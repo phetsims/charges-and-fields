@@ -1,0 +1,95 @@
+// Copyright 2002-2014, University of Colorado Boulder
+
+/**
+ * Control panel.
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
+define( function( require ) {
+  'use strict';
+
+  // modules
+
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Panel = require( 'SUN/Panel' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
+
+  //strings
+
+  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+  var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
+  var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
+
+
+  /**
+   *
+   * @param {Model} model
+   * @param {Object} [options] scenery options for rendering the control panel, see the constructor for options.
+   * @constructor
+   */
+  function ElectricPotentialSensorPanel( model, modelViewTransform, options ) {
+
+    var self = this;
+    this.model = model;
+    this.modelViewTransform = modelViewTransform;
+    // Demonstrate a common pattern for specifying options and providing default values.
+    options = _.extend( {
+        xMargin: 10,
+        yMargin: 10,
+        stroke: 'blue',
+        lineWidth: 3
+      },
+      options );
+
+    var plotButton = new TextPushButton( 'Plot', {
+      font: new PhetFont( 16 ),
+      baseColor: 'green',
+      xMargin: 10,
+      listener: function() {
+        model.traceElectricPotential( modelViewTransform );
+      }
+    } );
+    var clearButton = new TextPushButton( 'Clear', {
+      font: new PhetFont( 16 ),
+      baseColor: 'pink',
+      xMargin: 10,
+      listener: function() {
+        model.clearEquiPotentialLines = true;
+      }
+    } );
+
+    var equipotential = new Text( equipotentialString, {
+      font: new PhetFont( 16 ),
+      fill: 'grey',
+      xMargin: 10
+    } );
+
+
+    this.voltageReading = new Text( '?', {
+      font: new PhetFont( 16 ),
+      fill: 'grey',
+      xMargin: 10
+    } );
+
+
+    var voltage = new Text( voltageString, {
+      font: new PhetFont( 16 ),
+      fill: 'grey',
+      xMargin: 10
+    } );
+
+    // The contents of the control panel
+    var content = new VBox( {align: 'center', spacing: 10, children: [plotButton, clearButton, equipotential, this.voltageReading, voltage], pickable: true } );
+
+    Panel.call( this, content, options );
+  }
+
+  return inherit( Panel, ElectricPotentialSensorPanel );
+} );
