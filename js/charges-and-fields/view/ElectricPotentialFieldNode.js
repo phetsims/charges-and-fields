@@ -24,7 +24,7 @@ define( function( require ) {
    * @param showResolutionProperty
    * @constructor
    */
-  function ElectricPotentialFieldNode( model, modelViewTransform, bounds, showResolutionProperty ) {
+  function ElectricPotentialFieldNode( model, modelViewTransform, showResolutionProperty ) {
 
     var electricPotentialFieldNode = this;
     // Call the super constructor

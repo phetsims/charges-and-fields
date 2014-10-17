@@ -35,7 +35,7 @@ define( function( require ) {
    * @param showResolutionProperty
    * @constructor
    */
-  function ElectricFieldGridNode( model, modelViewTransform, bounds, eFieldIsVisibleProperty ) {
+  function ElectricFieldGridNode( model, modelViewTransform, eFieldIsVisibleProperty ) {
 
     var electricFieldGridNode = this;
 
@@ -43,16 +43,11 @@ define( function( require ) {
 
     model.electricFieldSensorGrid.forEach( function( electricFieldSensor ) {
       var positionInModel = electricFieldSensor.location;
-      var electricField = electricFieldSensor.electricField;
-      //  var electricFieldInView = modelViewTransform.modelToViewDelta( electricField );
       var locationInView = modelViewTransform.modelToViewPosition( positionInModel );
-      // var magnitude = electricField.magnitude();
-      // var angle = electricFieldInView.angle();
 
       // Add arrow
       //     var color = model.getColorElectricFieldMagnitude( positionInModel, magnitude );
       var arrowNode = new MutableArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH, 0, {fill: ARROW_COLOR, stroke: ARROW_COLOR, pickable: false, tailWidth: 8, lineWidth: 0, headWidth: 16, headHeight: 10} );
-
       arrowNode.center = locationInView.plus( new Vector2( ARROW_LENGTH / 4, 0 ) );
 
       // Add the centered circle
@@ -61,10 +56,7 @@ define( function( require ) {
 
       electricFieldSensor.electricFieldProperty.link( function( electricField ) {
         var electricFieldInView = modelViewTransform.modelToViewDelta( electricField );
-//        var magnitude = electricField.magnitude();
-        var angle = electricFieldInView.angle();
-        arrowNode.setRotation( angle );
-        arrowNode.stroke = 'blue';
+        arrowNode.setRotation( electricFieldInView.angle() );
       } );
       electricFieldGridNode.addChild( arrowNode );
       electricFieldGridNode.addChild( circle );
@@ -79,7 +71,6 @@ define( function( require ) {
         } );
       }
     } );
-
   }
 
   return inherit( Node, ElectricFieldGridNode );
