@@ -27,8 +27,8 @@ define( function( require ) {
   var gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
   var showNumbersString = require( 'string!CHARGES_AND_FIELDS/showNumbers' );
   var tapeMeasureString = require( 'string!CHARGES_AND_FIELDS/tapeMeasure' );
-  var clearAllString = require( 'string!CHARGES_AND_FIELDS/clearAll' );
-  var moreSpeedLessRes = require( 'string!CHARGES_AND_FIELDS/moreSpeedLessRes' );
+//  var clearAllString = require( 'string!CHARGES_AND_FIELDS/clearAll' );
+//  var moreSpeedLessRes = require( 'string!CHARGES_AND_FIELDS/moreSpeedLessRes' );
 
 // constants
   var CHECK_BOX_GROUP_OPTION_FONT = { font: new PhetFont( 14 ) };

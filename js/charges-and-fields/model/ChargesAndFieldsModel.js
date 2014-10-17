@@ -9,16 +9,18 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Bounds2 = require( 'DOT/Bounds2' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var Color = require( 'SCENERY/util/Color' );
+  var Dimension2 = require( 'DOT/Dimension2' );
   var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
   var LinearFunction = require( 'DOT/LinearFunction' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Property = require( 'AXON/Property' );
-  var Dimension2 = require( 'DOT/Dimension2' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
+  var SensorGridFactory = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGridFactory' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -28,7 +30,7 @@ define( function( require ) {
 
   //constants
   var K_CONSTANT = 9; // prefactor in E-field equation: E= k*Q/r^2 when Q is in nanocoulomb, r is in meter and E is is Volt/meter
-  var RAD_TO_DEGREES = 180 / Math.PI; //convert radians to degrees
+  // var RAD_TO_DEGREES = 180 / Math.PI; //convert radians to degrees
   var SATURATION_POSITIVE_COLOR = new Color( 'red' );
   var SATURATION_NEGATIVE_COLOR = new Color( 'blue' );
   var BACKGROUND_COLOR = new Color( '#FFFFB7' );
@@ -51,11 +53,11 @@ define( function( require ) {
       showResolution: false,
       gridIsVisible: false,
       showNumbersIsVisible: false,
-      clearEquiPotentialLines: false,
+      clearEquipotentialLines: false,
       tapeMeasureIsVisible: false,
       tapeMeasureUnits: 'cm',
       tapeMeasureScale: 1,
-      tapeMeasureLocation: new Vector2( 20, 50 )
+      tapeMeasureLocation: new Vector2( 20, 50 ) /// position in the view
     } );
 
 
@@ -116,7 +118,6 @@ define( function( require ) {
         position = new Vector2( x, y );
         electricField = thisModel.getElectricField( position );
         electricPotential = thisModel.getElectricPotential( position );
-        electricPotential = thisModel.getElectricPotential( position );
         this.electricFieldSensorGrid.push( new SensorElement( position, electricField, electricPotential, true ) );
       }
     }
@@ -144,29 +145,24 @@ define( function( require ) {
         position = new Vector2( x, y );
         electricField = thisModel.getElectricField( position );
         electricPotential = thisModel.getElectricPotential( position );
-        electricPotential = thisModel.getElectricPotential( position );
         this.electricPotentialGrid.push( new SensorElement( position, electricField, electricPotential, true ) );
       }
     }
 
-    this.equiPotentialLinesArray = new ObservableArray();
+    this.equipotentialLinesArray = new ObservableArray();
   }
 
   return inherit( PropertySet, ChargesAndFieldsModel, {
     reset: function() {
-      this.equiPotentialLinesArray.clear();
-      //     this.chargedParticles.reset();
-//      this.electricFieldSensorArray.reset();
-//      this.electricFieldSensorGrid.reset();
-//      this.electricPotentialSensor= null;
-      PropertySet.prototype.reset.call( this )
+      this.equipotentialLinesArray.clear();
+      PropertySet.prototype.reset.call( this );
     },
 
     getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
       var newDistancePowerCube = Math.pow( newChargePosition.distance( position ), 3 );
       var oldDistancePowerCube = Math.pow( oldChargePosition.distance( position ), 3 );
       var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
-      var oldFieldVector = ( position.minus( newChargePosition )).divideScalar( oldDistancePowerCube );
+      var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
       var electricFieldChange = (newFieldVector.minus( oldFieldVector )).timesScalar( particleCharge * K_CONSTANT );
       return electricFieldChange;
     },
@@ -190,22 +186,6 @@ define( function( require ) {
       return electricField;
     },
 
-//same method as previously but using functional programming
-    getElectricField2: function( chargedParticleArray, point ) {
-      function electricFieldContribution( chargedParticle ) {
-        var distance = chargedParticle.location.distance( point );
-        var distancePowerCube = Math.pow( distance, 3 );
-        var displacementVector = point.minus( chargedParticle.location );
-        var electricFieldContributionVector = displacementVector.timesScalar( (chargedParticle.charge) / distancePowerCube );
-        return electricFieldContributionVector;
-      }
-
-      var plusFunction = function( a, b ) { return a.plus( b ); };
-      //TODO check if we need to add zero or Vector2.ZERO
-      var electricFieldSensorVector = _.reduce( _.map( chargedParticleArray, electricFieldContribution() ), plusFunction, Vector2.Zero );
-      electricFieldSensorVector = electricFieldSensorVector.timesScalar( K_CONSTANT );/////prefactor depends on units
-      return electricFieldSensorVector;
-    },
 
     getElectricPotential: function( position ) {
       var electricPotential = 0;
@@ -218,18 +198,6 @@ define( function( require ) {
 
     },
 
-//same method as previously but using functional programming
-    getElectricPotential2: function( chargedParticleArray, point ) {
-      var electricPotentialContribution = function( chargedParticle ) {
-        var distance = chargedParticle.location.distance( point );
-        var electricPotentialContribution = (chargedParticle.charge) / distance;
-        return electricPotentialContribution;
-      };
-      var plusFunction = function( a, b ) { return a + b; };
-      var electricPotential = _.reduce( _.map( chargedParticleArray, electricPotentialContribution ), plusFunction, 0 );
-      electricPotential = electricPotential * K_CONSTANT;/////prefactor depends on units
-      return electricPotential;
-    },
 
     randomBoolean: function() {
       return Math.random() < 0.5;
@@ -247,7 +215,7 @@ define( function( require ) {
      *
      * The algorithm works best for small epsilon.
      *
-     * @param {Vector2} initial position
+     * @param {Vector2} position
      * @param {Number} deltaEpsilon , a distance
      * @returns {Vector2} next point along the equipotential line
      */
@@ -256,17 +224,14 @@ define( function( require ) {
       return this.getNextPositionAlongEquipotentialWithVoltage.call( this, position, initialElectricPotential, deltaEpsilon );
     },
 
-//TODO optimize the voltage constraint
 //starting at position with potential=voltage find final position at a distance deltaEpsilon along equipotential
     getNextPositionAlongEquipotentialWithVoltage: function( position, voltage, deltaEpsilon ) {
       var initialElectricField = this.getElectricField( position );
-      //var initialElectricPotential = this.getElectricPotential( position );
-      var initialElectricPotential = voltage;
       var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); //normalized Vector along equipotential
       var midwayPosition = position.plus( equipotentialNormalizedVector.timesScalar( deltaEpsilon ) );
       var midwayElectricField = this.getElectricField( midwayPosition );
       var midwayElectricPotential = this.getElectricPotential( midwayPosition );
-      var deltaElectricPotential = midwayElectricPotential - initialElectricPotential;
+      var deltaElectricPotential = midwayElectricPotential - voltage;
       var deltaPosition = midwayElectricField.timesScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() );
       var finalPosition = midwayPosition.plus( deltaPosition );
       return finalPosition;
@@ -289,7 +254,7 @@ define( function( require ) {
      * http://en.wikipedia.org/wiki/Midpoint_method
      *
      * @param {Vector2} position
-     * @param {number} deltaEpsilon, can be positive (for forward direction) or negative (for backward direction)
+     * @param {number} deltaEpsilon can be positive (for forward direction) or negative (for backward direction) units of meter^2/volt
      * @returns {Vector2}
      */
     getNextPositionAlongElectricField: function( position, deltaEpsilon ) {
@@ -304,24 +269,40 @@ define( function( require ) {
     },
 
     /**
+     * This method returns a downward position along the electric field lines
+     * This uses a standard midpoint algorithm
+     * http://en.wikipedia.org/wiki/Midpoint_method
+     *
+     * @param {Vector2} position
+     * @param {number} deltaDistance, can be positive (for forward direction) or negative (for backward direction)
+     * @returns {Vector2}
+     */
+    getNextPositionAlongElectricField2: function( position, deltaDistance ) {
+      //deltaEpsilon has units of meter square per volts
+      var initialElectricField = this.getElectricField( position );
+      var deltaEpsilon = deltaDistance * deltaDistance / (1 + initialElectricField.magnitude());
+      return   this.getNextPositionAlongElectricField( position, deltaEpsilon );
+    },
+
+    /**
      * This method returns a series of points with the same electric potential as the electric potential
      * at the initial position.
      *
-     * @param {Vector2} initial position
-     * @returns {Array<Vector2>} a series of positions with the same electric Potential as the initial position
+     * @param {Vector2} position : initial position
+     * @returns {Array<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
-    getEquiPotentialPositionArray: function( position ) {
+    getEquipotentialPositionArray: function( position ) {
       if ( !this.chargedParticles.length === 0 ) {
         // if there are no charges, don't bother to find the electric potential
-        return;
+        return null;
       }
 
       //  var epsilonDistance = 0.01;	 //step length along equipotential in meters
       var epsilonDistance = 0.01;	 //step length along equipotential in meters
       var readyToBreak = false;
       var stepCounter = 0;
-      var maxSteps = 2000;
-      var maxDistance = 10; //maximum distance from the initial position in meter
+      var maxSteps = 4000;
+      var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
       var nextPositionClockwise;
       var nextPositionCounterClockwise;
       var currentPositionClockwise = position;
@@ -367,19 +348,19 @@ define( function( require ) {
      * along an electric field lines. The list of points is forward (along the electric field) ordered.
      *
      * @param {Vector2} position
-     * @returns {Array<Vector2>}
+     * @returns {Array<Vector2>|| null}
      */
     getElectricFieldPositionArray: function( position ) {
       if ( !this.chargedParticles.length === 0 ) {
         // if there are no charges, don't bother to find the electric field lines
-        return;
+        return null;
       }
 
       var closestApproachDistance = 0.2; // in meters
       var maxElectricFieldMagnitude = K_CONSTANT / Math.pow( closestApproachDistance, 2 );
 
       var stepCounter = 0;
-      var maxSteps = 2000;
+      var maxSteps = 100;
       var epsilonDistance = 0.01; // in meter square per Volt
       var readyToBreak = false;
 
@@ -399,18 +380,18 @@ define( function( require ) {
               currentPositionForward.magnitude() < maxDistance ||
               this.getElectricField( currentPositionForward ).magnitude() > maxElectricFieldMagnitude ) {
 
-        nextPositionForward = this.getNextPositionAlongElectricField( currentPositionForward, epsilonDistance );
+        nextPositionForward = this.getNextPositionAlongElectricField2( currentPositionForward, epsilonDistance );
         positionForwardArray.push( nextPositionForward );
         currentPositionForward = nextPositionForward;
         stepCounter++;
       }//end of while()
 
-      var stepCounter = 0;
+      stepCounter = 0;
       while ( stepCounter < maxSteps ||
               currentPositionBackward.magnitude() < maxDistance ||
               this.getElectricField( currentPositionBackward ).magnitude() > maxElectricFieldMagnitude ) {
 
-        nextPositionBackward = this.getNextPositionAlongElectricField( currentPositionBackward, -epsilonDistance );
+        nextPositionBackward = this.getNextPositionAlongElectricField2( currentPositionBackward, -epsilonDistance );
         positionBackwardArray.push( nextPositionBackward );
         currentPositionBackward = nextPositionBackward;
         stepCounter++;
@@ -436,7 +417,6 @@ define( function( require ) {
       var electricPotentialMax = 40; // voltage (in volts) at which color will saturate to colorMax
       var electricPotentialMin = -40; // voltage at which color will saturate to colorMin
 
-
       var colorMax = SATURATION_POSITIVE_COLOR;   // for electricPotentialMax
       var backgroundColor = BACKGROUND_COLOR; // for electric Potential of Zero
       var colorMin = SATURATION_NEGATIVE_COLOR; // for electricPotentialMin
@@ -454,7 +434,7 @@ define( function( require ) {
         var distanceNegative = linearInterpolationNegative( electricPotential );
         finalColor = interpolateRGBA( colorMin, backgroundColor, distanceNegative );
       }
-      return finalColor
+      return finalColor;
     },
 
     /**
@@ -480,31 +460,17 @@ define( function( require ) {
       return interpolateRGBA( backgroundColor, colorMax, distancePositive );
     },
 
-    //TODO: to pass only points in array and let the view  handle it
-    traceElectricPotential: function( modelViewTransform ) {
-      var position = this.electricPotentialSensor.location;
-      var positionArray = this.getEquiPotentialPositionArray( position );
-      // var positionArray = this.getElectricFieldPositionArray( position );
-      var self = modelViewTransform;
-      var shape = new Shape();
-      var path = new Path( null, {stroke: 'green', lineWidth: 1, pickable: false} );
-
-      shape.moveToPoint( self.modelToViewPosition( positionArray[0] ) );
-//      shape.moveToPoint( positionArray[0]  );
-      positionArray.forEach( function( location ) {
-//        shape.lineToPoint(  location  );
-        shape.lineToPoint( self.modelToViewPosition( location ) );
-      } );
-      path.shape = shape;
-      var equiPotentialLine = {};
-      equiPotentialLine.path = path;
-      equiPotentialLine.position = position;
-      equiPotentialLine.electricPotential = this.getElectricPotential( position );
-      this.equiPotentialLinesArray.push( equiPotentialLine );
+    /**
+     * Push an equipotentialLine to the observable array
+     * The drawing of the equipotential line is handled in the view (equipotentialLineNode)
+     */
+    addElectricPotentialLine: function() {
+      var equipotentialLine = {};
+      equipotentialLine.position = this.electricPotentialSensor.location;
+      equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
+      equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
+      this.equipotentialLinesArray.push( equipotentialLine );
     }
-
-
-
   } );
 } );
 

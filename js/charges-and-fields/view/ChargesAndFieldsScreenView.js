@@ -18,6 +18,7 @@ define( function( require ) {
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialFieldNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialFieldNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
+  var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
   var Grid = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/Grid' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
@@ -61,7 +62,7 @@ define( function( require ) {
     thisView.modelViewTransform = modelViewTransform; // Make the modelViewTransform available to descendant types.
 
     // create and add the electric Potential field Node responsible for the electric potential field
-    var electricPotentialFieldNode = new ElectricPotentialFieldNode( model, modelViewTransform, this.layoutBounds, model.showResolutionProperty );
+    var electricPotentialFieldNode = new ElectricPotentialFieldNode( model, modelViewTransform, model.showResolutionProperty );
     this.addChild( electricPotentialFieldNode );
 
     // Create and add the visual grid on the view
@@ -69,30 +70,13 @@ define( function( require ) {
     this.addChild( grid );
 
     // create and add the grid with electric field arrow sensors
-    var electricFieldGridNode = new ElectricFieldGridNode( model, modelViewTransform, this.layoutBounds, model.eFieldIsVisibleProperty );
+    var electricFieldGridNode = new ElectricFieldGridNode( model, modelViewTransform, model.eFieldIsVisibleProperty );
     this.addChild( electricFieldGridNode );
 
 
-    // create and add the equipotential lines
-    this.equiPotentialNode = new Node();
-    this.equiPotentialLabelNode = new Node();
-    this.addChild( this.equiPotentialNode );
-    this.addChild( this.equiPotentialLabelNode );
-    thisView.voltageLabel = {};
-
-    model.equiPotentialLinesArray.addItemAddedListener( function( equiPotentialLine ) {
-      var voltageLabelText = StringUtils.format( pattern_0value_1units, equiPotentialLine.electricPotential.toFixed( 1 ), voltageUnitString );
-      thisView.voltageLabel = new Text( voltageLabelText, { fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
-      thisView.voltageLabel.center = modelViewTransform.modelToViewPosition( equiPotentialLine.position );
-      thisView.equiPotentialLabelNode.addChild( thisView.voltageLabel );
-      thisView.equiPotentialNode.addChild( equiPotentialLine.path );
-    } );
-
-    //TODO: ask JB about how to remove listeners
-//    model.equiPotentialLinesArray.addItemRemovedListener( function( equiPotentialLine ) {
-//      thisView.equiPotentialNode.removeChild( equiPotentialLine.path );
-//    } );
-
+    // Create and add the control panel
+    var equipotentialLineNode = new EquipotentialLineNode( model, modelViewTransform );
+    this.addChild( equipotentialLineNode );
 
     // create and add the Measuring Tape
     var measuringTape = new MeasuringTape( thisView.layoutBounds, model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty );
@@ -109,6 +93,7 @@ define( function( require ) {
       listener: function() {
         thisView.reset();
         model.reset();
+        equipotentialLineNode.removeAllChildren();
       },
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10
@@ -123,24 +108,13 @@ define( function( require ) {
     this.electricPotentialSensorNode = new ElectricPotentialSensorNode( model, model.electricPotentialSensor, modelViewTransform );
     this.addChild( this.electricPotentialSensorNode );
 
+
     // create and add the charged particles to the view
     var parentChargesNode = new Node();
     model.chargedParticles.forEach( function( charge ) {
       parentChargesNode.addChild( new ChargedParticleNode( model, charge, modelViewTransform ) );
     } );
     this.addChild( parentChargesNode );
-
-    // remove the equipotential lines
-    model.clearEquiPotentialLinesProperty.link( function() {
-      thisView.equiPotentialNode.removeAllChildren();
-      thisView.equiPotentialLabelNode.removeAllChildren();
-      model.clearEquiPotentialLines = false;
-    } );
-
-    // control the visibility of the number labels
-    model.showNumbersIsVisibleProperty.link( function( isVisible ) {
-      thisView.equiPotentialLabelNode.visible = isVisible;
-    } );
 
     // create and add the electric Field sensors
     var parentElectricFieldSensorsNode = new Node();
@@ -152,15 +126,13 @@ define( function( require ) {
     // Create and add the control panel
     controlPanel.right = thisView.layoutBounds.maxX - 20;
     controlPanel.bottom = resetAllButton.top - 20;
-    //  measuringTape.centerY = 100;
-    //   measuringTape.centerX = 100;
+
     grid.centerX = thisView.layoutBounds.centerX;
     grid.centerY = thisView.layoutBounds.centerY;
   }
 
   return inherit( ScreenView, ChargesAndFieldsScreenView, {
     reset: function() {
-      this.equiPotentialNode.removeAllChildren();
     }
   } );
 } );
