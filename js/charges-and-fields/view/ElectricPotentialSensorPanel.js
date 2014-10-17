@@ -23,7 +23,6 @@ define( function( require ) {
 
   //strings
 
-  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
   var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
 
@@ -31,12 +30,12 @@ define( function( require ) {
   /**
    *
    * @param {Model} model
+   * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] scenery options for rendering the control panel, see the constructor for options.
    * @constructor
    */
   function ElectricPotentialSensorPanel( model, modelViewTransform, options ) {
 
-    var self = this;
     this.model = model;
     this.modelViewTransform = modelViewTransform;
     // Demonstrate a common pattern for specifying options and providing default values.
@@ -53,7 +52,7 @@ define( function( require ) {
       baseColor: 'green',
       xMargin: 10,
       listener: function() {
-        model.traceElectricPotential( modelViewTransform );
+        model.addElectricPotentialLine();
       }
     } );
     var clearButton = new TextPushButton( 'Clear', {
@@ -61,7 +60,7 @@ define( function( require ) {
       baseColor: 'pink',
       xMargin: 10,
       listener: function() {
-        model.clearEquiPotentialLines = true;
+        model.clearEquipotentialLines = true;
       }
     } );
 
