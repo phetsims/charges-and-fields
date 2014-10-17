@@ -23,8 +23,8 @@ define( function( require ) {
 
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
-   * @param {model} main model of the simulation
-   * @param {ChargedParticle} the model of the charged particle
+   * @param {model} model of the simulation
+   * @param {ChargedParticle} chargedParticle : the model of the charged particle
    * @param {ModelViewTransform2} modelViewTransform the coordinate transform between model coordinates and view coordinates
    * @constructor
    */
@@ -38,11 +38,11 @@ define( function( require ) {
     } );
 
     // Add the centered circle
-    var radius = 10;
 
     var chargeColor;
-    if ( chargedParticle.charge === 1 ) { chargeColor = 'red'}
-    else { chargeColor = 'blue'}
+
+    // determine the color of the charged Particle based on its charge: blue positive
+    chargeColor = (chargedParticle.charge !== 1) ? 'blue' : 'red';
 
     var circle = new Circle( CIRCLE_RADIUS, {
       stroke: 'black',
@@ -52,8 +52,9 @@ define( function( require ) {
 
     chargedParticleNode.addChild( circle );
 
+    // create and add shape for the circle based on the charge of the particle
+    var ratio = 0.5; //
     if ( chargedParticle.charge === 1 ) {
-      var ratio = 0.5; //
       // plus Shape representing the positive charges
       var plusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
         .lineTo( CIRCLE_RADIUS * ratio, 0 )
@@ -62,7 +63,6 @@ define( function( require ) {
       chargedParticleNode.addChild( new Path( plusShape, { centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white' } ) );
     }
     else {
-      var ratio = 0.5;
       // minus Shape representing the negative charges
       var minusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
         .lineTo( CIRCLE_RADIUS * ratio, 0 );
@@ -70,10 +70,9 @@ define( function( require ) {
     }
 
     // Register for synchronization with model.
-    //synchronize all the other field dependent
     chargedParticle.locationProperty.link( function( position, oldPosition ) {
 
-      model.clearEquiPotentialLines = true;
+      model.clearEquipotentialLines = true;
 
       var charge = chargedParticle.charge;
       chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
@@ -88,9 +87,7 @@ define( function( require ) {
             sensorElement.electricField = model.getElectricField( sensorElement.location );
           }
           else {
-// TODO this commented line should work but there is a bug with it.
-//          sensorElement.electricField=sensorElement.electricField.plus(model.getElectricFieldChange( sensorElement.location, position, oldPosition, charge ));
-            sensorElement.electricField = model.getElectricField( sensorElement.location );
+            sensorElement.electricField = sensorElement.electricField.plus( model.getElectricFieldChange( sensorElement.location, position, oldPosition, charge ) );
           }
         } );
       }
@@ -105,7 +102,7 @@ define( function( require ) {
           }
         } );
       }
-      model.electricPotentialSensor.electricPotential = model.getElectricPotential( model.electricPotentialSensor.location )
+      model.electricPotentialSensor.electricPotential = model.getElectricPotential( model.electricPotentialSensor.location );
 
     } );
 
