@@ -22,7 +22,7 @@ define( function( require ) {
    */
   function SensorGridFactory( options ) {
     options = _.extend( {
-      location: new Vector2( 0, 0 ),/// in the middle
+      position: new Vector2( 0, 0 ),/// in the middle
       size: new Dimension2( 6.5, 4 ),/// in meters
       numberOfHorizontalSensors: 10,
       numberOfVerticalSensors: 10,
@@ -31,15 +31,16 @@ define( function( require ) {
       userControlled: false
     } );
 
+    ObservableArray.call( this );
     this.size = options.size;
-    this.location = options.location;
+    this.position = options.position;
     this.numberOfHorizontalSensors = options.numberOfHorizontalSensors;
     this.numberOfVerticalSensors = options.numberOfVerticalSensors;
 
     // convenience coordinates
-    this.left = this.location.x - this.size.width / 2;
+    this.left = this.position.x - this.size.width / 2;
     this.right = this.left + this.size.width;
-    this.bottom = this.location.y - this.size.height / 2;
+    this.bottom = this.position.y - this.size.height / 2;
     this.top = this.bottom + this.size.height;
 
     //unit cell
@@ -67,10 +68,10 @@ define( function( require ) {
         if ( options.electricPotentialInitialization ) {
           electricPotential = thisModel.getElectricPotential( position );
         }
-        this.sensorGrid.push( new SensorElement( {position: position, electricField: electricField, electricPotential: electricPotential, userControlled: options.userControlled} ) );
+        this.sensorGrid.push( new SensorElement( {position: position, electricField: electricField, electricPotential: electricPotential} ) );
       }
     }
   }
 
-  return inherit( Object, SensorGridFactory );
+  return inherit( ObservableArray, SensorGridFactory );
 } );
