@@ -42,17 +42,17 @@ define( function( require ) {
     Node.call( this );
 
     model.electricFieldSensorGrid.forEach( function( electricFieldSensor ) {
-      var positionInModel = electricFieldSensor.location;
-      var locationInView = modelViewTransform.modelToViewPosition( positionInModel );
+      var positionInModel = electricFieldSensor.position;
+      var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
 
       // Add arrow
       //     var color = model.getColorElectricFieldMagnitude( positionInModel, magnitude );
       var arrowNode = new MutableArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH, 0, {fill: ARROW_COLOR, stroke: ARROW_COLOR, pickable: false, tailWidth: 8, lineWidth: 0, headWidth: 16, headHeight: 10} );
-      arrowNode.center = locationInView.plus( new Vector2( ARROW_LENGTH / 4, 0 ) );
+      arrowNode.center = positionInView.plus( new Vector2( ARROW_LENGTH / 4, 0 ) );
 
       // Add the centered circle
       var circle = new Circle( CIRCLE_RADIUS, { fill: CIRCLE_COLOR, stroke: CIRCLE_COLOR} );
-      circle.center = locationInView;
+      circle.center = positionInView;
 
       electricFieldSensor.electricFieldProperty.link( function( electricField ) {
         var electricFieldInView = modelViewTransform.modelToViewDelta( electricField );
@@ -67,7 +67,7 @@ define( function( require ) {
       // for performance reason, the electric potential is calculated and updated only if the check is set to visible
       if ( isVisible === true ) {
         model.electricFieldSensorGrid.forEach( function( sensorElement ) {
-          sensorElement.electricField = model.getElectricField( sensorElement.location );
+          sensorElement.electricField = model.getElectricField( sensorElement.position );
         } );
       }
     } );

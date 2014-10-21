@@ -81,9 +81,9 @@ define( function( require ) {
     electricFieldSensorNode.addChild( this.directionLabel );
 
     // Register for synchronization with model.
-    electricFieldSensor.locationProperty.link( function( location ) {
-      electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( location );
-      electricFieldSensor.electricField = model.getElectricField( location );
+    electricFieldSensor.positionProperty.link( function( position ) {
+      electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
+      electricFieldSensor.electricField = model.getElectricField( position );
     } );
 
     electricFieldSensor.electricFieldProperty.link( function( electricField ) {
@@ -115,8 +115,8 @@ define( function( require ) {
 
         // Translate on drag events and update electricField
         translate: function( args ) {
-          electricFieldSensor.location = modelViewTransform.viewToModelPosition( args.position );
-          electricFieldSensor.electricField = model.getElectricField( electricFieldSensor.location );
+          electricFieldSensor.position = modelViewTransform.viewToModelPosition( args.position );
+          electricFieldSensor.electricField = model.getElectricField( electricFieldSensor.position );
         }
       } ) );
   }

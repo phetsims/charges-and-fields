@@ -63,14 +63,14 @@ define( function( require ) {
     this.electricPotentialSensorPanel.top = this.circle.bottom;
 
     // Register for synchronization with model.
-    electricPotentialSensor.locationProperty.link( function( location ) {
-      electricPotentialSensorNode.translation = modelViewTransform.modelToViewPosition( location );
-      electricPotentialSensor.electricPotential = model.getElectricPotential( location );
+    electricPotentialSensor.positionProperty.link( function( position ) {
+      electricPotentialSensorNode.translation = modelViewTransform.modelToViewPosition( position );
+      electricPotentialSensor.electricPotential = model.getElectricPotential( position );
     } );
 
     electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
       electricPotentialSensorNode.electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, electricPotential.toFixed( 1 ), voltageUnitString );
-      electricPotentialSensorNode.circle.fill = model.getColorElectricPotential( electricPotentialSensor.location, electricPotential ).withAlpha( 0.5 );
+      electricPotentialSensorNode.circle.fill = model.getColorElectricPotential( electricPotentialSensor.position, electricPotential ).withAlpha( 0.5 );
     } );
 
     // When dragging, move the charge
@@ -81,7 +81,7 @@ define( function( require ) {
 
         // Translate on drag events
         translate: function( args ) {
-          electricPotentialSensor.location = modelViewTransform.viewToModelPosition( args.position );
+          electricPotentialSensor.position = modelViewTransform.viewToModelPosition( args.position );
         }
       } ) );
   }

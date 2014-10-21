@@ -19,6 +19,7 @@ define( function( require ) {
   var ElectricPotentialFieldNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialFieldNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
+  var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
   var Grid = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/Grid' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
@@ -74,9 +75,13 @@ define( function( require ) {
     this.addChild( electricFieldGridNode );
 
 
-    // Create and add the control panel
+    // Create
     var equipotentialLineNode = new EquipotentialLineNode( model, modelViewTransform );
     this.addChild( equipotentialLineNode );
+
+    // Create
+    var electricFieldLineNode = new ElectricFieldLineNode( model, modelViewTransform );
+    this.addChild( electricFieldLineNode );
 
     // create and add the Measuring Tape
     var measuringTape = new MeasuringTape( thisView.layoutBounds, model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty );
@@ -94,6 +99,7 @@ define( function( require ) {
         thisView.reset();
         model.reset();
         equipotentialLineNode.removeAllChildren();
+        electricFieldLineNode.removeAllChildren();
       },
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10
@@ -122,6 +128,7 @@ define( function( require ) {
       parentElectricFieldSensorsNode.addChild( new ElectricFieldSensorNode( model, electricFieldSensor, modelViewTransform, model.eFieldIsVisibleProperty ) );
     } );
     this.addChild( parentElectricFieldSensorsNode );
+
 
     // Create and add the control panel
     controlPanel.right = thisView.layoutBounds.maxX - 20;

@@ -2,7 +2,7 @@
 
 /**
  * Model of a charged particle
- * The particle has a mutable location and charge.
+ * The particle has a mutable position and charge.
  *
  * @author Martin Veillette (Berea College)
  */
@@ -16,14 +16,16 @@ define( function( require ) {
 
   /**
    *
-   * @param {Vector2} location
+   * @param {Vector2} position
    * @param {Number} charge (positive=+1 or negative=-1)
    * @constructor
    */
-  function ChargedParticle( location, charge ) {
+  function ChargedParticle( position, charge ) {
 
     PropertySet.call( this, {
-      location: location
+      position: position,
+      userControlled: false     // Flag that tracks whether the user is dragging this shape around.  Should be set externally, generally by the a
+      // view node.
     } );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );

@@ -70,24 +70,25 @@ define( function( require ) {
     }
 
     // Register for synchronization with model.
-    chargedParticle.locationProperty.link( function( position, oldPosition ) {
+    chargedParticle.positionProperty.link( function( position, oldPosition ) {
 
       model.clearEquipotentialLines = true;
+      model.clearElectricFieldLines = true;
 
       var charge = chargedParticle.charge;
       chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
 
       model.electricFieldSensors.forEach( function( sensorElement ) {
-        sensorElement.electricField = model.getElectricField( sensorElement.location );
+        sensorElement.electricField = model.getElectricField( sensorElement.position );
       } );
 
       if ( model.eFieldIsVisible === true ) {
         model.electricFieldSensorGrid.forEach( function( sensorElement ) {
           if ( oldPosition === null ) {
-            sensorElement.electricField = model.getElectricField( sensorElement.location );
+            sensorElement.electricField = model.getElectricField( sensorElement.position );
           }
           else {
-            sensorElement.electricField = sensorElement.electricField.plus( model.getElectricFieldChange( sensorElement.location, position, oldPosition, charge ) );
+            sensorElement.electricField = sensorElement.electricField.plus( model.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
           }
         } );
       }
@@ -95,14 +96,14 @@ define( function( require ) {
       if ( model.showResolution === true ) {
         model.electricPotentialGrid.forEach( function( sensorElement ) {
           if ( oldPosition === null ) {
-            sensorElement.electricPotential = model.getElectricPotential( sensorElement.location );
+            sensorElement.electricPotential = model.getElectricPotential( sensorElement.position );
           }
           else {
-            sensorElement.electricPotential += model.getElectricPotentialChange( sensorElement.location, position, oldPosition, charge );
+            sensorElement.electricPotential += model.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
           }
         } );
       }
-      model.electricPotentialSensor.electricPotential = model.getElectricPotential( model.electricPotentialSensor.location );
+      model.electricPotentialSensor.electricPotential = model.getElectricPotential( model.electricPotentialSensor.position );
 
     } );
 
@@ -114,7 +115,7 @@ define( function( require ) {
 
         // Translate on drag events
         translate: function( args ) {
-          chargedParticle.location = modelViewTransform.viewToModelPosition( args.position );
+          chargedParticle.position = modelViewTransform.viewToModelPosition( args.position );
         }
       } ) );
 

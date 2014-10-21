@@ -14,6 +14,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+//  var RectangleWebGLDrawable = require( 'SCENERY/nodes/drawable/RectangleWebGLDrawable' );
+  var Util = require( 'SCENERY/util/Util' );
+
+//  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
+//  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );
 
 
   /**
@@ -30,16 +35,31 @@ define( function( require ) {
     // Call the super constructor
     Node.call( this );
 
-    var vectorDisplacement = model.electricPotentialGrid.get( 2 ).location.minus( model.electricPotentialGrid.get( 1 ).location );
+    var vectorDisplacement = model.electricPotentialGrid.get( 2 ).position.minus( model.electricPotentialGrid.get( 1 ).position );
     var unitDistance = modelViewTransform.modelToViewDelta( vectorDisplacement ).magnitude();
 
 
+//    // Check to see if WebGL was prevented by a query parameter
+//    var allowWebGL = window.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
+//
+//    var webGLSupported = Util.isWebGLSupported && allowWebGL;
+//
+//    // Use WebGL where available, but not on IE, due to https://github.com/phetsims/energy-skate-park-basics/issues/277
+//    // and https://github.com/phetsims/scenery/issues/285
+//    var renderer = webGLSupported ? 'webgl' : 'svg';
+//
+////    var pieChartNode = renderer === 'webgl' ? new PieChartWebGLNode( model.skater, model.property( 'pieChartVisible' ), modelViewTransform ) :
+////                       new PieChartNode( model.skater, model.property( 'pieChartVisible' ), modelViewTransform );
+////    this.addChild( pieChartNode );
+
+
+
     model.electricPotentialGrid.forEach( function( electricPotentialSensor ) {
-      var positionInModel = electricPotentialSensor.location;
+      var positionInModel = electricPotentialSensor.position;
       //  var electricPotential = electricPotentialSensor.electricPotential;
-      var locationInView = modelViewTransform.modelToViewPosition( positionInModel );
+      var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
       var rect = new Rectangle( 0, 0, unitDistance, unitDistance );
-      rect.center = locationInView;
+      rect.center = positionInView;
 
 
       electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
@@ -55,7 +75,7 @@ define( function( require ) {
       // for performance reason, the electric potential is calculated and updated only if the check is set to visible
       if ( isVisible ) {
         model.electricPotentialGrid.forEach( function( sensorElement ) {
-          sensorElement.electricPotential = model.getElectricPotential( sensorElement.location );
+          sensorElement.electricPotential = model.getElectricPotential( sensorElement.position );
         } );
       }
     } );

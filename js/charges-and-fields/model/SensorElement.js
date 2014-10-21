@@ -16,18 +16,19 @@ define( function( require ) {
 
   /**
    *
-   * @param {Vector2} location
+   * @param {Vector2} position
    * @param {Vector2} electricField
    * @param {Vector2} electricPotential
    * @param {Boolean} userControlled
    * @constructor
    */
-  function SensorElement( location, electricField, electricPotential, userControlled ) {
+  function SensorElement( position, electricField, electricPotential ) {
     PropertySet.call( this, {
-      location: location,
+      position: position,
       electricField: electricField,
       electricPotential: electricPotential,
-      userControlled: userControlled
+      userControlled: false      // Flag that tracks whether the user is dragging this shape around.  Should be set externally, generally by the a
+      // view node.
     } );
   }
 

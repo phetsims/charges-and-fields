@@ -1,9 +1,9 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Main screen View of the Charges and Fields simulation
+ * Node responsible for the drawing of the equipotential lines
  *
- * @author MYV
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
@@ -46,20 +46,22 @@ define( function( require ) {
     this.equipotentialLabelNode = new Node();
     this.addChild( this.equipotentialLabelNode );
 
+
     model.equipotentialLinesArray.addItemAddedListener( function( equipotentialLine ) {
       equipotentialLineNode.traceElectricPotentialLine( equipotentialLine );
-    } );
 
-    //TODO: ask JB about how to remove listeners
-//    model.equipotentialLinesArray.addItemRemovedListener( function( equipotentialLine ) {
-//      thisView.equipotentialNode.removeChild( equipotentialLine.path );
-//    } );
+//      model.equipotentialLinesArray.addItemRemovedListener( function removalListener( removedEquipotentialLine ) {
+//          if ( removedEquipotentialLine === equipotentialLine ) {
+//            equipotentialLineNode.removeChild(removedEquipotentialLine.path);
+//            model.equipotentialLinesArray.removeItemRemovedListener( removalListener );
+//          }
+//        } );
+    } );
 
     // remove the nodes and clear the array the equipotential lines
     model.clearEquipotentialLinesProperty.link( function() {
       equipotentialLineNode.equipotentialLabelNode.removeAllChildren();
       equipotentialLineNode.removeAllChildren();
-      //  model.equipotentialLinesArray.removeAll();
       model.clearEquipotentialLines = false;
     } );
 
@@ -84,8 +86,8 @@ define( function( require ) {
       //draw the equipotential line
       var shape = new Shape();
       shape.moveToPoint( modelViewTransform.modelToViewPosition( equipotentialLine.positionArray [0] ) );
-      equipotentialLine.positionArray.forEach( function( location ) {
-        shape.lineToPoint( modelViewTransform.modelToViewPosition( location ) );
+      equipotentialLine.positionArray.forEach( function( position ) {
+        shape.lineToPoint( modelViewTransform.modelToViewPosition( position ) );
       } );
       this.addChild( new Path( shape, {stroke: 'green', lineWidth: 1, pickable: false} ) );
     }

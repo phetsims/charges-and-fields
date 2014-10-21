@@ -11,11 +11,18 @@ define( function( require ) {
 
   //   var Color = require( 'SCENERY/util/Color' );
   //   var Dimension2 = require( 'DOT/Dimension2' );
+  var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
   var inherit = require( 'PHET_CORE/inherit' );
-  //  var Text = require( 'SCENERY/nodes/Text' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Shape = require( 'KITE/Shape' );
+  var Text = require( 'SCENERY/nodes/Text' );
+
+
+  // constants related to text
+  var FONT_SIZE = 13;
+  var FONT = new PhetFont( FONT_SIZE );
 
   function Grid( bounds, gridIsVisibleProperty ) {
 
@@ -71,6 +78,19 @@ define( function( require ) {
         {stroke: GRIDLINE_COLOR, lineWidth: lineWidthStroke, lineCap: 'butt', lineJoin: 'bevel'} ) );
     }
     this.addChild( gridlinesParent );
+
+
+    var arrowShape = new ArrowShape( 0, 0, 120, 0, {doubleHead: true} );
+    var arrowPath = new Path( arrowShape, {stroke: 'red', fill: 'orange'} );
+    arrowPath.bottom = 400;
+    arrowPath.left = 120;
+    this.addChild( arrowPath );
+
+
+    var text = new Text( ' 1 m', {font: FONT} );
+    this.addChild( text );
+    text.centerX = arrowPath.centerX;
+    text.top = arrowPath.bottom;
 
     gridIsVisibleProperty.link( function( isVisible ) {
       thisGrid.visible = isVisible;

@@ -47,12 +47,21 @@ define( function( require ) {
       },
       options );
 
-    var plotButton = new TextPushButton( 'Plot', {
+    var plotElectricPotentialLineButton = new TextPushButton( 'Plot V', {
       font: new PhetFont( 16 ),
       baseColor: 'green',
       xMargin: 10,
       listener: function() {
         model.addElectricPotentialLine();
+      }
+    } );
+    var plotElectricFieldLineButton = new TextPushButton( 'Plot E', {
+      font: new PhetFont( 16 ),
+      baseColor: 'orange',
+      xMargin: 10,
+      listener: function() {
+        model.addElectricFieldLine();
+        //     model.addManyLine();
       }
     } );
     var clearButton = new TextPushButton( 'Clear', {
@@ -61,6 +70,7 @@ define( function( require ) {
       xMargin: 10,
       listener: function() {
         model.clearEquipotentialLines = true;
+        model.clearElectricFieldLines = true;
       }
     } );
 
@@ -85,9 +95,13 @@ define( function( require ) {
     } );
 
     // The contents of the control panel
-    var content = new VBox( {align: 'center', spacing: 10, children: [plotButton, clearButton, equipotential, this.voltageReading, voltage], pickable: true } );
+    var content = new VBox( {
+      align: 'center',
+      spacing: 10,
+      children: [plotElectricPotentialLineButton, plotElectricFieldLineButton, clearButton, equipotential, this.voltageReading, voltage],
+      pickable: true } );
 
-    Panel.call( this, content, options );
+    Panel.call( this, content, {backgroundPickable: true} );
   }
 
   return inherit( Panel, ElectricPotentialSensorPanel );
