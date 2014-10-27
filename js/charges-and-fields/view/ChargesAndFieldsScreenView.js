@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
 
-  var BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
-  var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
+  // var BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
+//  var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
   var ControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ControlPanel' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
@@ -25,24 +25,24 @@ define( function( require ) {
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+//  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  // var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var Shape = require( 'KITE/Shape' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
+//  var Shape = require( 'KITE/Shape' );
+//  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+//  var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
 
   //constants
 
-  var LABEL_COLOR = 'brown';
-  var LABEL_FONT = new PhetFont( { size: 18, weight: 'bold' } );
+//  var LABEL_COLOR = 'brown';
+//  var LABEL_FONT = new PhetFont( { size: 18, weight: 'bold' } );
 
   //strings
 
-  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
-  var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
+//  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+//  var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   /**
    *

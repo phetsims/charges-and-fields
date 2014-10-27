@@ -13,21 +13,10 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+//  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Shape = require( 'KITE/Shape' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Vector2 = require( 'DOT/Vector2' );
+  // var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
-  // constants
-
-  var LABEL_COLOR = 'brown';
-  var LABEL_FONT = new PhetFont( { size: 18, weight: 'bold' } );
-
-  // strings
-
-  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
-  var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   /**
    *

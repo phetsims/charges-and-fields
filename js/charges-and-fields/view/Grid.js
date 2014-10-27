@@ -55,11 +55,13 @@ define( function( require ) {
     var deltaY = verticalLayoutLength / numberOfVerticalGridlines;
 
 
+    var isMajorGridline;
+    var lineWidthStroke;
     // horizontal gridlines
     var i;
     for ( i = 0; i <= numberOfHorizontalGridlines; i++ ) {
-      var isMajorGridline = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
-      var lineWidthStroke = ( isMajorGridline ? MAJOR_GRIDLINE_LINEWIDTH : MINOR_GRIDLINE_LINEWIDTH );
+      isMajorGridline = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+      lineWidthStroke = ( isMajorGridline ? MAJOR_GRIDLINE_LINEWIDTH : MINOR_GRIDLINE_LINEWIDTH );
       var x = ( i * deltaX );
 
       gridlinesParent.addChild( new Path(
@@ -69,8 +71,8 @@ define( function( require ) {
 
     // vertical gridlines
     for ( i = 0; i <= numberOfVerticalGridlines; i++ ) {
-      var isMajorGridline = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
-      var lineWidthStroke = ( isMajorGridline ? MAJOR_GRIDLINE_LINEWIDTH : MINOR_GRIDLINE_LINEWIDTH );
+      isMajorGridline = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+      lineWidthStroke = ( isMajorGridline ? MAJOR_GRIDLINE_LINEWIDTH : MINOR_GRIDLINE_LINEWIDTH );
       var y = ( i * deltaY );
 
       gridlinesParent.addChild( new Path(

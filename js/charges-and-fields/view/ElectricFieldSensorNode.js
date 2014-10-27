@@ -12,13 +12,12 @@ define( function( require ) {
   // modules
   var MutableArrowNode = require( 'SCENERY_PHET/MutableArrowNode' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
+  // var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
+  // var Path = require( 'SCENERY/nodes/Path' );
+//  var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -73,7 +72,7 @@ define( function( require ) {
     // Add Legend
     var fieldStrengthLabelText = StringUtils.format( pattern_0value_1units, '?', eFieldUnitString );
     this.fieldStrengthLabel = new Text( fieldStrengthLabelText, { fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
-    var directionLabelText = StringUtils.format( pattern_0value_1units, '?', angleUnit );
+    //  var directionLabelText = StringUtils.format( pattern_0value_1units, '?', angleUnit );
     this.directionLabel = new Text( fieldStrengthLabelText, { fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
     this.fieldStrengthLabel.top = circle.bottom;
     this.directionLabel.top = this.fieldStrengthLabel.bottom;

@@ -31,6 +31,7 @@ define( function( require ) {
       userControlled: false
     } );
 
+    var thisModel = this;
     ObservableArray.call( this );
     this.size = options.size;
     this.position = options.position;

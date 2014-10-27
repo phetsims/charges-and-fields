@@ -9,25 +9,25 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var Bucket = require( 'PHETCOMMON/model/Bucket' );
+//  var Bounds2 = require( 'DOT/Bounds2' );
+//  var Bucket = require( 'PHETCOMMON/model/Bucket' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var Color = require( 'SCENERY/util/Color' );
-  var Dimension2 = require( 'DOT/Dimension2' );
+  //var Dimension2 = require( 'DOT/Dimension2' );
   var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
   var LinearFunction = require( 'DOT/LinearFunction' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var Property = require( 'AXON/Property' );
+  // var Property = require( 'AXON/Property' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
-  var SensorGridFactory = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGridFactory' );
-  var Util = require( 'DOT/Util' );
+  // var SensorGridFactory = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGridFactory' );
+  // var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
 // temporary hack
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
+  // var Path = require( 'SCENERY/nodes/Path' );
+  // var Shape = require( 'KITE/Shape' );
 
   //constants
   var K_CONSTANT = 9; // prefactor in E-field equation: E= k*Q/r^2 when Q is in nanocoulomb, r is in meter and E is is Volt/meter
@@ -106,7 +106,6 @@ define( function( require ) {
     this.electricFieldSensorGrid = new ObservableArray();
 
 
-    var i;
     var j;
     //var aspectRatio= WIDTH/HEIGHT;
     var numberHorizontalSensors = 15;
@@ -135,13 +134,11 @@ define( function( require ) {
     this.electricPotentialGrid = new ObservableArray();
 
 
-    var i;
-    var j;
-    //   var aspetRatio= WIDTH/HEIGHT;
-    var numberHorizontalSensors = 80;
-    var horizontalSpacing = WIDTH / (numberHorizontalSensors + 1);
-    var verticalSpacing = horizontalSpacing;
-    var numberVerticalSensors = Math.floor( HEIGHT / verticalSpacing ) - 1;
+    //   var aspectRatio= WIDTH/HEIGHT;
+    numberHorizontalSensors = 80;
+    horizontalSpacing = WIDTH / (numberHorizontalSensors + 1);
+    verticalSpacing = horizontalSpacing;
+    numberVerticalSensors = Math.floor( HEIGHT / verticalSpacing ) - 1;
 
     for ( i = 0; i <= numberHorizontalSensors; i++ ) {
       for ( j = 0; j <= numberVerticalSensors; j++ ) {
@@ -305,13 +302,13 @@ define( function( require ) {
      * @returns {Array<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
     getEquipotentialPositionArray: function( position ) {
-      if ( !this.chargedParticles.length === 0 ) {
+      if ( this.chargedParticles.length === 0 ) {
         // if there are no charges, don't bother to find the electric potential
         return null;
       }
       var stepCounter = 0;
       var stepMax = 2000;
-      var epsilonDistance = 0.01;	 //step length along equipotential in meters
+      var epsilonDistance = 0.01;//step length along equipotential in meters
       var readyToBreak = false;
       var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
       var nextPositionClockwise;
@@ -360,7 +357,7 @@ define( function( require ) {
      * @returns {Array<Vector2>|| null}
      */
     getElectricFieldPositionArray: function( position ) {
-      if ( !this.chargedParticles.length === 0 ) {
+      if ( this.chargedParticles.length === 0 ) {
         // if there are no charges, don't bother to find the electric field lines
         return null;
       }

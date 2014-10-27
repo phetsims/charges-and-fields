@@ -9,21 +9,21 @@ define( function( require ) {
 
   // imports
 
-  var Color = require( 'SCENERY/util/Color' );
-  var Font = require( 'SCENERY/util/Font' );
+  // var Color = require( 'SCENERY/util/Color' );
+//  var Font = require( 'SCENERY/util/Font' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+//  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VerticalCheckBoxGroup = require( 'SUN/VerticalCheckBoxGroup' );
 
   // strings
   var showEFieldString = require( 'string!CHARGES_AND_FIELDS/showEField' );
-  var showDirectionOnlyString = require( 'string!CHARGES_AND_FIELDS/showDirectionOnly' );
+//  var showDirectionOnlyString = require( 'string!CHARGES_AND_FIELDS/showDirectionOnly' );
   var showLoResVString = require( 'string!CHARGES_AND_FIELDS/showLoResV' );
-  var showHiResVString = require( 'string!CHARGES_AND_FIELDS/showHiResV' );
+//  var showHiResVString = require( 'string!CHARGES_AND_FIELDS/showHiResV' );
   var gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
   var showNumbersString = require( 'string!CHARGES_AND_FIELDS/showNumbers' );
   var tapeMeasureString = require( 'string!CHARGES_AND_FIELDS/tapeMeasure' );

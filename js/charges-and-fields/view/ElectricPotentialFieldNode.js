@@ -15,7 +15,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 //  var RectangleWebGLDrawable = require( 'SCENERY/nodes/drawable/RectangleWebGLDrawable' );
-  var Util = require( 'SCENERY/util/Util' );
 
 //  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 //  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );
@@ -51,7 +50,6 @@ define( function( require ) {
 ////    var pieChartNode = renderer === 'webgl' ? new PieChartWebGLNode( model.skater, model.property( 'pieChartVisible' ), modelViewTransform ) :
 ////                       new PieChartNode( model.skater, model.property( 'pieChartVisible' ), modelViewTransform );
 ////    this.addChild( pieChartNode );
-
 
 
     model.electricPotentialGrid.forEach( function( electricPotentialSensor ) {
