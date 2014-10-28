@@ -72,11 +72,13 @@ define( function( require ) {
     // Register for synchronization with model.
     chargedParticle.positionProperty.link( function( position, oldPosition ) {
 
+      chargedParticleNode.moveToFront();
+      chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
+
       model.clearEquipotentialLines = true;
       model.clearElectricFieldLines = true;
 
       var charge = chargedParticle.charge;
-      chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
 
       model.electricFieldSensors.forEach( function( sensorElement ) {
         sensorElement.electricField = model.getElectricField( sensorElement.position );
