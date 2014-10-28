@@ -81,6 +81,7 @@ define( function( require ) {
 
     // Register for synchronization with model.
     electricFieldSensor.positionProperty.link( function( position ) {
+      electricFieldSensorNode.moveToFront();
       electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
       electricFieldSensor.electricField = model.getElectricField( position );
     } );
