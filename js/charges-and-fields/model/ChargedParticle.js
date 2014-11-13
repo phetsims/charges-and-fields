@@ -23,19 +23,52 @@ define( function( require ) {
   function ChargedParticle( position, charge ) {
 
     PropertySet.call( this, {
+
       position: position,
-      userControlled: false     // Flag that tracks whether the user is dragging this shape around.  Should be set externally, generally by the a
+      // Flag that tracks whether the user is dragging this data point around. Should be set externally, generally by the a
       // view node.
+      userControlled: false,
+
+      // Flag that indicates whether this element is animating from one location to another, should not be set externally.
+      animating: false
+
     } );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
     this.charge = charge;
+
+    this.initialPosition = position;
   }
 
   return inherit( PropertySet, ChargedParticle, {
     reset: function() {
       PropertySet.prototype.reset.call( this );
+    },
+
+    step: function( dt ) {
+      if ( this.animating ) {
+        this.animationStep( dt );
+      }
+    },
+
+    animationStep: function( dt ) {
+      // perform any animation
+      var distanceToDestination = this.position.distance( this.initialPosition );
+
+      // TODO: ANIMATION_VELOCITY is set in the model: not the view... adapt for scaling factor
+      if ( distanceToDestination > dt * 100 ) {
+        // Move a step toward the position.
+        var stepAngle = Math.atan2( this.initialPosition.y - this.position.y, this.initialPosition.x - this.position.x );
+        var stepVector = Vector2.createPolar( 100 * dt, stepAngle );
+        this.position = this.position.plus( stepVector );
+      }
+      else {
+        // Less than one time step away, so just go to the initial position.
+        this.position = this.initialPosition;
+        this.animating = false;
+        this.trigger( 'returnedToOrigin' );
+      }
     }
   } );
 } );

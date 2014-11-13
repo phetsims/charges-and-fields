@@ -10,10 +10,10 @@ define( function( require ) {
 
   // modules
 //  var Bounds2 = require( 'DOT/Bounds2' );
-//  var Bucket = require( 'PHETCOMMON/model/Bucket' );
+  var Bucket = require( 'PHETCOMMON/model/Bucket' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var Color = require( 'SCENERY/util/Color' );
-  //var Dimension2 = require( 'DOT/Dimension2' );
+  var Dimension2 = require( 'DOT/Dimension2' );
   var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
   var LinearFunction = require( 'DOT/LinearFunction' );
   var ObservableArray = require( 'AXON/ObservableArray' );
@@ -36,6 +36,10 @@ define( function( require ) {
   var SATURATION_NEGATIVE_COLOR = new Color( 'blue' );
   var BACKGROUND_COLOR = new Color( '#FFFFB7' );
 
+  // constants
+  var BUCKET_SIZE = new Dimension2( 90, 45 );
+
+
   //dimension of the screen in the model
   var HEIGHT = 4; //in meters
   var WIDTH = 6.5; // in meters
@@ -57,7 +61,7 @@ define( function( require ) {
       clearEquipotentialLines: false,
       clearElectricFieldLines: false,
       tapeMeasureIsVisible: false,
-      tapeMeasureUnits: 'cm',
+      tapeMeasureUnits: {name: 'cm', multiplier: 100},
       tapeMeasureScale: 1,
       tapeMeasurePosition: new Vector2( 20, 50 ) /// position in the view
     } );
@@ -71,6 +75,22 @@ define( function( require ) {
     var electricCharge;
     var electricField;
 
+    this.positiveChargeBucket = new Bucket( {
+      position: new Vector2( 700, 50 ),
+      baseColor: '#000080',
+      caption: '',
+      size: BUCKET_SIZE,
+      invertY: true
+    } );
+
+    this.negativeChargeBucket = new Bucket( {
+      position: new Vector2( 700, 150 ),
+      baseColor: '#000080',
+      caption: '',
+      size: BUCKET_SIZE,
+      invertY: true
+    } );
+
 
     function randomPosition() {
       return Math.random() * 4 - 2;
@@ -80,15 +100,8 @@ define( function( require ) {
       return new Vector2( randomPosition(), randomPosition() );
     }
 
-    // It is important to set up the charges first (before the sensors)
-    // charge particles that make up the model
+
     this.chargedParticles = new ObservableArray();
-    // this.chargedParticles = [];
-    for ( i = 0; i < 10; i++ ) {
-      position = randomVector();
-      electricCharge = thisModel.randomElectricCharge();
-      this.chargedParticles.push( new ChargedParticle( position, electricCharge ) );
-    }
 
     // electric Field Sensors
     this.electricFieldSensors = new ObservableArray();
@@ -164,6 +177,45 @@ define( function( require ) {
       PropertySet.prototype.reset.call( this );
     },
 
+
+    step: function( dt ) {
+      this.chargedParticles.forEach( function( chargedParticle ) {
+        chargedParticle.step( dt );
+      } );
+    },
+
+    /**
+     * Function for adding new  chargedParticles to this model when the user creates them, generally by clicking on some
+     * some sort of creator node.
+     * @public
+     * @param chargedParticle
+     */
+    addUserCreatedChargedParticle: function( chargedParticle ) {
+      var self = this;
+      this.chargedParticles.push( chargedParticle );
+      chargedParticle.positionProperty.link( function( position ) {
+        //if ( self.graph.ischargedParticlePositionOverlappingGraph( position ) && !chargedParticle.animating ) {
+        //  self.graph.addPoint( chargedParticle );
+        //}
+        //else {
+        //  self.graph.removePoint( chargedParticle );
+        //}
+      } );
+
+      chargedParticle.userControlledProperty.link( function( userControlled ) {
+        //var isOnGraph = self.graph.ischargedParticlePositionOverlappingGraph( chargedParticle.position );
+        //if ( !isOnGraph && !userControlled ) {
+        //  chargedParticle.animating = true;
+        //}
+      } );
+
+
+//      The chargedParticle will be removed from the model if and when it returns to its origination point. This is how a chargedParticle
+//      can be 'put back' into the bucket.
+      chargedParticle.on( 'returnedToOrigin', function() {
+        self.chargedParticles.remove( chargedParticle );
+      } );
+    },
 
     /**
      * Return the change in the electric field at position Position due to the motion of a charged particle from oldChargePosition to  newChargePosition.

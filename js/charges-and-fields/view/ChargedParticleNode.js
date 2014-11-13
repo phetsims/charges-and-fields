@@ -13,10 +13,11 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+
 
   // constants
   var CIRCLE_RADIUS = 10; // radius of charged particles.
@@ -36,6 +37,11 @@ define( function( require ) {
       // Show a cursor hand over the charge
       cursor: 'pointer'
     } );
+
+    // Set up the mouse and touch areas for this node so that this can still be grabbed when invisible.
+    this.touchArea = this.localBounds.dilatedXY( 10, 10 );
+    this.mouseArea = this.localBounds.dilatedXY( 10, 10 );
+
 
     // Add the centered circle
 
@@ -118,6 +124,14 @@ define( function( require ) {
         // Translate on drag events
         translate: function( args ) {
           chargedParticle.position = modelViewTransform.viewToModelPosition( args.position );
+        },
+
+        start: function( event, trail ) {
+          chargedParticle.userControlled = true;
+          chargedParticle.animating = false; // can stop point animation by catching the moving point in flight.
+        },
+        end: function( event, trail ) {
+          chargedParticle.userControlled = false;
         }
       } ) );
 
