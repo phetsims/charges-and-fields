@@ -24,7 +24,7 @@ define( function( require ) {
   var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
   var Grid = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/Grid' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
+  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTapeDeprecated' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
 //  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
