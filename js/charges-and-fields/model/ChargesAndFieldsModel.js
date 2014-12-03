@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
 //  var Bounds2 = require( 'DOT/Bounds2' );
   var Bucket = require( 'PHETCOMMON/model/Bucket' );
-  var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
+  //var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var Color = require( 'SCENERY/util/Color' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
@@ -72,7 +72,7 @@ define( function( require ) {
     var i;
     var position;
     var electricPotential;
-    var electricCharge;
+    //var electricCharge;
     var electricField;
 
     this.positiveChargeBucket = new Bucket( {
