@@ -24,7 +24,7 @@ define( function( require ) {
   var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
   var Grid = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/Grid' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTapeDeprecated' );
+  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
 //  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -107,23 +107,16 @@ define( function( require ) {
 
     // create and add the Measuring Tape
     var tape_options = {
-      x: 30,
-      y: 75,
-      tipX: 92.4,
-      tipY: 0,
-      scale: 1,
-      length: 92.4,
-      lengthDefault: 92.4,
-      initialValue: 1.00,
-      precision: 0
+      textColor: 'black'
     };
-    var measuringTape = new MeasuringTape( thisView.layoutBounds, model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty, tape_options );
-    measuringTape.text.fill = 'black';
+    var measuringTape = new MeasuringTape( thisView.layoutBounds, model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
+      tape_options );
+    //measuringTape.text.fill = 'black';
     this.addChild( measuringTape );
 
-    model.tapeMeasureIsVisibleProperty.link( function( isVisible ) {
-      measuringTape.visible = isVisible;
-    } );
+    //model.tapeMeasureIsVisibleProperty.link( function( isVisible ) {
+    //  measuringTape.visible = isVisible;
+    //} );
 
 
     // Create and add the Reset All Button in the bottom right, which resets the model

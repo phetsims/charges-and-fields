@@ -62,7 +62,7 @@ define( function( require ) {
       clearElectricFieldLines: false,
       tapeMeasureIsVisible: false,
       tapeMeasureUnits: {name: 'cm', multiplier: 100},
-      tapeMeasureScale: 1,
+      tapeMeasureScale: 100,
       tapeMeasurePosition: new Vector2( 20, 50 ) /// position in the view
     } );
 
