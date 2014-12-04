@@ -19,7 +19,7 @@ define( function( require ) {
    * @param {Vector2} position
    * @param {Vector2} electricField
    * @param {Vector2} electricPotential
-   * @param {Boolean} userControlled
+   * @param {boolean} userControlled
    * @constructor
    */
   function SensorElement( position, electricField, electricPotential ) {
@@ -33,6 +33,7 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, SensorElement, {
+    // @public
     reset: function() {
       PropertySet.prototype.reset.call( this );
     }

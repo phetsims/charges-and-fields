@@ -43,16 +43,18 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, ChargedParticle, {
+    // @public
     reset: function() {
       PropertySet.prototype.reset.call( this );
     },
 
+    // @public
     step: function( dt ) {
       if ( this.animating ) {
         this.animationStep( dt );
       }
     },
-
+    // @private
     animationStep: function( dt ) {
       // perform any animation
       var distanceToDestination = this.position.distance( this.initialPosition );

@@ -171,6 +171,7 @@ define( function( require ) {
 
 
   return inherit( PropertySet, ChargesAndFieldsModel, {
+    // @public
     reset: function() {
       this.equipotentialLinesArray.clear();
       this.electricFieldLinesArray.clear();
@@ -219,6 +220,7 @@ define( function( require ) {
 
     /**
      * Return the change in the electric field at position Position due to the motion of a charged particle from oldChargePosition to  newChargePosition.
+     * @public Read-Only
      *
      * @param {Vector2} position
      * @param {Vector2} newChargePosition
@@ -237,7 +239,7 @@ define( function( require ) {
 
     /**
      * Return the change in the electric potential at position Position due to the motion of a charged particle from oldChargePosition to  newChargePosition.
-     *
+     * @public read-Only
      * @param {Vector2} position
      * @param {Vector2} newChargePosition
      * @param {Vector2} oldChargePosition
@@ -251,6 +253,7 @@ define( function( require ) {
       return electricPotentialChange;
     },
 
+    // @public read-Only
     getElectricField: function( position ) {
       var electricField = new Vector2( 0, 0 );
       this.chargedParticles.forEach( function( chargedParticle ) {
@@ -266,7 +269,7 @@ define( function( require ) {
 
     /**
      * Return the electric potential at position Position due to the configuration of charges on the board.
-     *
+     * @public read-Only
      * @param {Vector2} position
      * @returns {number}
      */
@@ -281,11 +284,12 @@ define( function( require ) {
 
     },
 
-
+    // @private
     randomBoolean: function() {
       return Math.random() < 0.5;
     },
 
+    // @private
     randomElectricCharge: function() {
       return Math.round( this.randomBoolean() * 2 - 1 );
     },
@@ -297,7 +301,7 @@ define( function( require ) {
      * electric Field.
      *
      * The algorithm works best for small epsilon.
-     *
+     * @private
      * @param {Vector2} position
      * @param {Number} deltaDistance , a distance
      * @returns {Vector2} next point along the equipotential line
@@ -309,7 +313,7 @@ define( function( require ) {
 
     /**
      * Given a (initial) position, find a position with with targeted electric potential voltage within a distance deltaDistance
-     *
+     * @private
      * @param {Vector2} position
      * @param {number} voltage
      * @param {number} deltaDistance, a distance in meters, can be positive or negative
@@ -331,7 +335,7 @@ define( function( require ) {
      * This method returns a downward position along the electric field lines
      * This uses a standard midpoint algorithm
      * http://en.wikipedia.org/wiki/Midpoint_method
-     *
+     * @private
      * @param {Vector2} position
      * @param {number} deltaDistance can be positive (for forward direction) or negative (for backward direction) (units of meter)
      * @returns {Vector2}
@@ -349,7 +353,7 @@ define( function( require ) {
     /**
      * This method returns a series of points with the same electric potential as the electric potential
      * at the initial position.
-     *
+     * @public read-only
      * @param {Vector2} position : initial position
      * @returns {Array<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
@@ -404,7 +408,7 @@ define( function( require ) {
     /**
      * Starting from an initial position, this method generates a list of points that are
      * along an electric field lines. The list of points is forward (along the electric field) ordered.
-     *
+     * @public read-only
      * @param {Vector2} position
      * @returns {Array<Vector2>|| null}
      */
@@ -462,7 +466,8 @@ define( function( require ) {
 
 
     /**
-     *  Given a position returns a color that represent the intensity of the electricPotential at that point
+     * Given a position returns a color that represent the intensity of the electricPotential at that point
+     * @public read-only
      * @param {Vector2} position
      * @param {number}  electricPotential (optional Argument)
      * @returns {Color} color
@@ -498,7 +503,7 @@ define( function( require ) {
 
     /**
      * Given a position, returns a color that is related to the intensity of the electric field magnitude.
-     *
+     * @public read-only
      * @param {Vector2} position
      * @param {number} electricFieldMagnitude (optional argument)
      * @returns {Color}
@@ -522,6 +527,7 @@ define( function( require ) {
     /**
      * Push an equipotentialLine to an observable array
      * The drawing of the equipotential line is handled in the view (equipotentialLineNode)
+     * @public
      */
     addElectricPotentialLine: function() {
       var equipotentialLine = {};
@@ -534,6 +540,7 @@ define( function( require ) {
     /**
      * Push an electricFieldLine to an observable array
      * The drawing of the electricField Line is handled in the view.
+     * @public
      */
     addElectricFieldLine: function() {
       var electricFieldLine = {};
@@ -545,6 +552,7 @@ define( function( require ) {
     /**
      * Push an electricFieldLine to an observable array
      * The drawing of the electricField Line is handled in the view.
+     * @public
      */
     addManyLine: function() {
 
