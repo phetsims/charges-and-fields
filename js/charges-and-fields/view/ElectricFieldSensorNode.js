@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var MutableArrowNode = require( 'SCENERY_PHET/MutableArrowNode' );
+  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   // var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
@@ -26,7 +26,7 @@ define( function( require ) {
   var RAD_TO_DEGREES = 180 / Math.PI; //convert radians to degrees
   var CIRCLE_COLOR = 'orange';
   var CIRCLE_RADIUS = 7; //in pixels
-  var ARROW_COLOR = 'red';
+  var ARROW_COLOR = 'white';
   var LABEL_COLOR = 'brown';
   var LABEL_FONT = new PhetFont( { size: 18, weight: 'bold' } );
 
@@ -53,7 +53,7 @@ define( function( require ) {
     } );
 
     // Add Arrow
-    this.arrowNode = new MutableArrowNode( 0, 0, 40, 0, {
+    this.arrowNode = new ArrowNode( 0, 0, 40, 0, {
       fill: ARROW_COLOR,
       stroke: ARROW_COLOR,
       pickable: false,

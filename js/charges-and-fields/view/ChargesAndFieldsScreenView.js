@@ -107,7 +107,7 @@ define( function( require ) {
 
     // create and add the Measuring Tape
     var tape_options = {
-      textColor: 'black'
+      textColor: 'white'
     };
     var measuringTape = new MeasuringTape( thisView.layoutBounds, model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
       tape_options );

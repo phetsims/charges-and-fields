@@ -63,6 +63,7 @@ define( function( require ) {
       electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
         var specialColor = model.getColorElectricPotential( positionInModel, electricPotential );
         rect.fill = specialColor;
+        rect.stroke = specialColor;
       } );
       electricPotentialFieldNode.addChild( rect );
     } );

@@ -27,7 +27,8 @@ define( function( require ) {
     Screen.call( this, chargesAndFieldsSimString, icon,
       function() { return new ChargesAndFieldsModel(); },
       function( model ) { return new ChargesAndFieldsScreenView( model ); },
-      { backgroundColor: '#FFFFB7' } //yellowish color
+      //{ backgroundColor: '#FFFFB7' } //yellowish color
+      {backgroundColor: 'black'}
     );
   }
 

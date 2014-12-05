@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var MutableArrowNode = require( 'SCENERY_PHET/MutableArrowNode' );
+  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -22,9 +22,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   //constants
-  var CIRCLE_COLOR = 'white';
+  var CIRCLE_COLOR = 'black';
   var CIRCLE_RADIUS = 2; //in pixels
-  var ARROW_COLOR = 'red';
+  var ARROW_COLOR = 'pink';
   var ARROW_LENGTH = 20; //in pixels
 
   /**
@@ -47,16 +47,26 @@ define( function( require ) {
 
       // Add arrow
       //     var color = model.getColorElectricFieldMagnitude( positionInModel, magnitude );
-      var arrowNode = new MutableArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH, 0, {fill: ARROW_COLOR, stroke: ARROW_COLOR, pickable: false, tailWidth: 8, lineWidth: 0, headWidth: 16, headHeight: 10} );
+      var arrowNode = new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH, 0, {
+        fill: ARROW_COLOR,
+        stroke: ARROW_COLOR,
+        pickable: false,
+        tailWidth: 8,
+        lineWidth: 0,
+        headWidth: 16,
+        headHeight: 10
+      } );
       arrowNode.center = positionInView.plus( new Vector2( ARROW_LENGTH / 4, 0 ) );
 
       // Add the centered circle
-      var circle = new Circle( CIRCLE_RADIUS, { fill: CIRCLE_COLOR, stroke: CIRCLE_COLOR} );
+      var circle = new Circle( CIRCLE_RADIUS, {fill: CIRCLE_COLOR, stroke: CIRCLE_COLOR} );
       circle.center = positionInView;
 
       electricFieldSensor.electricFieldProperty.link( function( electricField ) {
         var electricFieldInView = modelViewTransform.modelToViewDelta( electricField );
         arrowNode.setRotation( electricFieldInView.angle() );
+        arrowNode.fill = model.getColorElectricFieldMagnitude( positionInModel, electricField.magnitude() );
+        //arrowNode.stroke = model.getColorElectricFieldMagnitude( positionInView );
       } );
       electricFieldGridNode.addChild( arrowNode );
       electricFieldGridNode.addChild( circle );

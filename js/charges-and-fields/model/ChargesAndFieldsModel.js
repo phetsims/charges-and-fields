@@ -34,7 +34,7 @@ define( function( require ) {
   // var RAD_TO_DEGREES = 180 / Math.PI; //convert radians to degrees
   var SATURATION_POSITIVE_COLOR = new Color( 'red' );
   var SATURATION_NEGATIVE_COLOR = new Color( 'blue' );
-  var BACKGROUND_COLOR = new Color( '#FFFFB7' );
+  var BACKGROUND_COLOR = new Color( 'black' );
 
   // constants
   var BUCKET_SIZE = new Dimension2( 90, 45 );
@@ -75,6 +75,7 @@ define( function( require ) {
     //var electricCharge;
     var electricField;
 
+    // @public read-only
     this.positiveChargeBucket = new Bucket( {
       position: new Vector2( 700, 50 ),
       baseColor: '#000080',
@@ -83,6 +84,7 @@ define( function( require ) {
       invertY: true
     } );
 
+    // @public read-only
     this.negativeChargeBucket = new Bucket( {
       position: new Vector2( 700, 150 ),
       baseColor: '#000080',
@@ -100,10 +102,11 @@ define( function( require ) {
       return new Vector2( randomPosition(), randomPosition() );
     }
 
-
+    // @public read-only
     this.chargedParticles = new ObservableArray();
 
     // electric Field Sensors
+    // @public read-only
     this.electricFieldSensors = new ObservableArray();
     for ( i = 0; i < 2; i++ ) {
       position = randomVector();
@@ -116,6 +119,7 @@ define( function( require ) {
 
 ///    this.electricFieldSensorGrid= new SensorGridFactory();
     /* the screen in the model is 4 meters high and 6.5 meters wide*/
+    // @public read-only
     this.electricFieldSensorGrid = new ObservableArray();
 
 
@@ -143,7 +147,7 @@ define( function( require ) {
     electricPotential = thisModel.getElectricPotential( position );
     this.electricPotentialSensor = new SensorElement( position, electricField, electricPotential );
 
-
+    // @public read-only
     this.electricPotentialGrid = new ObservableArray();
 
 
@@ -164,7 +168,9 @@ define( function( require ) {
       }
     }
 
+    // @public read-only
     this.equipotentialLinesArray = new ObservableArray();
+    // @public read-only
     this.electricFieldLinesArray = new ObservableArray();
 
   }
@@ -178,7 +184,7 @@ define( function( require ) {
       PropertySet.prototype.reset.call( this );
     },
 
-
+    // @public
     step: function( dt ) {
       this.chargedParticles.forEach( function( chargedParticle ) {
         chargedParticle.step( dt );
@@ -355,7 +361,7 @@ define( function( require ) {
      * at the initial position.
      * @public read-only
      * @param {Vector2} position : initial position
-     * @returns {Array<Vector2>|| null} a series of positions with the same electric Potential as the initial position
+     * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
     getEquipotentialPositionArray: function( position ) {
       if ( this.chargedParticles.length === 0 ) {
@@ -410,7 +416,7 @@ define( function( require ) {
      * along an electric field lines. The list of points is forward (along the electric field) ordered.
      * @public read-only
      * @param {Vector2} position
-     * @returns {Array<Vector2>|| null}
+     * @returns {Array.<Vector2>|| null}
      */
     getElectricFieldPositionArray: function( position ) {
       if ( this.chargedParticles.length === 0 ) {
@@ -511,15 +517,18 @@ define( function( require ) {
     getColorElectricFieldMagnitude: function( position, electricFieldMagnitude ) {
 
       if ( typeof electricFieldMagnitude === "undefined" ) {
-        electricFieldMagnitude = this.electricField( position ).magnitude();
+        var electricFieldMagnitude = this.getElectricField( position ).magnitude();
+
       }
 
-      var colorMax = SATURATION_POSITIVE_COLOR;
+      //var colorMax = SATURATION_POSITIVE_COLOR;
+      var colorMax = new Color( 'white' );
       var backgroundColor = BACKGROUND_COLOR;
-      var electricFieldMax = 200; // electricField at which color will saturate to colorMax (in Volts/meter)
+      var electricFieldMax = 5; // electricField at which color will saturate to colorMax (in Volts/meter)
 
       var linearInterpolationPositive = new LinearFunction( 0, electricFieldMax, 0, 1, true );
       var distancePositive = linearInterpolationPositive( electricFieldMagnitude );
+
 
       return interpolateRGBA( backgroundColor, colorMax, distancePositive );
     },
