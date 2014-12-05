@@ -25,20 +25,24 @@ define( function( require ) {
 
     PropertySet.call( this, {
 
+      // @public
       position: position,
-      // Flag that tracks whether the user is dragging this data point around. Should be set externally, generally by the a
+      // @public Flag that tracks whether the user is dragging this data point around. Should be set externally, generally by the a
       // view node.
       userControlled: false,
 
-      // Flag that indicates whether this element is animating from one location to another, should not be set externally.
+      // @public Flag that indicates whether this element is animating from one location to another, should not be set externally.
       animating: false
 
     } );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
+    // @public read-only
     this.charge = charge;
 
+    // @public read-only
+    //TODO Is it necessary?, using positionPropery.initial?
     this.initialPosition = position;
   }
 

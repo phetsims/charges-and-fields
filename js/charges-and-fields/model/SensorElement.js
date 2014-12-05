@@ -24,10 +24,13 @@ define( function( require ) {
    */
   function SensorElement( position, electricField, electricPotential ) {
     PropertySet.call( this, {
+      // @public
       position: position,
+      // @public
       electricField: electricField,
+      // @public
       electricPotential: electricPotential,
-      userControlled: false      // Flag that tracks whether the user is dragging this shape around.  Should be set externally, generally by the a
+      userControlled: false      // Flag that tracks whether the user is dragging this shape around.  Should be set externally, generally by the
       // view node.
     } );
   }
