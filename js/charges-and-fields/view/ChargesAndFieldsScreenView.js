@@ -124,6 +124,7 @@ define( function( require ) {
       listener: function() {
         thisView.reset();
         model.reset();
+        measuringTape.reset();
         equipotentialLineNode.removeAllChildren();
         electricFieldLineNode.removeAllChildren();
       },
