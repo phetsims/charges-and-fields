@@ -107,9 +107,10 @@ define( function( require ) {
 
     // create and add the Measuring Tape
     var tape_options = {
-      textColor: 'white'
+      textColor: 'white',
+      dragBounds: thisView.layoutBounds.eroded( 5 )
     };
-    var measuringTape = new MeasuringTape( thisView.layoutBounds, model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
+    var measuringTape = new MeasuringTape( model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
       tape_options );
     //measuringTape.text.fill = 'black';
     this.addChild( measuringTape );
