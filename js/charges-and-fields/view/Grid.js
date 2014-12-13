@@ -24,12 +24,16 @@ define( function( require ) {
   var FONT_SIZE = 13;
   var FONT = new PhetFont( FONT_SIZE );
 
+  // strings
+  var oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
+
   function Grid( bounds, gridIsVisibleProperty ) {
 
     var thisGrid = this;
 
     Node.call( this );
 
+    //TODO: set the grid based on the model bounds rather the view bounds
 
     //var horizontalLayoutLength = this.layoutBounds.maxX; //
     //var VERTICAL_LAYOUT_LENGTH = this.layoutBounds.maxY;
@@ -43,6 +47,10 @@ define( function( require ) {
     var MAJOR_GRIDLINE_LINEWIDTH = 2;
     var MINOR_GRIDLINE_LINEWIDTH = 1;
     var GRIDLINE_COLOR = 'orange';
+    var ARROW_STROKE = 'blue';
+    var ARROW_FILL = 'orange';
+    var ARROW_LENGTH = '120'
+
 
     var gridlinesParent = new Node();
 
@@ -82,14 +90,14 @@ define( function( require ) {
     this.addChild( gridlinesParent );
 
 
-    var arrowShape = new ArrowShape( 0, 0, 120, 0, {doubleHead: true} );
-    var arrowPath = new Path( arrowShape, {stroke: 'red', fill: 'orange'} );
+    var arrowShape = new ArrowShape( 0, 0, ARROW_LENGTH, 0, {doubleHead: true} );
+    var arrowPath = new Path( arrowShape, {stroke: ARROW_STROKE, fill: ARROW_FILL} );
     arrowPath.bottom = 400;
     arrowPath.left = 120;
     this.addChild( arrowPath );
 
 
-    var text = new Text( ' 1 m', {font: FONT} );
+    var text = new Text( oneMeterString, {font: FONT} );
     this.addChild( text );
     text.centerX = arrowPath.centerX;
     text.top = arrowPath.bottom;
