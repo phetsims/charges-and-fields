@@ -110,7 +110,7 @@ define( function( require ) {
       textColor: 'white',
       dragBounds: thisView.layoutBounds.eroded( 5 )
     };
-    var measuringTape = new MeasuringTape( model.tapeMeasureScaleProperty, model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
+    var measuringTape = new MeasuringTape( modelViewTransform, model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
       tape_options );
     //measuringTape.text.fill = 'black';
     this.addChild( measuringTape );
