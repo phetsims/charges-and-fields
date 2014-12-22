@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-
+  var Bounds2 = require( 'DOT/Bounds2' );
   var BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
   var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
@@ -65,7 +65,7 @@ define( function( require ) {
   function ChargesAndFieldsScreenView( model ) {
 
 
-    ScreenView.call( this, { renderer: 'svg' } );
+    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
     var thisView = this;
 
     //model View transform : The origin of the model is sets in the middle of the screen
