@@ -8,10 +8,8 @@ define( function( require ) {
   'use strict';
 
   var Color = require( 'SCENERY/util/Color' );
-  var Dimension2 = require( 'DOT/Dimension2' );
+  //var Dimension2 = require( 'DOT/Dimension2' );
 
-  var minMass = 25;// kg
-  var maxMass = 100;
 
   return {
     SATURATION_POSITIVE_COLOR: new Color( 'red' ),

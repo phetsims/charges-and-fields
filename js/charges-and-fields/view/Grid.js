@@ -49,7 +49,7 @@ define( function( require ) {
     var GRIDLINE_COLOR = 'orange';
     var ARROW_STROKE = 'blue';
     var ARROW_FILL = 'orange';
-    var ARROW_LENGTH = '120'
+    var ARROW_LENGTH = '120';
 
 
     var gridlinesParent = new Node();

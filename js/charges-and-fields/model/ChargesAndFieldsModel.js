@@ -406,7 +406,7 @@ define( function( require ) {
       //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
       var reverseArray = positionClockwiseArray.reverse();
       var positionArray = reverseArray.concat( position, positionCounterClockwiseArray );
-      return  positionArray;
+      return positionArray;
     },
 
     /**
@@ -465,7 +465,7 @@ define( function( require ) {
       //let's order all the positions (including the initial point) in an array in a forward fashion
       var reverseArray = positionBackwardArray.reverse();
       var positionArray = reverseArray.concat( position, positionForwardArray );
-      return  positionArray;
+      return positionArray;
     },
 
 
@@ -514,9 +514,12 @@ define( function( require ) {
      */
     getColorElectricFieldMagnitude: function( position, electricFieldMagnitude ) {
 
+      var electricFieldMag;
       if ( typeof electricFieldMagnitude === "undefined" ) {
-        var electricFieldMagnitude = this.getElectricField( position ).magnitude();
-
+        electricFieldMag = this.getElectricField( position ).magnitude();
+      }
+      else {
+        electricFieldMag = electricFieldMagnitude;
       }
 
       //var colorMax = SATURATION_POSITIVE_COLOR;
@@ -525,7 +528,7 @@ define( function( require ) {
       var electricFieldMax = 5; // electricField at which color will saturate to colorMax (in Volts/meter)
 
       var linearInterpolationPositive = new LinearFunction( 0, electricFieldMax, 0, 1, true );
-      var distancePositive = linearInterpolationPositive( electricFieldMagnitude );
+      var distancePositive = linearInterpolationPositive( electricFieldMag );
 
 
       return interpolateRGBA( backgroundColor, colorMax, distancePositive );
