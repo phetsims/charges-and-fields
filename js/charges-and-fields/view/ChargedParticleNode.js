@@ -24,9 +24,9 @@ define( function( require ) {
 
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
-   * @param {model} model of the simulation
-   * @param {ChargedParticle} chargedParticle : the model of the charged particle
-   * @param {ModelViewTransform2} modelViewTransform the coordinate transform between model coordinates and view coordinates
+   * @param {ChargesAndFieldsModel} model of the simulation
+   * @param {ChargedParticle} chargedParticle - the model of the charged particle
+   * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @constructor
    */
   function ChargedParticleNode( model, chargedParticle, modelViewTransform ) {
@@ -120,15 +120,12 @@ define( function( require ) {
       {
         // When dragging across it in a mobile device, pick it up
         allowTouchSnag: true,
-
+        start: function( event, trail ) {
+          chargedParticle.userControlled = true;
+        },
         // Translate on drag events
         translate: function( args ) {
           chargedParticle.position = modelViewTransform.viewToModelPosition( args.position );
-        },
-
-        start: function( event, trail ) {
-          chargedParticle.userControlled = true;
-          chargedParticle.animating = false; // can stop point animation by catching the moving point in flight.
         },
         end: function( event, trail ) {
           chargedParticle.userControlled = false;

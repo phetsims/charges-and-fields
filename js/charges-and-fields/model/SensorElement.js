@@ -19,7 +19,6 @@ define( function( require ) {
    * @param {Vector2} position
    * @param {Vector2} electricField
    * @param {Vector2} electricPotential
-   * @param {boolean} userControlled
    * @constructor
    */
   function SensorElement( position, electricField, electricPotential ) {
@@ -29,9 +28,7 @@ define( function( require ) {
       // @public
       electricField: electricField,
       // @public
-      electricPotential: electricPotential,
-      userControlled: false      // Flag that tracks whether the user is dragging this shape around.  Should be set externally, generally by the
-      // view node.
+      electricPotential: electricPotential
     } );
   }
 

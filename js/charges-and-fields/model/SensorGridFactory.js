@@ -18,6 +18,8 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
+   *
+   * @param {Object} [options]
    * @constructor
    */
   function SensorGridFactory( options ) {
@@ -28,7 +30,6 @@ define( function( require ) {
       numberOfVerticalSensors: 10,
       electricFieldInitialization: false,
       electricPotentialInitialization: false,
-      userControlled: false
     } );
 
     var thisModel = this;

@@ -1,4 +1,4 @@
-//  Copyright 2002-2014, University of Colorado Boulder
+//  Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Model of the charges and fields simulation
@@ -182,13 +182,6 @@ define( function( require ) {
       PropertySet.prototype.reset.call( this );
     },
 
-    // @public
-    step: function( dt ) {
-      this.chargedParticles.forEach( function( chargedParticle ) {
-        chargedParticle.step( dt );
-      } );
-    },
-
     /**
      * Function for adding new  chargedParticles to this model when the user creates them, generally by clicking on some
      * some sort of creator node.
@@ -196,30 +189,7 @@ define( function( require ) {
      * @param chargedParticle
      */
     addUserCreatedChargedParticle: function( chargedParticle ) {
-      var self = this;
       this.chargedParticles.push( chargedParticle );
-      chargedParticle.positionProperty.link( function( position ) {
-        //if ( self.graph.ischargedParticlePositionOverlappingGraph( position ) && !chargedParticle.animating ) {
-        //  self.graph.addPoint( chargedParticle );
-        //}
-        //else {
-        //  self.graph.removePoint( chargedParticle );
-        //}
-      } );
-
-      chargedParticle.userControlledProperty.link( function( userControlled ) {
-        //var isOnGraph = self.graph.ischargedParticlePositionOverlappingGraph( chargedParticle.position );
-        //if ( !isOnGraph && !userControlled ) {
-        //  chargedParticle.animating = true;
-        //}
-      } );
-
-
-//      The chargedParticle will be removed from the model if and when it returns to its origination point. This is how a chargedParticle
-//      can be 'put back' into the bucket.
-      chargedParticle.on( 'returnedToOrigin', function() {
-        self.chargedParticles.remove( chargedParticle );
-      } );
     },
 
     /**
