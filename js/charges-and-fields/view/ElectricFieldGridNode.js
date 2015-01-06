@@ -1,10 +1,9 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * View for the equipotential Lines
  *
- * @author Chris Malley (PixelZoom, Inc.)
- * @author Sam Reid (PhET Interactive Simulations)
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
@@ -31,8 +30,7 @@ define( function( require ) {
    *
    * @param model
    * @param modelViewTransform
-   * @param bounds
-   * @param showResolutionProperty
+   * @param eFieldIsVisibleProperty
    * @constructor
    */
   function ElectricFieldGridNode( model, modelViewTransform, eFieldIsVisibleProperty ) {

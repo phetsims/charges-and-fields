@@ -67,7 +67,7 @@ define( function( require ) {
 
   /**
    *
-   * @param {model} model of the simulation
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
    * @constructor
    */
   function ChargesAndFieldsScreenView( model ) {

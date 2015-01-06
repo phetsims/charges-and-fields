@@ -26,7 +26,7 @@ define( function( require ) {
 
   /**
    *
-   * @param {Model} model
+   * @param {ChargesAndFieldsModel} model
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] scenery options for rendering the control panel, see the constructor for options.
    * @constructor

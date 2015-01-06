@@ -24,7 +24,6 @@ define( function( require ) {
    *
    * @param model
    * @param modelViewTransform
-   * @param bounds
    * @param showResolutionProperty
    * @constructor
    */
@@ -36,20 +35,6 @@ define( function( require ) {
 
     var vectorDisplacement = model.electricPotentialGrid.get( 2 ).position.minus( model.electricPotentialGrid.get( 1 ).position );
     var unitDistance = modelViewTransform.modelToViewDelta( vectorDisplacement ).magnitude();
-
-
-//    // Check to see if WebGL was prevented by a query parameter
-//    var allowWebGL = window.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
-//
-//    var webGLSupported = Util.isWebGLSupported && allowWebGL;
-//
-//    // Use WebGL where available, but not on IE, due to https://github.com/phetsims/energy-skate-park-basics/issues/277
-//    // and https://github.com/phetsims/scenery/issues/285
-//    var renderer = webGLSupported ? 'webgl' : 'svg';
-//
-////    var pieChartNode = renderer === 'webgl' ? new PieChartWebGLNode( model.skater, model.property( 'pieChartVisible' ), modelViewTransform ) :
-////                       new PieChartNode( model.skater, model.property( 'pieChartVisible' ), modelViewTransform );
-////    this.addChild( pieChartNode );
 
 
     model.electricPotentialGrid.forEach( function( electricPotentialSensor ) {

@@ -30,7 +30,7 @@ define( function( require ) {
 
   /**
    *
-   * @param {model} model of the simulation
+   * @param {model} model - of the simulation
    * @param {ModelViewTransform2}  modelViewTransform
    * @constructor
    */

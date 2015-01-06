@@ -31,9 +31,13 @@ define( function( require ) {
 //  var moreSpeedLessRes = require( 'string!CHARGES_AND_FIELDS/moreSpeedLessRes' );
 
 // constants
-  var CHECK_BOX_GROUP_OPTION_FONT = { font: new PhetFont( 14 ) };
+  var CHECK_BOX_GROUP_OPTION_FONT = {font: new PhetFont( 14 )};
 
-
+  /**
+   *
+   * @param model
+   * @constructor
+   */
   function ControlPanel( model ) {
 
     Node.call( this, {x: 5, scale: 0.7} );

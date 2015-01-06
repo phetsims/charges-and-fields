@@ -29,9 +29,9 @@ define( function( require ) {
 
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-   * @param {model} model model of the simulation
-   * @param {SensorElement} electricPotentialSensor model
-   * @param {ModelViewTransform2} modelViewTransform the coordinate transform between model coordinates and view coordinates
+   * @param {model} model - model of the simulation
+   * @param {SensorElement} electricPotentialSensor - model
+   * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @constructor
    */
   function ElectricPotentialSensorNode( model, electricPotentialSensor, modelViewTransform ) {
