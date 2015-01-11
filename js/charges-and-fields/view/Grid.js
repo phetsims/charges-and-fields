@@ -12,13 +12,13 @@ define( function( require ) {
   //   var Color = require( 'SCENERY/util/Color' );
   //   var Dimension2 = require( 'DOT/Dimension2' );
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
+  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
-
 
   // constants related to text
   var FONT_SIZE = 13;
@@ -27,6 +27,12 @@ define( function( require ) {
   // strings
   var oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
 
+  /**
+   *
+   * @param {Bounds2} bounds
+   * @param {Property.<boolean>} gridIsVisibleProperty
+   * @constructor
+   */
   function Grid( bounds, gridIsVisibleProperty ) {
 
     var thisGrid = this;
@@ -51,7 +57,6 @@ define( function( require ) {
     var ARROW_FILL = 'orange';
     var ARROW_LENGTH = '120';
 
-
     var gridlinesParent = new Node();
 
     var widthOfMajorGridlines = MINOR_GRIDLINES_PER_MAJOR_GRIDLINE * MINOR_GRIDLINE_SPACING;
@@ -61,7 +66,6 @@ define( function( require ) {
     var numberOfVerticalGridlines = numberOfMajorVerticalGridlines * MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
     var deltaX = horizontalLayoutLength / numberOfHorizontalGridlines;
     var deltaY = verticalLayoutLength / numberOfVerticalGridlines;
-
 
     var isMajorGridline;
     var lineWidthStroke;
@@ -89,13 +93,11 @@ define( function( require ) {
     }
     this.addChild( gridlinesParent );
 
-
     var arrowShape = new ArrowShape( 0, 0, ARROW_LENGTH, 0, {doubleHead: true} );
     var arrowPath = new Path( arrowShape, {stroke: ARROW_STROKE, fill: ARROW_FILL} );
     arrowPath.bottom = 400;
     arrowPath.left = 120;
     this.addChild( arrowPath );
-
 
     var text = new Text( oneMeterString, {font: FONT} );
     this.addChild( text );

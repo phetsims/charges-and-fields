@@ -1,4 +1,4 @@
-//  Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Node responsible for the drawing of the equipotential lines
@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
 
+  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -20,75 +21,82 @@ define( function( require ) {
 
   // constants
 
-  var LABEL_COLOR = 'brown';
-  var LABEL_FONT = new PhetFont( { size: 18, weight: 'bold' } );
+  var LABEL_COLOR = 'red';
+  var LABEL_FONT = new PhetFont( {size: 18, weight: 'bold'} );
 
   // strings
 
   var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
+
   /**
    *
-   * @param {model} model - of the simulation
-   * @param {ModelViewTransform2}  modelViewTransform
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
+   * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
   function EquipotentialLineNode( model, modelViewTransform ) {
 
     Node.call( this );
-    this.modelViewTransform = modelViewTransform;
 
-    var equipotentialLineNode = this;
+    // create and add the line node
+    var lineNode = new Node();
+    this.addChild( lineNode );
 
     // create and add the equipotentialLine node for the labels
-    this.equipotentialLabelNode = new Node();
-    this.addChild( this.equipotentialLabelNode );
-
+    var equipotentialLabelNode = new Node();
+    this.addChild( equipotentialLabelNode );
 
     model.equipotentialLinesArray.addItemAddedListener( function( equipotentialLine ) {
-      equipotentialLineNode.traceElectricPotentialLine( equipotentialLine );
+      traceElectricPotentialLine( equipotentialLine );
 
-//      model.equipotentialLinesArray.addItemRemovedListener( function removalListener( removedEquipotentialLine ) {
-//          if ( removedEquipotentialLine === equipotentialLine ) {
-//            equipotentialLineNode.removeChild(removedEquipotentialLine.path);
-//            model.equipotentialLinesArray.removeItemRemovedListener( removalListener );
-//          }
-//        } );
+      model.equipotentialLinesArray.addItemRemovedListener( function removalListener( removedEquipotentialLine ) {
+        if ( removedEquipotentialLine === equipotentialLine ) {
+          lineNode.removeChild( removedEquipotentialLine.path );
+          model.equipotentialLinesArray.removeItemRemovedListener( removalListener );
+        }
+      } );
     } );
 
-    // remove the nodes and clear the array the equipotential lines
+    //// remove the nodes and clear the array the equipotential lines
     model.clearEquipotentialLinesProperty.link( function() {
-      equipotentialLineNode.equipotentialLabelNode.removeAllChildren();
-      equipotentialLineNode.removeAllChildren();
+      equipotentialLabelNode.removeAllChildren();
+      lineNode.removeAllChildren();
       model.clearEquipotentialLines = false;
     } );
 
-
     // control the visibility of the number labels
     model.showNumbersIsVisibleProperty.link( function( isVisible ) {
-      equipotentialLineNode.equipotentialLabelNode.visible = isVisible;
+      equipotentialLabelNode.visible = isVisible;
     } );
-  }
 
-  return inherit( Node, EquipotentialLineNode, {
-    traceElectricPotentialLine: function( equipotentialLine ) {
-
-      var modelViewTransform = this.modelViewTransform;
+    /**
+     * Function that generates a label and a path/shape of the equipotential line
+     * @param {Object} equipotentialLine - Object of the form {position, positionArray, electricPotential}
+     */
+    function traceElectricPotentialLine( equipotentialLine ) {
 
       //add and create the label for the equipotential line
       var voltageLabelText = StringUtils.format( pattern_0value_1units, equipotentialLine.electricPotential.toFixed( 1 ), voltageUnitString );
-      var voltageLabel = new Text( voltageLabelText, { fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
-      voltageLabel.center = modelViewTransform.modelToViewPosition( equipotentialLine.position );
-      this.equipotentialLabelNode.addChild( voltageLabel );
+      var voltageLabel = new Text( voltageLabelText,
+        {
+          fill: LABEL_COLOR,
+          font: LABEL_FONT,
+          pickable: false,
+          center: modelViewTransform.modelToViewPosition( equipotentialLine.position )
+        } );
+      equipotentialLabelNode.addChild( voltageLabel );
 
-      //draw the equipotential line
+      // create the equipotential line
       var shape = new Shape();
       shape.moveToPoint( modelViewTransform.modelToViewPosition( equipotentialLine.positionArray [0] ) );
       equipotentialLine.positionArray.forEach( function( position ) {
         shape.lineToPoint( modelViewTransform.modelToViewPosition( position ) );
       } );
-      this.addChild( new Path( shape, {stroke: 'green', lineWidth: 1, pickable: false} ) );
+      lineNode.addChild( new Path( shape, {stroke: 'green', lineWidth: 1, pickable: false} ) );
     }
-  } );
+  }
+
+  return inherit( Node, EquipotentialLineNode );
 } );

@@ -1,4 +1,4 @@
-//  Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Model of the charges and fields simulation
@@ -10,10 +10,9 @@ define( function( require ) {
 
   // modules
 //  var Bounds2 = require( 'DOT/Bounds2' );
-  var Bucket = require( 'PHETCOMMON/model/Bucket' );
   //var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
+  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Color = require( 'SCENERY/util/Color' );
-  var Dimension2 = require( 'DOT/Dimension2' );
   var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
   var LinearFunction = require( 'DOT/LinearFunction' );
   var ObservableArray = require( 'AXON/ObservableArray' );
@@ -35,9 +34,6 @@ define( function( require ) {
   var SATURATION_POSITIVE_COLOR = new Color( 'red' );
   var SATURATION_NEGATIVE_COLOR = new Color( 'blue' );
   var BACKGROUND_COLOR = new Color( 'black' );
-
-  // constants
-  var BUCKET_SIZE = new Dimension2( 90, 45 );
 
 
   //dimension of the screen in the model
@@ -64,7 +60,6 @@ define( function( require ) {
       tapeMeasureUnits: {name: 'cm', multiplier: 100}
     } );
 
-
     var x;
     var y;
     var i;
@@ -72,25 +67,6 @@ define( function( require ) {
     var electricPotential;
     //var electricCharge;
     var electricField;
-
-    // @public read-only
-    this.positiveChargeBucket = new Bucket( {
-      position: new Vector2( 700, 50 ),
-      baseColor: '#000080',
-      caption: '',
-      size: BUCKET_SIZE,
-      invertY: true
-    } );
-
-    // @public read-only
-    this.negativeChargeBucket = new Bucket( {
-      position: new Vector2( 700, 150 ),
-      baseColor: '#000080',
-      caption: '',
-      size: BUCKET_SIZE,
-      invertY: true
-    } );
-
 
     function randomPosition() {
       return Math.random() * 4 - 2;
@@ -120,14 +96,13 @@ define( function( require ) {
     // @public read-only
     this.electricFieldSensorGrid = new ObservableArray();
 
-
     var j;
     //var aspectRatio= WIDTH/HEIGHT;
-    var numberHorizontalSensors = 15;
+    //TODO increase to a larger value the number of horizontalSensors
+    var numberHorizontalSensors = 4;
     var horizontalSpacing = WIDTH / (numberHorizontalSensors + 1);
     var verticalSpacing = horizontalSpacing;
     var numberVerticalSensors = Math.floor( HEIGHT / verticalSpacing ) - 1;
-
 
     for ( i = 0; i <= numberHorizontalSensors; i++ ) {
       for ( j = 0; j <= numberVerticalSensors; j++ ) {
@@ -148,9 +123,9 @@ define( function( require ) {
     // @public read-only
     this.electricPotentialGrid = new ObservableArray();
 
-
     //   var aspectRatio= WIDTH/HEIGHT;
-    numberHorizontalSensors = 80;
+    //TODO increase to a larger value the number of horizontalSensors
+    numberHorizontalSensors = 8;
     horizontalSpacing = WIDTH / (numberHorizontalSensors + 1);
     verticalSpacing = horizontalSpacing;
     numberVerticalSensors = Math.floor( HEIGHT / verticalSpacing ) - 1;
@@ -173,7 +148,6 @@ define( function( require ) {
 
   }
 
-
   return inherit( PropertySet, ChargesAndFieldsModel, {
     // @public
     reset: function() {
@@ -186,7 +160,7 @@ define( function( require ) {
      * Function for adding new  chargedParticles to this model when the user creates them, generally by clicking on some
      * some sort of creator node.
      * @public
-     * @param chargedParticle
+     * @param {ChargedParticle} chargedParticle
      */
     addUserCreatedChargedParticle: function( chargedParticle ) {
       this.chargedParticles.push( chargedParticle );
@@ -227,7 +201,12 @@ define( function( require ) {
       return electricPotentialChange;
     },
 
-    // @public read-Only
+    /**
+     * Return the electric Field (vector) at location position
+     * @public read-Only
+     * @param {Vector2}position
+     * @returns {Vector2}
+     */
     getElectricField: function( position ) {
       var electricField = new Vector2( 0, 0 );
       this.chargedParticles.forEach( function( chargedParticle ) {
@@ -239,7 +218,6 @@ define( function( require ) {
       electricField = electricField.timesScalar( K_CONSTANT );/////prefactor depends on units
       return electricField;
     },
-
 
     /**
      * Return the electric potential at position Position due to the configuration of charges on the board.
@@ -256,16 +234,6 @@ define( function( require ) {
       electricPotential = electricPotential * K_CONSTANT;/////prefactor depends on units
       return electricPotential;
 
-    },
-
-    // @private
-    randomBoolean: function() {
-      return Math.random() < 0.5;
-    },
-
-    // @private
-    randomElectricCharge: function() {
-      return Math.round( this.randomBoolean() * 2 - 1 );
     },
 
     /**
@@ -290,7 +258,7 @@ define( function( require ) {
      * @private
      * @param {Vector2} position
      * @param {number} voltage
-     * @param {number} deltaDistance, a distance in meters, can be positive or negative
+     * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} final position
      */
     getNextPositionAlongEquipotentialWithVoltage: function( position, voltage, deltaDistance ) {
@@ -311,7 +279,7 @@ define( function( require ) {
      * http://en.wikipedia.org/wiki/Midpoint_method
      * @private
      * @param {Vector2} position
-     * @param {number} deltaDistance can be positive (for forward direction) or negative (for backward direction) (units of meter)
+     * @param {number} deltaDistance - can be positive (for forward direction) or negative (for backward direction) (units of meter)
      * @returns {Vector2}
      */
     getNextPositionAlongElectricField: function( position, deltaDistance ) {
@@ -328,7 +296,7 @@ define( function( require ) {
      * This method returns a series of points with the same electric potential as the electric potential
      * at the initial position.
      * @public read-only
-     * @param {Vector2} position : initial position
+     * @param {Vector2} position - initial position
      * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
     getEquipotentialPositionArray: function( position ) {
@@ -438,12 +406,11 @@ define( function( require ) {
       return positionArray;
     },
 
-
     /**
      * Given a position returns a color that represent the intensity of the electricPotential at that point
      * @public read-only
      * @param {Vector2} position
-     * @param {number}  electricPotential (optional Argument)
+     * @param {number}  [electricPotential] - (optional Argument)
      * @returns {Color} color
      */
     getColorElectricPotential: function( position, electricPotential ) {
@@ -479,7 +446,7 @@ define( function( require ) {
      * Given a position, returns a color that is related to the intensity of the electric field magnitude.
      * @public read-only
      * @param {Vector2} position
-     * @param {number} electricFieldMagnitude (optional argument)
+     * @param {number} [electricFieldMagnitude] -(optional argument)
      * @returns {Color}
      */
     getColorElectricFieldMagnitude: function( position, electricFieldMagnitude ) {
@@ -499,7 +466,6 @@ define( function( require ) {
 
       var linearInterpolationPositive = new LinearFunction( 0, electricFieldMax, 0, 1, true );
       var distancePositive = linearInterpolationPositive( electricFieldMag );
-
 
       return interpolateRGBA( backgroundColor, colorMax, distancePositive );
     },

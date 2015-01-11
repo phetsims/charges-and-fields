@@ -1,4 +1,4 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * View for the charged particle, which can be dragged to translate.
@@ -10,21 +10,20 @@ define( function( require ) {
 
   // modules
 
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
-
   // constants
-  var CIRCLE_RADIUS = 10; // radius of charged particles.
+  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
 
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
-   * @param {ChargesAndFieldsModel} model of the simulation
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
    * @param {ChargedParticle} chargedParticle - the model of the charged particle
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @constructor
@@ -42,7 +41,6 @@ define( function( require ) {
     this.touchArea = this.localBounds.dilatedXY( 10, 10 );
     this.mouseArea = this.localBounds.dilatedXY( 10, 10 );
 
-
     // Add the centered circle
 
     var chargeColor;
@@ -52,9 +50,8 @@ define( function( require ) {
 
     var circle = new Circle( CIRCLE_RADIUS, {
       stroke: 'black',
-      fill: new RadialGradient( -CIRCLE_RADIUS * 0.4, -CIRCLE_RADIUS * 0.4, 0, -CIRCLE_RADIUS * 0.4, -CIRCLE_RADIUS * 0.4, CIRCLE_RADIUS * 1.6 )
-        .addColorStop( 0, 'white' )
-        .addColorStop( 1, chargeColor ), centerX: 0, centerY: 0 } );
+      fill: chargeColor
+    } );
 
     chargedParticleNode.addChild( circle );
 
@@ -81,6 +78,7 @@ define( function( require ) {
       chargedParticleNode.moveToFront();
       chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
 
+      // remove equipotential lines and electric field lines when the position of a charged particle changes
       model.clearEquipotentialLines = true;
       model.clearElectricFieldLines = true;
 

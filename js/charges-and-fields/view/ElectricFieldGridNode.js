@@ -15,7 +15,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
 //  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
-
   // var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
   // var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -28,9 +27,9 @@ define( function( require ) {
 
   /**
    *
-   * @param model
-   * @param modelViewTransform
-   * @param eFieldIsVisibleProperty
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
+   * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<boolean>} eFieldIsVisibleProperty
    * @constructor
    */
   function ElectricFieldGridNode( model, modelViewTransform, eFieldIsVisibleProperty ) {

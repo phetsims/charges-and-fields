@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Model of a grid of Sensor Elements
@@ -50,7 +50,6 @@ define( function( require ) {
     this.verticalLatticeSpacing = this.size.width / (this.numberOfVerticalSensors );
 
     this.unitCellCenter = new Vector2( this.horizontalLatticeSpacing / 2, this.verticalLatticeSpacing / 2 );   /// in meters
-
 
     this.sensorGrid = new ObservableArray();
     var position = new Vector2();

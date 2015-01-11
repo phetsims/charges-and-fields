@@ -1,4 +1,4 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * View for the equipotential Lines
@@ -19,12 +19,11 @@ define( function( require ) {
 //  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 //  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );
 
-
   /**
    *
-   * @param model
-   * @param modelViewTransform
-   * @param showResolutionProperty
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
+   * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<boolean>} showResolutionProperty
    * @constructor
    */
   function ElectricPotentialFieldNode( model, modelViewTransform, showResolutionProperty ) {
@@ -36,21 +35,20 @@ define( function( require ) {
     var vectorDisplacement = model.electricPotentialGrid.get( 2 ).position.minus( model.electricPotentialGrid.get( 1 ).position );
     var unitDistance = modelViewTransform.modelToViewDelta( vectorDisplacement ).magnitude();
 
-
     model.electricPotentialGrid.forEach( function( electricPotentialSensor ) {
       var positionInModel = electricPotentialSensor.position;
       //  var electricPotential = electricPotentialSensor.electricPotential;
       var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
       var rect = new Rectangle( 0, 0, unitDistance, unitDistance );
       rect.center = positionInView;
-
+      electricPotentialFieldNode.addChild( rect );
 
       electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
         var specialColor = model.getColorElectricPotential( positionInModel, electricPotential );
         rect.fill = specialColor;
         rect.stroke = specialColor;
       } );
-      electricPotentialFieldNode.addChild( rect );
+
     } );
 
     showResolutionProperty.link( function( isVisible ) {
@@ -65,7 +63,6 @@ define( function( require ) {
     } );
 
   }
-
 
   return inherit( Node, ElectricPotentialFieldNode );
 } );

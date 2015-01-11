@@ -1,36 +1,36 @@
-/*
- * Copyright 2002-2014, University of Colorado Boulder
- */
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * A Scenery node that can be clicked upon to create new  chargedParticles in the model.
+ * A Scenery node that can be clicked upon to create new charged Particles in the model.
  *
  * @author John Blanco
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
 
   // modules
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
-
   // constants
-  var CIRCLE_RADIUS = 10; // radius of charged particles.
+  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;  // radius of charged particles.
 
   /**
+   *
    * @param {Function} addChargedParticleToModel - A function for adding the created chargedParticle to the model
+   * @param {number} charge - acceptable values are 1 or -1
+   * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options]
    * @constructor
    */
-
   function ChargedParticleCreatorNode( addChargedParticleToModel, charge, modelViewTransform, options ) {
     Node.call( this, {
       renderer: 'svg', rendererOptions: {cssTransform: true},
@@ -49,9 +49,7 @@ define( function( require ) {
 
     var circle = new Circle( CIRCLE_RADIUS, {
       stroke: 'black',
-      fill: new RadialGradient( -CIRCLE_RADIUS * 0.4, -CIRCLE_RADIUS * 0.4, 0, -CIRCLE_RADIUS * 0.4, -CIRCLE_RADIUS * 0.4, CIRCLE_RADIUS * 1.6 )
-        .addColorStop( 0, 'white' )
-        .addColorStop( 1, chargeColor ), centerX: 0, centerY: 0
+      fill: chargeColor
     } );
 
     self.addChild( circle );

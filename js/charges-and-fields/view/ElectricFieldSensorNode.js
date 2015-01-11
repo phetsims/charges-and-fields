@@ -1,16 +1,16 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * View for the electric field sensor nodes
  *
- * @author Chris Malley (PixelZoom, Inc.)
- * @author Sam Reid (PhET Interactive Simulations)
+ * @author MArtin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
 
   // modules
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   // var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
@@ -37,9 +37,9 @@ define( function( require ) {
 
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-   * @param model
-   * @param electricFieldSensor
-   * @param modelViewTransform
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
+   * @param {SensorElement} electricFieldSensor
+   * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
   function ElectricFieldSensorNode( model, electricFieldSensor, modelViewTransform ) {
@@ -54,15 +54,15 @@ define( function( require ) {
     } );
 
     // Add Arrow
-    this.arrowNode = new ArrowNode( 0, 0, 40, 0, {
+    var arrowNode = new ArrowNode( 0, 0, 40, 0, {
       fill: ARROW_COLOR,
       stroke: ARROW_COLOR,
       pickable: false,
       headWidth: 10} );
 
-    electricFieldSensorNode.addChild( this.arrowNode );
-    this.arrowNode.left = 0;
-    this.arrowNode.centerY = 0;
+    electricFieldSensorNode.addChild( arrowNode );
+    arrowNode.left = 0;
+    arrowNode.centerY = 0;
 
     // Add the centered circle
     var circle = new Circle( CIRCLE_RADIUS, { fill: CIRCLE_COLOR, stroke: 'black', centerX: 0, centerY: 0 } );
@@ -72,13 +72,13 @@ define( function( require ) {
 
     // Add Legend
     var fieldStrengthLabelText = StringUtils.format( pattern_0value_1units, '?', eFieldUnitString );
-    this.fieldStrengthLabel = new Text( fieldStrengthLabelText, { fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
+    var fieldStrengthLabel = new Text( fieldStrengthLabelText, {fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
     //  var directionLabelText = StringUtils.format( pattern_0value_1units, '?', angleUnit );
-    this.directionLabel = new Text( fieldStrengthLabelText, { fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
-    this.fieldStrengthLabel.top = circle.bottom;
-    this.directionLabel.top = this.fieldStrengthLabel.bottom;
-    electricFieldSensorNode.addChild( this.fieldStrengthLabel );
-    electricFieldSensorNode.addChild( this.directionLabel );
+    var directionLabel = new Text( fieldStrengthLabelText, {fill: LABEL_COLOR, font: LABEL_FONT, pickable: false} );
+    fieldStrengthLabel.top = circle.bottom;
+    directionLabel.top = fieldStrengthLabel.bottom;
+    electricFieldSensorNode.addChild( fieldStrengthLabel );
+    electricFieldSensorNode.addChild( directionLabel );
 
     // Register for synchronization with model.
     electricFieldSensor.positionProperty.link( function( position ) {
@@ -94,18 +94,18 @@ define( function( require ) {
 
       //update strings
       var fieldMagnitudeString = magnitude.toFixed( 0 );
-      electricFieldSensorNode.fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
+      fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
       var angleString = (-1 * angle * RAD_TO_DEGREES).toFixed( 0 );// the angle is expressed in the model hence the minus sign;
-      electricFieldSensorNode.directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
+      directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
 
       // update length and direction of the arrow
-      electricFieldSensorNode.arrowNode.setTailAndTip( 0, 0, magnitude, 0 );
-      electricFieldSensorNode.arrowNode.setRotation( angle );
+      arrowNode.setTailAndTip( 0, 0, magnitude, 0 );
+      arrowNode.setRotation( angle );
     } );
 
     model.showNumbersIsVisibleProperty.link( function( isVisible ) {
-      electricFieldSensorNode.fieldStrengthLabel.visible = isVisible;
-      electricFieldSensorNode.directionLabel.visible = isVisible;
+      fieldStrengthLabel.visible = isVisible;
+      directionLabel.visible = isVisible;
     } );
 
     // When dragging, move the charge

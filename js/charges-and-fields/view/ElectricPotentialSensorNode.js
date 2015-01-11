@@ -1,7 +1,8 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * View for the ElectricFieldSensorNode which renders the sensor as a scenery node.
+ * The sensor is draggable
  *
  * @author Martin Veillette (Berea College)
  */
@@ -10,6 +11,7 @@ define( function( require ) {
 
   // modules
 
+  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricPotentialSensorPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorPanel' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -19,9 +21,8 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
-
   //constants
-  var CIRCLE_RADIUS = 15;
+  var CIRCLE_RADIUS = 18;
 
   //strings
   var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -29,7 +30,7 @@ define( function( require ) {
 
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-   * @param {model} model - model of the simulation
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
    * @param {SensorElement} electricPotentialSensor - model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @constructor
@@ -40,26 +41,25 @@ define( function( require ) {
 
     // Call the super constructor
     Node.call( this, {
-      // Show a cursor hand over the charge
+      // Show a cursor hand over the sensor
       cursor: 'pointer'
     } );
 
     // Add the centered circle
-    this.circle = new Circle( CIRCLE_RADIUS, { fill: 'green', stroke: 'black', lineWidth: 3, centerX: 0, centerY: 0 } );
-    electricPotentialSensorNode.addChild( this.circle );
-
+    var circle = new Circle( CIRCLE_RADIUS, {fill: 'green', stroke: 'white', lineWidth: 3, centerX: 0, centerY: 0} );
+    electricPotentialSensorNode.addChild( circle );
 
     // crosshair, starting from upper
     var crosshair = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
       .lineTo( CIRCLE_RADIUS, 0 )
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
-    this.addChild( new Path( crosshair, { centerX: 0, centerY: 0, lineWidth: 1, stroke: 'black' } ) );
+    this.addChild( new Path( crosshair, {centerX: 0, centerY: 0, lineWidth: 1, stroke: 'white'} ) );
 
-    this.electricPotentialSensorPanel = new ElectricPotentialSensorPanel( model, modelViewTransform );
-    electricPotentialSensorNode.addChild( this.electricPotentialSensorPanel );
-    this.electricPotentialSensorPanel.centerX = this.circle.centerX;
-    this.electricPotentialSensorPanel.top = this.circle.bottom;
+    var electricPotentialSensorPanel = new ElectricPotentialSensorPanel( model );
+    electricPotentialSensorNode.addChild( electricPotentialSensorPanel );
+    electricPotentialSensorPanel.centerX = circle.centerX;
+    electricPotentialSensorPanel.top = circle.bottom;
 
     // Register for synchronization with model.
     electricPotentialSensor.positionProperty.link( function( position ) {
@@ -68,8 +68,8 @@ define( function( require ) {
     } );
 
     electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
-      electricPotentialSensorNode.electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, electricPotential.toFixed( 1 ), voltageUnitString );
-      electricPotentialSensorNode.circle.fill = model.getColorElectricPotential( electricPotentialSensor.position, electricPotential ).withAlpha( 0.5 );
+      electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, electricPotential.toFixed( 1 ), voltageUnitString );
+      circle.fill = model.getColorElectricPotential( electricPotentialSensor.position, electricPotential ).withAlpha( 0.5 );
     } );
 
     // When dragging, move the charge

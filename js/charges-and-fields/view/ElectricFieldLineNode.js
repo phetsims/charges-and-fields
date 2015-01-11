@@ -1,4 +1,4 @@
-//  Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Node responsible for the drawing of the electricField lines
@@ -17,10 +17,9 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   // var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
-
   /**
    *
-   * @param {model} model of the simulation
+   * @param {ChargesAndFieldsModel} model - main model of the simulation
    * @param {ModelViewTransform2}  modelViewTransform
    * @constructor
    */

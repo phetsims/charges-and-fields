@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Constants used throughout the simulation.
@@ -11,7 +11,6 @@ define( function( require ) {
   //var Dimension2 = require( 'DOT/Dimension2' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
-
   return {
     SATURATION_POSITIVE_COLOR: new Color( 'red' ),
     SATURATION_NEGATIVE_COLOR: new Color( 'blue' ),
@@ -19,22 +18,23 @@ define( function( require ) {
 
     POSITIVE_CHARGE_COLOR: new Color( 'red' ),
     NEGATIVE_CHARGE_COLOR: new Color( 'red' ),
-    CHARGE_RADIUS: 7,
+    CHARGE_RADIUS: 17,
 
     MOVABLE_SENSOR_COLOR: new Color( 'orange' ),
     MOVABLE_SENSOR_STROKE: 2,
     MOVABLE_SENSOR_RADIUS: 7,
     MOVABLE_SENSOR_ARROW_COLOR: new Color( 'red' ),
 
-
-    DEFAULT_FONT: new PhetFont( {size: 12} )
-
+    DEFAULT_FONT: new PhetFont( {size: 12} ),
+    CHECK_BOX_FONT: new PhetFont( {size: 16} ),
+    CHECK_BOX_TEXT_FILL: 'yellow',
+    PANEL_FILL: 'black',
+    PANEL_STROKE: 'white',
+    PANEL_LINE_WIDTH: 2
 
     //CIRCLE_COLOR = 'black';
-    //var CIRCLE_RADIUS = 2; //in pixels
     //  ARROW_COLOR = 'pink';
     //var ARROW_LENGTH = 20; //in pixels
-
 
   };
 } );

@@ -28,7 +28,6 @@ define( function( require ) {
       position: position,
 
       // @public
-
       userControlled: false
     } );
 

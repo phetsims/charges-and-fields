@@ -1,4 +1,4 @@
-//  Copyright 2002-2014, University of Colorado Boulder
+//  Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Charges and Fields main Screen
@@ -9,6 +9,7 @@ define( function( require ) {
   // modules
   var ChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModel' );
   var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsColors' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
 
@@ -20,6 +21,8 @@ define( function( require ) {
    */
   function ChargesAndFieldsScreen() {
 
+    var screen = this;
+
     //If this is a single-screen sim, then no icon is necessary.
     //If there are multiple screens, then the icon must be provided here.
     var icon = null;
@@ -27,9 +30,12 @@ define( function( require ) {
     Screen.call( this, chargesAndFieldsSimString, icon,
       function() { return new ChargesAndFieldsModel(); },
       function( model ) { return new ChargesAndFieldsScreenView( model ); },
-      //{ backgroundColor: '#FFFFB7' } //yellowish color
-      {backgroundColor: 'black'}
+      {backgroundColor: ChargesAndFieldsColors.background.toCSS()}
     );
+
+    ChargesAndFieldsColors.link( 'background', function( color ) {
+      screen.backgroundColor = color;
+    } );
   }
 
   return inherit( Screen, ChargesAndFieldsScreen );
