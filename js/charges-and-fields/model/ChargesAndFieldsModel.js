@@ -156,6 +156,13 @@ define( function( require ) {
       PropertySet.prototype.reset.call( this );
     },
 
+
+    step: function( dt ) {
+      this.chargedParticles.forEach( function( chargedParticle ) {
+        chargedParticle.step( dt );
+      } );
+    },
+
     /**
      * Function for adding new  chargedParticles to this model when the user creates them, generally by clicking on some
      * some sort of creator node.
@@ -164,6 +171,11 @@ define( function( require ) {
      */
     addUserCreatedChargedParticle: function( chargedParticle ) {
       this.chargedParticles.push( chargedParticle );
+      var self = this;
+
+      chargedParticle.on( 'returnedToOrigin', function() {
+        self.chargedParticles.remove( chargedParticle );
+      } );
     },
 
     /**
@@ -173,7 +185,7 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {Vector2} newChargePosition
      * @param {Vector2} oldChargePosition
-     * @param {number} particleCharge
+     * @param {number} particleCharge - allowed values are +1 or -1
      * @returns {Vector2}
      */
     getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {

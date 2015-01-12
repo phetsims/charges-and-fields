@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
 
+  var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -32,7 +33,8 @@ define( function( require ) {
 
     var chargedParticleNode = this;
 
-    Node.call( chargedParticleNode, { renderer: 'svg', rendererOptions: { cssTransform: true },
+    Node.call( chargedParticleNode, {
+      renderer: 'svg', rendererOptions: {cssTransform: true},
       // Show a cursor hand over the charge
       cursor: 'pointer'
     } );
@@ -63,14 +65,15 @@ define( function( require ) {
         .lineTo( CIRCLE_RADIUS * ratio, 0 )
         .moveTo( 0, -CIRCLE_RADIUS * ratio )
         .lineTo( 0, CIRCLE_RADIUS * ratio );
-      chargedParticleNode.addChild( new Path( plusShape, { centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white' } ) );
+      chargedParticleNode.addChild( new Path( plusShape, {centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white'} ) );
     }
     else {
       // minus Shape representing the negative charges
       var minusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
         .lineTo( CIRCLE_RADIUS * ratio, 0 );
-      chargedParticleNode.addChild( new Path( minusShape, { centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white' } ) );
+      chargedParticleNode.addChild( new Path( minusShape, {centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white'} ) );
     }
+    var testBounds = new Bounds2( 0, 0, 2, 2 );
 
     // Register for synchronization with model.
     chargedParticle.positionProperty.link( function( position, oldPosition ) {
@@ -127,6 +130,9 @@ define( function( require ) {
         },
         end: function( event, trail ) {
           chargedParticle.userControlled = false;
+          if ( testBounds.containsPoint( chargedParticle.position ) ) {
+            chargedParticle.animating = true;
+          }
         }
       } ) );
 
