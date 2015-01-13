@@ -3,7 +3,7 @@
 /**
  * View for the electric field sensor nodes
  *
- * @author MArtin Veillette (Berea College)
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
