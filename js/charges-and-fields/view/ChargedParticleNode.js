@@ -73,6 +73,8 @@ define( function( require ) {
         .lineTo( CIRCLE_RADIUS * ratio, 0 );
       chargedParticleNode.addChild( new Path( minusShape, {centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white'} ) );
     }
+
+    //TODO this is just a a proof of concept
     var testBounds = new Bounds2( 0, 0, 2, 2 );
 
     // Register for synchronization with model.

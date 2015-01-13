@@ -17,15 +17,15 @@ define( function( require ) {
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
 
   // strings
-  var showOuterLonePairsString = require( 'string!CHARGES_AND_FIELDS/options.showOuterLonePairs' );
+  var chargedLinesString = require( 'string!CHARGES_AND_FIELDS/options.chargedLines' );
   var projectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
   function GlobalOptionsNode( isBasicsVersion ) {
     var children = [];
 
     if ( !isBasicsVersion ) {
-      children.push( new CheckBox( new Text( showOuterLonePairsString, {font: OptionsDialog.DEFAULT_FONT} ),
-        ChargesAndFieldsGlobals.showOuterLonePairsProperty, {} ) );
+      children.push( new CheckBox( new Text( chargedLinesString, {font: OptionsDialog.DEFAULT_FONT} ),
+        ChargesAndFieldsGlobals.chargedLinesProperty, {} ) );
     }
     children.push( new CheckBox( new Text( projectorColorsString, {font: OptionsDialog.DEFAULT_FONT} ),
       ChargesAndFieldsGlobals.projectorColorsProperty, {} ) );
