@@ -76,12 +76,11 @@ define( function( require ) {
     var thisView = this;
 
     //model View transform : The origin of the model is sets in the middle of the screen
-    //The height of the screen corresponds to 4 meters in the model.
+    // there are 5 meters across the height of the sim.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       Vector2.ZERO,
       new Vector2( thisView.layoutBounds.width / 2, thisView.layoutBounds.height / 2 ),
-        thisView.layoutBounds.height / 4 );
-    thisView.modelViewTransform = modelViewTransform; // Make the modelViewTransform available to descendant types.
+      thisView.layoutBounds.height / 5 );
 
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = window.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
@@ -95,7 +94,7 @@ define( function( require ) {
     this.addChild( electricPotentialFieldNode );
 
     // Create and add the visual grid on the view
-    var grid = new Grid( thisView.layoutBounds, model.gridIsVisibleProperty );
+    var grid = new Grid( modelViewTransform, model.gridIsVisibleProperty );
     this.addChild( grid );
 
     // create and add the grid with electric field arrow sensors
