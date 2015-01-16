@@ -41,7 +41,6 @@ define(function (require) {
         // @public read-only
         this.charge = charge;
 
-
     }
 
     return inherit(PropertySet, ChargedParticle, {
@@ -80,6 +79,5 @@ define(function (require) {
 
     });
 });
-
 
 

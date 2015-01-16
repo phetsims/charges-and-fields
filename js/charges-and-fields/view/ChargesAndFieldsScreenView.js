@@ -94,7 +94,6 @@ define(function (require) {
 
         this.addChild(equipotentialLineNode);
 
-
         // Create
         var electricFieldLineNode = new ElectricFieldLineNode(model.electricFieldLinesArray, model.clearElectricFieldLinesProperty, modelViewTransform);
         this.addChild(electricFieldLineNode);
@@ -105,7 +104,6 @@ define(function (require) {
             dragBounds: thisView.layoutBounds.eroded(5),
             modelViewTransform: modelViewTransform
         };
-
 
         var measuringTape = new MeasuringTape(model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
             tape_options);
@@ -133,7 +131,6 @@ define(function (require) {
 //    Create the layer where the points will be placed. They are maintained in a separate layer so that they are over
 //     all of the point placement graphs in the z-order.
         var chargedParticlesLayer = new Node({layerSplit: true}); // Force the moving dataPoint into a separate layer for performance reasons.
-
 
         // Handle the comings and goings of  dataPoints.
         model.chargedParticles.addItemAddedListener(function (addedChargedParticle) {
@@ -176,7 +173,6 @@ define(function (require) {
 
         grid.centerX = thisView.layoutBounds.centerX;
         grid.centerY = thisView.layoutBounds.centerY;
-
 
         //TODO: Delete when done with the layout
         ////////////////////////////////////////////////////////////////

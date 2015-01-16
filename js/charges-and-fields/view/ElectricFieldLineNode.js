@@ -17,7 +17,6 @@ define(function (require) {
     var Shape = require('KITE/Shape');
     // var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
-
     /**
      *
      * @param electricFieldLinesArray
@@ -40,7 +39,6 @@ define(function (require) {
             electricFieldLineNode.removeAllChildren();
             clearElectricFieldLinesProperty.value = false;
         });
-
 
         function traceElectricFieldLine(electricFieldLine) {
 

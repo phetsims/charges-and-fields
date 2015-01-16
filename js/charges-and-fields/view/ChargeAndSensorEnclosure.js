@@ -61,7 +61,6 @@ define(function (require) {
                 }));
         });
 
-
         //Panel.call(this, enclosureGroup, {
         //    fill: ChargesAndFieldsConstants.PANEL_FILL,
         //    stroke: ChargesAndFieldsConstants.PANEL_STROKE,

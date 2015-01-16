@@ -35,7 +35,6 @@ define(function (require) {
         var SATURATION_NEGATIVE_COLOR = new Color('blue');
         var BACKGROUND_COLOR = new Color('black');
 
-
         //dimension of the screen in the model
         var HEIGHT = 4; //in meters
         var WIDTH = 6.5; // in meters
@@ -78,7 +77,6 @@ define(function (require) {
 
             // @public read-only
             this.chargeAndSensorEnclosureBounds = new Bounds2(-2, 0, 1, 2);
-
 
             // @public read-only
             this.chargedParticles = new ObservableArray();
@@ -150,7 +148,6 @@ define(function (require) {
             // @public read-only
             this.electricFieldLinesArray = new ObservableArray();
 
-
             //////////////////////////////////////////
             //// Hook Up listeners to the four Observables Arrays
             /////////////////////////////////////////////////
@@ -173,7 +170,6 @@ define(function (require) {
                     });
                 }
             });
-
 
             // if any charges move , we need to update all the sensors
             this.chargedParticles.addItemAddedListener(function (chargedParticle) {
@@ -227,12 +223,10 @@ define(function (require) {
                 });
             });
 
-
             // update the Electric Potential Sensor upon a change of position
             this.electricPotentialSensor.positionProperty.link(function (position) {
                 thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential(position);
             });
-
 
         }
 
@@ -243,7 +237,6 @@ define(function (require) {
                 this.electricFieldLinesArray.clear();
                 PropertySet.prototype.reset.call(this);
             },
-
 
             step: function (dt) {
                 this.chargedParticles.forEach(function (chargedParticle) {

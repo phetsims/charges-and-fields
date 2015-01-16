@@ -29,7 +29,6 @@ define(function (require) {
     var pattern_0value_1units = require('string!CHARGES_AND_FIELDS/pattern.0value.1units');
     var voltageUnitString = require('string!CHARGES_AND_FIELDS/voltageUnit');
 
-
     /**
      *
      * @param {ChargesAndFieldsModel} model - main model of the simulation
