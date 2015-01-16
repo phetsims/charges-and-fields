@@ -68,6 +68,16 @@ define(function (require) {
             default: new Color(30, 30, 30),
             basics: new Color(255, 255, 255),
             projector: new Color(255, 255, 255)
+        },
+        voltageLabel: {
+            default: new Color(30, 30, 30),
+            basics: new Color(1, 255, 255),
+            projector: new Color(255, 25, 255)
+        },
+        equipotentialLine: {
+            default: new Color(30, 30, 30),
+            basics: new Color(1, 255, 255),
+            projector: new Color(255, 25, 255)
         }
     };
 

@@ -26,6 +26,7 @@ define(function (require) {
         MOVABLE_SENSOR_ARROW_COLOR: new Color('red'),
 
         DEFAULT_FONT: new PhetFont({size: 12}),
+        VOLTAGE_LABEL_FONT: new PhetFont({size: 14}),
         CHECK_BOX_FONT: new PhetFont({size: 16}),
         CHECK_BOX_TEXT_FILL: 'yellow',
         PANEL_FILL: 'black',
