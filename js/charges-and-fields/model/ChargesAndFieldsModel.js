@@ -142,14 +142,6 @@ define(function (require) {
         // @public read-only
         this.electricFieldLinesArray = new ObservableArray();
 
-        this.on('clearEquipotentialLines', function () {
-            thisModel.equipotentialLinesArray.clear();
-        });
-
-        this.on('clearElectricFieldLines', function () {
-            thisModel.electricFieldLinesArray.clear();
-        });
-
         //////////////////////////////////////////
         //// Hook Up listeners to the four Observables Arrays
         /////////////////////////////////////////////////
@@ -631,19 +623,19 @@ define(function (require) {
         },
 
         /**
-         * Function that notifies the listener about clearing the Equipotential Lines on the Observable Array
+         * Function that clears the Equipotential Lines Observable Array
          * @public
          */
         clearEquipotentialLines: function () {
-            this.trigger('clearEquipotentialLines');
+            this.equipotentialLinesArray.clear();
         },
         /**
-         * Function that notifies the listener about clearing the Electric Field Lines on the Observable Array
+         * Function that clears the Electric Field Lines Observable Array
          * @public
          * UNUSED
          */
         clearElectricFieldLines: function () {
-            this.trigger('clearElectricFieldLines');
+            this.electricFieldLinesArray.clear();
         }
 
     });
