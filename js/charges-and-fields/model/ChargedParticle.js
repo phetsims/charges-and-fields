@@ -40,6 +40,8 @@ define(function (require) {
 
         // @public read-only
         this.charge = charge;
+
+
     }
 
     return inherit(PropertySet, ChargedParticle, {
@@ -47,12 +49,17 @@ define(function (require) {
         reset: function () {
             PropertySet.prototype.reset.call(this);
         },
+        // @public
         step: function (dt) {
             if (this.animating) {
                 this.animationStep(dt);
             }
         },
 
+        /**
+         * Function that displaces the position of the chargeParticle toward its origin Position.
+         * @param {number} dt
+         */
         animationStep: function (dt) {
 
             // perform any animation

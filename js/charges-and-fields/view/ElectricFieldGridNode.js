@@ -32,13 +32,22 @@ define(function (require) {
      * @param {Property.<boolean>} eFieldIsVisibleProperty
      * @constructor
      */
-    function ElectricFieldGridNode(model, modelViewTransform, eFieldIsVisibleProperty) {
+
+    /**
+     *
+     * @param  {Array.<SensorElement>} electricFieldSensorGrid
+     * @param {Function} getColorElectricFieldMagnitude
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} eFieldIsVisibleProperty
+     * @constructor
+     */
+    function ElectricFieldGridNode(electricFieldSensorGrid, getColorElectricFieldMagnitude, modelViewTransform, eFieldIsVisibleProperty) {
 
         var electricFieldGridNode = this;
 
         Node.call(this);
 
-        model.electricFieldSensorGrid.forEach(function (electricFieldSensor) {
+        electricFieldSensorGrid.forEach(function (electricFieldSensor) {
             var positionInModel = electricFieldSensor.position;
             var positionInView = modelViewTransform.modelToViewPosition(positionInModel);
 
@@ -62,7 +71,7 @@ define(function (require) {
             electricFieldSensor.electricFieldProperty.link(function (electricField) {
                 var electricFieldInView = modelViewTransform.modelToViewDelta(electricField);
                 arrowNode.setRotation(electricFieldInView.angle());
-                arrowNode.fill = model.getColorElectricFieldMagnitude(positionInModel, electricField.magnitude());
+                arrowNode.fill = getColorElectricFieldMagnitude(positionInModel, electricField.magnitude());
                 //arrowNode.stroke = model.getColorElectricFieldMagnitude( positionInView );
             });
             electricFieldGridNode.addChild(arrowNode);
@@ -71,12 +80,6 @@ define(function (require) {
 
         eFieldIsVisibleProperty.link(function (isVisible) {
             electricFieldGridNode.visible = isVisible;
-            // for performance reason, the electric potential is calculated and updated only if the check is set to visible
-            if (isVisible === true) {
-                model.electricFieldSensorGrid.forEach(function (sensorElement) {
-                    sensorElement.electricField = model.getElectricField(sensorElement.position);
-                });
-            }
         });
     }
 

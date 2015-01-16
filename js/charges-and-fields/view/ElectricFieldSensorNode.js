@@ -42,7 +42,7 @@ define(function (require) {
      * @param {ModelViewTransform2} modelViewTransform
      * @constructor
      */
-    function ElectricFieldSensorNode(model, electricFieldSensor, modelViewTransform) {
+    function ElectricFieldSensorNode(electricFieldSensor, modelViewTransform, valueIsVisibleProperty) {
 
         var electricFieldSensorNode = this;
 
@@ -89,7 +89,7 @@ define(function (require) {
         electricFieldSensor.positionProperty.link(function (position) {
             electricFieldSensorNode.moveToFront();
             electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition(position);
-            electricFieldSensor.electricField = model.getElectricField(position);
+            //electricFieldSensor.electricField = model.getElectricField(position);
         });
 
         electricFieldSensor.electricFieldProperty.link(function (electricField) {
@@ -108,7 +108,7 @@ define(function (require) {
             arrowNode.setRotation(angle);
         });
 
-        model.showNumbersIsVisibleProperty.link(function (isVisible) {
+        valueIsVisibleProperty.link(function (isVisible) {
             fieldStrengthLabel.visible = isVisible;
             directionLabel.visible = isVisible;
         });
@@ -122,7 +122,6 @@ define(function (require) {
                 // Translate on drag events and update electricField
                 translate: function (args) {
                     electricFieldSensor.position = modelViewTransform.viewToModelPosition(args.position);
-                    electricFieldSensor.electricField = model.getElectricField(electricFieldSensor.position);
                 }
             }));
     }

@@ -29,7 +29,14 @@ define(function (require) {
      * @param {Object} [options] scenery options for rendering the control panel, see the constructor for options.
      * @constructor
      */
-    function ElectricPotentialSensorPanel(model, options) {
+    /**
+     *
+     * @param clearEquipotentialLines
+     * @param addElectricPotentialLine
+     * @param {Object} [options] scenery options for rendering the Electric Potential Sensor Panel, see the constructor for options.
+     * @constructor
+     */
+    function ElectricPotentialSensorPanel(clearEquipotentialLines, addElectricPotentialLine, options) {
 
         // Demonstrate a common pattern for specifying options and providing default values.
         options = _.extend({
@@ -42,23 +49,13 @@ define(function (require) {
             },
             options);
 
-        //var plotElectricFieldLineButton = new TextPushButton( 'Plot E', {
-        //  font: new PhetFont( 16 ),
-        //  baseColor: 'orange',
-        //  xMargin: 10,
-        //  listener: function() {
-        //    model.addElectricFieldLine();
-        //    //     model.addManyLine();
-        //  }
-        //} );
-
         // create the button that allows the board to be cleared of all lines.
         var clearButton = new EraserButton({
             baseColor: 'white',
             iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
             listener: function () {
-                model.clearEquipotentialLines = true;
-                model.clearElectricFieldLines = true;
+                clearEquipotentialLines = true;
+                //model.clearElectricFieldLines = true;
             }
         });
 
@@ -67,7 +64,7 @@ define(function (require) {
             baseColor: 'white',
             iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
             listener: function () {
-                model.addElectricPotentialLine();
+                addElectricPotentialLine();
             }
         });
 

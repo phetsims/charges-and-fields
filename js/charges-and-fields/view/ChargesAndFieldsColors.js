@@ -58,6 +58,16 @@ define(function (require) {
             default: new Color(30, 30, 30),
             basics: new Color(255, 255, 255),
             projector: new Color(255, 255, 255)
+        },
+        negativeStillCharge: {
+            default: new Color(30, 30, 30),
+            basics: new Color(255, 255, 255),
+            projector: new Color(255, 255, 255)
+        },
+        positiveStillCharge: {
+            default: new Color(30, 30, 30),
+            basics: new Color(255, 255, 255),
+            projector: new Color(255, 255, 255)
         }
     };
 

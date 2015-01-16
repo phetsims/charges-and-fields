@@ -12,9 +12,10 @@ define(function (require) {
     var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
     var ChargedParticleCreatorNode = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleCreatorNode');
     var inherit = require('PHET_CORE/inherit');
-    //var Node = require( 'SCENERY/nodes/Node' );
-    var Panel = require('SUN/Panel');
+    var Node = require('SCENERY/nodes/Node');
+    //var Panel = require('SUN/Panel');
     //var Text = require( 'SCENERY/nodes/Text' );
+    var Rectangle = require('SCENERY/nodes/Rectangle');
     var Vector2 = require('DOT/Vector2');
 
     // strings
@@ -35,11 +36,13 @@ define(function (require) {
     /**
      * Enclosure that contains the charges and sensors
      * @param {ChargesAndFieldsModel} model - main model of the simulation
+     * @param {Bounds2} bounds
      * @param {ModelViewTransform2} modelViewTransform
      * @constructor
      */
-    function ChargeAndSensorEnclosure(model, modelViewTransform) {
+    function ChargeAndSensorEnclosure(model, bounds, modelViewTransform) {
 
+        Node.call(this);
         var enclosureGroup = this;
 
         // Add the dataPoint creator nodes.
@@ -47,27 +50,31 @@ define(function (require) {
             enclosureGroup.addChild(new ChargedParticleCreatorNode(
                 model.addUserCreatedChargedParticle.bind(model), 1,
                 modelViewTransform, {
-                    left: 100 + offset.x,
-                    top: 400 + offset.y
+                    left: offset.x,
+                    top: offset.y
                 }));
             enclosureGroup.addChild(new ChargedParticleCreatorNode(
                 model.addUserCreatedChargedParticle.bind(model), -1,
                 modelViewTransform, {
-                    left: 200 + offset.x,
-                    top: 400 + offset.y
+                    left: 100 + offset.x,
+                    top: offset.y
                 }));
         });
 
-        Panel.call(this, enclosureGroup, {
-            fill: ChargesAndFieldsConstants.PANEL_FILL,
-            stroke: ChargesAndFieldsConstants.PANEL_STROKE,
-            lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
-            xMargin: 10,
-            yMargin: 5
-        });
+
+        //Panel.call(this, enclosureGroup, {
+        //    fill: ChargesAndFieldsConstants.PANEL_FILL,
+        //    stroke: ChargesAndFieldsConstants.PANEL_STROKE,
+        //    lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
+        //    xMargin: 10,
+        //    yMargin: 5
+        //});
+
+        var rectangle = Rectangle.roundedBounds(modelViewTransform.modelToViewBounds(bounds), 10, 10, {stroke: 'green'});
+        this.addChild(rectangle);
 
     }
 
-    return inherit(Panel, ChargeAndSensorEnclosure);
+    return inherit(Node, ChargeAndSensorEnclosure);
 
 });

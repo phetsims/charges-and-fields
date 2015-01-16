@@ -10,7 +10,6 @@ define(function (require) {
 
     // modules
 
-    var Bounds2 = require('DOT/Bounds2');
     var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
     var Circle = require('SCENERY/nodes/Circle');
     var inherit = require('PHET_CORE/inherit');
@@ -34,7 +33,6 @@ define(function (require) {
         var chargedParticleNode = this;
 
         Node.call(chargedParticleNode, {
-            renderer: 'svg', rendererOptions: {cssTransform: true},
             // Show a cursor hand over the charge
             cursor: 'pointer'
         });
@@ -74,48 +72,16 @@ define(function (require) {
             chargedParticleNode.addChild(new Path(minusShape, {centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white'}));
         }
 
-        //TODO this is just a a proof of concept
-        var testBounds = new Bounds2(0, 0, 2, 2);
+        // Move the chargedParticle to the front of this layer when grabbed by the user.
+        chargedParticle.userControlledProperty.link(function (userControlled) {
+            if (userControlled) {
+                chargedParticleNode.moveToFront();
+            }
+        });
 
         // Register for synchronization with model.
         chargedParticle.positionProperty.link(function (position, oldPosition) {
-
-            chargedParticleNode.moveToFront();
             chargedParticleNode.translation = modelViewTransform.modelToViewPosition(position);
-
-            // remove equipotential lines and electric field lines when the position of a charged particle changes
-            model.clearEquipotentialLines = true;
-            model.clearElectricFieldLines = true;
-
-            var charge = chargedParticle.charge;
-
-            model.electricFieldSensors.forEach(function (sensorElement) {
-                sensorElement.electricField = model.getElectricField(sensorElement.position);
-            });
-
-            if (model.eFieldIsVisible === true) {
-                model.electricFieldSensorGrid.forEach(function (sensorElement) {
-                    if (oldPosition === null) {
-                        sensorElement.electricField = model.getElectricField(sensorElement.position);
-                    }
-                    else {
-                        sensorElement.electricField = sensorElement.electricField.plus(model.getElectricFieldChange(sensorElement.position, position, oldPosition, charge));
-                    }
-                });
-            }
-
-            if (model.showResolution === true) {
-                model.electricPotentialGrid.forEach(function (sensorElement) {
-                    if (oldPosition === null) {
-                        sensorElement.electricPotential = model.getElectricPotential(sensorElement.position);
-                    }
-                    else {
-                        sensorElement.electricPotential += model.getElectricPotentialChange(sensorElement.position, position, oldPosition, charge);
-                    }
-                });
-            }
-            model.electricPotentialSensor.electricPotential = model.getElectricPotential(model.electricPotentialSensor.position);
-
         });
 
         // When dragging, move the charge
@@ -129,12 +95,14 @@ define(function (require) {
                 // Translate on drag events
                 translate: function (args) {
                     chargedParticle.position = modelViewTransform.viewToModelPosition(args.position);
+
                 },
                 end: function (event, trail) {
                     chargedParticle.userControlled = false;
-                    if (testBounds.containsPoint(chargedParticle.position)) {
+                    if (model.chargeAndSensorEnclosureBounds.containsPoint(chargedParticle.position)) {
                         chargedParticle.animating = true;
                     }
+
                 }
             }));
 

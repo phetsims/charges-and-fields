@@ -17,42 +17,37 @@ define(function (require) {
     var Shape = require('KITE/Shape');
     // var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
+
     /**
      *
-     * @param {ChargesAndFieldsModel} model - main model of the simulation
+     * @param electricFieldLinesArray
+     * @param clearElectricFieldLinesProperty
      * @param {ModelViewTransform2}  modelViewTransform
      * @constructor
      */
-    function ElectricFieldLineNode(model, modelViewTransform) {
+    function ElectricFieldLineNode(electricFieldLinesArray, clearElectricFieldLinesProperty, modelViewTransform) {
 
         Node.call(this);
-        this.modelViewTransform = modelViewTransform;
 
         var electricFieldLineNode = this;
 
-        model.electricFieldLinesArray.addItemAddedListener(function (electricFieldLine) {
-            electricFieldLineNode.traceElectricFieldLine(electricFieldLine);
+        electricFieldLinesArray.addItemAddedListener(function (electricFieldLine) {
+            traceElectricFieldLine(electricFieldLine);
         });
 
         // remove the nodes and clear the array the equipotential lines
-        model.clearElectricFieldLinesProperty.link(function () {
+        clearElectricFieldLinesProperty.link(function () {
             electricFieldLineNode.removeAllChildren();
-            model.clearElectricFieldLines = false;
+            clearElectricFieldLinesProperty.value = false;
         });
 
-    }
 
-    return inherit(Node, ElectricFieldLineNode, {
-        traceElectricFieldLine: function (electricFieldLine) {
-
-            var modelViewTransform = this.modelViewTransform;
+        function traceElectricFieldLine(electricFieldLine) {
 
             //draw the electricField line
             var shape = new Shape();
             shape.moveToPoint(modelViewTransform.modelToViewPosition(electricFieldLine.positionArray [0]));
-//      electricFieldLine.positionArray.forEach( function( position ) {
-//        shape.lineToPoint( modelViewTransform.modelToViewPosition( position ) );
-//      } );
+
             var arrayLength = electricFieldLine.positionArray.length;
             var i;
             var L = 6;
@@ -74,7 +69,10 @@ define(function (require) {
                 shape.lineToPoint(modelViewTransform.modelToViewPosition(electricFieldLine.positionArray[i]));
             }
 
-            this.addChild(new Path(shape, {stroke: 'orange', lineWidth: 2, pickable: false}));
+            electricFieldLineNode.addChild(new Path(shape, {stroke: 'orange', lineWidth: 2, pickable: false}));
         }
-    });
+
+    }
+
+    return inherit(Node, ElectricFieldLineNode);
 });

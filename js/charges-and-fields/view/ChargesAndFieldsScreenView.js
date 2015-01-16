@@ -11,9 +11,10 @@ define(function (require) {
     // modules
     var Bounds2 = require('DOT/Bounds2');
     var ChargesAndFieldsColors = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsColors');
-    var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
+    //var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
+    var ChargeAndSensorEnclosure = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure');
     var ChargedParticleNode = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode');
-    var ChargedParticleCreatorNode = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleCreatorNode');
+    //var ChargedParticleCreatorNode = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleCreatorNode');
     var ControlPanel = require('CHARGES_AND_FIELDS/charges-and-fields/view/ControlPanel');
     var ElectricFieldSensorNode = require('CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode');
     var ElectricPotentialSensorNode = require('CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode');
@@ -39,17 +40,6 @@ define(function (require) {
 //  var Text = require( 'SCENERY/nodes/Text' );
     var Util = require('SCENERY/util/Util');
     var Vector2 = require('DOT/Vector2');
-
-    // constants
-
-    var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
-    var DATA_POINT_CREATOR_OFFSET_POSITIONS = [
-        // Offsets used for initial position of point . Empirically determined.
-        new Vector2((0.8) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS),
-        new Vector2((0.8) * CIRCLE_RADIUS, (-0.7) * CIRCLE_RADIUS),
-        new Vector2((-0.9) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS),
-        new Vector2((-0.6) * CIRCLE_RADIUS, (-0.75) * CIRCLE_RADIUS)
-    ];
 
     //constants
 
@@ -87,10 +77,8 @@ define(function (require) {
         var webGLSupported = Util.isWebGLSupported && allowWebGL;
         var renderer = webGLSupported ? 'webgl' : 'svg';
         // create and add the electric Potential field Node responsible for the electric potential field
-        var electricPotentialFieldNode = (renderer === 'webgl') ? new ElectricPotentialFieldNode(model, modelViewTransform, model.showResolutionProperty) :
-            new ElectricPotentialFieldNode(model, modelViewTransform, model.showResolutionProperty);
-
-        // var electricPotentialFieldNode = new ElectricPotentialFieldNode( model, modelViewTransform, model.showResolutionProperty );
+        var electricPotentialFieldNode = (renderer === 'webgl') ? new ElectricPotentialFieldNode(model.electricPotentialGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty) :
+            new ElectricPotentialFieldNode(model.electricPotentialGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty);
         this.addChild(electricPotentialFieldNode);
 
         // Create and add the visual grid on the view
@@ -98,15 +86,17 @@ define(function (require) {
         this.addChild(grid);
 
         // create and add the grid with electric field arrow sensors
-        var electricFieldGridNode = new ElectricFieldGridNode(model, modelViewTransform, model.eFieldIsVisibleProperty);
+        var electricFieldGridNode = new ElectricFieldGridNode(model.electricFieldSensorGrid, model.getColorElectricFieldMagnitude.bind(model), modelViewTransform, model.eFieldIsVisibleProperty);
         this.addChild(electricFieldGridNode);
 
         // Create
-        var equipotentialLineNode = new EquipotentialLineNode(model, modelViewTransform);
+        var equipotentialLineNode = new EquipotentialLineNode(model.equipotentialLinesArray, model.clearEquipotentialLinesProperty, modelViewTransform, model.valueIsVisibleProperty);
+
         this.addChild(equipotentialLineNode);
 
+
         // Create
-        var electricFieldLineNode = new ElectricFieldLineNode(model, modelViewTransform);
+        var electricFieldLineNode = new ElectricFieldLineNode(model.electricFieldLinesArray, model.clearElectricFieldLinesProperty, modelViewTransform);
         this.addChild(electricFieldLineNode);
 
         // create and add the Measuring Tape
@@ -115,6 +105,7 @@ define(function (require) {
             dragBounds: thisView.layoutBounds.eroded(5),
             modelViewTransform: modelViewTransform
         };
+
 
         var measuringTape = new MeasuringTape(model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
             tape_options);
@@ -143,21 +134,6 @@ define(function (require) {
 //     all of the point placement graphs in the z-order.
         var chargedParticlesLayer = new Node({layerSplit: true}); // Force the moving dataPoint into a separate layer for performance reasons.
 
-        // Add the dataPoint creator nodes.
-        DATA_POINT_CREATOR_OFFSET_POSITIONS.forEach(function (offset) {
-            backLayer.addChild(new ChargedParticleCreatorNode(
-                model.addUserCreatedChargedParticle.bind(model), 1,
-                modelViewTransform, {
-                    left: 100 + offset.x,
-                    top: 400 + offset.y
-                }));
-            backLayer.addChild(new ChargedParticleCreatorNode(
-                model.addUserCreatedChargedParticle.bind(model), -1,
-                modelViewTransform, {
-                    left: 200 + offset.x,
-                    top: 400 + offset.y
-                }));
-        });
 
         // Handle the comings and goings of  dataPoints.
         model.chargedParticles.addItemAddedListener(function (addedChargedParticle) {
@@ -165,16 +141,6 @@ define(function (require) {
             // Create and add the view representation for this chargedParticle.
             var chargedParticleNode = new ChargedParticleNode(model, addedChargedParticle, modelViewTransform);
             chargedParticlesLayer.addChild(chargedParticleNode);
-
-            addedChargedParticle.positionProperty.link(function () {
-
-            });
-            // Move the chargedParticle to the front of this layer when grabbed by the user.
-            addedChargedParticle.userControlledProperty.link(function (userControlled) {
-                if (userControlled) {
-                    chargedParticleNode.moveToFront();
-                }
-            });
 
             // Add the removal listener for if and when this chargedParticle is removed from the model.
             model.chargedParticles.addItemRemovedListener(function removalListener(removedChargedParticle) {
@@ -190,20 +156,16 @@ define(function (require) {
         this.addChild(controlPanel);
 
         // Create and add the electric potential sensor node (with panel)
-        var electricPotentialSensorNode = new ElectricPotentialSensorNode(model, model.electricPotentialSensor, modelViewTransform);
+        var electricPotentialSensorNode = new ElectricPotentialSensorNode(model.electricPotentialSensor,
+                model.getColorElectricPotential.bind(model), model.clearEquipotentialLines, model.addElectricPotentialLine.bind(model), modelViewTransform
+            )
+            ;
         this.addChild(electricPotentialSensorNode);
-
-        // create and add the charged particles to the view
-        //var parentChargesNode = new Node();
-        //model.chargedParticles.forEach( function( charge ) {
-        //  parentChargesNode.addChild( new ChargedParticleNode( model, charge, modelViewTransform ) );
-        //} );
-        //this.addChild( parentChargesNode );
 
         // create and add the electric Field sensors
         var parentElectricFieldSensorsNode = new Node();
         model.electricFieldSensors.forEach(function (electricFieldSensor) {
-            parentElectricFieldSensorsNode.addChild(new ElectricFieldSensorNode(model, electricFieldSensor, modelViewTransform, model.eFieldIsVisibleProperty));
+            parentElectricFieldSensorsNode.addChild(new ElectricFieldSensorNode(electricFieldSensor, modelViewTransform, model.valueIsVisibleProperty));
         });
         this.addChild(parentElectricFieldSensorsNode);
         this.addChild(chargedParticlesLayer);
@@ -214,6 +176,7 @@ define(function (require) {
 
         grid.centerX = thisView.layoutBounds.centerX;
         grid.centerY = thisView.layoutBounds.centerY;
+
 
         //TODO: Delete when done with the layout
         ////////////////////////////////////////////////////////////////
@@ -233,9 +196,13 @@ define(function (require) {
         this.addChild(image01);
         this.addChild(image02);
 
-        this.addChild(new HSlider(mockup02OpacityProperty, {min: 0, max: 1}, {top: 100, left: 20}));
-        this.addChild(new HSlider(mockup01OpacityProperty, {min: 0, max: 1}, {top: 10, left: 20}));
+        this.addChild(new HSlider(mockup02OpacityProperty, {min: 0, max: 1}, {top: 200, left: 20}));
+        this.addChild(new HSlider(mockup01OpacityProperty, {min: 0, max: 1}, {top: 300, left: 20}));
         /////////////////////////////////////////////////////////////////////////
+
+        // Create and add the charge and sensor enclosure (including the charges and sensors)
+        var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(model, model.chargeAndSensorEnclosureBounds, modelViewTransform);
+        backLayer.addChild(chargeAndSensorEnclosure);
 
     }
 

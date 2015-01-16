@@ -35,7 +35,17 @@ define(function (require) {
      * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
      * @constructor
      */
-    function ElectricPotentialSensorNode(model, electricPotentialSensor, modelViewTransform) {
+
+    /**
+     *
+     * @param {SensorElement} electricPotentialSensor - model of the electric potential sensor
+     * @param {Function} getColorElectricPotential
+     * @param clearEquipotentialLines
+     * @param {Function} addElectricPotentialLine
+     * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
+     * @constructor
+     */
+    function ElectricPotentialSensorNode(electricPotentialSensor, getColorElectricPotential, clearEquipotentialLines, addElectricPotentialLine, modelViewTransform) {
 
         var electricPotentialSensorNode = this;
 
@@ -56,7 +66,7 @@ define(function (require) {
             .lineTo(0, CIRCLE_RADIUS);
         this.addChild(new Path(crosshair, {centerX: 0, centerY: 0, lineWidth: 1, stroke: 'white'}));
 
-        var electricPotentialSensorPanel = new ElectricPotentialSensorPanel(model);
+        var electricPotentialSensorPanel = new ElectricPotentialSensorPanel(clearEquipotentialLines, addElectricPotentialLine);
         electricPotentialSensorNode.addChild(electricPotentialSensorPanel);
         electricPotentialSensorPanel.centerX = circle.centerX;
         electricPotentialSensorPanel.top = circle.bottom;
@@ -64,12 +74,11 @@ define(function (require) {
         // Register for synchronization with model.
         electricPotentialSensor.positionProperty.link(function (position) {
             electricPotentialSensorNode.translation = modelViewTransform.modelToViewPosition(position);
-            electricPotentialSensor.electricPotential = model.getElectricPotential(position);
         });
 
         electricPotentialSensor.electricPotentialProperty.link(function (electricPotential) {
             electricPotentialSensorPanel.voltageReading.text = StringUtils.format(pattern_0value_1units, electricPotential.toFixed(1), voltageUnitString);
-            circle.fill = model.getColorElectricPotential(electricPotentialSensor.position, electricPotential).withAlpha(0.5);
+            circle.fill = getColorElectricPotential(electricPotentialSensor.position, electricPotential).withAlpha(0.5);
         });
 
         // When dragging, move the charge

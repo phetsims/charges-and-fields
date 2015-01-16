@@ -11,6 +11,7 @@ define(function (require) {
 
     // modules
     var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
+    var ChargesAndFieldsColors = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsColors');
     var Circle = require('SCENERY/nodes/Circle');
     var inherit = require('PHET_CORE/inherit');
     var ChargedParticle = require('CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle');
@@ -33,7 +34,6 @@ define(function (require) {
      */
     function ChargedParticleCreatorNode(addChargedParticleToModel, charge, modelViewTransform, options) {
         Node.call(this, {
-            renderer: 'svg', rendererOptions: {cssTransform: true},
             // Show a cursor hand over the charge
             cursor: 'pointer'
         });
@@ -45,7 +45,7 @@ define(function (require) {
         var chargeColor;
 
         // determine the color of the charged Particle based on its charge: blue positive
-        chargeColor = (charge !== 1) ? 'rgb(0,0,150)' : 'rgb(150,0,0)';
+        chargeColor = (charge !== 1) ? ChargesAndFieldsColors.negativeStillCharge.toCSS() : ChargesAndFieldsColors.positiveStillCharge.toCSS();
 
         var circle = new Circle(CIRCLE_RADIUS, {
             stroke: 'black',

@@ -26,16 +26,16 @@ define(function (require) {
      * @param {Property.<boolean>} showResolutionProperty
      * @constructor
      */
-    function ElectricPotentialFieldNode(model, modelViewTransform, showResolutionProperty) {
+    function ElectricPotentialFieldNode(electricPotentialGrid, getColorElectricPotential, modelViewTransform, showResolutionProperty) {
 
         var electricPotentialFieldNode = this;
         // Call the super constructor
         Node.call(this);
 
-        var vectorDisplacement = model.electricPotentialGrid.get(2).position.minus(model.electricPotentialGrid.get(1).position);
+        var vectorDisplacement = electricPotentialGrid.get(2).position.minus(electricPotentialGrid.get(1).position);
         var unitDistance = modelViewTransform.modelToViewDelta(vectorDisplacement).magnitude();
 
-        model.electricPotentialGrid.forEach(function (electricPotentialSensor) {
+        electricPotentialGrid.forEach(function (electricPotentialSensor) {
             var positionInModel = electricPotentialSensor.position;
             //  var electricPotential = electricPotentialSensor.electricPotential;
             var positionInView = modelViewTransform.modelToViewPosition(positionInModel);
@@ -44,7 +44,7 @@ define(function (require) {
             electricPotentialFieldNode.addChild(rect);
 
             electricPotentialSensor.electricPotentialProperty.link(function (electricPotential) {
-                var specialColor = model.getColorElectricPotential(positionInModel, electricPotential);
+                var specialColor = getColorElectricPotential(positionInModel, electricPotential);
                 rect.fill = specialColor;
                 rect.stroke = specialColor;
             });
@@ -54,12 +54,12 @@ define(function (require) {
         showResolutionProperty.link(function (isVisible) {
             electricPotentialFieldNode.visible = isVisible;
 
-            // for performance reason, the electric potential is calculated and updated only if the check is set to visible
-            if (isVisible) {
-                model.electricPotentialGrid.forEach(function (sensorElement) {
-                    sensorElement.electricPotential = model.getElectricPotential(sensorElement.position);
-                });
-            }
+            //// for performance reason, the electric potential is calculated and updated only if the check is set to visible
+            //if (isVisible) {
+            //    model.electricPotentialGrid.forEach(function (sensorElement) {
+            //        sensorElement.electricPotential = model.getElectricPotential(sensorElement.position);
+            //    });
+            //}
         });
 
     }

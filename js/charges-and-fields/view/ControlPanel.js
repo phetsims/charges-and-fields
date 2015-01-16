@@ -53,7 +53,7 @@ define(function (require) {
             },
             {
                 content: new Text(valuesString, checkBoxTextOptions),
-                property: model.showNumbersIsVisibleProperty,
+                property: model.valueIsVisibleProperty,
                 indent: 0
             },
             {

@@ -36,7 +36,16 @@ define(function (require) {
      * @param {ModelViewTransform2} modelViewTransform
      * @constructor
      */
-    function EquipotentialLineNode(model, modelViewTransform) {
+
+    /**
+     *
+     * @param {Array.<Object>} equipotentialLinesArray
+     * @param {Property.<boolean>} clearEquipotentialLinesProperty
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} valueIsVisibleProperty
+     * @constructor
+     */
+    function EquipotentialLineNode(equipotentialLinesArray, clearEquipotentialLinesProperty, modelViewTransform, valueIsVisibleProperty) {
 
         Node.call(this);
 
@@ -48,26 +57,26 @@ define(function (require) {
         var equipotentialLabelNode = new Node();
         this.addChild(equipotentialLabelNode);
 
-        model.equipotentialLinesArray.addItemAddedListener(function (equipotentialLine) {
+        equipotentialLinesArray.addItemAddedListener(function (equipotentialLine) {
             traceElectricPotentialLine(equipotentialLine);
 
-            model.equipotentialLinesArray.addItemRemovedListener(function removalListener(removedEquipotentialLine) {
+            equipotentialLinesArray.addItemRemovedListener(function removalListener(removedEquipotentialLine) {
                 if (removedEquipotentialLine === equipotentialLine) {
                     lineNode.removeChild(removedEquipotentialLine.path);
-                    model.equipotentialLinesArray.removeItemRemovedListener(removalListener);
+                    equipotentialLinesArray.removeItemRemovedListener(removalListener);
                 }
             });
         });
 
         //// remove the nodes and clear the array the equipotential lines
-        model.clearEquipotentialLinesProperty.link(function () {
+        clearEquipotentialLinesProperty.link(function () {
             equipotentialLabelNode.removeAllChildren();
             lineNode.removeAllChildren();
-            model.clearEquipotentialLines = false;
+            clearEquipotentialLinesProperty.value = false;
         });
 
         // control the visibility of the number labels
-        model.showNumbersIsVisibleProperty.link(function (isVisible) {
+        valueIsVisibleProperty.link(function (isVisible) {
             equipotentialLabelNode.visible = isVisible;
         });
 
