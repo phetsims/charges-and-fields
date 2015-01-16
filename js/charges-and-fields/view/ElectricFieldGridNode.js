@@ -27,16 +27,8 @@ define(function (require) {
 
     /**
      *
-     * @param {ChargesAndFieldsModel} model - main model of the simulation
-     * @param {ModelViewTransform2} modelViewTransform
-     * @param {Property.<boolean>} eFieldIsVisibleProperty
-     * @constructor
-     */
-
-    /**
-     *
-     * @param  {Array.<SensorElement>} electricFieldSensorGrid
-     * @param {Function} getColorElectricFieldMagnitude
+     * @param  {ObservableArray.<SensorElement>} electricFieldSensorGrid
+     * @param {Function} getColorElectricFieldMagnitude - A function that maps a color to an Electric Field Magnitude
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} eFieldIsVisibleProperty
      * @constructor

@@ -22,26 +22,18 @@ define(function (require) {
     var StringUtils = require('PHETCOMMON/util/StringUtils');
 
     //constants
-    var CIRCLE_RADIUS = 18;
+    var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
 
     //strings
     var pattern_0value_1units = require('string!CHARGES_AND_FIELDS/pattern.0value.1units');
     var voltageUnitString = require('string!CHARGES_AND_FIELDS/voltageUnit');
 
     /**
-     * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-     * @param {ChargesAndFieldsModel} model - main model of the simulation
-     * @param {SensorElement} electricPotentialSensor - model
-     * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
-     * @constructor
-     */
-
-    /**
      *
      * @param {SensorElement} electricPotentialSensor - model of the electric potential sensor
-     * @param {Function} getColorElectricPotential
-     * @param clearEquipotentialLines
-     * @param {Function} addElectricPotentialLine
+     * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
+     * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
+     * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
      * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
      * @constructor
      */
@@ -55,19 +47,20 @@ define(function (require) {
             cursor: 'pointer'
         });
 
-        // Add the centered circle
+        // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
         var circle = new Circle(CIRCLE_RADIUS, {fill: 'green', stroke: 'white', lineWidth: 3, centerX: 0, centerY: 0});
-        electricPotentialSensorNode.addChild(circle);
+        this.addChild(circle);
 
-        // crosshair, starting from upper
+        // Create and add the crosshair
         var crosshair = new Shape().moveTo(-CIRCLE_RADIUS, 0)
             .lineTo(CIRCLE_RADIUS, 0)
             .moveTo(0, -CIRCLE_RADIUS)
             .lineTo(0, CIRCLE_RADIUS);
-        this.addChild(new Path(crosshair, {centerX: 0, centerY: 0, lineWidth: 1, stroke: 'white'}));
+        this.addChild(new Path(crosshair, {centerX: 0, centerY: 0, stroke: 'white'}));
 
+        // Create and add the panel of the sensor with the readout and push buttons
         var electricPotentialSensorPanel = new ElectricPotentialSensorPanel(clearEquipotentialLines, addElectricPotentialLine);
-        electricPotentialSensorNode.addChild(electricPotentialSensorPanel);
+        this.addChild(electricPotentialSensorPanel);
         electricPotentialSensorPanel.centerX = circle.centerX;
         electricPotentialSensorPanel.top = circle.bottom;
 
@@ -76,12 +69,13 @@ define(function (require) {
             electricPotentialSensorNode.translation = modelViewTransform.modelToViewPosition(position);
         });
 
+        // Update the value of the electric potential on the panel and the fill color on the crosshair
         electricPotentialSensor.electricPotentialProperty.link(function (electricPotential) {
             electricPotentialSensorPanel.voltageReading.text = StringUtils.format(pattern_0value_1units, electricPotential.toFixed(1), voltageUnitString);
             circle.fill = getColorElectricPotential(electricPotentialSensor.position, electricPotential).withAlpha(0.5);
         });
 
-        // When dragging, move the charge
+        // When dragging, move the electric potential sensor
         electricPotentialSensorNode.addInputListener(new SimpleDragHandler(
             {
                 // When dragging across it in a mobile device, pick it up

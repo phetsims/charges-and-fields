@@ -57,6 +57,7 @@ define(function (require) {
 
         /**
          * Function that displaces the position of the chargeParticle toward its origin Position.
+         * @private
          * @param {number} dt
          */
         animationStep: function (dt) {

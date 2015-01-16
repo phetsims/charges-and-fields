@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Scenery Node depicting a sensor panel that can generate or delete electric potential field lines.
+ * Scenery Node depicting a sensor panel that can generate or delete an electric potential field lines.
  * The sensor has a readout of the electric potential at a given position.
  *
  * @author Martin Veillette (Berea College)
@@ -10,12 +10,11 @@ define(function (require) {
     'use strict';
 
     // modules
-    //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+    var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
     var EraserButton = require('SCENERY_PHET/buttons/EraserButton');
     var HBox = require('SCENERY/nodes/HBox');
     var inherit = require('PHET_CORE/inherit');
     var Panel = require('SUN/Panel');
-    var PhetFont = require('SCENERY_PHET/PhetFont');
     //var TextPushButton = require( 'SUN/buttons/TextPushButton' );
     var Text = require('SCENERY/nodes/Text');
     var VBox = require('SCENERY/nodes/VBox');
@@ -25,14 +24,8 @@ define(function (require) {
 
     /**
      *
-     * @param {ChargesAndFieldsModel} model - main model of the simulation
-     * @param {Object} [options] scenery options for rendering the control panel, see the constructor for options.
-     * @constructor
-     */
-    /**
-     *
-     * @param clearEquipotentialLines
-     * @param addElectricPotentialLine
+     * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
+     * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
      * @param {Object} [options] scenery options for rendering the Electric Potential Sensor Panel, see the constructor for options.
      * @constructor
      */
@@ -49,17 +42,16 @@ define(function (require) {
             },
             options);
 
-        // create the button that allows the board to be cleared of all lines.
+        // Create the button that allows the board to be cleared of all lines.
         var clearButton = new EraserButton({
             baseColor: 'white',
             iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
             listener: function () {
-                clearEquipotentialLines = true;
-                //model.clearElectricFieldLines = true;
+                clearEquipotentialLines();
             }
         });
 
-        // create the button that allows to plot the ElectricPotential Lines
+        // Create the button that allows to plot the ElectricPotential Lines
         var plotElectricPotentialLineButton = new EraserButton({
             baseColor: 'white',
             iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
@@ -68,14 +60,15 @@ define(function (require) {
             }
         });
 
+        // Create the text node above the readout
         var equipotential = new Text(equipotentialString, {
-            font: new PhetFont(12),
+            font: ChargesAndFieldsConstants.DEFAULT_FONT,
             fill: 'white'
         });
 
         // TODO find a more robust way to set the textPanel content Width
         this.voltageReading = new Text('0.0000', {
-            font: new PhetFont(14),
+            font: ChargesAndFieldsConstants.DEFAULT_FONT,
             fill: 'black',
             xMargin: 10
         });
@@ -99,8 +92,7 @@ define(function (require) {
         var content = new VBox({
             align: 'center',
             spacing: 10,
-            children: [equipotential, textPanel, //plotElectricFieldLineButton,
-                buttons],
+            children: [equipotential, textPanel, buttons],
             pickable: true
         });
 

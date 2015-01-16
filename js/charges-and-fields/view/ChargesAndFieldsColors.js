@@ -60,24 +60,29 @@ define(function (require) {
             projector: new Color(255, 255, 255)
         },
         negativeStillCharge: {
-            default: new Color(30, 30, 30),
-            basics: new Color(255, 255, 255),
-            projector: new Color(255, 255, 255)
+            default: new Color(0, 255, 255),
+            basics: new Color(0, 255, 255),
+            projector: new Color(255, 0, 0)
         },
         positiveStillCharge: {
-            default: new Color(30, 30, 30),
-            basics: new Color(255, 255, 255),
-            projector: new Color(255, 255, 255)
+            default: new Color(255, 255, 0),
+            basics: new Color(255, 255, 0),
+            projector: new Color(0, 0, 255)
         },
         voltageLabel: {
-            default: new Color(30, 30, 30),
+            default: new Color(255, 30, 120),
             basics: new Color(1, 255, 255),
             projector: new Color(255, 25, 255)
         },
         equipotentialLine: {
-            default: new Color(30, 30, 30),
+            default: new Color(255, 30, 200),
             basics: new Color(1, 255, 255),
             projector: new Color(255, 25, 255)
+        },
+        measuringTapeText: {
+            default: new Color(30, 30, 30),
+            basics: new Color(255, 0, 255),
+            projector: new Color(0, 255, 255)
         }
     };
 

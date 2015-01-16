@@ -61,7 +61,7 @@ define(function (require) {
 
         // separation in model coordinates of the major grid lines
         var majorDeltaX = 0.5;
-        var majorDeltaY = majorDeltaX;
+        var majorDeltaY = majorDeltaX; // we want a square grid
 
         // separation in model coordinates of the minor grid lines
         var deltaX = majorDeltaX / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;

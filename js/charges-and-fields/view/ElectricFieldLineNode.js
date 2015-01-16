@@ -9,37 +9,40 @@ define(function (require) {
     'use strict';
 
     // modules
-
     var inherit = require('PHET_CORE/inherit');
     var Node = require('SCENERY/nodes/Node');
     var Path = require('SCENERY/nodes/Path');
-//  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
     var Shape = require('KITE/Shape');
-    // var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
     /**
      *
-     * @param electricFieldLinesArray
-     * @param clearElectricFieldLinesProperty
+     * @param {ObservableArray} electricFieldLinesArray
      * @param {ModelViewTransform2}  modelViewTransform
      * @constructor
      */
-    function ElectricFieldLineNode(electricFieldLinesArray, clearElectricFieldLinesProperty, modelViewTransform) {
+    function ElectricFieldLineNode(electricFieldLinesArray, modelViewTransform) {
 
         Node.call(this);
 
         var electricFieldLineNode = this;
 
         electricFieldLinesArray.addItemAddedListener(function (electricFieldLine) {
-            traceElectricFieldLine(electricFieldLine);
+            var electricFieldLinePath = traceElectricFieldLine(electricFieldLine);
+            electricFieldLineNode.addChild(electricFieldLinePath);
+
+            electricFieldLinesArray.addItemRemovedListener(function removalListener(removedElectricFieldLine) {
+                if (removedElectricFieldLine === electricFieldLine) {
+                    electricFieldLineNode.removeChild(electricFieldLinePath);
+                    electricFieldLinesArray.removeItemRemovedListener(removalListener);
+                }
+            });
         });
 
-        // remove the nodes and clear the array the equipotential lines
-        clearElectricFieldLinesProperty.link(function () {
-            electricFieldLineNode.removeAllChildren();
-            clearElectricFieldLinesProperty.value = false;
-        });
 
+        /**
+         * Function that returns a Scenery Path of a electric Field Line
+         * @param electricFieldLine
+         */
         function traceElectricFieldLine(electricFieldLine) {
 
             //draw the electricField line
@@ -67,7 +70,7 @@ define(function (require) {
                 shape.lineToPoint(modelViewTransform.modelToViewPosition(electricFieldLine.positionArray[i]));
             }
 
-            electricFieldLineNode.addChild(new Path(shape, {stroke: 'orange', lineWidth: 2, pickable: false}));
+            return new Path(shape, {stroke: 'orange', lineWidth: 2});
         }
 
     }

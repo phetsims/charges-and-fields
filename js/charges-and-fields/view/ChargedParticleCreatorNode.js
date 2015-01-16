@@ -44,7 +44,7 @@ define(function (require) {
 
         var chargeColor;
 
-        // determine the color of the charged Particle based on its charge: blue positive
+        // determine the color of the charged Particle based on its charge
         chargeColor = (charge !== 1) ? ChargesAndFieldsColors.negativeStillCharge.toCSS() : ChargesAndFieldsColors.positiveStillCharge.toCSS();
 
         var circle = new Circle(CIRCLE_RADIUS, {
@@ -54,7 +54,7 @@ define(function (require) {
 
         self.addChild(circle);
 
-        // create and add shape for the circle based on the charge of the particle
+        // Create and add shape for the circle based on the charge of the particle
         var ratio = 0.5; //
         if (charge === 1) {
             // plus Shape representing the positive charges
@@ -97,7 +97,8 @@ define(function (require) {
                 var initialPosition = this.parentScreen.globalToLocalPoint(event.pointer.point.plus(initialPositionOffset));
 
                 // Create and add the new model element.
-                this.chargedParticle = new ChargedParticle(modelViewTransform.viewToModelPosition(initialPosition), charge);
+                var initialModelPosition = modelViewTransform.viewToModelPosition(initialPosition);
+                this.chargedParticle = new ChargedParticle(initialModelPosition, charge);
                 this.chargedParticle.userControlled = true;
                 addChargedParticleToModel(this.chargedParticle);
 

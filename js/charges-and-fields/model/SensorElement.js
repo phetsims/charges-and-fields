@@ -18,7 +18,7 @@ define(function (require) {
      *
      * @param {Vector2} position
      * @param {Vector2} electricField
-     * @param {Vector2} electricPotential
+     * @param {number} electricPotential
      * @constructor
      */
     function SensorElement(position, electricField, electricPotential) {

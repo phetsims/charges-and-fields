@@ -23,12 +23,11 @@ define(function (require) {
 
     /**
      * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
-     * @param {ChargesAndFieldsModel} model - main model of the simulation
      * @param {ChargedParticle} chargedParticle - the model of the charged particle
      * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
      * @constructor
      */
-    function ChargedParticleNode(model, chargedParticle, modelViewTransform) {
+    function ChargedParticleNode(chargedParticle, modelViewTransform) {
 
         var chargedParticleNode = this;
 
@@ -55,7 +54,7 @@ define(function (require) {
 
         chargedParticleNode.addChild(circle);
 
-        // create and add shape for the circle based on the charge of the particle
+        // Create and add shape for the circle based on the charge of the particle
         var ratio = 0.5; //
         if (chargedParticle.charge === 1) {
             // plus Shape representing the positive charges
@@ -99,13 +98,8 @@ define(function (require) {
                 },
                 end: function (event, trail) {
                     chargedParticle.userControlled = false;
-                    if (model.chargeAndSensorEnclosureBounds.containsPoint(chargedParticle.position)) {
-                        chargedParticle.animating = true;
-                    }
-
                 }
             }));
-
     }
 
     return inherit(Node, ChargedParticleNode);

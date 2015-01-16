@@ -14,7 +14,6 @@ define(function (require) {
     var inherit = require('PHET_CORE/inherit');
     var Node = require('SCENERY/nodes/Node');
     var Path = require('SCENERY/nodes/Path');
-    var PhetFont = require('SCENERY_PHET/PhetFont');
     var Shape = require('KITE/Shape');
     var StringUtils = require('PHETCOMMON/util/StringUtils');
     var Text = require('SCENERY/nodes/Text');
@@ -31,7 +30,7 @@ define(function (require) {
      * @param {Property.<boolean>} valueIsVisibleProperty - ontrol the visibility of the voltage labels
      * @constructor
      */
-    function EquipotentialLineNode(equipotentialLinesArray, clearEquipotentialLinesProperty, modelViewTransform, valueIsVisibleProperty) {
+    function EquipotentialLineNode(equipotentialLinesArray, modelViewTransform, valueIsVisibleProperty) {
 
         Node.call(this);
 
@@ -45,21 +44,17 @@ define(function (require) {
 
         // Monitor the equipotentialLineArray and create a path and label for each equipotentialLine
         equipotentialLinesArray.addItemAddedListener(function (equipotentialLine) {
-            traceElectricPotentialLine(equipotentialLine);
-
+            var voltageLabel = labelElectricPotentialLine(equipotentialLine);
+            var equipotentialLinePath = traceElectricPotentialLine(equipotentialLine);
+            lineNode.addChild(equipotentialLinePath);
+            labelNode.addChild(voltageLabel);
             equipotentialLinesArray.addItemRemovedListener(function removalListener(removedEquipotentialLine) {
                 if (removedEquipotentialLine === equipotentialLine) {
-                    lineNode.removeChild(removedEquipotentialLine);
+                    lineNode.removeChild(equipotentialLinePath);
+                    labelNode.removeChild(voltageLabel);
                     equipotentialLinesArray.removeItemRemovedListener(removalListener);
                 }
             });
-        });
-
-        // Remove the nodes in the scene graph and clear the array of the equipotential lines in the model
-        clearEquipotentialLinesProperty.link(function () {
-            labelNode.removeAllChildren();
-            lineNode.removeAllChildren();
-            clearEquipotentialLinesProperty.value = false;
         });
 
         // Control the visibility of the value (voltage) labels
@@ -79,14 +74,22 @@ define(function (require) {
             });
 
             var equipotentialLinePath = new Path(modelViewTransform.modelToViewShape(shape), {stroke: ChargesAndFieldsColors.equipotentialLine.toCSS()});
-            lineNode.addChild(equipotentialLinePath);
 
-            // link the stroke color for the default/projector mode
+            // Link the stroke color for the default/projector mode
             ChargesAndFieldsColors.link('equipotentialLine', function (color) {
                 equipotentialLinePath.stroke = color;
             });
 
-            // Create and add the voltage label for the equipotential line
+            return equipotentialLinePath;
+        }
+
+        /**
+         * Function that generates a voltage label for the equipotential line
+         * @param {Object} equipotentialLine - Object of the form {position, positionArray, electricPotential}
+         */
+        function labelElectricPotentialLine(equipotentialLine) {
+
+            //Create the voltage label for the equipotential line
             var voltageLabelText = StringUtils.format(pattern_0value_1units, equipotentialLine.electricPotential.toFixed(1), voltageUnitString);
             var voltageLabel = new Text(voltageLabelText,
                 {
@@ -94,12 +97,12 @@ define(function (require) {
                     font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
                     center: modelViewTransform.modelToViewPosition(equipotentialLine.position)
                 });
-            labelNode.addChild(voltageLabel);
 
-            // link the fill color for the default/projector mode
+            // Link the fill color for the default/projector mode
             ChargesAndFieldsColors.link('voltageLabel', function (color) {
                 voltageLabel.fill = color;
             });
+            return voltageLabel;
         }
     }
 

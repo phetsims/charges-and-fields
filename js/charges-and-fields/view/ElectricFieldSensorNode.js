@@ -1,7 +1,10 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * View for the electric field sensor nodes
+ *  Scenery Node for the draggable electric field sensor node.
+ *  The sensor is made of a circle and an arrow that points along the local electric field
+ *  and changes its length according to the magnitude of the electric field
+ *  A text label of the direction and magnitude of the local electric field is also displayed
  *
  * @author Martin Veillette (Berea College)
  */
@@ -37,9 +40,9 @@ define(function (require) {
 
     /**
      * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-     * @param {ChargesAndFieldsModel} model - main model of the simulation
      * @param {SensorElement} electricFieldSensor
      * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} valueIsVisibleProperty
      * @constructor
      */
     function ElectricFieldSensorNode(electricFieldSensor, modelViewTransform, valueIsVisibleProperty) {
@@ -89,7 +92,6 @@ define(function (require) {
         electricFieldSensor.positionProperty.link(function (position) {
             electricFieldSensorNode.moveToFront();
             electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition(position);
-            //electricFieldSensor.electricField = model.getElectricField(position);
         });
 
         electricFieldSensor.electricFieldProperty.link(function (electricField) {
@@ -113,7 +115,7 @@ define(function (require) {
             directionLabel.visible = isVisible;
         });
 
-        // When dragging, move the charge
+        // When dragging, move the electric Field Sensor
         electricFieldSensorNode.addInputListener(new SimpleDragHandler(
             {
                 // When dragging across it in a mobile device, pick it up

@@ -19,9 +19,11 @@ define(function (require) {
 //  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 //  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );
 
+
     /**
      *
-     * @param {ChargesAndFieldsModel} model - main model of the simulation
+     * @param {ObservableArray.<SensorElement>} electricPotentialGrid
+     * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} showResolutionProperty
      * @constructor
@@ -32,12 +34,12 @@ define(function (require) {
         // Call the super constructor
         Node.call(this);
 
+        // find the distance between two adjacent electric Potential Sensors
         var vectorDisplacement = electricPotentialGrid.get(2).position.minus(electricPotentialGrid.get(1).position);
         var unitDistance = modelViewTransform.modelToViewDelta(vectorDisplacement).magnitude();
 
         electricPotentialGrid.forEach(function (electricPotentialSensor) {
             var positionInModel = electricPotentialSensor.position;
-            //  var electricPotential = electricPotentialSensor.electricPotential;
             var positionInView = modelViewTransform.modelToViewPosition(positionInModel);
             var rect = new Rectangle(0, 0, unitDistance, unitDistance);
             rect.center = positionInView;
@@ -53,13 +55,6 @@ define(function (require) {
 
         showResolutionProperty.link(function (isVisible) {
             electricPotentialFieldNode.visible = isVisible;
-
-            //// for performance reason, the electric potential is calculated and updated only if the check is set to visible
-            //if (isVisible) {
-            //    model.electricPotentialGrid.forEach(function (sensorElement) {
-            //        sensorElement.electricPotential = model.getElectricPotential(sensorElement.position);
-            //    });
-            //}
         });
 
     }
