@@ -39,18 +39,25 @@ define(function (require) {
         });
         var self = this;
 
-        // Create the node that the user will click upon to add a model element to the view.
-        // Add the centered circle
-
-        var chargeColor;
-
         // determine the color of the charged Particle based on its charge
-        chargeColor = (charge !== 1) ? ChargesAndFieldsColors.negativeStillCharge.toCSS() : ChargesAndFieldsColors.positiveStillCharge.toCSS();
+        var chargeColor = (charge !== 1) ? ChargesAndFieldsColors.negativeStillCharge.toCSS() : ChargesAndFieldsColors.positiveStillCharge.toCSS();
 
+        // Create the node that the user will click upon to add a model element to the view.
         var circle = new Circle(CIRCLE_RADIUS, {
             stroke: 'black',
             fill: chargeColor
         });
+
+        var colorFunction = function (color) {
+            circle.fill = color;
+        };
+
+        if (charge === 1) {
+            ChargesAndFieldsColors.link('positiveStillCharge', colorFunction);
+        }
+        else {
+            ChargesAndFieldsColors.link('negativeStillCharge', colorFunction);
+        }
 
         self.addChild(circle);
 

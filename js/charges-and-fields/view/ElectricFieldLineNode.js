@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Node responsible for the drawing of the electricField lines
+ * Scenery node responsible for the drawing of the electric field lines
  *
  * @author Martin Veillette (Berea College)
  */
@@ -16,8 +16,8 @@ define(function (require) {
 
     /**
      *
-     * @param {ObservableArray} electricFieldLinesArray
-     * @param {ModelViewTransform2}  modelViewTransform
+     * @param {ObservableArray.<Object>} electricFieldLinesArray
+     * @param {ModelViewTransform2} modelViewTransform
      * @constructor
      */
     function ElectricFieldLineNode(electricFieldLinesArray, modelViewTransform) {
@@ -38,36 +38,43 @@ define(function (require) {
             });
         });
 
-
         /**
-         * Function that returns a Scenery Path of a electric Field Line
-         * @param electricFieldLine
+         * Function that returns a Scenery Path for an electric Field Line model
+         * @param {Object} electricFieldLine
          */
         function traceElectricFieldLine(electricFieldLine) {
 
             //draw the electricField line
+
+            var arrayLength = electricFieldLine.positionArray.length;
+            var arrayIndex;
+            var arrowHeadLength = 6; // length of the arrow head in scenery coordinates
+            var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) form in the arrow head i.e >
+            var numberOfSegmentsPerArrow = 50; // number of segment intervals between arrows
+
             var shape = new Shape();
             shape.moveToPoint(modelViewTransform.modelToViewPosition(electricFieldLine.positionArray [0]));
 
-            var arrayLength = electricFieldLine.positionArray.length;
-            var i;
-            var L = 6;
-            var alpha = Math.PI * 6.5 / 8;
-
-            for (i = 0; i < arrayLength; i++) {
-                var isArrowSegment = ( i % 50 === 2 );
-                var position = modelViewTransform.modelToViewPosition(electricFieldLine.positionArray[i]);
+            for (arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++) {
+                var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === 2 );  // modulo is arbitrarily 2, just not 0
+                var position = modelViewTransform.modelToViewPosition(electricFieldLine.positionArray[arrayIndex]);
                 if (isArrowSegment) {
-                    var angle = position.minus(shape.getRelativePoint()).angle();
+                    var angle = position.minus(shape.getRelativePoint()).angle(); // angle of the electric field
                     shape
-                        .lineToPointRelative({x: L * Math.cos(angle + alpha), y: L * Math.sin(angle + alpha)})
                         .lineToPointRelative({
-                            x: 2 * L * Math.sin(alpha) * Math.sin(angle),
-                            y: -2 * L * Math.sin(alpha) * Math.cos(angle)
+                            x: arrowHeadLength * Math.cos(angle + arrowHeadInternalAngle),
+                            y: arrowHeadLength * Math.sin(angle + arrowHeadInternalAngle)
                         })
-                        .lineToPointRelative({x: -L * Math.cos(angle - alpha), y: -L * Math.sin(angle - alpha)});
+                        .lineToPointRelative({
+                            x: 2 * arrowHeadLength * Math.sin(arrowHeadInternalAngle) * Math.sin(angle),
+                            y: -2 * arrowHeadLength * Math.sin(arrowHeadInternalAngle) * Math.cos(angle)
+                        })
+                        .lineToPointRelative({
+                            x: -arrowHeadLength * Math.cos(angle - arrowHeadInternalAngle),
+                            y: -arrowHeadLength * Math.sin(angle - arrowHeadInternalAngle)
+                        });
                 }
-                shape.lineToPoint(modelViewTransform.modelToViewPosition(electricFieldLine.positionArray[i]));
+                shape.lineToPoint(modelViewTransform.modelToViewPosition(electricFieldLine.positionArray[arrayIndex]));
             }
 
             return new Path(shape, {stroke: 'orange', lineWidth: 2});

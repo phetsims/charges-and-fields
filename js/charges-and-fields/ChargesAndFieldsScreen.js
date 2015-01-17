@@ -37,9 +37,13 @@ define(function (require) {
             {backgroundColor: ChargesAndFieldsColors.background.toCSS()}
         );
 
-        ChargesAndFieldsColors.link('background', function (color) {
+        var colorFunction = function (color) {
             screen.backgroundColor = color;
-        });
+        };
+
+        ChargesAndFieldsColors.link('background', colorFunction);
+
+
     }
 
     return inherit(Screen, ChargesAndFieldsScreen);

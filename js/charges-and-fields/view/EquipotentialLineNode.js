@@ -24,10 +24,9 @@ define(function (require) {
 
     /**
      *
-     * @param {Array.<Object>} equipotentialLinesArray - array of models of equipotentialLine
-     * @param {Property.<boolean>} clearEquipotentialLinesProperty
+     * @param {ObservableArray.<Object>} equipotentialLinesArray - array of models of equipotentialLine
      * @param {ModelViewTransform2} modelViewTransform
-     * @param {Property.<boolean>} valueIsVisibleProperty - ontrol the visibility of the voltage labels
+     * @param {Property.<boolean>} valueIsVisibleProperty - control the visibility of the voltage labels
      * @constructor
      */
     function EquipotentialLineNode(equipotentialLinesArray, modelViewTransform, valueIsVisibleProperty) {
@@ -52,6 +51,7 @@ define(function (require) {
                 if (removedEquipotentialLine === equipotentialLine) {
                     lineNode.removeChild(equipotentialLinePath);
                     labelNode.removeChild(voltageLabel);
+                    //TODO: memory leak: should one unlink the voltageLabel and colorFunction? and similarly for equipotentialLinePath
                     equipotentialLinesArray.removeItemRemovedListener(removalListener);
                 }
             });
@@ -75,10 +75,11 @@ define(function (require) {
 
             var equipotentialLinePath = new Path(modelViewTransform.modelToViewShape(shape), {stroke: ChargesAndFieldsColors.equipotentialLine.toCSS()});
 
-            // Link the stroke color for the default/projector mode
-            ChargesAndFieldsColors.link('equipotentialLine', function (color) {
+            var colorFunction = function (color) {
                 equipotentialLinePath.stroke = color;
-            });
+            };
+            // Link the stroke color for the default/projector mode
+            ChargesAndFieldsColors.link('equipotentialLine', colorFunction);
 
             return equipotentialLinePath;
         }
@@ -99,9 +100,12 @@ define(function (require) {
                 });
 
             // Link the fill color for the default/projector mode
-            ChargesAndFieldsColors.link('voltageLabel', function (color) {
+            var colorFunction = function (color) {
                 voltageLabel.fill = color;
-            });
+            };
+
+            ChargesAndFieldsColors.link('voltageLabel', colorFunction);
+
             return voltageLabel;
         }
     }

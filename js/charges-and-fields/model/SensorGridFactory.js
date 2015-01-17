@@ -29,7 +29,7 @@ define(function (require) {
             numberOfHorizontalSensors: 10,
             numberOfVerticalSensors: 10,
             electricFieldInitialization: false,
-            electricPotentialInitialization: false,
+            electricPotentialInitialization: false
         });
 
         var thisModel = this;

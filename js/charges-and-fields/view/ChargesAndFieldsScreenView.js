@@ -134,14 +134,11 @@ define(function (require) {
             listener: function () {
                 model.reset();
                 measuringTape.reset();
-                equipotentialLineNode.removeAllChildren();
-                electricFieldLineNode.removeAllChildren();
             },
             right: this.layoutBounds.maxX - 10,
             bottom: this.layoutBounds.maxY - 10
         });
 
-        ChargesAndFieldsColors.linkAttribute('controlPanelText', resetAllButton, 'fill');
 
         // Create the nodes that will be used to layer things visually.
         var backLayer = new Node();

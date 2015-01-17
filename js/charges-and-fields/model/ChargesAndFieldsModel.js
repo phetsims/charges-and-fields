@@ -43,13 +43,13 @@ define(function (require) {
         var thisModel = this;
 
         PropertySet.call(thisModel, {
-            eFieldIsVisible: false,
-            directionOnlyIsVisible: false,
-            showResolution: false,
-            gridIsVisible: false,
-            valueIsVisible: false,
-            tapeMeasureIsVisible: false,
-            tapeMeasureUnits: {name: 'cm', multiplier: 100}
+            eFieldIsVisible: false, // control the visibility of a grid of arrows representing the local electric field
+            directionOnlyIsVisible: false, // controls the color shading in the fill of
+            showResolution: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
+            valueIsVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
+            gridIsVisible: false,  //  control the visibility of the simple grid with minor and major axes
+            tapeMeasureIsVisible: false, // control the visibility of the measuring tape
+            tapeMeasureUnits: {name: 'cm', multiplier: 100} // need for the measuring tape scenery node
         });
 
 
@@ -91,6 +91,7 @@ define(function (require) {
         /* the screen in the model is 4 meters high and 6.5 meters wide*/
         // @public read-only
         this.electricFieldSensorGrid = new ObservableArray();
+
 
         var j;
         //var aspectRatio= WIDTH/HEIGHT;
@@ -236,6 +237,8 @@ define(function (require) {
         reset: function () {
             this.equipotentialLinesArray.clear();
             this.electricFieldLinesArray.clear();
+            this.chargedParticles.clear();
+            this.electricFieldSensors.clear();
             PropertySet.prototype.reset.call(this);
         },
 
@@ -257,6 +260,21 @@ define(function (require) {
 
             chargedParticle.on('returnedToOrigin', function () {
                 self.chargedParticles.remove(chargedParticle);
+            });
+        },
+
+        /**
+         * Function for adding new electric Field sensor elements to this model when the user creates them, generally by clicking on some
+         * some sort of creator node.
+         * @public
+         * @param {SensorElement} electricFieldSensor
+         */
+        addUserCreatedElectricFieldSensor: function (electricFieldSensor) {
+            this.electricFieldSensors.push(electricFieldSensor);
+            var self = this;
+
+            electricFieldSensor.on('returnedToOrigin', function () {
+                self.electricFieldSensor.remove(electricFieldSensor);
             });
         },
 
