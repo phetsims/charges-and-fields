@@ -10,19 +10,20 @@ define(function (require) {
     'use strict';
 
     // modules
-    var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
-    var ChargesAndFieldsColors = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsColors');
-    var Circle = require('SCENERY/nodes/Circle');
+    var ChargedParticleRepresentation = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation');
+    //var ChargesAndFieldsConstants = require('CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants');
+    //var ChargesAndFieldsColors = require('CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsColors');
+    //var Circle = require('SCENERY/nodes/Circle');
     var inherit = require('PHET_CORE/inherit');
     var ChargedParticle = require('CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle');
-    var Node = require('SCENERY/nodes/Node');
-    var Path = require('SCENERY/nodes/Path');
+    //var Node = require('SCENERY/nodes/Node');
+    //var Path = require('SCENERY/nodes/Path');
     var ScreenView = require('JOIST/ScreenView');
-    var Shape = require('KITE/Shape');
+    //var Shape = require('KITE/Shape');
     var SimpleDragHandler = require('SCENERY/input/SimpleDragHandler');
 
     // constants
-    var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;  // radius of charged particles.
+    //var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;  // radius of charged particles.
 
     /**
      *
@@ -33,50 +34,10 @@ define(function (require) {
      * @constructor
      */
     function ChargedParticleCreatorNode(addChargedParticleToModel, charge, modelViewTransform, options) {
-        Node.call(this, {
-            // Show a cursor hand over the charge
-            cursor: 'pointer'
-        });
+
+        ChargedParticleRepresentation.call(this, charge);
+
         var self = this;
-
-        // determine the color of the charged Particle based on its charge
-        var chargeColor = (charge !== 1) ? ChargesAndFieldsColors.negativeStillCharge.toCSS() : ChargesAndFieldsColors.positiveStillCharge.toCSS();
-
-        // Create the node that the user will click upon to add a model element to the view.
-        var circle = new Circle(CIRCLE_RADIUS, {
-            stroke: 'black',
-            fill: chargeColor
-        });
-
-        var colorFunction = function (color) {
-            circle.fill = color;
-        };
-
-        if (charge === 1) {
-            ChargesAndFieldsColors.link('positiveStillCharge', colorFunction);
-        }
-        else {
-            ChargesAndFieldsColors.link('negativeStillCharge', colorFunction);
-        }
-
-        self.addChild(circle);
-
-        // Create and add shape for the circle based on the charge of the particle
-        var ratio = 0.5; //
-        if (charge === 1) {
-            // plus Shape representing the positive charges
-            var plusShape = new Shape().moveTo(-CIRCLE_RADIUS * ratio, 0)
-                .lineTo(CIRCLE_RADIUS * ratio, 0)
-                .moveTo(0, -CIRCLE_RADIUS * ratio)
-                .lineTo(0, CIRCLE_RADIUS * ratio);
-            self.addChild(new Path(plusShape, {centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white'}));
-        }
-        else {
-            // minus Shape representing the negative charges
-            var minusShape = new Shape().moveTo(-CIRCLE_RADIUS * ratio, 0)
-                .lineTo(CIRCLE_RADIUS * ratio, 0);
-            self.addChild(new Path(minusShape, {centerX: 0, centerY: 0, lineWidth: 3, stroke: 'white'}));
-        }
 
         // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
         this.addInputListener(new SimpleDragHandler({
@@ -125,5 +86,5 @@ define(function (require) {
         this.mutate(options);
     }
 
-    return inherit(Node, ChargedParticleCreatorNode);
+    return inherit(ChargedParticleRepresentation, ChargedParticleCreatorNode);
 });

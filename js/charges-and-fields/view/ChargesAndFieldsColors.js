@@ -69,6 +69,16 @@ define(function (require) {
             basics: new Color(255, 255, 0),
             projector: new Color(0, 0, 255)
         },
+        negativeCharge: {
+            default: new Color(0, 255, 255),
+            basics: new Color(0, 255, 255),
+            projector: new Color(255, 0, 0)
+        },
+        positiveCharge: {
+            default: new Color(255, 255, 0),
+            basics: new Color(255, 255, 0),
+            projector: new Color(0, 0, 255)
+        },
         voltageLabel: {
             default: new Color(255, 30, 120),
             basics: new Color(1, 255, 255),
