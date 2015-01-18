@@ -16,6 +16,7 @@ define( function( require ) {
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
@@ -26,7 +27,7 @@ define( function( require ) {
    */
   function ElectricFieldSensorCreatorNode( addSensorElementToModel, modelViewTransform, options ) {
 
-    ElectricFieldSensorRepresentation.call( this, electricFieldSensor, new Property( true ) );
+    ElectricFieldSensorRepresentation.call( this, new SensorElement( new Vector2( 0, 0 ) ), new Property( true ) );
 
     var self = this;
 

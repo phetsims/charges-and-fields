@@ -15,7 +15,7 @@ define( function( require ) {
     var Node = require( 'SCENERY/nodes/Node' );
     var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 //  var RectangleWebGLDrawable = require( 'SCENERY/nodes/drawable/RectangleWebGLDrawable' );
-    var LinearGradient = require( 'SCENERY/util/LinearGradient' );
+//    var LinearGradient = require( 'SCENERY/util/LinearGradient' );
 
 //  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 //  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );

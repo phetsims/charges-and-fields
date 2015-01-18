@@ -56,9 +56,6 @@ define( function( require ) {
     var y;
     var i;
     var position;
-    var electricPotential;
-    //var electricCharge;
-    var electricField;
 
     function randomPosition() {
       return Math.random() * 4 - 2;
@@ -193,10 +190,10 @@ define( function( require ) {
 
     for ( i = 0; i < 2; i++ ) {
       position = randomVector();
-      var sensorElement = new SensorElement( position );
-      sensorElement.electricField = thisModel.getElectricField( position );
-      sensorElement.electricPotential = thisModel.getElectricPotential( position );
-      this.electricFieldSensors.push( sensorElement );
+      var electricFieldSensor = new SensorElement( position );
+      electricFieldSensor.electricField = thisModel.getElectricField( position );
+      electricFieldSensor.electricPotential = thisModel.getElectricPotential( position );
+      this.electricFieldSensors.push( electricFieldSensor );
 
     }
     var j;
@@ -212,10 +209,10 @@ define( function( require ) {
         x = -WIDTH / 2 + horizontalSpacing * (i + 0.5);
         y = HEIGHT / 2 - verticalSpacing * (j + 0.5);
         position = new Vector2( x, y );
-        var sensorElement = new SensorElement( position );
-        sensorElement.electricField = thisModel.getElectricField( position );
-        sensorElement.electricPotential = thisModel.getElectricPotential( position );
-        this.electricFieldSensorGrid.push( sensorElement );
+        var electricFieldSensorElement = new SensorElement( position );
+        electricFieldSensorElement.electricField = thisModel.getElectricField( position );
+        electricFieldSensorElement.electricPotential = thisModel.getElectricPotential( position );
+        this.electricFieldSensorGrid.push( electricFieldSensorElement );
       }
     }
 
@@ -231,10 +228,10 @@ define( function( require ) {
         x = -WIDTH / 2 + horizontalSpacing * (i + 0.5);
         y = HEIGHT / 2 - verticalSpacing * (j + 0.5);
         position = new Vector2( x, y );
-        var sensorElement = new SensorElement( position );
-        sensorElement.electricField = thisModel.getElectricField( position );
-        sensorElement.electricPotential = thisModel.getElectricPotential( position );
-        this.electricPotentialGrid.push( sensorElement );
+        var electricPotentialSensorElement = new SensorElement( position );
+        electricPotentialSensorElement.electricField = thisModel.getElectricField( position );
+        electricPotentialSensorElement.electricPotential = thisModel.getElectricPotential( position );
+        this.electricPotentialGrid.push( electricPotentialSensorElement );
       }
     }
 
@@ -264,7 +261,6 @@ define( function( require ) {
      */
     addUserCreatedModelElementToObservableArray: function( modelElement, observableArray ) {
       observableArray.push( modelElement );
-      var self = this;
 
       modelElement.on( 'returnedToOrigin', function() {
         observableArray.remove( modelElement );
