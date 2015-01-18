@@ -96,7 +96,6 @@ define( function( require ) {
     },
     gridLengthScaleArrowStroke: {
       default: new Color( 255, 255, 255 ),
-
       projector: new Color( 0, 0, 0 )
     },
     gridLengthScaleArrowFill: {

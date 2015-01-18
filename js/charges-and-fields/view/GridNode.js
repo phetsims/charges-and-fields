@@ -18,13 +18,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   // constants related to text
-  var FONT_SIZE = 13;
-  var FONT = new PhetFont( FONT_SIZE );
+  var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
 
   //constants
   var MINOR_GRIDLINES_PER_MAJOR_GRIDLINE = 5;

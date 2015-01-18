@@ -25,6 +25,7 @@ define( function( require ) {
     DEFAULT_FONT: new PhetFont( {size: 12} ),
     VOLTAGE_LABEL_FONT: new PhetFont( {size: 14} ), // labels for the equipotential Lines
 
+    GRID_LABEL_FONT: new PhetFont( {size: 12} ),
     ENCLOSURE_LABEL_FONT: new PhetFont( {size: 16} ),
     ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS: 7,
     ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( {size: 14} ),
