@@ -12,13 +12,17 @@ define(function (require) {
     var PhetFont = require('SCENERY_PHET/PhetFont');
 
     return {
+
+        // Velocity at which animated elements move
+        ANIMATION_VELOCITY: 2, // In model coordinates per second
+
         SATURATION_POSITIVE_COLOR: new Color('red'),
         SATURATION_NEGATIVE_COLOR: new Color('blue'),
         BACKGROUND_COLOR: new Color('#FFFFB7'),
 
         POSITIVE_CHARGE_COLOR: new Color('red'),
         NEGATIVE_CHARGE_COLOR: new Color('red'),
-        CHARGE_RADIUS: 17,
+        CHARGE_RADIUS: 12,
 
         MOVABLE_SENSOR_COLOR: new Color('orange'),
         MOVABLE_SENSOR_STROKE: 2,
@@ -26,7 +30,9 @@ define(function (require) {
         MOVABLE_SENSOR_ARROW_COLOR: new Color('red'),
 
         DEFAULT_FONT: new PhetFont({size: 12}),
-        VOLTAGE_LABEL_FONT: new PhetFont({size: 14}),
+        VOLTAGE_LABEL_FONT: new PhetFont( {size: 14} ), // labels for the equipotential Lines
+        ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS: 7,
+        ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( {size: 14} ),
         CHECK_BOX_FONT: new PhetFont({size: 16}),
         CHECK_BOX_TEXT_FILL: 'yellow',
         PANEL_FILL: 'black',
