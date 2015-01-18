@@ -23,7 +23,6 @@ define( function( require ) {
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
 
   /**
-   *
    * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {Object} [options] scenery options for rendering the Electric Potential Sensor Panel, see the constructor for options.

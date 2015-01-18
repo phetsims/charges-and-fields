@@ -609,11 +609,14 @@ define( function( require ) {
        * @public
        */
       addElectricPotentialLine: function() {
-        var equipotentialLine = {};
-        equipotentialLine.position = this.electricPotentialSensor.position;
-        equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
-        equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
-        this.equipotentialLinesArray.push( equipotentialLine );
+        // electric potential lines don't exist in a vacuum of charges
+        if ( this.chargedParticles.length > 0 ) {
+          var equipotentialLine = {};
+          equipotentialLine.position = this.electricPotentialSensor.position;
+          equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
+          equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
+          this.equipotentialLinesArray.push( equipotentialLine );
+        }
       },
 
       /**
@@ -624,10 +627,13 @@ define( function( require ) {
        * UNUSED
        */
       addElectricFieldLine: function() {
+        // electric field lines don't exist in a vacuum of charges
         var electricFieldLine = {};
-        electricFieldLine.position = this.electricPotentialSensor.position;
-        electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
-        this.electricFieldLinesArray.push( electricFieldLine );
+        if ( this.chargedParticles.length > 0 ) {
+          electricFieldLine.position = this.electricPotentialSensor.position;
+          electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
+          this.electricFieldLinesArray.push( electricFieldLine );
+        }
       },
 
       /**

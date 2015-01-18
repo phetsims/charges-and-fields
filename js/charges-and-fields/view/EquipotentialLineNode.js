@@ -43,6 +43,7 @@ define( function( require ) {
 
     // Monitor the equipotentialLineArray and create a path and label for each equipotentialLine
     equipotentialLinesArray.addItemAddedListener( function( equipotentialLine ) {
+
       var voltageLabel = labelElectricPotentialLine( equipotentialLine );
       var equipotentialLinePath = traceElectricPotentialLine( equipotentialLine );
       lineNode.addChild( equipotentialLinePath );
@@ -55,6 +56,7 @@ define( function( require ) {
           equipotentialLinesArray.removeItemRemovedListener( removalListener );
         }
       } );
+
     } );
 
     // Control the visibility of the value (voltage) labels
