@@ -1,7 +1,7 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Location for all colors (especially those that could change for the basics version, or could be tweaked)
+ * Location for all colors (especially those that could be tweaked)
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -16,117 +16,95 @@ define( function( require ) {
   var colors = {
     background: {
       default: new Color( 0, 0, 0 ),
-      basics: new Color( 198, 226, 246 ),
       projector: new Color( 255, 255, 255 )
     },
     controlPanelBorder: {
       default: new Color( 210, 210, 210 ),
-      basics: new Color( 30, 30, 30 ),
       projector: new Color( 0, 0, 0 )
     },
     controlPanelFill: {
       default: new Color( 10, 10, 10 ),
-      basics: new Color( 0, 0, 0 ),
       projector: new Color( 240, 240, 240 )
     },
     controlPanelText: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     },
     enclosureText: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     },
     enclosureFill: {
       default: new Color( 10, 10, 10 ),
-      basics: new Color( 0, 0, 0 ),
       projector: new Color( 240, 240, 240 )
     },
     enclosureBorder: {
       default: new Color( 210, 210, 210 ),
-      basics: new Color( 30, 30, 30 ),
       projector: new Color( 0, 0, 0 )
     },
     checkBox: {
       default: new Color( 230, 230, 230 ),
-      basics: new Color( 0, 0, 0 ),
       projector: new Color( 0, 0, 0 )
     },
     checkBoxDisabled: {
       default: new Color( 100, 100, 100 ),
-      basics: new Color( 128, 128, 128 ),
       projector: new Color( 128, 128, 128 )
     },
     checkBoxBackground: {
       default: new Color( 30, 30, 30 ),
-      basics: new Color( 255, 255, 255 ),
       projector: new Color( 255, 255, 255 )
     },
     negativeCharge: {
       default: new Color( 0, 0, 205 ),
-      basics: new Color( 0, 255, 255 ),
       projector: new Color( 0, 0, 255 )
     },
     positiveCharge: {
       default: new Color( 205, 0, 0 ),
-      basics: new Color( 255, 255, 0 ),
       projector: new Color( 255, 0, 0 )
     },
     voltageLabel: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 1, 255, 255 ),
       projector: new Color( 255, 25, 255 )
     },
     equipotentialLine: {
       default: new Color( 50, 255, 100 ),
-      basics: new Color( 1, 255, 255 ),
       projector: new Color( 255, 25, 255 )
     },
     measuringTapeText: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     },
     electricFieldSensorCircleFill: {
       default: new Color( 255, 189, 0 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 255, 155, 55 )
     },
     electricFieldSensorCircleStroke: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     },
     electricFieldSensorArrow: {
       default: new Color( 255, 0, 0 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 255 )
     },
     electricFieldSensorLabel: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     },
     gridStroke: {
       default: new Color( 50, 50, 50 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 200, 200, 200 )
     },
     gridLengthScaleArrowStroke: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
+
       projector: new Color( 0, 0, 0 )
     },
     gridLengthScaleArrowFill: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     },
     gridTextFill: {
       default: new Color( 255, 255, 255 ),
-      basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     }
   };
@@ -144,7 +122,7 @@ define( function( require ) {
      * @param {string} profileName - one of 'default', 'basics' or 'projector'
      */
     applyProfile: function( profileName ) {
-      assert && assert( profileName === 'default' || profileName === 'basics' || profileName === 'projector' );
+      assert && assert( profileName === 'default' || profileName === 'projector' );
 
       for ( var key in colors ) {
         if ( profileName in colors[key] ) {
