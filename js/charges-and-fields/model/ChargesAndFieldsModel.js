@@ -174,7 +174,6 @@ define( function( require ) {
 
     // update the Electric Field Sensors upon a change of position
     this.electricFieldSensors.addItemAddedListener( function( electricFieldSensor ) {
-      console.log( electricFieldSensor.electricField );
       electricFieldSensor.positionProperty.link( function( position ) {
         electricFieldSensor.electricField = thisModel.getElectricField( position );
       } );
@@ -294,7 +293,7 @@ define( function( require ) {
       var self = this;
 
       electricFieldSensor.on( 'returnedToOrigin', function() {
-        self.electricFieldSensor.remove( electricFieldSensor );
+        self.electricFieldSensors.remove( electricFieldSensor );
       } );
     },
 

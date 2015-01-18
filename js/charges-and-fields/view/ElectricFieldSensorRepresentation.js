@@ -18,31 +18,22 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS;
   var LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
 
-  // strings
-  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
-  var eFieldUnitString = require( 'string!CHARGES_AND_FIELDS/eFieldUnit' );
-  var angleUnit = require( 'string!CHARGES_AND_FIELDS/angleUnit' );
-
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-   * @param {SensorElement} electricFieldSensor
-   * @param {Property.<boolean>} valueIsVisibleProperty
    * @constructor
    */
-  function ElectricFieldSensorNode( electricFieldSensor, valueIsVisibleProperty ) {
+  function ElectricFieldSensorNode() {
 
-    var electricFieldSensorNode = this;
+    var self = this;
 
     // Call the super constructor
-    Node.call( electricFieldSensorNode, {
+    Node.call( this, {
       // Show a cursor hand over the charge
       cursor: 'pointer'
     } );
@@ -64,13 +55,13 @@ define( function( require ) {
     ChargesAndFieldsColors.link( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
 
     // Create the E-field arrow, (set the arrow horizontally to start with)
-    var arrowNode = new ArrowNode( 0, 0, 1, 0, {
+    this.arrowNode = new ArrowNode( 0, 0, 1, 0, {
       pickable: false
     } );
 
     var arrowColorFunction = function( color ) {
-      arrowNode.stroke = color;
-      arrowNode.fill = color;
+      self.arrowNode.stroke = color;
+      self.arrowNode.fill = color;
     };
     ChargesAndFieldsColors.link( 'electricFieldSensorArrow', arrowColorFunction );
 
@@ -79,50 +70,27 @@ define( function( require ) {
       font: LABEL_FONT,
       pickable: false
     };
-    var fieldStrengthLabel = new Text( '', textOptions );
-    var directionLabel = new Text( '', textOptions );
+    this.fieldStrengthLabel = new Text( '', textOptions );
+    this.directionLabel = new Text( '', textOptions );
 
     var labelColorFunction = function( color ) {
-      fieldStrengthLabel.fill = color;
-      directionLabel.fill = color;
+      self.fieldStrengthLabel.fill = color;
+      self.directionLabel.fill = color;
     };
     ChargesAndFieldsColors.link( 'electricFieldSensorLabel', labelColorFunction );
 
     // Rendering order
-    electricFieldSensorNode.addChild( arrowNode );
-    electricFieldSensorNode.addChild( circle );
-    electricFieldSensorNode.addChild( fieldStrengthLabel );
-    electricFieldSensorNode.addChild( directionLabel );
+    this.addChild( this.arrowNode );
+    this.addChild( circle );
+    this.addChild( this.fieldStrengthLabel );
+    this.addChild( this.directionLabel );
 
     // Layout
-    arrowNode.left = 0;
-    arrowNode.centerY = 0;
-    fieldStrengthLabel.top = circle.bottom;
-    directionLabel.top = fieldStrengthLabel.bottom;
+    this.arrowNode.left = 0;
+    this.arrowNode.centerY = 0;
+    this.fieldStrengthLabel.top = circle.bottom;
+    this.directionLabel.top = this.fieldStrengthLabel.bottom;
 
-    // when the electric field changes update the arrow and the labels
-    electricFieldSensor.electricFieldProperty.link( function( electricField ) {
-      var magnitude = electricField.magnitude();
-      var angle = electricField.angle(); // angle from the model, in radians
-
-      // Update length and direction of the arrow
-      arrowNode.setTailAndTip( 0, 0, magnitude, 0 );
-      // note that the angleInView = -1 * angleInModel
-      // since the vertical direction is reversed between the view and the model
-      arrowNode.setRotation( -1 * angle );
-
-      // Update the strings in the labels
-      var fieldMagnitudeString = Util.toFixed( magnitude, 0 );
-      fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
-      var angleString = Util.toFixed( Util.toDegrees( angle ), 0 );
-      directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
-    } );
-
-    // Show/hide labels
-    valueIsVisibleProperty.link( function( isVisible ) {
-      fieldStrengthLabel.visible = isVisible;
-      directionLabel.visible = isVisible;
-    } );
   }
 
   return inherit( Node, ElectricFieldSensorNode );

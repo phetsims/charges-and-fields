@@ -12,7 +12,13 @@ define( function( require ) {
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Util = require( 'DOT/Util' );
 
+  // strings
+  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+  var eFieldUnitString = require( 'string!CHARGES_AND_FIELDS/eFieldUnit' );
+  var angleUnit = require( 'string!CHARGES_AND_FIELDS/angleUnit' );
 
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
@@ -27,22 +33,60 @@ define( function( require ) {
 
     var electricFieldSensorNode = this;
 
+    // when the electric field changes update the arrow and the labels
+    electricFieldSensor.electricFieldProperty.link( function( electricField ) {
+      var magnitude = electricField.magnitude();
+      var angle = electricField.angle(); // angle from the model, in radians
+
+      // Update length and direction of the arrow
+      electricFieldSensorNode.arrowNode.setTailAndTip( 0, 0, magnitude, 0 );
+      // note that the angleInView = -1 * angleInModel
+      // since the vertical direction is reversed between the view and the model
+      electricFieldSensorNode.arrowNode.setRotation( -1 * angle );
+
+      // Update the strings in the labels
+      var fieldMagnitudeString = Util.toFixed( magnitude, 0 );
+      electricFieldSensorNode.fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
+      var angleString = Util.toFixed( Util.toDegrees( angle ), 0 );
+      electricFieldSensorNode.directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
+    } );
+
+    // Show/hide labels
+    valueIsVisibleProperty.link( function( isVisible ) {
+      electricFieldSensorNode.fieldStrengthLabel.visible = isVisible;
+      electricFieldSensorNode.directionLabel.visible = isVisible;
+    } );
+
+    // Move the chargedParticle to the front of this layer when grabbed by the user.
+    electricFieldSensor.userControlledProperty.link( function( userControlled ) {
+      if ( userControlled ) {
+        electricFieldSensorNode.moveToFront();
+      }
+    } );
+
+
     // Register for synchronization with model.
     electricFieldSensor.positionProperty.link( function( position ) {
-      electricFieldSensorNode.moveToFront();
       electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
     } );
 
     // When dragging, move the electric Field Sensor
     electricFieldSensorNode.addInputListener( new SimpleDragHandler(
       {
-        // When dragging across it in a mobile device, pick it up
+        // When dragging across it in a touchscreen, pick it up
         allowTouchSnag: true,
-
-        // Translate on drag events and update electricField
+        start: function( event, trail ) {
+          electricFieldSensor.userControlled = true;
+        },
+        // Translate on drag events
         translate: function( args ) {
           electricFieldSensor.position = modelViewTransform.viewToModelPosition( args.position );
+
+        },
+        end: function( event, trail ) {
+          electricFieldSensor.userControlled = false;
         }
+
       } ) );
   }
 

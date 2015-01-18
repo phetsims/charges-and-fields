@@ -28,7 +28,9 @@ define( function( require ) {
       // @public
       electricField: new Vector2( 0, 0 ),
       // @public
-      electricPotential: 0
+      electricPotential: 0,
+      //
+      userControlled: false
     } );
   }
 

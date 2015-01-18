@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -27,7 +28,11 @@ define( function( require ) {
    */
   function ElectricFieldSensorCreatorNode( addSensorElementToModel, modelViewTransform, options ) {
 
-    ElectricFieldSensorRepresentation.call( this, new SensorElement( new Vector2( 0, 0 ) ), new Property( true ) );
+    // Call the super constructor
+    ElectricFieldSensorRepresentation.call( this, {
+      // Show a cursor hand over the charge
+      cursor: 'pointer'
+    } );
 
     var self = this;
 
@@ -73,6 +78,7 @@ define( function( require ) {
         this.electricFieldSensor = null;
       }
     } ) );
+
 
     // Pass options through to parent.
     this.mutate( options );
