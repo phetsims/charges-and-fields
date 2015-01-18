@@ -15,18 +15,18 @@ define( function( require ) {
   var ElectricFieldSensorCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorCreatorNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  //var Panel = require('SUN/Panel');
-  //var Text = require( 'SCENERY/nodes/Text' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  //var minusOneNanoCoulombString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
-  //var plusOneNanoCoulombString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
-  //var sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
+  var minusOneNanoCoulombString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
+  var plusOneNanoCoulombString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
+  var sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
+  var FONT = ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT;
   var DATA_POINT_CREATOR_OFFSET_POSITIONS = [
     // Offsets used for initial position of point . Empirically determined.
     new Vector2( (0.8) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS ),
@@ -47,50 +47,75 @@ define( function( require ) {
     Node.call( this );
     var enclosureGroup = this;
 
-    var rectangle = Rectangle.roundedBounds( modelViewTransform.modelToViewBounds( bounds ), 10, 10, {lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH} );
+    // bounds of the enclosure
+    var viewBounds = modelViewTransform.modelToViewBounds( bounds );
+
+    var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, {lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH} );
     this.addChild( rectangle );
 
+    // TODO: find a layout scheme that will not be broken by translation
 
-    var left = modelViewTransform.modelToViewBounds( bounds ).minX;
-    var top = modelViewTransform.modelToViewBounds( bounds ).minY;
+    var positiveChargeCenterX = viewBounds.centerX - viewBounds.width / 3;
+    var positiveChargeCenterY = viewBounds.centerY - viewBounds.height / 5;
+    var negativeChargeCenterX = viewBounds.centerX;
+    var negativeChargeCenterY = positiveChargeCenterY;
+    var electricFieldSensorCenterX = viewBounds.centerX + viewBounds.width / 3;
+    var electricFieldSensorCenterY = positiveChargeCenterY;
+
     // Add the dataPoint creator nodes.
     DATA_POINT_CREATOR_OFFSET_POSITIONS.forEach( function( offset ) {
-      enclosureGroup.addChild( new ChargedParticleCreatorNode(
-        model.addUserCreatedChargedParticle.bind( model ), 1,
-        modelViewTransform, {
-          left: offset.x + left + 70,
-          top:  offset.y + top + 20
-        } ) );
-      enclosureGroup.addChild( new ChargedParticleCreatorNode(
-        model.addUserCreatedChargedParticle.bind( model ), -1,
-        modelViewTransform, {
-          left: 170 + offset.x + left,
-          top:  offset.y + top + 20
-        } ) );
-      enclosureGroup.addChild( new ElectricFieldSensorCreatorNode(
+
+      var positiveCharge = new ChargedParticleCreatorNode(
+        model.addUserCreatedChargedParticle.bind( model ),
+        1,
+        modelViewTransform,
+        {
+          centerX: positiveChargeCenterX + offset.x,
+          centerY: positiveChargeCenterY + offset.y
+        } );
+      var negativeCharge = new ChargedParticleCreatorNode(
+        model.addUserCreatedChargedParticle.bind( model ),
+        -1,
+        modelViewTransform,
+        {
+          centerX: negativeChargeCenterX + offset.x,
+          centerY: negativeChargeCenterY + offset.y
+        } );
+
+      var electricFieldSensor = new ElectricFieldSensorCreatorNode(
         model.addUserCreatedElectricFieldSensor.bind( model ),
         modelViewTransform, {
-          left: offset.x + left + 270,
-          top: offset.y + top + 20
-        } ) );
+          centerX: electricFieldSensorCenterX + offset.x,
+          centerY: electricFieldSensorCenterY + offset.y
+        } );
 
+      enclosureGroup.addChild( positiveCharge );
+      enclosureGroup.addChild( negativeCharge );
+      enclosureGroup.addChild( electricFieldSensor );
+    } );
+
+    var textCenterY = viewBounds.centerY + viewBounds.height / 4;
+
+    var positiveChargeText = new Text( plusOneNanoCoulombString, {font: FONT, centerX: positiveChargeCenterX, centerY: textCenterY} );
+    var negativeChargeText = new Text( minusOneNanoCoulombString, {font: FONT, centerX: negativeChargeCenterX, centerY: textCenterY} );
+    var electricFieldSensorText = new Text( sensorsString, {font: FONT, centerX: electricFieldSensorCenterX, centerY: textCenterY} );
+
+    enclosureGroup.addChild( positiveChargeText );
+    enclosureGroup.addChild( negativeChargeText );
+    enclosureGroup.addChild( electricFieldSensorText );
+
+    ChargesAndFieldsColors.link( 'enclosureText', function( color ) {
+      positiveChargeText.fill = color;
+      negativeChargeText.fill = color;
+      electricFieldSensorText.fill = color;
     } );
 
 
-    //Panel.call(this, enclosureGroup, {
-    //    fill: ChargesAndFieldsConstants.PANEL_FILL,
-    //    stroke: ChargesAndFieldsConstants.PANEL_STROKE,
-    //    lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
-    //    xMargin: 10,
-    //    yMargin: 5
-    //});
-
-
-    ChargesAndFieldsColors.link( 'controlPanelBorder', function( color ) {
+    ChargesAndFieldsColors.link( 'enclosureBorder', function( color ) {
       rectangle.stroke = color;
     } );
 
-    ChargesAndFieldsColors.link( 'controlPanelFill', function( color ) {
+    ChargesAndFieldsColors.link( 'enclosureFill', function( color ) {
       rectangle.fill = color;
     } );
 
@@ -99,4 +124,5 @@ define( function( require ) {
 
   return inherit( Node, ChargeAndSensorEnclosure );
 
-} );
+} )
+;

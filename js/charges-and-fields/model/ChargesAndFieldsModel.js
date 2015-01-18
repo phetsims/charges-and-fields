@@ -184,7 +184,7 @@ define( function( require ) {
 
       var j;
       //TODO increase to a larger value the number of horizontalSensors
-      var numberHorizontalSensors = 4;
+      var numberHorizontalSensors = 14;
       var horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
       var verticalSpacing = horizontalSpacing;
       var numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
@@ -203,7 +203,7 @@ define( function( require ) {
 
       //   var aspectRatio= WIDTH/HEIGHT;
       //TODO increase to a larger value the number of horizontalSensors
-      numberHorizontalSensors = 8;
+      numberHorizontalSensors = 4;
       horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
       verticalSpacing = horizontalSpacing;
       numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;

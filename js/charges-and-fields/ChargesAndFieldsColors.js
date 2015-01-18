@@ -34,6 +34,21 @@ define( function( require ) {
       basics: new Color( 255, 0, 255 ),
       projector: new Color( 0, 0, 0 )
     },
+    enclosureText: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    enclosureFill: {
+      default: new Color( 10, 10, 10 ),
+      basics: new Color( 0, 0, 0 ),
+      projector: new Color( 240, 240, 240 )
+    },
+    enclosureBorder: {
+      default: new Color( 210, 210, 210 ),
+      basics: new Color( 30, 30, 30 ),
+      projector: new Color( 0, 0, 0 )
+    },
     checkBox: {
       default: new Color( 230, 230, 230 ),
       basics: new Color( 0, 0, 0 ),
@@ -65,7 +80,7 @@ define( function( require ) {
       projector: new Color( 255, 25, 255 )
     },
     equipotentialLine: {
-      default: new Color( 255, 30, 200 ),
+      default: new Color( 50, 255, 100 ),
       basics: new Color( 1, 255, 255 ),
       projector: new Color( 255, 25, 255 )
     },
