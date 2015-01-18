@@ -56,13 +56,6 @@ define( function( require ) {
       var i;
       var position;
 
-      function randomPosition() {
-        return Math.random() * 4 - 2;
-      }
-
-      function randomVector() {
-        return new Vector2( randomPosition(), randomPosition() );
-      }
 
       // @public read-only
       this.chargeAndSensorEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
@@ -643,11 +636,12 @@ define( function( require ) {
        * @private
        *
        * UNUSED
+       * FOR DEBUGGING PURPOSES
        */
       addManyLine: function() {
 
         var i;
-        for ( i = 0; i < 1; i++ ) {
+        for ( i = 0; i < 10; i++ ) {
           var position = new Vector2( 6.5 * Math.random() - 3.25, 4 * Math.random() - 2 );
           var electricFieldLine = {};
           electricFieldLine.position = position;
