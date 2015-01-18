@@ -11,7 +11,6 @@ define( function( require ) {
   'use strict';
 
   // imports
-
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );

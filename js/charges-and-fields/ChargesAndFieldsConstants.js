@@ -7,8 +7,6 @@
 define( function( require ) {
   'use strict';
 
-  var Color = require( 'SCENERY/util/Color' );
-  //var Dimension2 = require( 'DOT/Dimension2' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   return {
