@@ -5,156 +5,186 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define(function (require) {
-    'use strict';
+define( function( require ) {
+  'use strict';
 
-    // modules
-    var extend = require('PHET_CORE/extend');
-    var PropertySet = require('AXON/PropertySet');
-    var Color = require('SCENERY/util/Color');
+  // modules
+  var extend = require( 'PHET_CORE/extend' );
+  var PropertySet = require( 'AXON/PropertySet' );
+  var Color = require( 'SCENERY/util/Color' );
 
-    var colors = {
-        background: {
-            default: new Color(0, 0, 0),
-            basics: new Color(198, 226, 246),
-            projector: new Color(255, 255, 255)
-        },
-        controlPanelBorder: {
-            default: new Color(210, 210, 210),
-            basics: new Color(30, 30, 30),
-            projector: new Color(30, 30, 30)
-        },
-        controlPanelTitle: {
-            default: new Color(240, 240, 240),
-            projector: new Color(0, 0, 0),
-            basics: new Color(0, 0, 0)
-        },
-        controlPanelText: {
-            default: new Color(230, 230, 230),
-            projector: new Color(0, 0, 0),
-            basics: new Color(0, 0, 0)
-        },
-        removeButtonText: {
-            default: new Color(0, 0, 0),
-            projector: new Color(0, 0, 0),
-            basics: new Color(0, 0, 0)
-        },
-        removeButtonBackground: {
-            default: new Color(255, 200, 0),
-            projector: new Color(0, 0, 0),
-            basics: new Color(0, 0, 0)
-        },
-        checkBox: {
-            default: new Color(230, 230, 230),
-            basics: new Color(0, 0, 0),
-            projector: new Color(0, 0, 0)
-        },
-        checkBoxDisabled: {
-            default: new Color(100, 100, 100),
-            basics: new Color(128, 128, 128),
-            projector: new Color(128, 128, 128)
-        },
-        checkBoxBackground: {
-            default: new Color(30, 30, 30),
-            basics: new Color(255, 255, 255),
-            projector: new Color(255, 255, 255)
-        },
-        negativeStillCharge: {
-            default: new Color(0, 255, 255),
-            basics: new Color(0, 255, 255),
-            projector: new Color(255, 0, 0)
-        },
-        positiveStillCharge: {
-            default: new Color(255, 255, 0),
-            basics: new Color(255, 255, 0),
-            projector: new Color(0, 0, 255)
-        },
-        negativeCharge: {
-            default: new Color(0, 255, 255),
-            basics: new Color(0, 255, 255),
-            projector: new Color(255, 0, 0)
-        },
-        positiveCharge: {
-            default: new Color(255, 255, 0),
-            basics: new Color(255, 255, 0),
-            projector: new Color(0, 0, 255)
-        },
-        voltageLabel: {
-            default: new Color(255, 30, 120),
-            basics: new Color(1, 255, 255),
-            projector: new Color(255, 25, 255)
-        },
-        equipotentialLine: {
-            default: new Color(255, 30, 200),
-            basics: new Color(1, 255, 255),
-            projector: new Color(255, 25, 255)
-        },
-        measuringTapeText: {
-            default: new Color(30, 30, 30),
-            basics: new Color(255, 0, 255),
-            projector: new Color(0, 255, 255)
+  var colors = {
+    background: {
+      default: new Color( 0, 0, 0 ),
+      basics: new Color( 198, 226, 246 ),
+      projector: new Color( 255, 255, 255 )
+    },
+    controlPanelBorder: {
+      default: new Color( 210, 210, 210 ),
+      basics: new Color( 30, 30, 30 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    controlPanelFill: {
+      default: new Color( 10, 10, 10 ),
+      basics: new Color( 0, 0, 0 ),
+      projector: new Color( 240, 240, 240 )
+    },
+    controlPanelText: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    checkBox: {
+      default: new Color( 230, 230, 230 ),
+      basics: new Color( 0, 0, 0 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    checkBoxDisabled: {
+      default: new Color( 100, 100, 100 ),
+      basics: new Color( 128, 128, 128 ),
+      projector: new Color( 128, 128, 128 )
+    },
+    checkBoxBackground: {
+      default: new Color( 30, 30, 30 ),
+      basics: new Color( 255, 255, 255 ),
+      projector: new Color( 255, 255, 255 )
+    },
+    negativeStillCharge: {
+      default: new Color( 0, 255, 255 ),
+      basics: new Color( 0, 255, 255 ),
+      projector: new Color( 255, 0, 0 )
+    },
+    positiveStillCharge: {
+      default: new Color( 255, 255, 0 ),
+      basics: new Color( 255, 255, 0 ),
+      projector: new Color( 0, 0, 255 )
+    },
+    negativeCharge: {
+      default: new Color( 0, 0, 205 ),
+      basics: new Color( 0, 255, 255 ),
+      projector: new Color( 0, 0, 255 )
+    },
+    positiveCharge: {
+      default: new Color( 205, 0, 0 ),
+      basics: new Color( 255, 255, 0 ),
+      projector: new Color( 255, 0, 0 )
+    },
+    voltageLabel: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 1, 255, 255 ),
+      projector: new Color( 255, 25, 255 )
+    },
+    equipotentialLine: {
+      default: new Color( 255, 30, 200 ),
+      basics: new Color( 1, 255, 255 ),
+      projector: new Color( 255, 25, 255 )
+    },
+    measuringTapeText: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    electricFieldSensorCircleFill: {
+      default: new Color( 255, 189, 0 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 255, 155, 55 )
+    },
+    electricFieldSensorCircleStroke: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    electricFieldSensorArrow: {
+      default: new Color( 255, 0, 0 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 255 )
+    },
+    electricFieldSensorLabel: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    gridStroke: {
+      default: new Color( 50, 50, 50 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 200, 200, 200 )
+    },
+    gridLengthScaleArrowStroke: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    gridLengthScaleArrowFill: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    gridTextFill: {
+      default: new Color( 255, 255, 255 ),
+      basics: new Color( 255, 0, 255 ),
+      projector: new Color( 0, 0, 0 )
+    }
+  };
+
+  // initial properties object, to load into the PropertySet (so reset works nicely)
+  var initialProperties = {};
+  for ( var key in colors ) {
+    initialProperties[key] = colors[key].default;
+  }
+
+  var ChargesAndFieldsColors = extend( new PropertySet( initialProperties ), {
+    /*
+     * Applies all colors for the specific named color scheme, ignoring colors that aren't specified for it.
+     *
+     * @param {string} profileName - one of 'default', 'basics' or 'projector'
+     */
+    applyProfile: function( profileName ) {
+      assert && assert( profileName === 'default' || profileName === 'basics' || profileName === 'projector' );
+
+      for ( var key in colors ) {
+        if ( profileName in colors[key] ) {
+          var oldColor = this[key];
+          var newColor = colors[key][profileName];
+          if ( !newColor.equals( oldColor ) ) {
+            this[key] = newColor;
+            reportColor( key );
+          }
         }
-    };
+      }
+    }
+  } );
 
-    // initial properties object, to load into the PropertySet (so reset works nicely)
-    var initialProperties = {};
-    for (var key in colors) {
-        initialProperties[key] = colors[key].default;
+  /*---------------------------------------------------------------------------*
+   * Iframe communication
+   *----------------------------------------------------------------------------*/
+
+  // sends iframe communication to report the current color for the key name
+  function reportColor( key ) {
+    var hexColor = ChargesAndFieldsColors[key].toNumber().toString( 16 );
+    while ( hexColor.length < 6 ) {
+      hexColor = '0' + hexColor;
     }
 
-    var ChargesAndFieldsColors = extend(new PropertySet(initialProperties), {
-        /*
-         * Applies all colors for the specific named color scheme, ignoring colors that aren't specified for it.
-         *
-         * @param {string} profileName - one of 'default', 'basics' or 'projector'
-         */
-        applyProfile: function (profileName) {
-            assert && assert(profileName === 'default' || profileName === 'basics' || profileName === 'projector');
+    window.parent && window.parent.postMessage( JSON.stringify( {
+      type: 'reportColor',
+      name: key,
+      value: '#' + hexColor
+    } ), '*' );
+  }
 
-            for (var key in colors) {
-                if (profileName in colors[key]) {
-                    var oldColor = this[key];
-                    var newColor = colors[key][profileName];
-                    if (!newColor.equals(oldColor)) {
-                        this[key] = newColor;
-                        reportColor(key);
-                    }
-                }
-            }
-        }
-    });
+  // initial communication
+  for ( var colorName in colors ) {
+    reportColor( colorName );
+  }
 
-    /*---------------------------------------------------------------------------*
-     * Iframe communication
-     *----------------------------------------------------------------------------*/
-
-    // sends iframe communication to report the current color for the key name
-    function reportColor(key) {
-        var hexColor = ChargesAndFieldsColors[key].toNumber().toString(16);
-        while (hexColor.length < 6) {
-            hexColor = '0' + hexColor;
-        }
-
-        window.parent && window.parent.postMessage(JSON.stringify({
-            type: 'reportColor',
-            name: key,
-            value: '#' + hexColor
-        }), '*');
+  // receives iframe communication to set a color
+  window.addEventListener( 'message', function( evt ) {
+    var data = JSON.parse( evt.data );
+    if ( data.type === 'setColor' ) {
+      ChargesAndFieldsColors[data.name] = new Color( data.value );
     }
+  } );
 
-    // initial communication
-    for (var colorName in colors) {
-        reportColor(colorName);
-    }
-
-    // receives iframe communication to set a color
-    window.addEventListener('message', function (evt) {
-        var data = JSON.parse(evt.data);
-        if (data.type === 'setColor') {
-            ChargesAndFieldsColors[data.name] = new Color(data.value);
-        }
-    });
-
-    return ChargesAndFieldsColors;
-});
+  return ChargesAndFieldsColors;
+} );
 

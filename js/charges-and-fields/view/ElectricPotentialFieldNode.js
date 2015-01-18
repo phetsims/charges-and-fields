@@ -6,15 +6,16 @@
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define(function (require) {
+define( function( require ) {
     'use strict';
 
     // modules
 
-    var inherit = require('PHET_CORE/inherit');
-    var Node = require('SCENERY/nodes/Node');
-    var Rectangle = require('SCENERY/nodes/Rectangle');
+    var inherit = require( 'PHET_CORE/inherit' );
+    var Node = require( 'SCENERY/nodes/Node' );
+    var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 //  var RectangleWebGLDrawable = require( 'SCENERY/nodes/drawable/RectangleWebGLDrawable' );
+    var LinearGradient = require( 'SCENERY/util/LinearGradient' );
 
 //  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 //  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );
@@ -25,39 +26,39 @@ define(function (require) {
      * @param {ObservableArray.<SensorElement>} electricPotentialGrid
      * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
      * @param {ModelViewTransform2} modelViewTransform
-     * @param {Property.<boolean>} showResolutionProperty
+     * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialFieldNode(electricPotentialGrid, getColorElectricPotential, modelViewTransform, showResolutionProperty) {
+    function ElectricPotentialFieldNode( electricPotentialGrid, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
 
         var electricPotentialFieldNode = this;
         // Call the super constructor
-        Node.call(this);
+        Node.call( this );
 
         // find the distance between two adjacent electric Potential Sensors
-        var vectorDisplacement = electricPotentialGrid.get(2).position.minus(electricPotentialGrid.get(1).position);
-        var unitDistance = modelViewTransform.modelToViewDelta(vectorDisplacement).magnitude();
+        var vectorDisplacement = electricPotentialGrid.get( 2 ).position.minus( electricPotentialGrid.get( 1 ).position );
+        var unitDistance = modelViewTransform.modelToViewDelta( vectorDisplacement ).magnitude();
 
-        electricPotentialGrid.forEach(function (electricPotentialSensor) {
+        electricPotentialGrid.forEach( function( electricPotentialSensor ) {
             var positionInModel = electricPotentialSensor.position;
-            var positionInView = modelViewTransform.modelToViewPosition(positionInModel);
-            var rect = new Rectangle(0, 0, unitDistance, unitDistance);
+            var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
+            var rect = new Rectangle( 0, 0, unitDistance, unitDistance );
             rect.center = positionInView;
-            electricPotentialFieldNode.addChild(rect);
+            electricPotentialFieldNode.addChild( rect );
 
-            electricPotentialSensor.electricPotentialProperty.link(function (electricPotential) {
-                var specialColor = getColorElectricPotential(positionInModel, electricPotential);
+            electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
+                var specialColor = getColorElectricPotential( positionInModel, electricPotential );
                 rect.fill = specialColor;
                 rect.stroke = specialColor;
-            });
+            } );
 
-        });
+        } );
 
-        showResolutionProperty.link(function (isVisible) {
+        isVisibleProperty.link( function( isVisible ) {
             electricPotentialFieldNode.visible = isVisible;
-        });
+        } );
 
     }
 
-    return inherit(Node, ElectricPotentialFieldNode);
-});
+    return inherit( Node, ElectricPotentialFieldNode );
+} );
