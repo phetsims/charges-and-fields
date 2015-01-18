@@ -10,7 +10,7 @@ define( function( require ) {
 
     // modules
     var Bounds2 = require( 'DOT/Bounds2' );
-    //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+    var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var Color = require( 'SCENERY/util/Color' );
     var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
     var LinearFunction = require( 'DOT/LinearFunction' );
@@ -27,10 +27,6 @@ define( function( require ) {
     var SATURATION_POSITIVE_COLOR = new Color( 'red' );
     var SATURATION_NEGATIVE_COLOR = new Color( 'blue' );
     var BACKGROUND_COLOR = new Color( 'black' );
-
-    // dimension of the screen in the model
-    var HEIGHT = 5; //in meters
-    var WIDTH = 6.5; // in meters
 
     /**
      * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -187,17 +183,16 @@ define( function( require ) {
 
 
       var j;
-      //var aspectRatio= WIDTH/HEIGHT;
       //TODO increase to a larger value the number of horizontalSensors
       var numberHorizontalSensors = 4;
-      var horizontalSpacing = WIDTH / (numberHorizontalSensors + 1);
+      var horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
       var verticalSpacing = horizontalSpacing;
-      var numberVerticalSensors = Math.floor( HEIGHT / verticalSpacing ) - 1;
+      var numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
 
       for ( i = 0; i <= numberHorizontalSensors; i++ ) {
         for ( j = 0; j <= numberVerticalSensors; j++ ) {
-          x = -WIDTH / 2 + horizontalSpacing * (i + 0.5);
-          y = HEIGHT / 2 - verticalSpacing * (j + 0.5);
+          x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
+          y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
           position = new Vector2( x, y );
           var electricFieldSensorElement = new SensorElement( position );
           electricFieldSensorElement.electricField = thisModel.getElectricField( position );
@@ -209,14 +204,14 @@ define( function( require ) {
       //   var aspectRatio= WIDTH/HEIGHT;
       //TODO increase to a larger value the number of horizontalSensors
       numberHorizontalSensors = 8;
-      horizontalSpacing = WIDTH / (numberHorizontalSensors + 1);
+      horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
       verticalSpacing = horizontalSpacing;
-      numberVerticalSensors = Math.floor( HEIGHT / verticalSpacing ) - 1;
+      numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
 
       for ( i = 0; i <= numberHorizontalSensors; i++ ) {
         for ( j = 0; j <= numberVerticalSensors; j++ ) {
-          x = -WIDTH / 2 + horizontalSpacing * (i + 0.5);
-          y = HEIGHT / 2 - verticalSpacing * (j + 0.5);
+          x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
+          y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
           position = new Vector2( x, y );
           var electricPotentialSensorElement = new SensorElement( position );
           electricPotentialSensorElement.electricField = thisModel.getElectricField( position );
@@ -435,7 +430,7 @@ define( function( require ) {
         var stepMax = 2000;
         var epsilonDistance = 0.01;//step length along equipotential in meters
         var readyToBreak = false;
-        var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
+        var maxDistance = Math.max( ChargesAndFieldsConstants.WIDTH, ChargesAndFieldsConstants.HEIGHT ); //maximum distance from the center
         var nextPositionClockwise;
         var nextPositionCounterClockwise;
         var currentPositionClockwise = position;
@@ -500,7 +495,7 @@ define( function( require ) {
         var stepMax = 2000;
         var epsilonDistance = 0.01; // in meter t
 
-        var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the initial position in meters
+        var maxDistance = Math.max( ChargesAndFieldsConstants.WIDTH, ChargesAndFieldsConstants.HEIGHT ); //maximum distance from the initial position in meters
 
         var nextPositionForward;
         var nextPositionBackward;

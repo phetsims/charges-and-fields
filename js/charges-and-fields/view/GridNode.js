@@ -15,7 +15,7 @@ define( function( require ) {
   //   var Color = require( 'SCENERY/util/Color' );
   //   var Dimension2 = require( 'DOT/Dimension2' );
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
-  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -52,16 +52,16 @@ define( function( require ) {
     var gridlinesParent = new Node();
 
     // bounds of the grid in model coordinates
-    //var minX = -4;
-    //var maxX = 4;
-    //var minY = -2.5;
-    //var maxY = 2.5;
+    var minX = -ChargesAndFieldsConstants.WIDTH / 2;
+    var maxX = ChargesAndFieldsConstants.WIDTH / 2;
+    var minY = -ChargesAndFieldsConstants.HEIGHT / 2;
+    var maxY = ChargesAndFieldsConstants.HEIGHT / 2;
 
-// use bound three times as large as the nominal screen view
-    var minX = -12;
-    var maxX = 12;
-    var minY = -7.5;
-    var maxY = 7.5;
+// use bound twice times as large as the nominal screen view
+//    var minX = -ChargesAndFieldsConstants.WIDTH;
+//    var maxX = ChargesAndFieldsConstants.WIDTH;
+//    var minY = -ChargesAndFieldsConstants.HEIGHT;
+//    var maxY = ChargesAndFieldsConstants.HEIGHT;
     // separation in model coordinates of the major grid lines
     var majorDeltaX = 0.5;
     var majorDeltaY = majorDeltaX; // we want a square grid

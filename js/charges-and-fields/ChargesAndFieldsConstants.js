@@ -13,6 +13,10 @@ define( function( require ) {
 
   return {
 
+    // height of the screen in the model
+    HEIGHT: 5, //in meters
+    WIDTH: 8, //in meters
+
     // Velocity at which animated elements move
     ANIMATION_VELOCITY: 2, // In model coordinates per second
 
