@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );

@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // imports
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargedParticleCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleCreatorNode' );
   //var ElectricFieldSensorCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorCreatorNode' );
