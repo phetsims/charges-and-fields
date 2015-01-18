@@ -164,6 +164,23 @@ define( function( require ) {
       } );
     } );
 
+
+    // Handle the comings and goings of charged particles.
+    model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
+      // Create and add the view representation for this electric Field Sensor
+      var electricFieldSensorNode = new ElectricFieldSensorNode( addedElectricFieldSensor, modelViewTransform, model.valuesIsVisibleProperty );
+      chargedParticlesLayer.addChild( electricFieldSensorNode );
+
+      // Add the removal listener for if and when this chargedParticle is removed from the model.
+      model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
+        if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
+          chargedParticlesLayer.removeChild( electricFieldSensorNode );
+          model.electricFieldSensors.removeItemRemovedListener( removalListener );
+        }
+      } );
+    } );
+
+
     // layout the objects
     controlPanel.right = this.layoutBounds.maxX - 20;
     controlPanel.top = 20;

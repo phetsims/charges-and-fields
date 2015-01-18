@@ -9,10 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
 
   // strings
@@ -20,18 +24,60 @@ define( function( require ) {
   var eFieldUnitString = require( 'string!CHARGES_AND_FIELDS/eFieldUnit' );
   var angleUnit = require( 'string!CHARGES_AND_FIELDS/angleUnit' );
 
+  // constants
+  var LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
+
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
    * @param {SensorElement} electricFieldSensor
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} valueIsVisibleProperty
+   * @param {Property.<boolean>} valuesIsVisibleProperty
    * @constructor
    */
-  function ElectricFieldSensorNode( electricFieldSensor, modelViewTransform, valueIsVisibleProperty ) {
+  function ElectricFieldSensorNode( electricFieldSensor, modelViewTransform, valuesIsVisibleProperty ) {
 
-    ElectricFieldSensorRepresentation.call( this, electricFieldSensor, valueIsVisibleProperty );
+    ElectricFieldSensorRepresentation.call( this );
 
     var electricFieldSensorNode = this;
+
+    // Create the E-field arrow, (set the arrow horizontally to start with)
+    this.arrowNode = new ArrowNode( 0, 0, 1, 0, {
+      pickable: false
+    } );
+
+    this.arrowNode.left = 0;
+    this.arrowNode.centerY = 0;
+    this.addChild( this.arrowNode );
+    this.arrowNode.moveToBack();
+
+    var arrowColorFunction = function( color ) {
+      electricFieldSensorNode.arrowNode.stroke = color;
+      electricFieldSensorNode.arrowNode.fill = color;
+    };
+    ChargesAndFieldsColors.link( 'electricFieldSensorArrow', arrowColorFunction );
+
+    // Create two numerical readouts for the strength and direction of the electric field.
+    var textOptions = {
+      font: LABEL_FONT,
+      pickable: false
+    };
+    this.fieldStrengthLabel = new Text( '', textOptions );
+    this.directionLabel = new Text( '', textOptions );
+
+    var labelColorFunction = function( color ) {
+      electricFieldSensorNode.fieldStrengthLabel.fill = color;
+      electricFieldSensorNode.directionLabel.fill = color;
+    };
+    ChargesAndFieldsColors.link( 'electricFieldSensorLabel', labelColorFunction );
+
+
+    this.addChild( this.fieldStrengthLabel );
+    this.addChild( this.directionLabel );
+
+    // Layout
+    this.fieldStrengthLabel.top = this.bottom;
+    this.directionLabel.top = this.fieldStrengthLabel.bottom;
+
 
     // when the electric field changes update the arrow and the labels
     electricFieldSensor.electricFieldProperty.link( function( electricField ) {
@@ -52,7 +98,7 @@ define( function( require ) {
     } );
 
     // Show/hide labels
-    valueIsVisibleProperty.link( function( isVisible ) {
+    valuesIsVisibleProperty.link( function( isVisible ) {
       electricFieldSensorNode.fieldStrengthLabel.visible = isVisible;
       electricFieldSensorNode.directionLabel.visible = isVisible;
     } );

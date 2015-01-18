@@ -30,7 +30,9 @@ define( function( require ) {
       // @public
       electricPotential: 0,
       //
-      userControlled: false
+      userControlled: false,
+      //
+      animating: false
     } );
   }
 

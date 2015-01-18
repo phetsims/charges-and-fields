@@ -71,7 +71,7 @@ define( function( require ) {
         model.addUserCreatedElectricFieldSensor.bind( model ),
         modelViewTransform, {
           left: offset.x + left + 270,
-          top:  offset.y + top + 20
+          top: offset.y + top + 20
         } ) );
 
     } );
