@@ -12,8 +12,6 @@ define( function( require ) {
 
   // imports
 
-  //   var Color = require( 'SCENERY/util/Color' );
-  //   var Dimension2 = require( 'DOT/Dimension2' );
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
@@ -41,9 +39,10 @@ define( function( require ) {
    *
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} gridIsVisibleProperty
+   * @param {Property.<boolean>} valuesIsVisibleProperty
    * @constructor
    */
-  function Grid( modelViewTransform, gridIsVisibleProperty ) {
+  function Grid( modelViewTransform, gridIsVisibleProperty, valuesIsVisibleProperty ) {
 
     var thisGrid = this;
 
@@ -143,6 +142,13 @@ define( function( require ) {
     ChargesAndFieldsColors.link( 'gridTextFill', function( color ) {
       text.fill = color;
     } );
+
+    // Show/ Hide the arrow
+    valuesIsVisibleProperty.link( function( isVisible ) {
+      arrowPath.visible = isVisible;
+      text.visible = isVisible;
+    } );
+
 
     // Show/ Hide the grid
     gridIsVisibleProperty.link( function( isVisible ) {

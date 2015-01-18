@@ -109,7 +109,7 @@ define( function( require ) {
     } );
 
     // Create a visual grid with major and minor lines on the view
-    var gridNode = new GridNode( modelViewTransform, model.gridIsVisibleProperty );
+    var gridNode = new GridNode( modelViewTransform, model.gridIsVisibleProperty, model.valuesIsVisibleProperty );
 
     // Create a draggable but dragBound Measuring Tape
     var tape_options = {
