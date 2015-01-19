@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Color = require( 'SCENERY/util/Color' );
   var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var Color = require( 'SCENERY/util/Color' );
   var Util = require( 'SCENERY/util/Util' );
 
   var ChargesAndFieldsGlobals = new PropertySet( {

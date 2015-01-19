@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 

@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
   var extend = require( 'PHET_CORE/extend' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var Color = require( 'SCENERY/util/Color' );
+  var PropertySet = require( 'AXON/PropertySet' );
 
   var colors = {
     background: {

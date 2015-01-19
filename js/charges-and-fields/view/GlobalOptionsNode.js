@@ -9,12 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var CheckBox = require( 'SUN/CheckBox' );
+
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
+  var CheckBox = require( 'SUN/CheckBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   var chargedLinesString = require( 'string!CHARGES_AND_FIELDS/options.chargedLines' );
