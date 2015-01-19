@@ -14,8 +14,10 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
+  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var ControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ControlPanel' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
+  var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialFieldNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialFieldNode' );
   //var ElectricPotentialFieldWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialFieldWebGLNode' );
@@ -117,8 +119,13 @@ define( function( require ) {
     };
 
     // Create the electric control panel on the upper right hand side
-    var controlPanel = new ControlPanel( model.eFieldIsVisibleProperty, model.directionOnlyIsVisibleProperty,
-      model.voltageIsVisibleProperty, model.valuesIsVisibleProperty, model.gridIsVisibleProperty, model.tapeMeasureIsVisibleProperty );
+    var controlPanel = new ControlPanel(
+      model.eFieldIsVisibleProperty,
+      model.directionOnlyIsVisibleProperty,
+      model.voltageIsVisibleProperty,
+      model.valuesIsVisibleProperty,
+      model.gridIsVisibleProperty,
+      model.tapeMeasureIsVisibleProperty );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
@@ -143,7 +150,20 @@ define( function( require ) {
     var chargedParticlesLayer = new Node( {layerSplit: true} ); // Force the moving charged Particles into a separate layer for performance reasons.
 
     // Create the charge and sensor enclosure (including the charges and sensors)
-    var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure( model, model.chargeAndSensorEnclosureBounds, modelViewTransform );
+
+    var positiveChargedParticleRepresentation = new ChargedParticleRepresentation( 1 );
+    var negativeChargedParticleRepresentation = new ChargedParticleRepresentation( -1 );
+    var electricFieldSensorRepresentation = new ElectricFieldSensorRepresentation();
+
+    var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(
+      model.addUserCreatedModelElementToObservableArray.bind( model ),
+      positiveChargedParticleRepresentation,
+      negativeChargedParticleRepresentation,
+      electricFieldSensorRepresentation,
+      model.chargedParticles,
+      model.electricFieldSensors,
+      model.chargeAndSensorEnclosureBounds,
+      modelViewTransform );
 
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {

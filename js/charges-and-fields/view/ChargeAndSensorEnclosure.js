@@ -11,8 +11,6 @@ define( function( require ) {
   // imports
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
-  var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -38,13 +36,25 @@ define( function( require ) {
 
   /**
    * Enclosure that contains the charges and sensors
-   * @param {ChargesAndFieldsModel} model - main model of the simulation
-   * @param {Bounds2} bounds
+   *
+   * @param {Function} addUserCreatedModelElementToObservableArray
+   * @param {Node} positiveChargedParticleRepresentation - visual representation of a positive charge
+   * @param {Node} negativeChargedParticleRepresentation - visual representation of a negative charge
+   * @param {Node} electricFieldSensorRepresentation -visual representation of an electric field sensor (doesn't include an arrow or text labels)
+   * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
+   * @param {ObservableArray} electricFieldSensors -- observable array in the model that contains all the electric field sensors
+   * @param {Bounds2} bounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-
-  function ChargeAndSensorEnclosure( model, bounds, modelViewTransform ) {
+  function ChargeAndSensorEnclosure( addUserCreatedModelElementToObservableArray,
+                                     positiveChargedParticleRepresentation,
+                                     negativeChargedParticleRepresentation,
+                                     electricFieldSensorRepresentation,
+                                     chargedParticles,
+                                     electricFieldSensors,
+                                     bounds,
+                                     modelViewTransform ) {
 
     Node.call( this );
     var enclosureGroup = this;
@@ -64,15 +74,11 @@ define( function( require ) {
     var electricFieldSensorCenterX = viewBounds.centerX + viewBounds.width / 3;
     var electricFieldSensorCenterY = positiveChargeCenterY;
 
-    var positiveChargedParticleRepresentation = new ChargedParticleRepresentation( 1 );
-    var negativeChargedParticleRepresentation = new ChargedParticleRepresentation( -1 );
-    var electricFieldSensorRepresentation = new ElectricFieldSensorRepresentation();
-
     // Add the dataPoint creator nodes.
     DATA_POINT_CREATOR_OFFSET_POSITIONS.forEach( function( offset ) {
       var positiveCharge = new UserCreatorNode(
-        model.addUserCreatedModelElementToObservableArray.bind( model ),
-        model.chargedParticles,
+        addUserCreatedModelElementToObservableArray,
+        chargedParticles,
         positiveChargedParticleRepresentation,
         modelViewTransform,
         {
@@ -82,8 +88,8 @@ define( function( require ) {
         } );
 
       var negativeCharge = new UserCreatorNode(
-        model.addUserCreatedModelElementToObservableArray.bind( model ),
-        model.chargedParticles,
+        addUserCreatedModelElementToObservableArray,
+        chargedParticles,
         negativeChargedParticleRepresentation,
         modelViewTransform,
         {
@@ -93,8 +99,8 @@ define( function( require ) {
         } );
 
       var electricFieldSensor = new UserCreatorNode(
-        model.addUserCreatedModelElementToObservableArray.bind( model ),
-        model.electricFieldSensors,
+        addUserCreatedModelElementToObservableArray,
+        electricFieldSensors,
         electricFieldSensorRepresentation,
         modelViewTransform,
         {
@@ -124,7 +130,6 @@ define( function( require ) {
       electricFieldSensorText.fill = color;
     } );
 
-
     ChargesAndFieldsColors.link( 'enclosureBorder', function( color ) {
       rectangle.stroke = color;
     } );
@@ -132,8 +137,6 @@ define( function( require ) {
     ChargesAndFieldsColors.link( 'enclosureFill', function( color ) {
       rectangle.fill = color;
     } );
-
-
   }
 
   return inherit( Node, ChargeAndSensorEnclosure );

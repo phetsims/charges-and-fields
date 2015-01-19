@@ -36,7 +36,7 @@ define( function( require ) {
     } );
 
     options = _.extend( {
-      element: 'electricFieldSensor' // other valid input are 'positive' and 'negative'
+      element: 'electricFieldSensor' // other valid inputs are 'positive' and 'negative'
     }, options );
 
     this.addChild( representation );
