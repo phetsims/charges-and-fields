@@ -96,8 +96,7 @@ define( function( require ) {
       model.getColorElectricPotential.bind( model ),
       model.clearEquipotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
-      modelViewTransform
-    );
+      modelViewTransform );
 
     // Create the electric Field sensors
     var parentElectricFieldSensorsNode = new Node();

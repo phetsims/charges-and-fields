@@ -50,7 +50,7 @@ define( function( require ) {
     } );
 
     // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
-    var circle = new Circle( CIRCLE_RADIUS, {fill: 'green', stroke: 'white', lineWidth: 3, centerX: 0, centerY: 0} );
+    var circle = new Circle( CIRCLE_RADIUS, {stroke: 'white', lineWidth: 3, centerX: 0, centerY: 0} );
     this.addChild( circle );
 
     // Create and add the crosshair
@@ -76,7 +76,6 @@ define( function( require ) {
       electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
       circle.fill = getColorElectricPotential( electricPotentialSensor.position, electricPotential ).withAlpha( 0.5 );
     } );
-
 
     /**
      * Function that rounds number according
