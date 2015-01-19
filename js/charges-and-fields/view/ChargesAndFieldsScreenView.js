@@ -146,8 +146,8 @@ define( function( require ) {
       measuringTape.textColor = color;
     } );
 
-    // Create the layer where the charged Particles will be placed.
-    var chargedParticlesLayer = new Node( {layerSplit: true} ); // Force the moving charged Particles into a separate layer for performance reasons.
+    // Create the layer where the charged Particles and electric Field Sensors will be placed.
+    var draggableElementsLayer = new Node( {layerSplit: true} ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
     // Create the charge and sensor enclosure (including the charges and sensors)
 
@@ -169,12 +169,12 @@ define( function( require ) {
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
       // Create and add the view representation for this chargedParticle.
       var chargedParticleNode = new ChargedParticleNode( addedChargedParticle, modelViewTransform );
-      chargedParticlesLayer.addChild( chargedParticleNode );
+      draggableElementsLayer.addChild( chargedParticleNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
       model.chargedParticles.addItemRemovedListener( function removalListener( removedChargedParticle ) {
         if ( removedChargedParticle === addedChargedParticle ) {
-          chargedParticlesLayer.removeChild( chargedParticleNode );
+          draggableElementsLayer.removeChild( chargedParticleNode );
           model.chargedParticles.removeItemRemovedListener( removalListener );
         }
       } );
@@ -185,12 +185,12 @@ define( function( require ) {
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode( addedElectricFieldSensor, modelViewTransform, model.valuesIsVisibleProperty );
-      chargedParticlesLayer.addChild( electricFieldSensorNode );
+      draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
       model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
-          chargedParticlesLayer.removeChild( electricFieldSensorNode );
+          draggableElementsLayer.removeChild( electricFieldSensorNode );
           model.electricFieldSensors.removeItemRemovedListener( removalListener );
         }
       } );
@@ -214,7 +214,7 @@ define( function( require ) {
     this.addChild( electricFieldSensorsNode );
     this.addChild( chargeAndSensorEnclosure );
     this.addChild( measuringTape );
-    this.addChild( chargedParticlesLayer );
+    this.addChild( draggableElementsLayer );
 
     //TODO: Delete when done with the layout
     ////////////////////////////////////////////////////////////////

@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
 
+  //var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricPotentialSensorPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorPanel' );
   var Circle = require( 'SCENERY/nodes/Circle' );
@@ -32,8 +33,7 @@ define( function( require ) {
   /**
    *
    * @param {SensorElement} electricPotentialSensor - model of the electric potential sensor
-   * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
-
+   * @param {Function} getColorElectricPotential - A function that maps a value of the electric potential to a color
    * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
