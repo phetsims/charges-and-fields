@@ -99,9 +99,9 @@ define( function( require ) {
       modelViewTransform );
 
     // Create the electric Field sensors
-    var parentElectricFieldSensorsNode = new Node();
+    var electricFieldSensorsNode = new Node();
     model.electricFieldSensors.forEach( function( electricFieldSensor ) {
-      parentElectricFieldSensorsNode.addChild( new ElectricFieldSensorNode(
+      electricFieldSensorsNode.addChild( new ElectricFieldSensorNode(
         electricFieldSensor,
         modelViewTransform,
         model.valuesIsVisibleProperty ) );
@@ -115,13 +115,6 @@ define( function( require ) {
       dragBounds: this.layoutBounds.eroded( 5 ),
       modelViewTransform: modelViewTransform
     };
-    var measuringTape = new MeasuringTape( model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
-      tape_options );
-
-    // TODO: doesn't work: find fix
-    ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
-      measuringTape.textColor = color;
-    } );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ControlPanel( model.eFieldIsVisibleProperty, model.directionOnlyIsVisibleProperty,
@@ -137,16 +130,20 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10
     } );
 
+    // Create a measuring tape
+    var measuringTape = new MeasuringTape( model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
+      tape_options );
 
-    // Create the nodes that will be used to layer things visually.
-    var backLayer = new Node();
+    // TODO: doesn't work: find fix
+    ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
+      measuringTape.textColor = color;
+    } );
 
     // Create the layer where the charged Particles will be placed.
     var chargedParticlesLayer = new Node( {layerSplit: true} ); // Force the moving charged Particles into a separate layer for performance reasons.
 
-    // Create and add the charge and sensor enclosure (including the charges and sensors)
+    // Create the charge and sensor enclosure (including the charges and sensors)
     var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure( model, model.chargeAndSensorEnclosureBounds, modelViewTransform );
-    backLayer.addChild( chargeAndSensorEnclosure );
 
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
@@ -191,12 +188,12 @@ define( function( require ) {
     this.addChild( electricFieldGridNode );
     this.addChild( equipotentialLineNode );
     this.addChild( electricFieldLineNode );
-    this.addChild( measuringTape );
-    this.addChild( resetAllButton );
-    this.addChild( backLayer );
     this.addChild( controlPanel );
+    this.addChild( resetAllButton );
     this.addChild( electricPotentialSensorNode );
-    this.addChild( parentElectricFieldSensorsNode );
+    this.addChild( electricFieldSensorsNode );
+    this.addChild( chargeAndSensorEnclosure );
+    this.addChild( measuringTape );
     this.addChild( chargedParticlesLayer );
 
     //TODO: Delete when done with the layout
