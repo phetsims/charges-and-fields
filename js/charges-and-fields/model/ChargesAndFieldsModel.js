@@ -45,11 +45,11 @@ define( function( require ) {
         tapeMeasureIsVisible: false, // control the visibility of the measuring tape
         tapeMeasureUnits: {name: 'cm', multiplier: 100} // need for the measuring tape scenery node
       } );
-
-      var x;
-      var y;
-      var i;
-      var position;
+      //
+      //var x;
+      //var y;
+      //var i;
+      //var position;
 
 
       // @public read-only
@@ -69,7 +69,7 @@ define( function( require ) {
 
 
       // electric potential detector
-      position = new Vector2( -2.5, -1.0 );
+      var position = new Vector2( -2.5, -1.0 );
 
       this.electricPotentialSensor = new SensorElement( position );
       this.electricPotentialSensor.electricField = thisModel.getElectricField( this.electricPotentialSensor.position );
