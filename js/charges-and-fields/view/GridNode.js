@@ -117,8 +117,8 @@ define( function( require ) {
     // Create and add one meter double headed arrow representation
     var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, {doubleHead: true} );
     var arrowPath = new Path( arrowShape );
-    arrowPath.bottom = modelViewTransform.modelToViewY( -1.25 );
-    arrowPath.left = modelViewTransform.modelToViewX( -1 );
+    arrowPath.bottom = modelViewTransform.modelToViewY( -2.25 );
+    arrowPath.left = modelViewTransform.modelToViewX( 2 );
     this.addChild( arrowPath );
 
 
