@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
 
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
@@ -24,56 +25,58 @@ define( function( require ) {
    */
   function SensorGridFactory( options ) {
     options = _.extend( {
-      position: new Vector2( 0, 0 ),/// in the middle
-      size: new Dimension2( 6.5, 4 ),/// in meters
-      numberOfHorizontalSensors: 10,
-      numberOfVerticalSensors: 10,
-      electricFieldInitialization: false,
-      electricPotentialInitialization: false
+      spacing: 0.5 // separation in model coordinates between the sensors
     } );
 
-    var thisModel = this;
+    //var minX = -ChargesAndFieldsConstants.WIDTH / 2;
+    var maxX = ChargesAndFieldsConstants.WIDTH / 2;
+    //var minY = -ChargesAndFieldsConstants.HEIGHT / 2;
+    var maxY = ChargesAndFieldsConstants.HEIGHT / 2;
+
     ObservableArray.call( this );
-    this.size = options.size;
-    this.position = options.position;
-    this.numberOfHorizontalSensors = options.numberOfHorizontalSensors;
-    this.numberOfVerticalSensors = options.numberOfVerticalSensors;
 
-    // convenience coordinates
-    this.left = this.position.x - this.size.width / 2;
-    this.right = this.left + this.size.width;
-    this.bottom = this.position.y - this.size.height / 2;
-    this.top = this.bottom + this.size.height;
+    var x;
+    var y;
 
-    //unit cell
-    this.horizontalLatticeSpacing = this.size.width / (this.numberOfHorizontalSensors);
-    this.verticalLatticeSpacing = this.size.width / (this.numberOfVerticalSensors );
 
-    this.unitCellCenter = new Vector2( this.horizontalLatticeSpacing / 2, this.verticalLatticeSpacing / 2 );   /// in meters
+    this.add( new StaticSensorElement( new Vector2( 0, 0 ) ) );
 
-    this.sensorGrid = new ObservableArray();
-    var position = new Vector2();
-    var electricField = new Vector2();
-    var electricPotential;
-    var i;
-    var j;
-    for ( i = 0; i < this.numberOfHorizontalSensors; i++ ) {
-      for ( j = 0; j < this.numberOfVerticalSensors; j++ ) {
+    for ( x = options.spacing; x < maxX; x += options.spacing ) {
+      var positiveXAxisPosition = new Vector2( x, 0 );
+      var negativeXAxisPosition = new Vector2( -x, 0 );
 
-        position.x = this.left + this.unitCellCenter.x + i * this.horizontalLatticeSpacing;
-        position.y = this.bottom + this.unitCellCenter.y + j * this.verticalLatticeSpacing;
+      this.addAll(
+        [
+          new StaticSensorElement( positiveXAxisPosition ),
+          new StaticSensorElement( negativeXAxisPosition )
+        ] );
+    }
 
-        if ( options.electricFieldInitialization ) {
-          electricField = thisModel.getElectricField( position );
-        }
-        if ( options.electricPotentialInitialization ) {
-          electricPotential = thisModel.getElectricPotential( position );
-        }
-        var staticSensorElement = new StaticSensorElement( position, {
-          electricField: electricField,
-          electricPotential: electricPotential
-        } );
-        this.sensorGrid.push( staticSensorElement );
+    for ( y = options.spacing; y < maxY; y += options.spacing ) {
+      var positiveYAxisPosition = new Vector2( 0, y );
+      var negativeYAxisPosition = new Vector2( 0, -y );
+
+      this.addAll(
+        [
+          new StaticSensorElement( positiveYAxisPosition ),
+          new StaticSensorElement( negativeYAxisPosition )
+        ] );
+    }
+
+    for ( x = options.spacing; x < maxX; x += options.spacing ) {
+      for ( y = options.spacing; y < maxY; y += options.spacing ) {
+        var quadrant1Position = new Vector2( x, y );
+        var quadrant2Position = new Vector2( -x, y );
+        var quadrant3Position = new Vector2( -x, -y );
+        var quadrant4Position = new Vector2( x, -y );
+
+        this.addAll(
+          [
+            new StaticSensorElement( quadrant1Position ),
+            new StaticSensorElement( quadrant2Position ),
+            new StaticSensorElement( quadrant3Position ),
+            new StaticSensorElement( quadrant4Position )
+          ] );
       }
     }
   }

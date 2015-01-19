@@ -19,7 +19,7 @@ define( function( require ) {
     var inherit = require( 'PHET_CORE/inherit' );
     var PropertySet = require( 'AXON/PropertySet' );
     var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
-    // var SensorGridFactory = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGridFactory' );
+    var SensorGridFactory = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGridFactory' );
     var Vector2 = require( 'DOT/Vector2' );
 
     //constants
@@ -64,22 +64,19 @@ define( function( require ) {
       this.electricFieldSensors = new ObservableArray();
 
       // electric Field Sensors Grid
-
-///    this.electricFieldSensorGrid= new SensorGridFactory();
-      /* the screen in the model is 4 meters high and 6.5 meters wide*/
       // @public read-only
-      this.electricFieldSensorGrid = new ObservableArray();
+      this.electricFieldSensorGrid = new SensorGridFactory( {spacing: 0.5} );
 
 
       // electric potential detector
       position = new Vector2( -2.5, -1.0 );
 
       this.electricPotentialSensor = new SensorElement( position );
-      this.electricPotentialSensor.electricField = thisModel.getElectricField( position );
-      this.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( position );
+      this.electricPotentialSensor.electricField = thisModel.getElectricField( this.electricPotentialSensor.position );
+      this.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( this.electricPotentialSensor.position );
 
       // @public read-only
-      this.electricPotentialGrid = new ObservableArray();
+      this.electricPotentialGrid = new SensorGridFactory( {spacing: 0.5} );
 
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();
@@ -181,43 +178,44 @@ define( function( require ) {
       } );
 
 
-      var j;
-      //TODO increase to a larger value the number of horizontalSensors
-      var numberHorizontalSensors = 14;
-      var horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
-      var verticalSpacing = horizontalSpacing;
-      var numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
+      //var j;
+      ////TODO increase to a larger value the number of horizontalSensors
+      //var numberHorizontalSensors = 14;
+      //var horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
+      //var verticalSpacing = horizontalSpacing;
+      //var numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
+      //
+      //for ( i = 0; i <= numberHorizontalSensors; i++ ) {
+      //  for ( j = 0; j <= numberVerticalSensors; j++ ) {
+      //    x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
+      //    y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
+      //    position = new Vector2( x, y );
+      //    var electricFieldSensorElement = new SensorElement( position );
+      //    electricFieldSensorElement.electricField = thisModel.getElectricField( position );
+      //    electricFieldSensorElement.electricPotential = thisModel.getElectricPotential( position );
+      //    this.electricFieldSensorGrid.push( electricFieldSensorElement );
+      //  }
+      //}
 
-      for ( i = 0; i <= numberHorizontalSensors; i++ ) {
-        for ( j = 0; j <= numberVerticalSensors; j++ ) {
-          x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
-          y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
-          position = new Vector2( x, y );
-          var electricFieldSensorElement = new SensorElement( position );
-          electricFieldSensorElement.electricField = thisModel.getElectricField( position );
-          electricFieldSensorElement.electricPotential = thisModel.getElectricPotential( position );
-          this.electricFieldSensorGrid.push( electricFieldSensorElement );
-        }
-      }
-
-      //   var aspectRatio= WIDTH/HEIGHT;
-      //TODO increase to a larger value the number of horizontalSensors
-      numberHorizontalSensors = 4;
-      horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
-      verticalSpacing = horizontalSpacing;
-      numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
-
-      for ( i = 0; i <= numberHorizontalSensors; i++ ) {
-        for ( j = 0; j <= numberVerticalSensors; j++ ) {
-          x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
-          y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
-          position = new Vector2( x, y );
-          var electricPotentialSensorElement = new SensorElement( position );
-          electricPotentialSensorElement.electricField = thisModel.getElectricField( position );
-          electricPotentialSensorElement.electricPotential = thisModel.getElectricPotential( position );
-          this.electricPotentialGrid.push( electricPotentialSensorElement );
-        }
-      }
+      ////   var aspectRatio= WIDTH/HEIGHT;
+      ////TODO increase to a larger value the number of horizontalSensors
+      //var numberHorizontalSensors = 4;
+      //var horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
+      //var verticalSpacing = horizontalSpacing;
+      //var numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
+      //var j;
+      //
+      //for ( i = 0; i <= numberHorizontalSensors; i++ ) {
+      //  for ( j = 0; j <= numberVerticalSensors; j++ ) {
+      //    x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
+      //    y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
+      //    position = new Vector2( x, y );
+      //    var electricPotentialSensorElement = new SensorElement( position );
+      //    electricPotentialSensorElement.electricField = thisModel.getElectricField( position );
+      //    electricPotentialSensorElement.electricPotential = thisModel.getElectricPotential( position );
+      //    this.electricPotentialGrid.push( electricPotentialSensorElement );
+      //  }
+      //}
 
     }
 
