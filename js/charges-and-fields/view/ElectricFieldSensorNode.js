@@ -41,18 +41,18 @@ define( function( require ) {
     var electricFieldSensorNode = this;
 
     // Create the E-field arrow, (set the arrow horizontally to start with)
-    this.arrowNode = new ArrowNode( 0, 0, 1, 0, {
+    var arrowNode = new ArrowNode( 0, 0, 1, 0, {
       pickable: false
     } );
 
-    this.arrowNode.left = 0;
-    this.arrowNode.centerY = 0;
-    this.addChild( this.arrowNode );
-    this.arrowNode.moveToBack();
+    arrowNode.left = 0;
+    arrowNode.centerY = 0;
+    this.addChild( arrowNode );
+    arrowNode.moveToBack();
 
     var arrowColorFunction = function( color ) {
-      electricFieldSensorNode.arrowNode.stroke = color;
-      electricFieldSensorNode.arrowNode.fill = color;
+      arrowNode.stroke = color;
+      arrowNode.fill = color;
     };
     ChargesAndFieldsColors.link( 'electricFieldSensorArrow', arrowColorFunction );
 
@@ -61,22 +61,22 @@ define( function( require ) {
       font: LABEL_FONT,
       pickable: false
     };
-    this.fieldStrengthLabel = new Text( '', textOptions );
-    this.directionLabel = new Text( '', textOptions );
+    var fieldStrengthLabel = new Text( '', textOptions );
+    var directionLabel = new Text( '', textOptions );
 
     var labelColorFunction = function( color ) {
-      electricFieldSensorNode.fieldStrengthLabel.fill = color;
-      electricFieldSensorNode.directionLabel.fill = color;
+      fieldStrengthLabel.fill = color;
+      directionLabel.fill = color;
     };
     ChargesAndFieldsColors.link( 'electricFieldSensorLabel', labelColorFunction );
 
 
-    this.addChild( this.fieldStrengthLabel );
-    this.addChild( this.directionLabel );
+    this.addChild( fieldStrengthLabel );
+    this.addChild( directionLabel );
 
     // Layout
-    this.fieldStrengthLabel.top = this.bottom;
-    this.directionLabel.top = this.fieldStrengthLabel.bottom;
+    fieldStrengthLabel.top = this.bottom;
+    directionLabel.top = fieldStrengthLabel.bottom;
 
 
     // when the electric field changes update the arrow and the labels
@@ -85,22 +85,22 @@ define( function( require ) {
       var angle = electricField.angle(); // angle from the model, in radians
 
       // Update length and direction of the arrow
-      electricFieldSensorNode.arrowNode.setTailAndTip( 0, 0, magnitude, 0 );
+      arrowNode.setTailAndTip( 0, 0, magnitude, 0 );
       // note that the angleInView = -1 * angleInModel
       // since the vertical direction is reversed between the view and the model
-      electricFieldSensorNode.arrowNode.setRotation( -1 * angle );
+      arrowNode.setRotation( -1 * angle );
 
       // Update the strings in the labels
       var fieldMagnitudeString = Util.toFixed( magnitude, 1 );
-      electricFieldSensorNode.fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
+      fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
       var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
-      electricFieldSensorNode.directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
+      directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
     } );
 
     // Show/hide labels
     valuesIsVisibleProperty.link( function( isVisible ) {
-      electricFieldSensorNode.fieldStrengthLabel.visible = isVisible;
-      electricFieldSensorNode.directionLabel.visible = isVisible;
+      fieldStrengthLabel.visible = isVisible;
+      directionLabel.visible = isVisible;
     } );
 
     // Move the chargedParticle to the front of this layer when grabbed by the user.
