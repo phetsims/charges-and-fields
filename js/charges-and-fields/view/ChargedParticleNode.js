@@ -14,9 +14,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
-  // constants
-  //var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
-
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
    * @param {ChargedParticle} chargedParticle - the model of the charged particle
