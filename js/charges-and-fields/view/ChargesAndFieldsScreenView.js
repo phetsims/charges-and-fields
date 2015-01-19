@@ -220,8 +220,8 @@ define( function( require ) {
     ////////////////////////////////////////////////////////////////
     //Show the mock-up and a slider to change its transparency
     //////////////////////////////////////////////////////////////
-    var mockup01OpacityProperty = new Property( 0.02 );
-    var mockup02OpacityProperty = new Property( 0.02 );
+    var mockup01OpacityProperty = new Property( 0.0 );
+    var mockup02OpacityProperty = new Property( 0.0 );
 
     var image01 = new Image( mockup01Image, {pickable: false} );
     var image02 = new Image( mockup02Image, {pickable: false} );
