@@ -224,10 +224,10 @@ define( function( require ) {
         }, options );
         var gridArray = [];
 
-        //var minX = -ChargesAndFieldsConstants.WIDTH / 2;
-        var maxX = ChargesAndFieldsConstants.WIDTH / 2;
-        //var minY = -ChargesAndFieldsConstants.HEIGHT / 2;
-        var maxY = ChargesAndFieldsConstants.HEIGHT / 2;
+        //var minX = -WIDTH / 2;
+        var maxX = WIDTH / 2;
+        //var minY = -HEIGHT / 2;
+        var maxY = HEIGHT / 2;
 
         var spacingOffset;
         if ( options.onOrigin ) {
@@ -429,7 +429,7 @@ define( function( require ) {
         var stepMax = 2000;
         var epsilonDistance = 0.01;//step length along equipotential in meters
         var readyToBreak = false;
-        var maxDistance = Math.max( ChargesAndFieldsConstants.WIDTH, ChargesAndFieldsConstants.HEIGHT ); //maximum distance from the center
+        var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
         var nextPositionClockwise;
         var nextPositionCounterClockwise;
         var currentPositionClockwise = position;
@@ -494,7 +494,7 @@ define( function( require ) {
         var stepMax = 2000;
         var epsilonDistance = 0.01; // in meter t
 
-        var maxDistance = Math.max( ChargesAndFieldsConstants.WIDTH, ChargesAndFieldsConstants.HEIGHT ); //maximum distance from the initial position in meters
+        var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the initial position in meters
 
         var nextPositionForward;
         var nextPositionBackward;
