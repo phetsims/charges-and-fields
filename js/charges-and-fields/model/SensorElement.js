@@ -26,12 +26,12 @@ define( function( require ) {
       // @public
       position: position,
       // @public
-      electricField: new Vector2( 0, 0 ),
+      electricField: new Vector2( 0, 0 ), // the default value assumes there are no electric charges on the board
       // @public
-      electricPotential: 0,
+      electricPotential: 0, // the default value assumes there are no electric charges on the board
       //
       userControlled: false,
-      //
+      // @public
       animating: false
     } );
   }
