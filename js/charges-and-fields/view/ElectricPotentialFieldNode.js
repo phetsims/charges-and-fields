@@ -36,7 +36,7 @@ define( function( require ) {
         Node.call( this );
 
         // find the distance between two adjacent electric Potential Sensors
-        var vectorDisplacement = electricPotentialGrid.get( 2 ).position.minus( electricPotentialGrid.get( 1 ).position );
+        var vectorDisplacement = electricPotentialGrid[2].position.minus( electricPotentialGrid[1].position );
         var unitDistance = modelViewTransform.modelToViewDelta( vectorDisplacement ).magnitude();
 
         electricPotentialGrid.forEach( function( electricPotentialSensor ) {

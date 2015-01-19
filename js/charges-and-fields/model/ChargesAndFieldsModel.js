@@ -19,7 +19,7 @@ define( function( require ) {
     var inherit = require( 'PHET_CORE/inherit' );
     var PropertySet = require( 'AXON/PropertySet' );
     var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
-    var SensorGridFactory = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGridFactory' );
+    var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
     var Vector2 = require( 'DOT/Vector2' );
 
     //constants
@@ -27,6 +27,9 @@ define( function( require ) {
     var SATURATION_POSITIVE_COLOR = new Color( 'red' );
     var SATURATION_NEGATIVE_COLOR = new Color( 'blue' );
     var BACKGROUND_COLOR = new Color( 'black' );
+
+    var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
+    var WIDTH = ChargesAndFieldsConstants.WIDTH;
 
     /**
      * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -45,12 +48,8 @@ define( function( require ) {
         tapeMeasureIsVisible: false, // control the visibility of the measuring tape
         tapeMeasureUnits: {name: 'cm', multiplier: 100} // need for the measuring tape scenery node
       } );
-      //
-      //var x;
-      //var y;
-      //var i;
-      //var position;
-
+      // @public read-only
+      this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the sim play ground
 
       // @public read-only
       this.chargeAndSensorEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
@@ -63,21 +62,18 @@ define( function( require ) {
       // @public
       this.electricFieldSensors = new ObservableArray();
 
-      // electric Field Sensors Grid
-      // @public read-only
-      this.electricFieldSensorGrid = new SensorGridFactory( {spacing: 0.5} );
-
-
       // electric potential detector
-      var position = new Vector2( -2.5, -1.0 );
-
+      var position = new Vector2( -2.5, -1.0 ); // position of the crosshair on the electric potential sensor
       this.electricPotentialSensor = new SensorElement( position );
       this.electricPotentialSensor.electricField = thisModel.getElectricField( this.electricPotentialSensor.position );
       this.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( this.electricPotentialSensor.position );
 
+      // electric Field Sensors Grid
       // @public read-only
-      this.electricPotentialGrid = new SensorGridFactory( {spacing: 0.1} );
+      this.electricFieldSensorGrid = thisModel.sensorGridFactory( {spacing: 0.5} );
 
+      // @public read-only
+      this.electricPotentialGrid = thisModel.sensorGridFactory( {spacing: 0.1, onOrigin: false} );
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();
       // @public read-only
@@ -171,51 +167,10 @@ define( function( require ) {
         } );
       } );
 
-
       // update the Electric Potential Sensor upon a change of position
       this.electricPotentialSensor.positionProperty.link( function( position ) {
         thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( position );
       } );
-
-
-      //var j;
-      ////TODO increase to a larger value the number of horizontalSensors
-      //var numberHorizontalSensors = 14;
-      //var horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
-      //var verticalSpacing = horizontalSpacing;
-      //var numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
-      //
-      //for ( i = 0; i <= numberHorizontalSensors; i++ ) {
-      //  for ( j = 0; j <= numberVerticalSensors; j++ ) {
-      //    x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
-      //    y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
-      //    position = new Vector2( x, y );
-      //    var electricFieldSensorElement = new SensorElement( position );
-      //    electricFieldSensorElement.electricField = thisModel.getElectricField( position );
-      //    electricFieldSensorElement.electricPotential = thisModel.getElectricPotential( position );
-      //    this.electricFieldSensorGrid.push( electricFieldSensorElement );
-      //  }
-      //}
-
-      ////   var aspectRatio= WIDTH/HEIGHT;
-      ////TODO increase to a larger value the number of horizontalSensors
-      //var numberHorizontalSensors = 4;
-      //var horizontalSpacing = ChargesAndFieldsConstants.WIDTH / (numberHorizontalSensors + 1);
-      //var verticalSpacing = horizontalSpacing;
-      //var numberVerticalSensors = Math.floor( ChargesAndFieldsConstants.HEIGHT / verticalSpacing ) - 1;
-      //var j;
-      //
-      //for ( i = 0; i <= numberHorizontalSensors; i++ ) {
-      //  for ( j = 0; j <= numberVerticalSensors; j++ ) {
-      //    x = -ChargesAndFieldsConstants.WIDTH / 2 + horizontalSpacing * (i + 0.5);
-      //    y = ChargesAndFieldsConstants.HEIGHT / 2 - verticalSpacing * (j + 0.5);
-      //    position = new Vector2( x, y );
-      //    var electricPotentialSensorElement = new SensorElement( position );
-      //    electricPotentialSensorElement.electricField = thisModel.getElectricField( position );
-      //    electricPotentialSensorElement.electricPotential = thisModel.getElectricPotential( position );
-      //    this.electricPotentialGrid.push( electricPotentialSensorElement );
-      //  }
-      //}
 
     }
 
@@ -254,6 +209,82 @@ define( function( require ) {
         modelElement.on( 'returnedToOrigin', function() {
           observableArray.remove( modelElement );
         } );
+      },
+
+      /**
+       * Function  that returns an array of equally spaced sensors on a two dimensional grid
+       * The position of the sensors is determined the options parameter, and is bounded by the bounds of the model.
+       * @param {Object} [options]
+       * @returns {Array}
+       */
+      sensorGridFactory: function( options ) {
+        options = _.extend( {
+          spacing: 0.5, // separation (distance) in model coordinates between two adjacent sensors
+          onOrigin: true // is there  a sensor at the origin (0,0)
+        }, options );
+        var gridArray = [];
+
+        //var minX = -ChargesAndFieldsConstants.WIDTH / 2;
+        var maxX = ChargesAndFieldsConstants.WIDTH / 2;
+        //var minY = -ChargesAndFieldsConstants.HEIGHT / 2;
+        var maxY = ChargesAndFieldsConstants.HEIGHT / 2;
+
+        var spacingOffset;
+        if ( options.onOrigin ) {
+          spacingOffset = options.spacing;
+        }
+        else {
+          spacingOffset = options.spacing / 2;
+        }
+
+        var x;
+        var y;
+
+        for ( x = spacingOffset; x < maxX; x += options.spacing ) {
+          for ( y = spacingOffset; y < maxY; y += options.spacing ) {
+            var quadrant1Position = new Vector2( x, y );
+            var quadrant2Position = new Vector2( -x, y );
+            var quadrant3Position = new Vector2( -x, -y );
+            var quadrant4Position = new Vector2( x, -y );
+
+            gridArray.push(
+              new StaticSensorElement( quadrant1Position ),
+              new StaticSensorElement( quadrant2Position ),
+              new StaticSensorElement( quadrant3Position ),
+              new StaticSensorElement( quadrant4Position )
+            );
+          }
+        }
+
+        if ( options.onOrigin ) {
+          // push a sensor at the origin
+          gridArray.push( new StaticSensorElement( new Vector2( 0, 0 ) ) );
+
+          // push sensors on the X-axis
+          for ( x = options.spacing; x < maxX; x += options.spacing ) {
+            var positiveXAxisPosition = new Vector2( x, 0 );
+            var negativeXAxisPosition = new Vector2( -x, 0 );
+
+            gridArray.push(
+              new StaticSensorElement( positiveXAxisPosition ),
+              new StaticSensorElement( negativeXAxisPosition )
+            );
+          }
+          // push sensors on the Y-axis
+          for ( y = options.spacing; y < maxY; y += options.spacing ) {
+            var positiveYAxisPosition = new Vector2( 0, y );
+            var negativeYAxisPosition = new Vector2( 0, -y );
+
+            gridArray.push(
+              new StaticSensorElement( positiveYAxisPosition ),
+              new StaticSensorElement( negativeYAxisPosition )
+            );
+          }
+
+        }
+
+
+        return gridArray;
       },
 
       /**
@@ -335,7 +366,7 @@ define( function( require ) {
        * The algorithm works best for small epsilon.
        * @private
        * @param {Vector2} position
-       * @param {Number} deltaDistance , a distance
+       * @param {Number} deltaDistance - a distance
        * @returns {Vector2} next point along the equipotential line
        */
       getNextPositionAlongEquipotential: function( position, deltaDistance ) {
@@ -504,7 +535,7 @@ define( function( require ) {
        * Given a position returns a color that represent the intensity of the electricPotential at that point
        * @public read-only
        * @param {Vector2} position
-       * @param {number}  [electricPotential] - (optional Argument)
+       * @param {number} [electricPotential] - (optional Argument)
        * @returns {Color} color
        */
       getColorElectricPotential: function( position, electricPotential ) {
