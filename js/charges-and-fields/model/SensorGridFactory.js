@@ -14,7 +14,7 @@ define( function( require ) {
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
+  var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -69,11 +69,11 @@ define( function( require ) {
         if ( options.electricPotentialInitialization ) {
           electricPotential = thisModel.getElectricPotential( position );
         }
-        this.sensorGrid.push( new SensorElement( {
-          position: position,
+        var staticSensorElement = new StaticSensorElement( position, {
           electricField: electricField,
           electricPotential: electricPotential
-        } ) );
+        } );
+        this.sensorGrid.push( staticSensorElement );
       }
     }
   }
