@@ -13,6 +13,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *

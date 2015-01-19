@@ -91,9 +91,9 @@ define( function( require ) {
       electricFieldSensorNode.arrowNode.setRotation( -1 * angle );
 
       // Update the strings in the labels
-      var fieldMagnitudeString = Util.toFixed( magnitude, 0 );
+      var fieldMagnitudeString = Util.toFixed( magnitude, 1 );
       electricFieldSensorNode.fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
-      var angleString = Util.toFixed( Util.toDegrees( angle ), 0 );
+      var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
       electricFieldSensorNode.directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
     } );
 

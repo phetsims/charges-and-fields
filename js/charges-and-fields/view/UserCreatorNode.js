@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * A Scenery node that can be clicked upon to create new charged Particles in the model.
+ * A Scenery node that can be clicked upon to create new electric field sensor in the model.
  *
  * @author John Blanco
  * @author Martin Veillette (Berea College)
@@ -10,23 +10,36 @@ define( function( require ) {
   'use strict';
 
   // modules
+
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
-  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
    *
-   * @param {Function} addChargedParticleToModel - A function for adding the created chargedParticle to the model
-   * @param {number} charge - acceptable values are 1 or -1
+   * @param {Function} addModelElementToObservableArray - A function that add a modelElement to an Observable Array in the model
+   * @param {ObservableArray} observableArray
+   * @param {Node} representation - the visual representation of the Model Element in the scene graph
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options]
    * @constructor
    */
-  function ChargedParticleCreatorNode( addChargedParticleToModel, charge, modelViewTransform, options ) {
+  function UserCreatorNode( addModelElementToObservableArray, observableArray, representation, modelViewTransform, options ) {
 
-    ChargedParticleRepresentation.call( this, charge );
+    // Call the super constructor
+    Node.call( this, {
+      // Show a cursor hand over the charge
+      cursor: 'pointer'
+    } );
+
+    options = _.extend( {
+      element: 'electricFieldSensor' // other valid input are 'positive' and 'negative'
+    }, options );
+
+    this.addChild( representation );
 
     var self = this;
 
@@ -34,7 +47,7 @@ define( function( require ) {
     this.addInputListener( new SimpleDragHandler( {
 
       parentScreen: null, // needed for coordinate transforms
-      chargedParticle: null,
+      modelElement: null,
 
       // Allow moving a finger (touch) across this node to interact with it
       allowTouchSnag: true,
@@ -57,25 +70,41 @@ define( function( require ) {
 
         // Create and add the new model element.
         var initialModelPosition = modelViewTransform.viewToModelPosition( initialPosition );
-        this.chargedParticle = new ChargedParticle( initialModelPosition, charge );
-        this.chargedParticle.userControlled = true;
-        addChargedParticleToModel( this.chargedParticle );
+
+        switch( options.element ) {
+          case 'positive':
+            this.modelElement = new ChargedParticle( initialModelPosition, 1 );
+            break;
+          case 'negative':
+            this.modelElement = new ChargedParticle( initialModelPosition, -1 );
+            break;
+          case 'electricFieldSensor':
+            this.modelElement = new SensorElement( initialModelPosition );
+            break;
+          default:
+            // assert && assert( true, 'fail switch options' );
+            console.log( 'you are a failure' );
+            break;
+        }
+        this.modelElement.userControlled = true;
+        addModelElementToObservableArray( this.modelElement, observableArray );
 
       },
 
       translate: function( translationParams ) {
-        this.chargedParticle.position = this.chargedParticle.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        this.modelElement.position = this.modelElement.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
       },
 
       end: function( event, trail ) {
-        this.chargedParticle.userControlled = false;
-        this.chargedParticle = null;
+        this.modelElement.userControlled = false;
+        this.modelElement = null;
       }
     } ) );
+
 
     // Pass options through to parent.
     this.mutate( options );
   }
 
-  return inherit( ChargedParticleRepresentation, ChargedParticleCreatorNode );
+  return inherit( Node, UserCreatorNode );
 } );

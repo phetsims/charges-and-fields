@@ -11,7 +11,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
 

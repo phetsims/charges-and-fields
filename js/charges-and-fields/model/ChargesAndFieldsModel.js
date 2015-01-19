@@ -245,47 +245,17 @@ define( function( require ) {
       },
 
       /**
-       * Function for adding new  chargedParticles to this model when the user creates them, generally by clicking on some
-       * some sort of creator node.
+       * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
+       * some sort of creator node. The function add the type to an observable Array
        * @public
-       * @param {ChargedParticle} chargedParticle
+       * @param {Type} modelElement - the particular types that are of interest are ChargedParticle, SensorElement, ModelElement
+       * @param {ObservableArray} observableArray - e.g. this.chargedParticles, this.electricFieldSensors
        */
       addUserCreatedModelElementToObservableArray: function( modelElement, observableArray ) {
         observableArray.push( modelElement );
 
         modelElement.on( 'returnedToOrigin', function() {
           observableArray.remove( modelElement );
-        } );
-      },
-
-
-      /**
-       * Function for adding new  chargedParticles to this model when the user creates them, generally by clicking on some
-       * some sort of creator node.
-       * @public
-       * @param {ChargedParticle} chargedParticle
-       */
-      addUserCreatedChargedParticle: function( chargedParticle ) {
-        this.chargedParticles.push( chargedParticle );
-        var self = this;
-
-        chargedParticle.on( 'returnedToOrigin', function() {
-          self.chargedParticles.remove( chargedParticle );
-        } );
-      },
-
-      /**
-       * Function for adding new electric Field sensor elements to this model when the user creates them, generally by clicking on some
-       * some sort of creator node.
-       * @public
-       * @param {SensorElement} electricFieldSensor
-       */
-      addUserCreatedElectricFieldSensor: function( electricFieldSensor ) {
-        this.electricFieldSensors.push( electricFieldSensor );
-        var self = this;
-
-        electricFieldSensor.on( 'returnedToOrigin', function() {
-          self.electricFieldSensors.remove( electricFieldSensor );
         } );
       },
 

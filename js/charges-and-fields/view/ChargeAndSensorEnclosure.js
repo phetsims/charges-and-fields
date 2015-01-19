@@ -11,12 +11,13 @@ define( function( require ) {
   // imports
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargedParticleCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleCreatorNode' );
-  var ElectricFieldSensorCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorCreatorNode' );
+  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
+  var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var UserCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/UserCreatorNode' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -42,6 +43,7 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
+
   function ChargeAndSensorEnclosure( model, bounds, modelViewTransform ) {
 
     Node.call( this );
@@ -62,29 +64,41 @@ define( function( require ) {
     var electricFieldSensorCenterX = viewBounds.centerX + viewBounds.width / 3;
     var electricFieldSensorCenterY = positiveChargeCenterY;
 
+    var positiveChargedParticleRepresentation = new ChargedParticleRepresentation( 1 );
+    var negativeChargedParticleRepresentation = new ChargedParticleRepresentation( -1 );
+    var electricFieldSensorRepresentation = new ElectricFieldSensorRepresentation();
+
     // Add the dataPoint creator nodes.
     DATA_POINT_CREATOR_OFFSET_POSITIONS.forEach( function( offset ) {
-
-      var positiveCharge = new ChargedParticleCreatorNode(
-        model.addUserCreatedChargedParticle.bind( model ),
-        1,
+      var positiveCharge = new UserCreatorNode(
+        model.addUserCreatedModelElementToObservableArray.bind( model ),
+        model.chargedParticles,
+        positiveChargedParticleRepresentation,
         modelViewTransform,
         {
+          element: 'positive',
           centerX: positiveChargeCenterX + offset.x,
           centerY: positiveChargeCenterY + offset.y
         } );
-      var negativeCharge = new ChargedParticleCreatorNode(
-        model.addUserCreatedChargedParticle.bind( model ),
-        -1,
+
+      var negativeCharge = new UserCreatorNode(
+        model.addUserCreatedModelElementToObservableArray.bind( model ),
+        model.chargedParticles,
+        negativeChargedParticleRepresentation,
         modelViewTransform,
         {
+          element: 'negative',
           centerX: negativeChargeCenterX + offset.x,
           centerY: negativeChargeCenterY + offset.y
         } );
 
-      var electricFieldSensor = new ElectricFieldSensorCreatorNode(
-        model.addUserCreatedElectricFieldSensor.bind( model ),
-        modelViewTransform, {
+      var electricFieldSensor = new UserCreatorNode(
+        model.addUserCreatedModelElementToObservableArray.bind( model ),
+        model.electricFieldSensors,
+        electricFieldSensorRepresentation,
+        modelViewTransform,
+        {
+          element: 'electricFieldSensor',
           centerX: electricFieldSensorCenterX + offset.x,
           centerY: electricFieldSensorCenterY + offset.y
         } );
