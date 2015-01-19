@@ -10,6 +10,7 @@ define( function( require ) {
 
     // modules
     var Bounds2 = require( 'DOT/Bounds2' );
+    //var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var Color = require( 'SCENERY/util/Color' );
     var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
@@ -17,7 +18,6 @@ define( function( require ) {
     var ObservableArray = require( 'AXON/ObservableArray' );
     var inherit = require( 'PHET_CORE/inherit' );
     var PropertySet = require( 'AXON/PropertySet' );
-    // var Property = require( 'AXON/Property' );
     var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
     // var SensorGridFactory = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGridFactory' );
     var Vector2 = require( 'DOT/Vector2' );
@@ -46,7 +46,6 @@ define( function( require ) {
         tapeMeasureUnits: {name: 'cm', multiplier: 100} // need for the measuring tape scenery node
       } );
 
-
       var x;
       var y;
       var i;
@@ -73,7 +72,8 @@ define( function( require ) {
 
 
       // electric potential detector
-      position = new Vector2( -1.5, -0.5 );
+
+      position = new Vector2( -2.5, -1.0 );
 
       this.electricPotentialSensor = new SensorElement( position );
       this.electricPotentialSensor.electricField = thisModel.getElectricField( position );
@@ -229,6 +229,7 @@ define( function( require ) {
         this.electricFieldLinesArray.clear();
         this.chargedParticles.clear();
         this.electricFieldSensors.clear();
+        this.electricPotentialSensor.reset();
         PropertySet.prototype.reset.call( this );
       },
 
