@@ -76,7 +76,7 @@ define( function( require ) {
       this.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( this.electricPotentialSensor.position );
 
       // @public read-only
-      this.electricPotentialGrid = new SensorGridFactory( {spacing: 0.5} );
+      this.electricPotentialGrid = new SensorGridFactory( {spacing: 0.1} );
 
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();

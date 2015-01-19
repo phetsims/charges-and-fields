@@ -25,7 +25,7 @@ define( function( require ) {
   function SensorGridFactory( options ) {
     options = _.extend( {
       spacing: 0.5 // separation in model coordinates between the sensors
-    } );
+    }, options );
 
     //var minX = -ChargesAndFieldsConstants.WIDTH / 2;
     var maxX = ChargesAndFieldsConstants.WIDTH / 2;
