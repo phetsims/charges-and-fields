@@ -72,7 +72,6 @@ define( function( require ) {
 
 
       // electric potential detector
-
       position = new Vector2( -2.5, -1.0 );
 
       this.electricPotentialSensor = new SensorElement( position );
@@ -603,8 +602,8 @@ define( function( require ) {
       },
 
       /**
-       * Push an electricFieldLine to an observable array
-       * The drawing of the electricField Line is handled in the view.
+       * Push many electric Field Lines and  electric Potential Lines to an observable array
+       * The drawing of the electric Field Lines and electric Potential Lines is handled in the view.
        * @private
        *
        * UNUSED
