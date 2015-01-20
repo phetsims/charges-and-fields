@@ -87,7 +87,9 @@
   submitButton.onclick = showColors;
 
   function showColors() {
-    var colorScheme;
+    document.body.appendChild( document.createElement( 'br' ) );
+    document.body.appendChild( document.createElement( 'br' ) );
+    document.body.appendChild( document.createTextNode( '------------ ' ) );
     for ( var i = 0; i < colors.length; i++ ) {
       document.body.appendChild( document.createElement( 'br' ) );
       document.body.appendChild( document.createTextNode( colors[ i ] ) );
