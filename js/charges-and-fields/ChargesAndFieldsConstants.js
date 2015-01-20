@@ -15,7 +15,7 @@ define( function( require ) {
     HEIGHT: 5, //in meters
     WIDTH: 8, //in meters
     ELECTRIC_FIELD_SENSOR_SPACING: 0.5, //in meters
-    ELECTRIC_POTENTIAL_SENSOR_SPACING: 0.5, //in meters
+    ELECTRIC_POTENTIAL_SENSOR_SPACING: 0.1, //in meters
 
     // Velocity at which animated elements move
     ANIMATION_VELOCITY: 2, // In model coordinates per second
