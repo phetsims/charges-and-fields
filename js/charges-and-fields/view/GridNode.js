@@ -115,7 +115,7 @@ define( function( require ) {
     this.addChild( gridlinesParent );
 
     // Create and add one meter double headed arrow representation
-    var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, {doubleHead: true} );
+    var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
     var arrowPath = new Path( arrowShape );
     arrowPath.bottom = modelViewTransform.modelToViewY( -2.25 );
     arrowPath.left = modelViewTransform.modelToViewX( 2 );
@@ -131,7 +131,7 @@ define( function( require ) {
     } );
 
     // Create and add the text (legend) accompanying the double headed arrow
-    var text = new Text( oneMeterString, {font: FONT} );
+    var text = new Text( oneMeterString, { font: FONT } );
     this.addChild( text );
     text.centerX = arrowPath.centerX;
     text.top = arrowPath.bottom;

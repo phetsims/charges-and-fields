@@ -25,10 +25,10 @@ define( function( require ) {
     var children = [];
 
     if ( !isBasicsVersion ) {
-      children.push( new CheckBox( new Text( chargedLinesString, {font: OptionsDialog.DEFAULT_FONT} ),
+      children.push( new CheckBox( new Text( chargedLinesString, { font: OptionsDialog.DEFAULT_FONT } ),
         ChargesAndFieldsGlobals.chargedLinesProperty, {} ) );
     }
-    children.push( new CheckBox( new Text( projectorColorsString, {font: OptionsDialog.DEFAULT_FONT} ),
+    children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       ChargesAndFieldsGlobals.projectorColorsProperty, {} ) );
 
     VBox.call( this, _.extend( {

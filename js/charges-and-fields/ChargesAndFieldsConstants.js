@@ -24,13 +24,13 @@ define( function( require ) {
     ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS: 7,
     PANEL_LINE_WIDTH: 2,
 
-    DEFAULT_FONT: new PhetFont( {size: 12} ),
-    VOLTAGE_LABEL_FONT: new PhetFont( {size: 14} ), // font for the equipotential Line voltage label
-    GRID_LABEL_FONT: new PhetFont( {size: 12} ), // font for the label that appears beneath the double arrow (length scale) on the grid
-    ENCLOSURE_LABEL_FONT: new PhetFont( {size: 16} ),  // font for the labels in the enclosure for the charges and sensors
+    DEFAULT_FONT: new PhetFont( { size: 12 } ),
+    VOLTAGE_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the equipotential Line voltage label
+    GRID_LABEL_FONT: new PhetFont( { size: 12 } ), // font for the label that appears beneath the double arrow (length scale) on the grid
+    ENCLOSURE_LABEL_FONT: new PhetFont( { size: 16 } ),  // font for the labels in the enclosure for the charges and sensors
 
-    ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( {size: 14} ), // font for the strength and angle of the electric field sensors
-    CHECK_BOX_FONT: new PhetFont( {size: 16} ) // font for the control panel on the upper right hand side
+    ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the strength and angle of the electric field sensors
+    CHECK_BOX_FONT: new PhetFont( { size: 16 } ) // font for the control panel on the upper right hand side
 
 
   };

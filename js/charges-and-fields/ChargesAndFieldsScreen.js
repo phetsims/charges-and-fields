@@ -34,7 +34,7 @@ define( function( require ) {
       function( model ) {
         return new ChargesAndFieldsScreenView( model );
       },
-      {backgroundColor: ChargesAndFieldsColors.background.toCSS()}
+      { backgroundColor: ChargesAndFieldsColors.background.toCSS() }
     );
 
     var colorFunction = function( color ) {

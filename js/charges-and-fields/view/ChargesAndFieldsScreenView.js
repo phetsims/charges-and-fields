@@ -48,7 +48,7 @@ define( function( require ) {
    */
   function ChargesAndFieldsScreenView( model ) {
 
-    ScreenView.call( this, {renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 1024, 618 )} );
+    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
     // The origin of the model is sets in the middle of the scree. There are 5 meters across the height of the sim.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
@@ -147,7 +147,7 @@ define( function( require ) {
     } );
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
-    var draggableElementsLayer = new Node( {layerSplit: true} ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
+    var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
     // Create the charge and sensor enclosure (including the charges and sensors)
 
@@ -223,8 +223,8 @@ define( function( require ) {
     var mockup01OpacityProperty = new Property( 0.0 );
     var mockup02OpacityProperty = new Property( 0.0 );
 
-    var image01 = new Image( mockup01Image, {pickable: false} );
-    var image02 = new Image( mockup02Image, {pickable: false} );
+    var image01 = new Image( mockup01Image, { pickable: false } );
+    var image02 = new Image( mockup02Image, { pickable: false } );
 
     image01.scale( this.layoutBounds.height / image01.height );
     image02.scale( this.layoutBounds.height / image02.height );
@@ -234,8 +234,8 @@ define( function( require ) {
     this.addChild( image01 );
     this.addChild( image02 );
 
-    this.addChild( new HSlider( mockup02OpacityProperty, {min: 0, max: 1}, {top: 200, left: 20} ) );
-    this.addChild( new HSlider( mockup01OpacityProperty, {min: 0, max: 1}, {top: 300, left: 20} ) );
+    this.addChild( new HSlider( mockup02OpacityProperty, { min: 0, max: 1 }, { top: 200, left: 20 } ) );
+    this.addChild( new HSlider( mockup01OpacityProperty, { min: 0, max: 1 }, { top: 300, left: 20 } ) );
     /////////////////////////////////////////////////////////////////////////
 
   }

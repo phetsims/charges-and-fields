@@ -70,12 +70,12 @@ define( function( require ) {
 
       // Create and add the equipotential line
       var shape = new Shape();
-      shape.moveToPoint( equipotentialLine.positionArray [0] );
+      shape.moveToPoint( equipotentialLine.positionArray [ 0 ] );
       equipotentialLine.positionArray.forEach( function( position ) {
         shape.lineToPoint( position );
       } );
 
-      var equipotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ), {stroke: ChargesAndFieldsColors.equipotentialLine.toCSS()} );
+      var equipotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ), { stroke: ChargesAndFieldsColors.equipotentialLine.toCSS() } );
 
       var colorFunction = function( color ) {
         equipotentialLinePath.stroke = color;

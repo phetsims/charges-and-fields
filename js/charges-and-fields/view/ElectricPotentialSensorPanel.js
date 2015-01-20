@@ -82,7 +82,7 @@ define( function( require ) {
     var buttons = new HBox( {
       align: 'center',
       spacing: 20,
-      children: [clearButton, plotElectricPotentialLineButton],
+      children: [ clearButton, plotElectricPotentialLineButton ],
       pickable: true
     } );
 
@@ -90,7 +90,7 @@ define( function( require ) {
     var content = new VBox( {
       align: 'center',
       spacing: 10,
-      children: [equipotential, textPanel, buttons],
+      children: [ equipotential, textPanel, buttons ],
       pickable: true
     } );
 

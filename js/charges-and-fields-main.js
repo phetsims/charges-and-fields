@@ -52,7 +52,7 @@ define( function( require ) {
   }
 
   SimLauncher.launch( function() {
-    var sim = new Sim( simTitle, [new ChargesAndFieldsScreen()], simOptions );
+    var sim = new Sim( simTitle, [ new ChargesAndFieldsScreen() ], simOptions );
     sim.start();
   } );
 } );

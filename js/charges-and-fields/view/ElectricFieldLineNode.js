@@ -53,11 +53,11 @@ define( function( require ) {
       var numberOfSegmentsPerArrow = 50; // number of segment intervals between arrows
 
       var shape = new Shape();
-      shape.moveToPoint( modelViewTransform.modelToViewPosition( electricFieldLine.positionArray [0] ) );
+      shape.moveToPoint( modelViewTransform.modelToViewPosition( electricFieldLine.positionArray [ 0 ] ) );
 
       for ( arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++ ) {
         var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === 2 );  // modulo is arbitrarily 2, just not 0
-        var position = modelViewTransform.modelToViewPosition( electricFieldLine.positionArray[arrayIndex] );
+        var position = modelViewTransform.modelToViewPosition( electricFieldLine.positionArray[ arrayIndex ] );
         if ( isArrowSegment ) {
           var angle = position.minus( shape.getRelativePoint() ).angle(); // angle of the electric field
           shape
@@ -74,10 +74,10 @@ define( function( require ) {
               y: -arrowHeadLength * Math.sin( angle - arrowHeadInternalAngle )
             } );
         }
-        shape.lineToPoint( modelViewTransform.modelToViewPosition( electricFieldLine.positionArray[arrayIndex] ) );
+        shape.lineToPoint( modelViewTransform.modelToViewPosition( electricFieldLine.positionArray[ arrayIndex ] ) );
       }
 
-      return new Path( shape, {stroke: 'orange', lineWidth: 2} );
+      return new Path( shape, { stroke: 'orange', lineWidth: 2 } );
     }
 
   }

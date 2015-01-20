@@ -62,7 +62,7 @@ define( function( require ) {
     // bounds of the enclosure
     var viewBounds = modelViewTransform.modelToViewBounds( bounds );
 
-    var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, {lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH} );
+    var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, { lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH } );
     this.addChild( rectangle );
 
     // TODO: find a layout scheme that will not be broken by translation
@@ -116,9 +116,9 @@ define( function( require ) {
 
     var textCenterY = viewBounds.centerY + viewBounds.height / 4;
 
-    var positiveChargeText = new Text( plusOneNanoCoulombString, {font: FONT, centerX: positiveChargeCenterX, centerY: textCenterY} );
-    var negativeChargeText = new Text( minusOneNanoCoulombString, {font: FONT, centerX: negativeChargeCenterX, centerY: textCenterY} );
-    var electricFieldSensorText = new Text( sensorsString, {font: FONT, centerX: electricFieldSensorCenterX, centerY: textCenterY} );
+    var positiveChargeText = new Text( plusOneNanoCoulombString, { font: FONT, centerX: positiveChargeCenterX, centerY: textCenterY } );
+    var negativeChargeText = new Text( minusOneNanoCoulombString, { font: FONT, centerX: negativeChargeCenterX, centerY: textCenterY } );
+    var electricFieldSensorText = new Text( sensorsString, { font: FONT, centerX: electricFieldSensorCenterX, centerY: textCenterY } );
 
     enclosureGroup.addChild( positiveChargeText );
     enclosureGroup.addChild( negativeChargeText );

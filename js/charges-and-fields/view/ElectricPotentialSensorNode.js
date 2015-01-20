@@ -50,7 +50,7 @@ define( function( require ) {
     } );
 
     // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
-    var circle = new Circle( CIRCLE_RADIUS, {stroke: 'white', lineWidth: 3, centerX: 0, centerY: 0} );
+    var circle = new Circle( CIRCLE_RADIUS, { stroke: 'white', lineWidth: 3, centerX: 0, centerY: 0 } );
     this.addChild( circle );
 
     // Create and add the crosshair
@@ -58,7 +58,7 @@ define( function( require ) {
       .lineTo( CIRCLE_RADIUS, 0 )
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
-    this.addChild( new Path( crosshair, {centerX: 0, centerY: 0, stroke: 'white'} ) );
+    this.addChild( new Path( crosshair, { centerX: 0, centerY: 0, stroke: 'white' } ) );
 
     // Create and add the panel of the sensor with the readout and push buttons
     var electricPotentialSensorPanel = new ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine );

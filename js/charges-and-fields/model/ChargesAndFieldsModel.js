@@ -48,7 +48,7 @@ define( function( require ) {
         valuesIsVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
         gridIsVisible: false,  //  control the visibility of the simple grid with minor and major axes
         tapeMeasureIsVisible: false, // control the visibility of the measuring tape
-        tapeMeasureUnits: {name: 'cm', multiplier: 100} // need for the measuring tape scenery node
+        tapeMeasureUnits: { name: 'cm', multiplier: 100 } // need for the measuring tape scenery node
       } );
       // @public read-only
       this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the sim play ground
@@ -72,10 +72,10 @@ define( function( require ) {
 
       // electric Field Sensors Grid
       // @public read-only
-      this.electricFieldSensorGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: false} );
+      this.electricFieldSensorGrid = thisModel.sensorGridFactory( { spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: false } );
 
       // @public read-only
-      this.electricPotentialGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING, onOrigin: false} );
+      this.electricPotentialGrid = thisModel.sensorGridFactory( { spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING, onOrigin: false } );
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();
       // @public read-only
