@@ -80,7 +80,7 @@ define( function( require ) {
     /**
      * Function that rounds number according
      * @param {number} number
-     * @param options
+     * @param {Object} [options]
      * @returns {string}
      */
     function roundNumber( number, options ) {

@@ -72,7 +72,7 @@ define( function( require ) {
 
       // electric Field Sensors Grid
       // @public read-only
-      this.electricFieldSensorGrid = thisModel.sensorGridFactory( { spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: false } );
+      this.electricFieldSensorGrid = thisModel.sensorGridFactory( { spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: true } );
 
       // @public read-only
       this.electricPotentialGrid = thisModel.sensorGridFactory( { spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING, onOrigin: false } );

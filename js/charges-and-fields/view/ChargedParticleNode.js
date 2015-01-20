@@ -37,7 +37,7 @@ define( function( require ) {
     } );
 
     // Register for synchronization with model.
-    chargedParticle.positionProperty.link( function( position, oldPosition ) {
+    chargedParticle.positionProperty.link( function( position ) {
       chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
     } );
 
