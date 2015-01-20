@@ -30,6 +30,8 @@ define( function( require ) {
 
     var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
     var WIDTH = ChargesAndFieldsConstants.WIDTH;
+    var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
+    var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
     /**
      * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -70,10 +72,10 @@ define( function( require ) {
 
       // electric Field Sensors Grid
       // @public read-only
-      this.electricFieldSensorGrid = thisModel.sensorGridFactory( {spacing: 0.5} );
+      this.electricFieldSensorGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: false} );
 
       // @public read-only
-      this.electricPotentialGrid = thisModel.sensorGridFactory( {spacing: 0.1, onOrigin: false} );
+      this.electricPotentialGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING, onOrigin: false} );
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();
       // @public read-only
@@ -196,6 +198,7 @@ define( function( require ) {
 
       },
 
+      //TODO Should that function be here in the first place? It is a pure function. It is called by UserCreatedNode
       /**
        * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
        * some sort of creator node. The function add the type to an observable Array
@@ -205,7 +208,6 @@ define( function( require ) {
        */
       addUserCreatedModelElementToObservableArray: function( modelElement, observableArray ) {
         observableArray.push( modelElement );
-
         modelElement.on( 'returnedToOrigin', function() {
           observableArray.remove( modelElement );
         } );

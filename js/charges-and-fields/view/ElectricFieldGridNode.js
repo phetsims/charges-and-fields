@@ -27,7 +27,7 @@ define( function( require ) {
 
   /**
    *
-   * @param  {ObservableArray.<SensorElement>} electricFieldSensorGrid
+   * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
    * @param {Function} getColorElectricFieldMagnitude - A function that maps a color to an Electric Field Magnitude
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} eFieldIsVisibleProperty

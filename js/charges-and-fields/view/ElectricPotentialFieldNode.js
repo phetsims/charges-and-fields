@@ -10,7 +10,7 @@ define( function( require ) {
     'use strict';
 
     // modules
-
+    var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
     var Node = require( 'SCENERY/nodes/Node' );
     var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -20,10 +20,12 @@ define( function( require ) {
 //  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 //  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );
 
+    // constants
+    var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
     /**
      *
-     * @param {ObservableArray.<SensorElement>} electricPotentialGrid
+     * @param {Array.<StaticSensorElement>} electricPotentialGrid
      * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isVisibleProperty
@@ -35,10 +37,8 @@ define( function( require ) {
         // Call the super constructor
         Node.call( this );
 
-        // find the distance between two adjacent electric Potential Sensors
-        var vectorDisplacement = electricPotentialGrid[2].position.minus( electricPotentialGrid[1].position );
-        var unitDistance = modelViewTransform.modelToViewDelta( vectorDisplacement ).magnitude();
-
+        // find the distance between two adjacent sensors in view coordinates.
+        var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
         electricPotentialGrid.forEach( function( electricPotentialSensor ) {
             var positionInModel = electricPotentialSensor.position;
             var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
