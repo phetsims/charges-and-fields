@@ -10,20 +10,15 @@ define( function( require ) {
 
   // modules
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-//  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-
-  // var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
-  // var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
 
   //constants
-  var CIRCLE_COLOR = 'black';
-  var CIRCLE_RADIUS = 2; //in pixels
-  var ARROW_COLOR = 'pink';
-  var ARROW_LENGTH = 20; //in pixels
+  var CIRCLE_RADIUS = 2; //in scenery coordinates
+  var ARROW_LENGTH = 20; //in scenery coordinates
 
   /**
    *
@@ -43,28 +38,36 @@ define( function( require ) {
       var positionInModel = electricFieldSensor.position;
       var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
 
+      //TODO: There are too many magic numbers. Find a robust way to get the arrow to rotate around its axis in a predictable way
       // Add arrow
-      //     var color = model.getColorElectricFieldMagnitude( positionInModel, magnitude );
       var arrowNode = new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH, 0, {
-        fill: ARROW_COLOR,
-        stroke: ARROW_COLOR,
-        pickable: false,
         tailWidth: 8,
-        lineWidth: 0,
+        lineWidth: 0, // If the lineWidth is equal to zero, we dont have to worry about the color of the stroke
         headWidth: 16,
         headHeight: 10
       } );
       arrowNode.center = positionInView.plus( new Vector2( ARROW_LENGTH / 4, 0 ) );
 
       // Add the centered circle
-      var circle = new Circle( CIRCLE_RADIUS, {fill: CIRCLE_COLOR, stroke: CIRCLE_COLOR} );
+      var circle = new Circle( CIRCLE_RADIUS, {lineWidth: 0} );
       circle.center = positionInView;
+
+      var circleFillColorFunction = function( color ) {
+        circle.fill = color;
+      };
+      ChargesAndFieldsColors.link( 'background', circleFillColorFunction );
+
+      //TODO this approach is not going to work for the arrow fill..
+      // get a color scheme that is dependent on the background color
+      var arrowNodeFillColorFunction = function( color ) {
+        arrowNode.fill = color;
+      };
+      ChargesAndFieldsColors.link( 'background', arrowNodeFillColorFunction );
 
       electricFieldSensor.electricFieldProperty.link( function( electricField ) {
         var electricFieldInView = modelViewTransform.modelToViewDelta( electricField );
         arrowNode.setRotation( electricFieldInView.angle() );
         arrowNode.fill = getColorElectricFieldMagnitude( positionInModel, electricField.magnitude() );
-        //arrowNode.stroke = model.getColorElectricFieldMagnitude( positionInView );
       } );
       electricFieldGridNode.addChild( arrowNode );
       electricFieldGridNode.addChild( circle );
