@@ -156,6 +156,39 @@ define( function( require ) {
         } );
       } );
 
+
+      // if any charge is removed, we need to update all the sensors
+      this.chargedParticles.addItemRemovedListener( function() {
+
+        // remove equipotential lines and electric field lines when the position of a charged particle changes
+        thisModel.clearEquipotentialLines();
+        thisModel.clearElectricFieldLines();
+
+        // update the Electric Field Sensors
+        thisModel.electricFieldSensors.forEach( function( sensorElement ) {
+          sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+        } );
+
+        // update the Electric Potential Sensor
+        thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
+
+        // update the Electric Field Grid Sensors
+        if ( thisModel.eFieldIsVisible === true ) {
+          thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
+            sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+          } );
+        }
+
+        // update the Electric Potential Grid Sensors
+        if ( thisModel.voltageIsVisible === true ) {
+          thisModel.electricPotentialGrid.forEach( function( sensorElement ) {
+            sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
+          } );
+        }
+
+      } );
+
+
       // update the Electric Field Sensors upon a change of position
       this.electricFieldSensors.addItemAddedListener( function( electricFieldSensor ) {
         electricFieldSensor.positionProperty.link( function( position ) {

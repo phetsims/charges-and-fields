@@ -50,7 +50,7 @@ define( function( require ) {
       arrowNode.center = positionInView.plus( new Vector2( ARROW_LENGTH / 4, 0 ) );
 
       // Add the centered circle
-      var circle = new Circle( CIRCLE_RADIUS, {fill: CIRCLE_COLOR, lineWidth: 0} );
+      var circle = new Circle( CIRCLE_RADIUS, {lineWidth: 0} );
       circle.center = positionInView;
 
       var circleFillColorFunction = function( color ) {
