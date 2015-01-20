@@ -5,78 +5,114 @@
 
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1"/>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="phet-sim-level" content="production">
-    <title>Charges and Fields Colors</title>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="phet-sim-level" content="production">
+  <title>Charges and Fields Colors</title>
 </head>
 <body bgcolor="#888">
 <style>
-    body {
-        font-family: Arial, Helvetica, sans-serif
-    }
+  body {
+    font-family: Arial, Helvetica, sans-serif
+  }
 </style>
 <iframe src="charges-and-fields_en.html" width="768" height="504" id="sim-iframe"
-        style="position: absolute; top: 20; left: 300px;"></iframe>
+        style="position: absolute; top: 20px; left: 300px;"></iframe>
 <script type="text/javascript">
-    var contentWindow = document.getElementById('sim-iframe').contentWindow;
+  var contentWindow = document.getElementById( 'sim-iframe' ).contentWindow;
 
-    var colors = [
-        'background',
-        'controlPanelBorder',
-        'controlPanelFill',
-        'controlPanelText',
-        'enclosureBorder',
-        'enclosureFill',
-        'enclosureText',
-        'checkBox',
-        'checkBoxDisabled',
-        'checkBoxBackground',
-        'negativeCharge',
-        'positiveCharge',
-        'voltageLabel',
-        'equipotentialLine',
-        'measuringTapeText',
-        'electricFieldSensorCircleFill',
-        'electricFieldSensorCircleStroke',
-        'electricFieldSensorArrow',
-        'electricFieldSensorLabel',
-        'gridStroke',
-        'gridLengthScaleArrowStroke',
-        'gridLengthScaleArrowFill',
-        'gridTextFill'
-    ];
+  var colors = [
+    'background',
+    'controlPanelBorder',
+    'controlPanelFill',
+    'controlPanelText',
+    'enclosureBorder',
+    'enclosureFill',
+    'enclosureText',
+    'checkBox',
+    'checkBoxDisabled',
+    'checkBoxBackground',
+    'negativeCharge',
+    'positiveCharge',
+    'voltageLabel',
+    'equipotentialLine',
+    'measuringTapeText',
+    'electricFieldSensorCircleFill',
+    'electricFieldSensorCircleStroke',
+    'electricFieldSensorArrow',
+    'electricFieldSensorLabel',
+    'gridStroke',
+    'gridLengthScaleArrowStroke',
+    'gridLengthScaleArrowFill',
+    'gridTextFill'
+  ];
+  window.colorScheme = [];
+  for ( var i = 0; i < colors.length; i++ ) {
+    (function() {
+      var colorName = colors[ i ];
 
-    for (var i = 0; i < colors.length; i++) {
-        (function () {
-            var colorName = colors[i];
+      var input = document.createElement( 'input' );
+      input.id = 'color-' + colorName;
+      input.type = 'color';
 
-            var input = document.createElement('input');
-            input.id = 'color-' + colorName;
-            input.type = 'color';
+      input.addEventListener( 'input', function( evt ) {
+        contentWindow.postMessage( JSON.stringify( {
+          type: 'setColor',
+          name: colorName,
+          value: input.value
+        } ), '*' );
+      } );
+      document.body.appendChild( document.createElement( 'br' ) );
+      document.body.appendChild( input );
+      document.body.appendChild( document.createTextNode( ' ' + colorName ) );
+      window.colorScheme[ i ] = input;
+    })();
+  }
 
-            input.addEventListener('input', function (evt) {
-                contentWindow.postMessage(JSON.stringify({
-                    type: 'setColor',
-                    name: colorName,
-                    value: input.value
-                }), '*');
-            });
-            document.body.appendChild(document.createElement('br'));
-            document.body.appendChild(input);
-            document.body.appendChild(document.createTextNode(' ' + colorName));
-        })();
+  window.addEventListener( 'message', function( evt ) {
+    var data = JSON.parse( evt.data );
+    if ( data.type === 'reportColor' ) {
+      document.getElementById( 'color-' + data.name ).value = data.value;
     }
 
-    window.addEventListener('message', function (evt) {
-        var data = JSON.parse(evt.data);
-        if (data.type === 'reportColor') {
-            document.getElementById('color-' + data.name).value = data.value;
-        }
-    });
+  } );
 
+  var submitButton = document.createElement( 'input' );
+  submitButton.id = 'theSubmitButton';
+  submitButton.name = 'theSubmitButton';
+  submitButton.type = 'button';
+  submitButton.value = 'Print Out Color';
+  submitButton.onclick = showColors;
+
+  function showColors() {
+    var colorScheme;
+    for ( var i = 0; i < colors.length; i++ ) {
+      document.body.appendChild( document.createElement( 'br' ) );
+      document.body.appendChild( document.createTextNode( colors[ i ] ) );
+      var h = window.colorScheme[ i ].value;
+
+      function hexToR( h ) {return parseInt( (cutHex( h )).substring( 0, 2 ), 16 )}
+
+      function hexToG( h ) {return parseInt( (cutHex( h )).substring( 2, 4 ), 16 )}
+
+      function hexToB( h ) {return parseInt( (cutHex( h )).substring( 4, 6 ), 16 )}
+
+      function cutHex( h ) {return (h.charAt( 0 ) == "#") ? h.substring( 1, 7 ) : h}
+
+      var R = hexToR( h );
+      var G = hexToG( h );
+      var B = hexToB( h );
+
+      document.body.appendChild( document.createTextNode( ': ' + 'rgb(' + R + ',' + G + ',' + B + ')' ) );
+    }
+  }
+
+
+  document.body.appendChild( document.createElement( 'br' ) );
+  document.body.appendChild( document.createElement( 'br' ) );
+  document.body.appendChild( submitButton );
 
 </script>
 </body>
