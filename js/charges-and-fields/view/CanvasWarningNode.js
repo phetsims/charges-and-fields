@@ -49,8 +49,7 @@ define( function( require ) {
     this.mouseArea = this.touchArea = this.localBounds;
 
     this.addInputListener( {
-      // TODO: update for ohtwo
-      upImmediate: function() {
+      up: function() {
         var phetWindow = window.open( 'http://phet.colorado.edu/webgl-disabled-page?locale=' + window.phetLocale, '_blank' );
         phetWindow.focus();
       }
