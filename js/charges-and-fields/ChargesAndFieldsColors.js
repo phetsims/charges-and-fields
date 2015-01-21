@@ -1,9 +1,10 @@
-//  Copyright 2002-2014, University of Colorado Boulder
+//  Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Location for all colors (especially those that could be tweaked)
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
@@ -105,7 +106,47 @@ define( function( require ) {
     gridTextFill: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
+    },
+    electricPotentialSensorCircleStroke: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    electricPotentialSensorCrosshairStroke: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    buttonBaseColor: {
+      default: new Color( 200, 200, 200 ),
+      projector: new Color( 60, 60, 60 )
+    },
+    electricPotentialPanelTitleText: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    electricPotentialSensorTextPanelTextFill: {
+      default: new Color( 0, 0, 0 ),
+      projector: new Color( 255, 255, 255 )
+    },
+    electricPotentialSensorTextPanelBorder: {
+      default: new Color( 0, 0, 0 ),
+      projector: new Color( 250, 250, 250 )
+    },
+
+    electricPotentialSensorTextPanelBackground: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+
+    electricPotentialSensorBorder: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    electricPotentialSensorBackgroundFill: {
+      default: new Color( 40, 90, 255 ),
+      projector: new Color( 50, 150, 255 )
     }
+
+
   };
 
   // initial properties object, to load into the PropertySet (so reset works nicely)

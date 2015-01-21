@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -29,20 +30,19 @@ define( function( require ) {
    */
   function ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine, options ) {
 
+    var self = this;
     // Demonstrate a common pattern for specifying options and providing default values.
     options = _.extend( {
         xMargin: 10,
         yMargin: 10,
-        stroke: 'grey',
-        fill: 'blue',
         lineWidth: 6,
         backgroundPickable: true
       },
       options );
 
+
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
-      baseColor: 'white',
       iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
       listener: function() {
         clearEquipotentialLines();
@@ -51,32 +51,52 @@ define( function( require ) {
 
     // Create the button that allows to plot the ElectricPotential Lines
     var plotElectricPotentialLineButton = new EraserButton( {
-      baseColor: 'white',
       iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
       listener: function() {
         addElectricPotentialLine();
       }
     } );
 
+    var buttonBaseColorFunction = function( color ) {
+      clearButton.baseColor = color;
+      plotElectricPotentialLineButton.baseColor = color;
+    };
+    // Link the stroke color for the default/projector mode
+    ChargesAndFieldsColors.link( 'buttonBaseColor', buttonBaseColorFunction );
+
     // Create the text node above the readout
-    var equipotential = new Text( equipotentialString, {
-      font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      fill: 'white'
+    var equipotentialPanelTitleText = new Text( equipotentialString, {
+      font: ChargesAndFieldsConstants.DEFAULT_FONT
     } );
+
+    var equipotentialPanelTitleTextColorFunction = function( color ) {
+      equipotentialPanelTitleText.fill = color;
+    };
+    // Link the stroke color for the default/projector mode
+    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', equipotentialPanelTitleTextColorFunction );
 
     // TODO find a more robust way to set the textPanel content Width
     this.voltageReading = new Text( '-0.000 V', {
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      fill: 'black',
       xMargin: 10
+    } );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', function( color ) {
+      self.voltageReading.fill = color;
     } );
 
     var textPanel = new Panel( this.voltageReading, {
-      fill: 'white',
-      stroke: 'black',
       cornerRadius: 5,
       resize: false
     } );
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', function( color ) {
+      textPanel.stroke = color;
+    } );
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', function( color ) {
+      textPanel.fill = color;
+    } );
+
 
     // The clear and plot buttons
     var buttons = new HBox( {
@@ -90,11 +110,20 @@ define( function( require ) {
     var content = new VBox( {
       align: 'center',
       spacing: 10,
-      children: [ equipotential, textPanel, buttons ],
+      children: [ equipotentialPanelTitleText, textPanel, buttons ],
       pickable: true
     } );
 
     Panel.call( this, content, options );
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorBorder', function( color ) {
+      self.stroke = color;
+    } );
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorBackgroundFill', function( color ) {
+      self.fill = color;
+    } );
+
   }
 
   return inherit( Panel, ElectricPotentialSensorPanel );

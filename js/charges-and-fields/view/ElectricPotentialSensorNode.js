@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
 
-  //var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricPotentialSensorPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorPanel' );
   var Circle = require( 'SCENERY/nodes/Circle' );
@@ -50,15 +50,24 @@ define( function( require ) {
     } );
 
     // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
-    var circle = new Circle( CIRCLE_RADIUS, { stroke: 'white', lineWidth: 3, centerX: 0, centerY: 0 } );
+    var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
     this.addChild( circle );
 
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function( color ) {
+      circle.stroke = color;
+    } );
+
     // Create and add the crosshair
-    var crosshair = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
+    var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
       .lineTo( CIRCLE_RADIUS, 0 )
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
-    this.addChild( new Path( crosshair, { centerX: 0, centerY: 0, stroke: 'white' } ) );
+    var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
+
+    this.addChild( crosshair );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+      crosshair.stroke = color;
+    } );
 
     // Create and add the panel of the sensor with the readout and push buttons
     var electricPotentialSensorPanel = new ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine );
