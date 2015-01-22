@@ -41,19 +41,18 @@ define( function( require ) {
     var circle = new Circle( CIRCLE_RADIUS );
     this.addChild( circle );
 
-    // TODO color diesnt do anything here
     // Determine the color of the charged particle based on its charge
     var negativeColorFunction = function( color ) {
       circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
         .addColorStop( 0, 'rgb(79,207,255)' )
-        .addColorStop( 0.5, 'rgb(44,190,245)' )
+        .addColorStop( 0.5, color )
         .addColorStop( 1, 'rgb(0,169,232)' );
     };
 
     var positiveColorFunction = function( color ) {
       circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
         .addColorStop( 0, 'rgb(255,43,79)' )
-        .addColorStop( 0.5, 'rgb(245,60,44)' )
+        .addColorStop( 0.5, color )
         .addColorStop( 1, 'rgb(232,9,0)' );
     };
 

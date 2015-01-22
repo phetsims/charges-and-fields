@@ -60,12 +60,12 @@ define( function( require ) {
       projector: new Color( 255, 255, 255 )
     },
     negativeCharge: {
-      default: new Color( 0, 0, 205 ),
-      projector: new Color( 0, 0, 255 )
+      default: new Color( 44, 190, 245 ),
+      projector: new Color( 44, 190, 245 )
     },
     positiveCharge: {
-      default: new Color( 205, 0, 0 ),
-      projector: new Color( 255, 0, 0 )
+      default: new Color( 245, 60, 44 ),
+      projector: new Color( 245, 60, 44 )
     },
     voltageLabel: {
       default: new Color( 255, 255, 255 ),
@@ -135,7 +135,6 @@ define( function( require ) {
       default: new Color( 0, 0, 0 ),
       projector: new Color( 250, 250, 250 )
     },
-
     electricPotentialSensorTextPanelBackground: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
