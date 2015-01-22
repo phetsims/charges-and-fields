@@ -58,8 +58,9 @@ define( function( require ) {
 //    var maxX = ChargesAndFieldsConstants.WIDTH;
 //    var minY = -ChargesAndFieldsConstants.HEIGHT;
 //    var maxY = ChargesAndFieldsConstants.HEIGHT;
+
     // separation in model coordinates of the major grid lines
-    var majorDeltaX = 0.5;
+    var majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
     var majorDeltaY = majorDeltaX; // we want a square grid
 
     // separation in model coordinates of the minor grid lines
