@@ -10,9 +10,8 @@ define( function( require ) {
 
     // modules
     var Bounds2 = require( 'DOT/Bounds2' );
-    //var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+    var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-    var Color = require( 'SCENERY/util/Color' );
     var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
     var LinearFunction = require( 'DOT/LinearFunction' );
     var ObservableArray = require( 'AXON/ObservableArray' );
@@ -24,10 +23,6 @@ define( function( require ) {
 
     //constants
     var K_CONSTANT = 9; // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is is Volt/meter
-    var SATURATION_POSITIVE_COLOR = new Color( 'red' );
-    var SATURATION_NEGATIVE_COLOR = new Color( 'blue' );
-    var BACKGROUND_COLOR = new Color( 'black' );
-
     var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
     var WIDTH = ChargesAndFieldsConstants.WIDTH;
     var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
@@ -582,9 +577,9 @@ define( function( require ) {
         var electricPotentialMax = 40; // voltage (in volts) at which color will saturate to colorMax
         var electricPotentialMin = -40; // voltage at which color will saturate to colorMin
 
-        var colorMax = SATURATION_POSITIVE_COLOR;   // for electricPotentialMax
-        var backgroundColor = BACKGROUND_COLOR; // for electric Potential of Zero
-        var colorMin = SATURATION_NEGATIVE_COLOR; // for electricPotentialMin
+        var colorMax = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;   // for electricPotentialMax
+        var backgroundColor = ChargesAndFieldsColors.electricPotentialGridZero; // for electric Potential of Zero
+        var colorMin = ChargesAndFieldsColors.electricPotentialGridSaturationNegative; // for electricPotentialMin
 
         var finalColor;
 
@@ -621,9 +616,8 @@ define( function( require ) {
           electricFieldMag = electricFieldMagnitude;
         }
 
-        //var colorMax = SATURATION_POSITIVE_COLOR;
-        var colorMax = new Color( 'white' );
-        var backgroundColor = BACKGROUND_COLOR;
+        var colorMax = ChargesAndFieldsColors.electricFieldGridSaturationPositive;   // for electricPotentialMax
+        var backgroundColor = ChargesAndFieldsColors.electricFieldGridZero; //  for zero electric Field
         var electricFieldMax = 5; // electricField at which color will saturate to colorMax (in Volts/meter)
 
         var linearInterpolationPositive = new LinearFunction( 0, electricFieldMax, 0, 1, true );

@@ -136,7 +136,6 @@ define( function( require ) {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
     },
-
     electricPotentialSensorBorder: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
@@ -144,8 +143,27 @@ define( function( require ) {
     electricPotentialSensorBackgroundFill: {
       default: new Color( 40, 90, 255 ),
       projector: new Color( 50, 150, 255 )
+    },
+    electricFieldGridSaturationPositive: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
+    electricFieldGridZero: {
+      default: new Color( 0, 0, 0 ),
+      projector: new Color( 255, 255, 255 )
+    },
+    electricPotentialGridSaturationPositive: {
+      default: new Color( 255, 0, 0 ),
+      projector: new Color( 255, 0, 0 )
+    },
+    electricPotentialGridZero: {
+      default: new Color( 0, 0, 0 ),
+      projector: new Color( 255, 255, 255 )
+    },
+    electricPotentialGridSaturationNegative: {
+      default: new Color( 0, 0, 255 ),
+      projector: new Color( 0, 0, 255 )
     }
-
 
   };
 
