@@ -32,6 +32,9 @@ define( function( require ) {
   // strings
   var oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
 
+  // constants
+  var FRACTION = 1;// fraction of the nominal bounds of the screen are in grid form. Setting to >1 to get 'infinite' grid
+
   /**
    *
    * @param {ModelViewTransform2} modelViewTransform
@@ -48,16 +51,10 @@ define( function( require ) {
     var gridlinesParent = new Node();
 
     // bounds of the grid in model coordinates
-    var minX = -ChargesAndFieldsConstants.WIDTH / 2;
-    var maxX = ChargesAndFieldsConstants.WIDTH / 2;
-    var minY = -ChargesAndFieldsConstants.HEIGHT / 2;
-    var maxY = ChargesAndFieldsConstants.HEIGHT / 2;
-
-// use bound twice times as large as the nominal screen view
-//    var minX = -ChargesAndFieldsConstants.WIDTH;
-//    var maxX = ChargesAndFieldsConstants.WIDTH;
-//    var minY = -ChargesAndFieldsConstants.HEIGHT;
-//    var maxY = ChargesAndFieldsConstants.HEIGHT;
+    var minX = -FRACTION * ChargesAndFieldsConstants.WIDTH / 2;
+    var maxX = FRACTION * ChargesAndFieldsConstants.WIDTH / 2;
+    var minY = -FRACTION * ChargesAndFieldsConstants.HEIGHT / 2;
+    var maxY = FRACTION * ChargesAndFieldsConstants.HEIGHT / 2;
 
     // separation in model coordinates of the major grid lines
     var majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
