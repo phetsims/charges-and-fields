@@ -81,7 +81,7 @@ define( function( require ) {
 
     eFieldIsVisibleProperty.link( function( enabled ) {
       directionOnlyCheckBox.enabled = enabled;
-      directionOnlyText.fill = enabled ? textOptions.fill : textOptions.fillDisabled;
+      directionOnlyText.fill = enabled ? ChargesAndFieldsColors.controlPanelText : ChargesAndFieldsColors.controlPanelTextDisabled;
     } );
 
     var checkBoxGroup = new VBox( {
@@ -105,6 +105,15 @@ define( function( require ) {
       controlPanel.stroke = color;
     } );
 
+    ChargesAndFieldsColors.link( 'controlPanelTextDisabled', function( color ) {
+      electricFieldText.fillDisabled = color;
+      directionOnlyText.fillDisable = color;
+      voltageText.fillDisabled = color;
+      valuesText.fillDisabled = color;
+      gridText.fillDisable = color;
+      tapeMeasureText.fillDisabled = color;
+    } );
+
     ChargesAndFieldsColors.link( 'controlPanelText', function( color ) {
       electricFieldText.fill = color;
       directionOnlyText.fill = color;
@@ -113,6 +122,7 @@ define( function( require ) {
       gridText.fill = color;
       tapeMeasureText.fill = color;
     } );
+
 
     ChargesAndFieldsColors.link( 'checkBox', function( color ) {
       electricFieldCheckBox.checkBoxColor = color;

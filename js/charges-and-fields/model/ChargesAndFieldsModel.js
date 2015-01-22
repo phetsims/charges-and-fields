@@ -616,7 +616,7 @@ define( function( require ) {
           electricFieldMag = electricFieldMagnitude;
         }
 
-        var colorMax = ChargesAndFieldsColors.electricFieldGridSaturationPositive;   // for electricPotentialMax
+        var colorMax = ChargesAndFieldsColors.electricFieldGridSaturation;   // for electricPotentialMax
         var backgroundColor = ChargesAndFieldsColors.electricFieldGridZero; //  for zero electric Field
         var electricFieldMax = 5; // electricField at which color will saturate to colorMax (in Volts/meter)
 

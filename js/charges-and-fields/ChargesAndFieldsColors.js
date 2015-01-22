@@ -31,6 +31,10 @@ define( function( require ) {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
     },
+    controlPanelTextDisabled: {
+      default: new Color( 100, 100, 100 ),
+      projector: new Color( 150, 150, 150 )
+    },
     enclosureText: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
@@ -144,7 +148,7 @@ define( function( require ) {
       default: new Color( 40, 90, 255 ),
       projector: new Color( 50, 150, 255 )
     },
-    electricFieldGridSaturationPositive: {
+    electricFieldGridSaturation: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
     },

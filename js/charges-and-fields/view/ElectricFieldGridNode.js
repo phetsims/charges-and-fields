@@ -26,10 +26,11 @@ define( function( require ) {
    * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
    * @param {Function} getColorElectricFieldMagnitude - A function that maps a color to an Electric Field Magnitude
    * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<boolean>} directionOnlyIsVisibleProperty - Controls the arrows Fill - from uniform (false) to gradient (true)
    * @param {Property.<boolean>} eFieldIsVisibleProperty
    * @constructor
    */
-  function ElectricFieldGridNode( electricFieldSensorGrid, getColorElectricFieldMagnitude, modelViewTransform, eFieldIsVisibleProperty ) {
+  function ElectricFieldGridNode( electricFieldSensorGrid, getColorElectricFieldMagnitude, modelViewTransform, directionOnlyIsVisibleProperty, eFieldIsVisibleProperty ) {
 
     var electricFieldGridNode = this;
 
@@ -58,17 +59,18 @@ define( function( require ) {
       };
       ChargesAndFieldsColors.link( 'background', circleFillColorFunction );
 
-      //TODO this approach is not going to work for the arrow fill..
-      // get a color scheme that is dependent on the background color
-      var arrowNodeFillColorFunction = function( color ) {
-        arrowNode.fill = color;
-      };
-      ChargesAndFieldsColors.link( 'background', arrowNodeFillColorFunction );
-
       electricFieldSensor.electricFieldProperty.link( function( electricField ) {
         var electricFieldInView = modelViewTransform.modelToViewDelta( electricField );
         arrowNode.setRotation( electricFieldInView.angle() );
-        arrowNode.fill = getColorElectricFieldMagnitude( positionInModel, electricField.magnitude() );
+        directionOnlyIsVisibleProperty.link( function( isVisible ) {
+          if ( isVisible ) {
+            arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
+          }
+          else {
+            arrowNode.fill = getColorElectricFieldMagnitude( positionInModel, electricField.magnitude() );
+
+          }
+        } );
       } );
       electricFieldGridNode.addChild( arrowNode );
       electricFieldGridNode.addChild( circle );
@@ -77,6 +79,8 @@ define( function( require ) {
     eFieldIsVisibleProperty.link( function( isVisible ) {
       electricFieldGridNode.visible = isVisible;
     } );
+
+
   }
 
   return inherit( Node, ElectricFieldGridNode );

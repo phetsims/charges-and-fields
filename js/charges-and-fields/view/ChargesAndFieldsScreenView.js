@@ -78,6 +78,7 @@ define( function( require ) {
       model.electricFieldSensorGrid,
       model.getColorElectricFieldMagnitude.bind( model ),
       modelViewTransform,
+      model.directionOnlyIsVisibleProperty,
       model.eFieldIsVisibleProperty );
 
     // Create the scenery node responsible for drawing the equipotential lines
