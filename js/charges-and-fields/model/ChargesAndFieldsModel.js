@@ -77,7 +77,7 @@ define( function( require ) {
       this.electricFieldLinesArray = new ObservableArray();
 
       //////////////////////////////////////////
-      //// Hook Up listeners to the four Observables Arrays
+      //// Hook Up listeners
       /////////////////////////////////////////////////
 
       // for performance reason, the electric field sensors on the grid is calculated and updated only if their
