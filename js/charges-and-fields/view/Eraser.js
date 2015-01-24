@@ -29,8 +29,6 @@ define( function( require ) {
       // defaults
     }, options );
 
-    var gridShape = new Shape();
-
     var sideLinearGradient = new LinearGradient( 204.9355, 81.1113, 108.6211, 81.1113 ).
       addColorStop( 0, '#F4ABAA' ).
       addColorStop( 0.2769, '#F1A9A8' ).
