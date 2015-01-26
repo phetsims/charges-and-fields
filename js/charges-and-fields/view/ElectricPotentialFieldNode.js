@@ -9,15 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  // var RectangleWebGLDrawable = require( 'SCENERY/nodes/drawables/RectangleWebGLDrawable' );
-  // var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-
-//  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
-//  var WebGLLayer = require( 'SCENERY/layers/WebGLLayer' );
 
   // constants
   var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
@@ -34,10 +29,7 @@ define( function( require ) {
 
     var electricPotentialFieldNode = this;
     // Call the super constructor
-    Node.call( this );
-
-    //this.canvas = document.createElement( 'canvas' );
-    //var gl = this.canvas.getContext( 'webgl' ) || this.canvas.getContext( 'experimental-webgl' );
+    CanvasNode.call( this );
 
     // find the distance between two adjacent sensors in view coordinates.
     var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
@@ -62,5 +54,5 @@ define( function( require ) {
 
   }
 
-  return inherit( Node, ElectricPotentialFieldNode );
+  return inherit( CanvasNode, ElectricPotentialFieldNode );
 } );
