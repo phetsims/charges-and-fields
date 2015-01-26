@@ -43,7 +43,7 @@ define( function( require ) {
         valuesIsVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
         gridIsVisible: false,  //  control the visibility of the simple grid with minor and major axes
         tapeMeasureIsVisible: false, // control the visibility of the measuring tape
-        tapeMeasureUnits: { name: 'cm', multiplier: 100 } // need for the measuring tape scenery node
+        tapeMeasureUnits: {name: 'cm', multiplier: 100} // need for the measuring tape scenery node
       } );
       // @public read-only
       this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the sim play ground
@@ -67,10 +67,10 @@ define( function( require ) {
 
       // electric Field Sensors Grid
       // @public read-only
-      this.electricFieldSensorGrid = thisModel.sensorGridFactory( { spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: true } );
+      this.electricFieldSensorGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: true} );
 
       // @public read-only
-      this.electricPotentialGrid = thisModel.sensorGridFactory( { spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING, onOrigin: false } );
+      this.electricPotentialGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING, onOrigin: false} );
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();
       // @public read-only
@@ -147,7 +147,6 @@ define( function( require ) {
               }
             } );
           }
-
         } );
       } );
 
@@ -180,7 +179,6 @@ define( function( require ) {
             sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
           } );
         }
-
       } );
 
 
@@ -201,7 +199,6 @@ define( function( require ) {
       this.electricPotentialSensor.positionProperty.link( function( position ) {
         thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( position );
       } );
-
     }
 
     return inherit( PropertySet, ChargesAndFieldsModel, {
@@ -312,7 +309,6 @@ define( function( require ) {
           }
 
         }
-
 
         return gridArray;
       },
@@ -452,11 +448,11 @@ define( function( require ) {
        */
       getEquipotentialPositionArray: function( position ) {
         if ( this.chargedParticles.length === 0 ) {
-          // if there are no charges, don't bother to find the electric potential
+          // if there are no charges, don't bother to find the equipotential line
           return null;
         }
         var stepCounter = 0;
-        var stepMax = 2000;
+        var stepMax = 3000;
         var epsilonDistance = 0.01;//step length along equipotential in meters
         var readyToBreak = false;
         var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
