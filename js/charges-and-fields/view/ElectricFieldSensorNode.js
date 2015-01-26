@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -30,11 +31,12 @@ define( function( require ) {
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
    * @param {SensorElement} electricFieldSensor
+   * @param {Function} addElectricFieldLine - function that add an electricFieldLine to the model
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} valuesIsVisibleProperty
    * @constructor
    */
-  function ElectricFieldSensorNode( electricFieldSensor, modelViewTransform, valuesIsVisibleProperty ) {
+  function ElectricFieldSensorNode( electricFieldSensor, addElectricFieldLine, modelViewTransform, valuesIsVisibleProperty ) {
 
     ElectricFieldSensorRepresentation.call( this );
 
@@ -78,6 +80,8 @@ define( function( require ) {
     fieldStrengthLabel.top = this.bottom;
     directionLabel.top = fieldStrengthLabel.bottom;
 
+    // expand the touch area
+    this.touchArea = this.localBounds.dilatedXY( 10, 10 );
 
     // when the electric field changes update the arrow and the labels
     electricFieldSensor.electricFieldProperty.link( function( electricField ) {
@@ -120,9 +124,22 @@ define( function( require ) {
     electricFieldSensorNode.addInputListener( new SimpleDragHandler(
       {
         // When dragging across it in a touchscreen, pick it up
+        startNewTime: 0,
+        startOldTime: 0,
         allowTouchSnag: true,
         start: function( event, trail ) {
           electricFieldSensor.userControlled = true;
+
+          if ( ChargesAndFieldsGlobals.electricFieldLines ) {
+            // Add an electricFieldLine on a double click event
+            this.startNewTime = new Date().getTime();
+            var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
+            if ( timeDifference < 200 ) {
+              addElectricFieldLine( electricFieldSensor.position );
+            }
+            this.startOldTime = this.startNewTime;
+          }
+
         },
         // Translate on drag events
         translate: function( args ) {

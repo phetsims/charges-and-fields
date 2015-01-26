@@ -56,7 +56,7 @@ define( function( require ) {
       shape.moveToPoint( modelViewTransform.modelToViewPosition( electricFieldLine.positionArray [ 0 ] ) );
 
       for ( arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++ ) {
-        var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === 2 );  // modulo is arbitrarily 2, just not 0
+        var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === Math.floor( numberOfSegmentsPerArrow / 2 ) );  // modulo is arbitrarily, just not 0
         var position = modelViewTransform.modelToViewPosition( electricFieldLine.positionArray[ arrayIndex ] );
         if ( isArrowSegment ) {
           var angle = position.minus( shape.getRelativePoint() ).angle(); // angle of the electric field

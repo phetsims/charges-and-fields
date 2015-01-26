@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- *  Scenery Node for the electric field sensor node.
+ *  Scenery Node for the electric field sensor.
  *  The sensor is made of a circle and an arrow that points along the local electric field
  *  and changes its length according to the magnitude of the electric field
  *  A text label of the direction and magnitude of the local electric field is also displayed
@@ -22,10 +22,10 @@ define( function( require ) {
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS;
 
   /**
-   * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
+   * Constructor for the ElectricFieldSensorRepresentation which renders the sensor as a scenery node.
    * @constructor
    */
-  function ElectricFieldSensorNode() {
+  function ElectricFieldSensorRepresentation() {
 
     // Call the super constructor
     Node.call( this, {
@@ -54,5 +54,5 @@ define( function( require ) {
 
   }
 
-  return inherit( Node, ElectricFieldSensorNode );
+  return inherit( Node, ElectricFieldSensorRepresentation );
 } );

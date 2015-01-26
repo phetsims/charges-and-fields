@@ -100,14 +100,6 @@ define( function( require ) {
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform );
 
-    // Create the electric Field sensors
-    var electricFieldSensorsNode = new Node();
-    model.electricFieldSensors.forEach( function( electricFieldSensor ) {
-      electricFieldSensorsNode.addChild( new ElectricFieldSensorNode(
-        electricFieldSensor,
-        modelViewTransform,
-        model.valuesIsVisibleProperty ) );
-    } );
 
     // Create a visual grid with major and minor lines on the view
     var gridNode = new GridNode( modelViewTransform, model.gridIsVisibleProperty, model.valuesIsVisibleProperty );
@@ -184,7 +176,11 @@ define( function( require ) {
     // Handle the comings and goings of charged particles.
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
-      var electricFieldSensorNode = new ElectricFieldSensorNode( addedElectricFieldSensor, modelViewTransform, model.valuesIsVisibleProperty );
+      var electricFieldSensorNode = new ElectricFieldSensorNode(
+        addedElectricFieldSensor,
+        model.addElectricFieldLine.bind( model ),
+        modelViewTransform,
+        model.valuesIsVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -211,7 +207,6 @@ define( function( require ) {
     this.addChild( controlPanel );
     this.addChild( resetAllButton );
     this.addChild( electricPotentialSensorNode );
-    this.addChild( electricFieldSensorsNode );
     this.addChild( chargeAndSensorEnclosure );
     this.addChild( measuringTape );
     this.addChild( draggableElementsLayer );

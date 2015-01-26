@@ -15,7 +15,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
 
   var ChargesAndFieldsGlobals = new PropertySet( {
-    chargedLines:    !!window.phetcommon.getQueryParameter( 'chargedLines' ) || false,
+    electricFieldLines: !!window.phetcommon.getQueryParameter( 'electricFieldLines' ) || false,
     projectorColors: !!window.phetcommon.getQueryParameter( 'projector' ) || false
   } );
 

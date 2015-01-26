@@ -26,7 +26,7 @@ define( function( require ) {
 
     ChargedParticleRepresentation.call( this, chargedParticle.charge );
 
-    // Set up the mouse and touch areas for this node so that this can still be grabbed when invisible.
+    // Set up the mouse  areas for this node so that this can still be grabbed when invisible.
     this.touchArea = this.localBounds.dilatedXY( 10, 10 );
 
     // Move the chargedParticle to the front of this layer when grabbed by the user.

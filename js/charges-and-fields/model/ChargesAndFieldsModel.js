@@ -43,7 +43,7 @@ define( function( require ) {
         valuesIsVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
         gridIsVisible: false,  //  control the visibility of the simple grid with minor and major axes
         tapeMeasureIsVisible: false, // control the visibility of the measuring tape
-        tapeMeasureUnits: {name: 'cm', multiplier: 100} // need for the measuring tape scenery node
+        tapeMeasureUnits: { name: 'cm', multiplier: 100 } // need for the measuring tape scenery node
       } );
       // @public read-only
       this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the sim play ground
@@ -67,10 +67,16 @@ define( function( require ) {
 
       // electric Field Sensors Grid
       // @public read-only
-      this.electricFieldSensorGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_FIELD_SENSOR_SPACING, onOrigin: true} );
+      this.electricFieldSensorGrid = thisModel.sensorGridFactory( {
+        spacing: ELECTRIC_FIELD_SENSOR_SPACING,
+        onOrigin: true
+      } );
 
       // @public read-only
-      this.electricPotentialGrid = thisModel.sensorGridFactory( {spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING, onOrigin: false} );
+      this.electricPotentialGrid = thisModel.sensorGridFactory( {
+        spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
+        onOrigin: false
+      } );
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();
       // @public read-only
@@ -625,13 +631,21 @@ define( function( require ) {
       /**
        * Push an equipotentialLine to an observable array
        * The drawing of the equipotential line is handled in the view (equipotentialLineNode)
+       * @param {Vector2} [position] - optional argument: starting point to calculate the equipotential line
        * @public
        */
-      addElectricPotentialLine: function() {
+      addElectricPotentialLine: function( position ) {
         // electric potential lines don't exist in a vacuum of charges
         if ( this.chargedParticles.length > 0 ) {
           var equipotentialLine = {};
-          equipotentialLine.position = this.electricPotentialSensor.position;
+
+          if ( position ) {
+            equipotentialLine.position = position
+          }
+          else {
+            // use the location of the electric Potential Sensor as default position
+            equipotentialLine.position = this.electricPotentialSensor.position;
+          }
           equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
           equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
           this.equipotentialLinesArray.push( equipotentialLine );
@@ -641,15 +655,14 @@ define( function( require ) {
       /**
        * Push an electricFieldLine to an observable array
        * The drawing of the electricField Line is handled in the view.
-       * @private
-       *
-       * UNUSED
+       * @public
+       * @param {Vector2} position - starting point to calculate the electric field line
        */
-      addElectricFieldLine: function() {
+      addElectricFieldLine: function( position ) {
         // electric field lines don't exist in a vacuum of charges
         var electricFieldLine = {};
         if ( this.chargedParticles.length > 0 ) {
-          electricFieldLine.position = this.electricPotentialSensor.position;
+          electricFieldLine.position = position;
           electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
           this.electricFieldLinesArray.push( electricFieldLine );
         }
@@ -659,15 +672,14 @@ define( function( require ) {
        * Push many electric Field Lines and  electric Potential Lines to an observable array
        * The drawing of the electric Field Lines and electric Potential Lines is handled in the view.
        * @private
-       *
-       * UNUSED
-       * FOR DEBUGGING PURPOSES
+       * @param {number} numberOfLines
+       * UNUSED, FOR DEBUGGING PURPOSES
        */
-      addManyLine: function() {
+      addManyLine: function( numberOfLines ) {
 
         var i;
-        for ( i = 0; i < 10; i++ ) {
-          var position = new Vector2( 6.5 * Math.random() - 3.25, 4 * Math.random() - 2 );
+        for ( i = 0; i < numberOfLines; i++ ) {
+          var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
           var electricFieldLine = {};
           electricFieldLine.position = position;
           electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
@@ -691,7 +703,6 @@ define( function( require ) {
       /**
        * Function that clears the Electric Field Lines Observable Array
        * @public
-       * UNUSED
        */
       clearElectricFieldLines: function() {
         this.electricFieldLinesArray.clear();

@@ -19,7 +19,7 @@ define( function( require ) {
   // strings
   var simTitle = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.name' );
 
-  var isBasicsVersion = false;
+  var isBasicsVersion = false; // Do you want to be able to draw electric Field Lines?
 
   var simOptions = {
     credits: {

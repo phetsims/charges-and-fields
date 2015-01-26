@@ -18,15 +18,15 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var chargedLinesString = require( 'string!CHARGES_AND_FIELDS/options.chargedLines' );
+  var electricFieldLinesString = require( 'string!CHARGES_AND_FIELDS/options.electricFieldLines' );
   var projectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
   function GlobalOptionsNode( isBasicsVersion ) {
     var children = [];
 
     if ( !isBasicsVersion ) {
-      children.push( new CheckBox( new Text( chargedLinesString, { font: OptionsDialog.DEFAULT_FONT } ),
-        ChargesAndFieldsGlobals.chargedLinesProperty, {} ) );
+      children.push( new CheckBox( new Text( electricFieldLinesString, { font: OptionsDialog.DEFAULT_FONT } ),
+        ChargesAndFieldsGlobals.electricFieldLinesProperty, {} ) );
     }
     children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       ChargesAndFieldsGlobals.projectorColorsProperty, {} ) );

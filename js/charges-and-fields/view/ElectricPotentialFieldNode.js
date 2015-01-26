@@ -36,8 +36,7 @@ define( function( require ) {
     electricPotentialGrid.forEach( function( electricPotentialSensor ) {
       var positionInModel = electricPotentialSensor.position;
       var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
-      var rect = new Rectangle( 0, 0, unitDistance, unitDistance );
-      rect.center = positionInView;
+      var rect = new Rectangle( 0, 0, unitDistance, unitDistance, { center: positionInView } );
       electricPotentialFieldNode.addChild( rect );
 
       electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
