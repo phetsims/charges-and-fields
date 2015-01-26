@@ -90,7 +90,6 @@ define( function( require ) {
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLineNode = new ElectricFieldLineNode(
       model.electricFieldLinesArray,
-      model.clearElectricFieldLines.bind( model ),
       modelViewTransform );
 
     // Create the draggable electric potential sensor node with a electric potential readout
