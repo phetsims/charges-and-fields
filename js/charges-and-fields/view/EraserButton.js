@@ -1,32 +1,31 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * A Scenery node that depicts an eraser
+ * Button with an eraser icon.
  *
- * @author Martin Veillette (Berea College)
+ * @author John Blanco
  */
 define( function( require ) {
   'use strict';
 
   // modules
-  //var Bounds2 = require( 'DOT/Bounds2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
 
+
   /**
-   *
    * @param {Object} [options]
    * @constructor
    */
-  function Eraser( options ) {
-
-    Node.call( this );
+  function EraserButton( options ) {
 
     options = _.extend( {
-      // defaults
+      baseColor: '#F2E916',
+      iconWidth: 20 // width of eraser icon, used for scaling, the aspect ratio will determine height
     }, options );
 
     var sideLinearGradient = new LinearGradient( 204.9355, 81.1113, 108.6211, 81.1113 ).
@@ -103,13 +102,13 @@ define( function( require ) {
       fill: topLinearGradient
     } );
 
-    this.addChild( sidePath );
-    this.addChild( frontPath );
-    this.addChild( topPath );
+    // eraser icon
+    options.content = new Node( { children: [ sidePath, frontPath, topPath ] } );
 
-    // Pass options through to the parent class.
-    this.mutate( options );
+    options.content.scale( options.iconWidth / options.content.width );
+
+    RectangularPushButton.call( this, options );
   }
 
-  return inherit( Node, Eraser );
+  return inherit( RectangularPushButton, EraserButton );
 } );

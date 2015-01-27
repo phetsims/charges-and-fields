@@ -12,12 +12,20 @@ define( function( require ) {
   // modules
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
+  var EraserButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EraserButton' );
+  //var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
+  var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  // tools for drawing
+  //var LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  //var Node = require( 'SCENERY/nodes/Node' );
+  //var Path = require( 'SCENERY/nodes/Path' );
+  //var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  //var Shape = require( 'KITE/Shape' );
 
   //strings
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
@@ -50,8 +58,8 @@ define( function( require ) {
     } );
 
     // Create the button that allows to plot the ElectricPotential Lines
-    var plotElectricPotentialLineButton = new EraserButton( {
-      iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
+    var plotElectricPotentialLineButton = new PencilButton( {
+      iconWidth: 26, // width of pencil icon, used for scaling, the aspect ratio will determine height
       listener: function() {
         addElectricPotentialLine();
       }
@@ -115,6 +123,7 @@ define( function( require ) {
     } );
 
     Panel.call( this, content, options );
+
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorBorder', function( color ) {
       self.stroke = color;
