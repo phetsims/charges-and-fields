@@ -50,12 +50,15 @@ define( function( require ) {
       font: ChargesAndFieldsConstants.CHECK_BOX_FONT
     };
 
-    var checkBoxOptions = {};
+    var checkBoxOptions = {
+      boxWidth: 25,
+      spacing: 7
+    };
 
     var panelOptions = {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
-      xMargin: 10,
-      yMargin: 5
+      xMargin: 12,
+      yMargin: 10
     };
 
     var electricFieldText = new Text( electricFieldString, textOptions );
@@ -85,7 +88,7 @@ define( function( require ) {
     } );
 
     var checkBoxGroup = new VBox( {
-      spacing: 10, children: [
+      spacing: 12, children: [
         electricFieldCheckBox,
         directionOnlyGroup,
         voltageCheckBox,

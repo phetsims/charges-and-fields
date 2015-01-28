@@ -124,9 +124,7 @@ define( function( require ) {
       listener: function() {
         model.reset();
         measuringTape.reset();
-      },
-      right:  this.layoutBounds.maxX - 10,
-      bottom: this.layoutBounds.maxY - 10
+      }
     } );
 
     // Create a measuring tape
@@ -192,24 +190,26 @@ define( function( require ) {
       } );
     } );
 
-
     // layout the objects
-    controlPanel.right = this.layoutBounds.maxX - 20;
-    controlPanel.top = 20;
+    controlPanel.right = this.layoutBounds.maxX - 30;
+    controlPanel.top = 30;
     gridNode.centerX = this.layoutBounds.centerX;
     gridNode.centerY = this.layoutBounds.centerY;
+    resetAllButton.right = this.layoutBounds.maxX - 30;
+    resetAllButton.bottom = this.layoutBounds.maxY - 20;
 
-    this.addChild( electricPotentialFieldNode );
-    this.addChild( gridNode );
+
+    this.addChild( electricPotentialFieldNode ); // it is the bottom of the z-order
+    this.addChild( gridNode ); //
     this.addChild( electricFieldGridNode );
-    this.addChild( equipotentialLineNode );
     this.addChild( electricFieldLineNode );
+    this.addChild( equipotentialLineNode );
     this.addChild( controlPanel );
     this.addChild( resetAllButton );
-    this.addChild( electricPotentialSensorNode );
     this.addChild( chargeAndSensorEnclosure );
+    this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );
-    this.addChild( draggableElementsLayer );
+    this.addChild( draggableElementsLayer ); // at the top of the z-order
 
     //TODO: Delete when done with the layout
     ////////////////////////////////////////////////////////////////
