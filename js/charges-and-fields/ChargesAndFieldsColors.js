@@ -69,7 +69,7 @@ define( function( require ) {
     },
     voltageLabel: {
       default: new Color( 255, 255, 255 ),
-      projector: new Color( 255, 25, 255 )
+      projector: new Color( 0, 0, 0 )
     },
     equipotentialLine: {
       default: new Color( 50, 255, 100 ),
