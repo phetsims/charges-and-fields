@@ -121,15 +121,15 @@ define( function( require ) {
     },
     buttonBaseColor: {
       default: new Color( 200, 200, 200 ),
-      projector: new Color( 60, 60, 60 )
+      projector: new Color( 200, 200, 200 )
     },
     electricPotentialPanelTitleText: {
       default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 255, 255, 255 )
     },
     electricPotentialSensorTextPanelTextFill: {
       default: new Color( 0, 0, 0 ),
-      projector: new Color( 255, 255, 255 )
+      projector: new Color( 0, 0, 0 )
     },
     electricPotentialSensorTextPanelBorder: {
       default: new Color( 0, 0, 0 ),
@@ -140,7 +140,7 @@ define( function( require ) {
       projector: new Color( 0, 0, 0 )
     },
     electricPotentialSensorBorder: {
-      default: new Color( 255, 255, 255 ),
+      default: new Color( 210, 210, 210 ),
       projector: new Color( 150, 150, 150 )
     },
     electricPotentialSensorBackgroundFill: {
