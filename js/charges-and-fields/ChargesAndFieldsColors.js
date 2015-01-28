@@ -89,7 +89,7 @@ define( function( require ) {
     },
     electricFieldSensorArrow: {
       default: new Color( 255, 0, 0 ),
-      projector: new Color( 0, 0, 255 )
+      projector: new Color( 255, 0, 0 )
     },
     electricFieldSensorLabel: {
       default: new Color( 229, 229, 126 ),
@@ -137,7 +137,7 @@ define( function( require ) {
     },
     electricPotentialSensorTextPanelBackground: {
       default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 255, 255, 255 )
     },
     electricPotentialSensorBorder: {
       default: new Color( 210, 210, 210 ),
