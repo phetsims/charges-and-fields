@@ -21,14 +21,14 @@ define( function( require ) {
     },
     controlPanelBorder: {
       default: new Color( 210, 210, 210 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 192, 192, 192 )
     },
     controlPanelFill: {
       default: new Color( 10, 10, 10 ),
-      projector: new Color( 240, 240, 240 )
+      projector: new Color( 238, 238, 238 )
     },
     controlPanelText: {
-      default: new Color( 255, 255, 255 ),
+      default: new Color( 229, 229, 126 ),
       projector: new Color( 0, 0, 0 )
     },
     controlPanelTextDisabled: {
@@ -41,11 +41,11 @@ define( function( require ) {
     },
     enclosureFill: {
       default: new Color( 10, 10, 10 ),
-      projector: new Color( 240, 240, 240 )
+      projector: new Color( 238, 238, 238 )
     },
     enclosureBorder: {
       default: new Color( 210, 210, 210 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 192, 192, 192 )
     },
     checkBox: {
       default: new Color( 230, 230, 230 ),
@@ -53,7 +53,7 @@ define( function( require ) {
     },
     checkBoxDisabled: {
       default: new Color( 100, 100, 100 ),
-      projector: new Color( 128, 128, 128 )
+      projector: new Color( 192, 192, 192 )
     },
     checkBoxBackground: {
       default: new Color( 30, 30, 30 ),
@@ -73,18 +73,18 @@ define( function( require ) {
     },
     equipotentialLine: {
       default: new Color( 50, 255, 100 ),
-      projector: new Color( 255, 25, 255 )
+      projector: new Color( 0, 0, 0 )
     },
     measuringTapeText: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
     },
     electricFieldSensorCircleFill: {
-      default: new Color( 255, 189, 0 ),
-      projector: new Color( 255, 155, 55 )
+      default: new Color( 255, 255, 0 ),
+      projector: new Color( 255, 153, 0 )
     },
     electricFieldSensorCircleStroke: {
-      default: new Color( 255, 255, 255 ),
+      default: new Color( 128, 120, 133 ),
       projector: new Color( 0, 0, 0 )
     },
     electricFieldSensorArrow: {
@@ -92,20 +92,20 @@ define( function( require ) {
       projector: new Color( 0, 0, 255 )
     },
     electricFieldSensorLabel: {
-      default: new Color( 255, 255, 255 ),
+      default: new Color( 229, 229, 126 ),
       projector: new Color( 0, 0, 0 )
     },
     gridStroke: {
       default: new Color( 50, 50, 50 ),
-      projector: new Color( 200, 200, 200 )
+      projector: new Color( 255, 204, 51 )
     },
     gridLengthScaleArrowStroke: {
       default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 255, 0, 0 )
     },
     gridLengthScaleArrowFill: {
       default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 255, 153, 0 )
     },
     gridTextFill: {
       default: new Color( 255, 255, 255 ),
@@ -141,15 +141,15 @@ define( function( require ) {
     },
     electricPotentialSensorBorder: {
       default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 150, 150, 150 )
     },
     electricPotentialSensorBackgroundFill: {
-      default: new Color( 40, 90, 255 ),
-      projector: new Color( 50, 150, 255 )
+      default: new Color( 52, 50, 159 ),
+      projector: new Color( 52, 60, 159 )
     },
     electricFieldGridSaturation: {
       default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      projector: new Color( 255, 0, 0 )
     },
     electricFieldGridZero: {
       default: new Color( 0, 0, 0 ),
