@@ -99,6 +99,18 @@ define( function( require ) {
         } );
       } );
 
+      // TODO this is just a hack find a better way to hook up colors.
+      ChargesAndFieldsColors.link( 'electricFieldGridZero', function() {
+        // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
+        if ( directionOnlyIsVisibleProperty.value ) {
+          arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
+        }
+        else {
+          arrowNode.fill = getColorElectricFieldMagnitude( positionInModel, electricFieldSensor.electricField.magnitude() );
+        }
+      } );
+
+
       electricFieldGridNode.addChild( arrowNode );
       electricFieldGridNode.addChild( circle ); //circle should come after arrowNode
     } );

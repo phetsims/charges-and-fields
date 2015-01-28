@@ -9,12 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
 
+
+  // images
+  var pencilImage = require( 'image!CHARGES_AND_FIELDS/pencil.png' );
 
   /**
    * @param {Object} [options]
@@ -24,7 +28,8 @@ define( function( require ) {
 
     options = _.extend( {
       baseColor: 'white',
-      iconWidth: 300 // width of pencil icon, used for scaling, the aspect ratio will determine height
+      iconWidth: 20,
+      iconHeight: 18
     }, options );
 
     // eraser
@@ -173,7 +178,10 @@ define( function( require ) {
         part2Path, part3Path, part4Path, part5Path, part6Path, part7Path, part8Path, part9Path, part10Path, part11Path ]
     } );
 
-    options.content.scale( options.iconWidth / options.content.width );
+    // pencil icon
+    options.content = new Image( pencilImage );
+
+    options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
     RectangularPushButton.call( this, options );
   }

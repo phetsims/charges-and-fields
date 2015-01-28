@@ -24,14 +24,15 @@ define( function( require ) {
   var sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
 
   // constants
-  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
+  //var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
   var FONT = ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT;
   var DATA_POINT_CREATOR_OFFSET_POSITIONS = [
     // Offsets used for initial position of point . Empirically determined.
-    new Vector2( (0.8) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS ),
-    new Vector2( (0.8) * CIRCLE_RADIUS, (-0.7) * CIRCLE_RADIUS ),
-    new Vector2( (-0.9) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS ),
-    new Vector2( (-0.6) * CIRCLE_RADIUS, (-0.75) * CIRCLE_RADIUS )
+    //new Vector2( (0.8) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS ),
+    //new Vector2( (0.8) * CIRCLE_RADIUS, (-0.7) * CIRCLE_RADIUS ),
+    //new Vector2( (-0.9) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS ),
+    //new Vector2( (-0.6) * CIRCLE_RADIUS, (-0.75) * CIRCLE_RADIUS )
+    new Vector2( 0, 0 )
   ];
 
   /**
@@ -42,7 +43,7 @@ define( function( require ) {
    * @param {Node} negativeChargedParticleRepresentation - visual representation of a negative charge
    * @param {Node} electricFieldSensorRepresentation -visual representation of an electric field sensor (doesn't include an arrow or text labels)
    * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
-   * @param {ObservableArray} electricFieldSensors -- observable array in the model that contains all the electric field sensors
+   * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field sensors
    * @param {Bounds2} bounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor

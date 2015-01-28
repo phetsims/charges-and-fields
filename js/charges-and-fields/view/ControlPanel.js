@@ -108,18 +108,19 @@ define( function( require ) {
       controlPanel.stroke = color;
     } );
 
-    ChargesAndFieldsColors.link( 'controlPanelTextDisabled', function( color ) {
-      electricFieldText.fillDisabled = color;
-      directionOnlyText.fillDisable = color;
-      voltageText.fillDisabled = color;
-      valuesText.fillDisabled = color;
-      gridText.fillDisable = color;
-      tapeMeasureText.fillDisabled = color;
-    } );
+    //ChargesAndFieldsColors.link( 'controlPanelTextDisabled', function( color ) {
+    //  electricFieldText.fillDisabled = color;
+    //  directionOnlyText.fillDisable = color;
+    //  voltageText.fillDisabled = color;
+    //  valuesText.fillDisabled = color;
+    //  gridText.fillDisable = color;
+    //  tapeMeasureText.fillDisabled = color;
+    //} );
 
     ChargesAndFieldsColors.link( 'controlPanelText', function( color ) {
       electricFieldText.fill = color;
-      directionOnlyText.fill = color;
+      // TODO another hack
+      directionOnlyText.fill = eFieldIsVisibleProperty.value ? color : ChargesAndFieldsColors.controlPanelTextDisabled;
       voltageText.fill = color;
       valuesText.fill = color;
       gridText.fill = color;

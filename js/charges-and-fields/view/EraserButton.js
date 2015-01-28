@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -16,6 +17,8 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
 
+  // images
+  var eraserImage = require( 'image!CHARGES_AND_FIELDS/eraser.png' );
 
   /**
    * @param {Object} [options]
@@ -25,7 +28,8 @@ define( function( require ) {
 
     options = _.extend( {
       baseColor: '#F2E916',
-      iconWidth: 20 // width of eraser icon, used for scaling, the aspect ratio will determine height
+      iconWidth: 20,
+      iconHeight: 18
     }, options );
 
     var sideLinearGradient = new LinearGradient( 204.9355, 81.1113, 108.6211, 81.1113 ).
@@ -105,7 +109,10 @@ define( function( require ) {
     // eraser icon
     options.content = new Node( { children: [ sidePath, frontPath, topPath ] } );
 
-    options.content.scale( options.iconWidth / options.content.width );
+    // eraser icon
+    options.content = new Image( eraserImage );
+
+    options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
     RectangularPushButton.call( this, options );
   }
