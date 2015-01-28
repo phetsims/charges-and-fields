@@ -640,7 +640,7 @@ define( function( require ) {
           var equipotentialLine = {};
 
           if ( position ) {
-            equipotentialLine.position = position
+            equipotentialLine.position = position;
           }
           else {
             // use the location of the electric Potential Sensor as default position
