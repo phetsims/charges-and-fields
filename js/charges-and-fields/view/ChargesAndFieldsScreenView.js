@@ -215,22 +215,22 @@ define( function( require ) {
     ////////////////////////////////////////////////////////////////
     //Show the mock-up and a slider to change its transparency
     //////////////////////////////////////////////////////////////
-    var mockup01OpacityProperty = new Property( 0.0 );
-    var mockup02OpacityProperty = new Property( 0.0 );
-
-    var image01 = new Image( mockup01Image, { pickable: false } );
-    var image02 = new Image( mockup02Image, { pickable: false } );
-
-    image01.scale( this.layoutBounds.height / image01.height );
-    image02.scale( this.layoutBounds.height / image02.height );
-
-    mockup01OpacityProperty.linkAttribute( image01, 'opacity' );
-    mockup02OpacityProperty.linkAttribute( image02, 'opacity' );
-    this.addChild( image01 );
-    this.addChild( image02 );
-
-    this.addChild( new HSlider( mockup02OpacityProperty, { min: 0, max: 1 }, { top: 200, left: 20 } ) );
-    this.addChild( new HSlider( mockup01OpacityProperty, { min: 0, max: 1 }, { top: 300, left: 20 } ) );
+    //var mockup01OpacityProperty = new Property( 0.0 );
+    //var mockup02OpacityProperty = new Property( 0.0 );
+    //
+    //var image01 = new Image( mockup01Image, { pickable: false } );
+    //var image02 = new Image( mockup02Image, { pickable: false } );
+    //
+    //image01.scale( this.layoutBounds.height / image01.height );
+    //image02.scale( this.layoutBounds.height / image02.height );
+    //
+    //mockup01OpacityProperty.linkAttribute( image01, 'opacity' );
+    //mockup02OpacityProperty.linkAttribute( image02, 'opacity' );
+    //this.addChild( image01 );
+    //this.addChild( image02 );
+    //
+    //this.addChild( new HSlider( mockup02OpacityProperty, { min: 0, max: 1 }, { top: 200, left: 20 } ) );
+    //this.addChild( new HSlider( mockup01OpacityProperty, { min: 0, max: 1 }, { top: 300, left: 20 } ) );
     /////////////////////////////////////////////////////////////////////////
 
   }
