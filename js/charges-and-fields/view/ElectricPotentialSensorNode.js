@@ -18,6 +18,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -51,7 +52,7 @@ define( function( require ) {
 
     // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
     var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
-    this.addChild( circle );
+
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function( color ) {
       circle.stroke = color;
@@ -64,16 +65,31 @@ define( function( require ) {
       .lineTo( 0, CIRCLE_RADIUS );
     var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
 
-    this.addChild( crosshair );
+
     ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
       crosshair.stroke = color;
     } );
 
+    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
+
+    // TODO do i need a new color
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+      crosshairMount.fill = color;
+      crosshairMount.stroke = color;
+    } );
+
     // Create and add the panel of the sensor with the readout and push buttons
     var electricPotentialSensorPanel = new ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine );
+
+    this.addChild( crosshairMount );
+    this.addChild( crosshair );
+    this.addChild( circle );
     this.addChild( electricPotentialSensorPanel );
-    electricPotentialSensorPanel.centerX = circle.centerX;
-    electricPotentialSensorPanel.top = circle.bottom;
+
+    crosshairMount.centerX = circle.centerX;
+    crosshairMount.top = circle.bottom;
+    electricPotentialSensorPanel.centerX = crosshairMount.centerX;
+    electricPotentialSensorPanel.top = crosshairMount.bottom;
 
     // Register for synchronization with model.
     electricPotentialSensor.positionProperty.link( function( position ) {

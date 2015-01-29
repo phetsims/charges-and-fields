@@ -15,6 +15,7 @@ define( function( require ) {
   var EraserButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EraserButton' );
   // var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
@@ -22,13 +23,16 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   // tools for drawing
   //var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  //var Node = require( 'SCENERY/nodes/Node' );
+  var Node = require( 'SCENERY/nodes/Node' );
   //var Path = require( 'SCENERY/nodes/Path' );
   //var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   //var Shape = require( 'KITE/Shape' );
 
-  //strings
+  // strings
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
+
+  // images
+  var equipotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/equipotentialLinePanelOutline.png' );
 
   /**
    * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
@@ -153,11 +157,18 @@ define( function( require ) {
     //content.top=10;
     //content.centerX=0;
 
-    //Node.call( this );
-    Panel.call( this, content, options );
+    Node.call( this );
+    //Panel.call( this, content, options );
 
     //this.addChild( frontPath );
-    //this.addChild( content );
+
+
+    var outlineImage = new Image( equipotentialLinePanelOutlineImage );
+    outlineImage.scale( 1.2 * content.width / outlineImage.width );
+    outlineImage.centerX = content.centerX;
+    outlineImage.top = content.top - 10;
+    this.addChild( outlineImage );
+    this.addChild( content );
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorBorder', function( color ) {
       self.stroke = color;
@@ -169,5 +180,5 @@ define( function( require ) {
 
   }
 
-  return inherit( Panel, ElectricPotentialSensorPanel );
+  return inherit( Node, ElectricPotentialSensorPanel );
 } );
