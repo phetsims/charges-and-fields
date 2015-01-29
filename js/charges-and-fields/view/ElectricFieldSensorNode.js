@@ -89,7 +89,7 @@ define( function( require ) {
       var angle = electricField.angle(); // angle from the model, in radians
 
       // Update length and direction of the arrow
-      arrowNode.setTailAndTip( 0, 0, magnitude, 0 );
+      arrowNode.setTailAndTip( 0, 0, magnitude * 15, 0 );  // arbitrary multiplicative factor for the view
       // note that the angleInView = -1 * angleInModel
       // since the vertical direction is reversed between the view and the model
       arrowNode.setRotation( -1 * angle );
