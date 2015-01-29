@@ -104,13 +104,6 @@ define( function( require ) {
     // Create a visual grid with major and minor lines on the view
     var gridNode = new GridNode( modelViewTransform, model.gridIsVisibleProperty, model.valuesIsVisibleProperty );
 
-    // Create a draggable but dragBound Measuring Tape
-    var tape_options = {
-      dragBounds: this.layoutBounds.eroded( 5 ),
-      modelViewTransform: modelViewTransform,
-      basePositionProperty: new Property( new Vector2( 100, 100 ) )
-    };
-
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ControlPanel(
       model.eFieldIsVisibleProperty,
@@ -128,11 +121,17 @@ define( function( require ) {
       }
     } );
 
+    // Create a draggable but dragBound Measuring Tape
+    var tape_options = {
+      dragBounds: this.layoutBounds.eroded( 5 ),
+      modelViewTransform: modelViewTransform,
+      basePositionProperty: new Property( new Vector2( 100, 100 ) )
+    };
+
     // Create a measuring tape
     var measuringTape = new MeasuringTape( model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
       tape_options );
 
-    // TODO: doesn't work: find fix
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
     } );
