@@ -25,8 +25,8 @@ define( function( require ) {
   var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
   var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
-  var HSlider = require( 'SUN/HSlider' );
-  var Image = require( 'SCENERY/nodes/Image' );
+  //var HSlider = require( 'SUN/HSlider' );
+  //var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
@@ -38,8 +38,8 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var mockup01Image = require( 'image!CHARGES_AND_FIELDS/mockup01.png' );
-  var mockup02Image = require( 'image!CHARGES_AND_FIELDS/mockup02.png' );
+  //var mockup01Image = require( 'image!CHARGES_AND_FIELDS/mockup01.png' );
+  //var mockup02Image = require( 'image!CHARGES_AND_FIELDS/mockup02.png' );
 
   /**
    *
@@ -107,7 +107,8 @@ define( function( require ) {
     // Create a draggable but dragBound Measuring Tape
     var tape_options = {
       dragBounds: this.layoutBounds.eroded( 5 ),
-      modelViewTransform: modelViewTransform
+      modelViewTransform: modelViewTransform,
+      basePositionProperty: new Property( new Vector2( 100, 100 ) )
     };
 
     // Create the electric control panel on the upper right hand side
