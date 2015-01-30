@@ -109,8 +109,8 @@ define( function( require ) {
       //------------------------
 
 
-      // for performance reason, the electric field sensors on the grid is calculated and updated only if their
-      // visibility is set to true
+      // for performance reason, the electric field of the sensors on the grid is calculated and updated only if the
+      // visibility of the grid is set to true
       this.isElectricFieldGridVisibleProperty.link( function( isVisible ) {
         if ( isVisible === true ) {
           thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
@@ -514,8 +514,8 @@ define( function( require ) {
           return null;
         }
         var stepCounter = 0;
-        var stepMax = 3000;
-        var epsilonDistance = 0.01;//step length along equipotential in meters
+        var stepMax = 500; // the product of stepMax and epsilonDistance should be larger than maxDistance
+        var epsilonDistance = 0.05;//step length along equipotential in meters
         var readyToBreak = false;
         var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
         var nextPositionClockwise;
@@ -528,7 +528,7 @@ define( function( require ) {
         var initialElectricPotential = this.getElectricPotential( position );
 
         while ( stepCounter < stepMax &&
-                currentPositionClockwise.magnitude() < maxDistance &&
+                currentPositionClockwise.magnitude() < maxDistance ||
                 currentPositionCounterClockwise.magnitude() < maxDistance ) {
 
           nextPositionClockwise = this.getNextPositionAlongEquipotentialWithVoltage( currentPositionClockwise, initialElectricPotential, epsilonDistance );
