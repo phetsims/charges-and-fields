@@ -152,15 +152,30 @@ define( function( require ) {
           thisModel.clearEquipotentialLines();
           thisModel.clearElectricFieldLines();
 
+          oldPosition = null;
           // convenience variable
           var charge = chargedParticle.charge;
 
+          // TODO: find out if it is really necessary to take the diff instead of the sum
+          // It would greatly simplify the code if you just take the sum
+
           // update the Electric Potential Sensor
-          thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
+          if ( oldPosition === null ) {
+            thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
+          }
+          else {
+            thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange( thisModel.electricPotentialSensor.position, position, oldPosition, charge );
+          }
 
           // update the Electric Field Sensors
           thisModel.electricFieldSensors.forEach( function( sensorElement ) {
-            sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+            if ( oldPosition === null ) {
+              sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+            }
+            else {
+              // electricField is a property: we want to allocate a new vector to trigger an update in the view.
+              sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+            }
           } );
 
           // update the Electric Field Grid Sensors
