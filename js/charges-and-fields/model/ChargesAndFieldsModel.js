@@ -90,7 +90,9 @@ define( function( require ) {
       this.electricFieldLinesArray = new ObservableArray();
 
       //----------------------------------------------------------------------------------------
-      // Hook ups listeners
+      //
+      // Hook up all the listeners the model
+      //
       //----------------------------------------------------------------------------------------
 
       //------------------------
@@ -167,7 +169,7 @@ define( function( require ) {
                 sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
               }
               else {
-                sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+                sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
               }
             } );
           }
