@@ -22,7 +22,7 @@ define( function( require ) {
     var Vector2 = require( 'DOT/Vector2' );
 
     //constants
-    var K_CONSTANT = 9; // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is is Volt/meter
+    var K_CONSTANT = 9; // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
     var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
     var WIDTH = ChargesAndFieldsConstants.WIDTH;
     var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
@@ -43,7 +43,7 @@ define( function( require ) {
         valuesIsVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
         gridIsVisible: false,  //  control the visibility of the simple grid with minor and major axes
         tapeMeasureIsVisible: false, // control the visibility of the measuring tape
-        tapeMeasureUnits: { name: 'cm', multiplier: 100 } // need for the measuring tape scenery node
+        tapeMeasureUnits: { name: 'cm', multiplier: 100 } // needed for the measuring tape scenery node
       } );
       // @public read-only
       this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the sim play ground
@@ -77,8 +77,10 @@ define( function( require ) {
         spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
         onOrigin: false
       } );
+
       // @public read-only
       this.equipotentialLinesArray = new ObservableArray();
+
       // @public read-only
       this.electricFieldLinesArray = new ObservableArray();
 
@@ -96,7 +98,7 @@ define( function( require ) {
         }
       } );
 
-      // for performance reason, the electric potential is calculated and updated only if the check is set to visible
+      // for performance reason, the electric potential is calculated and updated only if it is set to visible
       this.voltageIsVisibleProperty.link( function( isVisible ) {
         if ( isVisible ) {
           thisModel.electricPotentialGrid.forEach( function( sensorElement ) {
@@ -105,9 +107,10 @@ define( function( require ) {
         }
       } );
 
-      // if any charges move , we need to update all the sensors
+      // if any charges move, we need to update all the sensors
       this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
 
+        // send a trigger signal (go back to origin) if the charge particle is over the enclosure
         chargedParticle.userControlledProperty.link( function( userControlled ) {
           if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
             chargedParticle.animating = true;
@@ -157,6 +160,7 @@ define( function( require ) {
       } );
 
 
+      //TODO this seems very redundant with the code for adding a particle
       // if any charge is removed, we need to update all the sensors
       this.chargedParticles.addItemRemovedListener( function() {
 
@@ -193,8 +197,9 @@ define( function( require ) {
         electricFieldSensor.positionProperty.link( function( position ) {
           electricFieldSensor.electricField = thisModel.getElectricField( position );
         } );
-        electricFieldSensor.userControlledProperty.link( function( userControlled ) {
 
+        // send a trigger signal (go back to origin) if the electric field sensor is over the enclosure
+        electricFieldSensor.userControlledProperty.link( function( userControlled ) {
           if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
             electricFieldSensor.animating = true;
           }
@@ -576,25 +581,30 @@ define( function( require ) {
           electricPotential = this.getElectricPotential( position );
         }
 
-        var electricPotentialMax = 40; // voltage (in volts) at which color will saturate to colorMax
-        var electricPotentialMin = -40; // voltage at which color will saturate to colorMin
 
-        var colorMax = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;   // for electricPotentialMax
+        var electricPotentialMax = 40; // voltage (in volts) at which color will saturate to colorMax
+        var electricPotentialMin = -40; // voltage at which color will saturate to minColor
+
+        // Color constants
+        var maxColor = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;   // for electricPotentialMax
         var backgroundColor = ChargesAndFieldsColors.electricPotentialGridZero; // for electric Potential of Zero
-        var colorMin = ChargesAndFieldsColors.electricPotentialGridSaturationNegative; // for electricPotentialMin
+        var minColor = ChargesAndFieldsColors.electricPotentialGridSaturationNegative; // for electricPotentialMin
 
         var finalColor;
 
-        //clamp the linear interpolation function;
+        // a piecewise function is used to interpolate
+
+        // for positive potential
         if ( electricPotential > 0 ) {
-          var linearInterpolationPositive = new LinearFunction( 0, electricPotentialMax, 0, 1, true );
-          var distancePositive = linearInterpolationPositive( electricPotential );
-          finalColor = interpolateRGBA( backgroundColor, colorMax, distancePositive );
+          var linearInterpolationPositive = new LinearFunction( 0, electricPotentialMax, 0, 1, true );  // clamp the linear interpolation function;
+          var distance = linearInterpolationPositive( electricPotential );
+          finalColor = interpolateRGBA( backgroundColor, maxColor, distance ); //distance must be between 0 and 1
         }
+        // for negative (or zero) potentential
         else {
-          var linearInterpolationNegative = new LinearFunction( electricPotentialMin, 0, 0, 1, true );
-          var distanceNegative = linearInterpolationNegative( electricPotential );
-          finalColor = interpolateRGBA( colorMin, backgroundColor, distanceNegative );
+          var linearInterpolationNegative = new LinearFunction( electricPotentialMin, 0, 0, 1, true );  // clamp the linear interpolation function;
+          var distance = linearInterpolationNegative( electricPotential ); //
+          finalColor = interpolateRGBA( minColor, backgroundColor, distance ); // distance must be between 0 and 1
         }
         return finalColor;
       },
@@ -606,7 +616,6 @@ define( function( require ) {
        * @param {number} [electricFieldMagnitude] -(optional argument)
        * @returns {Color}
        *
-       * UNUSED
        */
       getColorElectricFieldMagnitude: function( position, electricFieldMagnitude ) {
 
@@ -618,14 +627,14 @@ define( function( require ) {
           electricFieldMag = electricFieldMagnitude;
         }
 
-        var colorMax = ChargesAndFieldsColors.electricFieldGridSaturation;   // for electricPotentialMax
+        var maxColor = ChargesAndFieldsColors.electricFieldGridSaturation;   // for electricPotentialMax
         var backgroundColor = ChargesAndFieldsColors.electricFieldGridZero; //  for zero electric Field
-        var electricFieldMax = 5; // electricField at which color will saturate to colorMax (in Volts/meter)
+        var maxElectricFieldMagnitude = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
 
-        var linearInterpolationPositive = new LinearFunction( 0, electricFieldMax, 0, 1, true );
-        var distancePositive = linearInterpolationPositive( electricFieldMag );
+        var linearInterpolationPositive = new LinearFunction( 0, maxElectricFieldMagnitude, 0, 1, true ); // true clamps the linear interpolation function;
+        var distance = linearInterpolationPositive( electricFieldMag ); // a value between 0 and 1
 
-        return interpolateRGBA( backgroundColor, colorMax, distancePositive );
+        return interpolateRGBA( backgroundColor, maxColor, distance );
       },
 
       /**
