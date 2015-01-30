@@ -373,7 +373,7 @@ define( function( require ) {
           var displacementVector = position.minus( chargedParticle.position );
           electricField.add( displacementVector.multiplyScalar( (chargedParticle.charge) / distancePowerCube ) );
         } );
-        electricField.multiplyScalar( K_CONSTANT );/////prefactor depends on units
+        electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
         return electricField;
       },
 
@@ -389,7 +389,7 @@ define( function( require ) {
           var distance = chargedParticle.position.distance( position );
           electricPotential += (chargedParticle.charge) / distance;
         } );
-        electricPotential = electricPotential * K_CONSTANT;/////prefactor depends on units
+        electricPotential *= K_CONSTANT; // prefactor depends on units
         return electricPotential;
 
       },
@@ -417,17 +417,17 @@ define( function( require ) {
        * @param {Vector2} position
        * @param {number} voltage
        * @param {number} deltaDistance - a distance in meters, can be positive or negative
-       * @returns {Vector2} final position
+       * @returns {Vector2} finalPosition
        */
       getNextPositionAlongEquipotentialWithVoltage: function( position, voltage, deltaDistance ) {
         var initialElectricField = this.getElectricField( position );
-        var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); //normalized Vector along equipotential
-        var midwayPosition = position.plus( equipotentialNormalizedVector.timesScalar( deltaDistance ) );
-        var midwayElectricField = this.getElectricField( midwayPosition );
-        var midwayElectricPotential = this.getElectricPotential( midwayPosition );
+        var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // normalized Vector along equipotential
+        var midwayPosition = ( equipotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // a Vector2
+        var midwayElectricField = this.getElectricField( midwayPosition ); // a Vector2
+        var midwayElectricPotential = this.getElectricPotential( midwayPosition ); // a number
         var deltaElectricPotential = midwayElectricPotential - voltage;
-        var deltaPosition = midwayElectricField.timesScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() );
-        var finalPosition = midwayPosition.plus( deltaPosition );
+        var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() );
+        var finalPosition = midwayPosition.add( deltaPosition );
         return finalPosition;
       },
 
@@ -442,11 +442,11 @@ define( function( require ) {
        */
       getNextPositionAlongElectricField: function( position, deltaDistance ) {
         var initialElectricField = this.getElectricField( position );
-        var midwayDisplacement = initialElectricField.normalized().timesScalar( deltaDistance / 2 );
-        var midwayPosition = position.plus( midwayDisplacement );
+        var midwayDisplacement = initialElectricField.normalized().multiplyScalar( deltaDistance / 2 );
+        var midwayPosition = midwayDisplacement.add( position );
         var midwayElectricField = this.getElectricField( midwayPosition );
-        var deltaDisplacement = midwayElectricField.normalized().timesScalar( deltaDistance );
-        var finalPosition = position.plus( deltaDisplacement );
+        var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
+        var finalPosition = deltaDisplacement.add( position );
         return finalPosition;
       },
 
@@ -600,7 +600,7 @@ define( function( require ) {
           var distance = linearInterpolationPositive( electricPotential );
           finalColor = interpolateRGBA( backgroundColor, maxColor, distance ); //distance must be between 0 and 1
         }
-        // for negative (or zero) potentential
+        // for negative (or zero) potential
         else {
           var linearInterpolationNegative = new LinearFunction( electricPotentialMin, 0, 0, 1, true );  // clamp the linear interpolation function;
           var distance = linearInterpolationNegative( electricPotential ); //
