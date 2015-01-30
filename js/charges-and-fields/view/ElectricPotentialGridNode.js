@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * View for the electric potential Field Node that displays a two dimensional grid of rectangles
+ * View for the electric potential Grid Node that displays a two dimensional grid of rectangles that represent the electric potential field
  *
  * @author Martin Veillette (Berea College)
  */
@@ -26,9 +26,9 @@ define( function( require ) {
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialFieldNode( electricPotentialSensorGrid, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
+    function ElectricPotentialGridNode( electricPotentialSensorGrid, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
 
-      var electricPotentialFieldNode = this;
+      var electricPotentialGridNode = this;
       // Call the super constructor
       CanvasNode.call( this );
 
@@ -38,7 +38,7 @@ define( function( require ) {
         var positionInModel = electricPotentialSensor.position;
         var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
         var rect = new Rectangle( 0, 0, unitDistance, unitDistance, { center: positionInView } );
-        electricPotentialFieldNode.addChild( rect );
+        electricPotentialGridNode.addChild( rect );
 
         electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
           var specialColor = getColorElectricPotential( positionInModel, electricPotential );
@@ -56,12 +56,12 @@ define( function( require ) {
 
 
       isVisibleProperty.link( function( isVisible ) {
-        electricPotentialFieldNode.visible = isVisible;
+        electricPotentialGridNode.visible = isVisible;
       } );
 
     }
 
-    return inherit( CanvasNode, ElectricPotentialFieldNode );
+    return inherit( CanvasNode, ElectricPotentialGridNode );
   }
 )
 ;

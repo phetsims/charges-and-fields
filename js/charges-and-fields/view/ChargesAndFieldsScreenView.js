@@ -19,7 +19,7 @@ define( function( require ) {
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
-  var ElectricPotentialFieldNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialFieldNode' );
+  var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
   //var ElectricPotentialFieldWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialFieldWebGLNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
@@ -63,11 +63,11 @@ define( function( require ) {
     if ( renderer ) {
     } // make lint happy
 
-    //var electricPotentialFieldNode = (renderer === 'webgl') ? new ElectricPotentialFieldNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty) :
-    //    new ElectricPotentialFieldNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty);
+    //var electricPotentialGridNode = (renderer === 'webgl') ? new ElectricPotentialGridNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty) :
+    //    new ElectricPotentialGridNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty);
 
-    // Create the electric Potential field node that displays an array of contiguous rectangles of changing colors
-    var electricPotentialFieldNode = new ElectricPotentialFieldNode(
+    // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
+    var electricPotentialGridNode = new ElectricPotentialGridNode(
       model.electricPotentialSensorGrid,
       model.getColorElectricPotential.bind( model ),
       modelViewTransform,
@@ -199,7 +199,7 @@ define( function( require ) {
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
 
 
-    this.addChild( electricPotentialFieldNode ); // it is the bottom of the z-order
+    this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
     this.addChild( gridNode ); //
     this.addChild( electricFieldGridNode );
     this.addChild( electricFieldLineNode );
