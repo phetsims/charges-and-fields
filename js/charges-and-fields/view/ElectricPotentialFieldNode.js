@@ -20,13 +20,13 @@ define( function( require ) {
 
     /**
      *
-     * @param {Array.<StaticSensorElement>} electricPotentialGrid
+     * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
      * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialFieldNode( electricPotentialGrid, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
+    function ElectricPotentialFieldNode( electricPotentialSensorGrid, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
 
       var electricPotentialFieldNode = this;
       // Call the super constructor
@@ -34,7 +34,7 @@ define( function( require ) {
 
       // find the distance between two adjacent sensors in view coordinates.
       var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
-      electricPotentialGrid.forEach( function( electricPotentialSensor ) {
+      electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
         var positionInModel = electricPotentialSensor.position;
         var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
         var rect = new Rectangle( 0, 0, unitDistance, unitDistance, { center: positionInView } );

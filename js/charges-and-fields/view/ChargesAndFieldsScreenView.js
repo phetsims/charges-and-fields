@@ -63,12 +63,12 @@ define( function( require ) {
     if ( renderer ) {
     } // make lint happy
 
-    //var electricPotentialFieldNode = (renderer === 'webgl') ? new ElectricPotentialFieldNode(model.electricPotentialGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty) :
-    //    new ElectricPotentialFieldNode(model.electricPotentialGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty);
+    //var electricPotentialFieldNode = (renderer === 'webgl') ? new ElectricPotentialFieldNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty) :
+    //    new ElectricPotentialFieldNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty);
 
     // Create the electric Potential field node that displays an array of contiguous rectangles of changing colors
     var electricPotentialFieldNode = new ElectricPotentialFieldNode(
-      model.electricPotentialGrid,
+      model.electricPotentialSensorGrid,
       model.getColorElectricPotential.bind( model ),
       modelViewTransform,
       model.voltageIsVisibleProperty );

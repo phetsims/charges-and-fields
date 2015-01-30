@@ -78,7 +78,7 @@ define( function( require ) {
       } );
 
       // @public read-only
-      this.electricPotentialGrid = thisModel.sensorGridFactory( {
+      this.electricPotentialSensorGrid = thisModel.sensorGridFactory( {
         spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
         onOrigin: false
       } );
@@ -126,7 +126,7 @@ define( function( require ) {
       // for performance reason, the electric potential is calculated and updated only if it is set to visible
       this.voltageIsVisibleProperty.link( function( isVisible ) {
         if ( isVisible ) {
-          thisModel.electricPotentialGrid.forEach( function( sensorElement ) {
+          thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
             sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
           } );
         }
@@ -152,15 +152,16 @@ define( function( require ) {
           thisModel.clearEquipotentialLines();
           thisModel.clearElectricFieldLines();
 
+          // convenience variable
           var charge = chargedParticle.charge;
+
+          // update the Electric Potential Sensor
+          thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
 
           // update the Electric Field Sensors
           thisModel.electricFieldSensors.forEach( function( sensorElement ) {
             sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
           } );
-
-          // update the Electric Potential Sensor
-          thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
 
           // update the Electric Field Grid Sensors
           if ( thisModel.eFieldIsVisible === true ) {
@@ -177,7 +178,7 @@ define( function( require ) {
 
           // update the Electric Potential Grid Sensors
           if ( thisModel.voltageIsVisible === true ) {
-            thisModel.electricPotentialGrid.forEach( function( sensorElement ) {
+            thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
               if ( oldPosition === null ) {
                 sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
               }
@@ -218,7 +219,7 @@ define( function( require ) {
 
         // update the Electric Potential Grid Sensors
         if ( thisModel.voltageIsVisible === true ) {
-          thisModel.electricPotentialGrid.forEach( function( sensorElement ) {
+          thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
             sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
           } );
         }
