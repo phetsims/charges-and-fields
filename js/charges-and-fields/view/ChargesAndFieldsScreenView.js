@@ -57,7 +57,7 @@ define( function( require ) {
       this.layoutBounds.height / ChargesAndFieldsConstants.HEIGHT );
 
     // Check to see if WebGL was prevented by a query parameter
-    var allowWebGL = window.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
+    var allowWebGL = phet.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
     var webGLSupported = Util.isWebGLSupported && allowWebGL;
     var renderer = webGLSupported ? 'webgl' : 'svg';
     if ( renderer ) {
