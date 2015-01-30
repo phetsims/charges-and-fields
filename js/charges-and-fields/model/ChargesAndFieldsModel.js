@@ -45,13 +45,18 @@ define( function( require ) {
         tapeMeasureIsVisible: false, // control the visibility of the measuring tape
         tapeMeasureUnits: { name: 'cm', multiplier: 100 } // needed for the measuring tape scenery node
       } );
+
+      //----------------------------------------------------------------------------------------
+      // Initialize variables
+      //----------------------------------------------------------------------------------------
+
       // @public read-only
       this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the sim play ground
 
       // @public read-only
       this.chargeAndSensorEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
 
-      // Observable arrays of all electric charges
+      // Observable arrays of all draggable electric charges
       // @public
       this.chargedParticles = new ObservableArray();
 
@@ -84,9 +89,23 @@ define( function( require ) {
       // @public read-only
       this.electricFieldLinesArray = new ObservableArray();
 
-      //////////////////////////////////////////
-      //// Hook Up listeners
-      /////////////////////////////////////////////////
+      //----------------------------------------------------------------------------------------
+      // Hook ups listeners
+      //----------------------------------------------------------------------------------------
+
+      //------------------------
+      // Position Listener on the electric potential Sensor
+      //------------------------
+
+      // update the Electric Potential Sensor upon a change of position
+      this.electricPotentialSensor.positionProperty.link( function( position ) {
+        thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( position );
+      } );
+
+      //------------------------
+      // eFieldIsVisible Listener  (update all the electric field grid sensors a.k.a. grid of arrows)
+      //------------------------
+
 
       // for performance reason, the electric field sensors on the grid is calculated and updated only if their
       // visibility is set to true
@@ -98,6 +117,10 @@ define( function( require ) {
         }
       } );
 
+      //------------------------
+      // voltageIsVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric field potential)
+      //------------------------
+
       // for performance reason, the electric potential is calculated and updated only if it is set to visible
       this.voltageIsVisibleProperty.link( function( isVisible ) {
         if ( isVisible ) {
@@ -106,6 +129,10 @@ define( function( require ) {
           } );
         }
       } );
+
+      //------------------------
+      // AddItem Added Listener on the charged Particles Observable Array
+      //------------------------
 
       // if any charges move, we need to update all the sensors
       this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
@@ -159,6 +186,9 @@ define( function( require ) {
         } );
       } );
 
+      //------------------------
+      // AddItem Removed Listener on the charged Particles Observable Array
+      //------------------------
 
       //TODO this seems very redundant with the code for adding a particle
       // if any charge is removed, we need to update all the sensors
@@ -192,6 +222,11 @@ define( function( require ) {
       } );
 
 
+      //------------------------
+      // AddItem Removed Listener on the electric Field Sensors Observable Array
+      //------------------------
+
+
       // update the Electric Field Sensors upon a change of position
       this.electricFieldSensors.addItemAddedListener( function( electricFieldSensor ) {
         electricFieldSensor.positionProperty.link( function( position ) {
@@ -206,10 +241,7 @@ define( function( require ) {
         } );
       } );
 
-      // update the Electric Potential Sensor upon a change of position
-      this.electricPotentialSensor.positionProperty.link( function( position ) {
-        thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( position );
-      } );
+
     }
 
     return inherit( PropertySet, ChargesAndFieldsModel, {
