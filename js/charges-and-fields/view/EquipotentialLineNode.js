@@ -26,10 +26,10 @@ define( function( require ) {
    *
    * @param {ObservableArray.<Object>} equipotentialLinesArray - array of models of equipotentialLine
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} valueIsVisibleProperty - control the visibility of the voltage labels
+   * @param {Property.<boolean>} isValuesVisibleProperty - control the visibility of the voltage labels
    * @constructor
    */
-  function EquipotentialLineNode( equipotentialLinesArray, modelViewTransform, valueIsVisibleProperty ) {
+  function EquipotentialLineNode( equipotentialLinesArray, modelViewTransform, isValuesVisibleProperty ) {
 
     Node.call( this );
 
@@ -60,7 +60,7 @@ define( function( require ) {
     } );
 
     // Control the visibility of the value (voltage) labels
-    valueIsVisibleProperty.linkAttribute( labelNode, 'visible' );
+    isValuesVisibleProperty.linkAttribute( labelNode, 'visible' );
 
     /**
      * Function that generates a label and a path/shape of the equipotential line
