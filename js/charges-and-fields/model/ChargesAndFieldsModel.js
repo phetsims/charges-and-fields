@@ -335,8 +335,8 @@ define( function( require ) {
        * @returns {Vector2}
        */
       getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
-        var newDistancePowerCube = Math.pow( newChargePosition.distance( position ), 3 );
-        var oldDistancePowerCube = Math.pow( oldChargePosition.distance( position ), 3 );
+        var newDistancePowerCube = Math.pow( newChargePosition.distanceSquared( position ), 1.5 );
+        var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
         var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
         var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
         var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
@@ -368,8 +368,8 @@ define( function( require ) {
       getElectricField: function( position ) {
         var electricField = new Vector2( 0, 0 );
         this.chargedParticles.forEach( function( chargedParticle ) {
-          var distance = chargedParticle.position.distance( position );
-          var distancePowerCube = Math.pow( distance, 3 );
+          var distanceSquared = chargedParticle.position.distanceSquared( position );
+          var distancePowerCube = Math.pow( distanceSquared, 1.5 );
           var displacementVector = position.minus( chargedParticle.position );
           electricField.add( displacementVector.multiplyScalar( (chargedParticle.charge) / distancePowerCube ) );
         } );
@@ -591,19 +591,20 @@ define( function( require ) {
         var minColor = ChargesAndFieldsColors.electricPotentialGridSaturationNegative; // for electricPotentialMin
 
         var finalColor;
+        var distance;
 
         // a piecewise function is used to interpolate
 
         // for positive potential
         if ( electricPotential > 0 ) {
           var linearInterpolationPositive = new LinearFunction( 0, electricPotentialMax, 0, 1, true );  // clamp the linear interpolation function;
-          var distance = linearInterpolationPositive( electricPotential );
+          distance = linearInterpolationPositive( electricPotential );
           finalColor = interpolateRGBA( backgroundColor, maxColor, distance ); //distance must be between 0 and 1
         }
         // for negative (or zero) potential
         else {
           var linearInterpolationNegative = new LinearFunction( electricPotentialMin, 0, 0, 1, true );  // clamp the linear interpolation function;
-          var distance = linearInterpolationNegative( electricPotential ); //
+          distance = linearInterpolationNegative( electricPotential ); //
           finalColor = interpolateRGBA( minColor, backgroundColor, distance ); // distance must be between 0 and 1
         }
         return finalColor;
