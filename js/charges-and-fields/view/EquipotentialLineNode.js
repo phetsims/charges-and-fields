@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -45,12 +46,22 @@ define( function( require ) {
     equipotentialLinesArray.addItemAddedListener( function( equipotentialLine ) {
 
       var voltageLabel = labelElectricPotentialLine( equipotentialLine );
+      var rectangle = new Rectangle( 0, 0, voltageLabel.width * 1.5, voltageLabel.height * 1.5,
+        {
+          fill: 'green',
+          stroke: 'white',
+          center: modelViewTransform.modelToViewPosition( equipotentialLine.position )
+        } );
+
       var equipotentialLinePath = traceElectricPotentialLine( equipotentialLine );
+
       lineNode.addChild( equipotentialLinePath );
+      labelNode.addChild( rectangle );
       labelNode.addChild( voltageLabel );
       equipotentialLinesArray.addItemRemovedListener( function removalListener( removedEquipotentialLine ) {
         if ( removedEquipotentialLine === equipotentialLine ) {
           lineNode.removeChild( equipotentialLinePath );
+          labelNode.removeChild( rectangle );
           labelNode.removeChild( voltageLabel );
           //TODO: memory leak: should one unlink the voltageLabel and colorFunction? and similarly for equipotentialLinePath
           equipotentialLinesArray.removeItemRemovedListener( removalListener );
