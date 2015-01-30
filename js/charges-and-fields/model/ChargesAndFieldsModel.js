@@ -37,12 +37,12 @@ define( function( require ) {
       var thisModel = this;
 
       PropertySet.call( thisModel, {
-        eFieldIsVisible: false, // control the visibility of a grid of arrows representing the local electric field
-        directionOnlyIsVisible: false, // controls the color shading in the fill of
-        voltageIsVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
-        valuesIsVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
-        gridIsVisible: false,  //  control the visibility of the simple grid with minor and major axes
-        tapeMeasureIsVisible: false, // control the visibility of the measuring tape
+        isElectricFieldGridVisible: false, // control the visibility of a grid of arrows representing the local electric field
+        isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
+        isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
+        isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
+        isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
+        isTapeMeasureVisible: false, // control the visibility of the measuring tape
         tapeMeasureUnits: { name: 'cm', multiplier: 100 } // needed for the measuring tape scenery node
       } );
 
@@ -105,13 +105,13 @@ define( function( require ) {
       } );
 
       //------------------------
-      // eFieldIsVisible Listener  (update all the electric field grid sensors a.k.a. grid of arrows)
+      // isElectricFieldGridVisible Listener  (update all the electric field grid sensors a.k.a. grid of arrows)
       //------------------------
 
 
       // for performance reason, the electric field sensors on the grid is calculated and updated only if their
       // visibility is set to true
-      this.eFieldIsVisibleProperty.link( function( isVisible ) {
+      this.isElectricFieldGridVisibleProperty.link( function( isVisible ) {
         if ( isVisible === true ) {
           thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
             sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
@@ -120,11 +120,11 @@ define( function( require ) {
       } );
 
       //------------------------
-      // voltageIsVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric field potential)
+      // isElectricPotentialGridVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric field potential)
       //------------------------
 
       // for performance reason, the electric potential is calculated and updated only if it is set to visible
-      this.voltageIsVisibleProperty.link( function( isVisible ) {
+      this.isElectricPotentialGridVisibleProperty.link( function( isVisible ) {
         if ( isVisible ) {
           thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
             sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
@@ -179,7 +179,7 @@ define( function( require ) {
           } );
 
           // update the Electric Field Grid Sensors
-          if ( thisModel.eFieldIsVisible === true ) {
+          if ( thisModel.isElectricFieldGridVisible === true ) {
             thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
               if ( oldPosition === null ) {
                 sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
@@ -192,7 +192,7 @@ define( function( require ) {
           }
 
           // update the Electric Potential Grid Sensors
-          if ( thisModel.voltageIsVisible === true ) {
+          if ( thisModel.isElectricPotentialGridVisible === true ) {
             thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
               if ( oldPosition === null ) {
                 sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
@@ -226,14 +226,14 @@ define( function( require ) {
         thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
 
         // update the Electric Field Grid Sensors
-        if ( thisModel.eFieldIsVisible === true ) {
+        if ( thisModel.isElectricFieldGridVisible === true ) {
           thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
             sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
           } );
         }
 
         // update the Electric Potential Grid Sensors
-        if ( thisModel.voltageIsVisible === true ) {
+        if ( thisModel.isElectricPotentialGridVisible === true ) {
           thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
             sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
           } );

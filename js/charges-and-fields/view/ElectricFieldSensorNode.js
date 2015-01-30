@@ -33,10 +33,10 @@ define( function( require ) {
    * @param {SensorElement} electricFieldSensor
    * @param {Function} addElectricFieldLine - function that add an electricFieldLine to the model
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} valuesIsVisibleProperty
+   * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
-  function ElectricFieldSensorNode( electricFieldSensor, addElectricFieldLine, modelViewTransform, valuesIsVisibleProperty ) {
+  function ElectricFieldSensorNode( electricFieldSensor, addElectricFieldLine, modelViewTransform, isValuesVisibleProperty ) {
 
     ElectricFieldSensorRepresentation.call( this );
 
@@ -102,7 +102,7 @@ define( function( require ) {
     } );
 
     // Show/hide labels
-    valuesIsVisibleProperty.link( function( isVisible ) {
+    isValuesVisibleProperty.link( function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
       directionLabel.visible = isVisible;
     } );

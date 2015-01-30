@@ -38,11 +38,11 @@ define( function( require ) {
   /**
    *
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} gridIsVisibleProperty
-   * @param {Property.<boolean>} valuesIsVisibleProperty
+   * @param {Property.<boolean>} isGridVisibleProperty
+   * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
-  function Grid( modelViewTransform, gridIsVisibleProperty, valuesIsVisibleProperty ) {
+  function Grid( modelViewTransform, isGridVisibleProperty, isValuesVisibleProperty ) {
 
     var thisGrid = this;
 
@@ -139,14 +139,14 @@ define( function( require ) {
     } );
 
     // Show/ Hide the arrow
-    valuesIsVisibleProperty.link( function( isVisible ) {
+    isValuesVisibleProperty.link( function( isVisible ) {
       arrowPath.visible = isVisible;
       text.visible = isVisible;
     } );
 
 
     // Show/ Hide the grid
-    gridIsVisibleProperty.link( function( isVisible ) {
+    isGridVisibleProperty.link( function( isVisible ) {
       thisGrid.visible = isVisible;
     } );
 

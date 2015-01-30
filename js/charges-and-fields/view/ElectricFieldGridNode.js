@@ -25,15 +25,15 @@ define( function( require ) {
    * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
    * @param {Function} getColorElectricFieldMagnitude - A function that maps a color to an Electric Field Magnitude
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} directionOnlyIsVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
-   * @param {Property.<boolean>} eFieldIsVisibleProperty
+   * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
+   * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
    * @constructor
    */
   function ElectricFieldGridNode( electricFieldSensorGrid,
                                   getColorElectricFieldMagnitude,
                                   modelViewTransform,
-                                  directionOnlyIsVisibleProperty,
-                                  eFieldIsVisibleProperty ) {
+                                  isDirectionOnlyElectricFieldGridVisibleProperty,
+                                  isElectricFieldGridVisibleProperty ) {
 
     var electricFieldGridNode = this;
 
@@ -89,7 +89,7 @@ define( function( require ) {
         arrowNode.setRotation( electricFieldInView.angle() );
 
         // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
-        directionOnlyIsVisibleProperty.link( function( isVisible ) {
+        isDirectionOnlyElectricFieldGridVisibleProperty.link( function( isVisible ) {
           if ( isVisible ) {
             arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
           }
@@ -102,7 +102,7 @@ define( function( require ) {
       // TODO this is just a hack find a better way to hook up colors.
       ChargesAndFieldsColors.link( 'electricFieldGridZero', function() {
         // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
-        if ( directionOnlyIsVisibleProperty.value ) {
+        if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
         }
         else {
@@ -116,7 +116,7 @@ define( function( require ) {
     } );
 
     // Show or Hide this node
-    eFieldIsVisibleProperty.link( function( isVisible ) {
+    isElectricFieldGridVisibleProperty.link( function( isVisible ) {
       electricFieldGridNode.visible = isVisible;
     } );
   }

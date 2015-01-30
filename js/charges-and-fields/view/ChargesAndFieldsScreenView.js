@@ -71,21 +71,21 @@ define( function( require ) {
       model.electricPotentialSensorGrid,
       model.getColorElectricPotential.bind( model ),
       modelViewTransform,
-      model.voltageIsVisibleProperty );
+      model.isElectricPotentialGridVisibleProperty );
 
     // Create a grid of electric field arrow sensors
     var electricFieldGridNode = new ElectricFieldGridNode(
       model.electricFieldSensorGrid,
       model.getColorElectricFieldMagnitude.bind( model ),
       modelViewTransform,
-      model.directionOnlyIsVisibleProperty,
-      model.eFieldIsVisibleProperty );
+      model.isDirectionOnlyElectricFieldGridVisibleProperty,
+      model.isElectricFieldGridVisibleProperty );
 
     // Create the scenery node responsible for drawing the equipotential lines
     var equipotentialLineNode = new EquipotentialLineNode(
       model.equipotentialLinesArray,
       modelViewTransform,
-      model.valuesIsVisibleProperty );
+      model.isValuesVisibleProperty );
 
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLineNode = new ElectricFieldLineNode(
@@ -102,16 +102,16 @@ define( function( require ) {
 
 
     // Create a visual grid with major and minor lines on the view
-    var gridNode = new GridNode( modelViewTransform, model.gridIsVisibleProperty, model.valuesIsVisibleProperty );
+    var gridNode = new GridNode( modelViewTransform, model.isGridVisibleProperty, model.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ControlPanel(
-      model.eFieldIsVisibleProperty,
-      model.directionOnlyIsVisibleProperty,
-      model.voltageIsVisibleProperty,
-      model.valuesIsVisibleProperty,
-      model.gridIsVisibleProperty,
-      model.tapeMeasureIsVisibleProperty );
+      model.isElectricFieldGridVisibleProperty,
+      model.isDirectionOnlyElectricFieldGridVisibleProperty,
+      model.isElectricPotentialGridVisibleProperty,
+      model.isValuesVisibleProperty,
+      model.isGridVisibleProperty,
+      model.isTapeMeasureVisibleProperty );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
@@ -129,7 +129,7 @@ define( function( require ) {
     };
 
     // Create a measuring tape
-    var measuringTape = new MeasuringTape( model.tapeMeasureUnitsProperty, model.tapeMeasureIsVisibleProperty,
+    var measuringTape = new MeasuringTape( model.tapeMeasureUnitsProperty, model.isTapeMeasureVisibleProperty,
       tape_options );
 
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
@@ -178,7 +178,7 @@ define( function( require ) {
         addedElectricFieldSensor,
         model.addElectricFieldLine.bind( model ),
         modelViewTransform,
-        model.valuesIsVisibleProperty );
+        model.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.

@@ -29,20 +29,20 @@ define( function( require ) {
 
   /**
    * Control panel constructor
-   * @param {Property.<boolean>} eFieldIsVisibleProperty
-   * @param {Property.<boolean>} directionOnlyIsVisibleProperty
-   * @param {Property.<boolean>} voltageIsVisibleProperty
-   * @param {Property.<boolean>} valuesIsVisibleProperty
-   * @param {Property.<boolean>} gridIsVisibleProperty
-   * @param {Property.<boolean>} tapeMeasureIsVisibleProperty
+   * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
+   * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty
+   * @param {Property.<boolean>} isElectricPotentialGridVisibleProperty
+   * @param {Property.<boolean>} isValuesVisibleProperty
+   * @param {Property.<boolean>} isGridVisibleProperty
+   * @param {Property.<boolean>} isTapeMeasureVisibleProperty
    * @constructor
    */
-  function ControlPanel( eFieldIsVisibleProperty,
-                         directionOnlyIsVisibleProperty,
-                         voltageIsVisibleProperty,
-                         valuesIsVisibleProperty,
-                         gridIsVisibleProperty,
-                         tapeMeasureIsVisibleProperty ) {
+  function ControlPanel( isElectricFieldGridVisibleProperty,
+                         isDirectionOnlyElectricFieldGridVisibleProperty,
+                         isElectricPotentialGridVisibleProperty,
+                         isValuesVisibleProperty,
+                         isGridVisibleProperty,
+                         isTapeMeasureVisibleProperty ) {
 
     var controlPanel = this;
 
@@ -68,12 +68,12 @@ define( function( require ) {
     var gridText = new Text( valuesString, textOptions );
     var tapeMeasureText = new Text( tapeMeasureString, textOptions );
 
-    var electricFieldCheckBox = new CheckBox( electricFieldText, eFieldIsVisibleProperty, checkBoxOptions );
-    var directionOnlyCheckBox = new CheckBox( directionOnlyText, directionOnlyIsVisibleProperty, checkBoxOptions );
-    var voltageCheckBox = new CheckBox( voltageText, voltageIsVisibleProperty, checkBoxOptions );
-    var valuesCheckBox = new CheckBox( gridText, valuesIsVisibleProperty, checkBoxOptions );
-    var gridCheckBox = new CheckBox( valuesText, gridIsVisibleProperty, checkBoxOptions );
-    var tapeMeasureCheckBox = new CheckBox( tapeMeasureText, tapeMeasureIsVisibleProperty, checkBoxOptions );
+    var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldGridVisibleProperty, checkBoxOptions );
+    var directionOnlyCheckBox = new CheckBox( directionOnlyText, isDirectionOnlyElectricFieldGridVisibleProperty, checkBoxOptions );
+    var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialGridVisibleProperty, checkBoxOptions );
+    var valuesCheckBox = new CheckBox( gridText, isValuesVisibleProperty, checkBoxOptions );
+    var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, checkBoxOptions );
+    var tapeMeasureCheckBox = new CheckBox( tapeMeasureText, isTapeMeasureVisibleProperty, checkBoxOptions );
 
 
     var directionOnlyGroup = new Node();
@@ -82,7 +82,7 @@ define( function( require ) {
     directionOnlyGroup.addChild( hStrut );
     directionOnlyGroup.addChild( directionOnlyCheckBox );
 
-    eFieldIsVisibleProperty.link( function( enabled ) {
+    isElectricFieldGridVisibleProperty.link( function( enabled ) {
       directionOnlyCheckBox.enabled = enabled;
       directionOnlyText.fill = enabled ? ChargesAndFieldsColors.controlPanelText : ChargesAndFieldsColors.controlPanelTextDisabled;
     } );
@@ -120,7 +120,7 @@ define( function( require ) {
     ChargesAndFieldsColors.link( 'controlPanelText', function( color ) {
       electricFieldText.fill = color;
       // TODO another hack
-      directionOnlyText.fill = eFieldIsVisibleProperty.value ? color : ChargesAndFieldsColors.controlPanelTextDisabled;
+      directionOnlyText.fill = isElectricFieldGridVisibleProperty.value ? color : ChargesAndFieldsColors.controlPanelTextDisabled;
       voltageText.fill = color;
       valuesText.fill = color;
       gridText.fill = color;
