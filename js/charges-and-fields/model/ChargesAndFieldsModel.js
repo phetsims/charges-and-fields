@@ -169,7 +169,8 @@ define( function( require ) {
                 sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
               }
               else {
-                sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+                // electricField is a property: we want to allocate a new vector to trigger an update in the view.
+                sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
               }
             } );
           }
