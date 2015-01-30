@@ -76,7 +76,7 @@ define( function( require ) {
         headWidth: 16,
         headHeight: 10
       } );
-      arrowNode.center = positionInView.plus( offsetVector );
+      arrowNode.center = offsetVector.add( positionInView );
 
       // Update the orientation of the arrow (and possibly its fill) according to the value of the electric field
       // at the position in the model
