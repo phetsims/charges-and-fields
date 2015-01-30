@@ -339,7 +339,7 @@ define( function( require ) {
         var oldDistancePowerCube = Math.pow( oldChargePosition.distance( position ), 3 );
         var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
         var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
-        var electricFieldChange = (newFieldVector.minus( oldFieldVector )).timesScalar( particleCharge * K_CONSTANT );
+        var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
         return electricFieldChange;
       },
 
@@ -371,9 +371,9 @@ define( function( require ) {
           var distance = chargedParticle.position.distance( position );
           var distancePowerCube = Math.pow( distance, 3 );
           var displacementVector = position.minus( chargedParticle.position );
-          electricField = electricField.plus( displacementVector.timesScalar( (chargedParticle.charge) / distancePowerCube ) );
+          electricField.add( displacementVector.multiplyScalar( (chargedParticle.charge) / distancePowerCube ) );
         } );
-        electricField = electricField.timesScalar( K_CONSTANT );/////prefactor depends on units
+        electricField.multiplyScalar( K_CONSTANT );/////prefactor depends on units
         return electricField;
       },
 
