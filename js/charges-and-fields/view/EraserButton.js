@@ -110,7 +110,8 @@ define( function( require ) {
     options.content = new Node( { children: [ sidePath, frontPath, topPath ] } );
 
     // eraser icon
-    options.content = new Image( eraserImage );
+    //options.content = new Image( eraserImage );
+    options.useless = new Image( eraserImage );
 
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 

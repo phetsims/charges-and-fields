@@ -179,7 +179,8 @@ define( function( require ) {
     } );
 
     // pencil icon
-    options.content = new Image( pencilImage );
+    //options.content = new Image( pencilImage );
+    options.useless = new Image( pencilImage );
 
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
