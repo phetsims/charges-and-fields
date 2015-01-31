@@ -21,7 +21,7 @@ define( function( require ) {
     var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
     var Vector2 = require( 'DOT/Vector2' );
 
-    //constants
+    // constants
     var K_CONSTANT = 9; // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
     var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
     var WIDTH = ChargesAndFieldsConstants.WIDTH;
@@ -51,7 +51,7 @@ define( function( require ) {
       //----------------------------------------------------------------------------------------
 
       // @public read-only
-      this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the sim play ground
+      this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model
 
       // @public read-only
       this.chargeAndSensorEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
