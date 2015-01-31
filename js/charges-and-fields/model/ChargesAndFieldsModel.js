@@ -64,19 +64,20 @@ define( function( require ) {
       // @public
       this.electricFieldSensors = new ObservableArray();
 
-      // electric potential detector
+      // electric potential sensor
       var position = new Vector2( -2.5, -1.0 ); // position of the crosshair on the electric potential sensor
       this.electricPotentialSensor = new SensorElement( position );
       this.electricPotentialSensor.electricField = thisModel.getElectricField( this.electricPotentialSensor.position );
       this.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( this.electricPotentialSensor.position );
 
-      // electric Field Sensors Grid
+      // electric Field Sensor Grid
       // @public read-only
       this.electricFieldSensorGrid = thisModel.sensorGridFactory( {
         spacing: ELECTRIC_FIELD_SENSOR_SPACING,
         onOrigin: true
       } );
 
+      // electric potential Sensor Grid, a.k.a in physics as the electric potential 'field'
       // @public read-only
       this.electricPotentialSensorGrid = thisModel.sensorGridFactory( {
         spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
@@ -112,23 +113,19 @@ define( function( require ) {
       // for performance reason, the electric field of the sensors on the grid is calculated and updated only if the
       // visibility of the grid is set to true
       this.isElectricFieldGridVisibleProperty.link( function( isVisible ) {
-        if ( isVisible === true ) {
-          thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
-            sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-          } );
+        if ( isVisible ) {
+          thisModel.updateElectricFieldSensorGrid();
         }
       } );
 
       //------------------------
-      // isElectricPotentialGridVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric field potential)
+      // isElectricPotentialGridVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric potential field)
       //------------------------
 
       // for performance reason, the electric potential is calculated and updated only if it is set to visible
       this.isElectricPotentialGridVisibleProperty.link( function( isVisible ) {
         if ( isVisible ) {
-          thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-            sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-          } );
+          thisModel.updateElectricPotentialSensorGrid();
         }
       } );
 
@@ -152,55 +149,41 @@ define( function( require ) {
           thisModel.clearEquipotentialLines();
           thisModel.clearElectricFieldLines();
 
-          oldPosition = null;
-          // convenience variable
-          var charge = chargedParticle.charge;
-
-          // TODO: find out if it is really necessary to take the diff instead of the sum
-          // It would greatly simplify the code if you just take the sum
-
-          // update the Electric Potential Sensor
+          // if oldPosition doesn't exist calculate the sensor properties from the charge configurations (from scratch)
           if ( oldPosition === null ) {
-            thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
+            thisModel.updateAllVisibleSensors();
           }
+          // if oldPosition exists calculate the sensor properties from the delta contribution
+          // TODO find out if this is a significant performance enhancement
           else {
-            thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange( thisModel.electricPotentialSensor.position, position, oldPosition, charge );
-          }
+            // convenience variable
+            var charge = chargedParticle.charge;
 
-          // update the Electric Field Sensors
-          thisModel.electricFieldSensors.forEach( function( sensorElement ) {
-            if ( oldPosition === null ) {
-              sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-            }
-            else {
+            // update the Electric Potential Sensor by calculating the change in the electric potential
+            thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange( thisModel.electricPotentialSensor.position, position, oldPosition, charge );
+
+            // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
+            thisModel.electricFieldSensors.forEach( function( sensorElement ) {
               // electricField is a property: we want to allocate a new vector to trigger an update in the view.
               sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
-            }
-          } );
+            } );
 
-          // update the Electric Field Grid Sensors
-          if ( thisModel.isElectricFieldGridVisible === true ) {
-            thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
-              if ( oldPosition === null ) {
-                sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-              }
-              else {
+            // update the Electric Field Grid Sensors, but only if the grid is visible
+            if ( thisModel.isElectricFieldGridVisible === true ) {
+              thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
                 // electricField is a property: we want to allocate a new vector to trigger an update in the view.
+                // let's calculate the change in the electric field due to the change in position of one charge
                 sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
-              }
-            } );
-          }
+              } );
+            }
 
-          // update the Electric Potential Grid Sensors
-          if ( thisModel.isElectricPotentialGridVisible === true ) {
-            thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-              if ( oldPosition === null ) {
-                sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-              }
-              else {
+            // update the Electric Potential Grid Sensors but only if the grid is visible
+            if ( thisModel.isElectricPotentialGridVisible === true ) {
+              thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
+                // calculating the change in the electric potential due to the change in position of one charge
                 sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
-              }
-            } );
+              } );
+            }
           }
         } );
       } );
@@ -209,49 +192,24 @@ define( function( require ) {
       // AddItem Removed Listener on the charged Particles Observable Array
       //------------------------
 
-      //TODO this seems very redundant with the code for adding a particle
       // if any charge is removed, we need to update all the sensors
       this.chargedParticles.addItemRemovedListener( function() {
-
-        // remove equipotential lines and electric field lines when the position of a charged particle changes
+        // Remove equipotential lines and electric field lines when the position of a charged particle changes
         thisModel.clearEquipotentialLines();
         thisModel.clearElectricFieldLines();
-
-        // update the Electric Field Sensors
-        thisModel.electricFieldSensors.forEach( function( sensorElement ) {
-          sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-        } );
-
-        // update the Electric Potential Sensor
-        thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( thisModel.electricPotentialSensor.position );
-
-        // update the Electric Field Grid Sensors
-        if ( thisModel.isElectricFieldGridVisible === true ) {
-          thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
-            sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-          } );
-        }
-
-        // update the Electric Potential Grid Sensors
-        if ( thisModel.isElectricPotentialGridVisible === true ) {
-          thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-            sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-          } );
-        }
+        // Update all the visible sensors
+        thisModel.updateAllVisibleSensors();
       } );
 
-
       //------------------------
-      // AddItem Removed Listener on the electric Field Sensors Observable Array
+      // AddItem Added Listener on the electric Field Sensors Observable Array
       //------------------------
 
-
-      // update the Electric Field Sensors upon a change of position
       this.electricFieldSensors.addItemAddedListener( function( electricFieldSensor ) {
+        // update the Electric Field Sensors upon a change of its own position
         electricFieldSensor.positionProperty.link( function( position ) {
           electricFieldSensor.electricField = thisModel.getElectricField( position );
         } );
-
         // send a trigger signal (go back to origin) if the electric field sensor is over the enclosure
         electricFieldSensor.userControlledProperty.link( function( userControlled ) {
           if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
@@ -259,32 +217,93 @@ define( function( require ) {
           }
         } );
       } );
-
-
     }
 
     return inherit( PropertySet, ChargesAndFieldsModel, {
-      // @public
+      /**
+       * @public
+       */
       reset: function() {
-        this.equipotentialLinesArray.clear();
-        this.electricFieldLinesArray.clear();
-        this.chargedParticles.clear();
-        this.electricFieldSensors.clear();
-        this.electricPotentialSensor.reset();
-        PropertySet.prototype.reset.call( this );
+        this.chargedParticles.clear(); // clear all the charges
+        this.electricFieldSensors.clear(); // clear all the electric field sensors
+        this.equipotentialLinesArray.clear(); // clear the equipotential 'lines'
+        this.electricFieldLinesArray.clear(); // clear the electric field 'lines'
+        this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
+        PropertySet.prototype.reset.call( this ); // reset the visibility of the check boxes
       },
-
+      /**
+       * @public
+       * @param {number} dt
+       */
       step: function( dt ) {
         this.chargedParticles.forEach( function( chargedParticle ) {
           chargedParticle.step( dt );
         } );
-
-        this.electricFieldSensors.forEach( function( chargedParticle ) {
-          chargedParticle.step( dt );
+        this.electricFieldSensors.forEach( function( electricFieldSensor ) {
+          electricFieldSensor.step( dt );
         } );
-
       },
-
+      /**
+       * Update the four types of sensors
+       * @private
+       */
+      updateAllSensors: function() {
+        this.updateElectricPotentialSensor();
+        this.updateElectricPotentialSensorGrid();
+        this.updateElectricFieldSensors();
+        this.updateElectricFieldSensorGrid();
+      },
+      /**
+       * Update all the visible sensors
+       * @private
+       */
+      updateAllVisibleSensors: function() {
+        this.updateElectricPotentialSensor(); // always visible
+        if ( this.isElectricPotentialGridVisible === true ) {
+          this.updateElectricPotentialSensorGrid();
+        }
+        this.updateElectricFieldSensors(); // always visible
+        if ( this.isElectricFieldGridVisible === true ) {
+          this.updateElectricFieldSensorGrid();
+        }
+      },
+      /**
+       * Update the Electric Field Sensors
+       * @private
+       */
+      updateElectricFieldSensors: function() {
+        var thisModel = this;
+        this.electricFieldSensors.forEach( function( sensorElement ) {
+          sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+        } );
+      },
+      /**
+       * Update the Electric Potential Sensor
+       * @private
+       */
+      updateElectricPotentialSensor: function() {
+        this.electricPotentialSensor.electricPotential = this.getElectricPotential( this.electricPotentialSensor.position );
+      },
+      /**
+       * Update the Electric Potential Grid Sensors
+       * @private
+       */
+      updateElectricPotentialSensorGrid: function() {
+        var thisModel = this;
+        this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
+          sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
+        } );
+      },
+      /**
+       * Update the Electric Field Grid Sensors
+       * @private
+       */
+      updateElectricFieldSensorGrid: function() {
+        var thisModel = this;
+        this.electricFieldSensorGrid.forEach( function( sensorElement ) {
+          sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+        } );
+      },
       //TODO Should that function be here in the first place? It is a pure function. It is called by UserCreatedNode
       /**
        * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
@@ -620,7 +639,7 @@ define( function( require ) {
       },
 
       /**
-       * Given a position returns a color that represent the intensity of the electricPotential at that point
+       * Given a position returns a color that represents the intensity of the electric Potential at that point
        * @public read-only
        * @param {Vector2} position
        * @param {number} [electricPotential] - (optional Argument)
@@ -628,6 +647,7 @@ define( function( require ) {
        */
       getColorElectricPotential: function( position, electricPotential ) {
 
+        // TODO find a way to get position to be optional as well ask JB
         if ( typeof electricPotential === "undefined" ) {
           electricPotential = this.getElectricPotential( position );
         }
@@ -662,7 +682,7 @@ define( function( require ) {
       },
 
       /**
-       * Given a position, returns a color that is related to the intensity of the electric field magnitude.
+       * Given a position, returns a color that is related to the intensity of the magnitude of the electric field
        * @private
        * @param {Vector2} position
        * @param {number} [electricFieldMagnitude] -(optional argument)
@@ -671,6 +691,7 @@ define( function( require ) {
        */
       getColorElectricFieldMagnitude: function( position, electricFieldMagnitude ) {
 
+        // TODO find a way to get position to be optional as well ask JB, both are vectors this is more difficult
         var electricFieldMag;
         if ( typeof electricFieldMagnitude === "undefined" ) {
           electricFieldMag = this.getElectricField( position ).magnitude();
