@@ -82,8 +82,7 @@ define( function( require ) {
             this.modelElement = new SensorElement( initialModelPosition );
             break;
           default:
-            // assert && assert( true, 'fail switch options' );
-            console.log( 'you are a failure' );
+            assert && assert( true, 'fail switch options' );
             break;
         }
         this.modelElement.userControlled = true;
