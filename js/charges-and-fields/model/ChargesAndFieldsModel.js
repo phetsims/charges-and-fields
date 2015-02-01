@@ -149,6 +149,7 @@ define( function( require ) {
           thisModel.clearEquipotentialLines();
           thisModel.clearElectricFieldLines();
 
+
           // if oldPosition doesn't exist calculate the sensor properties from the charge configurations (from scratch)
           if ( oldPosition === null ) {
             thisModel.updateAllVisibleSensors();
@@ -292,6 +293,8 @@ define( function( require ) {
         var thisModel = this;
         this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
           sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
+          // TODO change back if needed
+          //sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.position, sensorElement.electricPotential );
         } );
       },
       /**
@@ -302,6 +305,8 @@ define( function( require ) {
         var thisModel = this;
         this.electricFieldSensorGrid.forEach( function( sensorElement ) {
           sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+          // TODO change back if needed
+          //sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.position, sensorElement.electricField.magnitude() );
         } );
       },
       //TODO Should that function be here in the first place? It is a pure function. It is called by UserCreatedNode
@@ -681,6 +686,49 @@ define( function( require ) {
         return finalColor;
       },
 
+      //TODO : is this more effcient to batch it
+      /**
+       * Find all the colors for the grid of electric potential sensors
+       * @public
+       * UNUSED
+       *
+       */
+      getColorElectricPotentialSensorGrid: function() {
+
+        var electricPotentialMax = 40; // voltage (in volts) at which color will saturate to colorMax
+        var electricPotentialMin = -40; // voltage at which color will saturate to minColor
+
+        // Color constants
+        var maxColor = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;   // for electricPotentialMax
+        var backgroundColor = ChargesAndFieldsColors.electricPotentialGridZero; // for electric Potential of Zero
+        var minColor = ChargesAndFieldsColors.electricPotentialGridSaturationNegative; // for electricPotentialMin
+
+        // Linear function used to interpolate
+        var linearInterpolationNegative = new LinearFunction( electricPotentialMin, 0, 0, 1, true );  // clamp the linear interpolation function;
+        var linearInterpolationPositive = new LinearFunction( 0, electricPotentialMax, 0, 1, true );  // clamp the linear interpolation function;
+
+        var finalColor;
+        var distance;
+        var electricPotential;
+        // a piecewise function is used to interpolate
+
+        this.electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
+          electricPotential = electricPotentialSensor.electricPotential;
+          // for positive potential
+          if ( electricPotential > 0 ) {
+            distance = linearInterpolationPositive( electricPotential );
+            finalColor = interpolateRGBA( backgroundColor, maxColor, distance ); //distance must be between 0 and 1
+          }
+          // for negative (or zero) potential
+          else {
+            distance = linearInterpolationNegative( electricPotential ); //
+            finalColor = interpolateRGBA( minColor, backgroundColor, distance ); // distance must be between 0 and 1
+          }
+          electricPotentialSensor.electricPotentialColor = finalColor;
+        } );
+      },
+
+
       /**
        * Given a position, returns a color that is related to the intensity of the magnitude of the electric field
        * @private
@@ -700,7 +748,7 @@ define( function( require ) {
           electricFieldMag = electricFieldMagnitude;
         }
 
-        var maxColor = ChargesAndFieldsColors.electricFieldGridSaturation;   // for electricPotentialMax
+        var maxColor = ChargesAndFieldsColors.electricFieldGridSaturation;   // for the saturation color corresponding to max electric field
         var backgroundColor = ChargesAndFieldsColors.electricFieldGridZero; //  for zero electric Field
         var maxElectricFieldMagnitude = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
 
@@ -708,7 +756,9 @@ define( function( require ) {
         var distance = linearInterpolationPositive( electricFieldMag ); // a value between 0 and 1
 
         return interpolateRGBA( backgroundColor, maxColor, distance );
-      },
+      }
+
+      ,
 
       /**
        * Push an equipotentialLine to an observable array
