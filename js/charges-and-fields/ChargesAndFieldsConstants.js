@@ -24,9 +24,9 @@ define( function( require ) {
     // Velocity at which animated elements move
     ANIMATION_VELOCITY: 2, // In model coordinates per second
 
-    CHARGE_RADIUS: 12,
-    ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS: 7,
-    PANEL_LINE_WIDTH: 2,
+    CHARGE_RADIUS: 12, // in scenery coordinates
+    ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS: 7, // in scenery coordinates
+    PANEL_LINE_WIDTH: 2, // in scenery coordinates
 
     DEFAULT_FONT: new PhetFont( { size: 12 } ),
     VOLTAGE_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the equipotential Line voltage label
