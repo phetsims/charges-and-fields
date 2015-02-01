@@ -35,7 +35,7 @@ define( function( require ) {
     // eraser
     var part1Shape = new Shape().
       moveTo( 151.991, 43.257 ).
-      cubicCurveToRelative( -7.06, -7.05, -26.607, -20.176, -26.607, -20.176 ).
+      cubicCurveToRelative( -7.06, -7.05, -26.607, -20.176, -26.607, -20.177 ).
       lineToRelative( -0.188, -0.188 ).
       verticalLineToRelative( -0.009 ).
       lineToRelative( 18.351, -17.732 ).
