@@ -756,9 +756,7 @@ define( function( require ) {
         var distance = linearInterpolationPositive( electricFieldMag ); // a value between 0 and 1
 
         return interpolateRGBA( backgroundColor, maxColor, distance );
-      }
-
-      ,
+      },
 
       /**
        * Push an equipotentialLine to an observable array
