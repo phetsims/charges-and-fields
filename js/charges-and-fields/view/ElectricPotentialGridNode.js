@@ -9,10 +9,12 @@ define( function( require ) {
     'use strict';
 
     // modules
-    var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
+    //var Bounds2 = require( 'DOT/Bounds2' );
+    //var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
+    var Node = require( 'SCENERY/nodes/Node' );
     var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
     // constants
@@ -30,7 +32,10 @@ define( function( require ) {
 
       var electricPotentialGridNode = this;
       // Call the super constructor
-      CanvasNode.call( this );
+
+      Node.call( this );
+      //TODO ask JO how to use canvas node
+      //CanvasNode.call( this, { canvasBounds: new Bounds2( 0, 0, 1024, 618 )  } );
 
       // find the distance between two adjacent sensors in view coordinates.
       var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
@@ -61,7 +66,7 @@ define( function( require ) {
 
     }
 
-    return inherit( CanvasNode, ElectricPotentialGridNode );
+    return inherit( Node, ElectricPotentialGridNode );
   }
 )
 ;
