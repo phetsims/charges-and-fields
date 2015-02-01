@@ -686,7 +686,7 @@ define( function( require ) {
         return finalColor;
       },
 
-      //TODO : is this more effcient to batch it
+      //TODO : is this more efficient to batch it
       /**
        * Find all the colors for the grid of electric potential sensors
        * @public
