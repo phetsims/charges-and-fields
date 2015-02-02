@@ -12,7 +12,6 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -21,23 +20,16 @@ define( function( require ) {
    * @constructor
    */
   function StaticSensorElement( position ) {
-    PropertySet.call( this, {
 
-      // @public
-      electricField: new Vector2( 0, 0 ),  // the default value assumes there are no electric charges on the board
-
-      // @public
-      electricPotential: 0  // the default value assumes there are no electric charges on the board
-    } );
     // @public read-only
     this.position = position;
+    // @public
+    this.electricPotential = 0;  // the default value assumes there are no electric charges on the board
+    // @public
+    this.electricField = new Vector2( 0, 0 );  // the default value assumes there are no electric charges on the board
+
   }
 
-  return inherit( PropertySet, StaticSensorElement, {
-    // @public
-    reset: function() {
-      PropertySet.prototype.reset.call( this );
-    }
-  } );
+  return inherit( Object, StaticSensorElement );
 
 } );

@@ -88,28 +88,29 @@ define( function( require ) {
 
       electricFieldGridNode.addChild( arrowNode );
       electricFieldGridNode.addChild( circle ); //circle should come after arrowNode
+    } );
 
-      // Update the orientation of the arrow (and possibly its fill) according to the value of the electric field
-      // at the position in the model
-      electricFieldSensor.electricFieldProperty.link( function( electricField ) {
-
+    /**
+     *  Update the orientation of the arrow (and possibly its fill) according to the value of the electric field
+     *  at the position in the model
+     */
+    function updateElectricFieldGrid() {
+      arrowArray.forEach( function( arrowNode ) {
         // Rotate the arrow according to the direction of the electric field
         // Let's not make any assumption about inverted/notInverted Y
         // Just use the electricField in the view
-        var electricFieldInView = modelViewTransform.modelToViewDelta( electricField );
+        var electricFieldInView = modelViewTransform.modelToViewDelta( arrowNode.electricFieldSensor.electricField );
         arrowNode.setRotation( electricFieldInView.angle() );
-
         // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
-        isDirectionOnlyElectricFieldGridVisibleProperty.link( function( isVisible ) {
-          if ( isVisible ) {
-            arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
-          }
-          else {
-            arrowNode.fill = getColorElectricFieldMagnitude( positionInModel, electricField.magnitude() );
-          }
-        } );
+        if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
+          arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
+        }
+        else {
+          arrowNode.fill = getColorElectricFieldMagnitude( arrowNode.electricFieldSensor.position,
+            arrowNode.electricFieldSensor.electricField.magnitude() );
+        }
       } );
-    } );
+    }
 
     /**
      * Update the colors of the electric Field grid
@@ -120,21 +121,23 @@ define( function( require ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
         }
         else {
-          var specialColor = getColorElectricFieldMagnitude( arrowNode.electricFieldSensor.position, arrowNode.electricFieldSensor.electricField.magnitude() );
-          arrowNode.fill = specialColor;
+          arrowNode.fill = getColorElectricFieldMagnitude( arrowNode.electricFieldSensor.position,
+            arrowNode.electricFieldSensor.electricField.magnitude() );
         }
       } );
     }
 
-    update( 'updateElectricFieldGrid', updateElectricFieldGridColors );
+
+    update( 'updateElectricFieldGrid', updateElectricFieldGrid );
     ChargesAndFieldsColors.on( 'profileChanged', updateElectricFieldGridColors );
 
 
-
+    isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 
     // Show or Hide this node
     isElectricFieldGridVisibleProperty.link( function( isVisible ) {
       electricFieldGridNode.visible = isVisible;
+      updateElectricFieldGrid();
     } );
   }
 

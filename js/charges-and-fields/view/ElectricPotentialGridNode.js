@@ -14,9 +14,6 @@ define( function( require ) {
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
-    //var Node = require( 'SCENERY/nodes/Node' );
-    //var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-    //var Vector2 = require( 'DOT/Vector2' );
 
     // constants
     var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
