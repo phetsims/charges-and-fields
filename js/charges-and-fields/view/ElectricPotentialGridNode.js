@@ -9,8 +9,8 @@ define( function( require ) {
     'use strict';
 
     // modules
-    //var Bounds2 = require( 'DOT/Bounds2' );
-    //var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
+    var Bounds2 = require( 'DOT/Bounds2' );
+    var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
@@ -39,26 +39,31 @@ define( function( require ) {
 
       // find the distance between two adjacent sensors in view coordinates.
       var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
+      var rectArray = [];
       electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
         var positionInModel = electricPotentialSensor.position;
         var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
         var rect = new Rectangle( 0, 0, unitDistance, unitDistance, { center: positionInView } );
+        rect.electricPotentialSensor = electricPotentialSensor;
+
+        rectArray.push( rect );
         electricPotentialGridNode.addChild( rect );
+
 
         electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
           var specialColor = getColorElectricPotential( positionInModel, electricPotential );
           rect.fill = specialColor;
           rect.stroke = specialColor;
         } );
+      } );
 
-        // TODO: find a proper way to do the color change. This is just a hack
-        ChargesAndFieldsColors.link( 'electricPotentialGridZero', function() {
-          var specialColor = getColorElectricPotential( positionInModel, electricPotentialSensor.electricPotential );
+      ChargesAndFieldsColors.on( 'profileChanged', function() {
+        rectArray.forEach( function( rect ) {
+          var specialColor = getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
           rect.fill = specialColor;
           rect.stroke = specialColor;
         } );
       } );
-
 
       isVisibleProperty.link( function( isVisible ) {
         electricPotentialGridNode.visible = isVisible;
@@ -66,7 +71,8 @@ define( function( require ) {
 
     }
 
-    return inherit( Node, ElectricPotentialGridNode );
+    return inherit( Node, ElectricPotentialGridNode
+    );
   }
 )
 ;

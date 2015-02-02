@@ -39,6 +39,9 @@ define( function( require ) {
 
     Node.call( this );
 
+
+    var arrowArray = [];
+
     electricFieldSensorGrid.forEach( function( electricFieldSensor ) {
 
       var positionInModel = electricFieldSensor.position; // position of the sensor in model
@@ -78,6 +81,12 @@ define( function( require ) {
       } );
       arrowNode.center = offsetVector.add( positionInView );
 
+      arrowNode.electricFieldSensor = electricFieldSensor;
+      arrowArray.push( arrowNode );
+
+      electricFieldGridNode.addChild( arrowNode );
+      electricFieldGridNode.addChild( circle ); //circle should come after arrowNode
+
       // Update the orientation of the arrow (and possibly its fill) according to the value of the electric field
       // at the position in the model
       electricFieldSensor.electricFieldProperty.link( function( electricField ) {
@@ -98,22 +107,21 @@ define( function( require ) {
           }
         } );
       } );
+    } );
 
-      // TODO this is just a hack find a better way to hook up colors.
-      ChargesAndFieldsColors.link( 'electricFieldGridZero', function() {
-        // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
+
+    ChargesAndFieldsColors.on( 'profileChanged', function() {
+      arrowArray.forEach( function( arrowNode ) {
         if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
         }
         else {
-          arrowNode.fill = getColorElectricFieldMagnitude( positionInModel, electricFieldSensor.electricField.magnitude() );
+          var specialColor = getColorElectricFieldMagnitude( arrowNode.electricFieldSensor.position, arrowNode.electricFieldSensor.electricField.magnitude() );
+          arrowNode.fill = specialColor;
         }
       } );
-
-
-      electricFieldGridNode.addChild( arrowNode );
-      electricFieldGridNode.addChild( circle ); //circle should come after arrowNode
     } );
+
 
     // Show or Hide this node
     isElectricFieldGridVisibleProperty.link( function( isVisible ) {

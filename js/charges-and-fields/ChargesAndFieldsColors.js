@@ -195,6 +195,7 @@ define( function( require ) {
           }
         }
       }
+      this.trigger( 'profileChanged' );
     }
   } );
 
