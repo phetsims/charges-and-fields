@@ -111,10 +111,9 @@ define( function( require ) {
       } );
     } );
 
-    update( 'updateElectricFieldGrid', updateElectricFieldGridColors );
-    ChargesAndFieldsColors.on( 'profileChanged', updateElectricFieldGridColors );
-
-
+    /**
+     * Update the colors of the electric Field grid
+     */
     function updateElectricFieldGridColors() {
       arrowArray.forEach( function( arrowNode ) {
         if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
@@ -127,6 +126,8 @@ define( function( require ) {
       } );
     }
 
+    update( 'updateElectricFieldGrid', updateElectricFieldGridColors );
+    ChargesAndFieldsColors.on( 'profileChanged', updateElectricFieldGridColors );
 
 
 

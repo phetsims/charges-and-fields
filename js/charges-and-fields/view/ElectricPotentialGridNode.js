@@ -51,9 +51,9 @@ define( function( require ) {
         electricPotentialGridNode.addChild( rect );
       } );
 
-      update( 'updateElectricPotentialGrid', updateElectricPotentialGridColors );
-      ChargesAndFieldsColors.on( 'profileChanged', updateElectricPotentialGridColors );
-
+      /**
+       * Update the electric Potential Grid Colors
+       */
       function updateElectricPotentialGridColors() {
         rectArray.forEach( function( rect ) {
           var specialColor = getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
@@ -61,6 +61,9 @@ define( function( require ) {
           rect.stroke = specialColor;
         } );
       }
+      update( 'updateElectricPotentialGrid', updateElectricPotentialGridColors );
+      ChargesAndFieldsColors.on( 'profileChanged', updateElectricPotentialGridColors );
+
 
       isVisibleProperty.link( function( isVisible ) {
         electricPotentialGridNode.visible = isVisible;
