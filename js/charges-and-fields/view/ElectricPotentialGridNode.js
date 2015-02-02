@@ -80,8 +80,11 @@ define( function( require ) {
           var context = wrapper.context;
 
           this.rectArray.forEach( function( rect ) {
-            context.fillStyle = electricPotentialGridNode.getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
+            var color = electricPotentialGridNode.getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
+            context.fillStyle = color;
             context.fillRect( rect.minX, rect.minY, rect.width, rect.height );
+            context.strokeStyle = color;
+            context.strokeRect( rect.minX, rect.minY, rect.width, rect.height );
           } );
         }
       }
