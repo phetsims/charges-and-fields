@@ -9,8 +9,8 @@ define( function( require ) {
     'use strict';
 
     // modules
-    var Bounds2 = require( 'DOT/Bounds2' );
-    var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
+    //var Bounds2 = require( 'DOT/Bounds2' );
+    //var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
