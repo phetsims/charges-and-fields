@@ -81,7 +81,7 @@ define( function( require ) {
 
           this.rectArray.forEach( function( rect ) {
             context.fillStyle = electricPotentialGridNode.getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
-            context.fillRect( rect.minX, rect.minY, rect.maxX, rect.maxY );
+            context.fillRect( rect.minX, rect.minY, rect.width, rect.height );
           } );
         }
       }
