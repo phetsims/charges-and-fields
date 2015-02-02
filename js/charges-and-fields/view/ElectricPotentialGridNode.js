@@ -23,12 +23,13 @@ define( function( require ) {
     /**
      *
      * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
+     * @param {Function} update -       model.on.bind(model),
      * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialGridNode( electricPotentialSensorGrid, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
+    function ElectricPotentialGridNode( electricPotentialSensorGrid, update, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
 
       var electricPotentialGridNode = this;
       // Call the super constructor
@@ -48,22 +49,18 @@ define( function( require ) {
 
         rectArray.push( rect );
         electricPotentialGridNode.addChild( rect );
-
-
-        electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
-          var specialColor = getColorElectricPotential( positionInModel, electricPotential );
-          rect.fill = specialColor;
-          rect.stroke = specialColor;
-        } );
       } );
 
-      ChargesAndFieldsColors.on( 'profileChanged', function() {
+      update( 'updateElectricPotentialGrid', updateElectricPotentialGridColors );
+      ChargesAndFieldsColors.on( 'profileChanged', updateElectricPotentialGridColors );
+
+      function updateElectricPotentialGridColors() {
         rectArray.forEach( function( rect ) {
           var specialColor = getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
           rect.fill = specialColor;
           rect.stroke = specialColor;
         } );
-      } );
+      }
 
       isVisibleProperty.link( function( isVisible ) {
         electricPotentialGridNode.visible = isVisible;

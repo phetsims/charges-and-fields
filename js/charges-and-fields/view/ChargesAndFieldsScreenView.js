@@ -69,6 +69,7 @@ define( function( require ) {
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     var electricPotentialGridNode = new ElectricPotentialGridNode(
       model.electricPotentialSensorGrid,
+      model.on.bind( model ),
       model.getColorElectricPotential.bind( model ),
       modelViewTransform,
       model.isElectricPotentialGridVisibleProperty );
@@ -76,6 +77,7 @@ define( function( require ) {
     // Create a grid of electric field arrow sensors
     var electricFieldGridNode = new ElectricFieldGridNode(
       model.electricFieldSensorGrid,
+      model.on.bind( model ),
       model.getColorElectricFieldMagnitude.bind( model ),
       modelViewTransform,
       model.isDirectionOnlyElectricFieldGridVisibleProperty,

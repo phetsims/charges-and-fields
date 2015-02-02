@@ -159,7 +159,6 @@ define( function( require ) {
         thisModel.clearEquipotentialLines();
         thisModel.clearElectricFieldLines();
 
-
         // if oldPosition doesn't exist calculate the sensor properties from the charge configurations (from scratch)
         if ( oldPosition === null ) {
           thisModel.updateAllVisibleSensors();
@@ -196,6 +195,9 @@ define( function( require ) {
             } );
           }
         }
+
+        thisModel.trigger( 'updateElectricFieldGrid' );
+        thisModel.trigger( 'updateElectricPotentialGrid' );
       } );
     } );
 
@@ -210,6 +212,8 @@ define( function( require ) {
       thisModel.clearElectricFieldLines();
       // Update all the visible sensors
       thisModel.updateAllVisibleSensors();
+      thisModel.trigger( 'updateElectricFieldGrid' );
+      thisModel.trigger( 'updateElectricPotentialGrid' );
     } );
 
     //------------------------
