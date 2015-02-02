@@ -9,13 +9,14 @@ define( function( require ) {
     'use strict';
 
     // modules
-    //var Bounds2 = require( 'DOT/Bounds2' );
-    //var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
+    var Bounds2 = require( 'DOT/Bounds2' );
+    var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
-    var Node = require( 'SCENERY/nodes/Node' );
-    var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+    //var Node = require( 'SCENERY/nodes/Node' );
+    //var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+    //var Vector2 = require( 'DOT/Vector2' );
 
     // constants
     var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
@@ -31,47 +32,59 @@ define( function( require ) {
      */
     function ElectricPotentialGridNode( electricPotentialSensorGrid, update, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
 
-      var electricPotentialGridNode = this;
       // Call the super constructor
+      CanvasNode.call( this, { canvasBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
-      Node.call( this );
-      //TODO ask JO how to use canvas node
-      //CanvasNode.call( this, { canvasBounds: new Bounds2( 0, 0, 1024, 618 )  } );
+      var electricPotentialGridNode = this;
 
       // find the distance between two adjacent sensors in view coordinates.
       var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
-      var rectArray = [];
+      this.rectArray = [];
       electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
         var positionInModel = electricPotentialSensor.position;
         var positionInView = modelViewTransform.modelToViewPosition( positionInModel );
-        var rect = new Rectangle( 0, 0, unitDistance, unitDistance, { center: positionInView } );
+        var rect = new Bounds2(
+          positionInView.x - unitDistance / 2,
+          positionInView.y - unitDistance / 2,
+          positionInView.x + unitDistance / 2,
+          positionInView.y + unitDistance / 2 );
         rect.electricPotentialSensor = electricPotentialSensor;
-
-        rectArray.push( rect );
-        electricPotentialGridNode.addChild( rect );
+        electricPotentialGridNode.rectArray.push( rect );
       } );
 
-      /**
-       * Update the electric Potential Grid Colors
-       */
-      function updateElectricPotentialGridColors() {
-        rectArray.forEach( function( rect ) {
-          var specialColor = getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
-          rect.fill = specialColor;
-          rect.stroke = specialColor;
-        } );
-      }
-      update( 'updateElectricPotentialGrid', updateElectricPotentialGridColors );
-      ChargesAndFieldsColors.on( 'profileChanged', updateElectricPotentialGridColors );
+      ChargesAndFieldsColors.on( 'profileChanged', function() {
+        electricPotentialGridNode.invalidatePaint();
+      } );
 
+      update( 'updateElectricPotentialGrid', function() {
+        electricPotentialGridNode.invalidatePaint();
+      } );
+
+      this.getColorElectricPotential = getColorElectricPotential;
 
       isVisibleProperty.link( function( isVisible ) {
         electricPotentialGridNode.visible = isVisible;
       } );
 
+      this.invalidatePaint();
     }
 
-    return inherit( Node, ElectricPotentialGridNode
+    return inherit( CanvasNode, ElectricPotentialGridNode, {
+
+        /*
+         * @override
+         * @param {CanvasContextWrapper} wrapper
+         */
+        paintCanvas: function( wrapper ) {
+          var electricPotentialGridNode = this;
+          var context = wrapper.context;
+
+          this.rectArray.forEach( function( rect ) {
+            context.fillStyle = electricPotentialGridNode.getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
+            context.fillRect( rect.minX, rect.minY, rect.maxX, rect.maxY );
+          } );
+        }
+      }
     );
   }
 )

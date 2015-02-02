@@ -12,7 +12,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
+  //var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
   var LinearFunction = require( 'DOT/LinearFunction' );
   var linear = require( 'DOT/Util' ).linear;
   var ObservableArray = require( 'AXON/ObservableArray' );
@@ -683,7 +683,7 @@ define( function( require ) {
 
         //var linearInterpolationPositive = new LinearFunction( 0, electricPotentialMax, 0, 1, true );  // clamp the linear interpolation function;
         distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
-        finalColor = interpolateRGBA(
+        finalColor = this.interpolateRGBA(
           ChargesAndFieldsColors.electricPotentialGridZero, // color that corresponds to the Electric Potential being zero
           ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // color of Max Electric Potential
           distance ); //distance must be between 0 and 1
@@ -693,7 +693,7 @@ define( function( require ) {
 
         //var linearInterpolationNegative = new LinearFunction( electricPotentialMin, 0, 0, 1, true );  // clamp the linear interpolation function;
         distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); //
-        finalColor = interpolateRGBA(
+        finalColor = this.interpolateRGBA(
           ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // color that corresponds to the lowest (i.e. negative) Electric Potential
           ChargesAndFieldsColors.electricPotentialGridZero,// color that corresponds to the Electric Potential being zero zero
           distance ); // distance must be between 0 and 1
@@ -715,12 +715,14 @@ define( function( require ) {
       var electricPotential;
       // a piecewise function is used to interpolate
 
+      var thisModel = this;
+
       this.electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
         electricPotential = electricPotentialSensor.electricPotential;
         // for positive potential
         if ( electricPotential > 0 ) {
           distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
-          finalColor = interpolateRGBA(
+          finalColor = thisModel.interpolateRGBA(
             ChargesAndFieldsColors.electricPotentialGridZero, // color that corresponds to the Electric Potential being zero
             ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // color of Max Electric Potential
             distance ); //distance must be between 0 and 1
@@ -728,7 +730,7 @@ define( function( require ) {
         // for negative (or zero) potential
         else {
           distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); //
-          finalColor = interpolateRGBA(
+          finalColor = thisModel.interpolateRGBA(
             ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // color that corresponds to the lowest (i.e. negative) Electric Potential
             ChargesAndFieldsColors.electricPotentialGridZero,// color that corresponds to the Electric Potential being zero zero
             distance ); // distance must be between 0 and 1
@@ -758,7 +760,7 @@ define( function( require ) {
       }
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMag ); // a value between 0 and 1
 
-      return this.interpolateRGB(
+      return this.interpolateRGBA(
         ChargesAndFieldsColors.electricFieldGridZero,  //  color that corresponds to zero electric Field
         ChargesAndFieldsColors.electricFieldGridSaturation, // //  color that corresponds to the largest electric field
         distance ); // distance must be between 0 and 1
@@ -845,7 +847,7 @@ define( function( require ) {
     },
 
 
-    interpolateRGB: function( color1, color2, distance ) {
+    interpolateRGBA: function( color1, color2, distance ) {
       if ( distance < 0 || distance > 1 ) {
         throw new Error( 'distance must be between 0 and 1: ' + distance );
       }
@@ -853,7 +855,7 @@ define( function( require ) {
       var g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
       var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
       //var a = linear( 0, 1, color1.a, color2.a, distance );
-      return 'rgb(' + r + ',' + g + ',' + b + ')';
+      return 'rgba(' + r + ',' + g + ',' + b + ',' + 1 + ')';
     }
 
   } );
