@@ -110,30 +110,30 @@ define( function( require ) {
     }
 
     /**
-     * Update the colors of the electric Field grid
+     * Update the colors of the electric Field grid arrows
      */
     function updateElectricFieldGridColors() {
-      arrowArray.forEach( function( arrowNode ) {
-        if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
+      if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
+        arrowArray.forEach( function( arrowNode ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
-        }
-        else {
+        } );
+      }
+      else {
+        arrowArray.forEach( function( arrowNode ) {
           arrowNode.fill = arrowNode.electricFieldSensor.electricFieldColor;
-        }
-      } );
+        } );
+      }
     }
 
-
     update( 'updateElectricFieldGrid', updateElectricFieldGrid );
+    //TODO something funny with the next line the colors don't update immediately after projector/default mode switch
+    // OK got it , we need to update the color again since the model is not aware of it //ha ha
     ChargesAndFieldsColors.on( 'profileChanged', updateElectricFieldGridColors );
-
-
     isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 
     // Show or Hide this node
     isElectricFieldGridVisibleProperty.link( function( isVisible ) {
       electricFieldGridNode.visible = isVisible;
-      updateElectricFieldGrid();
     } );
   }
 
