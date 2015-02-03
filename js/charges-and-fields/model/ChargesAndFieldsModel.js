@@ -248,6 +248,7 @@ define( function( require ) {
       this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
       PropertySet.prototype.reset.call( this ); // reset the visibility of the check boxes
     },
+
     /**
      * @public
      * @param {number} dt
@@ -260,6 +261,7 @@ define( function( require ) {
         electricFieldSensor.step( dt );
       } );
     },
+
     /**
      * Update the four types of sensors
      * @private
@@ -270,6 +272,7 @@ define( function( require ) {
       this.updateElectricFieldSensors();
       this.updateElectricFieldSensorGrid();
     },
+
     /**
      * Update all the visible sensors
      * @private
@@ -282,9 +285,9 @@ define( function( require ) {
       this.updateElectricFieldSensors(); // always visible
       if ( this.isElectricFieldGridVisible === true ) {
         this.updateElectricFieldSensorGrid();
-
       }
     },
+
     /**
      * Update the Electric Field Sensors
      * @private
@@ -302,6 +305,7 @@ define( function( require ) {
     updateElectricPotentialSensor: function() {
       this.electricPotentialSensor.electricPotential = this.getElectricPotential( this.electricPotentialSensor.position );
     },
+
     /**
      * Update the Electric Potential Grid Sensors
      * @private
@@ -314,6 +318,7 @@ define( function( require ) {
       } );
       this.trigger( 'updateElectricPotentialGrid' );
     },
+
     /**
      * Update the Electric Field Grid Sensors
      * @private
@@ -484,7 +489,6 @@ define( function( require ) {
       } );
       electricPotential *= K_CONSTANT; // prefactor depends on units
       return electricPotential;
-
     },
 
     /**
@@ -694,45 +698,6 @@ define( function( require ) {
       }
       return finalColor;
     },
-
-    //TODO : is this more efficient to batch it
-    /**
-     * Find all the colors for the grid of electric potential sensors
-     * @public
-     * UNUSED
-     *
-     */
-    getColorElectricPotentialSensorGrid: function() {
-
-      var finalColor; // {string} e.g. rgba(0,0,0,1)
-      var distance; // {number}  between 0 and 1
-      var electricPotential; // {number}
-
-      // a piecewise function is used to interpolate
-      var thisModel = this;
-
-      this.electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
-        electricPotential = electricPotentialSensor.electricPotential;
-        // for positive potential
-        if ( electricPotential > 0 ) {
-          distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
-          finalColor = thisModel.interpolateRGBA(
-            ChargesAndFieldsColors.electricPotentialGridZero, // color that corresponds to the Electric Potential being zero
-            ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // color of Max Electric Potential
-            distance ); //distance must be between 0 and 1
-        }
-        // for negative (or zero) potential
-        else {
-          distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); //
-          finalColor = thisModel.interpolateRGBA(
-            ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // color that corresponds to the lowest (i.e. negative) Electric Potential
-            ChargesAndFieldsColors.electricPotentialGridZero,// color that corresponds to the Electric Potential being zero zero
-            distance ); // distance must be between 0 and 1
-        }
-        electricPotentialSensor.electricPotentialColor = finalColor;
-      } );
-    },
-
 
     /**
      * Given a position, returns a color that is related to the intensity of the magnitude of the electric field
