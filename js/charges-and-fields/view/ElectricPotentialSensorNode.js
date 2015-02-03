@@ -99,9 +99,7 @@ define( function( require ) {
     // Update the value of the electric potential on the panel and the fill color on the crosshair
     electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
       electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
-      //TODO temporary hack put back transparency
-      //circle.fill = getColorElectricPotential( electricPotentialSensor.position, electricPotential ).withAlpha( 0.5 );
-      circle.fill = getColorElectricPotential( electricPotential );
+      circle.fill = getColorElectricPotential( electricPotential, { transparency: 0.5 } );
     } );
 
     /**

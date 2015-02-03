@@ -665,9 +665,10 @@ define( function( require ) {
      * Given a position returns a color that represents the intensity of the electric Potential at that point
      * @public read-only
      * @param {number} electricPotential
+     * @param {Object} [options] - useful to set transparency
      * @returns {string} color
      */
-    getColorElectricPotential: function( electricPotential ) {
+    getColorElectricPotential: function( electricPotential, options ) {
 
       var finalColor; // {string} e.g. rgba(0,0,0,1)
       var distance; // {number}  between 0 and 1
@@ -681,7 +682,8 @@ define( function( require ) {
         finalColor = this.interpolateRGBA(
           ChargesAndFieldsColors.electricPotentialGridZero, // color that corresponds to the Electric Potential being zero
           ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // color of Max Electric Potential
-          distance ); //distance must be between 0 and 1
+          distance, // distance must be between 0 and 1
+          options );
       }
       // for negative (or zero) potential
       else {
@@ -690,7 +692,8 @@ define( function( require ) {
         finalColor = this.interpolateRGBA(
           ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // color that corresponds to the lowest (i.e. negative) Electric Potential
           ChargesAndFieldsColors.electricPotentialGridZero,// color that corresponds to the Electric Potential being zero zero
-          distance ); // distance must be between 0 and 1
+          distance, // distance must be between 0 and 1
+          options );
       }
       return finalColor;
     },
@@ -699,17 +702,19 @@ define( function( require ) {
      * Given a position, returns a color that is related to the intensity of the magnitude of the electric field
      * @private
      * @param {number} electricFieldMagnitude
+     * @param {Object} [options] - useful to set transparency
      * @returns {string} color
      *
      */
-    getColorElectricFieldMagnitude: function( electricFieldMagnitude ) {
+    getColorElectricFieldMagnitude: function( electricFieldMagnitude, options ) {
 
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
       return this.interpolateRGBA(
         ChargesAndFieldsColors.electricFieldGridZero,  //  color that corresponds to zero electric Field
         ChargesAndFieldsColors.electricFieldGridSaturation, // //  color that corresponds to the largest electric field
-        distance ); // distance must be between 0 and 1
+        distance, // distance must be between 0 and 1
+        options );
     },
 
     /**
@@ -792,7 +797,20 @@ define( function( require ) {
       this.electricFieldLinesArray.clear();
     },
 
-    interpolateRGBA: function( color1, color2, distance ) {
+    /**
+     *
+     * @param {Color} color1
+     * @param {Color} color2
+     * @param {number} distance
+     * @param {Object} [options]
+     * @returns {string}
+     */
+    interpolateRGBA: function( color1, color2, distance, options ) {
+      options = _.extend( {
+        // defaults
+        transparency: 1
+      }, options );
+
       if ( distance < 0 || distance > 1 ) {
         throw new Error( 'distance must be between 0 and 1: ' + distance );
       }
@@ -800,7 +818,7 @@ define( function( require ) {
       var g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
       var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
       //var a = linear( 0, 1, color1.a, color2.a, distance );
-      return 'rgba(' + r + ',' + g + ',' + b + ',' + 1 + ')';
+      return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
     }
 
   } );
