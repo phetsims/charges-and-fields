@@ -560,43 +560,44 @@ define( function( require ) {
       var epsilonDistance = 0.05;//step length along equipotential in meters
       var readyToBreak = false;
       var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
-      var nextPositionClockwise;
-      var nextPositionCounterClockwise;
-      var currentPositionClockwise = position;
-      var currentPositionCounterClockwise = position;
+      var nextClockwisePosition;
+      var nextCounterClockwisePosition;
+      var currentClockwisePosition = position;
+      var currentCounterClockwisePosition = position;
       var positionClockwiseArray = [];
       var positionCounterClockwiseArray = [];
 
       var initialElectricPotential = this.getElectricPotential( position );
 
       while ( stepCounter < stepMax &&
-              currentPositionClockwise.magnitude() < maxDistance ||
-              currentPositionCounterClockwise.magnitude() < maxDistance ) {
+              currentClockwisePosition.magnitude() < maxDistance ||
+              currentCounterClockwisePosition.magnitude() < maxDistance ) {
 
-        nextPositionClockwise = this.getNextPositionAlongEquipotentialWithVoltage( currentPositionClockwise, initialElectricPotential, epsilonDistance );
-        nextPositionCounterClockwise = this.getNextPositionAlongEquipotentialWithVoltage( currentPositionCounterClockwise, initialElectricPotential, -epsilonDistance );
+        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithVoltage( currentClockwisePosition, initialElectricPotential, epsilonDistance );
+        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithVoltage( currentCounterClockwisePosition, initialElectricPotential, -epsilonDistance );
 
-        positionClockwiseArray.push( nextPositionClockwise );
-        positionCounterClockwiseArray.push( nextPositionCounterClockwise );
+        positionClockwiseArray.push( nextClockwisePosition );
+        positionCounterClockwiseArray.push( nextCounterClockwisePosition );
 
         if ( readyToBreak ) {
           break;
         }
 
         // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
-        if ( nextPositionClockwise.distance( nextPositionCounterClockwise ) < epsilonDistance / 2 ) {
+        // TODO: wouldnt it be better to let the VIEW know to that the ends are 'joined' and close the path
+        if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance / 2 ) {
           readyToBreak = true;
         }
 
-        currentPositionClockwise = nextPositionClockwise;
-        currentPositionCounterClockwise = nextPositionCounterClockwise;
+        currentClockwisePosition = nextClockwisePosition;
+        currentCounterClockwisePosition = nextCounterClockwisePosition;
 
         stepCounter++;
       }//end of while()
 
       //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
-      var reverseArray = positionClockwiseArray.reverse();
-      var positionArray = reverseArray.concat( position, positionCounterClockwiseArray );
+      var reversedArray = positionClockwiseArray.reverse();
+      var positionArray = reversedArray.concat( position, positionCounterClockwiseArray );
       return positionArray;
     },
 
@@ -626,38 +627,38 @@ define( function( require ) {
 
       var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the initial position in meters
 
-      var nextPositionForward;
-      var nextPositionBackward;
-      var currentPositionForward = position;
-      var currentPositionBackward = position;
-      var positionForwardArray = [];
-      var positionBackwardArray = [];
+      var nextForwardPosition;
+      var nextBackwardPosition;
+      var currentForwardPosition = position;
+      var currentBackwardPosition = position;
+      var forwardPositionArray = [];
+      var backwardPositionArray = [];
 
-      //TODO: the this.getElectricField(currentPositionForward).magnitude() call is expensive
+      //TODO: the this.getElectricField(currentForwardPosition).magnitude() call is expensive
       // find way to reuse it
       while ( stepCounter < stepMax &&
-              currentPositionForward.magnitude() < maxDistance &&
-              this.getElectricField( currentPositionForward ).magnitude() < maxElectricFieldMagnitude ) {
-        nextPositionForward = this.getNextPositionAlongElectricField( currentPositionForward, epsilonDistance );
-        positionForwardArray.push( nextPositionForward );
-        currentPositionForward = nextPositionForward;
+              currentForwardPosition.magnitude() < maxDistance &&
+              this.getElectricField( currentForwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
+        nextForwardPosition = this.getNextPositionAlongElectricField( currentForwardPosition, epsilonDistance );
+        forwardPositionArray.push( nextForwardPosition );
+        currentForwardPosition = nextForwardPosition;
         stepCounter++;
       }//end of while()
 
       stepCounter = 0;
       while ( stepCounter < stepMax &&
-              currentPositionBackward.magnitude() < maxDistance &&
-              this.getElectricField( currentPositionBackward ).magnitude() < maxElectricFieldMagnitude ) {
+              currentBackwardPosition.magnitude() < maxDistance &&
+              this.getElectricField( currentBackwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
 
-        nextPositionBackward = this.getNextPositionAlongElectricField( currentPositionBackward, -epsilonDistance );
-        positionBackwardArray.push( nextPositionBackward );
-        currentPositionBackward = nextPositionBackward;
+        nextBackwardPosition = this.getNextPositionAlongElectricField( currentBackwardPosition, -epsilonDistance );
+        backwardPositionArray.push( nextBackwardPosition );
+        currentBackwardPosition = nextBackwardPosition;
         stepCounter++;
       }//end of while()
 
       //let's order all the positions (including the initial point) in an array in a forward fashion
-      var reverseArray = positionBackwardArray.reverse();
-      var positionArray = reverseArray.concat( position, positionForwardArray );
+      var reversedArray = backwardPositionArray.reverse();
+      var positionArray = reversedArray.concat( position, forwardPositionArray );
       return positionArray;
     },
 
