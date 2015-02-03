@@ -37,7 +37,6 @@ define( function( require ) {
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
 
-
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
    * @constructor
@@ -119,7 +118,6 @@ define( function( require ) {
     // isElectricFieldGridVisible Listener  (update all the electric field grid sensors a.k.a. grid of arrows)
     //------------------------
 
-
     // for performance reason, the electric field of the sensors on the grid is calculated and updated only if the
     // visibility of the grid is set to true
     this.isElectricFieldGridVisibleProperty.link( function( isVisible ) {
@@ -164,13 +162,15 @@ define( function( require ) {
           thisModel.updateAllVisibleSensors();
         }
         // if oldPosition exists calculate the sensor properties from the delta contribution
+        // this should help if there are many charged particles on the board
         // TODO find out if this is a significant performance enhancement
         else {
           // convenience variable
           var charge = chargedParticle.charge;
 
           // update the Electric Potential Sensor by calculating the change in the electric potential
-          thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange( thisModel.electricPotentialSensor.position, position, oldPosition, charge );
+          thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange(
+            thisModel.electricPotentialSensor.position, position, oldPosition, charge );
 
           // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
           thisModel.electricFieldSensors.forEach( function( sensorElement ) {
@@ -197,8 +197,6 @@ define( function( require ) {
             thisModel.trigger( 'updateElectricPotentialGrid' );
           }
         }
-
-
       } );
     } );
 
@@ -213,8 +211,6 @@ define( function( require ) {
       thisModel.clearElectricFieldLines();
       // Update all the visible sensors
       thisModel.updateAllVisibleSensors();
-
-
     } );
 
     //------------------------
@@ -795,7 +791,6 @@ define( function( require ) {
     clearElectricFieldLines: function() {
       this.electricFieldLinesArray.clear();
     },
-
 
     interpolateRGBA: function( color1, color2, distance ) {
       if ( distance < 0 || distance > 1 ) {
