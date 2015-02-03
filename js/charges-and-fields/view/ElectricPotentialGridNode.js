@@ -22,12 +22,11 @@ define( function( require ) {
      *
      * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
      * @param {Function} update -       model.on.bind(model),
-     * @param {Function} getColorElectricPotential - A function that maps a color to a value of the electric potential
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialGridNode( electricPotentialSensorGrid, update, getColorElectricPotential, modelViewTransform, isVisibleProperty ) {
+    function ElectricPotentialGridNode( electricPotentialSensorGrid, update, modelViewTransform, isVisibleProperty ) {
 
       // Call the super constructor
       CanvasNode.call( this, { canvasBounds: new Bounds2( 0, 0, 1024, 618 ) } );
@@ -53,11 +52,10 @@ define( function( require ) {
         electricPotentialGridNode.invalidatePaint();
       } );
 
+
       update( 'updateElectricPotentialGrid', function() {
         electricPotentialGridNode.invalidatePaint();
       } );
-
-      this.getColorElectricPotential = getColorElectricPotential;
 
       isVisibleProperty.link( function( isVisible ) {
         electricPotentialGridNode.visible = isVisible;
@@ -65,7 +63,6 @@ define( function( require ) {
 
       this.invalidatePaint();
     }
-
     return inherit( CanvasNode, ElectricPotentialGridNode, {
 
         /*
@@ -73,14 +70,11 @@ define( function( require ) {
          * @param {CanvasContextWrapper} wrapper
          */
         paintCanvas: function( wrapper ) {
-          var electricPotentialGridNode = this;
           var context = wrapper.context;
-
           this.rectArray.forEach( function( rect ) {
-            var color = electricPotentialGridNode.getColorElectricPotential( rect.electricPotentialSensor.position, rect.electricPotentialSensor.electricPotential );
-            context.fillStyle = color;
+            context.fillStyle = rect.electricPotentialSensor.electricPotentialColor;
             context.fillRect( rect.minX, rect.minY, rect.width, rect.height );
-            context.strokeStyle = color;
+            context.strokeStyle = rect.electricPotentialSensor.electricPotentialColor;
             context.strokeRect( rect.minX, rect.minY, rect.width, rect.height );
           } );
         }

@@ -24,7 +24,6 @@ define( function( require ) {
    *
    * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
    * @param {Function} update -       model.on.bind(model),
-   * @param {Function} getColorElectricFieldMagnitude - A function that maps a color to an Electric Field Magnitude
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
    * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
@@ -32,7 +31,6 @@ define( function( require ) {
    */
   function ElectricFieldGridNode( electricFieldSensorGrid,
                                   update,
-                                  getColorElectricFieldMagnitude,
                                   modelViewTransform,
                                   isDirectionOnlyElectricFieldGridVisibleProperty,
                                   isElectricFieldGridVisibleProperty ) {
@@ -106,8 +104,7 @@ define( function( require ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
         }
         else {
-          arrowNode.fill = getColorElectricFieldMagnitude( arrowNode.electricFieldSensor.position,
-            arrowNode.electricFieldSensor.electricField.magnitude() );
+          arrowNode.fill = arrowNode.electricFieldSensor.electricFieldColor;
         }
       } );
     }
@@ -121,8 +118,7 @@ define( function( require ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
         }
         else {
-          arrowNode.fill = getColorElectricFieldMagnitude( arrowNode.electricFieldSensor.position,
-            arrowNode.electricFieldSensor.electricField.magnitude() );
+          arrowNode.fill = arrowNode.electricFieldSensor.electricFieldColor;
         }
       } );
     }

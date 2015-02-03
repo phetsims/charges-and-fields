@@ -82,8 +82,8 @@ define( function( require ) {
     var electricPotentialSensorPanel = new ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine );
 
     this.addChild( crosshairMount );
-    this.addChild( crosshair );
     this.addChild( circle );
+    this.addChild( crosshair );
     this.addChild( electricPotentialSensorPanel );
 
     crosshairMount.centerX = circle.centerX;
@@ -101,7 +101,7 @@ define( function( require ) {
       electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
       //TODO temporary hack put back transparency
       //circle.fill = getColorElectricPotential( electricPotentialSensor.position, electricPotential ).withAlpha( 0.5 );
-      circle.fill = getColorElectricPotential( electricPotentialSensor.position, electricPotential );
+      circle.fill = getColorElectricPotential( electricPotential );
     } );
 
     /**

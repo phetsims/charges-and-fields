@@ -182,6 +182,7 @@ define( function( require ) {
             thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
               // let's calculate the change in the electric field due to the change in position of one charge
               sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+              sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
             } );
             thisModel.trigger( 'updateElectricFieldGrid' );
           }
@@ -191,6 +192,7 @@ define( function( require ) {
             thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
               // calculating the change in the electric potential due to the change in position of one charge
               sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
+              sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
             } );
             thisModel.trigger( 'updateElectricPotentialGrid' );
           }
@@ -308,8 +310,7 @@ define( function( require ) {
       var thisModel = this;
       this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
         sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-        // TODO change back if needed
-        //sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.position, sensorElement.electricPotential );
+        sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
       } );
       this.trigger( 'updateElectricPotentialGrid' );
     },
@@ -321,8 +322,7 @@ define( function( require ) {
       var thisModel = this;
       this.electricFieldSensorGrid.forEach( function( sensorElement ) {
         sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-        // TODO change back if needed
-        //sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.position, sensorElement.electricField.magnitude() );
+        sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
       } );
       this.trigger( 'updateElectricFieldGrid' );
 
@@ -664,28 +664,20 @@ define( function( require ) {
     /**
      * Given a position returns a color that represents the intensity of the electric Potential at that point
      * @public read-only
-     * @param {Vector2} position
-     * @param {number} [electricPotential] - (optional Argument)
-     * @returns {Color} color
+     * @param {number} electricPotential
+     * @returns {string} color
      */
-    getColorElectricPotential: function( position, electricPotential ) {
+    getColorElectricPotential: function( electricPotential ) {
 
-      // TODO find a way to get position to be optional as well ask JB
-      if ( typeof electricPotential === "undefined" ) {
-        electricPotential = this.getElectricPotential( position );
-      }
-
-
-      var finalColor;
-      var distance;
+      var finalColor; // {string} e.g. rgba(0,0,0,1)
+      var distance; // {number}  between 0 and 1
 
       // a piecewise function is used to interpolate
 
       // for positive potential
       if ( electricPotential > 0 ) {
 
-        //var linearInterpolationPositive = new LinearFunction( 0, electricPotentialMax, 0, 1, true );  // clamp the linear interpolation function;
-        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
+        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
         finalColor = this.interpolateRGBA(
           ChargesAndFieldsColors.electricPotentialGridZero, // color that corresponds to the Electric Potential being zero
           ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // color of Max Electric Potential
@@ -694,8 +686,7 @@ define( function( require ) {
       // for negative (or zero) potential
       else {
 
-        //var linearInterpolationNegative = new LinearFunction( electricPotentialMin, 0, 0, 1, true );  // clamp the linear interpolation function;
-        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); //
+        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
         finalColor = this.interpolateRGBA(
           ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // color that corresponds to the lowest (i.e. negative) Electric Potential
           ChargesAndFieldsColors.electricPotentialGridZero,// color that corresponds to the Electric Potential being zero zero
@@ -713,11 +704,11 @@ define( function( require ) {
      */
     getColorElectricPotentialSensorGrid: function() {
 
-      var finalColor;
-      var distance;
-      var electricPotential;
-      // a piecewise function is used to interpolate
+      var finalColor; // {string} e.g. rgba(0,0,0,1)
+      var distance; // {number}  between 0 and 1
+      var electricPotential; // {number}
 
+      // a piecewise function is used to interpolate
       var thisModel = this;
 
       this.electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
@@ -746,22 +737,13 @@ define( function( require ) {
     /**
      * Given a position, returns a color that is related to the intensity of the magnitude of the electric field
      * @private
-     * @param {Vector2} position
-     * @param {number} [electricFieldMagnitude] -(optional argument)
-     * @returns {Color}
+     * @param {number} electricFieldMagnitude
+     * @returns {string} color
      *
      */
-    getColorElectricFieldMagnitude: function( position, electricFieldMagnitude ) {
+    getColorElectricFieldMagnitude: function( electricFieldMagnitude ) {
 
-      // TODO find a way to get position to be optional as well ask JB, both are vectors this is more difficult
-      var electricFieldMag;
-      if ( typeof electricFieldMagnitude === "undefined" ) {
-        electricFieldMag = this.getElectricField( position ).magnitude();
-      }
-      else {
-        electricFieldMag = electricFieldMagnitude;
-      }
-      var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMag ); // a value between 0 and 1
+      var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
       return this.interpolateRGBA(
         ChargesAndFieldsColors.electricFieldGridZero,  //  color that corresponds to zero electric Field
