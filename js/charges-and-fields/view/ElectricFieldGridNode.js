@@ -125,7 +125,7 @@ define( function( require ) {
       }
     }
 
-    update( 'updateElectricFieldGrid', updateElectricFieldGrid );
+    update( 'electricFieldGridUpdated', updateElectricFieldGrid );
     //TODO something funny with the next line the colors don't update immediately after projector/default mode switch
     // OK got it , we need to update the color again since the model is not aware of it //ha ha
     ChargesAndFieldsColors.on( 'profileChanged', updateElectricFieldGridColors );

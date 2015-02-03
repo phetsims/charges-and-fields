@@ -53,7 +53,7 @@ define( function( require ) {
       } );
 
 
-      update( 'updateElectricPotentialGrid', function() {
+      update( 'electricPotentialGridUpdated', function() {
         electricPotentialGridNode.invalidatePaint();
       } );
 

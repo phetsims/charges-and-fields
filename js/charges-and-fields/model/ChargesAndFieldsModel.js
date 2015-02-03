@@ -184,7 +184,7 @@ define( function( require ) {
               sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
               sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
             } );
-            thisModel.trigger( 'updateElectricFieldGrid' );
+            thisModel.trigger( 'electricFieldGridUpdated' );
           }
 
           // update the Electric Potential Grid Sensors but only if the grid is visible
@@ -194,7 +194,7 @@ define( function( require ) {
               sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
               sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
             } );
-            thisModel.trigger( 'updateElectricPotentialGrid' );
+            thisModel.trigger( 'electricPotentialGridUpdated' );
           }
         }
       } );
@@ -229,7 +229,6 @@ define( function( require ) {
         }
       } );
     } );
-
   }
 
   return inherit( PropertySet, ChargesAndFieldsModel, {
@@ -312,7 +311,18 @@ define( function( require ) {
         sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
         sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
       } );
-      this.trigger( 'updateElectricPotentialGrid' );
+      this.trigger( 'electricPotentialGridUpdated' );
+    },
+
+    /**
+     * Update the Electric Potential Grid Color
+     * @public
+     */
+    updateElectricPotentialSensorGridColor: function() {
+      var thisModel = this;
+      this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
+        sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
+      } );
     },
 
     /**
@@ -325,7 +335,18 @@ define( function( require ) {
         sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
         sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
       } );
-      this.trigger( 'updateElectricFieldGrid' );
+      this.trigger( 'electricFieldGridUpdated' );
+    },
+
+    /**
+     * Update the Color of Electric Field Grid Sensors
+     * @public
+     */
+    updateElectricFieldSensorGridColor: function() {
+      var thisModel = this;
+      this.electricFieldSensorGrid.forEach( function( sensorElement ) {
+        sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
+      } );
 
     },
     //TODO Should that function be here in the first place? It is a pure function. It is called by UserCreatedNode
