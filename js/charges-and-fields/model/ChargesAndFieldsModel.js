@@ -174,17 +174,16 @@ define( function( require ) {
 
           // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
           thisModel.electricFieldSensors.forEach( function( sensorElement ) {
-            // electricField is a property: we want to allocate a new vector to trigger an update in the view.
-            sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+            sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
           } );
 
           // update the Electric Field Grid Sensors, but only if the grid is visible
           if ( thisModel.isElectricFieldGridVisible === true ) {
             thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
-              // electricField is a property: we want to allocate a new vector to trigger an update in the view.
               // let's calculate the change in the electric field due to the change in position of one charge
-              sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+              sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
             } );
+            thisModel.trigger( 'updateElectricFieldGrid' );
           }
 
           // update the Electric Potential Grid Sensors but only if the grid is visible
@@ -193,11 +192,11 @@ define( function( require ) {
               // calculating the change in the electric potential due to the change in position of one charge
               sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
             } );
+            thisModel.trigger( 'updateElectricPotentialGrid' );
           }
         }
 
-        thisModel.trigger( 'updateElectricFieldGrid' );
-        thisModel.trigger( 'updateElectricPotentialGrid' );
+
       } );
     } );
 
@@ -212,8 +211,8 @@ define( function( require ) {
       thisModel.clearElectricFieldLines();
       // Update all the visible sensors
       thisModel.updateAllVisibleSensors();
-      thisModel.trigger( 'updateElectricFieldGrid' );
-      thisModel.trigger( 'updateElectricPotentialGrid' );
+
+
     } );
 
     //------------------------
@@ -281,6 +280,7 @@ define( function( require ) {
       this.updateElectricFieldSensors(); // always visible
       if ( this.isElectricFieldGridVisible === true ) {
         this.updateElectricFieldSensorGrid();
+
       }
     },
     /**
@@ -311,6 +311,7 @@ define( function( require ) {
         // TODO change back if needed
         //sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.position, sensorElement.electricPotential );
       } );
+      this.trigger( 'updateElectricPotentialGrid' );
     },
     /**
      * Update the Electric Field Grid Sensors
@@ -323,6 +324,8 @@ define( function( require ) {
         // TODO change back if needed
         //sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.position, sensorElement.electricField.magnitude() );
       } );
+      this.trigger( 'updateElectricFieldGrid' );
+
     },
     //TODO Should that function be here in the first place? It is a pure function. It is called by UserCreatedNode
     /**
