@@ -177,7 +177,7 @@ define( function( require ) {
             sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
           } );
 
-          // update the Electric Field Grid Sensors, but only if the grid is visible
+          // update the Electric Field Grid Sensors, but only if the electric Field grid is visible
           if ( thisModel.isElectricFieldGridVisible === true ) {
             thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
               // let's calculate the change in the electric field due to the change in position of one charge
@@ -187,7 +187,7 @@ define( function( require ) {
             thisModel.trigger( 'electricFieldGridUpdated' );
           }
 
-          // update the Electric Potential Grid Sensors but only if the grid is visible
+          // update the Electric Potential Grid Sensors but only if the electric potential grid is visible
           if ( thisModel.isElectricPotentialGridVisible === true ) {
             thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
               // calculating the change in the electric potential due to the change in position of one charge
