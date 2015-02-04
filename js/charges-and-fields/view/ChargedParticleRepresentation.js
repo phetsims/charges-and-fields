@@ -66,7 +66,7 @@ define( function( require ) {
     // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
 
     var ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
-    var pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white' };
+    var pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white', pickable: false };
     if ( charge === 1 ) {
       // plus Shape representing a positive charge
       var plusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )

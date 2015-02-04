@@ -91,19 +91,22 @@ define( function( require ) {
     var frontPath = new Path( frontShape, {
       stroke: '#231F20',
       lineWidth: 2,
-      fill: frontLinearGradient
+      fill: frontLinearGradient,
+      pickable: false
     } );
 
     var sidePath = new Path( sideShape, {
       stroke: '#231F20',
       lineWidth: 2,
-      fill: sideLinearGradient
+      fill: sideLinearGradient,
+      pickable: false
     } );
 
     var topPath = new Path( topShape, {
       stroke: '#231F20',
       lineWidth: 2,
-      fill: topLinearGradient
+      fill: topLinearGradient,
+      pickable: false
     } );
 
     // eraser icon

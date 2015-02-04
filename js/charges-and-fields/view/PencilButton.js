@@ -47,7 +47,7 @@ define( function( require ) {
       cubicCurveTo( 171.269, 67.982, 158.694, 49.97, 151.991, 43.257 ).
       close();
 
-    var part1Path = new Path( part1Shape, { fill: '#F4ABAA' } );
+    var part1Path = new Path( part1Shape, { fill: '#F4ABAA', pickable: false } );
 
     // metal part that hold the eraser
     var part2Shape = new Shape().
@@ -62,7 +62,7 @@ define( function( require ) {
       cubicCurveTo( 158.938, 83.112, 144.941, 62.899, 137.882, 55.812 ).
       close();
 
-    var part2Path = new Path( part2Shape, { fill: '#D1D3D4' } );
+    var part2Path = new Path( part2Shape, { fill: '#D1D3D4', pickable: false } );
 
     // main body of the pencil
     var part3Shape = new Shape().
@@ -84,7 +84,7 @@ define( function( require ) {
       close();
 
 
-    var part3Path = new Path( part3Shape, { fill: '#FDA720' } );
+    var part3Path = new Path( part3Shape, { fill: '#FDA720', pickable: false } );
 
     // triangular tip
     var part4Shape = new Shape().
@@ -107,7 +107,7 @@ define( function( require ) {
       lineTo( 59.07, 141.823 ).
       close();
 
-    var part5Path = new Path( part5Shape, { fill: '#E1B89A' } );
+    var part5Path = new Path( part5Shape, { fill: '#E1B89A', pickable: false } );
 
     var part6Shape = new Shape().
       moveTo( 41.422, 167.795 ).
@@ -126,7 +126,7 @@ define( function( require ) {
       lineTo( 42.33, 102.97 ).
       lineToRelative( -4.344, 11.301 );
 
-    var lineOptions = { stroke: '#231F20', lineWidth: 1.84, miterLimit: 10 };
+    var lineOptions = { stroke: '#231F20', lineWidth: 1.84, miterLimit: 10, pickable: false };
     var part6Path = new Path( part6Shape, lineOptions );
 
     var part7Shape = new Shape().
