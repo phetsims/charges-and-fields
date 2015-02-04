@@ -10,10 +10,12 @@ define( function( require ) {
 
     // modules
     var Bounds2 = require( 'DOT/Bounds2' );
-    var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
+    var DOM = require( 'SCENERY/nodes/DOM' );
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
+    //var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
+    //var Util = require( 'SCENERY/util/Util' );
 
     // constants
     var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
@@ -27,12 +29,27 @@ define( function( require ) {
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialGridNode( electricPotentialSensorGrid, update, bounds, modelViewTransform, isVisibleProperty ) {
+    function ElectricPotentialGridWebGLNode( electricPotentialSensorGrid, update, bounds, modelViewTransform, isVisibleProperty ) {
 
-      // Call the super constructor
-      CanvasNode.call( this, { canvasBounds: bounds } );
+      // prepare the canvas
+      this.canvas = document.createElement( 'canvas' );
+      this.context = this.canvas.getContext( 'webgl' ) || this.canvas.getContext( 'experimental-webgl' );
+      //this.backingScale = useHighRes ? Util.backingScale( this.context ) : 1;
+      this.canvas.className = 'canvas-3d';
+      this.canvas.style.position = 'absolute';
+      this.canvas.style.left = '0';
+      this.canvas.style.top = '0';
+      this.canvasBounds = bounds;
 
-      var electricPotentialGridNode = this;
+      // construct ourself with the canvas (now properly initially sized)
+      DOM.call( this, this.canvas, {
+        preventTransform: true
+      } );
+      // TODO: work in progress
+      var electricPotentialGridWebGLNode = this;
+
+      //var ShaderProgram = new ShaderProgram( this.context, vertexSource, fragmentSource, attributeNames, uniformNames );
+
 
       // find the distance between two adjacent sensors in view coordinates.
       var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
@@ -46,25 +63,26 @@ define( function( require ) {
           positionInView.x + unitDistance / 2,
           positionInView.y + unitDistance / 2 );
         rect.electricPotentialSensor = electricPotentialSensor;
-        electricPotentialGridNode.rectArray.push( rect );
+        electricPotentialGridWebGLNode.rectArray.push( rect );
       } );
 
       ChargesAndFieldsColors.on( 'profileChanged', function() {
-        electricPotentialGridNode.invalidatePaint();
+        electricPotentialGridWebGLNode.invalidatePaint();
       } );
 
 
       update( 'electricPotentialGridUpdated', function() {
-        electricPotentialGridNode.invalidatePaint();
+        electricPotentialGridWebGLNode.invalidatePaint();
       } );
 
       isVisibleProperty.link( function( isVisible ) {
-        electricPotentialGridNode.visible = isVisible;
+        electricPotentialGridWebGLNode.visible = isVisible;
       } );
 
       this.invalidatePaint();
     }
-    return inherit( CanvasNode, ElectricPotentialGridNode, {
+
+    return inherit( DOM, ElectricPotentialGridWebGLNode, {
 
         /*
          * @override
@@ -74,8 +92,6 @@ define( function( require ) {
           var context = wrapper.context;
           this.rectArray.forEach( function( rect ) {
             context.fillStyle = rect.electricPotentialSensor.electricPotentialColor;
-            // in order to avoid an additional (and expensive) call for fillStroke,
-            // we will make the squares a tad bigger hence the '+1'
             context.fillRect( rect.minX, rect.minY, rect.width + 1, rect.height + 1 );
           } );
         }

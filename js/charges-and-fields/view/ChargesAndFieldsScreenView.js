@@ -20,7 +20,7 @@ define( function( require ) {
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
-  //var ElectricPotentialFieldWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialFieldWebGLNode' );
+  var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
   var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
@@ -59,19 +59,27 @@ define( function( require ) {
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = phet.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
     var webGLSupported = Util.isWebGLSupported && allowWebGL;
-    var renderer = webGLSupported ? 'webgl' : 'svg';
-    if ( renderer ) {
-    } // make lint happy
 
-    //var electricPotentialGridNode = (renderer === 'webgl') ? new ElectricPotentialGridNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty) :
-    //    new ElectricPotentialGridNode(model.electricPotentialSensorGrid, model.getColorElectricPotential.bind(model), modelViewTransform, model.showResolutionProperty);
 
+    var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
-    var electricPotentialGridNode = new ElectricPotentialGridNode(
-      model.electricPotentialSensorGrid,
-      model.on.bind( model ),
-      modelViewTransform,
-      model.isElectricPotentialGridVisibleProperty );
+    // TODO: remove false
+    if ( webGLSupported && false ) {
+      electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
+        model.electricPotentialSensorGrid,
+        model.on.bind( model ),
+        this.layoutBounds,
+        modelViewTransform,
+        model.isElectricPotentialGridVisibleProperty );
+    }
+    else {
+      electricPotentialGridNode = new ElectricPotentialGridNode(
+        model.electricPotentialSensorGrid,
+        model.on.bind( model ),
+        this.layoutBounds,
+        modelViewTransform,
+        model.isElectricPotentialGridVisibleProperty );
+    }
 
     // Create a grid of electric field arrow sensors
     var electricFieldGridNode = new ElectricFieldGridNode(
