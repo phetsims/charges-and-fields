@@ -58,8 +58,7 @@ define( function( require ) {
 
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = phet.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
-    var webGLSupported = Util.isWebGLSupported && allowWebGL;
-
+    var webGLSupported = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowWebGL;
 
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
