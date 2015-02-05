@@ -94,7 +94,7 @@ define( function( require ) {
       },
 
       translate: function( translationParams ) {
-        this.modelElement.position = this.modelElement.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        this.modelElement.position = modelViewTransform.viewToModelDelta( translationParams.delta ).add( this.modelElement.position );
       },
 
       end: function( event, trail ) {
