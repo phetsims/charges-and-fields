@@ -89,16 +89,15 @@ define( function( require ) {
     } );
 
     /**
-     *  Update the orientation of the arrow (and possibly its fill) according to the value of the electric field
+     *  Update the orientation of the arrows (and possibly their fill) according to the value of the electric field
      *  at the position in the model
      */
     function updateElectricFieldGrid() {
       arrowArray.forEach( function( arrowNode ) {
         // Rotate the arrow according to the direction of the electric field
-        // Let's not make any assumption about inverted/notInverted Y
-        // Just use the electricField in the view
-        var electricFieldInView = modelViewTransform.modelToViewDelta( arrowNode.electricFieldSensor.electricField );
-        arrowNode.setRotation( electricFieldInView.angle() );
+        // Since the model View Transform is  Y inverted, the angle in the view and in the model
+        // differ by a minus sign
+        arrowNode.setRotation( -1 * arrowNode.electricFieldSensor.electricField.angle() );
         // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
         if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
