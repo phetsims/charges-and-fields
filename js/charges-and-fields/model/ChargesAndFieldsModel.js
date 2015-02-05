@@ -448,16 +448,25 @@ define( function( require ) {
      * @param {Vector2} newChargePosition
      * @param {Vector2} oldChargePosition
      * @param {number} particleCharge - allowed values are +1 or -1
-     * @returns {Vector2}
+     * @returns {{x:number,y:number}}
      */
     getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
       var newDistancePowerCube = Math.pow( newChargePosition.distanceSquared( position ), 1.5 );
       var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
-      //TODO: vector allocations in the next two lines. Is it worth changing?
-      var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
-      var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
-      var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
-      return electricFieldChange;
+
+      // For performance reason, we don't want to generate more vector allocations
+      // Here is the original code
+      //var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
+      //var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
+      //var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
+      return {
+        x: ((position.x - newChargePosition.x) / ( newDistancePowerCube ) -
+            (position.x - oldChargePosition.x) / ( oldDistancePowerCube ))
+           * ( particleCharge * K_CONSTANT ),
+        y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
+            (position.y - oldChargePosition.y) / ( oldDistancePowerCube ))
+           * ( particleCharge * K_CONSTANT )
+      };
     },
 
     /**
@@ -472,8 +481,8 @@ define( function( require ) {
     getElectricPotentialChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
       var newDistance = newChargePosition.distance( position );
       var oldDistance = oldChargePosition.distance( position );
-      var electricPotentialChange = particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
-      return electricPotentialChange;
+      //var electricPotentialChange = particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
+      return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
     },
 
     /**
@@ -487,9 +496,12 @@ define( function( require ) {
       this.chargedParticles.forEach( function( chargedParticle ) {
         var distanceSquared = chargedParticle.position.distanceSquared( position );
         var distancePowerCube = Math.pow( distanceSquared, 1.5 );
-        //TODO: vector allocation. Is it worth changing?
-        var displacementVector = position.minus( chargedParticle.position );
-        electricField.add( displacementVector.multiplyScalar( (chargedParticle.charge) / distancePowerCube ) );
+        // For performance reason, we don't want to generate more vector allocations
+        var electricFieldContribution = {
+          x: (position.x - chargedParticle.position.x) * (chargedParticle.charge) / distancePowerCube,
+          y: (position.y - chargedParticle.position.y) * (chargedParticle.charge) / distancePowerCube
+        };
+        electricField.add( electricFieldContribution );
       } );
       electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
       return electricField;
@@ -544,8 +556,8 @@ define( function( require ) {
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); // a number
       var deltaElectricPotential = midwayElectricPotential - voltage;
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() );
-      var finalPosition = midwayPosition.add( deltaPosition );
-      return finalPosition;
+      //var finalPosition = midwayPosition.add( deltaPosition );
+      return midwayPosition.add( deltaPosition );
     },
 
     /**
@@ -563,8 +575,8 @@ define( function( require ) {
       var midwayPosition = midwayDisplacement.add( position );
       var midwayElectricField = this.getElectricField( midwayPosition );
       var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
-      var finalPosition = deltaDisplacement.add( position );
-      return finalPosition;
+      //var finalPosition = deltaDisplacement.add( position );
+      return deltaDisplacement.add( position );
     },
 
     /**
@@ -621,8 +633,8 @@ define( function( require ) {
 
       //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
       var reversedArray = positionClockwiseArray.reverse();
-      var positionArray = reversedArray.concat( position, positionCounterClockwiseArray );
-      return positionArray;
+      //var positionArray = reversedArray.concat( position, positionCounterClockwiseArray );
+      return reversedArray.concat( position, positionCounterClockwiseArray );
     },
 
     /**
@@ -682,8 +694,8 @@ define( function( require ) {
 
       //let's order all the positions (including the initial point) in an array in a forward fashion
       var reversedArray = backwardPositionArray.reverse();
-      var positionArray = reversedArray.concat( position, forwardPositionArray );
-      return positionArray;
+      //var positionArray = reversedArray.concat( position, forwardPositionArray );
+      return reversedArray.concat( position, forwardPositionArray );
     },
 
     /**
@@ -814,6 +826,7 @@ define( function( require ) {
     clearEquipotentialLines: function() {
       this.equipotentialLinesArray.clear();
     },
+
     /**
      * Function that clears the Electric Field Lines Observable Array
      * @public
