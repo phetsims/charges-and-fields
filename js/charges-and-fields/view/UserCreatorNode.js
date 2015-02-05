@@ -65,8 +65,8 @@ define( function( require ) {
 
         // Determine the initial position of the new element as a function of the event position and this node's bounds.
         var centerPositionGlobal = self.parentToGlobalPoint( self.center );
-        var initialPositionOffset = centerPositionGlobal.minus( event.pointer.point );
-        var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point.plus( initialPositionOffset ) );
+        var initialPositionOffset = centerPositionGlobal.subtract( event.pointer.point );
+        var initialPosition = this.parentScreen.globalToLocalPoint( initialPositionOffset.add( event.pointer.point ) );
 
         // Create and add the new model element.
         var initialModelPosition = modelViewTransform.viewToModelPosition( initialPosition );
