@@ -43,6 +43,9 @@ define( function( require ) {
 
     var self = this;
 
+    // let's make this node very easy to pick
+    this.touchArea = this.localBounds.dilatedXY( 20, 20 );
+
     // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
     this.addInputListener( new SimpleDragHandler( {
 
