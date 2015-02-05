@@ -88,11 +88,14 @@ define( function( require ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
-      // Update length and direction of the arrow
-      arrowNode.setTailAndTip( 0, 0, magnitude * 15, 0 );  // arbitrary multiplicative factor for the view
+      var arrowLength = 15 * magnitude;// arbitrary multiplicative factor for the view
+
       // note that the angleInView = -1 * angleInModel
       // since the vertical direction is reversed between the view and the model
-      arrowNode.setRotation( -1 * angle );
+      // so the text must be updated with angle whereas arrow node must be updated with -angle
+
+      // Update length and direction of the arrow
+      arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
 
       // Update the strings in the labels
       var fieldMagnitudeString = Util.toFixed( magnitude, 1 );
@@ -113,7 +116,6 @@ define( function( require ) {
         electricFieldSensorNode.moveToFront();
       }
     } );
-
 
     // Register for synchronization with model.
     electricFieldSensor.positionProperty.link( function( position ) {
