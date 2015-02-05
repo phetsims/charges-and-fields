@@ -39,48 +39,42 @@ define( function( require ) {
 
     Node.call( this );
 
-
     var arrowArray = [];
+    var circleArray = [];
+
+
+    // First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
+    // The arrow will rotate around a point that is not necessarily its center.
+    // The point of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
+    // fraction=1/2 => rotate around the center,
+    // fraction=0 => rotate around the tail,
+    // fraction=1 => rotate around the tip,
+
+    var fraction = 2 / 5;
+    var tailX = -ARROW_LENGTH * (fraction);
+    var tipX = ARROW_LENGTH * (1 - fraction);
+    var offsetCenterX = (tailX + tipX) / 2;
+    var arrowOptions = {
+      tailWidth: 8,
+      lineWidth: 0, // If the lineWidth is equal to zero, we don't have to worry about the color of the stroke
+      headWidth: 16,
+      headHeight: 10
+    };
+
 
     electricFieldSensorGrid.forEach( function( electricFieldSensor ) {
 
       var positionInModel = electricFieldSensor.position; // position of the sensor in model
-
       var positionInView = modelViewTransform.modelToViewPosition( positionInModel ); // position of the sensor in the view
 
       // Create the centered circle.
       var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 0 } );
       circle.center = positionInView; // center the circle at the sensor position
-
-      // attached a listener to the projector/default mode for setting the fill color
-      var circleFillColorFunction = function( color ) {
-        circle.fill = color;
-      };
-      ChargesAndFieldsColors.link( 'background', circleFillColorFunction );
+      circleArray.push( circle );
 
       // Create the arrow
-
-      // First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
-      // The arrow will rotate around a point that is not necessarily its center.
-      // The point of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
-      // fraction=1/2 => rotate around the center,
-      // fraction=0 => rotate around the tail,
-      // fraction=1 => rotate around the tip,
-
-      var fraction = 2 / 5;
-
-      var tailX = -ARROW_LENGTH * (fraction);
-      var tipX = ARROW_LENGTH * (1 - fraction);
-      var offsetCenterX = (tailX + tipX) / 2;
-      var offsetVector = new Vector2( offsetCenterX, 0 );
-      var arrowNode = new ArrowNode( tailX, 0, tipX, 0, {
-        tailWidth: 8,
-        lineWidth: 0, // If the lineWidth is equal to zero, we don't have to worry about the color of the stroke
-        headWidth: 16,
-        headHeight: 10
-      } );
-      arrowNode.center = offsetVector.add( positionInView );
-
+      var arrowNode = new ArrowNode( tailX, 0, tipX, 0, arrowOptions );
+      arrowNode.center = positionInView.addXY( offsetCenterX, 0 );
       arrowNode.electricFieldSensor = electricFieldSensor;
       arrowArray.push( arrowNode );
 
@@ -112,6 +106,13 @@ define( function( require ) {
      * Update the colors of the electric Field grid arrows
      */
     function updateElectricFieldGridColors() {
+
+      // update the color of the button circles
+      circleArray.forEach( function( circle ) {
+        circle.fill = ChargesAndFieldsColors.background;
+      } );
+
+      // update the color of the arrows
       if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
         arrowArray.forEach( function( arrowNode ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
