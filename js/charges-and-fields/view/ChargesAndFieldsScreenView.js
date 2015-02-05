@@ -66,19 +66,23 @@ define( function( require ) {
     // TODO: remove false
     if ( webGLSupported && false ) {
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
+        model,
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
         this.layoutBounds,
         modelViewTransform,
-        model.isElectricPotentialGridVisibleProperty );
+        model.isElectricPotentialGridVisibleProperty
+      );
     }
     else {
       electricPotentialGridNode = new ElectricPotentialGridNode(
+        model,
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
         this.layoutBounds,
         modelViewTransform,
-        model.isElectricPotentialGridVisibleProperty );
+        model.isElectricPotentialGridVisibleProperty
+      );
     }
 
     // Create a grid of electric field arrow sensors
