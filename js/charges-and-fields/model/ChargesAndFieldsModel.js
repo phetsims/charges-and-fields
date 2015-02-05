@@ -174,7 +174,8 @@ define( function( require ) {
 
           // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
           thisModel.electricFieldSensors.forEach( function( sensorElement ) {
-            sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+            // electricField is a property that is being listened to. We want a new vector allocation when the electric field gets updated
+            sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
           } );
 
           // update the Electric Field Grid Sensors, but only if the electric Field grid is visible
@@ -452,6 +453,7 @@ define( function( require ) {
     getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
       var newDistancePowerCube = Math.pow( newChargePosition.distanceSquared( position ), 1.5 );
       var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
+      //TODO: vector allocations in the next two lines. Is it worth changing?
       var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
       var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
       var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
@@ -485,6 +487,7 @@ define( function( require ) {
       this.chargedParticles.forEach( function( chargedParticle ) {
         var distanceSquared = chargedParticle.position.distanceSquared( position );
         var distancePowerCube = Math.pow( distanceSquared, 1.5 );
+        //TODO: vector allocation. Is it worth changing?
         var displacementVector = position.minus( chargedParticle.position );
         electricField.add( displacementVector.multiplyScalar( (chargedParticle.charge) / distancePowerCube ) );
       } );
