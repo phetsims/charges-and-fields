@@ -549,15 +549,23 @@ define( function( require ) {
      * @returns {Vector2} finalPosition
      */
     getNextPositionAlongEquipotentialWithElectricPotential: function( position, electricPotential, deltaDistance ) {
-      var initialElectricField = this.getElectricField( position );
+      /*
+       General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
+       to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
+       A further correction is applied since this intermediate point will not have the same electric potential
+       as the targeted electric potential. To find the final point, the electric potential offset between the targeted
+       and the electric potential at the intermediate point is found. By knowing the electric field at the intermediate point
+       the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
+       */
+      var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
-      var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // normalized Vector along equipotential
-      var midwayPosition = ( equipotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // a Vector2
-      var midwayElectricField = this.getElectricField( midwayPosition ); // a Vector2
+      var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
+      var midwayPosition = ( equipotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
+      var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
       assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero ' );
-      var midwayElectricPotential = this.getElectricPotential( midwayPosition ); // a number
-      var deltaElectricPotential = midwayElectricPotential - electricPotential;
-      var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() );
+      var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
+      var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
+      var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
       //var finalPosition = midwayPosition.add( deltaPosition );
       return midwayPosition.add( deltaPosition );
     },
@@ -573,9 +581,11 @@ define( function( require ) {
      */
     getNextPositionAlongElectricField: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position );
+      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
       var midwayDisplacement = initialElectricField.normalized().multiplyScalar( deltaDistance / 2 );
       var midwayPosition = midwayDisplacement.add( position );
       var midwayElectricField = this.getElectricField( midwayPosition );
+      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
       var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
       //var finalPosition = deltaDisplacement.add( position );
       return deltaDisplacement.add( position );
@@ -593,10 +603,27 @@ define( function( require ) {
         // if there are no charges, don't bother to find the equipotential line
         return null;
       }
+      /*
+       General Idea of this algorithm
+
+       The equipotential line is found using two searches. Starting from an initial point, we find the electric field at this
+       position and define the point to the left of the electric field as the counterclockwise point, whereas the point that is
+       90 degree right of the electric field is the clockwise point. The points are stored in a counterclockwise and clockwise array.
+       The search of the clockwise and counterclockwise points done concurrently. The search stops if (1) the number of
+       searching steps exceeds a large number and (2) either the clockwise or counterClockwise point is very far away from the origin.
+       A third condition to bailout of the search is that the clockwise and counterClockwise position are very close to one another
+       in which case we have a closed equipotential line. Note that if the conditions (1) and (2) are fulfilled the equipotential line
+       is not going to be a closed line but this is so far away from the screenview that the end user will simply see the line going
+       beyond the screen.
+
+       After the search is done, the function returns an array of points ordered in a counterclockwise direction, i.e. after
+       joining all the points, the directed line would be made of points that have an electric field
+       pointing clockwise (yes  clockwise) to the direction of the line.
+       */
       var stepCounter = 0;
       var stepMax = 500; // the product of stepMax and epsilonDistance should be larger than maxDistance
-      var epsilonDistance = 0.05;//step length along equipotential in meters
-      var readyToBreak = false;
+      var epsilonDistance = 0.05; // step length along equipotential in meters
+      var readyToBreak = false; // boolean to
       var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
       var nextClockwisePosition;
       var nextCounterClockwisePosition;
@@ -653,21 +680,36 @@ define( function( require ) {
         // if there are no charges, don't bother to find the electric field lines
         return null;
       }
+      /*
+       General Idea of the algorithm
+
+       Two arrays of points are generated. One is called forwardPositionArray and is made of all the points
+       (excluding the initial point) that are along the electric field. The point are generated sequentially.
+       Starting from the initial point it finds the next point that points along the initial electric field.
+       The search stops once (1) the number of steps exceeds some large number, (2) the current position is very far away
+       from the origin (center) of the model, (3) the current position is very close to a charge.
+       A similar search process is repeated for the direction opposite to the electric field.
+       Once the search process is over the two arrays are stitched together.  The resulting point array contains
+       a sequence of forward ordered points, i.e. the electric field points forward to the next point.
+       If no charges are present on the board, then the notion of electric field line does not exist, and the value null is returned
+       */
+
 
       var closestApproachDistance = 0.01; // closest approach distance to a charge in meters
-      var maxElectricFieldMagnitude = K_CONSTANT / Math.pow( closestApproachDistance, 2 );
+      // define the largest electric field before the electric field line search algorithm bails out
+      var maxElectricFieldMagnitude = K_CONSTANT / Math.pow( closestApproachDistance, 2 ); // {number}
 
-      var stepCounter = 0;
+      var stepCounter = 0; // our step counter
 
       // the product of stepMax and epsilonDistance should exceed the WIDTH or HEIGHT variable
       var stepMax = 2000;
-      var epsilonDistance = 0.01; // in meter t
+      var epsilonDistance = 0.01; // in meter
 
-      var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the initial position in meters
+      var maxDistance = Math.max( WIDTH, HEIGHT ); // maximum distance from the initial position in meters
 
-      var nextForwardPosition;
-      var nextBackwardPosition;
-      var currentForwardPosition = position;
+      var nextForwardPosition; // {Vector2} next position along the electric field
+      var nextBackwardPosition; // {Vector2} next position opposite to the electric field direction
+      var currentForwardPosition = position;  //
       var currentBackwardPosition = position;
       var forwardPositionArray = [];
       var backwardPositionArray = [];
