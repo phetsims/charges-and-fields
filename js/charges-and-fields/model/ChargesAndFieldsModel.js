@@ -30,8 +30,8 @@ define( function( require ) {
   var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
   var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
-  var MAX_ELECTRIC_POTENTIAL = 40; // voltage (in volts) at which color will saturate to colorMax
-  var MIN_ELECTRIC_POTENTIAL = -40; // voltage at which color will saturate to minColor
+  var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
+  var MIN_ELECTRIC_POTENTIAL = -40; // electric potential   at which color will saturate to minColor
 
   var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
@@ -537,24 +537,26 @@ define( function( require ) {
      */
     getNextPositionAlongEquipotential: function( position, deltaDistance ) {
       var initialElectricPotential = this.getElectricPotential( position );
-      return this.getNextPositionAlongEquipotentialWithVoltage.call( this, position, initialElectricPotential, deltaDistance );
+      return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, initialElectricPotential, deltaDistance );
     },
 
     /**
-     * Given a (initial) position, find a position with the targeted electric potential voltage within a distance deltaDistance
+     * Given a (initial) position, find a position with the targeted electric potential within a distance deltaDistance
      * @private
      * @param {Vector2} position
-     * @param {number} voltage
+     * @param {number} electricPotential
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithVoltage: function( position, voltage, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithElectricPotential: function( position, electricPotential, deltaDistance ) {
       var initialElectricField = this.getElectricField( position );
+      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
       var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // normalized Vector along equipotential
       var midwayPosition = ( equipotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // a Vector2
       var midwayElectricField = this.getElectricField( midwayPosition ); // a Vector2
+      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero ' );
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); // a number
-      var deltaElectricPotential = midwayElectricPotential - voltage;
+      var deltaElectricPotential = midwayElectricPotential - electricPotential;
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() );
       //var finalPosition = midwayPosition.add( deltaPosition );
       return midwayPosition.add( deltaPosition );
@@ -609,8 +611,8 @@ define( function( require ) {
               currentClockwisePosition.magnitude() < maxDistance ||
               currentCounterClockwisePosition.magnitude() < maxDistance ) {
 
-        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithVoltage( currentClockwisePosition, initialElectricPotential, epsilonDistance );
-        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithVoltage( currentCounterClockwisePosition, initialElectricPotential, -epsilonDistance );
+        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential( currentClockwisePosition, initialElectricPotential, epsilonDistance );
+        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential( currentCounterClockwisePosition, initialElectricPotential, -epsilonDistance );
 
         positionClockwiseArray.push( nextClockwisePosition );
         positionCounterClockwiseArray.push( nextCounterClockwisePosition );
