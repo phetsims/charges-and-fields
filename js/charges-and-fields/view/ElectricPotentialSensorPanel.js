@@ -14,14 +14,12 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var EraserButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EraserButton' );
   // var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
-  //var HBox = require( 'SCENERY/nodes/HBox' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Panel = require( 'SUN/Panel' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
   var Text = require( 'SCENERY/nodes/Text' );
-  //var VBox = require( 'SCENERY/nodes/VBox' );
   // tools for drawing
   //var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
