@@ -14,13 +14,14 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var EraserButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EraserButton' );
   // var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
+  //var HBox = require( 'SCENERY/nodes/HBox' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Panel = require( 'SUN/Panel' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  //var VBox = require( 'SCENERY/nodes/VBox' );
   // tools for drawing
   //var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -111,7 +112,8 @@ define( function( require ) {
 
 
     // The clear and plot buttons
-    var buttons = new HBox( {
+    var buttons = new LayoutBox( {
+      orientation: 'horizontal',
       align: 'center',
       spacing: 20,
       children: [ clearButton, plotElectricPotentialLineButton ],
@@ -119,7 +121,7 @@ define( function( require ) {
     } );
 
     // The contents of the control panel
-    var content = new VBox( {
+    var content = new LayoutBox( {
       align: 'center',
       spacing: 10,
       children: [ equipotentialPanelTitleText, textPanel, buttons ],
