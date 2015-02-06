@@ -15,7 +15,7 @@ define( function( require ) {
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
     var inherit = require( 'PHET_CORE/inherit' );
     //var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
-    //var Util = require( 'SCENERY/util/Util' );
+    var Util = require( 'SCENERY/util/Util' );
 
     // constants
     var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
@@ -33,13 +33,12 @@ define( function( require ) {
 
       // prepare the canvas
       this.canvas = document.createElement( 'canvas' );
-      this.context = this.canvas.getContext( 'webgl' ) || this.canvas.getContext( 'experimental-webgl' );
-      //this.backingScale = useHighRes ? Util.backingScale( this.context ) : 1;
-      this.canvas.className = 'canvas-3d';
+      this.gl = this.canvas.getContext( 'webgl' ) || this.canvas.getContext( 'experimental-webgl' );
+      this.gl.getExtension( 'OES_texture_float' );
+      this.backingScale = Util.backingScale( this.gl );
       this.canvas.style.position = 'absolute';
       this.canvas.style.left = '0';
       this.canvas.style.top = '0';
-      this.canvasBounds = bounds;
 
       // construct ourself with the canvas (now properly initially sized)
       DOM.call( this, this.canvas, {
@@ -48,7 +47,8 @@ define( function( require ) {
       // TODO: work in progress
       var electricPotentialGridWebGLNode = this;
 
-      //var ShaderProgram = new ShaderProgram( this.context, vertexSource, fragmentSource, attributeNames, uniformNames );
+
+      //var ShaderProgram = new ShaderProgram( this.gl, vertexSource, fragmentSource, attributeNames, uniformNames );
 
 
       // find the distance between two adjacent sensors in view coordinates.
