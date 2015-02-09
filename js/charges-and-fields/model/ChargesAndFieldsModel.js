@@ -623,7 +623,7 @@ define( function( require ) {
       var stepCounter = 0;
       var stepMax = 500; // the product of stepMax and epsilonDistance should be larger than maxDistance
       var epsilonDistance = 0.05; // step length along equipotential in meters
-      var readyToBreak = false; // boolean to
+      var isLinePathClosed = false; // boolean
       var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
       var nextClockwisePosition;
       var nextCounterClockwisePosition;
@@ -644,14 +644,13 @@ define( function( require ) {
         positionClockwiseArray.push( nextClockwisePosition );
         positionCounterClockwiseArray.push( nextCounterClockwisePosition );
 
-        if ( readyToBreak ) {
-          break;
-        }
+        //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
 
         // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
-        // TODO: wouldnt it be better to let the VIEW know to that the ends are 'joined' and close the path
-        if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance / 2 ) {
-          readyToBreak = true;
+        if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
+          isLinePathClosed = true;
+          positionClockwiseArray.push( nextCounterClockwisePosition ); // let's close the 'path'
+          break;
         }
 
         currentClockwisePosition = nextClockwisePosition;
@@ -660,10 +659,53 @@ define( function( require ) {
         stepCounter++;
       }//end of while()
 
+
+      if ( !isLinePathClosed || currentClockwisePosition.magnitude() < maxDistance || currentClockwisePosition.magnitude() < maxDistance ) {
+        console.log( 'an equipotential line terminates on the screen' );
+        // bring out the big guns
+        // see https://github.com/phetsims/charges-and-fields/issues/1
+        this.getEquipotentialThroughMarchingSquaresPositionArray( position );
+      }
+
       //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
       var reversedArray = positionClockwiseArray.reverse();
       //var positionArray = reversedArray.concat( position, positionCounterClockwiseArray );
       return reversedArray.concat( position, positionCounterClockwiseArray );
+    },
+
+    /**
+     * This method returns an array of points (vectors) with the same electric potential as the electric potential
+     * at the initial position. The array is ordered with position points going counterclockwise.
+     * This method uses a so called 'Marching Squares' Algorithm
+     * see http://en.wikipedia.org/wiki/Marching_squares
+     * @private
+     * @param {Vector2} position - initial position
+     * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
+     */
+    getEquipotentialThroughMarchingSquaresPositionArray: function( position ) {
+
+      //TODO: complete this algorithm
+
+      /*
+
+       */
+      // options = _.extend( {
+      //   spacing: 0.5 // separation (distance) in model coordinates between two adjacent sensors
+      // }, options );
+      // var gridArray = [];
+      //
+      // //var minX = -WIDTH / 2;
+      // var maxX = WIDTH / 2;
+      // //var minY = -HEIGHT / 2;
+      // var maxY = HEIGHT / 2;
+      //
+      // var x;
+      // var y;
+      //
+      //// Marching Squares Parameters
+      // var threshold = this.getElectricPotential( position );
+
+
     },
 
     /**
