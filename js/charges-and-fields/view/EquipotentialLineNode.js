@@ -86,6 +86,23 @@ define( function( require ) {
         shape.lineToPoint( position );
       } );
 
+      //var length = equipotentialLine.positionArray.length;
+      //var i;
+      //for (i = 1; i < length - 2; i ++)
+      //{
+      //  var xc = (equipotentialLine.positionArray[i].x + equipotentialLine.positionArray[i + 1].x) / 2;
+      //  var yc = (equipotentialLine.positionArray[i].y + equipotentialLine.positionArray[i + 1].y) / 2;
+      //  shape.quadraticCurveTo(equipotentialLine.positionArray[i].x, equipotentialLine.positionArray[i].y, xc, yc);
+      //}
+      //// curve through the last two points
+      //shape.quadraticCurveTo(
+      //  equipotentialLine.positionArray[i].x,
+      //  equipotentialLine.positionArray[i].y,
+      //  equipotentialLine.positionArray[i+1].x,
+      //  equipotentialLine.positionArray[i+1].y);
+
+
+
       var equipotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ), { stroke: ChargesAndFieldsColors.equipotentialLine.toCSS() } );
 
       var colorFunction = function( color ) {
