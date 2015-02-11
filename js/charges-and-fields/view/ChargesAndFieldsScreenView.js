@@ -218,9 +218,10 @@ define( function( require ) {
     this.addChild( controlPanel );
     this.addChild( resetAllButton );
     this.addChild( chargeAndSensorEnclosure );
+
+    this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );
-    this.addChild( draggableElementsLayer ); // at the top of the z-order
 
     //TODO: Delete when done with the layout
     ////////////////////////////////////////////////////////////////
