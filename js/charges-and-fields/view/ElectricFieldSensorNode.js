@@ -77,9 +77,11 @@ define( function( require ) {
     this.addChild( directionLabel );
 
     // Layout
-    fieldStrengthLabel.top = this.bottom;
-    directionLabel.top = fieldStrengthLabel.bottom;
+    fieldStrengthLabel.bottom = this.top;
+    directionLabel.bottom = fieldStrengthLabel.top;
 
+    fieldStrengthLabel.right = this.left - 20;
+    directionLabel.right = fieldStrengthLabel.right;
     // expand the touch area
     this.touchArea = this.localBounds.dilatedXY( 10, 10 );
 
