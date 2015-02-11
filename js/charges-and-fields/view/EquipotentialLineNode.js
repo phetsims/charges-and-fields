@@ -48,10 +48,18 @@ define( function( require ) {
       var voltageLabel = labelElectricPotentialLine( equipotentialLine );
       var rectangle = new Rectangle( 0, 0, voltageLabel.width * 1.5, voltageLabel.height * 1.5,
         {
-          fill: 'green',
-          stroke: 'white',
           center: modelViewTransform.modelToViewPosition( equipotentialLine.position )
         } );
+
+      // Link the fill color for the default/projector mode
+      ChargesAndFieldsColors.link( 'background', function( color ) {
+        rectangle.fill = color;
+      } );
+
+      // Link the stroke color for the default/projector mode
+      ChargesAndFieldsColors.link( 'reversedBackground', function( color ) {
+        rectangle.stroke = color;
+      } );
 
       var equipotentialLinePath = traceElectricPotentialLine( equipotentialLine );
 

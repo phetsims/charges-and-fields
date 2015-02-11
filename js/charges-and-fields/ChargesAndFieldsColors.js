@@ -19,6 +19,10 @@ define( function( require ) {
       default: new Color( 0, 0, 0 ),
       projector: new Color( 255, 255, 255 )
     },
+    reversedBackground: {
+      default: new Color( 255, 255, 255 ),
+      projector: new Color( 0, 0, 0 )
+    },
     controlPanelBorder: {
       default: new Color( 210, 210, 210 ),
       projector: new Color( 192, 192, 192 )
