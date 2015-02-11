@@ -629,8 +629,8 @@ define( function( require ) {
       var nextCounterClockwisePosition;
       var currentClockwisePosition = position;
       var currentCounterClockwisePosition = position;
-      var positionClockwiseArray = [];
-      var positionCounterClockwiseArray = [];
+      var clockwisePositionArray = [];
+      var counterClockwisePositionArray = [];
 
       var initialElectricPotential = this.getElectricPotential( position );
 
@@ -641,15 +641,15 @@ define( function( require ) {
         nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential( currentClockwisePosition, initialElectricPotential, epsilonDistance );
         nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential( currentCounterClockwisePosition, initialElectricPotential, -epsilonDistance );
 
-        positionClockwiseArray.push( nextClockwisePosition );
-        positionCounterClockwiseArray.push( nextCounterClockwisePosition );
+        clockwisePositionArray.push( nextClockwisePosition );
+        counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
         //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
 
         // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
         if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
           isLinePathClosed = true;
-          positionClockwiseArray.push( nextCounterClockwisePosition ); // let's close the 'path'
+          clockwisePositionArray.push( nextCounterClockwisePosition ); // let's close the 'path'
           break;
         }
 
@@ -668,9 +668,9 @@ define( function( require ) {
       }
 
       //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
-      var reversedArray = positionClockwiseArray.reverse();
-      //var positionArray = reversedArray.concat( position, positionCounterClockwiseArray );
-      return reversedArray.concat( position, positionCounterClockwiseArray );
+      var reversedArray = clockwisePositionArray.reverse();
+      //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
+      return reversedArray.concat( position, counterClockwisePositionArray );
     },
 
     /**
@@ -736,28 +736,27 @@ define( function( require ) {
        If no charges are present on the board, then the notion of electric field line does not exist, and the value null is returned
        */
 
-
-      var closestApproachDistance = 0.01; // closest approach distance to a charge in meters
+      // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
+      var closestApproachDistance = 0.01;
       // define the largest electric field before the electric field line search algorithm bails out
       var maxElectricFieldMagnitude = K_CONSTANT / Math.pow( closestApproachDistance, 2 ); // {number}
 
       var stepCounter = 0; // our step counter
 
       // the product of stepMax and epsilonDistance should exceed the WIDTH or HEIGHT variable
-      var stepMax = 2000;
-      var epsilonDistance = 0.01; // in meter
+      var stepMax = 2000; // an integer, the maximum number of steps in the algorithm
+      var epsilonDistance = 0.025; // in meter
 
-      var maxDistance = Math.max( WIDTH, HEIGHT ); // maximum distance from the initial position in meters
+      var maxDistance = 3 * Math.max( WIDTH, HEIGHT ); // maximum distance from the initial position in meters
 
       var nextForwardPosition; // {Vector2} next position along the electric field
       var nextBackwardPosition; // {Vector2} next position opposite to the electric field direction
-      var currentForwardPosition = position;  //
+      var currentForwardPosition = position;
       var currentBackwardPosition = position;
       var forwardPositionArray = [];
       var backwardPositionArray = [];
 
-      //TODO: the this.getElectricField(currentForwardPosition).magnitude() call is expensive
-      // find way to reuse it
+      // find the positions along the electric field
       while ( stepCounter < stepMax &&
               currentForwardPosition.magnitude() < maxDistance &&
               this.getElectricField( currentForwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
@@ -767,7 +766,10 @@ define( function( require ) {
         stepCounter++;
       }//end of while()
 
+      // reset the counter
       stepCounter = 0;
+
+      // find the positions opposite to the initial electric field
       while ( stepCounter < stepMax &&
               currentBackwardPosition.magnitude() < maxDistance &&
               this.getElectricField( currentBackwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
@@ -778,7 +780,7 @@ define( function( require ) {
         stepCounter++;
       }//end of while()
 
-      //let's order all the positions (including the initial point) in an array in a forward fashion
+      // order all the positions (including the initial point) in an array in a forward fashion
       var reversedArray = backwardPositionArray.reverse();
       //var positionArray = reversedArray.concat( position, forwardPositionArray );
       return reversedArray.concat( position, forwardPositionArray );
