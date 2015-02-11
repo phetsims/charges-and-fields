@@ -57,7 +57,7 @@ define( function( require ) {
       this.layoutBounds.height / ChargesAndFieldsConstants.HEIGHT );
 
     // Check to see if WebGL was prevented by a query parameter
-    var allowWebGL = phet.phetcommon.getQueryParameter( 'webgl' ) !== 'false';
+    var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
     var webGLSupported = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowWebGL;
 
     var electricPotentialGridNode;

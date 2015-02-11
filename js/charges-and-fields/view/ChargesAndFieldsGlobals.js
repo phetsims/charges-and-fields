@@ -15,12 +15,12 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
 
   var ChargesAndFieldsGlobals = new PropertySet( {
-    electricFieldLines: !!phet.phetcommon.getQueryParameter( 'electricFieldLines' ) || false,
-    projectorColors: !!phet.phetcommon.getQueryParameter( 'projector' ) || false
+    electricFieldLines: !!phet.chipper.getQueryParameter( 'electricFieldLines' ) || false,
+    projectorColors: !!phet.chipper.getQueryParameter( 'projector' ) || false
   } );
 
   return _.extend( ChargesAndFieldsGlobals, {
-    useWebGL: ( phet.phetcommon.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
+    useWebGL: ( phet.chipper.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
 
     /*
      * Applies color changes to the material's color field, and also does so immediately upon being called.
