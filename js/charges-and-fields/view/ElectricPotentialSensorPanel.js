@@ -14,11 +14,13 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var EraserButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EraserButton' );
   // var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
+  //var HStrut = require( 'SUN/HStrut' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  var Panel = require( 'SUN/Panel' );
+  //var Panel = require( 'SUN/Panel' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   // tools for drawing
   //var LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -42,15 +44,13 @@ define( function( require ) {
   function ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine, options ) {
 
     var self = this;
-    // Demonstrate a common pattern for specifying options and providing default values.
-    options = _.extend( {
-        xMargin: 10,
-        yMargin: 10,
-        lineWidth: 6,
-        backgroundPickable: true
-      },
-      options );
 
+    Node.call( this );
+
+    // Create the text node above the readout
+    var equipotentialPanelTitleText = new Text( equipotentialString, {
+      font: ChargesAndFieldsConstants.DEFAULT_FONT
+    } );
 
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
@@ -68,47 +68,6 @@ define( function( require ) {
       }
     } );
 
-    var buttonBaseColorFunction = function( color ) {
-      clearButton.baseColor = color;
-      plotElectricPotentialLineButton.baseColor = color;
-    };
-    // Link the stroke color for the default/projector mode
-    ChargesAndFieldsColors.link( 'buttonBaseColor', buttonBaseColorFunction );
-
-    // Create the text node above the readout
-    var equipotentialPanelTitleText = new Text( equipotentialString, {
-      font: ChargesAndFieldsConstants.DEFAULT_FONT
-    } );
-
-    var equipotentialPanelTitleTextColorFunction = function( color ) {
-      equipotentialPanelTitleText.fill = color;
-    };
-    // Link the stroke color for the default/projector mode
-    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', equipotentialPanelTitleTextColorFunction );
-
-    // TODO find a more robust way to set the textPanel content Width
-    this.voltageReading = new Text( '-0.000 V', {
-      font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      xMargin: 10
-    } );
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', function( color ) {
-      self.voltageReading.fill = color;
-    } );
-
-    var textPanel = new Panel( this.voltageReading, {
-      cornerRadius: 5,
-      resize: false
-    } );
-
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', function( color ) {
-      textPanel.stroke = color;
-    } );
-
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', function( color ) {
-      textPanel.fill = color;
-    } );
-
-
     // The clear and plot buttons
     var buttons = new LayoutBox( {
       orientation: 'horizontal',
@@ -118,16 +77,20 @@ define( function( require ) {
       pickable: true
     } );
 
-    // The contents of the control panel
-    var content = new LayoutBox( {
-      align: 'center',
-      spacing: 10,
-      children: [ equipotentialPanelTitleText, textPanel, buttons ],
-      pickable: true
+    // Create the voltage Reading reading
+    this.voltageReading = new Text( '0.000 V', {
+      font: ChargesAndFieldsConstants.DEFAULT_FONT
     } );
 
-    //Panel.call( this, content, options );
-    //
+    // Create the background rectangle behind the voltage Reading
+    var backgroundRectangle = new Rectangle( 0, 0, buttons.width, this.voltageReading.height * 1.5, 5, 5 );
+
+    // Organize the content of the control panel
+    var content = new LayoutBox( {
+      spacing: 10,
+      children: [ equipotentialPanelTitleText, backgroundRectangle, buttons ],
+      pickable: true
+    } );
 
 
     //var moreShape = new Shape().
@@ -157,18 +120,34 @@ define( function( require ) {
     //content.top=10;
     //content.centerX=0;
 
-    Node.call( this );
-    //Panel.call( this, content, options );
-
-    //this.addChild( frontPath );
-
-
+    // Create the body of the sensor
     var outlineImage = new Image( equipotentialLinePanelOutlineImage );
+
+    // Add the nodes
+    this.addChild( outlineImage ); // must go first
+    this.addChild( content );
+    this.addChild( this.voltageReading ); // must be last
+
+
+    // layout all the remaining nodes
     outlineImage.scale( 1.2 * content.width / outlineImage.width );
     outlineImage.centerX = content.centerX;
-    outlineImage.top = content.top - 10;
-    this.addChild( outlineImage );
-    this.addChild( content );
+    outlineImage.top = content.top - 15;
+    this.voltageReading.centerX = content.centerX;
+    this.voltageReading.centerY = backgroundRectangle.centerY;
+
+    // hookup the colors
+
+    // Link the stroke color for the default/projector mode
+    ChargesAndFieldsColors.link( 'buttonBaseColor', function( color ) {
+      clearButton.baseColor = color;
+      plotElectricPotentialLineButton.baseColor = color;
+    } );
+
+    // Link the fill color for the default/projector mode
+    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', function( color ) {
+      equipotentialPanelTitleText.fill = color;
+    } );
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorBorder', function( color ) {
       self.stroke = color;
@@ -176,6 +155,18 @@ define( function( require ) {
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorBackgroundFill', function( color ) {
       self.fill = color;
+    } );
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', function( color ) {
+      self.voltageReading.fill = color;
+    } );
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', function( color ) {
+      backgroundRectangle.stroke = color;
+    } );
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', function( color ) {
+      backgroundRectangle.fill = color;
     } );
 
   }
