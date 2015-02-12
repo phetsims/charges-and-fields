@@ -42,16 +42,15 @@ define( function( require ) {
 
     var electricFieldSensorNode = this;
 
+    // Expand the touch area
+    this.touchArea = this.localBounds.dilatedXY( 20, 20 );
+
     // Create the E-field arrow, (set the arrow horizontally to start with)
     var arrowNode = new ArrowNode( 0, 0, 1, 0, {
       pickable: false
     } );
 
-    arrowNode.left = 0;
-    arrowNode.centerY = 0;
-    this.addChild( arrowNode );
-    arrowNode.moveToBack();
-
+    // hook up colors for default/projector mode
     var arrowColorFunction = function( color ) {
       arrowNode.stroke = color;
       arrowNode.fill = color;
@@ -66,24 +65,25 @@ define( function( require ) {
     var fieldStrengthLabel = new Text( '', textOptions );
     var directionLabel = new Text( '', textOptions );
 
+    // Hook up colors for default/projector mode
     var labelColorFunction = function( color ) {
       fieldStrengthLabel.fill = color;
       directionLabel.fill = color;
     };
     ChargesAndFieldsColors.link( 'electricFieldSensorLabel', labelColorFunction );
 
-
+    this.addChild( arrowNode );
     this.addChild( fieldStrengthLabel );
     this.addChild( directionLabel );
+    arrowNode.moveToBack(); // the arrow should always be on the back of 'this'
 
-    // Layout
-    fieldStrengthLabel.bottom = this.top;
+    // layout
+    arrowNode.left = 0;
+    arrowNode.centerY = 0;
+    fieldStrengthLabel.bottom = this.top; // 'this' is the ElectricFieldSensorRepresentation, i.e. the circle
     directionLabel.bottom = fieldStrengthLabel.top;
-
     fieldStrengthLabel.right = this.left - 20;
     directionLabel.right = fieldStrengthLabel.right;
-    // expand the touch area
-    this.touchArea = this.localBounds.dilatedXY( 10, 10 );
 
     // when the electric field changes update the arrow and the labels
     electricFieldSensor.electricFieldProperty.link( function( electricField ) {
