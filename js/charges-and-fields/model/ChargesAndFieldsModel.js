@@ -369,21 +369,22 @@ define( function( require ) {
      * Function  that returns an array of equally spaced sensors on a two dimensional grid
      * The position of the sensors is determined the options parameter, and is bounded by the bounds of the model.
      * @param {Object} [options]
-     * @returns {Array}
+     * @returns {Array.<StaticSensorElement>}
      */
     sensorGridFactory: function( options ) {
       options = _.extend( {
         spacing: 0.5, // separation (distance) in model coordinates between two adjacent sensors
-        onOrigin: true // is there  a sensor at the origin (0,0)
+        onOrigin: true // is there  a sensor at the origin(0,0)?, if false the first sensor is put at (spacing/2, spacing/2)
       }, options );
+
       var gridArray = [];
 
-      //var minX = -WIDTH / 2;
+      // The grid is centered at the origin;
       var maxX = WIDTH / 2;
-      //var minY = -HEIGHT / 2;
       var maxY = HEIGHT / 2;
 
-      var spacingOffset;
+      var spacingOffset; // {number}  Measure of the smallest x-coordinate of all sensors (excluding the one at the origin, if present)
+
       if ( options.onOrigin ) {
         spacingOffset = options.spacing;
       }
@@ -393,6 +394,8 @@ define( function( require ) {
 
       var x;
       var y;
+
+      // fill the array with sensors in the four quadrants
 
       for ( x = spacingOffset; x < maxX; x += options.spacing ) {
         for ( y = spacingOffset; y < maxY; y += options.spacing ) {
@@ -410,6 +413,7 @@ define( function( require ) {
         }
       }
 
+      // if onOrigin is true, add a sensor at the origin as well as sensors that lie on the X-axis and Y-axis
       if ( options.onOrigin ) {
         // push a sensor at the origin
         gridArray.push( new StaticSensorElement( new Vector2( 0, 0 ) ) );
@@ -606,8 +610,8 @@ define( function( require ) {
       /*
        General Idea of this algorithm
 
-       The equipotential line is found using two searches. Starting from an initial point, we find the electric field at this
-       position and define the point to the left of the electric field as the counterclockwise point, whereas the point that is
+       The equipotential line is found using two searches. Starting from an initial point, we find the electric field at
+       this position and define the point to the left of the electric field as the counterclockwise point, whereas the point that is
        90 degree right of the electric field is the clockwise point. The points are stored in a counterclockwise and clockwise array.
        The search of the clockwise and counterclockwise points done concurrently. The search stops if (1) the number of
        searching steps exceeds a large number and (2) either the clockwise or counterClockwise point is very far away from the origin.
@@ -638,8 +642,14 @@ define( function( require ) {
               currentClockwisePosition.magnitude() < maxDistance ||
               currentCounterClockwisePosition.magnitude() < maxDistance ) {
 
-        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential( currentClockwisePosition, initialElectricPotential, epsilonDistance );
-        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential( currentCounterClockwisePosition, initialElectricPotential, -epsilonDistance );
+        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
+          currentClockwisePosition,
+          initialElectricPotential,
+          epsilonDistance );
+        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
+          currentCounterClockwisePosition,
+          initialElectricPotential,
+          -epsilonDistance );
 
         clockwisePositionArray.push( nextClockwisePosition );
         counterClockwisePositionArray.push( nextCounterClockwisePosition );
@@ -660,7 +670,8 @@ define( function( require ) {
       }//end of while()
 
 
-      if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance || currentClockwisePosition.magnitude() < maxDistance) ) {
+      if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance
+                                 || currentClockwisePosition.magnitude() < maxDistance) ) {
         console.log( 'an equipotential line terminates on the screen' );
         // bring out the big guns
         // see https://github.com/phetsims/charges-and-fields/issues/1
@@ -733,7 +744,8 @@ define( function( require ) {
        A similar search process is repeated for the direction opposite to the electric field.
        Once the search process is over the two arrays are stitched together.  The resulting point array contains
        a sequence of forward ordered points, i.e. the electric field points forward to the next point.
-       If no charges are present on the board, then the notion of electric field line does not exist, and the value null is returned
+       If no charges are present on the board, then the notion of electric field line does not exist, and the value
+       null is returned
        */
 
       // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
@@ -924,7 +936,8 @@ define( function( require ) {
     },
 
     /**
-     *
+     * Function that interpolates between two color. The transparency can be set vis a default options
+     * The function returns a string in order to minimize the number of allocations
      * @param {Color} color1
      * @param {Color} color2
      * @param {number} distance
@@ -943,7 +956,6 @@ define( function( require ) {
       var r = Math.floor( linear( 0, 1, color1.r, color2.r, distance ) );
       var g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
       var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
-      //var a = linear( 0, 1, color1.a, color2.a, distance );
       return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
     }
 
