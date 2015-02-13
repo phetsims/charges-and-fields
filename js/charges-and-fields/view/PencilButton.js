@@ -34,53 +34,53 @@ define( function( require ) {
 
     // eraser
     var part1Shape = new Shape().
-      moveTo( 151.991, 43.257 ).
-      cubicCurveToRelative( -7.06, -7.05, -26.607, -20.176, -26.607, -20.177 ).
-      lineToRelative( -0.188, -0.188 ).
-      verticalLineToRelative( -0.009 ).
-      lineToRelative( 18.351, -17.732 ).
-      cubicCurveToRelative( 0.001, 0.001, 1.151, -1.826, 6.319, -3.343 ).
-      cubicCurveToRelative( 4.513, -1.376, 16.89, 3.782, 29.426, 16.16 ).
-      cubicCurveToRelative( 12.518, 12.349, 19.221, 24.454, 16.665, 28.451 ).
-      cubicCurveToRelative( -2.21, 3.399, -6.002, 6.741, -6.003, 6.740 ).
-      lineToRelative( -17.339, 16.749 ).
-      cubicCurveTo( 171.269, 67.982, 158.694, 49.97, 151.991, 43.257 ).
+      moveTo( 26.685, 3.47 ).
+      cubicCurveToRelative( 1.545, 1.913, 2.285, 3.701, 1.867, 4.215 ).
+      cubicCurveToRelative( -0.361, 0.439, -0.939, 0.843, -0.939, 0.8431 ).
+      lineToRelative( -2.674, 2.055 ).
+      cubicCurveToRelative( -0.151, -0.282, -1.617, -2.99, -2.446, -4.032 ).
+      cubicCurveToRelative( -0.868, -1.088, -3.375, -3.22, -3.375, -3.221 ).
+      lineToRelative( -0.025, -0.032 ).
+      lineToRelative( 2.829, -2.175 ).
+      cubicCurveToRelative( 0, 0.001, 0.191, -0.234, 0.931, -0.364 ).
+      cubicCurveTo( 23.5, 0.64, 25.14, 1.553, 26.685, 3.47 ).
       close();
 
     var part1Path = new Path( part1Shape, { fill: '#F4ABAA', pickable: false } );
 
     // metal part that hold the eraser
     var part2Shape = new Shape().
-      moveTo( 137.882, 55.812 ).
-      cubicCurveToRelative( -6.469, -6.395, -23.293, -17.919, -26.187, -19.886 ).
-      lineToRelative( 13.501, -13.032 ).
-      lineToRelative( 0.188, 0.188 ).
-      cubicCurveToRelative( 0.001, 0.001, 19.548, 13.126, 26.607, 20.176 ).
-      cubicCurveToRelative( 6.703, 6.713, 19.277, 24.726, 20.625, 26.654 ).
-      lineToRelative( -13.669, 13.211 ).
-      lineToRelative( -0.009, -0.01 ).
-      cubicCurveTo( 158.938, 83.112, 144.941, 62.899, 137.882, 55.812 ).
+      moveTo( 24.938, 10.582 ).
+      lineToRelative( -2.105, 1.617 ).
+      lineToRelative( -0.002, -0.002 ).
+      cubicCurveToRelative( 0, 0.001, -1.627, -3.026, -2.494, -4.123 ).
+      cubicCurveToRelative( -0.797, -0.993, -2.95, -2.853, -3.325, -3.176 ).
+      lineToRelative( 2.08, -1.601 ).
+      lineToRelative( 0.025, 0.032 ).
+      cubicCurveToRelative( 0, 0.001, 2.507, 2.132, 3.375, 3.22 ).
+      cubicCurveTo( 23.321, 7.592, 24.787, 10.3, 24.938, 10.582 ).
       close();
 
     var part2Path = new Path( part2Shape, { fill: '#D1D3D4', pickable: false } );
 
     // main body of the pencil
     var part3Shape = new Shape().
-      moveTo( 158.938, 83.112 ).
-      lineToRelative( 0.009, 0.01 ).
-      lineToRelative( -70.245, 67.857 ).
-      lineToRelative( -8.202, 2.912 ).
-      verticalLineToRelative( -0.01 ).
-      lineToRelative( -1.16, -11.291 ).
-      lineToRelative( -20.27, -0.768 ).
-      lineToRelative( -3.596, -22.938 ).
-      lineToRelative( -16.468, 4.644 ).
-      lineToRelative( -1.021, -9.25 ).
-      verticalLineToRelative( -0.009 ).
-      lineToRelative( 4.344, -11.301 ).
-      lineToRelative( 69.365, -67.044 ).
-      cubicCurveToRelative( 2.894, 1.967, 19.718, 13.491, 26.187, 19.886 ).
-      cubicCurveTo( 144.941, 62.899, 158.938, 83.112, 158.939, 83.113 ).
+      moveTo( 22.833, 12.199 ).
+      lineToRelative( -10.83, 8.319 ).
+      lineToRelative( -1.186, 0.275 ).
+      lineToRelative( -0.001, -0.002 ).
+      lineToRelative( 0.018, -1.584 ).
+      lineToRelative( -2.802, -0.431 ).
+      lineToRelative( -0.14, -3.24 ).
+      lineToRelative( -2.36, 0.385 ).
+      lineToRelative( 0.004, -1.294 ).
+      verticalLineToRelative( -0.001 ).
+      lineToRelative( 0.785, -1.508 ).
+      lineToRelative( 10.689, -8.221 ).
+      horizontalLineToRelative( 0.001 ).
+      cubicCurveToRelative( 0.375, 0.323, 2.528, 2.183, 3.325, 3.176 ).
+      cubicCurveToRelative( 0.867, 1.097, 2.494, 4.123, 2.494, 4.1231 ).
+      lineTo( 22.833, 12.199 ).
       close();
 
 
@@ -88,94 +88,111 @@ define( function( require ) {
 
     // triangular tip
     var part4Shape = new Shape().
-      moveTo( 13.653, 177.662 ).
-      lineTo( 24.093, 150.483 ).
-      lineTo( 41.413, 167.795 ).
+      moveTo( 3.037, 19.432 ).
+      lineTo( 5.169, 22.109 ).
+      lineTo( 1.156, 23.044 ).
       close();
 
     var part4Path = new Path( part4Shape, { fill: '#231F20' } );
 
     // shaved wood
     var part5Shape = new Shape().
-      moveTo( 79.34, 142.591 ).
-      lineTo( 80.5, 153.882 ).
-      lineTo( 41.422, 167.795 ).
-      lineTo( 24.093, 150.483 ).
-      lineTo( 37.986, 114.279 ).
-      lineTo( 39.007, 123.529 ).
-      lineTo( 55.475, 118.886 ).
-      lineTo( 59.07, 141.823 ).
+      moveTo( 10.817, 20.794 ).
+      lineTo( 10.817, 20.795 ).
+      lineTo( 5.17, 22.109 ).
+      lineTo( 5.169, 22.109 ).
+      lineTo( 3.037, 19.432 ).
+      lineTo( 5.536, 14.628 ).
+      lineTo( 5.532, 15.922 ).
+      lineTo( 7.893, 15.537 ).
+      lineTo( 8.032, 18.777 ).
+      lineTo( 10.834, 19.208 ).
+      lineTo( 10.816, 20.792 ).
       close();
 
     var part5Path = new Path( part5Shape, { fill: '#E1B89A', pickable: false } );
 
-    var part6Shape = new Shape().
-      moveTo( 41.422, 167.795 ).
-      lineTo( 80.5, 153.892 ).
-      lineToRelative( 8.202, -2.912 ).
-      lineToRelative( 70.245, -67.857 ).
-      lineToRelative( 13.669, -13.211 ).
-      lineToRelative( 17.339, -16.749 ).
-      cubicCurveToRelative( 0.001, 0.001, 3.792, -3.342, 6.002, -6.741 ).
-      cubicCurveToRelative( 2.556, -3.997, -4.147, -16.103, -16.665, -28.451 ).
-      cubicCurveTo( 166.756, 5.592, 154.379, 0.434, 149.866, 1.81 ).
-      cubicCurveToRelative( -5.168, 1.517, -6.319, 3.343, -6.320, 3.344 ).
-      lineToRelative( -18.351, 17.732 ).
-      verticalLineToRelative( 0.009 ).
-      lineToRelative( -13.501, 13.032 ).
-      lineTo( 42.33, 102.97 ).
-      lineToRelative( -4.344, 11.301 );
 
-    var lineOptions = { stroke: '#231F20', lineWidth: 1.84, miterLimit: 10, pickable: false };
+    // Outlines
+    var lineOptions = { stroke: '#231F20', lineWidth: 0.5, miterLimit: 10, pickable: false };
+
+    // lower body outline and eraser outline
+    var part6Shape = new Shape().
+      moveTo( 5.17, 22.109 ).
+      lineToRelative( 5.647, -1.314 ).
+      verticalLineToRelative( -0.001 ).
+      lineToRelative( 1.186, -0.275 ).
+      lineToRelative( 10.83, -8.319 ).
+      lineToRelative( 2.105, -1.617 ).
+      lineToRelative( 2.674, -2.055 ).
+      cubicCurveToRelative( 0, 0.001, 0.578, -0.403, 0.939, -0.843 ).
+      cubicCurveToRelative( 0.418, -0.514, -0.322, -2.302, -1.867, -4.215 ).
+      cubicCurveTo( 25.14, 1.553, 23.5, 0.64, 22.852, 0.759 ).
+      cubicCurveToRelative( -0.739, 0.13, -0.931, 0.365, -0.931, 0.364 ).
+      lineToRelative( -2.829, 2.175 ).
+      lineToRelative( -2.08, 1.601 );
+
     var part6Path = new Path( part6Shape, lineOptions );
 
+    // Outline of upper shaved wood and tip
     var part7Shape = new Shape().
-      moveTo( 37.986, 114.279 ).
-      lineTo( 24.093, 150.483 ).
-      lineTo( 13.653, 177.662 ).
-      lineTo( 41.413, 167.795 );
+      moveTo( 5.536, 14.628 ).
+      lineTo( 3.037, 19.432 ).
+      lineTo( 1.156, 23.044 ).
+      lineTo( 5.169, 22.109 );
 
     var part7Path = new Path( part7Shape, lineOptions );
 
+    // Outline between eraser and metal
     var part8Shape = new Shape().
-      moveTo( 125.384, 23.081 ).
-      cubicCurveToRelative( 0.001, 0.001, 19.548, 13.126, 26.607, 20.176 ).
-      cubicCurveToRelative( 6.703, 6.713, 19.277, 24.726, 20.625, 26.654 ).
-      cubicCurveToRelative( 0.075, 0.112, 0.112, 0.169, 0.113, 0.170 );
+      moveTo( 19.117, 3.33 ).
+      cubicCurveToRelative( 0.001, 0, 2.507, 2.132, 3.375, 3.22 ).
+      cubicCurveToRelative( 0.829, 1.042, 2.295, 3.75, 2.446, 4.032 ).
+      cubicCurveToRelative( 0.009, 0.016, 0.013, 0.023, 0.013, 0.0231 );
 
     var part8Path = new Path( part8Shape, lineOptions );
 
+    // outline between wood and metal
     var part9Shape = new Shape().
-      moveTo( 111.265, 35.636 ).
-      cubicCurveToRelative( 0.001, 0.001, 0.15, 0.104, 0.431, 0.29 ).
-      cubicCurveToRelative( 2.894, 1.967, 19.718, 13.491, 26.187, 19.886 ).
-      cubicCurveToRelative( 7.06, 7.088, 21.057, 27.301, 21.058, 27.302 );
+      moveTo( 16.955, 4.852 ).
+      cubicCurveToRelative( 0.001, 0, 0.02, 0.017, 0.056, 0.047 ).
+      cubicCurveToRelative( 0.375, 0.323, 2.528, 2.183, 3.325, 3.176 ).
+      cubicCurveToRelative( 0.867, 1.097, 2.494, 4.123, 2.494, 4.1231 );
 
     var part9Path = new Path( part9Shape, lineOptions );
 
+    // Jagged outline between shaved wood and body
     var part10Shape = new Shape().
-      moveTo( 80.5, 153.882 ).
-      lineTo( 79.34, 142.591 ).
-      lineTo( 59.07, 141.823 ).
-      lineTo( 55.475, 118.886 ).
-      lineTo( 39.007, 123.529 ).
-      lineTo( 37.986, 114.279 ).
-      lineTo( 37.986, 114.271 );
-
+      moveTo( 10.816, 20.792 ).
+      lineTo( 10.834, 19.208 ).
+      lineTo( 8.032, 18.777 ).
+      lineTo( 7.893, 15.537 ).
+      lineTo( 5.532, 15.922 ).
+      lineTo( 5.536, 14.628 ).
+      lineTo( 5.535, 14.619 );
     var part10Path = new Path( part10Shape, lineOptions );
 
+    // Outline between shaved wood and tip
     var part11Shape = new Shape().
-      moveTo( 24.093, 150.483 ).
-      lineTo( 41.413, 167.795 ).
-      lineTo( 41.422, 167.795 ).
-      lineTo( 41.432, 167.804 );
+      moveTo( 3.036, 19.43 ).
+      lineTo( 5.169, 22.109 ).
+      lineTo( 5.17, 22.109 );
 
     var part11Path = new Path( part11Shape, lineOptions );
+
+    // upper wood outline
+    var part12Shape = new Shape().
+      moveTo( 17.011, 4.898 ).
+      lineTo( 6.321, 13.119 ).
+      lineTo( 5.536, 14.627 );
+
+    var part12Path = new Path( part12Shape, lineOptions );
 
     // pencil icon
     options.content = new Node( {
       children: [ part1Path,
-        part2Path, part3Path, part4Path, part5Path, part6Path, part7Path, part8Path, part9Path, part10Path, part11Path ]
+        part2Path, part3Path, part4Path, part5Path, part6Path, part7Path, part8Path, part9Path, part10Path,
+        part11Path, part12Path ]
     } );
 
     // pencil icon
