@@ -670,8 +670,8 @@ define( function( require ) {
       }//end of while()
 
 
-      if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance
-                                 || currentClockwisePosition.magnitude() < maxDistance) ) {
+      if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance ||
+                                 currentClockwisePosition.magnitude() < maxDistance) ) {
         console.log( 'an equipotential line terminates on the screen' );
         // bring out the big guns
         // see https://github.com/phetsims/charges-and-fields/issues/1
