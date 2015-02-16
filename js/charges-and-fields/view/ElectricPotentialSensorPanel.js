@@ -71,7 +71,6 @@ define( function( require ) {
     // The clear and plot buttons
     var buttons = new LayoutBox( {
       orientation: 'horizontal',
-      align: 'center',
       spacing: 20,
       children: [ clearButton, plotElectricPotentialLineButton ],
       pickable: true
