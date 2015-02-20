@@ -39,10 +39,6 @@ define( function( require ) {
 
   return inherit( PropertySet, ModelElement, {
     // @public
-    reset: function() {
-      PropertySet.prototype.reset.call( this );
-    },
-    // @public
     step: function( dt ) {
       if ( this.animating ) {
         this.animationStep( dt );

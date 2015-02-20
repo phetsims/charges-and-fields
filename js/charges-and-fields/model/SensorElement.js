@@ -30,10 +30,5 @@ define( function( require ) {
 
   }
 
-  return inherit( ModelElement, SensorElement, {
-    // @public
-    reset: function() {
-      ModelElement.prototype.reset.call( this );
-    }
-  } );
+  return inherit( ModelElement, SensorElement );
 } );
