@@ -26,7 +26,6 @@ define( function( require ) {
   var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
 
-
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
    * @constructor
@@ -634,7 +633,6 @@ define( function( require ) {
         stepCounter++;
       }//end of while()
 
-
       if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance ||
                                  currentClockwisePosition.magnitude() < maxDistance) ) {
         console.log( 'an equipotential line terminates on the screen' );
@@ -680,7 +678,6 @@ define( function( require ) {
       //
       //// Marching Squares Parameters
       // var threshold = this.getElectricPotential( position );
-
 
     },
 
@@ -763,7 +760,6 @@ define( function( require ) {
       return reversedArray.concat( position, forwardPositionArray );
     },
 
-
     /**
      * Push an equipotentialLine to an observable array
      * The drawing of the equipotential line is handled in the view (equipotentialLineNode)
@@ -844,7 +840,6 @@ define( function( require ) {
     clearElectricFieldLines: function() {
       this.electricFieldLinesArray.clear();
     }
-
 
   } );
 } );

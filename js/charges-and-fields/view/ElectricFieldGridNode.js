@@ -44,7 +44,6 @@ define( function( require ) {
     var arrowArray = []; // arrays of the arrows
     var circleArray = []; // array of the 'transparent' circles on the arrows.
 
-
     // First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
     // The arrow will rotate around a point (a circle in the view) that is not necessarily its center.
     // The point of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
@@ -62,7 +61,6 @@ define( function( require ) {
       headWidth: 16,
       headHeight: 10
     };
-
 
     electricFieldSensorGrid.forEach( function( electricFieldSensor ) {
 

@@ -75,7 +75,6 @@ define( function( require ) {
     var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, checkBoxOptions );
     var tapeMeasureCheckBox = new CheckBox( tapeMeasureText, isTapeMeasureVisibleProperty, checkBoxOptions );
 
-
     var directionOnlyGroup = new Node();
     var hStrut = new HStrut( 25 );
     directionOnlyCheckBox.left = hStrut.right;
@@ -126,7 +125,6 @@ define( function( require ) {
       gridText.fill = color;
       tapeMeasureText.fill = color;
     } );
-
 
     ChargesAndFieldsColors.link( 'checkBox', function( color ) {
       electricFieldCheckBox.checkBoxColor = color;

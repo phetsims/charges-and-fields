@@ -43,7 +43,6 @@ define( function( require ) {
   //var mockup01Image = require( 'image!CHARGES_AND_FIELDS/mockup01.png' );
   //var mockup02Image = require( 'image!CHARGES_AND_FIELDS/mockup02.png' );
 
-
   var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
   var MIN_ELECTRIC_POTENTIAL = -40; // electric potential   at which color will saturate to minColor
@@ -123,7 +122,6 @@ define( function( require ) {
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform );
 
-
     // Create a visual grid with major and minor lines on the view
     var gridNode = new GridNode( modelViewTransform, model.isGridVisibleProperty, model.isValuesVisibleProperty );
 
@@ -193,7 +191,6 @@ define( function( require ) {
       } );
     } );
 
-
     // Handle the comings and goings of charged particles.
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
@@ -220,7 +217,6 @@ define( function( require ) {
     gridNode.centerY = this.layoutBounds.centerY;
     resetAllButton.right = this.layoutBounds.maxX - 30;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
-
 
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
     this.addChild( gridNode ); //

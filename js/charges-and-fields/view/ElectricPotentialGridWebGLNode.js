@@ -47,9 +47,7 @@ define( function( require ) {
       // TODO: work in progress
       var electricPotentialGridWebGLNode = this;
 
-
       //var ShaderProgram = new ShaderProgram( this.gl, vertexSource, fragmentSource, attributeNames, uniformNames );
-
 
       // find the distance between two adjacent sensors in view coordinates.
       var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
@@ -69,7 +67,6 @@ define( function( require ) {
       ChargesAndFieldsColors.on( 'profileChanged', function() {
         electricPotentialGridWebGLNode.invalidatePaint();
       } );
-
 
       update( 'electricPotentialGridUpdated', function() {
         electricPotentialGridWebGLNode.invalidatePaint();

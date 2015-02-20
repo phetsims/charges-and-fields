@@ -36,7 +36,6 @@ define( function( require ) {
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
-
     // Create and add the circle that represents the charge particle
     var circle = new Circle( CIRCLE_RADIUS );
     this.addChild( circle );

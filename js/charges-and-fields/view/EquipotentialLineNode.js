@@ -110,7 +110,6 @@ define( function( require ) {
       //  equipotentialLine.positionArray[i+1].y);
 
 
-
       var equipotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ), { stroke: ChargesAndFieldsColors.equipotentialLine.toCSS() } );
 
       var colorFunction = function( color ) {

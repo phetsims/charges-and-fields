@@ -16,7 +16,6 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
 
-
   // images
   var pencilImage = require( 'image!CHARGES_AND_FIELDS/pencil.png' );
 
@@ -83,7 +82,6 @@ define( function( require ) {
       lineTo( 22.833, 12.199 ).
       close();
 
-
     var part3Path = new Path( part3Shape, { fill: '#FDA720', pickable: false } );
 
     // triangular tip
@@ -111,7 +109,6 @@ define( function( require ) {
       close();
 
     var part5Path = new Path( part5Shape, { fill: '#E1B89A', pickable: false } );
-
 
     // Outlines
     var lineOptions = { stroke: '#231F20', lineWidth: 0.5, miterLimit: 10, pickable: false };

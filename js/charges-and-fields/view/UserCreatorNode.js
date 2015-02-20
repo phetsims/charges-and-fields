@@ -103,7 +103,6 @@ define( function( require ) {
       }
     } ) );
 
-
     // Pass options through to parent.
     this.mutate( options );
   }

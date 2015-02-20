@@ -53,7 +53,6 @@ define( function( require ) {
     // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
     var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
 
-
     ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function( color ) {
       circle.stroke = color;
     } );
@@ -64,7 +63,6 @@ define( function( require ) {
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
     var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
-
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
       crosshair.stroke = color;
