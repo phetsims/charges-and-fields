@@ -10,13 +10,9 @@ define( function( require ) {
 
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  //var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
-  var LinearFunction = require( 'DOT/LinearFunction' );
-  var linear = require( 'DOT/Util' ).linear;
-  var ObservableArray = require( 'AXON/ObservableArray' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
@@ -29,13 +25,6 @@ define( function( require ) {
   var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
   var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
-  var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
-  var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
-  var MIN_ELECTRIC_POTENTIAL = -40; // electric potential   at which color will saturate to minColor
-
-  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
-  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
-  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
 
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -183,7 +172,6 @@ define( function( require ) {
             thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
               // let's calculate the change in the electric field due to the change in position of one charge
               sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
-              sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
             } );
             thisModel.trigger( 'electricFieldGridUpdated' );
           }
@@ -193,7 +181,6 @@ define( function( require ) {
             thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
               // calculating the change in the electric potential due to the change in position of one charge
               sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
-              sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
             } );
             thisModel.trigger( 'electricPotentialGridUpdated' );
           }
@@ -310,20 +297,9 @@ define( function( require ) {
       var thisModel = this;
       this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
         sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-        sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
+
       } );
       this.trigger( 'electricPotentialGridUpdated' );
-    },
-
-    /**
-     * Update the Electric Potential Grid Color
-     * @public
-     */
-    updateElectricPotentialSensorGridColor: function() {
-      var thisModel = this;
-      this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-        sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
-      } );
     },
 
     /**
@@ -334,22 +310,10 @@ define( function( require ) {
       var thisModel = this;
       this.electricFieldSensorGrid.forEach( function( sensorElement ) {
         sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-        sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
       } );
       this.trigger( 'electricFieldGridUpdated' );
     },
 
-    /**
-     * Update the Color of Electric Field Grid Sensors
-     * @public
-     */
-    updateElectricFieldSensorGridColor: function() {
-      var thisModel = this;
-      this.electricFieldSensorGrid.forEach( function( sensorElement ) {
-        sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
-      } );
-
-    },
     //TODO Should that function be here in the first place? It is a pure function. It is called by UserCreatedNode
     /**
      * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
@@ -562,16 +526,16 @@ define( function( require ) {
        the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
        */
       var initialElectricField = this.getElectricField( position ); // {Vector2}
-      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
+      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
       var midwayPosition = ( equipotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
       var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
-      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero ' );
+      assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
       //var finalPosition = midwayPosition.add( deltaPosition );
-      return midwayPosition.add( deltaPosition );
+      return midwayPosition.add( deltaPosition ); // finalPosition
     },
 
     /**
@@ -585,11 +549,11 @@ define( function( require ) {
      */
     getNextPositionAlongElectricField: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position );
-      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
+      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero' );
       var midwayDisplacement = initialElectricField.normalized().multiplyScalar( deltaDistance / 2 );
       var midwayPosition = midwayDisplacement.add( position );
       var midwayElectricField = this.getElectricField( midwayPosition );
-      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
+      assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero' );
       var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
       //var finalPosition = deltaDisplacement.add( position );
       return deltaDisplacement.add( position );
@@ -636,7 +600,20 @@ define( function( require ) {
       var clockwisePositionArray = [];
       var counterClockwisePositionArray = [];
 
+
+      // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
+      var closestApproachDistance = 0.05;
+      // define the largest electric potential allowed, no electric potential should be drawn above this potential
+      var maxElectricPotential = K_CONSTANT / closestApproachDistance; // {number}
+
+      // electric potential associated with the position
       var initialElectricPotential = this.getElectricPotential( position );
+
+      // return a null array if the absolute of the electric potential is too large
+      if ( Math.abs( initialElectricPotential ) > maxElectricPotential ) {
+        return null;
+      }
+
 
       while ( stepCounter < stepMax &&
               currentClockwisePosition.magnitude() < maxDistance ||
@@ -668,7 +645,6 @@ define( function( require ) {
 
         stepCounter++;
       }//end of while()
-
 
       if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance ||
                                  currentClockwisePosition.magnitude() < maxDistance) ) {
@@ -715,7 +691,6 @@ define( function( require ) {
       //
       //// Marching Squares Parameters
       // var threshold = this.getElectricPotential( position );
-
 
     },
 
@@ -799,66 +774,10 @@ define( function( require ) {
     },
 
     /**
-     * Given a position returns a color that represents the intensity of the electric Potential at that point
-     * @public read-only
-     * @param {number} electricPotential
-     * @param {Object} [options] - useful to set transparency
-     * @returns {string} color
-     */
-    getColorElectricPotential: function( electricPotential, options ) {
-
-      var finalColor; // {string} e.g. rgba(0,0,0,1)
-      var distance; // {number}  between 0 and 1
-
-      // a piecewise function is used to interpolate
-
-      // for positive potential
-      if ( electricPotential > 0 ) {
-
-        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
-        finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridZero, // color that corresponds to the Electric Potential being zero
-          ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // color of Max Electric Potential
-          distance, // distance must be between 0 and 1
-          options );
-      }
-      // for negative (or zero) potential
-      else {
-
-        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
-        finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // color that corresponds to the lowest (i.e. negative) Electric Potential
-          ChargesAndFieldsColors.electricPotentialGridZero,// color that corresponds to the Electric Potential being zero zero
-          distance, // distance must be between 0 and 1
-          options );
-      }
-      return finalColor;
-    },
-
-    /**
-     * Given a position, returns a color that is related to the intensity of the magnitude of the electric field
-     * @private
-     * @param {number} electricFieldMagnitude
-     * @param {Object} [options] - useful to set transparency
-     * @returns {string} color
-     *
-     */
-    getColorElectricFieldMagnitude: function( electricFieldMagnitude, options ) {
-
-      var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
-
-      return this.interpolateRGBA(
-        ChargesAndFieldsColors.electricFieldGridZero,  //  color that corresponds to zero electric Field
-        ChargesAndFieldsColors.electricFieldGridSaturation, // //  color that corresponds to the largest electric field
-        distance, // distance must be between 0 and 1
-        options );
-    },
-
-    /**
      * Push an equipotentialLine to an observable array
      * The drawing of the equipotential line is handled in the view (equipotentialLineNode)
-     * @param {Vector2} [position] - optional argument: starting point to calculate the equipotential line
      * @public
+     * @param {Vector2} [position] - optional argument: starting point to calculate the equipotential line
      */
     addElectricPotentialLine: function( position ) {
       // electric potential lines don't exist in a vacuum of charges
@@ -933,30 +852,6 @@ define( function( require ) {
      */
     clearElectricFieldLines: function() {
       this.electricFieldLinesArray.clear();
-    },
-
-    /**
-     * Function that interpolates between two color. The transparency can be set vis a default options
-     * The function returns a string in order to minimize the number of allocations
-     * @param {Color} color1
-     * @param {Color} color2
-     * @param {number} distance
-     * @param {Object} [options]
-     * @returns {string}
-     */
-    interpolateRGBA: function( color1, color2, distance, options ) {
-      options = _.extend( {
-        // defaults
-        transparency: 1
-      }, options );
-
-      if ( distance < 0 || distance > 1 ) {
-        throw new Error( 'distance must be between 0 and 1: ' + distance );
-      }
-      var r = Math.floor( linear( 0, 1, color1.r, color2.r, distance ) );
-      var g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
-      var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
-      return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
     }
 
   } );

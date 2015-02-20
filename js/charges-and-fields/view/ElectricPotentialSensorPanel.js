@@ -91,7 +91,6 @@ define( function( require ) {
       pickable: true
     } );
 
-
     //var moreShape = new Shape().
     //  moveTo( 120.51, 146.7 ).
     //  cubicCurveToRelative( 0, 6.487, -5.193, 12.895, -11.539, 14.238 ).
@@ -126,7 +125,6 @@ define( function( require ) {
     this.addChild( outlineImage ); // must go first
     this.addChild( content );
     this.addChild( this.voltageReading ); // must be last
-
 
     // layout all the remaining nodes
     outlineImage.scale( 1.2 * content.width / outlineImage.width );

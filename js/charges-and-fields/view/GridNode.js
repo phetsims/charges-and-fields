@@ -119,7 +119,6 @@ define( function( require ) {
     arrowPath.left = modelViewTransform.modelToViewX( 2 );
     this.addChild( arrowPath );
 
-
     ChargesAndFieldsColors.link( 'gridLengthScaleArrowStroke', function( color ) {
       arrowPath.stroke = color;
     } );
@@ -143,7 +142,6 @@ define( function( require ) {
       arrowPath.visible = isVisible;
       text.visible = isVisible;
     } );
-
 
     // Show/ Hide the grid
     isGridVisibleProperty.link( function( isVisible ) {

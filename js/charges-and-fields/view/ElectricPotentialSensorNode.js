@@ -10,7 +10,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricPotentialSensorPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorPanel' );
@@ -40,7 +39,7 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @constructor
    */
-  function ElectricPotentialSensorNode( electricPotentialSensor, getColorElectricPotential, clearEquipotentialLines, addElectricPotentialLine, modelViewTransform ) {
+  function ElectricPotentialSensorNode( electricPotentialSensor, getElectricPotentialColor, clearEquipotentialLines, addElectricPotentialLine, modelViewTransform ) {
 
     var electricPotentialSensorNode = this;
 
@@ -53,7 +52,6 @@ define( function( require ) {
     // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
     var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
 
-
     ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function( color ) {
       circle.stroke = color;
     } );
@@ -64,7 +62,6 @@ define( function( require ) {
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
     var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
-
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
       crosshair.stroke = color;
@@ -99,7 +96,7 @@ define( function( require ) {
     // Update the value of the electric potential on the panel and the fill color on the crosshair
     electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
       electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
-      circle.fill = getColorElectricPotential( electricPotential, { transparency: 0.5 } );
+      circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
     } );
 
     /**

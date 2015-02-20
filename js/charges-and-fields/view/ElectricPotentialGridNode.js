@@ -22,18 +22,26 @@ define( function( require ) {
     /**
      *
      * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
-     * @param {Function} update -       model.on.bind(model),
-     * @param {Bounds2} bounds
+     * @param {Function} update -  model.on.bind(model)
+     * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given an electric potential
+     * @param {Bounds2} bounds - bounds of the canvas
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialGridNode( model, electricPotentialSensorGrid, update, bounds, modelViewTransform, isVisibleProperty ) {
+    function ElectricPotentialGridNode( electricPotentialSensorGrid,
+                                        update,
+                                        colorInterpolationFunction,
+                                        bounds,
+                                        modelViewTransform,
+                                        isVisibleProperty ) {
 
       // Call the super constructor
       CanvasNode.call( this, { canvasBounds: bounds } );
 
       var electricPotentialGridNode = this;
+
+      this.colorInterpolationFunction = colorInterpolationFunction;
 
       // find the distance between two adjacent sensors in view coordinates.
       var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
@@ -63,48 +71,25 @@ define( function( require ) {
       } );
 
       this.invalidatePaint();
-      this.model = model;
+
     }
 
     return inherit( CanvasNode, ElectricPotentialGridNode, {
 
         /*
+         * Function responsible for painting the canvas Node as a grid array of squares
          * @override
          * @param {CanvasContextWrapper} wrapper
          */
         paintCanvas: function( wrapper ) {
+          var self = this;
           var context = wrapper.context;
           this.rectArray.forEach( function( rect ) {
-            context.fillStyle = rect.electricPotentialSensor.electricPotentialColor;
-            //var position = rect.electricPotentialSensor.position;
-
-            //var ul = position.plus( new Vector2( -ELECTRIC_POTENTIAL_SENSOR_SPACING / 2, ELECTRIC_POTENTIAL_SENSOR_SPACING / 2 ) );
-            //var ur = position.plus( new Vector2( ELECTRIC_POTENTIAL_SENSOR_SPACING / 2, ELECTRIC_POTENTIAL_SENSOR_SPACING / 2 ) );
-            //var ll = position.plus( new Vector2( -ELECTRIC_POTENTIAL_SENSOR_SPACING / 2, -ELECTRIC_POTENTIAL_SENSOR_SPACING / 2 ) );
-            //var lr = position.plus( new Vector2( ELECTRIC_POTENTIAL_SENSOR_SPACING / 2, -ELECTRIC_POTENTIAL_SENSOR_SPACING / 2 ) );
-            //
-            //var pul = this.model.getElectricPotential( ul );
-            //var pur = this.model.getElectricPotential( ur );
-            //var pll = this.model.getElectricPotential( ll );
-            //var plr = this.model.getElectricPotential( lr );
-            //
-            //var duulr = pul - pur;
-            //var dlllr = pll - plr;
-            //var dulll = pul - pll;
-            //var dulrr = pur - plr;
-
-
-
-
-
-            // in order to avoid an additional (and expensive) call for fillStroke,
-            // we will make the squares a tad bigger hence the '+1'
-            //var gradient = context.createLinearGradient( 0, 0, 10, 0 );
-            //gradient.addColorStop( 0, "green" );
-            //gradient.addColorStop( 1, "white" );
-            //context.fillStyle = gradient;
+            context.fillStyle = self.colorInterpolationFunction( rect.electricPotentialSensor.electricPotential );
+            // It is expensive to set the fill and the stroke of the rectangle. Instead of setting the stroke
+            // we set the fill on a rectangle that is slightly larger (hence the +1) than its nominal value
+            // In this way we indirectly set the stroke. This simple optimization nearly doubled the number of fps.
             context.fillRect( rect.minX, rect.minY, rect.width + 1, rect.height + 1 );
-
           } );
         }
       }

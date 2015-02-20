@@ -1,59 +1,59 @@
 {
   "chipper": {
-    "sha": "4c118bfe590efd3645c01c4b19a37e7c6cfd3916",
+    "sha": "522ff3ed9ac716816db94aec87f67477601e8068",
     "branch": "master"
   },
   "sun": {
-    "sha": "0094fe3acb898f277c0020bfb411690dd04a9efb",
+    "sha": "e3becd3d320ae4bf60202dc55e376322db0c2837",
     "branch": "master"
   },
   "sherpa": {
-    "sha": "cb447a1622d55143dafaf5aace6431b9878775d3",
+    "sha": "bf15240caf4ab055d45b669a5a2243b497fc3511",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "3c86b6ed77a9f42ac70cc1bed37faaf836c36d51",
+    "sha": "6c7f1d526061e83b5f4d57141ac782babe6b4b28",
     "branch": "master"
   },
   "scenery": {
-    "sha": "e29fd769bd12463baa52832b11a829113ec51f40",
+    "sha": "27d639a03b1653c7d443b01b89497a95f5adb81b",
     "branch": "master"
   },
   "phetcommon": {
-    "sha": "986cb730bb423bce191a95beef9b9d516d59c7d3",
+    "sha": "dd722834a1cb3f91b2dc2698ea4b95da907301e2",
     "branch": "master"
   },
   "phet-core": {
-    "sha": "38dbc8837af8a9bee5ff8cd876e3ecd97936feb7",
+    "sha": "c98d56c366b265802198a7f3eeee8a7f7644215b",
     "branch": "master"
   },
   "kite": {
-    "sha": "2c6cfed19197b041abcd19c1cdc893ffbb5d579f",
+    "sha": "8d80e165c771500a67fc508767b682139e7906ae",
     "branch": "master"
   },
   "joist": {
-    "sha": "04bc117f2c4acf03c6710648ba840375c3160a92",
+    "sha": "ebc927c9aa5b70bd314eac86976d35378cac18cb",
     "branch": "master"
   },
   "dot": {
-    "sha": "5c494f9bccf191fb266a4551df095d024d652144",
+    "sha": "b7e24feee13296a76659dcf3070888e5cee9bbcd",
     "branch": "master"
   },
   "brand": {
-    "sha": "d8931905471f7937a1c5855761ae796e15b1864e",
+    "sha": "0f9ee9b8ca1a0e121f66d57109bca59f05c2ef2c",
     "branch": "master"
   },
   "axon": {
-    "sha": "bb12a7a1403a1fca7d942e4beb031f91828ce8f8",
+    "sha": "9c8d2b0328a1929231bb8a4626e6df5fa8d7f072",
     "branch": "master"
   },
   "assert": {
-    "sha": "386e00157abe609741d3095120e0e425d10e7b51",
+    "sha": "e9e725994176afd0103aff427acda10bf31192c4",
     "branch": "master"
   },
   "charges-and-fields": {
-    "sha": "61b34bbbb17fc288c5ec57061288e5ea71b345ce",
-    "branch": "master"
+    "sha": "ffb5f40c32d0ca7f47b936406770596ca2040040",
+    "branch": "ColorsInView"
   },
-  "comment": "# charges-and-fields 1.0.0-dev.2 Wed Feb 11 2015 15:22:14 GMT-0700 (Mountain Standard Time)"
+  "comment": "# charges-and-fields 1.0.0-dev.3 Fri Feb 20 2015 11:14:41 GMT-0700 (Mountain Standard Time)"
 }

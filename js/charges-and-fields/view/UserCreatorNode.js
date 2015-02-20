@@ -10,7 +10,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -102,7 +101,6 @@ define( function( require ) {
         this.modelElement = null;
       }
     } ) );
-
 
     // Pass options through to parent.
     this.mutate( options );

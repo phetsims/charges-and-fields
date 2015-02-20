@@ -43,7 +43,6 @@ define( function( require ) {
 
     ChargesAndFieldsColors.link( 'background', colorFunction );
 
-
   }
 
   return inherit( Screen, ChargesAndFieldsScreen );

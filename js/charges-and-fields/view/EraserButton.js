@@ -113,6 +113,7 @@ define( function( require ) {
     options.content = new Node( { children: [ sidePath, frontPath, topPath ] } );
 
     // eraser icon
+    //TODO get rid unless JO solution for png is working
     //options.content = new Image( eraserImage );
     options.useless = new Image( eraserImage );
 

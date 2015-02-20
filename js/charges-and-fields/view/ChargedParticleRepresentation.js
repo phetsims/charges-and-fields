@@ -9,7 +9,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
@@ -35,7 +34,6 @@ define( function( require ) {
     } );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
-
 
     // Create and add the circle that represents the charge particle
     var circle = new Circle( CIRCLE_RADIUS );
