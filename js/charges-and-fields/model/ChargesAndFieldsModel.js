@@ -10,13 +10,9 @@ define( function( require ) {
 
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  //var interpolateRGBA = require( 'SCENERY/util/Color' ).interpolateRGBA;
-  var LinearFunction = require( 'DOT/LinearFunction' );
-  var linear = require( 'DOT/Util' ).linear;
-  var ObservableArray = require( 'AXON/ObservableArray' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
@@ -29,13 +25,7 @@ define( function( require ) {
   var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
   var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
-  var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
-  var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
-  var MIN_ELECTRIC_POTENTIAL = -40; // electric potential   at which color will saturate to minColor
 
-  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
-  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
-  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
 
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -773,66 +763,6 @@ define( function( require ) {
       return reversedArray.concat( position, forwardPositionArray );
     },
 
-    /**
-     * Function that returns a color string for a given value of the electricPotential.
-     * The interpolation scheme is somewhat unusual in the sense that it is performed via a piecewise function
-     * which relies on three colors and three electric potential anchors. It is essentially two linear interpolation
-     * functions put end to end so that the entire domain is covered.
-     * @public read-only
-     * @param {number} electricPotential
-     * @param {Object} [options] - useful to set transparency
-     * @returns {string} color -  e.g. 'rgba(255, 255, 255, 1)'
-     */
-    getElectricPotentialColor: function( electricPotential, options ) {
-
-      var finalColor; // {string} e.g. 'rgba(0,0,0,1)'
-      var distance; // {number}  between 0 and 1
-
-      // for positive electric potential
-      if ( electricPotential > 0 ) {
-
-        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
-        finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridZero, // {Color} color that corresponds to the Electric Potential being zero
-          ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // {Color} color of Max Electric Potential
-          distance, // {number} distance must be between 0 and 1
-          options );
-      }
-      // for negative (or zero) electric potential
-      else {
-
-        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
-        finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
-          ChargesAndFieldsColors.electricPotentialGridZero,// {Color} color that corresponds to the Electric Potential being zero zero
-          distance, // {number} distance must be between 0 and 1
-          options );
-      }
-      return finalColor;
-    },
-
-    /**
-     * Function that returns a color that is proportional to the magnitude of electric Field.
-     * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
-     * electric field of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
-     * electric field value of MAX_ELECTRIC_FIELD_MAGNITUDE).
-     * @private
-     * @param {number} electricFieldMagnitude - a non negative number
-     * @param {Object} [options] - useful to set transparency
-     * @returns {string} color - e.g. 'rgba(255, 255, 255, 1)'
-     *
-     */
-    getElectricFieldMagnitudeColor: function( electricFieldMagnitude, options ) {
-
-      // ELECTRIC_FIELD_LINEAR_FUNCTION is a clamped linear function
-      var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
-
-      return this.interpolateRGBA(
-        ChargesAndFieldsColors.electricFieldGridZero,  // {Color} color that corresponds to zero electric Field
-        ChargesAndFieldsColors.electricFieldGridSaturation, // {Color} color that corresponds to the largest electric field
-        distance, // {number} distance must be between 0 and 1
-        options );
-    },
 
     /**
      * Push an equipotentialLine to an observable array
@@ -913,31 +843,8 @@ define( function( require ) {
      */
     clearElectricFieldLines: function() {
       this.electricFieldLinesArray.clear();
-    },
-
-    /**
-     * Function that interpolates between two color. The transparency can be set vis a default options
-     * The function returns a string in order to minimize the number of allocations
-     * @param {Color} color1
-     * @param {Color} color2
-     * @param {number} distance - a value from 0 to 1
-     * @param {Object} [options]
-     * @returns {string} color - e.g. 'rgba(0,0,0,1)'
-     */
-    interpolateRGBA: function( color1, color2, distance, options ) {
-      options = _.extend( {
-        // defaults
-        transparency: 1
-      }, options );
-
-      if ( distance < 0 || distance > 1 ) {
-        throw new Error( 'distance must be between 0 and 1: ' + distance );
-      }
-      var r = Math.floor( linear( 0, 1, color1.r, color2.r, distance ) );
-      var g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
-      var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
-      return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
     }
+
 
   } );
 } );
