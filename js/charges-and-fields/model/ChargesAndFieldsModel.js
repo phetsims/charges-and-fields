@@ -183,7 +183,7 @@ define( function( require ) {
             thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
               // let's calculate the change in the electric field due to the change in position of one charge
               sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
-              sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
+              sensorElement.electricFieldColor = thisModel.getElectricFieldMagnitudeColor( sensorElement.electricField.magnitude() );
             } );
             thisModel.trigger( 'electricFieldGridUpdated' );
           }
@@ -193,7 +193,7 @@ define( function( require ) {
             thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
               // calculating the change in the electric potential due to the change in position of one charge
               sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
-              sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
+              sensorElement.electricPotentialColor = thisModel.getElectricPotentialColor( sensorElement.electricPotential );
             } );
             thisModel.trigger( 'electricPotentialGridUpdated' );
           }
@@ -310,7 +310,7 @@ define( function( require ) {
       var thisModel = this;
       this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
         sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-        sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
+        sensorElement.electricPotentialColor = thisModel.getElectricPotentialColor( sensorElement.electricPotential );
       } );
       this.trigger( 'electricPotentialGridUpdated' );
     },
@@ -322,7 +322,7 @@ define( function( require ) {
     updateElectricPotentialSensorGridColor: function() {
       var thisModel = this;
       this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-        sensorElement.electricPotentialColor = thisModel.getColorElectricPotential( sensorElement.electricPotential );
+        sensorElement.electricPotentialColor = thisModel.getElectricPotentialColor( sensorElement.electricPotential );
       } );
     },
 
@@ -334,7 +334,7 @@ define( function( require ) {
       var thisModel = this;
       this.electricFieldSensorGrid.forEach( function( sensorElement ) {
         sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-        sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
+        sensorElement.electricFieldColor = thisModel.getElectricFieldMagnitudeColor( sensorElement.electricField.magnitude() );
       } );
       this.trigger( 'electricFieldGridUpdated' );
     },
@@ -346,7 +346,7 @@ define( function( require ) {
     updateElectricFieldSensorGridColor: function() {
       var thisModel = this;
       this.electricFieldSensorGrid.forEach( function( sensorElement ) {
-        sensorElement.electricFieldColor = thisModel.getColorElectricFieldMagnitude( sensorElement.electricField.magnitude() );
+        sensorElement.electricFieldColor = thisModel.getElectricFieldMagnitudeColor( sensorElement.electricField.magnitude() );
       } );
 
     },
@@ -799,13 +799,13 @@ define( function( require ) {
     },
 
     /**
-     * Given a position returns a color that represents the intensity of the electric Potential at that point
+     * Function that returns a color that represents the intensity of the electric Potential
      * @public read-only
      * @param {number} electricPotential
      * @param {Object} [options] - useful to set transparency
-     * @returns {string} color
+     * @returns {string} color - e.g. 'rgba(0,0,0,1)'
      */
-    getColorElectricPotential: function( electricPotential, options ) {
+    getElectricPotentialColor: function( electricPotential, options ) {
 
       var finalColor; // {string} e.g. rgba(0,0,0,1)
       var distance; // {number}  between 0 and 1
@@ -827,8 +827,8 @@ define( function( require ) {
 
         distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
         finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // color that corresponds to the lowest (i.e. negative) Electric Potential
-          ChargesAndFieldsColors.electricPotentialGridZero,// color that corresponds to the Electric Potential being zero zero
+          ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
+          ChargesAndFieldsColors.electricPotentialGridZero,// {Color} color that corresponds to the Electric Potential being zero zero
           distance, // distance must be between 0 and 1
           options );
       }
@@ -836,21 +836,21 @@ define( function( require ) {
     },
 
     /**
-     * Given a position, returns a color that is related to the intensity of the magnitude of the electric field
+     * Function that returns a color (as as string) that is related to the intensity of the magnitude of the electric field
      * @private
      * @param {number} electricFieldMagnitude
      * @param {Object} [options] - useful to set transparency
-     * @returns {string} color
+     * @returns {string} color - e.g. 'rgba(0,0,0,1)'
      *
      */
-    getColorElectricFieldMagnitude: function( electricFieldMagnitude, options ) {
+    getElectricFieldMagnitudeColor: function( electricFieldMagnitude, options ) {
 
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
       return this.interpolateRGBA(
-        ChargesAndFieldsColors.electricFieldGridZero,  //  color that corresponds to zero electric Field
-        ChargesAndFieldsColors.electricFieldGridSaturation, // //  color that corresponds to the largest electric field
-        distance, // distance must be between 0 and 1
+        ChargesAndFieldsColors.electricFieldGridZero,  // {Color} color that corresponds to zero electric Field
+        ChargesAndFieldsColors.electricFieldGridSaturation, // {Color} color that corresponds to the largest electric field
+        distance, // {number} distance must be between 0 and 1
         options );
     },
 
@@ -942,7 +942,7 @@ define( function( require ) {
      * @param {Color} color2
      * @param {number} distance
      * @param {Object} [options]
-     * @returns {string}
+     * @returns {string} color - e.g. 'rgba(0,0,0,1)'
      */
     interpolateRGBA: function( color1, color2, distance, options ) {
       options = _.extend( {

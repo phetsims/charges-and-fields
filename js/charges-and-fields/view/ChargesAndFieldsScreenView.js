@@ -106,7 +106,7 @@ define( function( require ) {
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
       model.electricPotentialSensor,
-      model.getColorElectricPotential.bind( model ),
+      model.getElectricPotentialColor.bind( model ),
       model.clearEquipotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform );
