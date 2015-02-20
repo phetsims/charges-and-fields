@@ -526,11 +526,11 @@ define( function( require ) {
        the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
        */
       var initialElectricField = this.getElectricField( position ); // {Vector2}
-      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero: initial Electric Field' );
+      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
       var midwayPosition = ( equipotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
       var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
-      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
+      assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
@@ -549,11 +549,11 @@ define( function( require ) {
      */
     getNextPositionAlongElectricField: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position );
-      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
+      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero' );
       var midwayDisplacement = initialElectricField.normalized().multiplyScalar( deltaDistance / 2 );
       var midwayPosition = midwayDisplacement.add( position );
       var midwayElectricField = this.getElectricField( midwayPosition );
-      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
+      assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero' );
       var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
       //var finalPosition = deltaDisplacement.add( position );
       return deltaDisplacement.add( position );
@@ -600,7 +600,20 @@ define( function( require ) {
       var clockwisePositionArray = [];
       var counterClockwisePositionArray = [];
 
+
+      // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
+      var closestApproachDistance = 0.05;
+      // define the largest electric potential allowed, no electric potential should be drawn above this potential
+      var maxElectricPotential = K_CONSTANT / closestApproachDistance; // {number}
+
+      // electric potential associated with the position
       var initialElectricPotential = this.getElectricPotential( position );
+
+      // return a null array if the absolute of the electric potential is too large
+      if ( Math.abs( initialElectricPotential ) > maxElectricPotential ) {
+        return null;
+      }
+
 
       while ( stepCounter < stepMax &&
               currentClockwisePosition.magnitude() < maxDistance ||
