@@ -537,16 +537,16 @@ define( function( require ) {
        the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
        */
       var initialElectricField = this.getElectricField( position ); // {Vector2}
-      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero' );
+      assert && assert( initialElectricField.magnitude() === 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var equipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
       var midwayPosition = ( equipotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
       var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
-      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero ' );
+      assert && assert( midwayElectricField.magnitude() === 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
       //var finalPosition = midwayPosition.add( deltaPosition );
-      return midwayPosition.add( deltaPosition );
+      return midwayPosition.add( deltaPosition ); // finalPosition
     },
 
     /**
