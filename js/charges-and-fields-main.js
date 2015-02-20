@@ -25,11 +25,9 @@ define( function( require ) {
     credits: {
 
       // all credits fields are optional
-      leadDesign: 'Michael Dubson',
-      softwareDevelopment: 'Michael Dubson',
-      designTeam: 'Curly, Larry, Moe',
-      interviews: 'Wile E. Coyote',
-      thanks: 'Thanks to the ACME Dynamite Company for funding this sim!'
+      leadDesign: 'Amy Rouinfar, Michael Dubson',
+      softwareDevelopment: 'Martin Veillette, Michael Dubson',
+      designTeam: 'Ariel Paul, Amy Rouinfar, Kathy Perkins'
     },
     optionsNode: new GlobalOptionsNode( isBasicsVersion ),
     homeScreenWarningNode: ChargesAndFieldsGlobals.useWebGL ? null : new CanvasWarningNode()
