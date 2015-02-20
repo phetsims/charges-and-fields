@@ -68,6 +68,7 @@ define( function( require ) {
         model,
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
+        model.getElectricPotentialColor.bind( model ),
         this.layoutBounds,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
@@ -75,9 +76,9 @@ define( function( require ) {
     }
     else {
       electricPotentialGridNode = new ElectricPotentialGridNode(
-        model,
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
+        model.getElectricPotentialColor.bind( model ),
         this.layoutBounds,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
@@ -88,6 +89,7 @@ define( function( require ) {
     var electricFieldGridNode = new ElectricFieldGridNode(
       model.electricFieldSensorGrid,
       model.on.bind( model ),
+      model.getElectricFieldMagnitudeColor.bind( model ),
       modelViewTransform,
       model.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricFieldGridVisibleProperty );
