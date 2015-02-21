@@ -56,10 +56,10 @@ define( function( require ) {
         rectangle.fill = color;
       } );
 
-      // Link the stroke color for the default/projector mode
-      ChargesAndFieldsColors.link( 'reversedBackground', function( color ) {
-        rectangle.stroke = color;
-      } );
+      //// Link the stroke color for the default/projector mode
+      //ChargesAndFieldsColors.link( 'reversedBackground', function( color ) {
+      //  rectangle.stroke = color;
+      //} );
 
       var equipotentialLinePath = traceElectricPotentialLine( equipotentialLine );
 
@@ -141,7 +141,7 @@ define( function( require ) {
         voltageLabel.fill = color;
       };
 
-      ChargesAndFieldsColors.link( 'voltageLabel', colorFunction );
+      ChargesAndFieldsColors.link( 'equipotentialLine', colorFunction );
 
       return voltageLabel;
     }
