@@ -610,6 +610,7 @@ define( function( require ) {
       var initialElectricPotential = this.getElectricPotential( position );
 
       // return a null array if the absolute of the electric potential is too large
+      //  see https://github.com/phetsims/charges-and-fields/issues/5
       if ( Math.abs( initialElectricPotential ) > maxElectricPotential ) {
         return null;
       }
