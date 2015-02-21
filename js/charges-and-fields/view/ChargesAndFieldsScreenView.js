@@ -25,24 +25,20 @@ define( function( require ) {
   var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
   var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
-  //var HSlider = require( 'SUN/HSlider' );
-  //var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var linear = require( 'DOT/Util' ).linear;
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
+  var PropertySet = require( 'AXON/PropertySet' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
-  // images
-  //var mockup01Image = require( 'image!CHARGES_AND_FIELDS/mockup01.png' );
-  //var mockup02Image = require( 'image!CHARGES_AND_FIELDS/mockup02.png' );
 
+  // constants
   var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
   var MIN_ELECTRIC_POTENTIAL = -40; // electric potential   at which color will saturate to minColor
@@ -64,6 +60,16 @@ define( function( require ) {
       Vector2.ZERO,
       new Vector2( this.layoutBounds.width / 2, this.layoutBounds.height / 2 ),
       this.layoutBounds.height / ChargesAndFieldsConstants.HEIGHT );
+
+    // Create many properties for checkboxes and Measuring Tape
+    var viewProperty = new PropertySet( {
+      isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
+      isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
+      isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
+      isTapeMeasureVisible: false, // control the visibility of the measuring tape
+      tapeMeasureUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
+      tapeMeasureBasePosition: new Vector2( 100, 100 )
+    } );
 
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
@@ -100,14 +106,14 @@ define( function( require ) {
       model.on.bind( model ),
       this.getElectricFieldMagnitudeColor.bind( this ),
       modelViewTransform,
-      model.isDirectionOnlyElectricFieldGridVisibleProperty,
+      viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricFieldGridVisibleProperty );
 
     // Create the scenery node responsible for drawing the equipotential lines
     var equipotentialLineNode = new EquipotentialLineNode(
       model.equipotentialLinesArray,
       modelViewTransform,
-      model.isValuesVisibleProperty );
+      viewProperty.isValuesVisibleProperty );
 
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLineNode = new ElectricFieldLineNode(
@@ -123,35 +129,35 @@ define( function( require ) {
       modelViewTransform );
 
     // Create a visual grid with major and minor lines on the view
-    var gridNode = new GridNode( modelViewTransform, model.isGridVisibleProperty, model.isValuesVisibleProperty );
+    var gridNode = new GridNode( modelViewTransform, viewProperty.isGridVisibleProperty, viewProperty.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ControlPanel(
       model.isElectricFieldGridVisibleProperty,
-      model.isDirectionOnlyElectricFieldGridVisibleProperty,
+      viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricPotentialGridVisibleProperty,
-      model.isValuesVisibleProperty,
-      model.isGridVisibleProperty,
-      model.isTapeMeasureVisibleProperty );
+      viewProperty.isValuesVisibleProperty,
+      viewProperty.isGridVisibleProperty,
+      viewProperty.isTapeMeasureVisibleProperty );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         model.reset();
-        measuringTape.reset();
+        viewProperty.reset();
       }
     } );
 
     // Create a draggable but dragBound Measuring Tape
-    var tape_options = {
+    var tapeOptions = {
       dragBounds: this.layoutBounds.eroded( 5 ),
       modelViewTransform: modelViewTransform,
-      basePositionProperty: new Property( new Vector2( 100, 100 ) )
+      basePositionProperty: viewProperty.tapeMeasureBasePositionProperty
     };
 
     // Create a measuring tape
-    var measuringTape = new MeasuringTape( model.tapeMeasureUnitsProperty, model.isTapeMeasureVisibleProperty,
-      tape_options );
+    var measuringTape = new MeasuringTape( viewProperty.tapeMeasureUnitsProperty, viewProperty.isTapeMeasureVisibleProperty,
+      tapeOptions );
 
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
@@ -161,7 +167,6 @@ define( function( require ) {
     var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
     // Create the charge and sensor enclosure (including the charges and sensors)
-
     var positiveChargedParticleRepresentation = new ChargedParticleRepresentation( 1 );
     var negativeChargedParticleRepresentation = new ChargedParticleRepresentation( -1 );
     var electricFieldSensorRepresentation = new ElectricFieldSensorRepresentation();
@@ -198,7 +203,7 @@ define( function( require ) {
         addedElectricFieldSensor,
         model.addElectricFieldLine.bind( model ),
         modelViewTransform,
-        model.isValuesVisibleProperty );
+        viewProperty.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -230,28 +235,6 @@ define( function( require ) {
     this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );
-
-    //TODO: Delete when done with the layout
-    ////////////////////////////////////////////////////////////////
-    //Show the mock-up and a slider to change its transparency
-    //////////////////////////////////////////////////////////////
-    //var mockup01OpacityProperty = new Property( 0.0 );
-    //var mockup02OpacityProperty = new Property( 0.0 );
-    //
-    //var image01 = new Image( mockup01Image, { pickable: false } );
-    //var image02 = new Image( mockup02Image, { pickable: false } );
-    //
-    //image01.scale( this.layoutBounds.height / image01.height );
-    //image02.scale( this.layoutBounds.height / image02.height );
-    //
-    //mockup01OpacityProperty.linkAttribute( image01, 'opacity' );
-    //mockup02OpacityProperty.linkAttribute( image02, 'opacity' );
-    //this.addChild( image01 );
-    //this.addChild( image02 );
-    //
-    //this.addChild( new HSlider( mockup02OpacityProperty, { min: 0, max: 1 }, { top: 200, left: 20 } ) );
-    //this.addChild( new HSlider( mockup01OpacityProperty, { min: 0, max: 1 }, { top: 300, left: 20 } ) );
-    /////////////////////////////////////////////////////////////////////////
 
   }
 
