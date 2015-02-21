@@ -84,6 +84,7 @@ define( function( require ) {
     /**
      * Function that generates a label and a path/shape of the equipotential line
      * @param {Object} equipotentialLine - Object of the form {position, positionArray, electricPotential}
+     * @returns {Path}
      */
     function traceElectricPotentialLine( equipotentialLine ) {
 
@@ -127,6 +128,7 @@ define( function( require ) {
     /**
      * Function that generates a voltage label for the equipotential line
      * @param {Object} equipotentialLine - Object of the form {position, positionArray, electricPotential}
+     * @returns {Text}
      */
     function labelElectricPotentialLine( equipotentialLine ) {
 
