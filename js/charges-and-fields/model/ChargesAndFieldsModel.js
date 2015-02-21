@@ -34,14 +34,11 @@ define( function( require ) {
 
     var thisModel = this;
 
+    // For performance reasons these two following visibility properties are strongly tied to the model hence the reason they appear here.
+    // The other visibility properties can be found in the ChargesAndFieldsScreenView file
     PropertySet.call( thisModel, {
       isElectricFieldGridVisible: false, // control the visibility of a grid of arrows representing the local electric field
-      isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
-      isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
-      isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
-      isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
-      isTapeMeasureVisible: false, // control the visibility of the measuring tape
-      tapeMeasureUnits: { name: 'cm', multiplier: 100 } // needed for the measuring tape scenery node
+      isElectricPotentialGridVisible: false // control the visibility of the electric potential field, a.k.a. rectangular grid
     } );
 
     //----------------------------------------------------------------------------------------
