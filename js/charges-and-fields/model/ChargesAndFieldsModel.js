@@ -533,7 +533,7 @@ define( function( require ) {
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
-      //assert && assert( deltaPosition.magnitude() < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
+      assert && assert( deltaPosition.magnitude() < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
       return midwayPosition.add( deltaPosition ); // {Vector2} finalPosition
     },
 
@@ -599,66 +599,64 @@ define( function( require ) {
       var clockwisePositionArray = [];
       var counterClockwisePositionArray = [];
 
-
-      // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
-      var closestApproachDistance = 0.05; /// in meters
-      // define the largest electric potential allowed, no electric potential should be drawn above this potential
-      var maxElectricPotential = K_CONSTANT / closestApproachDistance; // {number} in volts
-
       // electric potential associated with the position
       var initialElectricPotential = this.getElectricPotential( position ); // {number} in volts
 
-      // return a null array if the absolute of the electric potential is too large, this means
-      // that the equipotential sensor is too close to a charge.
+      // return a null array if the initial point for the equipotential line is too close to a charged particle
       // see https://github.com/phetsims/charges-and-fields/issues/5
-      if ( Math.abs( initialElectricPotential ) > maxElectricPotential ) {
+      var closestDistance = 2 * epsilonDistance;
+      var isSafeDistance = true;
+      this.chargedParticles.forEach( function( chargedParticle ) {
+        isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > closestDistance);
+      } );
+      if ( !isSafeDistance ) {
         return null;
       }
+      else {
+        while ( stepCounter < stepMax &&
+                currentClockwisePosition.magnitude() < maxDistance ||
+                currentCounterClockwisePosition.magnitude() < maxDistance ) {
 
+          nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
+            currentClockwisePosition,
+            initialElectricPotential,
+            epsilonDistance );
+          nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
+            currentCounterClockwisePosition,
+            initialElectricPotential,
+            -epsilonDistance );
 
-      while ( stepCounter < stepMax &&
-              currentClockwisePosition.magnitude() < maxDistance ||
-              currentCounterClockwisePosition.magnitude() < maxDistance ) {
+          clockwisePositionArray.push( nextClockwisePosition );
+          counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
-        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
-          currentClockwisePosition,
-          initialElectricPotential,
-          epsilonDistance );
-        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
-          currentCounterClockwisePosition,
-          initialElectricPotential,
-          -epsilonDistance );
+          //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
 
-        clockwisePositionArray.push( nextClockwisePosition );
-        counterClockwisePositionArray.push( nextCounterClockwisePosition );
+          // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
+          if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
+            isLinePathClosed = true;
+            clockwisePositionArray.push( nextCounterClockwisePosition ); // let's close the 'path'
+            break;
+          }
 
-        //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
+          currentClockwisePosition = nextClockwisePosition;
+          currentCounterClockwisePosition = nextCounterClockwisePosition;
 
-        // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
-        if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
-          isLinePathClosed = true;
-          clockwisePositionArray.push( nextCounterClockwisePosition ); // let's close the 'path'
-          break;
+          stepCounter++;
+        }//end of while()
+
+        if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance ||
+                                   currentClockwisePosition.magnitude() < maxDistance) ) {
+          console.log( 'an equipotential line terminates on the screen' );
+          // bring out the big guns
+          // see https://github.com/phetsims/charges-and-fields/issues/1
+          this.getEquipotentialThroughMarchingSquaresPositionArray( position );
         }
 
-        currentClockwisePosition = nextClockwisePosition;
-        currentCounterClockwisePosition = nextCounterClockwisePosition;
-
-        stepCounter++;
-      }//end of while()
-
-      if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance ||
-                                 currentClockwisePosition.magnitude() < maxDistance) ) {
-        console.log( 'an equipotential line terminates on the screen' );
-        // bring out the big guns
-        // see https://github.com/phetsims/charges-and-fields/issues/1
-        this.getEquipotentialThroughMarchingSquaresPositionArray( position );
+        //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
+        var reversedArray = clockwisePositionArray.reverse();
+        //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
+        return reversedArray.concat( position, counterClockwisePositionArray );
       }
-
-      //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
-      var reversedArray = clockwisePositionArray.reverse();
-      //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
-      return reversedArray.concat( position, counterClockwisePositionArray );
     },
 
     /**
@@ -795,9 +793,6 @@ define( function( require ) {
       // make sure the positionArray is not null
       if ( equipotentialLine.positionArray ) {
         this.equipotentialLinesArray.push( equipotentialLine );
-      }
-      else {
-        console.log( 'failed to calculate the electricPotential Line' )
       }
     },
 
