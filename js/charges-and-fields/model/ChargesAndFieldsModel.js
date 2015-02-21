@@ -152,7 +152,6 @@ define( function( require ) {
         }
         // if oldPosition exists calculate the sensor properties from the delta contribution
         // this should help if there are many charged particles on the board
-        // TODO find out if this is a significant performance enhancement
         else {
           // convenience variable
           var charge = chargedParticle.charge;
@@ -534,8 +533,8 @@ define( function( require ) {
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
-      //var finalPosition = midwayPosition.add( deltaPosition );
-      return midwayPosition.add( deltaPosition ); // finalPosition
+      //assert && assert( deltaPosition.magnitude() < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
+      return midwayPosition.add( deltaPosition ); // {Vector2} finalPosition
     },
 
     /**
@@ -555,8 +554,7 @@ define( function( require ) {
       var midwayElectricField = this.getElectricField( midwayPosition );
       assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero' );
       var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
-      //var finalPosition = deltaDisplacement.add( position );
-      return deltaDisplacement.add( position );
+      return deltaDisplacement.add( position ); // {Vector2} finalPosition
     },
 
     /**
@@ -588,29 +586,31 @@ define( function( require ) {
        joining all the points, the directed line would be made of points that have an electric field
        pointing clockwise (yes  clockwise) to the direction of the line.
        */
-      var stepCounter = 0;
-      var stepMax = 500; // the product of stepMax and epsilonDistance should be larger than maxDistance
-      var epsilonDistance = 0.05; // step length along equipotential in meters
-      var isLinePathClosed = false; // boolean
+      var stepCounter = 0; // {number} integer
+      var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
+      var epsilonDistance = 0.05; // {number} step length along equipotential in meters
+      var isLinePathClosed = false; // {boolean}
       var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
-      var nextClockwisePosition;
-      var nextCounterClockwisePosition;
-      var currentClockwisePosition = position;
-      var currentCounterClockwisePosition = position;
+      assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
+      var nextClockwisePosition; // {Vector2}
+      var nextCounterClockwisePosition; // {Vector2}
+      var currentClockwisePosition = position; // {Vector2}
+      var currentCounterClockwisePosition = position; // {Vector2}
       var clockwisePositionArray = [];
       var counterClockwisePositionArray = [];
 
 
       // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
-      var closestApproachDistance = 0.05;
+      var closestApproachDistance = 0.05; /// in meters
       // define the largest electric potential allowed, no electric potential should be drawn above this potential
-      var maxElectricPotential = K_CONSTANT / closestApproachDistance; // {number}
+      var maxElectricPotential = K_CONSTANT / closestApproachDistance; // {number} in volts
 
       // electric potential associated with the position
-      var initialElectricPotential = this.getElectricPotential( position );
+      var initialElectricPotential = this.getElectricPotential( position ); // {number} in volts
 
-      // return a null array if the absolute of the electric potential is too large
-      //  see https://github.com/phetsims/charges-and-fields/issues/5
+      // return a null array if the absolute of the electric potential is too large, this means
+      // that the equipotential sensor is too close to a charge.
+      // see https://github.com/phetsims/charges-and-fields/issues/5
       if ( Math.abs( initialElectricPotential ) > maxElectricPotential ) {
         return null;
       }
@@ -725,7 +725,7 @@ define( function( require ) {
        */
 
       // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
-      var closestApproachDistance = 0.01;
+      var closestApproachDistance = 0.05; // in meters, for reference the radius of the charge circle is 0.10 m
       // define the largest electric field before the electric field line search algorithm bails out
       var maxElectricFieldMagnitude = K_CONSTANT / Math.pow( closestApproachDistance, 2 ); // {number}
 
@@ -770,8 +770,8 @@ define( function( require ) {
 
       // order all the positions (including the initial point) in an array in a forward fashion
       var reversedArray = backwardPositionArray.reverse();
-      //var positionArray = reversedArray.concat( position, forwardPositionArray );
-      return reversedArray.concat( position, forwardPositionArray );
+
+      return reversedArray.concat( position, forwardPositionArray ); //  positionArray ordered
     },
 
     /**
@@ -781,20 +781,23 @@ define( function( require ) {
      * @param {Vector2} [position] - optional argument: starting point to calculate the equipotential line
      */
     addElectricPotentialLine: function( position ) {
-      // electric potential lines don't exist in a vacuum of charges
-      if ( this.chargedParticles.length > 0 ) {
-        var equipotentialLine = {};
+      var equipotentialLine = {};
 
-        if ( position ) {
-          equipotentialLine.position = position;
-        }
-        else {
-          // use the location of the electric Potential Sensor as default position
-          equipotentialLine.position = this.electricPotentialSensor.position;
-        }
-        equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
-        equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
+      if ( position ) {
+        equipotentialLine.position = position;
+      }
+      else {
+        // use the location of the electric Potential Sensor as default position
+        equipotentialLine.position = this.electricPotentialSensor.position;
+      }
+      equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
+      equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
+      // make sure the positionArray is not null
+      if ( equipotentialLine.positionArray ) {
         this.equipotentialLinesArray.push( equipotentialLine );
+      }
+      else {
+        console.log( 'failed to calculate the electricPotential Line' )
       }
     },
 
