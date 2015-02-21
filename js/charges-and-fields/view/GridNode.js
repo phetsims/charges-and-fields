@@ -33,7 +33,7 @@ define( function( require ) {
   var oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
 
   // constants
-  var FRACTION = 1;// fraction of the nominal bounds of the screen are in grid form. Setting to >1 to get 'infinite' grid
+  var FRACTION = 3;// fraction of the nominal bounds of the screen are in grid form. Setting to >1 to get 'infinite' grid
 
   /**
    *
