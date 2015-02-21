@@ -279,9 +279,9 @@ define( function( require ) {
     },
 
     /**
-     * Function that returns a color that is proportional to the magnitude of electric Field.
+     * Function that returns a color that is proportional to the magnitude of the electric Field.
      * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
-     * electric field of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
+     * electric field value of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
      * electric field value of MAX_ELECTRIC_FIELD_MAGNITUDE).
      *
      * @param {number} electricFieldMagnitude - a non negative number
