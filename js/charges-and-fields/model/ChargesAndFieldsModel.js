@@ -810,14 +810,32 @@ define( function( require ) {
     },
 
     /**
-     * Push many electric Field Lines and  electric Potential Lines to an observable array
-     * The drawing of the electric Field Lines and electric Potential Lines is handled in the view.
-     * @private
+     * Push many electric Potential Lines to an observable array
+     * The drawing of the electric Potential Lines is handled in the view.
      * @param {number} numberOfLines
-     * UNUSED, FOR DEBUGGING PURPOSES
+     * USED IN DEBUGGING MODE
      */
-    addManyLine: function( numberOfLines ) {
+    addManyEquipotentialLines: function( numberOfLines ) {
+      var i;
+      for ( i = 0; i < numberOfLines; i++ ) {
+        var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
 
+        var equipotentialLine = {};
+        equipotentialLine.position = position;
+        equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
+        equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
+        this.equipotentialLinesArray.push( equipotentialLine );
+      }
+    },
+
+    /**
+     * Push many electric Field Lines to an observable array
+     * The drawing of the electric Field Lines and electric Potential Lines is handled in the view.
+
+     * @param {number} numberOfLines
+     * USED IN DEBUGGING MODE
+     */
+    addManyElectricFieldLines: function( numberOfLines ) {
       var i;
       for ( i = 0; i < numberOfLines; i++ ) {
         var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
@@ -825,12 +843,6 @@ define( function( require ) {
         electricFieldLine.position = position;
         electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
         this.electricFieldLinesArray.push( electricFieldLine );
-
-        var equipotentialLine = {};
-        equipotentialLine.position = position;
-        equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
-        equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
-        this.equipotentialLinesArray.push( equipotentialLine );
       }
     },
 

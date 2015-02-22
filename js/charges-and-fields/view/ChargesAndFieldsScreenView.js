@@ -32,6 +32,7 @@ define( function( require ) {
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Util = require( 'SCENERY/util/Util' );
@@ -46,6 +47,9 @@ define( function( require ) {
   var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
+
+  var IS_DEBUG = true;
+
   /**
    *
    * @param {ChargesAndFieldsModel} model - main model of the simulation
@@ -148,6 +152,7 @@ define( function( require ) {
       }
     } );
 
+
     // Create a draggable but dragBound Measuring Tape
     var tapeOptions = {
       dragBounds: this.layoutBounds.eroded( 5 ),
@@ -222,6 +227,33 @@ define( function( require ) {
     gridNode.centerY = this.layoutBounds.centerY;
     resetAllButton.right = this.layoutBounds.maxX - 30;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
+
+    // if in debug mode
+    if ( IS_DEBUG ) {
+      this.addChild( new RectangularPushButton( {
+          listener: function() {
+            model.addManyEquipotentialLines( 20 );
+          },
+          baseColor: 'rgb( 0, 222, 120 )',
+          minWidth: 20,
+          minHeight: 20,
+          centerX: resetAllButton.centerX,
+          centerY: resetAllButton.centerY - 40
+        }
+      ) );
+
+      this.addChild( new RectangularPushButton( {
+          listener: function() {
+            model.addManyElectricFieldLines( 20 );
+          },
+          baseColor: 'rgb( 204, 122, 24  )',
+          minWidth: 20,
+          minHeight: 20,
+          centerX: resetAllButton.centerX,
+          centerY: resetAllButton.centerY - 70
+        }
+      ) );
+    }
 
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
     this.addChild( gridNode ); //
