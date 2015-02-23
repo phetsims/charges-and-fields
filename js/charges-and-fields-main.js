@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CanvasWarningNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/CanvasWarningNode' );
+  var CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsScreen = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsScreen' );
