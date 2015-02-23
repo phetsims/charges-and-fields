@@ -19,7 +19,5 @@
   "pattern.0value.1units": "{0} {1}",
   "pattern.parentheses.0text": "({0})",
   "options.electricFieldLines": "Electric Field Lines Support",
-  "options.projectorColors": "Projector Mode",
-  "webglWarning.title": "Running with low graphics quality",
-  "webglWarning.body": "WebGL is not enabled or not available. Click to learn more."
+  "options.projectorColors": "Projector Mode"
 }
