@@ -16,9 +16,9 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   //var Vector2 = require( 'DOT/Vector2' );
 
-  //constants
-  var CIRCLE_RADIUS = 2; //in scenery coordinates
-  var ARROW_LENGTH = 40; //in scenery coordinates
+  // constants
+  var CIRCLE_RADIUS = 2; // in scenery coordinates
+  var ARROW_LENGTH = 40; // in scenery coordinates
 
   /**
    *
@@ -79,7 +79,7 @@ define( function( require ) {
       arrowArray.push( arrowNode );
 
       electricFieldGridNode.addChild( arrowNode );
-      electricFieldGridNode.addChild( circle ); //circle should come after arrowNode
+      electricFieldGridNode.addChild( circle ); // circle should come after arrowNode
 
     } ); // end of forEach loop
 

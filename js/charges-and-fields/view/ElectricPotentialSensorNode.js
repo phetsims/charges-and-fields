@@ -23,10 +23,10 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Util = require( 'DOT/Util' );
 
-  //constants
+  // constants
   var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
 
-  //strings
+  // strings
   var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 

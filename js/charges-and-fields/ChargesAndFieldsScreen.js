@@ -23,8 +23,7 @@ define( function( require ) {
 
     var screen = this;
 
-    //If this is a single-screen sim, then no icon is necessary.
-    //If there are multiple screens, then the icon must be provided here.
+    // If this is a single-screen sim, then no icon is necessary.
     var icon = null;
 
     Screen.call( this, chargesAndFieldsSimString, icon,

@@ -23,7 +23,7 @@ define( function( require ) {
   // constants related to text
   var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
 
-  //constants
+  // constants
   var MINOR_GRIDLINES_PER_MAJOR_GRIDLINE = 5;
   var MAJOR_GRIDLINE_LINEWIDTH = 2;
   var MINOR_GRIDLINE_LINEWIDTH = 1;
