@@ -42,6 +42,9 @@ define( function( require ) {
 
     var electricFieldSensorNode = this;
 
+    this.electricFieldSensor = electricFieldSensor;
+    this.isValuesVisibleProperty = isValuesVisibleProperty;
+
     // Expand the touch area
     this.touchArea = this.localBounds.dilatedXY( 20, 20 );
 
@@ -86,7 +89,7 @@ define( function( require ) {
     directionLabel.right = fieldStrengthLabel.right;
 
     // when the electric field changes update the arrow and the labels
-    electricFieldSensor.electricFieldProperty.link( function( electricField ) {
+    this.electricFieldListener = function( electricField ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
@@ -104,25 +107,29 @@ define( function( require ) {
       fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
       var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
       directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
-    } );
+    };
+    electricFieldSensor.electricFieldProperty.link( this.electricFieldListener );
 
     // Show/hide labels
-    isValuesVisibleProperty.link( function( isVisible ) {
+    this.isValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
       directionLabel.visible = isVisible;
-    } );
+    };
+    isValuesVisibleProperty.link( this.isValuesVisibleListener );
 
     // Move the chargedParticle to the front of this layer when grabbed by the user.
-    electricFieldSensor.userControlledProperty.link( function( userControlled ) {
+    this.userControlledListener = function( userControlled ) {
       if ( userControlled ) {
         electricFieldSensorNode.moveToFront();
       }
-    } );
+    };
+    electricFieldSensor.userControlledProperty.link( this.userControlledListener );
 
     // Register for synchronization with model.
-    electricFieldSensor.positionProperty.link( function( position ) {
+    this.positionListener = function( position ) {
       electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
-    } );
+    };
+    electricFieldSensor.positionProperty.link( this.positionListener );
 
     // When dragging, move the electric Field Sensor
     electricFieldSensorNode.addInputListener( new SimpleDragHandler(
@@ -153,9 +160,16 @@ define( function( require ) {
         end: function( event, trail ) {
           electricFieldSensor.userControlled = false;
         }
-
       } ) );
+
   }
 
-  return inherit( ElectricFieldSensorRepresentation, ElectricFieldSensorNode );
+  return inherit( ElectricFieldSensorRepresentation, ElectricFieldSensorNode, {
+    dispose: function() {
+      this.electricFieldSensor.positionProperty.unlink( this.positionListener );
+      this.electricFieldSensor.userControlledProperty.unlink( this.userControlledListener );
+      this.electricFieldSensor.electricFieldProperty.unlink( this.electricFieldListener );
+      this.isValuesVisibleProperty.unlink( this.isValuesVisibleListener );
+    }
+  } );
 } );

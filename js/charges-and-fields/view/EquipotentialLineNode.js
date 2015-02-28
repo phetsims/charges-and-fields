@@ -52,26 +52,27 @@ define( function( require ) {
         } );
 
       // Link the fill color for the default/projector mode
-      ChargesAndFieldsColors.link( 'background', function( color ) {
+      var rectangleColorFunction = function( color ) {
         rectangle.fill = color;
-      } );
-
-      //// Link the stroke color for the default/projector mode
-      //ChargesAndFieldsColors.link( 'reversedBackground', function( color ) {
-      //  rectangle.stroke = color;
-      //} );
+      };
+      ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
 
       var equipotentialLinePath = traceElectricPotentialLine( equipotentialLine );
 
       lineNode.addChild( equipotentialLinePath );
       labelNode.addChild( rectangle );
       labelNode.addChild( voltageLabel );
+
       equipotentialLinesArray.addItemRemovedListener( function removalListener( removedEquipotentialLine ) {
         if ( removedEquipotentialLine === equipotentialLine ) {
           lineNode.removeChild( equipotentialLinePath );
           labelNode.removeChild( rectangle );
           labelNode.removeChild( voltageLabel );
-          //TODO: memory leak: should one unlink the voltageLabel and colorFunction? and similarly for equipotentialLinePath
+
+          ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
+          ChargesAndFieldsColors.unlink( 'equipotentialLine', equipotentialLinePath.colorFunction );
+          ChargesAndFieldsColors.unlink( 'equipotentialLine', voltageLabel.colorFunction );
+
           equipotentialLinesArray.removeItemRemovedListener( removalListener );
         }
       } );
@@ -79,6 +80,7 @@ define( function( require ) {
     } );
 
     // Control the visibility of the value (voltage) labels
+    // no need to unlink present for the lifetime of the sim
     isValuesVisibleProperty.linkAttribute( labelNode, 'visible' );
 
     /**
@@ -110,13 +112,13 @@ define( function( require ) {
       //  equipotentialLine.positionArray[i+1].y);
 
 
-      var equipotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ), { stroke: ChargesAndFieldsColors.equipotentialLine.toCSS() } );
+      var equipotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ) );
 
-      var colorFunction = function( color ) {
+      equipotentialLinePath.colorFunction = function( color ) {
         equipotentialLinePath.stroke = color;
       };
       // Link the stroke color for the default/projector mode
-      ChargesAndFieldsColors.link( 'equipotentialLine', colorFunction );
+      ChargesAndFieldsColors.link( 'equipotentialLine', equipotentialLinePath.colorFunction );
 
       return equipotentialLinePath;
     }
@@ -131,17 +133,16 @@ define( function( require ) {
       var voltageLabelText = StringUtils.format( pattern_0value_1units, equipotentialLine.electricPotential.toFixed( 1 ), voltageUnitString );
       var voltageLabel = new Text( voltageLabelText,
         {
-          fill: ChargesAndFieldsColors.voltageLabel.toCSS(),
           font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
           center: modelViewTransform.modelToViewPosition( equipotentialLine.position )
         } );
 
       // Link the fill color for the default/projector mode
-      var colorFunction = function( color ) {
+      voltageLabel.colorFunction = function( color ) {
         voltageLabel.fill = color;
       };
 
-      ChargesAndFieldsColors.link( 'equipotentialLine', colorFunction );
+      ChargesAndFieldsColors.link( 'equipotentialLine', voltageLabel.colorFunction );
 
       return voltageLabel;
     }

@@ -102,6 +102,7 @@ define( function( require ) {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH, lineCap: 'butt', lineJoin: 'bevel'
     } );
 
+    // no need to unlink, present for the lifetime of the simulation
     ChargesAndFieldsColors.link( 'gridStroke', function( color ) {
       minorGridLinesPath.stroke = color;
       majorGridLinesPath.stroke = color;
@@ -138,12 +139,14 @@ define( function( require ) {
     } );
 
     // Show/ Hide the arrow
+    // no need to unlink, present for the lifetime of the simulation
     isValuesVisibleProperty.link( function( isVisible ) {
       arrowPath.visible = isVisible;
       text.visible = isVisible;
     } );
 
     // Show/ Hide the grid
+    // no need to unlink, present for the lifetime of the simulation
     isGridVisibleProperty.link( function( isVisible ) {
       thisGrid.visible = isVisible;
     } );

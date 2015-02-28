@@ -190,6 +190,7 @@ define( function( require ) {
       // Add the removal listener for if and when this chargedParticle is removed from the model.
       model.chargedParticles.addItemRemovedListener( function removalListener( removedChargedParticle ) {
         if ( removedChargedParticle === addedChargedParticle ) {
+          chargedParticleNode.dispose();
           draggableElementsLayer.removeChild( chargedParticleNode );
           model.chargedParticles.removeItemRemovedListener( removalListener );
         }
@@ -209,6 +210,7 @@ define( function( require ) {
       // Add the removal listener for if and when this chargedParticle is removed from the model.
       model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
+          electricFieldSensorNode.dispose();
           draggableElementsLayer.removeChild( electricFieldSensorNode );
           model.electricFieldSensors.removeItemRemovedListener( removalListener );
         }

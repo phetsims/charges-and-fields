@@ -133,9 +133,11 @@ define( function( require ) {
     ChargesAndFieldsColors.on( 'profileChanged', updateElectricFieldGridColors );
 
     // update the colors of the electric field arrows if the checkbox 'Direction Only' is checked/unchecked
+    // no need to unlink, present for the lifetime of the simulation
     isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 
     // Show or Hide this node
+    // no need to unlink, present for the lifetime of the simulation
     isElectricFieldGridVisibleProperty.link( function( isVisible ) {
       electricFieldGridNode.visible = isVisible;
     } );
