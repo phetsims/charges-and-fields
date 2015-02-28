@@ -23,6 +23,7 @@ define( function( require ) {
   var electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
   var directionOnlyString = require( 'string!CHARGES_AND_FIELDS/directionOnly' );
   var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
+  var equipotentialSensorString = require( 'string!CHARGES_AND_FIELDS/equipotentialSensor' );
   var gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
   var valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
   var tapeMeasureString = require( 'string!CHARGES_AND_FIELDS/tapeMeasure' );
@@ -32,6 +33,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty
    * @param {Property.<boolean>} isElectricPotentialGridVisibleProperty
+   * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @param {Property.<boolean>} isGridVisibleProperty
    * @param {Property.<boolean>} isTapeMeasureVisibleProperty
@@ -40,6 +42,7 @@ define( function( require ) {
   function ControlPanel( isElectricFieldGridVisibleProperty,
                          isDirectionOnlyElectricFieldGridVisibleProperty,
                          isElectricPotentialGridVisibleProperty,
+                         isElectricPotentialSensorVisibleProperty,
                          isValuesVisibleProperty,
                          isGridVisibleProperty,
                          isTapeMeasureVisibleProperty ) {
@@ -64,6 +67,7 @@ define( function( require ) {
     var electricFieldText = new Text( electricFieldString, textOptions );
     var directionOnlyText = new Text( directionOnlyString, textOptions );
     var voltageText = new Text( voltageString, textOptions );
+    var equipotentialSensorText = new Text( equipotentialSensorString, textOptions );
     var valuesText = new Text( gridString, textOptions );
     var gridText = new Text( valuesString, textOptions );
     var tapeMeasureText = new Text( tapeMeasureString, textOptions );
@@ -71,6 +75,7 @@ define( function( require ) {
     var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldGridVisibleProperty, checkBoxOptions );
     var directionOnlyCheckBox = new CheckBox( directionOnlyText, isDirectionOnlyElectricFieldGridVisibleProperty, checkBoxOptions );
     var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialGridVisibleProperty, checkBoxOptions );
+    var equipotentialSensorCheckBox = new CheckBox( equipotentialSensorText, isElectricPotentialSensorVisibleProperty, checkBoxOptions );
     var valuesCheckBox = new CheckBox( gridText, isValuesVisibleProperty, checkBoxOptions );
     var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, checkBoxOptions );
     var tapeMeasureCheckBox = new CheckBox( tapeMeasureText, isTapeMeasureVisibleProperty, checkBoxOptions );
@@ -91,6 +96,7 @@ define( function( require ) {
         electricFieldCheckBox,
         directionOnlyGroup,
         voltageCheckBox,
+        equipotentialSensorCheckBox,
         valuesCheckBox,
         gridCheckBox,
         tapeMeasureCheckBox
@@ -121,6 +127,7 @@ define( function( require ) {
       // TODO another hack
       directionOnlyText.fill = isElectricFieldGridVisibleProperty.value ? color : ChargesAndFieldsColors.controlPanelTextDisabled;
       voltageText.fill = color;
+      equipotentialSensorText.fill = color;
       valuesText.fill = color;
       gridText.fill = color;
       tapeMeasureText.fill = color;
@@ -130,6 +137,7 @@ define( function( require ) {
       electricFieldCheckBox.checkBoxColor = color;
       directionOnlyCheckBox.checkBoxColor = color;
       voltageCheckBox.checkBoxColor = color;
+      equipotentialSensorCheckBox.checkBoxColor = color;
       valuesCheckBox.checkBoxColor = color;
       gridCheckBox.checkBoxColor = color;
       tapeMeasureCheckBox.checkBoxColor = color;
@@ -139,6 +147,7 @@ define( function( require ) {
       electricFieldCheckBox.checkBoxColorDisabled = color;
       directionOnlyCheckBox.checkBoxColorDisabled = color;
       voltageCheckBox.checkBoxColorDisabled = color;
+      equipotentialSensorCheckBox.checkBoxColorDisabled = color;
       valuesCheckBox.checkBoxColorDisabled = color;
       gridCheckBox.checkBoxColorDisabled = color;
       tapeMeasureCheckBox.checkBoxColorDisabled = color;
@@ -148,6 +157,7 @@ define( function( require ) {
       electricFieldCheckBox.checkBoxColorBackground = color;
       directionOnlyCheckBox.checkBoxColorBackground = color;
       voltageCheckBox.checkBoxColorBackground = color;
+      equipotentialSensorCheckBox.checkBoxColorBackground = color;
       valuesCheckBox.checkBoxColorBackground = color;
       gridCheckBox.checkBoxColorBackground = color;
       tapeMeasureCheckBox.checkBoxColorBackground = color;

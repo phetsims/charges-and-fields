@@ -65,6 +65,7 @@ define( function( require ) {
     var viewProperty = new PropertySet( {
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
+      isElectricPotentialSensorVisible: false, // control the visibility of the equipotential sensor
       isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
       isTapeMeasureVisible: false, // control the visibility of the measuring tape
       tapeMeasureUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
@@ -126,7 +127,8 @@ define( function( require ) {
       this.getElectricPotentialColor.bind( this ),
       model.clearEquipotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
-      modelViewTransform );
+      modelViewTransform,
+      viewProperty.isElectricPotentialSensorVisibleProperty );
 
     // Create a visual grid with major and minor lines on the view
     var gridNode = new GridNode( modelViewTransform, viewProperty.isGridVisibleProperty, viewProperty.isValuesVisibleProperty );
@@ -136,6 +138,7 @@ define( function( require ) {
       model.isElectricFieldGridVisibleProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricPotentialGridVisibleProperty,
+      viewProperty.isElectricPotentialSensorVisibleProperty,
       viewProperty.isValuesVisibleProperty,
       viewProperty.isGridVisibleProperty,
       viewProperty.isTapeMeasureVisibleProperty );

@@ -37,9 +37,15 @@ define( function( require ) {
    * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
+   * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty - control the visibility of this node
    * @constructor
    */
-  function ElectricPotentialSensorNode( electricPotentialSensor, getElectricPotentialColor, clearEquipotentialLines, addElectricPotentialLine, modelViewTransform ) {
+  function ElectricPotentialSensorNode( electricPotentialSensor,
+                                        getElectricPotentialColor,
+                                        clearEquipotentialLines,
+                                        addElectricPotentialLine,
+                                        modelViewTransform,
+                                        isElectricPotentialSensorVisibleProperty ) {
 
     var electricPotentialSensorNode = this;
 
@@ -98,6 +104,10 @@ define( function( require ) {
       electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
       circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
     } );
+
+    // Show// Hide this node
+    // no need to unlink, stays for the lifetime of the simulation
+    isElectricPotentialSensorVisibleProperty.linkAttribute( this, 'visible' );
 
     /**
      * Function that rounds number according
