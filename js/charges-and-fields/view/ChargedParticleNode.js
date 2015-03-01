@@ -29,16 +29,18 @@ define( function( require ) {
     this.touchArea = this.localBounds.dilatedXY( 10, 10 );
 
     // Move the chargedParticle to the front of this layer when grabbed by the user.
-    chargedParticle.userControlledProperty.link( function( userControlled ) {
+    this.userControlledListener = function( userControlled ) {
       if ( userControlled ) {
         chargedParticleNode.moveToFront();
       }
-    } );
+    };
+    chargedParticle.userControlledProperty.link( this.userControlledListener );
 
     // Register for synchronization with model.
-    chargedParticle.positionProperty.link( function( position ) {
+    this.positionListener = function( position ) {
       chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
-    } );
+    };
+    chargedParticle.positionProperty.link( this.positionListener );
 
     // When dragging, move the charge
     chargedParticleNode.addInputListener( new SimpleDragHandler(
@@ -57,7 +59,16 @@ define( function( require ) {
           chargedParticle.userControlled = false;
         }
       } ) );
+
+    this.userControlledProperty = chargedParticle.userControlledProperty;
+    this.positionProperty = chargedParticle.positionProperty;
   }
 
-  return inherit( ChargedParticleRepresentation, ChargedParticleNode );
+  return inherit( ChargedParticleRepresentation, ChargedParticleNode, {
+    dispose: function() {
+      this.userControlledProperty.unlink( this.userControlledListener );
+      this.positionProperty.unlink( this.positionListener );
+    }
+
+  } );
 } );

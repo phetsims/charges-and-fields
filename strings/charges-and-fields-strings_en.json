@@ -15,6 +15,7 @@
   "distanceUnit": "m",
   "oneMeter": "1 meter",
   "equipotential": "Equipotential",
+  "equipotentialSensor": "Equipotential",
   "pattern.0label": "{0}:",
   "pattern.0value.1units": "{0} {1}",
   "pattern.parentheses.0text": "({0})",

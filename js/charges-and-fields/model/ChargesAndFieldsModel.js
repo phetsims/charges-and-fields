@@ -639,7 +639,7 @@ define( function( require ) {
           currentCounterClockwisePosition = nextCounterClockwisePosition;
 
           stepCounter++;
-        }//end of while()
+        }// end of while()
 
         if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance ||
                                    currentClockwisePosition.magnitude() < maxDistance) ) {
@@ -649,7 +649,7 @@ define( function( require ) {
           this.getEquipotentialThroughMarchingSquaresPositionArray( position );
         }
 
-        //let's order all the positions (including the initial point) in an array in a counterclockwise fashion
+        // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
         var reversedArray = clockwisePositionArray.reverse();
         //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
         return reversedArray.concat( position, counterClockwisePositionArray );
@@ -747,7 +747,7 @@ define( function( require ) {
         forwardPositionArray.push( nextForwardPosition );
         currentForwardPosition = nextForwardPosition;
         stepCounter++;
-      }//end of while()
+      }// end of while()
 
       // reset the counter
       stepCounter = 0;
@@ -761,7 +761,7 @@ define( function( require ) {
         backwardPositionArray.push( nextBackwardPosition );
         currentBackwardPosition = nextBackwardPosition;
         stepCounter++;
-      }//end of while()
+      }// end of while()
 
       // order all the positions (including the initial point) in an array in a forward fashion
       var reversedArray = backwardPositionArray.reverse();

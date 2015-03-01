@@ -9,4 +9,4 @@ potential (or field) contributions.
 
 An equipotential line is found by a modified midpoint method algorithm. On rare occasions,
 the equipotential lines may not form closed lines due to the finite number of steps in the
- equipotential line algorithm.
+equipotential line algorithm.

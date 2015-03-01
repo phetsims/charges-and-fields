@@ -23,7 +23,7 @@ define( function( require ) {
   // constants related to text
   var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
 
-  //constants
+  // constants
   var MINOR_GRIDLINES_PER_MAJOR_GRIDLINE = 5;
   var MAJOR_GRIDLINE_LINEWIDTH = 2;
   var MINOR_GRIDLINE_LINEWIDTH = 1;
@@ -102,6 +102,7 @@ define( function( require ) {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH, lineCap: 'butt', lineJoin: 'bevel'
     } );
 
+    // no need to unlink, present for the lifetime of the simulation
     ChargesAndFieldsColors.link( 'gridStroke', function( color ) {
       minorGridLinesPath.stroke = color;
       majorGridLinesPath.stroke = color;
@@ -138,12 +139,14 @@ define( function( require ) {
     } );
 
     // Show/ Hide the arrow
+    // no need to unlink, present for the lifetime of the simulation
     isValuesVisibleProperty.link( function( isVisible ) {
       arrowPath.visible = isVisible;
       text.visible = isVisible;
     } );
 
     // Show/ Hide the grid
+    // no need to unlink, present for the lifetime of the simulation
     isGridVisibleProperty.link( function( isVisible ) {
       thisGrid.visible = isVisible;
     } );
