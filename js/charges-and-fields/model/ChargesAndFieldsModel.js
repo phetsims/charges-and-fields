@@ -326,7 +326,7 @@ define( function( require ) {
     },
 
     /**
-     * Function  that returns an array of equally spaced sensors on a two dimensional grid
+     * Function  that returns an array of equally spaced sensors on a two dimensional grid (a.k.a lattice)
      * The position of the sensors is determined the options parameter, and is bounded by the bounds of the model.
      * @param {Object} [options]
      * @returns {Array.<StaticSensorElement>}
@@ -338,6 +338,15 @@ define( function( require ) {
       }, options );
 
       var gridArray = [];
+
+
+      /*
+       The lattice points are given by (n and m are integers)
+       \vec{R}_{n,m} = (options.spacing) \left( n \hat{e}_x + m \hat{e}_x \right) + options.onOrigin*\vec{Offset}
+       where  \vec{Offset}= (options.spacing) \left( \hat{e}_x + \hat{e}_x \right)/2
+
+       The lattices vectors are constrained to be with the bounds x=[-WIDTH/2, WIDTH/2] and y=[-HEIGHT/2, HEIGHT/2]
+       */
 
       // The grid is centered at the origin;
       var maxX = WIDTH / 2;
