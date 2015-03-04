@@ -57,7 +57,7 @@ define( function( require ) {
    */
   function ChargesAndFieldsScreenView( model ) {
 
-    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
+    ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
     // The origin of the model is sets in the middle of the scree. There are 5 meters across the height of the sim.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
