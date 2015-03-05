@@ -361,6 +361,39 @@ define( function( require ) {
       var g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
       var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
       return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
+    },
+    // Layout the EnergySkateParkBasicsScreenView,
+
+    /**
+     * Function responsible for the layout of the SreenView. It scales the scene graph up and down with
+     * the size of the screen to ensure a minimally visible area,
+     * but keeping it centered at the bottom of the screen.
+     * @public
+     * @param {number} width
+     * @param {number} height
+     */
+    layout: function( width, height ) {
+
+      this.resetTransform();
+
+      var scale = this.getLayoutScale( width, height );
+      this.setScaleMagnitude( scale );
+
+      var offsetX = 0;
+      var offsetY = 0;
+
+      // Move to bottom vertically
+      if ( scale === width / this.layoutBounds.width ) {
+        offsetY = (height / scale - this.layoutBounds.height);
+      }
+
+      // center horizontally
+      else if ( scale === height / this.layoutBounds.height ) {
+        offsetX = (width - this.layoutBounds.width * scale) / 2 / scale;
+      }
+      this.translate( offsetX, offsetY );
+
     }
+
   } );
 } );
