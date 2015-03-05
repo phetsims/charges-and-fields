@@ -365,7 +365,9 @@ define( function( require ) {
     // Layout the EnergySkateParkBasicsScreenView,
 
     /**
-     * Function responsible for the layout of the SreenView. It scales the scene graph up and down with
+     * Function responsible for the layout of the ScreenView.
+     * It overrides the layout strategy in ScreenView.js
+     * It scales the scene graph up and down with
      * the size of the screen to ensure a minimally visible area,
      * but keeping it centered at the bottom of the screen.
      * @public
