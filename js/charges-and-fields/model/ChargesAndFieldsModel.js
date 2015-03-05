@@ -37,7 +37,7 @@ define( function( require ) {
     // For performance reasons these two following visibility properties are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
     PropertySet.call( thisModel, {
-      isElectricFieldGridVisible: false, // control the visibility of a grid of arrows representing the local electric field
+      isElectricFieldGridVisible: true, // control the visibility of a grid of arrows representing the local electric field
       isElectricPotentialGridVisible: false // control the visibility of the electric potential field, a.k.a. rectangular grid
     } );
 
