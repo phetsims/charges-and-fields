@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  //var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -38,7 +39,8 @@ define( function( require ) {
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
     PropertySet.call( thisModel, {
       isElectricFieldGridVisible: true, // control the visibility of a grid of arrows representing the local electric field
-      isElectricPotentialGridVisible: false // control the visibility of the electric potential field, a.k.a. rectangular grid
+      isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
+      isChargedParticlePresent: false // is there at least one charged particle on the board 
     } );
 
     //----------------------------------------------------------------------------------------
@@ -91,6 +93,7 @@ define( function( require ) {
     //
     //----------------------------------------------------------------------------------------
 
+
     //------------------------
     // Position Listener on the electric potential Sensor
     //------------------------
@@ -129,6 +132,9 @@ define( function( require ) {
 
     // if any charges move, we need to update all the sensors
     this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
+
+
+      thisModel.checkAtLeastOneChargedParticleOnBoard();
 
       // send a trigger signal (go back to origin) if the charge particle is over the enclosure
       chargedParticle.userControlledProperty.link( function( userControlled ) {
@@ -195,6 +201,8 @@ define( function( require ) {
       thisModel.clearElectricFieldLines();
       // Update all the visible sensors
       thisModel.updateAllVisibleSensors();
+      // is there at least one charge on the board ?
+      thisModel.checkAtLeastOneChargedParticleOnBoard();
     } );
 
     //------------------------
@@ -239,6 +247,14 @@ define( function( require ) {
       this.electricFieldSensors.forEach( function( electricFieldSensor ) {
         electricFieldSensor.step( dt );
       } );
+    },
+
+    /**
+     * Function that determines if there are charges on the board
+     * @private
+     */
+    checkAtLeastOneChargedParticleOnBoard: function() {
+      this.isChargedParticlePresent = (this.chargedParticles.length > 0);
     },
 
     /**
@@ -328,6 +344,7 @@ define( function( require ) {
     /**
      * Function  that returns an array of equally spaced sensors on a two dimensional grid
      * The position of the sensors is determined the options parameter, and is bounded by the bounds of the model.
+     * @private
      * @param {Object} [options]
      * @returns {Array.<StaticSensorElement>}
      */
@@ -562,7 +579,7 @@ define( function( require ) {
      * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
     getEquipotentialPositionArray: function( position ) {
-      if ( this.chargedParticles.length === 0 ) {
+      if ( !this.isChargedParticlePresent ) {
         // if there are no charges, don't bother to find the equipotential line
         return null;
       }
@@ -700,7 +717,7 @@ define( function( require ) {
      * UNUSED
      */
     getElectricFieldPositionArray: function( position ) {
-      if ( this.chargedParticles.length === 0 ) {
+      if ( !this.isChargedParticlePresent ) {
         // if there are no charges, don't bother to find the electric field lines
         return null;
       }
@@ -802,7 +819,7 @@ define( function( require ) {
     addElectricFieldLine: function( position ) {
       // electric field lines don't exist in a vacuum of charges
       var electricFieldLine = {};
-      if ( this.chargedParticles.length > 0 ) {
+      if ( this.isChargedParticlePresent ) {
         electricFieldLine.position = position;
         electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
         this.electricFieldLinesArray.push( electricFieldLine );

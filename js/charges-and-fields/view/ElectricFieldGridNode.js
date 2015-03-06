@@ -12,6 +12,7 @@ define( function( require ) {
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   //var Vector2 = require( 'DOT/Vector2' );
@@ -26,6 +27,7 @@ define( function( require ) {
    * @param {Function} update -       model.on.bind(model),
    * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given the magnitude of the electric field
    * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
    * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
    * @constructor
@@ -34,6 +36,7 @@ define( function( require ) {
                                   update,
                                   colorInterpolationFunction,
                                   modelViewTransform,
+                                  isChargedParticlePresentProperty,
                                   isDirectionOnlyElectricFieldGridVisibleProperty,
                                   isElectricFieldGridVisibleProperty ) {
 
@@ -44,12 +47,14 @@ define( function( require ) {
     var arrowArray = []; // arrays of the arrows
     var circleArray = []; // array of the 'transparent' circles on the arrows.
 
-    // First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
-    // The arrow will rotate around a point (a circle in the view) that is not necessarily its center.
-    // The point of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
-    // fraction=1/2 => rotate around the center,
-    // fraction=0 => rotate around the tail,
-    // fraction=1 => rotate around the tip,
+    /**
+     * First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
+     * The point for the center of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
+     *
+     * fraction=1/2 => rotate around the center of the arrow,
+     * fraction=0 => rotate around the tail
+     * fraction=1 => rotate around the tip,
+     */
 
     var fraction = 2 / 5;
     var tailX = -ARROW_LENGTH * (fraction);
@@ -91,7 +96,7 @@ define( function( require ) {
       arrowArray.forEach( function( arrowNode ) {
         // Rotate the arrow according to the direction of the electric field
         // Since the model View Transform is  Y inverted, the angle in the view and in the model
-        // differ by a minus sign
+        // differs by a minus sign
         arrowNode.setRotation( -1 * arrowNode.electricFieldSensor.electricField.angle() );
         // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
         if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
@@ -136,9 +141,16 @@ define( function( require ) {
     // no need to unlink, present for the lifetime of the simulation
     isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 
+
+    // this node is visible if  (1) the electricField is checked AND (2) there is at least one charge particle  on the board
+    var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldGridVisibleProperty, isChargedParticlePresentProperty ],
+      function( isElectricFieldVisible, isChargedParticlePresent ) {
+        return isElectricFieldVisible && isChargedParticlePresent;
+      } );
+
     // Show or Hide this node
     // no need to unlink, present for the lifetime of the simulation
-    isElectricFieldGridVisibleProperty.link( function( isVisible ) {
+    isElectricFieldGridNodeVisibleProperty.link( function( isVisible ) {
       electricFieldGridNode.visible = isVisible;
     } );
   }

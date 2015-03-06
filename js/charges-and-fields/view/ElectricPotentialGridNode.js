@@ -13,6 +13,7 @@ define( function( require ) {
     var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+    //var DerivedProperty = require('AXON/DerivedProperty');
     var inherit = require( 'PHET_CORE/inherit' );
     //var Vector2 = require( 'DOT/Vector2' );
 
@@ -26,6 +27,7 @@ define( function( require ) {
      * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given an electric potential
      * @param {Bounds2} bounds - bounds of the canvas
      * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
@@ -34,6 +36,7 @@ define( function( require ) {
                                         colorInterpolationFunction,
                                         bounds,
                                         modelViewTransform,
+                                        isChargedParticlePresentProperty,
                                         isVisibleProperty ) {
 
       // Call the super constructor
