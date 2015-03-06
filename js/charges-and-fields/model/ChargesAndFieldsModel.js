@@ -331,7 +331,7 @@ define( function( require ) {
 
     /**
      * Function  that returns an array of equally spaced sensors on a two dimensional grid
-     * The position of the sensors is determined the options parameter, and is bounded by the bounds of the model.
+     * The position of the sensors is determined the options parameter
      * @private
      * @param {Object} [options]
      * @returns {Array.<StaticSensorElement>}
@@ -344,9 +344,11 @@ define( function( require ) {
 
       var gridArray = [];
 
+      // TODO: get rid of magic numbers
       // The grid is centered at the origin;
-      var maxX = WIDTH / 2;
-      var maxY = HEIGHT / 2;
+      var maxX = WIDTH / 2 * (30 / 25);
+      var maxY = HEIGHT / 2 * (5);
+      var minY = -HEIGHT / 2;
 
       var spacingOffset; // {number}  Measure of the smallest x-coordinate of all sensors (excluding the one at the origin, if present)
 
@@ -366,12 +368,18 @@ define( function( require ) {
         for ( y = spacingOffset; y < maxY; y += options.spacing ) {
           var quadrant1Position = new Vector2( x, y );
           var quadrant2Position = new Vector2( -x, y );
-          var quadrant3Position = new Vector2( -x, -y );
-          var quadrant4Position = new Vector2( x, -y );
 
           gridArray.push(
             new StaticSensorElement( quadrant1Position ),
-            new StaticSensorElement( quadrant2Position ),
+            new StaticSensorElement( quadrant2Position )
+          );
+        }
+
+        for ( y = -spacingOffset; y > minY; y -= options.spacing ) {
+          var quadrant3Position = new Vector2( -x, y );
+          var quadrant4Position = new Vector2( x, y );
+
+          gridArray.push(
             new StaticSensorElement( quadrant3Position ),
             new StaticSensorElement( quadrant4Position )
           );
@@ -396,12 +404,18 @@ define( function( require ) {
         // push sensors on the Y-axis
         for ( y = options.spacing; y < maxY; y += options.spacing ) {
           var positiveYAxisPosition = new Vector2( 0, y );
-          var negativeYAxisPosition = new Vector2( 0, -y );
 
           gridArray.push(
-            new StaticSensorElement( positiveYAxisPosition ),
-            new StaticSensorElement( negativeYAxisPosition )
+            new StaticSensorElement( positiveYAxisPosition )
           );
+
+          for ( y = -options.spacing; y > minY; y -= options.spacing ) {
+            var negativeYAxisPosition = new Vector2( 0, y );
+
+            gridArray.push(
+              new StaticSensorElement( negativeYAxisPosition )
+            );
+          }
         }
 
       }
