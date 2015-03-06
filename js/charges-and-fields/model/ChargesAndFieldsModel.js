@@ -139,7 +139,7 @@ define( function( require ) {
       // send a trigger signal (go back to origin) if the charge particle is over the enclosure
       chargedParticle.userControlledProperty.link( function( userControlled ) {
         if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
-          chargedParticle.animating = true;
+          chargedParticle.animate();
         }
       } );
 
@@ -217,7 +217,7 @@ define( function( require ) {
       // send a trigger signal (go back to origin) if the electric field sensor is over the enclosure
       electricFieldSensor.userControlledProperty.link( function( userControlled ) {
         if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
-          electricFieldSensor.animating = true;
+          electricFieldSensor.animate();
         }
       } );
     } );
@@ -236,18 +236,6 @@ define( function( require ) {
       PropertySet.prototype.reset.call( this ); // reset the visibility of the check boxes
     },
 
-    /**
-     * @public
-     * @param {number} dt
-     */
-    step: function( dt ) {
-      this.chargedParticles.forEach( function( chargedParticle ) {
-        chargedParticle.step( dt );
-      } );
-      this.electricFieldSensors.forEach( function( electricFieldSensor ) {
-        electricFieldSensor.step( dt );
-      } );
-    },
 
     /**
      * Function that determines if there are charges on the board

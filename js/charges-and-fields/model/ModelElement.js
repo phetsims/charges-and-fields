@@ -28,46 +28,50 @@ define( function( require ) {
       position: position,
 
       // @public
-      userControlled: false,
+      userControlled: false
 
-      // @public
-      // Flag that indicates whether this element is animating from one location to another, should not be set externally.
-      animating: false
     } );
 
+    // @public read-only
+    // Flag that indicates whether this element is animating from one location to another, should not be set externally.
+    this.animating = false;
   }
 
   return inherit( PropertySet, ModelElement, {
-    // @public
-    step: function( dt ) {
-      if ( this.animating ) {
-        this.animationStep( dt );
-      }
-    },
 
     /**
-     * Function that displaces the position of the chargeParticle toward its origin Position.
-     * @private
-     * @param {number} dt
+     * Function that animates the position of the chargeParticle toward its origin Position.
+     * @public
      */
-    animationStep: function( dt ) {
+    animate: function() {
+      var self = this;
 
-      // perform any animation
+      this.animating = true;
+
+      var position = {
+        x: this.position.x,
+        y: this.position.y
+      };
+
       var distanceToDestination = this.position.distance( this.positionProperty.initialValue );
-      if ( distanceToDestination > dt * ChargesAndFieldsConstants.ANIMATION_VELOCITY ) {
-        // Move a step toward the position.
-        var stepAngle = Math.atan2( this.positionProperty.initialValue.y - this.position.y, this.positionProperty.initialValue.x - this.position.x );
-        var stepVector = Vector2.createPolar( ChargesAndFieldsConstants.ANIMATION_VELOCITY * dt, stepAngle );
-        this.position = this.position.plus( stepVector );
-      }
-      else {
-        // Less than one time step away, so just go to the initial position.
-        this.position = this.positionProperty.initialValue;
-        this.animating = false;
-        this.trigger( 'returnedToOrigin' );
-      }
-    }
+      var animationTime = (distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY) * 1000; // in milliseconds
 
+      var animationTween = new TWEEN.Tween( position ).
+        to( {
+          x: this.positionProperty.initialValue.x,
+          y: this.positionProperty.initialValue.y
+        }, animationTime ).
+        easing( TWEEN.Easing.Cubic.InOut ).
+        onUpdate( function() {
+          self.position = new Vector2( position.x, position.y );
+        } ).
+        onComplete( function() {
+          self.animating = false;
+          self.trigger( 'returnedToOrigin' );
+        } );
+
+      animationTween.start();
+    }
   } );
 } );
 
