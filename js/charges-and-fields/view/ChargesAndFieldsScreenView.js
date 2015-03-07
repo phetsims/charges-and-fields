@@ -150,6 +150,7 @@ define( function( require ) {
       model.clearEquipotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
+      viewProperty.availableModelBounds,
       viewProperty.isElectricPotentialSensorVisibleProperty );
 
     // Create a visual grid with major and minor lines on the view
