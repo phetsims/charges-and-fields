@@ -135,21 +135,24 @@ define( function( require ) {
     electricFieldSensorNode.addInputListener( new SimpleDragHandler(
       {
         // When dragging across it in a touchscreen, pick it up
-        startNewTime: 0,
-        startOldTime: 0,
         allowTouchSnag: true,
+        //startNewTime: 0,
+        //startOldTime: 0,
         start: function( event, trail ) {
           electricFieldSensor.userControlled = true;
+          var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
+          // move this node upward so that the cursor is below the sensor
+          electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -10 ) );
 
-          if ( ChargesAndFieldsGlobals.electricFieldLines ) {
-            // Add an electricFieldLine on a double click event
-            this.startNewTime = new Date().getTime();
-            var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
-            if ( timeDifference < 200 ) {
-              addElectricFieldLine( electricFieldSensor.position );
-            }
-            this.startOldTime = this.startNewTime;
-          }
+          //if ( ChargesAndFieldsGlobals.electricFieldLines ) {
+          //  // Add an electricFieldLine on a double click event
+          //  this.startNewTime = new Date().getTime();
+          //  var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
+          //  if ( timeDifference < 200 ) {
+          //    addElectricFieldLine( electricFieldSensor.position );
+          //  }
+          //  this.startOldTime = this.startNewTime;
+          //}
 
         },
         // Translate on drag events
