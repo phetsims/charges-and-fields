@@ -347,7 +347,7 @@ define( function( require ) {
       // TODO: get rid of magic numbers
       // The grid is centered at the origin;
       var maxX = WIDTH / 2 * (30 / 25);
-      var maxY = HEIGHT / 2 * (5);
+      var maxY = HEIGHT / 2;
       var minY = -HEIGHT / 2;
 
       var spacingOffset; // {number}  Measure of the smallest x-coordinate of all sensors (excluding the one at the origin, if present)
@@ -408,14 +408,14 @@ define( function( require ) {
           gridArray.push(
             new StaticSensorElement( positiveYAxisPosition )
           );
+        }
+        for ( y = -options.spacing; y > minY; y -= options.spacing ) {
+          var negativeYAxisPosition = new Vector2( 0, y );
 
-          for ( y = -options.spacing; y > minY; y -= options.spacing ) {
-            var negativeYAxisPosition = new Vector2( 0, y );
+          gridArray.push(
+            new StaticSensorElement( negativeYAxisPosition )
+          );
 
-            gridArray.push(
-              new StaticSensorElement( negativeYAxisPosition )
-            );
-          }
         }
 
       }
