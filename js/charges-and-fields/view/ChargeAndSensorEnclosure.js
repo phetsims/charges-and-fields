@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Panel with Check Boxes that control the electrical Properties of the Sim
+ * Scenery Node that contains an enclosure for a positive, a negative electric charge and an electric sensor
  *
  * @author Martin Veillette (Berea College)
  */
@@ -29,7 +29,7 @@ define( function( require ) {
   var FONT = ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT;
 
   /**
-   * Enclosure that contains the charges and sensors
+   * Enclosure that contains the charges and sensor
    *
    * @param {Function} addUserCreatedModelElementToObservableArray
    * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
@@ -51,7 +51,6 @@ define( function( require ) {
 
     // Create the background enclosure
     var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, { lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH } );
-
 
     // TODO: find a layout scheme that will not be broken by translation
     // Convenience variable to position the charges and sensor
@@ -100,7 +99,6 @@ define( function( require ) {
     var positiveChargeText = new Text( plusOneNanoCoulombString, { font: FONT, centerX: positiveChargeCenterX, centerY: textCenterY } );
     var negativeChargeText = new Text( minusOneNanoCoulombString, { font: FONT, centerX: negativeChargeCenterX, centerY: textCenterY } );
     var electricFieldSensorText = new Text( sensorsString, { font: FONT, centerX: electricFieldSensorCenterX, centerY: textCenterY } );
-
 
     // Add the nodes
     this.addChild( rectangle );
