@@ -49,9 +49,6 @@ define( function( require ) {
    * @constructor
    */
   function ChargeAndSensorEnclosure( addUserCreatedModelElementToObservableArray,
-                                     positiveChargedParticleRepresentation,
-                                     negativeChargedParticleRepresentation,
-                                     electricFieldSensorRepresentation,
                                      chargedParticles,
                                      electricFieldSensors,
                                      bounds,
@@ -80,7 +77,6 @@ define( function( require ) {
       var positiveCharge = new UserCreatorNode(
         addUserCreatedModelElementToObservableArray,
         chargedParticles,
-        positiveChargedParticleRepresentation,
         modelViewTransform,
         {
           element: 'positive',
@@ -91,7 +87,6 @@ define( function( require ) {
       var negativeCharge = new UserCreatorNode(
         addUserCreatedModelElementToObservableArray,
         chargedParticles,
-        negativeChargedParticleRepresentation,
         modelViewTransform,
         {
           element: 'negative',
@@ -102,7 +97,6 @@ define( function( require ) {
       var electricFieldSensor = new UserCreatorNode(
         addUserCreatedModelElementToObservableArray,
         electricFieldSensors,
-        electricFieldSensorRepresentation,
         modelViewTransform,
         {
           element: 'electricFieldSensor',

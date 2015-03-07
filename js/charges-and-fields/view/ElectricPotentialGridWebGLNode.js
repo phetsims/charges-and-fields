@@ -13,6 +13,7 @@ define( function( require ) {
     var DOM = require( 'SCENERY/nodes/DOM' );
     var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
     var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+    //var DerivedProperty = require('AXON/DerivedProperty');
     var inherit = require( 'PHET_CORE/inherit' );
     //var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
     var Util = require( 'SCENERY/util/Util' );
@@ -26,10 +27,11 @@ define( function( require ) {
      * @param {Function} update -       model.on.bind(model),
      * @param {Bounds2} bounds
      * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialGridWebGLNode( electricPotentialSensorGrid, update, bounds, modelViewTransform, isVisibleProperty ) {
+    function ElectricPotentialGridWebGLNode( electricPotentialSensorGrid, update, bounds, modelViewTransform, isChargedParticlePresentProperty, isVisibleProperty ) {
 
       // prepare the canvas
       this.canvas = document.createElement( 'canvas' );

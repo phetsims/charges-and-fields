@@ -9,9 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+
+  // constants
+  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of a charged particle
 
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
@@ -49,12 +53,22 @@ define( function( require ) {
         allowTouchSnag: true,
         start: function( event, trail ) {
           chargedParticle.userControlled = true;
+          var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
+          // move this node upward so that the cursor touches the bottom of the chargedParticle
+          chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -CIRCLE_RADIUS ) );
         },
-        // Translate on drag events
+        //Translate on drag events
         translate: function( args ) {
           chargedParticle.position = modelViewTransform.viewToModelPosition( args.position );
 
         },
+
+        //// Translate on drag events
+        //drag: function( event, trail ) {
+        //  var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
+        //  chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY(0,-15) );
+        //},
+
         end: function( event, trail ) {
           chargedParticle.userControlled = false;
         }

@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  //var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -37,8 +38,9 @@ define( function( require ) {
     // For performance reasons these two following visibility properties are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
     PropertySet.call( thisModel, {
-      isElectricFieldGridVisible: false, // control the visibility of a grid of arrows representing the local electric field
-      isElectricPotentialGridVisible: false // control the visibility of the electric potential field, a.k.a. rectangular grid
+      isElectricFieldGridVisible: true, // control the visibility of a grid of arrows representing the local electric field
+      isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
+      isChargedParticlePresent: false // is there at least one charged particle on the board 
     } );
 
     //----------------------------------------------------------------------------------------
@@ -91,6 +93,7 @@ define( function( require ) {
     //
     //----------------------------------------------------------------------------------------
 
+
     //------------------------
     // Position Listener on the electric potential Sensor
     //------------------------
@@ -130,10 +133,13 @@ define( function( require ) {
     // if any charges move, we need to update all the sensors
     this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
 
+
+      thisModel.checkAtLeastOneChargedParticleOnBoard();
+
       // send a trigger signal (go back to origin) if the charge particle is over the enclosure
       chargedParticle.userControlledProperty.link( function( userControlled ) {
         if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
-          chargedParticle.animating = true;
+          chargedParticle.animate();
         }
       } );
 
@@ -195,6 +201,8 @@ define( function( require ) {
       thisModel.clearElectricFieldLines();
       // Update all the visible sensors
       thisModel.updateAllVisibleSensors();
+      // is there at least one charge on the board ?
+      thisModel.checkAtLeastOneChargedParticleOnBoard();
     } );
 
     //------------------------
@@ -209,7 +217,7 @@ define( function( require ) {
       // send a trigger signal (go back to origin) if the electric field sensor is over the enclosure
       electricFieldSensor.userControlledProperty.link( function( userControlled ) {
         if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
-          electricFieldSensor.animating = true;
+          electricFieldSensor.animate();
         }
       } );
     } );
@@ -228,17 +236,13 @@ define( function( require ) {
       PropertySet.prototype.reset.call( this ); // reset the visibility of the check boxes
     },
 
+
     /**
-     * @public
-     * @param {number} dt
+     * Function that determines if there are charges on the board
+     * @private
      */
-    step: function( dt ) {
-      this.chargedParticles.forEach( function( chargedParticle ) {
-        chargedParticle.step( dt );
-      } );
-      this.electricFieldSensors.forEach( function( electricFieldSensor ) {
-        electricFieldSensor.step( dt );
-      } );
+    checkAtLeastOneChargedParticleOnBoard: function() {
+      this.isChargedParticlePresent = (this.chargedParticles.length > 0);
     },
 
     /**
@@ -326,8 +330,9 @@ define( function( require ) {
     },
 
     /**
-     * Function  that returns an array of equally spaced sensors on a two dimensional grid (a.k.a lattice)
-     * The position of the sensors is determined the options parameter, and is bounded by the bounds of the model.
+     * Function  that returns an array of equally spaced sensors on a two dimensional grid
+     * The position of the sensors is determined the options parameter
+     * @private
      * @param {Object} [options]
      * @returns {Array.<StaticSensorElement>}
      */
@@ -339,18 +344,11 @@ define( function( require ) {
 
       var gridArray = [];
 
-
-      /*
-       The lattice points are given by (n and m are integers)
-       \vec{R}_{n,m} = (options.spacing) \left( n \hat{e}_x + m \hat{e}_x \right) + options.onOrigin*\vec{Offset}
-       where  \vec{Offset}= (options.spacing) \left( \hat{e}_x + \hat{e}_x \right)/2
-
-       The lattices vectors are constrained to be with the bounds x=[-WIDTH/2, WIDTH/2] and y=[-HEIGHT/2, HEIGHT/2]
-       */
-
+      // TODO: get rid of magic numbers
       // The grid is centered at the origin;
-      var maxX = WIDTH / 2;
+      var maxX = WIDTH / 2 * (30 / 25);
       var maxY = HEIGHT / 2;
+      var minY = -HEIGHT / 2;
 
       var spacingOffset; // {number}  Measure of the smallest x-coordinate of all sensors (excluding the one at the origin, if present)
 
@@ -370,12 +368,18 @@ define( function( require ) {
         for ( y = spacingOffset; y < maxY; y += options.spacing ) {
           var quadrant1Position = new Vector2( x, y );
           var quadrant2Position = new Vector2( -x, y );
-          var quadrant3Position = new Vector2( -x, -y );
-          var quadrant4Position = new Vector2( x, -y );
 
           gridArray.push(
             new StaticSensorElement( quadrant1Position ),
-            new StaticSensorElement( quadrant2Position ),
+            new StaticSensorElement( quadrant2Position )
+          );
+        }
+
+        for ( y = -spacingOffset; y > minY; y -= options.spacing ) {
+          var quadrant3Position = new Vector2( -x, y );
+          var quadrant4Position = new Vector2( x, y );
+
+          gridArray.push(
             new StaticSensorElement( quadrant3Position ),
             new StaticSensorElement( quadrant4Position )
           );
@@ -400,12 +404,18 @@ define( function( require ) {
         // push sensors on the Y-axis
         for ( y = options.spacing; y < maxY; y += options.spacing ) {
           var positiveYAxisPosition = new Vector2( 0, y );
-          var negativeYAxisPosition = new Vector2( 0, -y );
 
           gridArray.push(
-            new StaticSensorElement( positiveYAxisPosition ),
+            new StaticSensorElement( positiveYAxisPosition )
+          );
+        }
+        for ( y = -options.spacing; y > minY; y -= options.spacing ) {
+          var negativeYAxisPosition = new Vector2( 0, y );
+
+          gridArray.push(
             new StaticSensorElement( negativeYAxisPosition )
           );
+
         }
 
       }
@@ -571,7 +581,7 @@ define( function( require ) {
      * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
     getEquipotentialPositionArray: function( position ) {
-      if ( this.chargedParticles.length === 0 ) {
+      if ( !this.isChargedParticlePresent ) {
         // if there are no charges, don't bother to find the equipotential line
         return null;
       }
@@ -709,7 +719,7 @@ define( function( require ) {
      * UNUSED
      */
     getElectricFieldPositionArray: function( position ) {
-      if ( this.chargedParticles.length === 0 ) {
+      if ( !this.isChargedParticlePresent ) {
         // if there are no charges, don't bother to find the electric field lines
         return null;
       }
@@ -811,7 +821,7 @@ define( function( require ) {
     addElectricFieldLine: function( position ) {
       // electric field lines don't exist in a vacuum of charges
       var electricFieldLine = {};
-      if ( this.chargedParticles.length > 0 ) {
+      if ( this.isChargedParticlePresent ) {
         electricFieldLine.position = position;
         electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
         this.electricFieldLinesArray.push( electricFieldLine );

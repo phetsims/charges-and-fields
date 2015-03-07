@@ -12,6 +12,7 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var CheckBox = require( 'SUN/CheckBox' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var HStrut = require( 'SUN/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -86,10 +87,6 @@ define( function( require ) {
     directionOnlyGroup.addChild( hStrut );
     directionOnlyGroup.addChild( directionOnlyCheckBox );
 
-    isElectricFieldGridVisibleProperty.link( function( enabled ) {
-      directionOnlyCheckBox.enabled = enabled;
-      directionOnlyText.fill = enabled ? ChargesAndFieldsColors.controlPanelText : ChargesAndFieldsColors.controlPanelTextDisabled;
-    } );
 
     var checkBoxGroup = new VBox( {
       spacing: 12, children: [
@@ -105,27 +102,17 @@ define( function( require ) {
 
     Panel.call( this, checkBoxGroup, panelOptions );
 
-    ChargesAndFieldsColors.link( 'controlPanelFill', function( color ) {
+    ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
       controlPanel.background.fill = color;
     } );
 
-    ChargesAndFieldsColors.link( 'controlPanelBorder', function( color ) {
+    ChargesAndFieldsColors.controlPanelBorderProperty.link( function( color ) {
       controlPanel.stroke = color;
     } );
 
-    //ChargesAndFieldsColors.link( 'controlPanelTextDisabled', function( color ) {
-    //  electricFieldText.fillDisabled = color;
-    //  directionOnlyText.fillDisable = color;
-    //  voltageText.fillDisabled = color;
-    //  valuesText.fillDisabled = color;
-    //  gridText.fillDisable = color;
-    //  tapeMeasureText.fillDisabled = color;
-    //} );
-
-    ChargesAndFieldsColors.link( 'controlPanelText', function( color ) {
+    // update the text fill of all the check boxes except directionOnlyCheckBox
+    ChargesAndFieldsColors.controlPanelTextProperty.link( function( color ) {
       electricFieldText.fill = color;
-      // TODO another hack
-      directionOnlyText.fill = isElectricFieldGridVisibleProperty.value ? color : ChargesAndFieldsColors.controlPanelTextDisabled;
       voltageText.fill = color;
       equipotentialSensorText.fill = color;
       valuesText.fill = color;
@@ -133,35 +120,67 @@ define( function( require ) {
       tapeMeasureText.fill = color;
     } );
 
-    ChargesAndFieldsColors.link( 'checkBox', function( color ) {
-      electricFieldCheckBox.checkBoxColor = color;
-      directionOnlyCheckBox.checkBoxColor = color;
-      voltageCheckBox.checkBoxColor = color;
-      equipotentialSensorCheckBox.checkBoxColor = color;
-      valuesCheckBox.checkBoxColor = color;
-      gridCheckBox.checkBoxColor = color;
-      tapeMeasureCheckBox.checkBoxColor = color;
+    // create a derived property to be used for the content of directionOnlyCheckBox
+    var directionOnlyTextFillProperty = new DerivedProperty( [
+        isElectricFieldGridVisibleProperty,
+        ChargesAndFieldsColors.controlPanelTextProperty,
+        ChargesAndFieldsColors.controlPanelTextDisabledProperty ],
+      function( isElectricFieldGridVisible, controlPanelText, controlPanelDisabledText ) {
+        if ( isElectricFieldGridVisible ) {
+          return controlPanelText;
+        }
+        else {
+          return controlPanelDisabledText;
+        }
+      } );
+
+    // update the text fill of the directionOnlyCheckBox checkBox
+    directionOnlyTextFillProperty.link( function( directionOnlyTextFill ) {
+      directionOnlyText.fill = directionOnlyTextFill;
     } );
 
-    ChargesAndFieldsColors.link( 'checkBoxDisabled', function( color ) {
-      electricFieldCheckBox.checkBoxColorDisabled = color;
-      directionOnlyCheckBox.checkBoxColorDisabled = color;
-      voltageCheckBox.checkBoxColorDisabled = color;
-      equipotentialSensorCheckBox.checkBoxColorDisabled = color;
-      valuesCheckBox.checkBoxColorDisabled = color;
-      gridCheckBox.checkBoxColorDisabled = color;
-      tapeMeasureCheckBox.checkBoxColorDisabled = color;
+    isElectricFieldGridVisibleProperty.link( function( enabled ) {
+      directionOnlyCheckBox.enabled = enabled;
     } );
 
-    ChargesAndFieldsColors.link( 'checkBoxBackground', function( color ) {
-      electricFieldCheckBox.checkBoxColorBackground = color;
-      directionOnlyCheckBox.checkBoxColorBackground = color;
-      voltageCheckBox.checkBoxColorBackground = color;
-      equipotentialSensorCheckBox.checkBoxColorBackground = color;
-      valuesCheckBox.checkBoxColorBackground = color;
-      gridCheckBox.checkBoxColorBackground = color;
-      tapeMeasureCheckBox.checkBoxColorBackground = color;
+    // convenience variable, includes all the checkBoxes
+    var checkBoxArray = [
+      electricFieldCheckBox,
+      directionOnlyCheckBox,
+      voltageCheckBox,
+      equipotentialSensorCheckBox,
+      valuesCheckBox,
+      gridCheckBox,
+      tapeMeasureCheckBox
+    ];
+
+    ChargesAndFieldsColors.checkBoxProperty.link( function( color ) {
+      checkBoxArray.forEach( function( checkBox ) {
+        checkBox.checkBoxColor = color;
+      } );
     } );
+
+    ChargesAndFieldsColors.checkBoxDisabledProperty.link( function( color ) {
+      checkBoxArray.forEach( function( checkBox ) {
+        checkBox.checkBoxColorDisabled = color;
+      } );
+    } );
+
+    ChargesAndFieldsColors.checkBoxBackgroundProperty.link( function( color ) {
+      checkBoxArray.forEach( function( checkBox ) {
+        checkBox.checkBoxColorBackground = color;
+      } );
+    } );
+
+
+    // this will only work on change of profile, not for the initialization...
+    //ChargesAndFieldsColors.on( 'profileChanged', function() {
+    //  checkBoxArray.forEach( function( checkBox ) {
+    //    checkBox.checkBoxColor = ChargesAndFieldsColors.checkBox;
+    //    checkBox.checkBoxColorBackground = ChargesAndFieldsColors.checkBoxBackground;
+    //    checkBox.checkBoxColorDisabled = ChargesAndFieldsColors.checkBoxDisabled;
+    //  } )
+    //} );
 
   }
 

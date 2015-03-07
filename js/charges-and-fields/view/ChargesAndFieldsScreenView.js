@@ -14,10 +14,8 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
-  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var ControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ControlPanel' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
-  var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
   var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
@@ -31,10 +29,13 @@ define( function( require ) {
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
+  //var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var Rectangle = require( 'DOT/Rectangle' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  //var Shape = require( 'KITE/Shape' );
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -57,6 +58,7 @@ define( function( require ) {
    */
   function ChargesAndFieldsScreenView( model ) {
 
+    //var screenView = this;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
     // The origin of the model is sets in the middle of the scree. There are 5 meters across the height of the sim.
@@ -65,8 +67,12 @@ define( function( require ) {
       new Vector2( this.layoutBounds.width / 2, this.layoutBounds.height / 2 ),
       this.layoutBounds.height / ChargesAndFieldsConstants.HEIGHT );
 
+    this.modelViewTransform = modelViewTransform;
+
     // Create many properties for checkboxes and Measuring Tape
     var viewProperty = new PropertySet( {
+      availableModelBounds: model.bounds, //
+      availableViewBounds: modelViewTransform.modelToViewBounds( model.bounds ), //
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the equipotential sensor
@@ -74,6 +80,13 @@ define( function( require ) {
       isTapeMeasureVisible: false, // control the visibility of the measuring tape
       tapeMeasureUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
       tapeMeasureBasePosition: new Vector2( 100, 100 )
+    } );
+
+    this.availableViewBoundsProperty = viewProperty.availableViewBoundsProperty;
+    this.availableModelBoundsProperty = viewProperty.availableModelBoundsProperty;
+    viewProperty.availableViewBoundsProperty.lazyLink( function( availableModelBounds ) {
+      // Compute the visible model bounds
+      viewProperty.availableModelBounds = modelViewTransform.viewToModelBounds( viewProperty.availableViewBounds );
     } );
 
     // Check to see if WebGL was prevented by a query parameter
@@ -91,6 +104,7 @@ define( function( require ) {
         this.getElectricPotentialColor.bind( this ),
         this.layoutBounds,
         modelViewTransform,
+        model.isChargedParticlePresentProperty,
         model.isElectricPotentialGridVisibleProperty
       );
     }
@@ -101,6 +115,7 @@ define( function( require ) {
         this.getElectricPotentialColor.bind( this ),
         this.layoutBounds,
         modelViewTransform,
+        model.isChargedParticlePresentProperty,
         model.isElectricPotentialGridVisibleProperty
       );
     }
@@ -111,6 +126,7 @@ define( function( require ) {
       model.on.bind( model ),
       this.getElectricFieldMagnitudeColor.bind( this ),
       modelViewTransform,
+      model.isChargedParticlePresentProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricFieldGridVisibleProperty );
 
@@ -118,12 +134,14 @@ define( function( require ) {
     var equipotentialLineNode = new EquipotentialLineNode(
       model.equipotentialLinesArray,
       modelViewTransform,
+      model.isChargedParticlePresentProperty,
       viewProperty.isValuesVisibleProperty );
 
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLineNode = new ElectricFieldLineNode(
       model.electricFieldLinesArray,
-      modelViewTransform );
+      modelViewTransform,
+      model.isChargedParticlePresentProperty );
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
@@ -174,16 +192,10 @@ define( function( require ) {
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
     var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
-    // Create the charge and sensor enclosure (including the charges and sensors)
-    var positiveChargedParticleRepresentation = new ChargedParticleRepresentation( 1 );
-    var negativeChargedParticleRepresentation = new ChargedParticleRepresentation( -1 );
-    var electricFieldSensorRepresentation = new ElectricFieldSensorRepresentation();
+    // Create the charge and sensor enclosure
 
     var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(
       model.addUserCreatedModelElementToObservableArray.bind( model ),
-      positiveChargedParticleRepresentation,
-      negativeChargedParticleRepresentation,
-      electricFieldSensorRepresentation,
       model.chargedParticles,
       model.electricFieldSensors,
       model.chargeAndSensorEnclosureBounds,
@@ -361,6 +373,42 @@ define( function( require ) {
       var g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
       var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
       return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
+    },
+    // Layout the EnergySkateParkBasicsScreenView,
+
+    /**
+     * Function responsible for the layout of the ScreenView.
+     * It overrides the layout strategy in ScreenView.js
+     * It scales the scene graph up and down with
+     * the size of the screen to ensure a minimally visible area,
+     * but keeping it centered at the bottom of the screen.
+     * @public
+     * @param {number} width
+     * @param {number} height
+     */
+    layout: function( width, height ) {
+
+      this.resetTransform();
+
+      var scale = this.getLayoutScale( width, height ); // {number}
+      this.setScaleMagnitude( scale );
+
+      var offsetX = 0;
+      var offsetY = 0;
+
+      // Move to bottom vertically
+      if ( scale === width / this.layoutBounds.width ) {
+        offsetY = (height / scale - this.layoutBounds.height);
+      }
+
+      // center horizontally
+      else if ( scale === height / this.layoutBounds.height ) {
+        offsetX = (width / scale - this.layoutBounds.width ) / 2;
+      }
+      this.translate( offsetX, offsetY );
+
+      this.availableViewBounds = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
     }
+
   } );
 } );
