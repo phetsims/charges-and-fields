@@ -142,7 +142,7 @@ define( function( require ) {
           electricFieldSensor.userControlled = true;
           var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
           // move this node upward so that the cursor is below the sensor
-          electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -10 ) );
+          electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
 
           //if ( ChargesAndFieldsGlobals.electricFieldLines ) {
           //  // Add an electricFieldLine on a double click event

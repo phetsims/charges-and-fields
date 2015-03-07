@@ -14,10 +14,8 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
-  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var ControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ControlPanel' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
-  var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
   var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
@@ -194,16 +192,10 @@ define( function( require ) {
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
     var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
-    // Create the charge and sensor enclosure (including the charges and sensors)
-    var positiveChargedParticleRepresentation = new ChargedParticleRepresentation( 1 );
-    var negativeChargedParticleRepresentation = new ChargedParticleRepresentation( -1 );
-    var electricFieldSensorRepresentation = new ElectricFieldSensorRepresentation();
+    // Create the charge and sensor enclosure
 
     var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(
       model.addUserCreatedModelElementToObservableArray.bind( model ),
-      positiveChargedParticleRepresentation,
-      negativeChargedParticleRepresentation,
-      electricFieldSensorRepresentation,
       model.chargedParticles,
       model.electricFieldSensors,
       model.chargeAndSensorEnclosureBounds,

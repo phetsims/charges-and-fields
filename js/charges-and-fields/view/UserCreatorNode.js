@@ -23,12 +23,11 @@ define( function( require ) {
    *
    * @param {Function} addModelElementToObservableArray - A function that add a modelElement to an Observable Array in the model
    * @param {ObservableArray} observableArray
-   * @param {Node} representation - the visual representation of the Model Element in the scene graph
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options]
    * @constructor
    */
-  function UserCreatorNode( addModelElementToObservableArray, observableArray, representation, modelViewTransform, options ) {
+  function UserCreatorNode( addModelElementToObservableArray, observableArray, modelViewTransform, options ) {
 
     // Call the super constructor
     Node.call( this, {
