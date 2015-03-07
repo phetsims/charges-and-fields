@@ -13,6 +13,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  //var Panel = require ('SUN/Panel');
   var Text = require( 'SCENERY/nodes/Text' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var UserCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/UserCreatorNode' );
@@ -44,16 +45,16 @@ define( function( require ) {
                                      modelViewTransform ) {
 
     Node.call( this );
-    var enclosureGroup = this;
 
     // bounds of the enclosure
     var viewBounds = modelViewTransform.modelToViewBounds( bounds );
 
+    // Create the background enclosure
     var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, { lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH } );
-    this.addChild( rectangle );
+
 
     // TODO: find a layout scheme that will not be broken by translation
-
+    // Convenience variable to position the charges and sensor
     var positiveChargeCenterX = viewBounds.centerX - viewBounds.width / 3;
     var positiveChargeCenterY = viewBounds.centerY - viewBounds.height / 5;
     var negativeChargeCenterX = viewBounds.centerX;
@@ -61,52 +62,57 @@ define( function( require ) {
     var electricFieldSensorCenterX = viewBounds.centerX + viewBounds.width / 3;
     var electricFieldSensorCenterY = positiveChargeCenterY;
 
-    // Add the dataPoint creator nodes.
+    // Create the charges and sensor
+    var positiveCharge = new UserCreatorNode(
+      addUserCreatedModelElementToObservableArray,
+      chargedParticles,
+      modelViewTransform,
+      {
+        element: 'positive',
+        centerX: positiveChargeCenterX,
+        centerY: positiveChargeCenterY
+      } );
 
-      var positiveCharge = new UserCreatorNode(
-        addUserCreatedModelElementToObservableArray,
-        chargedParticles,
-        modelViewTransform,
-        {
-          element: 'positive',
-          centerX: positiveChargeCenterX,
-          centerY: positiveChargeCenterY
-        } );
+    var negativeCharge = new UserCreatorNode(
+      addUserCreatedModelElementToObservableArray,
+      chargedParticles,
+      modelViewTransform,
+      {
+        element: 'negative',
+        centerX: negativeChargeCenterX,
+        centerY: negativeChargeCenterY
+      } );
 
-      var negativeCharge = new UserCreatorNode(
-        addUserCreatedModelElementToObservableArray,
-        chargedParticles,
-        modelViewTransform,
-        {
-          element: 'negative',
-          centerX: negativeChargeCenterX,
-          centerY: negativeChargeCenterY
-        } );
+    var electricFieldSensor = new UserCreatorNode(
+      addUserCreatedModelElementToObservableArray,
+      electricFieldSensors,
+      modelViewTransform,
+      {
+        element: 'electricFieldSensor',
+        centerX: electricFieldSensorCenterX,
+        centerY: electricFieldSensorCenterY
+      } );
 
-      var electricFieldSensor = new UserCreatorNode(
-        addUserCreatedModelElementToObservableArray,
-        electricFieldSensors,
-        modelViewTransform,
-        {
-          element: 'electricFieldSensor',
-          centerX: electricFieldSensorCenterX,
-          centerY: electricFieldSensorCenterY
-        } );
-
-      enclosureGroup.addChild( positiveCharge );
-      enclosureGroup.addChild( negativeCharge );
-      enclosureGroup.addChild( electricFieldSensor );
-
-
+    // vertical Position for the text label
     var textCenterY = viewBounds.centerY + viewBounds.height / 4;
 
+    // Create the three text labels
     var positiveChargeText = new Text( plusOneNanoCoulombString, { font: FONT, centerX: positiveChargeCenterX, centerY: textCenterY } );
     var negativeChargeText = new Text( minusOneNanoCoulombString, { font: FONT, centerX: negativeChargeCenterX, centerY: textCenterY } );
     var electricFieldSensorText = new Text( sensorsString, { font: FONT, centerX: electricFieldSensorCenterX, centerY: textCenterY } );
 
-    enclosureGroup.addChild( positiveChargeText );
-    enclosureGroup.addChild( negativeChargeText );
-    enclosureGroup.addChild( electricFieldSensorText );
+
+    // Add the nodes
+    this.addChild( rectangle );
+    this.addChild( positiveCharge );
+    this.addChild( negativeCharge );
+    this.addChild( electricFieldSensor );
+    this.addChild( positiveChargeText );
+    this.addChild( negativeChargeText );
+    this.addChild( electricFieldSensorText );
+
+    // update the colors on change of color scheme (projector vs default)
+    // no need to unlink since the chargeEnclosure is present for the lifetime of the simulation
 
     ChargesAndFieldsColors.link( 'enclosureText', function( color ) {
       positiveChargeText.fill = color;
