@@ -68,6 +68,7 @@ define( function( require ) {
 
         parentScreen: null, // needed for coordinate transforms
         modelElement: null,
+        destinationPosition: null, // {Vector2}
 
         // Allow moving a finger (touch) across this node to interact with it
         allowTouchSnag: true,
@@ -85,8 +86,13 @@ define( function( require ) {
               break;
           }
 
+          this.destinationPosition = modelViewTransform.viewToModelPosition( self.globalToParentPoint( event.pointer.point ) );
+
+
           var globalPoint = movingObject.globalToParentPoint( event.pointer.point );
           // move this node upward so that the cursor touches the bottom of the particle
+
+
           movingObject.translation = globalPoint.plusXY( 0, -20 );
 
         },
@@ -130,6 +136,8 @@ define( function( require ) {
               assert && assert( false, 'fail switch options' );
               break;
           }
+
+          this.modelElement.destinationPosition = this.destinationPosition;
           this.modelElement.userControlled = true;
           addModelElementToObservableArray( this.modelElement, observableArray );
 

@@ -35,6 +35,8 @@ define( function( require ) {
     // @public read-only
     // Flag that indicates whether this element is animating from one location to another, should not be set externally.
     this.animating = false;
+
+    this.destinationPosition = null; // {Vector2} the final destination when animated
   }
 
   return inherit( PropertySet, ModelElement, {
@@ -53,13 +55,13 @@ define( function( require ) {
         y: this.position.y
       };
 
-      var distanceToDestination = this.position.distance( this.positionProperty.initialValue );
+      var distanceToDestination = this.position.distance( this.destinationPosition );
       var animationTime = (distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY) * 1000; // in milliseconds
 
       var animationTween = new TWEEN.Tween( position ).
         to( {
-          x: this.positionProperty.initialValue.x,
-          y: this.positionProperty.initialValue.y
+          x: this.destinationPosition.x,
+          y: this.destinationPosition.y
         }, animationTime ).
         easing( TWEEN.Easing.Cubic.InOut ).
         onUpdate( function() {
