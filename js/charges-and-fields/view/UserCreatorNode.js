@@ -92,7 +92,24 @@ define( function( require ) {
           // move this node upward so that the cursor touches the bottom of the particle
 
 
-          movingObject.translation = globalPoint.plusXY( 0, -20 );
+          var position = {
+            x: globalPoint.x,
+            y: globalPoint.y
+          };
+
+          var animationTween = new TWEEN.Tween( position ).
+            to( {
+              x: globalPoint.plusXY( 0, -20 ).x,
+              y: globalPoint.plusXY( 0, -20 ).y
+            }, 100 ).
+            easing( TWEEN.Easing.Cubic.InOut ).
+            onUpdate( function() {
+              movingObject.translation = { x: position.x, y: position.y };
+            } );
+
+          animationTween.start();
+
+          //movingObject.translation = globalPoint.plusXY( 0, -20 );
 
         },
 
