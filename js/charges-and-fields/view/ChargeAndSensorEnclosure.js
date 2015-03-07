@@ -26,22 +26,11 @@ define( function( require ) {
   // constants
   //var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
   var FONT = ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT;
-  var DATA_POINT_CREATOR_OFFSET_POSITIONS = [
-    // Offsets used for initial position of point . Empirically determined.
-    //new Vector2( (0.8) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS ),
-    //new Vector2( (0.8) * CIRCLE_RADIUS, (-0.7) * CIRCLE_RADIUS ),
-    //new Vector2( (-0.9) * CIRCLE_RADIUS, (0.8) * CIRCLE_RADIUS ),
-    //new Vector2( (-0.6) * CIRCLE_RADIUS, (-0.75) * CIRCLE_RADIUS )
-    new Vector2( 0, 0 )
-  ];
 
   /**
    * Enclosure that contains the charges and sensors
    *
    * @param {Function} addUserCreatedModelElementToObservableArray
-   * @param {Node} positiveChargedParticleRepresentation - visual representation of a positive charge
-   * @param {Node} negativeChargedParticleRepresentation - visual representation of a negative charge
-   * @param {Node} electricFieldSensorRepresentation -visual representation of an electric field sensor (doesn't include an arrow or text labels)
    * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
    * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field sensors
    * @param {Bounds2} bounds - model bounds of the outer enclosure
@@ -73,15 +62,15 @@ define( function( require ) {
     var electricFieldSensorCenterY = positiveChargeCenterY;
 
     // Add the dataPoint creator nodes.
-    DATA_POINT_CREATOR_OFFSET_POSITIONS.forEach( function( offset ) {
+
       var positiveCharge = new UserCreatorNode(
         addUserCreatedModelElementToObservableArray,
         chargedParticles,
         modelViewTransform,
         {
           element: 'positive',
-          centerX: positiveChargeCenterX + offset.x,
-          centerY: positiveChargeCenterY + offset.y
+          centerX: positiveChargeCenterX,
+          centerY: positiveChargeCenterY
         } );
 
       var negativeCharge = new UserCreatorNode(
@@ -90,8 +79,8 @@ define( function( require ) {
         modelViewTransform,
         {
           element: 'negative',
-          centerX: negativeChargeCenterX + offset.x,
-          centerY: negativeChargeCenterY + offset.y
+          centerX: negativeChargeCenterX,
+          centerY: negativeChargeCenterY
         } );
 
       var electricFieldSensor = new UserCreatorNode(
@@ -100,14 +89,14 @@ define( function( require ) {
         modelViewTransform,
         {
           element: 'electricFieldSensor',
-          centerX: electricFieldSensorCenterX + offset.x,
-          centerY: electricFieldSensorCenterY + offset.y
+          centerX: electricFieldSensorCenterX,
+          centerY: electricFieldSensorCenterY
         } );
 
       enclosureGroup.addChild( positiveCharge );
       enclosureGroup.addChild( negativeCharge );
       enclosureGroup.addChild( electricFieldSensor );
-    } );
+
 
     var textCenterY = viewBounds.centerY + viewBounds.height / 4;
 
