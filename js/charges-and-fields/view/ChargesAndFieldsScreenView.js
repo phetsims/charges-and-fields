@@ -205,7 +205,10 @@ define( function( require ) {
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
       // Create and add the view representation for this chargedParticle.
-      var chargedParticleNode = new ChargedParticleNode( addedChargedParticle, modelViewTransform );
+      var chargedParticleNode = new ChargedParticleNode(
+        addedChargedParticle,
+        modelViewTransform,
+        viewProperty.availableModelBounds );
       draggableElementsLayer.addChild( chargedParticleNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -225,6 +228,7 @@ define( function( require ) {
         addedElectricFieldSensor,
         model.addElectricFieldLine.bind( model ),
         modelViewTransform,
+        viewProperty.availableModelBounds,
         viewProperty.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 

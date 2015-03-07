@@ -15,7 +15,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -33,10 +33,15 @@ define( function( require ) {
    * @param {SensorElement} electricFieldSensor
    * @param {Function} addElectricFieldLine - function that add an electricFieldLine to the model
    * @param {ModelViewTransform2} modelViewTransform
+   * @param {Bounds2} availableModelBounds - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
-  function ElectricFieldSensorNode( electricFieldSensor, addElectricFieldLine, modelViewTransform, isValuesVisibleProperty ) {
+  function ElectricFieldSensorNode( electricFieldSensor,
+                                    addElectricFieldLine,
+                                    modelViewTransform,
+                                    availableModelBounds,
+                                    isValuesVisibleProperty ) {
 
     ElectricFieldSensorRepresentation.call( this );
 
@@ -132,38 +137,23 @@ define( function( require ) {
     electricFieldSensor.positionProperty.link( this.positionListener );
 
     // When dragging, move the electric Field Sensor
-    electricFieldSensorNode.addInputListener( new SimpleDragHandler(
+    electricFieldSensorNode.addInputListener( new MovableDragHandler(
+      electricFieldSensor.positionProperty,
       {
-        // When dragging across it in a touchscreen, pick it up
-        allowTouchSnag: true,
-        //startNewTime: 0,
-        //startOldTime: 0,
-        start: function( event, trail ) {
+        dragBounds: availableModelBounds,
+        modelViewTransform: modelViewTransform,
+        startDrag: function( event ) {
           electricFieldSensor.userControlled = true;
           var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
-          // move this node upward so that the cursor is below the sensor
+          // move this node upward so that the cursor touches the bottom of the chargedParticle
           electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
-
-          //if ( ChargesAndFieldsGlobals.electricFieldLines ) {
-          //  // Add an electricFieldLine on a double click event
-          //  this.startNewTime = new Date().getTime();
-          //  var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
-          //  if ( timeDifference < 200 ) {
-          //    addElectricFieldLine( electricFieldSensor.position );
-          //  }
-          //  this.startOldTime = this.startNewTime;
-          //}
-
         },
-        // Translate on drag events
-        translate: function( args ) {
-          electricFieldSensor.position = modelViewTransform.viewToModelPosition( args.position );
 
-        },
-        end: function( event, trail ) {
+        endDrag: function( event ) {
           electricFieldSensor.userControlled = false;
         }
       } ) );
+
 
   }
 

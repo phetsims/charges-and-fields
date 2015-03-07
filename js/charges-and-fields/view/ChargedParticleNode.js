@@ -12,18 +12,19 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
   // constants
-  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of a charged particle
+  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
    * @param {ChargedParticle} chargedParticle - the model of the charged particle
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
+   * @param {Bounds2} availableModelBounds - dragBounds for the charged particle
    * @constructor
    */
-  function ChargedParticleNode( chargedParticle, modelViewTransform ) {
+  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBounds ) {
 
     var chargedParticleNode = this;
 
@@ -47,29 +48,19 @@ define( function( require ) {
     chargedParticle.positionProperty.link( this.positionListener );
 
     // When dragging, move the charge
-    chargedParticleNode.addInputListener( new SimpleDragHandler(
+    chargedParticleNode.addInputListener( new MovableDragHandler(
+      chargedParticle.positionProperty,
       {
-        // When dragging across it in a mobile device, pick it up
-        allowTouchSnag: true,
-        start: function( event, trail ) {
+        dragBounds: availableModelBounds,
+        modelViewTransform: modelViewTransform,
+        startDrag: function( event ) {
           chargedParticle.userControlled = true;
           var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
           // move this node upward so that the cursor touches the bottom of the chargedParticle
           chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -CIRCLE_RADIUS ) );
         },
-        //Translate on drag events
-        translate: function( args ) {
-          chargedParticle.position = modelViewTransform.viewToModelPosition( args.position );
 
-        },
-
-        //// Translate on drag events
-        //drag: function( event, trail ) {
-        //  var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
-        //  chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY(0,-15) );
-        //},
-
-        end: function( event, trail ) {
+        endDrag: function( event ) {
           chargedParticle.userControlled = false;
         }
       } ) );
