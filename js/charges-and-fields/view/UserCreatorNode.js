@@ -19,7 +19,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  //var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -57,79 +57,6 @@ define( function( require ) {
     var staticObject = new Node();
     this.addChild( staticObject );
     this.addChild( movingObject );
-
-    staticObject.addChild( representationCreatorNode() );
-
-    var movingObjectPositionProperty = new Property(
-      modelViewTransform.viewToModelPosition( staticObject.localToGlobalPoint( staticObject.translation ) ) );
-
-    movingObjectPositionProperty.link( function( movingObjectPosition ) {
-      movingObject.translation = staticObject.parentToLocalPoint( modelViewTransform.modelToViewPosition( movingObjectPosition ) );
-    } );
-
-    // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
-    this.addInputListener( new MovableDragHandler( movingObjectPositionProperty,
-        {
-          modelViewTransform: modelViewTransform,
-          dragBoundsProperty: availableModelBoundsProperty,
-          startDrag: function( event ) {
-
-            movingObject.addChild( representationCreatorNode() );
-
-            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( self.globalToParentPoint( event.pointer.point ) );
-
-            var globalPoint = movingObject.globalToParentPoint( event.pointer.point );
-
-            // move this node upward so that the cursor touches the bottom of the particle
-            var position = {
-              x: globalPoint.x,
-              y: globalPoint.y
-            };
-
-            var animationTween = new TWEEN.Tween( position ).
-              to( {
-                x: globalPoint.plusXY( 0, -20 ).x,
-                y: globalPoint.plusXY( 0, -20 ).y
-              }, 100 ).
-              easing( TWEEN.Easing.Cubic.InOut ).
-              onUpdate( function() {
-                movingObject.translation = { x: position.x, y: position.y };
-              } );
-
-            animationTween.start();
-          },
-
-          endDrag: function( event ) {
-            // Find the parent screen by moving up the scene graph.
-            var testNode = self;
-            var parentScreen;
-            while ( testNode !== null ) {
-              if ( testNode instanceof ScreenView ) {
-                parentScreen = testNode;
-                break;
-              }
-              testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
-            }
-
-            // Determine the initial position of the new element as a function of the event position and this node's bounds.
-            var centerPositionGlobal = movingObject.parentToGlobalPoint( movingObject.center );
-            var initialPositionOffset = centerPositionGlobal.subtract( event.pointer.point );
-            var initialPosition = parentScreen.globalToLocalPoint( initialPositionOffset.add( event.pointer.point ) );
-            // Create and add the new model element.
-
-            var initialModelPosition = modelViewTransform.viewToModelPosition( initialPosition );
-
-            var modelElement = modelElementCreator( initialModelPosition );
-
-            //       modelElement.destinationPosition = movingObject.destinationPosition;
-            movingObject.removeAllChildren();
-            addModelElementToObservableArray( modelElement, observableArray );
-
-            // TODO: this is not very kosher
-            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( staticObject.parentToGlobalPoint( staticObject.translation ) ) );
-          }
-        } )
-    );
 
     /**
      * Function that returns the view Node associated to options.element
@@ -172,6 +99,86 @@ define( function( require ) {
       }
       return modelElement;
     }
+
+
+    staticObject.addChild( representationCreatorNode() );
+
+    var movingObjectPositionProperty = new Property(
+      modelViewTransform.viewToModelPosition( new Vector2( 0, 0 ) ) );
+
+    movingObjectPositionProperty.link( function( movingObjectPosition ) {
+      movingObject.translation = modelViewTransform.modelToViewPosition( movingObjectPosition ).addXY( 0, -20 );
+    } );
+
+    // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
+    this.addInputListener( new MovableDragHandler( movingObjectPositionProperty,
+        {
+          modelViewTransform: modelViewTransform,
+          //dragBoundsProperty: availableModelBoundsProperty,
+          startDrag: function( event ) {
+
+            // add the fake view element (no corresponding model element associated with this view)
+            movingObject.addChild( representationCreatorNode() );
+
+            // determine where we picked up this view element
+            // TODO: it'd be better if we find the center of view element
+            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( self.globalToParentPoint( event.pointer.point ) );
+
+            // we want to have a pop up effect when the view element is picked up
+
+            var currentPosition = movingObject.globalToParentPoint( event.pointer.point );
+
+            // move this node upward so that the cursor touches the bottom of the particle
+            var position = {
+              x: currentPosition.x,
+              y: currentPosition.y
+            };
+
+            var animationTween = new TWEEN.Tween( position ).
+              to( {
+                x: currentPosition.plusXY( 0, -20 ).x,
+                y: currentPosition.plusXY( 0, -20 ).y
+              }, 100 ).
+              easing( TWEEN.Easing.Cubic.InOut ).
+              onUpdate( function() {
+                movingObject.translation = { x: position.x, y: position.y };
+              } );
+
+            animationTween.start();
+          },
+
+          endDrag: function( event ) {
+            // Find the parent screen by moving up the scene graph.
+            var testNode = self;
+            var parentScreen;
+            while ( testNode !== null ) {
+              if ( testNode instanceof ScreenView ) {
+                parentScreen = testNode;
+                break;
+              }
+              testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
+            }
+
+            // Determine the initial position of the new element
+            var centerPositionGlobal = movingObject.parentToGlobalPoint( movingObject.center );
+            var initialPosition = parentScreen.globalToLocalPoint( centerPositionGlobal );
+
+            // Create and add the new model element.
+            var initialModelPosition = modelViewTransform.viewToModelPosition( initialPosition );
+            var modelElement = modelElementCreator( initialModelPosition );
+            // set the destination position of the model based on where it was picked up in the enclosure
+            modelElement.destinationPosition = movingObject.destinationPosition;
+            addModelElementToObservableArray( modelElement, observableArray );
+
+            // remove the fake view element
+            movingObject.removeAllChildren();
+
+            // TODO: this is not very kosher
+            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( new Vector2( 0, 0 ) ) );
+          }
+        } )
+    );
+
 
 // Pass options through to parent.
     this.mutate( options );
