@@ -87,7 +87,6 @@ define( function( require ) {
     this.availableViewBoundsProperty.link( function( availableViewBounds ) {
       // Compute the visible model bounds
       viewProperty.availableModelBounds = modelViewTransform.viewToModelBounds( availableViewBounds );
-      console.log( viewProperty.availableModelBounds );
     } );
 
     // Check to see if WebGL was prevented by a query parameter
@@ -415,7 +414,6 @@ define( function( require ) {
       this.translate( offsetX, offsetY );
 
       this.availableViewBoundsProperty.value = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
-      console.log( 'new Bounds', this.availableViewBoundsProperty.value );
     }
 
   } );
