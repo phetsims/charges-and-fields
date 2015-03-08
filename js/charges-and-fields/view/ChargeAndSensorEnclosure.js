@@ -36,13 +36,15 @@ define( function( require ) {
    * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field sensors
    * @param {Bounds2} bounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds of the charges and sensors in view coordinates
    * @constructor
    */
   function ChargeAndSensorEnclosure( addUserCreatedModelElementToObservableArray,
                                      chargedParticles,
                                      electricFieldSensors,
                                      bounds,
-                                     modelViewTransform ) {
+                                     modelViewTransform,
+                                     availableModelBoundsProperty ) {
 
     Node.call( this );
 
@@ -66,6 +68,7 @@ define( function( require ) {
       addUserCreatedModelElementToObservableArray,
       chargedParticles,
       modelViewTransform,
+      availableModelBoundsProperty,
       {
         element: 'positive',
         centerX: positiveChargeCenterX,
@@ -76,6 +79,7 @@ define( function( require ) {
       addUserCreatedModelElementToObservableArray,
       chargedParticles,
       modelViewTransform,
+      availableModelBoundsProperty,
       {
         element: 'negative',
         centerX: negativeChargeCenterX,
@@ -86,6 +90,7 @@ define( function( require ) {
       addUserCreatedModelElementToObservableArray,
       electricFieldSensors,
       modelViewTransform,
+      availableModelBoundsProperty,
       {
         element: 'electricFieldSensor',
         centerX: electricFieldSensorCenterX,

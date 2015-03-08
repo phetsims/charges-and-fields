@@ -15,7 +15,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -33,14 +33,14 @@ define( function( require ) {
    * @param {SensorElement} electricFieldSensor
    * @param {Function} addElectricFieldLine - function that add an electricFieldLine to the model
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Bounds2} availableModelBounds - dragBounds for the electric field sensor node
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
                                     addElectricFieldLine,
                                     modelViewTransform,
-                                    availableModelBounds,
+                                    availableModelBoundsProperty,
                                     isValuesVisibleProperty ) {
 
     ElectricFieldSensorRepresentation.call( this );
@@ -140,7 +140,7 @@ define( function( require ) {
     electricFieldSensorNode.addInputListener( new MovableDragHandler(
       electricFieldSensor.positionProperty,
       {
-        dragBounds: availableModelBounds,
+        dragBoundsProperty: availableModelBoundsProperty,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
           electricFieldSensor.userControlled = true;

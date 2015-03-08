@@ -12,7 +12,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
@@ -21,10 +21,10 @@ define( function( require ) {
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
    * @param {ChargedParticle} chargedParticle - the model of the charged particle
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
-   * @param {Bounds2} availableModelBounds - dragBounds for the charged particle
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
    * @constructor
    */
-  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBounds ) {
+  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty ) {
 
     var chargedParticleNode = this;
 
@@ -51,7 +51,7 @@ define( function( require ) {
     chargedParticleNode.addInputListener( new MovableDragHandler(
       chargedParticle.positionProperty,
       {
-        dragBounds: availableModelBounds,
+        dragBoundsProperty: availableModelBoundsProperty,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
           chargedParticle.userControlled = true;

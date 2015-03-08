@@ -15,7 +15,7 @@ define( function( require ) {
   var ElectricPotentialSensorPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorPanel' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -37,7 +37,7 @@ define( function( require ) {
    * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
-   * @param {Bounds} availableModelBounds - dragbounds in model coordinates for the electric potential sensor node
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
    * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty - control the visibility of this node
    * @constructor
    */
@@ -46,7 +46,7 @@ define( function( require ) {
                                         clearEquipotentialLines,
                                         addElectricPotentialLine,
                                         modelViewTransform,
-                                        availableModelBounds,
+                                        availableModelBoundsProperty,
                                         isElectricPotentialSensorVisibleProperty ) {
 
     var electricPotentialSensorNode = this;
@@ -140,7 +140,7 @@ define( function( require ) {
 
     // When dragging, move the electric potential sensor
     electricPotentialSensorNode.addInputListener( new MovableDragHandler( electricPotentialSensor.positionProperty, {
-        dragBounds: availableModelBounds,
+        dragBoundsProperty: availableModelBoundsProperty,
         modelViewTransform: modelViewTransform
       }
     ) );

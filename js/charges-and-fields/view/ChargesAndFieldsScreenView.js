@@ -84,9 +84,10 @@ define( function( require ) {
 
     this.availableViewBoundsProperty = viewProperty.availableViewBoundsProperty;
     this.availableModelBoundsProperty = viewProperty.availableModelBoundsProperty;
-    viewProperty.availableViewBoundsProperty.lazyLink( function( availableModelBounds ) {
+    this.availableViewBoundsProperty.link( function( availableViewBounds ) {
       // Compute the visible model bounds
-      viewProperty.availableModelBounds = modelViewTransform.viewToModelBounds( viewProperty.availableViewBounds );
+      viewProperty.availableModelBounds = modelViewTransform.viewToModelBounds( availableViewBounds );
+      console.log( viewProperty.availableModelBounds );
     } );
 
     // Check to see if WebGL was prevented by a query parameter
@@ -150,7 +151,7 @@ define( function( require ) {
       model.clearEquipotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
-      viewProperty.availableModelBounds,
+      viewProperty.availableModelBoundsProperty,
       viewProperty.isElectricPotentialSensorVisibleProperty );
 
     // Create a visual grid with major and minor lines on the view
@@ -200,7 +201,8 @@ define( function( require ) {
       model.chargedParticles,
       model.electricFieldSensors,
       model.chargeAndSensorEnclosureBounds,
-      modelViewTransform );
+      modelViewTransform,
+      viewProperty.availableModelBoundsProperty );
 
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
@@ -208,7 +210,7 @@ define( function( require ) {
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
         modelViewTransform,
-        viewProperty.availableModelBounds );
+        viewProperty.availableModelBoundsProperty );
       draggableElementsLayer.addChild( chargedParticleNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -228,7 +230,7 @@ define( function( require ) {
         addedElectricFieldSensor,
         model.addElectricFieldLine.bind( model ),
         modelViewTransform,
-        viewProperty.availableModelBounds,
+        viewProperty.availableModelBoundsProperty,
         viewProperty.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
@@ -412,7 +414,8 @@ define( function( require ) {
       }
       this.translate( offsetX, offsetY );
 
-      this.availableViewBounds = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
+      this.availableViewBoundsProperty.value = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
+      console.log( 'new Bounds', this.availableViewBoundsProperty.value );
     }
 
   } );

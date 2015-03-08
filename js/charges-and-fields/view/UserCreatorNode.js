@@ -14,20 +14,28 @@ define( function( require ) {
   var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Property = require( 'AXON/Property' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
    * @param {Function} addModelElementToObservableArray - A function that add a modelElement to an Observable Array in the model
    * @param {ObservableArray} observableArray
    * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the moving view element
    * @param {Object} [options]
    * @constructor
    */
-  function UserCreatorNode( addModelElementToObservableArray, observableArray, modelViewTransform, options ) {
+  function UserCreatorNode( addModelElementToObservableArray,
+                            observableArray,
+                            modelViewTransform,
+                            availableModelBoundsProperty,
+                            options ) {
 
     // Call the super constructor
     Node.call( this, {
@@ -50,119 +58,120 @@ define( function( require ) {
     this.addChild( staticObject );
     this.addChild( movingObject );
 
-    switch( options.element ) {
-      case 'positive':
-        staticObject.addChild( new ChargedParticleRepresentation( 1 ) );
-        break;
-      case 'negative':
-        staticObject.addChild( new ChargedParticleRepresentation( -1 ) );
-        break;
-      case 'electricFieldSensor':
-        staticObject.addChild( new ElectricFieldSensorRepresentation() );
-        break;
-    }
+    staticObject.addChild( representationCreatorNode() );
+
+    var movingObjectPositionProperty = new Property(
+      modelViewTransform.viewToModelPosition( staticObject.localToGlobalPoint( staticObject.translation ) ) );
+
+    movingObjectPositionProperty.link( function( movingObjectPosition ) {
+      movingObject.translation = staticObject.parentToLocalPoint( modelViewTransform.modelToViewPosition( movingObjectPosition ) );
+    } );
 
     // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
-    this.addInputListener( new SimpleDragHandler( {
+    this.addInputListener( new MovableDragHandler( movingObjectPositionProperty,
+        {
+          modelViewTransform: modelViewTransform,
+          dragBoundsProperty: availableModelBoundsProperty,
+          startDrag: function( event ) {
 
-        parentScreen: null, // needed for coordinate transforms
-        modelElement: null,
-        destinationPosition: null, // {Vector2}
+            movingObject.addChild( representationCreatorNode() );
 
-        // Allow moving a finger (touch) across this node to interact with it
-        allowTouchSnag: true,
+            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( self.globalToParentPoint( event.pointer.point ) );
 
-        start: function( event, trail ) {
-          switch( options.element ) {
-            case 'positive':
-              movingObject.addChild( new ChargedParticleRepresentation( 1 ) );
-              break;
-            case 'negative':
-              movingObject.addChild( new ChargedParticleRepresentation( -1 ) );
-              break;
-            case 'electricFieldSensor':
-              movingObject.addChild( new ElectricFieldSensorRepresentation() );
-              break;
-          }
+            var globalPoint = movingObject.globalToParentPoint( event.pointer.point );
 
-          this.destinationPosition = modelViewTransform.viewToModelPosition( self.globalToParentPoint( event.pointer.point ) );
+            // move this node upward so that the cursor touches the bottom of the particle
+            var position = {
+              x: globalPoint.x,
+              y: globalPoint.y
+            };
 
+            var animationTween = new TWEEN.Tween( position ).
+              to( {
+                x: globalPoint.plusXY( 0, -20 ).x,
+                y: globalPoint.plusXY( 0, -20 ).y
+              }, 100 ).
+              easing( TWEEN.Easing.Cubic.InOut ).
+              onUpdate( function() {
+                movingObject.translation = { x: position.x, y: position.y };
+              } );
 
-          var globalPoint = movingObject.globalToParentPoint( event.pointer.point );
-          // move this node upward so that the cursor touches the bottom of the particle
+            animationTween.start();
+          },
 
-
-          var position = {
-            x: globalPoint.x,
-            y: globalPoint.y
-          };
-
-          var animationTween = new TWEEN.Tween( position ).
-            to( {
-              x: globalPoint.plusXY( 0, -20 ).x,
-              y: globalPoint.plusXY( 0, -20 ).y
-            }, 100 ).
-            easing( TWEEN.Easing.Cubic.InOut ).
-            onUpdate( function() {
-              movingObject.translation = { x: position.x, y: position.y };
-            } );
-
-          animationTween.start();
-
-          //movingObject.translation = globalPoint.plusXY( 0, -20 );
-
-        },
-
-        drag: function( event, trail ) {
-          movingObject.translation = self.globalToLocalPoint( event.pointer.point ).plusXY( 0, -20 );
-        },
-
-        end: function( event, trail ) {
-          // Find the parent screen by moving up the scene graph.
-          var testNode = self;
-          while ( testNode !== null ) {
-            if ( testNode instanceof ScreenView ) {
-              this.parentScreen = testNode;
-              break;
+          endDrag: function( event ) {
+            // Find the parent screen by moving up the scene graph.
+            var testNode = self;
+            var parentScreen;
+            while ( testNode !== null ) {
+              if ( testNode instanceof ScreenView ) {
+                parentScreen = testNode;
+                break;
+              }
+              testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
             }
-            testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
+
+            // Determine the initial position of the new element as a function of the event position and this node's bounds.
+            var centerPositionGlobal = movingObject.parentToGlobalPoint( movingObject.center );
+            var initialPositionOffset = centerPositionGlobal.subtract( event.pointer.point );
+            var initialPosition = parentScreen.globalToLocalPoint( initialPositionOffset.add( event.pointer.point ) );
+            // Create and add the new model element.
+
+            var initialModelPosition = modelViewTransform.viewToModelPosition( initialPosition );
+
+            var modelElement = modelElementCreator( initialModelPosition );
+
+            //       modelElement.destinationPosition = movingObject.destinationPosition;
+            movingObject.removeAllChildren();
+            addModelElementToObservableArray( modelElement, observableArray );
+
+            // TODO: this is not very kosher
+            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( staticObject.parentToGlobalPoint( staticObject.translation ) ) );
           }
+        } )
+    );
 
-          // Determine the initial position of the new element as a function of the event position and this node's bounds.
-          var centerPositionGlobal = movingObject.parentToGlobalPoint( movingObject.center );
-          var initialPositionOffset = centerPositionGlobal.subtract( event.pointer.point );
-          var initialPosition = this.parentScreen.globalToLocalPoint( initialPositionOffset.add( event.pointer.point ) );
-          // Create and add the new model element.
+    /**
+     * Function that returns the view Node associated to options.element
+     * @returns {Node}
+     */
+    function representationCreatorNode() {
+      var representationNode;
+      switch( options.element ) {
+        case 'positive':
+          representationNode = new ChargedParticleRepresentation( 1 );
+          break;
+        case 'negative':
+          representationNode = new ChargedParticleRepresentation( -1 );
+          break;
+        case 'electricFieldSensor':
+          representationNode = new ElectricFieldSensorRepresentation();
+          break;
+      }
+      return representationNode;
+    }
 
-          movingObject.removeAllChildren();
+    /**
+     * Function that returns the model element associated to options.element
+     * @param {Vector2} initialModelPosition
+     * @returns {ModelElement}
+     */
+    function modelElementCreator( initialModelPosition ) {
+      var modelElement;
 
-          var initialModelPosition = modelViewTransform.viewToModelPosition( initialPosition );
-
-          switch( options.element ) {
-            case 'positive':
-              this.modelElement = new ChargedParticle( initialModelPosition, 1 );
-              break;
-            case 'negative':
-              this.modelElement = new ChargedParticle( initialModelPosition, -1 );
-              break;
-            case 'electricFieldSensor':
-              this.modelElement = new SensorElement( initialModelPosition );
-              break;
-            default:
-              assert && assert( false, 'fail switch options' );
-              break;
-          }
-
-          this.modelElement.destinationPosition = this.destinationPosition;
-          this.modelElement.userControlled = true;
-          addModelElementToObservableArray( this.modelElement, observableArray );
-
-          this.modelElement.userControlled = false;
-          this.modelElement = null;
-        }
-      } )
-    )
-    ;
+      switch( options.element ) {
+        case 'positive':
+          modelElement = new ChargedParticle( initialModelPosition, 1 );
+          break;
+        case 'negative':
+          modelElement = new ChargedParticle( initialModelPosition, -1 );
+          break;
+        case 'electricFieldSensor':
+          modelElement = new SensorElement( initialModelPosition );
+          break;
+      }
+      return modelElement;
+    }
 
 // Pass options through to parent.
     this.mutate( options );
