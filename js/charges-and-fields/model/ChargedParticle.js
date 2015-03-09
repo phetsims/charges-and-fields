@@ -17,7 +17,7 @@ define( function( require ) {
   /**
    *
    * @param {Vector2} position - initial position of the charged particle
-   * @param {Number} charge - (positive=+1 or negative=-1)
+   * @param {number} charge - (positive=+1 or negative=-1)
    * @constructor
    */
   function ChargedParticle( position, charge ) {
