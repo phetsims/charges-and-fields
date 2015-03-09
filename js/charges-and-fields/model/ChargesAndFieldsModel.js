@@ -48,7 +48,10 @@ define( function( require ) {
     //----------------------------------------------------------------------------------------
 
     // @public read-only
-    this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model
+    this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
+
+    // @public read-only
+    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 5 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
     // @public read-only
     this.chargeAndSensorEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
@@ -70,6 +73,7 @@ define( function( require ) {
     // electric Field Sensor Grid
     // @public read-only
     this.electricFieldSensorGrid = thisModel.sensorGridFactory( {
+      bounds: this.enlargedBounds,
       spacing: ELECTRIC_FIELD_SENSOR_SPACING,
       onOrigin: true
     } );
@@ -77,6 +81,7 @@ define( function( require ) {
     // electric potential Sensor Grid, a.k.a in physics as the electric potential 'field'
     // @public read-only
     this.electricPotentialSensorGrid = thisModel.sensorGridFactory( {
+      bounds: this.enlargedBounds,
       spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
       onOrigin: false
     } );
@@ -338,17 +343,18 @@ define( function( require ) {
      */
     sensorGridFactory: function( options ) {
       options = _.extend( {
+        bounds: this.bounds, // bounds of the grid
         spacing: 0.5, // separation (distance) in model coordinates between two adjacent sensors
         onOrigin: true // is there  a sensor at the origin(0,0)?, if false the first sensor is put at (spacing/2, spacing/2)
       }, options );
 
       var gridArray = [];
 
-      // TODO: get rid of magic numbers
       // The grid is centered at the origin;
-      var maxX = WIDTH / 2 * (30 / 25);
-      var maxY = HEIGHT / 2;
-      var minY = -HEIGHT / 2;
+      var minX = options.bounds.minX;
+      var maxX = options.bounds.maxX;
+      var minY = options.bounds.minY;
+      var maxY = options.bounds.maxY;
 
       var spacingOffset; // {number}  Measure of the smallest x-coordinate of all sensors (excluding the one at the origin, if present)
 
@@ -364,27 +370,34 @@ define( function( require ) {
 
       // fill the array with sensors in the four quadrants
 
+      // first quadrant (upper right)
       for ( x = spacingOffset; x < maxX; x += options.spacing ) {
         for ( y = spacingOffset; y < maxY; y += options.spacing ) {
-          var quadrant1Position = new Vector2( x, y );
-          var quadrant2Position = new Vector2( -x, y );
-
-          gridArray.push(
-            new StaticSensorElement( quadrant1Position ),
-            new StaticSensorElement( quadrant2Position )
-          );
-        }
-
-        for ( y = -spacingOffset; y > minY; y -= options.spacing ) {
-          var quadrant3Position = new Vector2( -x, y );
-          var quadrant4Position = new Vector2( x, y );
-
-          gridArray.push(
-            new StaticSensorElement( quadrant3Position ),
-            new StaticSensorElement( quadrant4Position )
-          );
+          gridArray.push( new StaticSensorElement( new Vector2( x, y ) ) );
         }
       }
+
+      // second quadrant (upper left)
+      for ( x = -spacingOffset; x > minX; x -= options.spacing ) {
+        for ( y = spacingOffset; y < maxY; y += options.spacing ) {
+          gridArray.push( new StaticSensorElement( new Vector2( x, y ) ) );
+        }
+      }
+
+      // third quadrant (lower left)
+      for ( x = -spacingOffset; x > minX; x -= options.spacing ) {
+        for ( y = -spacingOffset; y > minY; y -= options.spacing ) {
+          gridArray.push( new StaticSensorElement( new Vector2( x, y ) ) );
+        }
+      }
+
+      // fourth quadrant (lower right)
+      for ( x = spacingOffset; x < maxX; x += options.spacing ) {
+        for ( y = -spacingOffset; y > minY; y -= options.spacing ) {
+          gridArray.push( new StaticSensorElement( new Vector2( x, y ) ) );
+        }
+      }
+
 
       // if onOrigin is true, add a sensor at the origin as well as sensors that lie on the X-axis and Y-axis
       if ( options.onOrigin ) {
@@ -392,32 +405,26 @@ define( function( require ) {
         gridArray.push( new StaticSensorElement( new Vector2( 0, 0 ) ) );
 
         // push sensors on the X-axis
+
+        // positive X- axis
         for ( x = options.spacing; x < maxX; x += options.spacing ) {
-          var positiveXAxisPosition = new Vector2( x, 0 );
-          var negativeXAxisPosition = new Vector2( -x, 0 );
-
-          gridArray.push(
-            new StaticSensorElement( positiveXAxisPosition ),
-            new StaticSensorElement( negativeXAxisPosition )
-          );
+          gridArray.push( new StaticSensorElement( new Vector2( x, 0 ) ) );
         }
-        // push sensors on the Y-axis
+
+        // negative X- axis
+        for ( x = -options.spacing; x > minX; x -= options.spacing ) {
+          gridArray.push( new StaticSensorElement( new Vector2( x, 0 ) ) );
+        }
+
+        // positive Y- axis
         for ( y = options.spacing; y < maxY; y += options.spacing ) {
-          var positiveYAxisPosition = new Vector2( 0, y );
-
-          gridArray.push(
-            new StaticSensorElement( positiveYAxisPosition )
-          );
+          gridArray.push( new StaticSensorElement( new Vector2( 0, y ) ) );
         }
+
+        // negative Y- axis
         for ( y = -options.spacing; y > minY; y -= options.spacing ) {
-          var negativeYAxisPosition = new Vector2( 0, y );
-
-          gridArray.push(
-            new StaticSensorElement( negativeYAxisPosition )
-          );
-
+          gridArray.push( new StaticSensorElement( new Vector2( 0, y ) ) );
         }
-
       }
 
       return gridArray;

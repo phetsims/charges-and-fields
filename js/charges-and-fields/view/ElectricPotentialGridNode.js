@@ -25,7 +25,7 @@ define( function( require ) {
      * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
      * @param {Function} update -  model.on.bind(model)
      * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given an electric potential
-     * @param {Bounds2} bounds - bounds of the canvas
+     * @param {Property.<Bounds2>} boundsProperty - bounds of the canvas in model units
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
      * @param {Property.<boolean>} isVisibleProperty
@@ -34,15 +34,19 @@ define( function( require ) {
     function ElectricPotentialGridNode( electricPotentialSensorGrid,
                                         update,
                                         colorInterpolationFunction,
-                                        bounds,
+                                        boundsProperty,
                                         modelViewTransform,
                                         isChargedParticlePresentProperty,
                                         isVisibleProperty ) {
 
       // Call the super constructor
-      CanvasNode.call( this, { canvasBounds: bounds } );
+      CanvasNode.call( this, { canvasBounds: modelViewTransform.modelToViewBounds( boundsProperty.get() ) } );
 
       var electricPotentialGridNode = this;
+
+      boundsProperty.link( function( bounds ) {
+        electricPotentialGridNode.setCanvasBounds( modelViewTransform.modelToViewBounds( bounds ) );
+      } );
 
       this.colorInterpolationFunction = colorInterpolationFunction;
 
