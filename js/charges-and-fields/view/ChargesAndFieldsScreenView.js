@@ -61,18 +61,9 @@ define( function( require ) {
     //var screenView = this;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
-    // The origin of the model is sets in the middle of the scree. There are 5 meters across the height of the sim.
-    var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
-      Vector2.ZERO,
-      new Vector2( this.layoutBounds.width / 2, this.layoutBounds.height / 2 ),
-      this.layoutBounds.height / ChargesAndFieldsConstants.HEIGHT );
-
-    this.modelViewTransform = modelViewTransform;
-
     // Create many properties for checkboxes and Measuring Tape
     var viewProperty = new PropertySet( {
-      availableModelBounds: model.bounds, //
-      availableViewBounds: modelViewTransform.modelToViewBounds( model.bounds ), //
+      availableModelBounds: model.bounds, // will be used for dragBounds, and the gridNode, set by this.layout
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the equipotential sensor
@@ -82,12 +73,16 @@ define( function( require ) {
       tapeMeasureBasePosition: new Vector2( 100, 100 )
     } );
 
-    this.availableViewBoundsProperty = viewProperty.availableViewBoundsProperty;
+    // The origin of the model is sets in the middle of the scree. There are 5 meters across the height of the sim.
+    var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
+      Vector2.ZERO,
+      new Vector2( this.layoutBounds.width / 2, this.layoutBounds.height / 2 ),
+      this.layoutBounds.height / ChargesAndFieldsConstants.HEIGHT );
+
+    // convenience variables
+    this.modelViewTransform = modelViewTransform;
+    this.model = model;
     this.availableModelBoundsProperty = viewProperty.availableModelBoundsProperty;
-    this.availableViewBoundsProperty.link( function( availableViewBounds ) {
-      // Compute the visible model bounds
-      viewProperty.availableModelBounds = modelViewTransform.viewToModelBounds( availableViewBounds );
-    } );
 
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
@@ -154,7 +149,11 @@ define( function( require ) {
       viewProperty.isElectricPotentialSensorVisibleProperty );
 
     // Create a visual grid with major and minor lines on the view
-    var gridNode = new GridNode( modelViewTransform, new Property( model.enlargedBounds ), viewProperty.isGridVisibleProperty, viewProperty.isValuesVisibleProperty );
+    var gridNode = new GridNode(
+      modelViewTransform,
+      new Property( model.enlargedBounds ),
+      viewProperty.isGridVisibleProperty,
+      viewProperty.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ControlPanel(
@@ -413,7 +412,11 @@ define( function( require ) {
       }
       this.translate( offsetX, offsetY );
 
-      this.availableViewBoundsProperty.value = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
+      // nominal view Bounds
+      var viewBounds = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
+
+      // the modelBounds are the nominal viewBounds (in model coordinates) or the model.enlargedBounds, whichever is smaller.
+      this.availableModelBoundsProperty.set( this.modelViewTransform.viewToModelBounds( viewBounds ).intersection( this.model.enlargedBounds ) );
     }
 
   } );
