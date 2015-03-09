@@ -29,7 +29,7 @@ define( function( require ) {
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
-  //var Property = require( 'AXON/Property' );
+  var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Rectangle = require( 'DOT/Rectangle' );
@@ -154,7 +154,7 @@ define( function( require ) {
       viewProperty.isElectricPotentialSensorVisibleProperty );
 
     // Create a visual grid with major and minor lines on the view
-    var gridNode = new GridNode( modelViewTransform, viewProperty.isGridVisibleProperty, viewProperty.isValuesVisibleProperty );
+    var gridNode = new GridNode( modelViewTransform, new Property( model.enlargedBounds ), viewProperty.isGridVisibleProperty, viewProperty.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ControlPanel(
@@ -247,7 +247,7 @@ define( function( require ) {
     controlPanel.right = this.layoutBounds.maxX - 30;
     controlPanel.top = 30;
     gridNode.centerX = this.layoutBounds.centerX;
-    gridNode.centerY = this.layoutBounds.centerY;
+    gridNode.bottom = this.layoutBounds.bottom;
     resetAllButton.right = this.layoutBounds.maxX - 30;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
 
