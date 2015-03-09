@@ -17,7 +17,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * @param {Property.<Vector2>} locationProperty
+   * @param {Property.<Vector2>} locationProperty - location in the model
    * @param {Object} [options]
    * @constructor
    */
@@ -26,7 +26,7 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
-      dragBoundsProperty: new Property( Bounds2.EVERYTHING ), // {Property.<Bounds2>} dragging will be constrained to these optional bounds
+      dragBoundsProperty: new Property( Bounds2.EVERYTHING ), // {Property.<Bounds2>} dragging will be constrained to these bounds
       modelViewTransform: ModelViewTransform2.createIdentity(), // {ModelViewTransform2} defaults to identity
       startDrag: function( event ) {},  // use this to do something at the start of dragging, like moving a node to the foreground
       endDrag: function( event ) {},  // use this to do something at the end of dragging, like 'snapping'
@@ -34,15 +34,21 @@ define( function( require ) {
       componentType: null
     }, options );
 
-    //@public
+    // @public
     this.componentID = options.componentID;
     this.componentType = options.componentType;
 
-    var dragBounds;
-    options.dragBoundsProperty.link( function( bounds ) {
-      dragBounds = bounds;
+    var everythingBounds = Bounds2.EVERYTHING; // convenience variable to minimize the number of Bounds allocations
+
+    // @public
+    this.dragBoundsProperty = options.dragBoundsProperty;
+
+    // constrain the location to always be within the dragBounds
+    // @public
+    this.dragBoundsPropertyListener = function( bounds ) {
       locationProperty.set( constrainLocation( locationProperty.value, bounds ) );
-    } );
+    };
+    this.dragBoundsProperty.link( this.dragBoundsPropertyListener );
 
     var startOffset; // where the drag started, relative to the Movable's origin, in parent view coordinates
 
@@ -69,8 +75,8 @@ define( function( require ) {
 
         var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( startOffset );
         var location = options.modelViewTransform.viewToModelPosition( parentPoint );
-        if ( options.dragBoundsProperty ) {
-          location = constrainLocation( location, dragBounds );
+        if ( self.dragBoundsProperty.get() !== everythingBounds ) {
+          location = constrainLocation( location, self.dragBoundsProperty.get() );
         }
         var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'drag', {
             positionX: location.x,
@@ -108,5 +114,14 @@ define( function( require ) {
     }
   };
 
-  return inherit( SimpleDragHandler, MovableDragHandler );
+
+  return inherit( SimpleDragHandler, MovableDragHandler, {
+    /**
+     * Unlink to ensures that this Handler is eligible for garbage collection.
+     * @public
+     */
+    dispose: function() {
+      this.dragBoundsProperty.unlink( this.dragBoundsPropertyListener );
+    }
+  } );
 } );

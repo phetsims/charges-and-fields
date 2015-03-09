@@ -1,7 +1,13 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * A Scenery node that can be clicked upon to create new electric field sensor in the model.
+ * A Scenery node that can be clicked upon to create a scenery node and a model element.
+ *
+ * The behavior that is sought after is
+ * (1) when clicked upon an additional scenery node (with no model element counterpart) is created and "jump".
+ * (2) the additional node can be dragged onto the board but is subject to the some dragBounds
+ * (3) when released the additional scenery node should disappeared and be replaced by a model element (which itself is responsible for its view.
+ * (4) the model element should be able to return to its 'destinationPosition', namely the position of the static scenery node
  *
  * @author John Blanco
  * @author Martin Veillette (Berea College)
@@ -17,9 +23,8 @@ define( function( require ) {
   var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
-  var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  //var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -50,8 +55,6 @@ define( function( require ) {
 
     var self = this;
 
-    // let's make this node very easy to pick
-    this.touchArea = this.localBounds.dilatedXY( 20, 20 );
 
     var movingObject = new Node();
     var staticObject = new Node();
@@ -100,14 +103,18 @@ define( function( require ) {
       return modelElement;
     }
 
-
+    // Create and add a static view node
     staticObject.addChild( representationCreatorNode() );
 
+    // let's make this node very easy to pick
+    this.touchArea = staticObject.localBounds.dilatedXY( 20, 20 );
+
     var movingObjectPositionProperty = new Property(
-      modelViewTransform.viewToModelPosition( new Vector2( 0, 0 ) ) );
+      modelViewTransform.viewToModelPosition( staticObject.center ) );
 
     movingObjectPositionProperty.link( function( movingObjectPosition ) {
-      movingObject.translation = modelViewTransform.modelToViewPosition( movingObjectPosition ).addXY( 0, -20 );
+      // top left corner
+      movingObject.translation = (modelViewTransform.modelToViewPosition( movingObjectPosition )).plusXY( 0, -20 );
     } );
 
     // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
@@ -120,13 +127,25 @@ define( function( require ) {
             // add the fake view element (no corresponding model element associated with this view)
             movingObject.addChild( representationCreatorNode() );
 
+            // Determine the center position of the static element underneath the moving object,
+            // used it as a destination position for the return of the model element to the enclosure
+            var testNode = self;
+            var parentScreen;
+            while ( testNode !== null ) {
+              if ( testNode instanceof ScreenView ) {
+                parentScreen = testNode;
+                break;
+              }
+              testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
+            }
+            var centerPositionGlobal = staticObject.parentToGlobalPoint( staticObject.center );
+            var initialPosition = parentScreen.globalToLocalPoint( centerPositionGlobal );
+            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( initialPosition );
+
+
             // determine where we picked up this view element
-            // TODO: it'd be better if we find the center of view element
-            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( self.globalToParentPoint( event.pointer.point ) );
-
             // we want to have a pop up effect when the view element is picked up
-
-            var currentPosition = movingObject.globalToParentPoint( event.pointer.point );
+            var currentPosition = staticObject.center;
 
             // move this node upward so that the cursor touches the bottom of the particle
             var position = {
