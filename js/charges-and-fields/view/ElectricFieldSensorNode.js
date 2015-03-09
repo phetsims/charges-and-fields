@@ -122,14 +122,6 @@ define( function( require ) {
     };
     isValuesVisibleProperty.link( this.isValuesVisibleListener );
 
-    // Move the chargedParticle to the front of this layer when grabbed by the user.
-    this.userControlledListener = function( userControlled ) {
-      if ( userControlled ) {
-        electricFieldSensorNode.moveToFront();
-      }
-    };
-    electricFieldSensor.userControlledProperty.link( this.userControlledListener );
-
     // Register for synchronization with model.
     this.positionListener = function( position ) {
       electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
@@ -144,6 +136,8 @@ define( function( require ) {
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
           electricFieldSensor.userControlled = true;
+          // Move the sensor to the front of this layer when grabbed by the user.
+          electricFieldSensorNode.moveToFront();
           var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
           // move this node upward so that the cursor touches the bottom of the chargedParticle
           electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
@@ -160,7 +154,6 @@ define( function( require ) {
   return inherit( ElectricFieldSensorRepresentation, ElectricFieldSensorNode, {
     dispose: function() {
       this.electricFieldSensor.positionProperty.unlink( this.positionListener );
-      this.electricFieldSensor.userControlledProperty.unlink( this.userControlledListener );
       this.electricFieldSensor.electricFieldProperty.unlink( this.electricFieldListener );
       this.isValuesVisibleProperty.unlink( this.isValuesVisibleListener );
     }

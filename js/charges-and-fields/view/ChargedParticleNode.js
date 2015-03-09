@@ -33,14 +33,6 @@ define( function( require ) {
     // Set up the mouse  areas for this node so that this can still be grabbed when invisible.
     this.touchArea = this.localBounds.dilatedXY( 10, 10 );
 
-    // Move the chargedParticle to the front of this layer when grabbed by the user.
-    this.userControlledListener = function( userControlled ) {
-      if ( userControlled ) {
-        chargedParticleNode.moveToFront();
-      }
-    };
-    chargedParticle.userControlledProperty.link( this.userControlledListener );
-
     // Register for synchronization with model.
     this.positionListener = function( position ) {
       chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
@@ -55,6 +47,8 @@ define( function( require ) {
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
           chargedParticle.userControlled = true;
+          // Move the chargedParticle to the front of this layer when grabbed by the user.
+          chargedParticleNode.moveToFront();
           var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
           // move this node upward so that the cursor touches the bottom of the chargedParticle
           chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -CIRCLE_RADIUS ) );
@@ -65,13 +59,11 @@ define( function( require ) {
         }
       } ) );
 
-    this.userControlledProperty = chargedParticle.userControlledProperty;
     this.positionProperty = chargedParticle.positionProperty;
   }
 
   return inherit( ChargedParticleRepresentation, ChargedParticleNode, {
     dispose: function() {
-      this.userControlledProperty.unlink( this.userControlledListener );
       this.positionProperty.unlink( this.positionListener );
     }
 
