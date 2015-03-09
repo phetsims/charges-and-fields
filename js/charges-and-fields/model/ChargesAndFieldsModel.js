@@ -636,9 +636,11 @@ define( function( require ) {
         return null;
       }
       else {
+
+        //TODO: should we use dilated enlargedBounds?: discuss with amy
         while ( stepCounter < stepMax &&
-                currentClockwisePosition.magnitude() < maxDistance ||
-                currentCounterClockwisePosition.magnitude() < maxDistance ) {
+                this.enlargedBounds.containsPoint( currentClockwisePosition ) ||
+                this.enlargedBounds.containsPoint( currentCounterClockwisePosition ) ) {
 
           nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
             currentClockwisePosition,
@@ -736,8 +738,8 @@ define( function( require ) {
        Two arrays of points are generated. One is called forwardPositionArray and is made of all the points
        (excluding the initial point) that are along the electric field. The point are generated sequentially.
        Starting from the initial point it finds the next point that points along the initial electric field.
-       The search stops once (1) the number of steps exceeds some large number, (2) the current position is very far away
-       from the origin (center) of the model, (3) the current position is very close to a charge.
+       The search stops once (1) the number of steps exceeds some large number, (2) the current position is no longer
+       within the enlarged bounds of the model, (3) the current position is very close to a charge.
        A similar search process is repeated for the direction opposite to the electric field.
        Once the search process is over the two arrays are stitched together.  The resulting point array contains
        a sequence of forward ordered points, i.e. the electric field points forward to the next point.
@@ -756,7 +758,7 @@ define( function( require ) {
       var stepMax = 2000; // an integer, the maximum number of steps in the algorithm
       var epsilonDistance = 0.025; // in meter
 
-      var maxDistance = 3 * Math.max( WIDTH, HEIGHT ); // maximum distance from the initial position in meters
+      //var maxDistance = 3 * Math.max( WIDTH, HEIGHT ); // maximum distance from the initial position in meters
 
       var nextForwardPosition; // {Vector2} next position along the electric field
       var nextBackwardPosition; // {Vector2} next position opposite to the electric field direction
@@ -767,7 +769,7 @@ define( function( require ) {
 
       // find the positions along the electric field
       while ( stepCounter < stepMax &&
-              currentForwardPosition.magnitude() < maxDistance &&
+              this.enlargedBounds.containsPoint( currentForwardPosition ) &&
               this.getElectricField( currentForwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
         nextForwardPosition = this.getNextPositionAlongElectricField( currentForwardPosition, epsilonDistance );
         forwardPositionArray.push( nextForwardPosition );
@@ -780,7 +782,7 @@ define( function( require ) {
 
       // find the positions opposite to the initial electric field
       while ( stepCounter < stepMax &&
-              currentBackwardPosition.magnitude() < maxDistance &&
+              this.enlargedBounds.containsPoint( currentBackwardPosition ) &&
               this.getElectricField( currentBackwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
 
         nextBackwardPosition = this.getNextPositionAlongElectricField( currentBackwardPosition, -epsilonDistance );
