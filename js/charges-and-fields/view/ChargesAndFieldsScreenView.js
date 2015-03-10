@@ -120,6 +120,7 @@ define( function( require ) {
       model.electricFieldSensorGrid,
       model.on.bind( model ),
       this.getElectricFieldMagnitudeColor.bind( this ),
+      viewProperty.availableModelBoundsProperty,
       modelViewTransform,
       model.isChargedParticlePresentProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,

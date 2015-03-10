@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -26,6 +27,7 @@ define( function( require ) {
    * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
    * @param {Function} update -       model.on.bind(model),
    * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given the magnitude of the electric field
+   * @param {Property.<Bounds2>} boundsProperty - bounds of the canvas in model units
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
@@ -35,6 +37,7 @@ define( function( require ) {
   function ElectricFieldGridNode( electricFieldSensorGrid,
                                   update,
                                   colorInterpolationFunction,
+                                  boundsProperty,
                                   modelViewTransform,
                                   isChargedParticlePresentProperty,
                                   isDirectionOnlyElectricFieldGridVisibleProperty,
@@ -93,19 +96,33 @@ define( function( require ) {
      *  at the position in the model
      */
     function updateElectricFieldGrid() {
-      arrowArray.forEach( function( arrowNode ) {
-        // Rotate the arrow according to the direction of the electric field
-        // Since the model View Transform is  Y inverted, the angle in the view and in the model
-        // differs by a minus sign
-        arrowNode.setRotation( -1 * arrowNode.electricFieldSensor.electricField.angle() );
-        // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
-        if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
-          arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
+
+      /**
+       * Function that updates the orientation and fill of an arrow
+       * @param {ArrowNode} arrowNode
+       */
+      var updateArrowNode = function( arrowNode ) {
+        // bounds that are slightly larger than the viewport to encompass arrows that are within one row
+        // or one column of the nominal bounds
+        var bounds = modelViewTransform.modelToViewBounds( boundsProperty.get().dilated(
+          ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
+
+        if ( bounds.containsPoint( arrowNode.center ) ) {
+          // Rotate the arrow according to the direction of the electric field
+          // Since the model View Transform is  Y inverted, the angle in the view and in the model
+          // differs by a minus sign
+          arrowNode.setRotation( -1 * arrowNode.electricFieldSensor.electricField.angle() );
+          // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
+          if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
+            arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
+          }
+          else {
+            arrowNode.fill = colorInterpolationFunction( arrowNode.electricFieldSensor.electricField.magnitude() );
+          }
         }
-        else {
-          arrowNode.fill = colorInterpolationFunction( arrowNode.electricFieldSensor.electricField.magnitude() );
-        }
-      } );
+      };
+
+      arrowArray.forEach( updateArrowNode );
     }
 
     /**
@@ -130,6 +147,8 @@ define( function( require ) {
         } );
       }
     }
+
+    boundsProperty.link( updateElectricFieldGrid );
 
     // update the orientation and colors of the electric field arrows upon an update of the electric field grid
     update( 'electricFieldGridUpdated', updateElectricFieldGrid );
