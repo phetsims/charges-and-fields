@@ -1,21 +1,15 @@
-charges-and-fields
-===========
+Charges And Fields
+================
 
-An interactive educational simulation that teaches about the concepts of charges and fields. Explore how the electric field and electric potential changes for different configuration of charges.
+"Charges And Fields" is an educational simulation in HTML5, by <a href="http://phet.colorado.edu/" target="_blank">PhET Interactive Simulations</a>
+at the University of Colorado Boulder.
 
-By PhET Interactive Simulations http://phet.colorado.edu/
+*This simulation is under development and has not been published.*
 
-NOTE: This repository has dependencies on other repositories. Those repositories much be checked out as siblings to this repository in your directory structure. See package.json for a list of dependencies.
+### Documentation
+The <a href="http://bit.ly/phet-development-overview" target="_blank">PhET Development Overview</a> is the most complete guide to PhET Simulation
+Development. This guide includes how to obtain simulation code and its dependencies, notes about architecture & design, how to test and build
+the sims, as well as other important issues.
 
-Third-Party Dependencies
-This repository uses third-party libraries. Those libraries and their licenses are available in: https://github.com/phetsims/sherpa.
-
-
-
-
-
-
-
-
-
-
+### License
+See the <a href="https://github.com/phetsims/charges-and-fields/blob/master/LICENSE" target="_blank">LICENSE</a>
