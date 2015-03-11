@@ -113,7 +113,7 @@ define( function( require ) {
     this.addChild( text );
 
     // layout
-    arrowPath.bottom = modelViewTransform.modelToViewY( -2.30 );
+    arrowPath.top = modelViewTransform.modelToViewY( -2.20 );
     arrowPath.left = modelViewTransform.modelToViewX( 2 );
     text.centerX = arrowPath.centerX;
     text.top = arrowPath.bottom;
