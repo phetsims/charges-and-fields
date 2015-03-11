@@ -73,11 +73,11 @@ define( function( require ) {
       tapeMeasureBasePosition: new Vector2( 100, 100 )
     } );
 
-    // The origin of the model is sets in the middle of the scree. There are 5 meters across the height of the sim.
+    // The origin of the model is sets in the middle of the scree. There are 8 meters across the width of the dev bounds.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       Vector2.ZERO,
       new Vector2( this.layoutBounds.width / 2, this.layoutBounds.height / 2 ),
-      this.layoutBounds.height / ChargesAndFieldsConstants.HEIGHT );
+      this.layoutBounds.width / ChargesAndFieldsConstants.WIDTH );
 
     // convenience variables
     this.modelViewTransform = modelViewTransform;
@@ -247,7 +247,7 @@ define( function( require ) {
     controlPanel.right = this.layoutBounds.maxX - 30;
     controlPanel.top = 30;
     gridNode.centerX = this.layoutBounds.centerX;
-    gridNode.bottom = this.layoutBounds.bottom;
+    gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
     resetAllButton.right = this.layoutBounds.maxX - 30;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
 

@@ -48,12 +48,6 @@ define( function( require ) {
 
     var gridlinesParent = new Node();
 
-    // bounds of the grid in model coordinates
-    var minX = boundsProperty.get().minX;
-    var maxX = boundsProperty.get().maxX;
-    var minY = boundsProperty.get().minY;
-    var maxY = boundsProperty.get().maxY;
-
     // separation in model coordinates of the major grid lines
     var majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
     var majorDeltaY = majorDeltaX; // we want a square grid
@@ -62,33 +56,37 @@ define( function( require ) {
     var deltaX = majorDeltaX / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
     var deltaY = majorDeltaY / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
 
-    var epsilon = 0.00001; // allow for floating point error
-    var isMajorGridline;
+    // the following variables are integers
+    var minI = Math.ceil( boundsProperty.get().minX / deltaX );
+    var maxI = Math.floor( boundsProperty.get().maxX / deltaX );
+    var minJ = Math.ceil( boundsProperty.get().minY / deltaY );
+    var maxJ = Math.floor( boundsProperty.get().maxY / deltaY );
 
+    var i; // {number} an integer
+    var j; // {number} an integer
+    var isMajorGridline; // {boolean}
     var majorGridlinesShape = new Shape();
     var minorGridlinesShape = new Shape();
 
     // vertical gridlines
-    var x;
-
-    for ( x = minX; x <= maxX + epsilon; x = x + deltaX ) {
-      isMajorGridline = ( Math.round( x / deltaX ) % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+    for ( i = minI; i <= maxI; i++ ) {
+      isMajorGridline = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
       if ( isMajorGridline ) {
-        majorGridlinesShape.moveTo( x, minY ).verticalLineTo( maxY );
+        majorGridlinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
       }
       else {
-        minorGridlinesShape.moveTo( x, minY ).verticalLineTo( maxY );
+        minorGridlinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
       }
     }
+
     // horizontal gridlines
-    var y;
-    for ( y = minY; y <= maxY + epsilon; y = y + deltaY ) {
-      isMajorGridline = ( Math.round( y / deltaY ) % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+    for ( j = minJ; j <= maxJ; j++ ) {
+      isMajorGridline = ( j % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
       if ( isMajorGridline ) {
-        majorGridlinesShape.moveTo( minX, y ).horizontalLineTo( maxX );
+        majorGridlinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
       }
       else {
-        minorGridlinesShape.moveTo( minX, y ).horizontalLineTo( maxX );
+        minorGridlinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
       }
     }
 
@@ -100,39 +98,42 @@ define( function( require ) {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH, lineCap: 'butt', lineJoin: 'bevel'
     } );
 
+    // Create the one-meter double headed arrow representation
+    var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
+    var arrowPath = new Path( arrowShape );
+
+    // Create and add the text (legend) accompanying the double headed arrow
+    var text = new Text( oneMeterString, { font: FONT } );
+
+    // add all the nodes
+    gridlinesParent.addChild( minorGridLinesPath );
+    gridlinesParent.addChild( majorGridLinesPath );
+    this.addChild( gridlinesParent );
+    this.addChild( arrowPath );
+    this.addChild( text );
+
+    // layout
+    arrowPath.bottom = modelViewTransform.modelToViewY( -2.30 );
+    arrowPath.left = modelViewTransform.modelToViewX( 2 );
+    text.centerX = arrowPath.centerX;
+    text.top = arrowPath.bottom;
+
+    // Create links to the projector/default color scheme
     // no need to unlink, present for the lifetime of the simulation
-    ChargesAndFieldsColors.link( 'gridStroke', function( color ) {
+    ChargesAndFieldsColors.gridStrokeProperty.link( function( color ) {
       minorGridLinesPath.stroke = color;
       majorGridLinesPath.stroke = color;
     } );
 
-    gridlinesParent.addChild( minorGridLinesPath );
-    gridlinesParent.addChild( majorGridLinesPath );
-
-    this.addChild( gridlinesParent );
-
-    // Create and add one meter double headed arrow representation
-    var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
-    var arrowPath = new Path( arrowShape );
-    arrowPath.bottom = modelViewTransform.modelToViewY( -2.30 );
-    arrowPath.left = modelViewTransform.modelToViewX( 2 );
-    this.addChild( arrowPath );
-
-    ChargesAndFieldsColors.link( 'gridLengthScaleArrowStroke', function( color ) {
+    ChargesAndFieldsColors.gridLengthScaleArrowStrokeProperty.link( function( color ) {
       arrowPath.stroke = color;
     } );
 
-    ChargesAndFieldsColors.link( 'gridLengthScaleArrowFill', function( color ) {
+    ChargesAndFieldsColors.gridLengthScaleArrowFillProperty.link( function( color ) {
       arrowPath.fill = color;
     } );
 
-    // Create and add the text (legend) accompanying the double headed arrow
-    var text = new Text( oneMeterString, { font: FONT } );
-    this.addChild( text );
-    text.centerX = arrowPath.centerX;
-    text.top = arrowPath.bottom;
-
-    ChargesAndFieldsColors.link( 'gridTextFill', function( color ) {
+    ChargesAndFieldsColors.gridTextFillProperty.link( function( color ) {
       text.fill = color;
     } );
 

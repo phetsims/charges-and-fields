@@ -99,9 +99,12 @@ define( function( require ) {
   }
 
   /**
-   * Constrains a location to some bounds.
+   * Constrains a location to some bounds
+   * Returns a location within the bounds.
+   *
    * @param {Vector2} location
    * @param {Bounds2} bounds
+   * @returns {Vector2}
    */
   var constrainLocation = function( location, bounds ) {
     if ( bounds.containsCoordinates( location.x, location.y ) ) {
