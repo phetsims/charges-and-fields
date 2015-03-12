@@ -682,7 +682,7 @@ define( function( require ) {
          */
         var stepCounter = 0; // {number} integer
         var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
-        var epsilonDistance = 0.05; // {number} step length along equipotential in meters
+        var epsilonDistance = 0.10; // {number} step length along equipotential in meters
         var isLinePathClosed = false; // {boolean}
         var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
         assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
@@ -818,7 +818,7 @@ define( function( require ) {
 
         // the product of stepMax and epsilonDistance should exceed the WIDTH or HEIGHT variable
         var stepMax = 2000; // an integer, the maximum number of steps in the algorithm
-        var epsilonDistance = 0.025; // in meter
+        var epsilonDistance = 0.1; // in meter
 
         //var maxDistance = 3 * Math.max( WIDTH, HEIGHT ); // maximum distance from the initial position in meters
 
@@ -833,7 +833,7 @@ define( function( require ) {
         while ( stepCounter < stepMax &&
                 this.enlargedBounds.containsPoint( currentForwardPosition ) &&
                 this.getElectricField( currentForwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
-          nextForwardPosition = this.getNextPositionAlongElectricField( currentForwardPosition, epsilonDistance );
+          nextForwardPosition = this.getNextPositionAlongElectricFieldWithRK4( currentForwardPosition, epsilonDistance );
           forwardPositionArray.push( nextForwardPosition );
           currentForwardPosition = nextForwardPosition;
           stepCounter++;
@@ -847,7 +847,7 @@ define( function( require ) {
                 this.enlargedBounds.containsPoint( currentBackwardPosition ) &&
                 this.getElectricField( currentBackwardPosition ).magnitude() < maxElectricFieldMagnitude ) {
 
-          nextBackwardPosition = this.getNextPositionAlongElectricField( currentBackwardPosition, -epsilonDistance );
+          nextBackwardPosition = this.getNextPositionAlongElectricFieldWithRK4( currentBackwardPosition, -epsilonDistance );
           backwardPositionArray.push( nextBackwardPosition );
           currentBackwardPosition = nextBackwardPosition;
           stepCounter++;
