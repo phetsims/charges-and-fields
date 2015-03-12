@@ -40,7 +40,7 @@ define( function( require ) {
     PropertySet.call( thisModel, {
       isElectricFieldGridVisible: true, // control the visibility of a grid of arrows representing the local electric field
       isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
-      isChargedParticlePresent: false // is there at least one charged particle on the board 
+      isChargedParticlePresent: false // is there at least one charged particle on the board
     } );
 
     //----------------------------------------------------------------------------------------
@@ -547,9 +547,87 @@ define( function( require ) {
         var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
         var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
         assert && assert( deltaPosition.magnitude() < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
-        return midwayPosition.add( deltaPosition ); // {Vector2} finalPosition
+        // if 'the second order correction is larger than the first'
+        if ( deltaPosition.magnitude() > Math.abs( deltaDistance ) ) {
+          // use a fail safe method
+          return this.getNextPositionAlongEquipotentialWithMidPoint( position, deltaDistance );
+        }
+        else {
+          return midwayPosition.add( deltaPosition ); // {Vector2} finalPosition
+        }
       },
 
+      /**
+       * Given a (initial) position, find a position with the targeted electric potential within a distance deltaDistance
+       * This uses a standard midpoint algorithm
+       * http://en.wikipedia.org/wiki/Midpoint_method
+       * @private
+       * @param {Vector2} position
+       * @param {number} deltaDistance - a distance in meters, can be positive or negative
+       * @returns {Vector2} finalPosition
+       */
+      getNextPositionAlongEquipotentialWithMidPoint: function( position, deltaDistance ) {
+        var initialElectricField = this.getElectricField( position ); // {Vector2}
+        assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
+        var initialEquipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
+        var midwayPosition = ( initialEquipotentialNormalizedVector.multiplyScalar( deltaDistance / 2 ) ).add( position ); // {Vector2}
+        var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
+        assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
+        var midwayEquipotentialNormalizedVector = midwayElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
+        var deltaPosition = midwayEquipotentialNormalizedVector.multiplyScalar( deltaDistance ); // {Vector2}
+        return deltaPosition.add( position ); // {Vector2} finalPosition
+      },
+
+      /**
+       * Given a (initial) position, find a position along the electric field line within a distance deltaDistance
+       * This uses a standard RK4 algorithm
+       * http://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+       * @private
+       * @param {Vector2} position
+       * @param {number} deltaDistance - a distance in meters, can be positive or negative
+       * @returns {Vector2} finalPosition
+       */
+      getNextPositionAlongElectricFieldWithRK4: function( position, deltaDistance ) {
+        var initialElectricField = this.getElectricField( position ); // {Vector2}
+        assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
+        var k1Vector = this.getElectricField( position ).normalize(); // {Vector2} normalized Vector along equipotential
+        var k2Vector = this.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize(); // {Vector2} normalized Vector along equipotential
+        var k3Vector = this.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize(); // {Vector2} normalized Vector along equipotential
+        var k4Vector = this.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize(); // {Vector2} normalized Vector along equipotential
+        var deltaDisplacement =
+        {
+          x: deltaDistance * (k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x) / 6,
+          y: deltaDistance * (k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y) / 6
+        };
+        return position.plus( deltaDisplacement ); // {Vector2} finalPosition
+      },
+
+
+      /**
+       * Given a (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance
+       * of the initial position.
+       *
+       * This uses a standard RK4 algorithm generalized to 2D
+       * http://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+       * @private
+       * @param {Vector2} position
+       * @param {number} deltaDistance - a distance in meters, can be positive or negative
+       * @returns {Vector2} finalPosition
+       */
+      getNextPositionAlongEquipotentialWithRK4: function( position, deltaDistance ) {
+        var initialElectricField = this.getElectricField( position ); // {Vector2}
+        assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
+        var k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
+        var k2Vector = this.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
+        var k3Vector = this.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
+        var k4Vector = this.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along equipotential
+        var deltaDisplacement =
+        {
+          x: deltaDistance * (k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x) / 6,
+          y: deltaDistance * (k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y) / 6
+        };
+        return position.plus( deltaDisplacement ); // {Vector2} finalPosition
+      },
 
       /**
        * This method returns a downward position vector along the electric field lines
@@ -570,6 +648,7 @@ define( function( require ) {
         var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
         return deltaDisplacement.add( position ); // {Vector2} finalPosition
       },
+
 
 
       /**
@@ -643,6 +722,14 @@ define( function( require ) {
               initialElectricPotential,
               -epsilonDistance );
 
+
+            //nextClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
+            //  currentClockwisePosition,
+            //  epsilonDistance );
+            //nextCounterClockwisePosition = this. getNextPositionAlongEquipotentialWithRK4(
+            //  currentCounterClockwisePosition,
+            //  -epsilonDistance );
+
             clockwisePositionArray.push( nextClockwisePosition );
             counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
@@ -661,12 +748,12 @@ define( function( require ) {
             stepCounter++;
           }// end of while()
 
-          if ( !isLinePathClosed && (currentClockwisePosition.magnitude() < maxDistance ||
-                                     currentClockwisePosition.magnitude() < maxDistance) ) {
+          if ( !isLinePathClosed && ( this.enlargedBounds.containsPoint( currentClockwisePosition ) ||
+                                      this.enlargedBounds.containsPoint( currentCounterClockwisePosition ) ) ) {
             console.log( 'an equipotential line terminates on the screen' );
             // bring out the big guns
             // see https://github.com/phetsims/charges-and-fields/issues/1
-            this.getEquipotentialThroughMarchingSquaresPositionArray( position );
+            //   this.getEquipotentialThroughMarchingSquaresPositionArray( position );
           }
 
           // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
@@ -689,25 +776,6 @@ define( function( require ) {
       getEquipotentialThroughMarchingSquaresPositionArray: function( position ) {
 
         //TODO: complete this algorithm
-
-        /*
-
-         */
-        // options = _.extend( {
-        //   spacing: 0.5 // separation (distance) in model coordinates between two adjacent sensors
-        // }, options );
-        // var gridArray = [];
-        //
-        // //var minX = -WIDTH / 2;
-        // var maxX = WIDTH / 2;
-        // //var minY = -HEIGHT / 2;
-        // var maxY = HEIGHT / 2;
-        //
-        // var x;
-        // var y;
-        //
-        //// Marching Squares Parameters
-        // var threshold = this.getElectricPotential( position );
 
       },
 
@@ -893,5 +961,6 @@ define( function( require ) {
     }
   )
     ;
-} );
+} )
+;
 
