@@ -30,13 +30,11 @@ define( function( require ) {
       modelViewTransform: ModelViewTransform2.createIdentity(), // {ModelViewTransform2} defaults to identity
       startDrag: function( event ) {},  // use this to do something at the start of dragging, like moving a node to the foreground
       endDrag: function( event ) {},  // use this to do something at the end of dragging, like 'snapping'
-      componentID: null,
-      componentType: null
+      componentID: null
     }, options );
 
     // @public
     this.componentID = options.componentID;
-    this.componentType = options.componentType;
 
     var everythingBounds = Bounds2.EVERYTHING; // convenience variable to minimize the number of Bounds allocations
 
