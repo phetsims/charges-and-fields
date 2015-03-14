@@ -59,7 +59,7 @@ define( function( require ) {
       // note where the drag started
       start: function( event ) {
 
-        var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'dragStart', {
+        var archID = arch && arch.start( 'user', self.componentID, 'dragStart', {
             positionX: locationProperty.get().x,
             positionY: locationProperty.get().y
           } );
@@ -78,7 +78,7 @@ define( function( require ) {
         if ( self.dragBoundsProperty.get() !== everythingBounds ) {
           location = constrainLocation( location, self.dragBoundsProperty.get() );
         }
-        var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'drag', {
+        var archID = arch && arch.start( 'user', self.componentID, 'drag', {
             positionX: location.x,
             positionY: location.y
           } );
@@ -88,7 +88,7 @@ define( function( require ) {
       },
 
       end: function( event ) {
-        var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'dragEnd', {
+        var archID = arch && arch.start( 'user', self.componentID, 'dragEnd', {
             positionX: locationProperty.get().x,
             positionY: locationProperty.get().y
           } );
