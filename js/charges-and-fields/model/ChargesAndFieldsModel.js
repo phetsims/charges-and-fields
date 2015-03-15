@@ -650,7 +650,6 @@ define( function( require ) {
       },
 
 
-
       /**
        * This method returns an array of points (vectors) with the same electric potential as the electric potential
        * at the initial position. The array is ordered with position points going counterclockwise.
@@ -897,7 +896,9 @@ define( function( require ) {
         if ( this.isChargedParticlePresent ) {
           electricFieldLine.position = position;
           electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
-          this.electricFieldLinesArray.push( electricFieldLine );
+          if ( electricFieldLine.positionArray ) {
+            this.electricFieldLinesArray.push( electricFieldLine );
+          }
         }
       },
 
@@ -917,7 +918,9 @@ define( function( require ) {
           equipotentialLine.position = position;
           equipotentialLine.positionArray = this.getEquipotentialPositionArray( equipotentialLine.position );
           equipotentialLine.electricPotential = this.getElectricPotential( equipotentialLine.position );
-          this.equipotentialLinesArray.push( equipotentialLine );
+          if ( equipotentialLine.positionArray ) {
+            this.equipotentialLinesArray.push( equipotentialLine );
+          }
         }
       },
 

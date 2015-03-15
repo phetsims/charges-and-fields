@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -22,6 +23,9 @@ define( function( require ) {
   // strings
   var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
+
+  // constants
+  var IS_DEBUG = true;
 
   /**
    *
@@ -43,6 +47,9 @@ define( function( require ) {
     var labelNode = new Node();
     this.addChild( labelNode );
 
+    var circleNode = new Node();
+    this.addChild( circleNode );
+
     // Monitor the equipotentialLineArray and create a path and label for each equipotentialLine
     equipotentialLinesArray.addItemAddedListener( function( equipotentialLine ) {
 
@@ -59,17 +66,23 @@ define( function( require ) {
       ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
 
       var equipotentialLinePath = traceElectricPotentialLine( equipotentialLine );
-
       lineNode.addChild( equipotentialLinePath );
       labelNode.addChild( rectangle );
       labelNode.addChild( voltageLabel );
 
+      if ( IS_DEBUG ) {
+        var equipotentialCircle = dotElectricPotentialLine( equipotentialLine );
+        circleNode.setChildren( equipotentialCircle );
+
+      }
       equipotentialLinesArray.addItemRemovedListener( function removalListener( removedEquipotentialLine ) {
         if ( removedEquipotentialLine === equipotentialLine ) {
           lineNode.removeChild( equipotentialLinePath );
           labelNode.removeChild( rectangle );
           labelNode.removeChild( voltageLabel );
-
+          if ( IS_DEBUG ) {
+            circleNode.removeAllChildren();
+          }
           ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
           ChargesAndFieldsColors.unlink( 'equipotentialLine', equipotentialLinePath.colorFunction );
           ChargesAndFieldsColors.unlink( 'equipotentialLine', voltageLabel.colorFunction );
@@ -85,7 +98,7 @@ define( function( require ) {
     isValuesVisibleProperty.linkAttribute( labelNode, 'visible' );
 
     /**
-     * Function that generates a label and a path/shape of the equipotential line
+     * Function that generates a path/shape of the equipotential line
      * @param {Object} equipotentialLine - Object of the form {position, positionArray, electricPotential}
      * @returns {Path}
      */
@@ -126,6 +139,34 @@ define( function( require ) {
       ChargesAndFieldsColors.link( 'equipotentialLine', equipotentialLinePath.colorFunction );
 
       return equipotentialLinePath;
+    }
+
+
+    /**
+     * Function that generates a label and a path/shape of the equipotential line
+     * @param {Object} equipotentialLine - Object of the form {position, positionArray, electricPotential}
+     * @returns {Path}
+     */
+    function dotElectricPotentialLine( equipotentialLine ) {
+
+      var circleArray = [];
+
+      //Simple and naive method to plot lines between all the points
+      equipotentialLine.positionArray.forEach( function( position ) {
+        var circle = new Circle( 1 );
+        circle.center = modelViewTransform.modelToViewPosition( position );
+        circleArray.push( circle );
+      } );
+
+      circleArray.colorFunction = function( color ) {
+        circleArray.forEach( function( circle ) {
+          circle.stroke = color;
+        } );
+      };
+      // Link the stroke color for the default/projector mode
+      ChargesAndFieldsColors.link( 'equipotentialLine', circleArray.colorFunction );
+
+      return circleArray;
     }
 
     /**

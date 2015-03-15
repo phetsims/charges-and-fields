@@ -64,7 +64,7 @@ define( function( require ) {
 
     // Create many properties for checkboxes and Measuring Tape
     var viewProperty = new PropertySet( {
-      availableModelBounds: model.bounds, // will be used for dragBounds, and the gridNode, set by this.layout
+      availableModelBounds: model.enlargedBounds, // will be used for dragBounds, and the gridNode, set by this.layout
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the equipotential sensor
@@ -172,6 +172,7 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         model.reset();
+        //TODO: reset everything but the availableModelBoundsProperty
         viewProperty.reset();
       }
     } );

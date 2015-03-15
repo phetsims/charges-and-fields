@@ -42,25 +42,27 @@ define( function( require ) {
     /**
      * Function that returns a Scenery Path for an electric Field Line model
      * @param {Object} electricFieldLine
+     * @returns {Path}
      */
     function traceElectricFieldLine( electricFieldLine ) {
 
-      //draw the electricField line
+      // draw the electricField line
 
       var arrayLength = electricFieldLine.positionArray.length;
       var arrayIndex;
       var arrowHeadLength = 6; // length of the arrow head in scenery coordinates
-      var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) form in the arrow head i.e >
-      var numberOfSegmentsPerArrow = 50; // number of segment intervals between arrows
+      var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) at the tip of the arrow head i.e >
+      var numberOfSegmentsPerArrow = 10; // number of segment intervals between arrows
 
       var shape = new Shape();
       shape.moveToPoint( modelViewTransform.modelToViewPosition( electricFieldLine.positionArray [ 0 ] ) );
 
       for ( arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++ ) {
-        var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === Math.floor( numberOfSegmentsPerArrow / 2 ) );  // modulo is arbitrarily, just not 0
+        var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === Math.floor( numberOfSegmentsPerArrow / 2 ) );  // modulo value is arbitrary, just not zero since it will start on a positive charge
         var position = modelViewTransform.modelToViewPosition( electricFieldLine.positionArray[ arrayIndex ] );
         if ( isArrowSegment ) {
-          var angle = position.minus( shape.getRelativePoint() ).angle(); // angle of the electric field
+          var angle = position.minus( shape.getRelativePoint() ).angle(); // angle of the electric field at location 'position'
+          // shape of an arrow head (triangle)
           shape
             .lineToPointRelative( {
               x: arrowHeadLength * Math.cos( angle + arrowHeadInternalAngle ),
@@ -74,7 +76,8 @@ define( function( require ) {
               x: -arrowHeadLength * Math.cos( angle - arrowHeadInternalAngle ),
               y: -arrowHeadLength * Math.sin( angle - arrowHeadInternalAngle )
             } );
-        }
+        } // end of  if (isArrowSegment)
+
         shape.lineToPoint( modelViewTransform.modelToViewPosition( electricFieldLine.positionArray[ arrayIndex ] ) );
       }
 
