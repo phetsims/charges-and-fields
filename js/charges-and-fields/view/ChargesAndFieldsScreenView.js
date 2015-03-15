@@ -26,7 +26,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var linear = require( 'DOT/Util' ).linear;
-  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
+  //var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
+  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
@@ -70,7 +71,8 @@ define( function( require ) {
       isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
       isTapeMeasureVisible: false, // control the visibility of the measuring tape
       tapeMeasureUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
-      tapeMeasureBasePosition: new Vector2( 100, 100 )
+      tapeMeasureBasePosition: new Vector2( 0, 0 ),
+      tapeMeasureTipPosition: new Vector2( 1, 0 )
     } );
 
     // The origin of the model is sets in the middle of the scree. There are 8 meters across the width of the dev bounds.
@@ -177,9 +179,10 @@ define( function( require ) {
 
     // Create a draggable but dragBound Measuring Tape
     var tapeOptions = {
-      dragBounds: this.layoutBounds.eroded( 5 ),
+      dragBoundsProperty: viewProperty.availableModelBoundsProperty,
       modelViewTransform: modelViewTransform,
-      basePositionProperty: viewProperty.tapeMeasureBasePositionProperty
+      basePositionProperty: viewProperty.tapeMeasureBasePositionProperty,
+      tipPositionProperty: viewProperty.tapeMeasureTipPositionProperty
     };
 
     // Create a measuring tape
