@@ -15,7 +15,7 @@ define( function( require ) {
   var ElectricPotentialSensorPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorPanel' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -138,12 +138,21 @@ define( function( require ) {
       return roundedNumber;
     }
 
+    var movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
+      dragBounds: availableModelBoundsProperty.value,
+      modelViewTransform: modelViewTransform
+    });
+
     // When dragging, move the electric potential sensor
-    electricPotentialSensorNode.addInputListener( new MovableDragHandler( electricPotentialSensor.positionProperty, {
-        dragBoundsProperty: availableModelBoundsProperty,
-        modelViewTransform: modelViewTransform
-      }
-    ) );
+    electricPotentialSensorNode.addInputListener( movableDragHandler);
+
+    //no need to unlink, the sensor is present for the lifetime of the simulation.
+    availableModelBoundsProperty.link(function( bounds ) {
+      movableDragHandler.setDragBounds( bounds );
+    } );
+
+
+
   }
 
   return inherit( Node, ElectricPotentialSensorNode );

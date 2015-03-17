@@ -51,9 +51,9 @@ define( function( require ) {
     options = _.extend( {
       basePositionProperty: new Property( new Vector2( 0, 0 ) ), // base Position in model coordinate reference frame (rightBottom position of the measuring tape image)
       tipPositionProperty: new Property( new Vector2( 1, 0 ) ), // tip Position in model coordinate reference frame (center position of the tip)
+      dragBounds: Bounds2.EVERYTHING,// bounds for the measuring tape (in model coordinate reference frame), default value is no (effective) bounds
       textPosition: new Vector2( 0, 30 ), // position of the text relative to center of the base image in view units
       modelViewTransform: ModelViewTransform2.createIdentity(),
-      dragBoundsProperty: new Property( Bounds2.EVERYTHING ),// bounds for the measuring tape (in model coordinate reference frame), default value is no (effective) bounds
       scaleProperty: new Property( 1 ), // scale the apparent length of the unrolled Tape, without changing the measurement, analogous to a zoom factor
       significantFigures: 1, // number of significant figures in the length measurement
       textColor: 'white', // color of the length measurement and unit
@@ -72,27 +72,15 @@ define( function( require ) {
 
 
     assert && assert( Math.abs( options.modelViewTransform.modelToViewDeltaX( 1 ) ) === Math.abs( options.modelViewTransform.modelToViewDeltaY( 1 ) ), 'The y and x scale factor are not identical' );
-
     this.significantFigures = options.significantFigures; // @private
     this.unitsProperty = unitsProperty; // @private
     this.isVisibleProperty = isVisibleProperty; // @private
     this.scaleProperty = options.scaleProperty; // @private
-    this.dragBoundsProperty = options.dragBoundsProperty;
+    this._dragBounds = options.dragBounds; // @private
     this.basePositionProperty = options.basePositionProperty;
     this.tipPositionProperty = options.tipPositionProperty;
 
-    this.tipToBaseDistance = (this.basePositionProperty.get()).distance( this.tipPositionProperty.get() ); // @private
-
-    // constrain the location to always be within the dragBounds
-    // @public
-    this.dragBoundsPropertyListener = function( bounds ) {
-      measuringTape.tipPositionProperty.set(
-        constrainToBoundsLocation( measuringTape.tipPositionProperty.get(), bounds ) );
-      measuringTape.basePositionProperty.set(
-        constrainToBoundsLocation( measuringTape.basePositionProperty.get(), bounds ) );
-    };
-    this.dragBoundsProperty.link( this.dragBoundsPropertyListener );
-
+    this.tipToBaseDistance = (options.basePositionProperty.get()).distance( options.tipPositionProperty.get() ); // @private
 
     var crosshairShape = new Shape().
       moveTo( -options.crosshairSize, 0 ).
@@ -135,7 +123,7 @@ define( function( require ) {
     } );
 
     // expand the area for touch
-    tip.touchArea = tip.localBounds.dilatedXY( 15 );
+    tip.touchArea = tip.localBounds.dilated( 15 );
     baseImage.touchArea = baseImage.localBounds.dilated( 20 );
     baseImage.mouseArea = baseImage.localBounds.dilated( 10 );
 
@@ -157,7 +145,7 @@ define( function( require ) {
 
           var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( this.startOffset );
           var unconstrainedBaseLocation = options.modelViewTransform.viewToModelPosition( parentPoint );
-          var constrainedBaseLocation = constrainToBoundsLocation( unconstrainedBaseLocation, options.dragBoundsProperty.get() );
+          var constrainedBaseLocation = constrainToBoundsLocation( unconstrainedBaseLocation, measuringTape._dragBounds );
 
           // the basePosition value has not been updated yet, hence it is the old value of the basePosition;
           var translationDelta = constrainedBaseLocation.minus( options.basePositionProperty.get() ); // in model reference frame
@@ -168,7 +156,7 @@ define( function( require ) {
           // translate the position of the tip if it is not being dragged
           if ( !isDraggingTip ) {
             var unconstrainedTipLocation = translationDelta.add( measuringTape.tipPositionProperty.get() );
-            var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, options.dragBoundsProperty.get() );
+            var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation,measuringTape._dragBounds );
             measuringTape.tipPositionProperty.set( constrainedTipLocation );
           }
         }
@@ -190,7 +178,7 @@ define( function( require ) {
       translate: function( translationParams ) {
         var translationDelta = options.modelViewTransform.viewToModelDelta( translationParams.delta ); // in model reference frame
         var unconstrainedTipLocation = translationDelta.add( measuringTape.tipPositionProperty.get() );
-        var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, options.dragBoundsProperty.get() );
+        var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
         measuringTape.tipPositionProperty.set( constrainedTipLocation );
 
       },
@@ -265,25 +253,25 @@ define( function( require ) {
     // scaleProperty is analogous to a zoom in/zoom out function
     this.scaleProperty.link( this.scalePropertyObserver ); // must be unlinked in dispose
 
-    /**
-     * Constrains a point to some bounds. Returns a vector within the bounds
-     *
-     * @param {Vector2} point
-     * @param {Bounds2} bounds
-     * @returns {Vector2}
-     */
-    function constrainToBoundsLocation( point, bounds ) {
-      if ( _.isUndefined( bounds ) || bounds.containsPoint( point ) ) {
-        return point;
-      }
-      else {
-        var xConstrained = Math.max( Math.min( point.x, bounds.maxX ), bounds.minX );
-        var yConstrained = Math.max( Math.min( point.y, bounds.maxY ), bounds.minY );
-        return new Vector2( xConstrained, yConstrained );
-      }
-    }
-
     this.mutate( options );
+  }
+
+  /**
+   * Constrains a point to some bounds. Returns a vector within the bounds
+   *
+   * @param {Vector2} point
+   * @param {Bounds2} bounds
+   * @returns {Vector2}
+   */
+  function constrainToBoundsLocation( point, bounds ) {
+    if ( _.isUndefined( bounds ) || bounds.containsPoint( point ) ) {
+      return point;
+    }
+    else {
+      var xConstrained = Math.max( Math.min( point.x, bounds.maxX ), bounds.minX );
+      var yConstrained = Math.max( Math.min( point.y, bounds.maxY ), bounds.minY );
+      return new Vector2( xConstrained, yConstrained );
+    }
   }
 
   return inherit( Node, MeasuringTape, {
@@ -314,7 +302,26 @@ define( function( require ) {
       this.isVisibleProperty.unlink( this.isVisiblePropertyObserver );
       this.unitsProperty.unlink( this.unitsPropertyObserver );
       this.scaleProperty.unlink( this.scalePropertyObserver );
-      this.dragBoundsProperty.link( this.dragBoundsPropertyListener );
+    },
+
+    /**
+     * Set the dragBounds of the of the measuringTape.
+     * In addition, it forces the tip and base of the measuring tape to be within the new bounds.
+     * @param {Bounds2} dragBounds
+     */
+    setDragBounds: function( dragBounds ) {
+      this._dragBounds = dragBounds.copy();
+      this.tipPositionProperty.set( constrainToBoundsLocation( this.tipPositionProperty.value, this._dragBounds ) );
+      this.basePositionProperty.set( constrainToBoundsLocation( this.basePositionProperty.value, this._dragBounds ) );
+    },
+
+    /**
+     * Return the dragBounds of the sim
+     * May Return null if the dragBounds
+     * @returns {Bounds2||null}
+     */
+    getDragBounds: function() {
+      return this._dragBounds;
     },
 
     /**
@@ -327,7 +334,11 @@ define( function( require ) {
 
     // ES5 getter and setter for the textColor
     set textColor( value ) { this.setTextColor( value ); },
-    get textColor() { return this.labelText.fill; }
+    get textColor() { return this.labelText.fill; },
+
+    // ES5 getter and setter for the dragBounds
+    set dragBounds( value ) { this.setDragBounds( value ); },
+    get dragBounds() { return this.getDragBounds(); }
 
   } );
 } );

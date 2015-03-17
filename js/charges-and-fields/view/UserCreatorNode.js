@@ -20,7 +20,7 @@ define( function( require ) {
   var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -117,11 +117,11 @@ define( function( require ) {
       movingObject.translation = (modelViewTransform.modelToViewPosition( movingObjectPosition )).plusXY( 0, -20 );
     } );
 
-    // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
-    this.addInputListener( new MovableDragHandler( movingObjectPositionProperty,
+    var movableDragHandler =
+      new MovableDragHandler( movingObjectPositionProperty,
         {
           modelViewTransform: modelViewTransform,
-          //dragBoundsProperty: availableModelBoundsProperty,
+          dragBounds: availableModelBoundsProperty.value,
           startDrag: function( event ) {
 
             // add the fake view element (no corresponding model element associated with this view)
@@ -195,8 +195,10 @@ define( function( require ) {
             // TODO: this is not very kosher
             movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( new Vector2( 0, 0 ) ) );
           }
-        } )
-    );
+        } );
+
+    // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
+    this.addInputListener( movableDragHandler );
 
 
 // Pass options through to parent.

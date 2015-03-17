@@ -15,7 +15,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MovableDragHandler' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -128,11 +128,10 @@ define( function( require ) {
     };
     electricFieldSensor.positionProperty.link( this.positionListener );
 
-    // When dragging, move the electric Field Sensor
-    electricFieldSensorNode.addInputListener( new MovableDragHandler(
+    var movableDragHandler = new MovableDragHandler(
       electricFieldSensor.positionProperty,
       {
-        dragBoundsProperty: availableModelBoundsProperty,
+        dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
           electricFieldSensor.userControlled = true;
@@ -146,8 +145,18 @@ define( function( require ) {
         endDrag: function( event ) {
           electricFieldSensor.userControlled = false;
         }
-      } ) );
+      } );
 
+    // When dragging, move the electric Field Sensor
+    electricFieldSensorNode.addInputListener( movableDragHandler );
+
+    this.availableModelBoundsPropertyListener = function( bounds ) {
+      movableDragHandler.setDragBounds( bounds );
+    };
+
+    availableModelBoundsProperty.link( this.availableModelBoundsPropertyListener );
+
+    this.availableModelBoundsProperty = availableModelBoundsProperty;
 
   }
 
@@ -156,6 +165,7 @@ define( function( require ) {
       this.electricFieldSensor.positionProperty.unlink( this.positionListener );
       this.electricFieldSensor.electricFieldProperty.unlink( this.electricFieldListener );
       this.isValuesVisibleProperty.unlink( this.isValuesVisibleListener );
+      this.availableModelBoundsProperty.unlink( this.availableModelBoundsPropertyListener);
     }
   } );
 } );

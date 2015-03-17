@@ -180,7 +180,7 @@ define( function( require ) {
 
     // Create a draggable but dragBound Measuring Tape
     var tapeOptions = {
-      dragBoundsProperty: viewProperty.availableModelBoundsProperty,
+      dragBounds: viewProperty.availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       basePositionProperty: viewProperty.tapeMeasureBasePositionProperty,
       tipPositionProperty: viewProperty.tapeMeasureTipPositionProperty
@@ -189,6 +189,10 @@ define( function( require ) {
     // Create a measuring tape
     var measuringTape = new MeasuringTape( viewProperty.tapeMeasureUnitsProperty, viewProperty.isTapeMeasureVisibleProperty,
       tapeOptions );
+
+    viewProperty.availableModelBoundsProperty.link( function( bounds ) {
+      measuringTape.dragBounds = bounds;
+    } );
 
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
