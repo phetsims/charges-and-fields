@@ -80,7 +80,7 @@ define( function( require ) {
     this.basePositionProperty = options.basePositionProperty;
     this.tipPositionProperty = options.tipPositionProperty;
 
-    this.tipToBaseDistance = (options.basePositionProperty.get()).distance( options.tipPositionProperty.get() ); // @private
+    this.tipToBaseDistance = (options.basePositionProperty.value).distance( options.tipPositionProperty.value ); // @private
 
     var crosshairShape = new Shape().
       moveTo( -options.crosshairSize, 0 ).
@@ -107,7 +107,7 @@ define( function( require ) {
     } );
 
     // create tapeline (running from one crosshair to the other)
-    var tapeLine = new Line( this.basePositionProperty.get(), this.tipPositionProperty.get(), {
+    var tapeLine = new Line( this.basePositionProperty.value, this.tipPositionProperty.value, {
       stroke: options.lineColor,
       lineWidth: options.tapeLineWidth
     } );
@@ -137,25 +137,24 @@ define( function( require ) {
         startOffset: 0,
         allowTouchSnag: true,
         start: function( event, trail ) {
-          var location = options.modelViewTransform.modelToViewPosition( options.basePositionProperty.get() );
+          var location = options.modelViewTransform.modelToViewPosition( options.basePositionProperty.value );
           this.startOffset = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( location );
         },
 
         drag: function( event ) {
-
           var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( this.startOffset );
           var unconstrainedBaseLocation = options.modelViewTransform.viewToModelPosition( parentPoint );
           var constrainedBaseLocation = constrainToBoundsLocation( unconstrainedBaseLocation, measuringTape._dragBounds );
 
           // the basePosition value has not been updated yet, hence it is the old value of the basePosition;
-          var translationDelta = constrainedBaseLocation.minus( options.basePositionProperty.get() ); // in model reference frame
+          var translationDelta = constrainedBaseLocation.minus( options.basePositionProperty.value ); // in model reference frame
 
           // translation of the basePosition (subject to the constraining bounds)
           options.basePositionProperty.set( constrainedBaseLocation );
 
           // translate the position of the tip if it is not being dragged
           if ( !isDraggingTip ) {
-            var unconstrainedTipLocation = translationDelta.add( measuringTape.tipPositionProperty.get() );
+            var unconstrainedTipLocation = translationDelta.add( measuringTape.tipPositionProperty.value );
             var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation,measuringTape._dragBounds );
             measuringTape.tipPositionProperty.set( constrainedTipLocation );
           }
@@ -168,19 +167,23 @@ define( function( require ) {
     var isDraggingTip = false;
 
     // init drag and drop for tip
+    // TODO: this simpleDragHandler could be changed to MovableDragHandler, Should we change it.
+    // Note that it is not possible to use MovableDragHandler for the baseImage
     tip.addInputListener( new SimpleDragHandler( {
+      startOffset: 0,
       allowTouchSnag: true,
-
       start: function( event, trail ) {
         isDraggingTip = true;
+        var location = options.modelViewTransform.modelToViewPosition( options.tipPositionProperty.value );
+        this.startOffset = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( location );
       },
 
-      translate: function( translationParams ) {
-        var translationDelta = options.modelViewTransform.viewToModelDelta( translationParams.delta ); // in model reference frame
-        var unconstrainedTipLocation = translationDelta.add( measuringTape.tipPositionProperty.get() );
+      drag: function( event ) {
+        var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( this.startOffset );
+        var unconstrainedTipLocation = options.modelViewTransform.viewToModelPosition( parentPoint );
         var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
+        // translation of the basePosition (subject to the constraining bounds)
         measuringTape.tipPositionProperty.set( constrainedTipLocation );
-
       },
 
       end: function( event, trail ) {
@@ -206,7 +209,7 @@ define( function( require ) {
       // in order to avoid all kind of geometrical issues with position, let's reset the baseImage upright and then set its position and rotation
       baseImage.setRotation( 0 );
       baseImage.rightBottom = viewBasePosition;
-      baseImage.rotateAround( viewBasePosition, angle );
+      baseImage.rotateAround(  baseImage.rightBottom, angle );
 
       // reset the text
       measuringTape.tipToBaseDistance = tipPosition.distance( basePosition );
@@ -246,9 +249,9 @@ define( function( require ) {
         oldScale = 1;
       }
       // update the position of the tip
-      var displacementVector = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
+      var displacementVector = measuringTape.tipPositionProperty.value.minus( measuringTape.basePositionProperty.value );
       var scaledDisplacementVector = displacementVector.timesScalar( scale / oldScale );
-      measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.get().plus( scaledDisplacementVector ) );
+      measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.value.plus( scaledDisplacementVector ) );
     };
     // scaleProperty is analogous to a zoom in/zoom out function
     this.scaleProperty.link( this.scalePropertyObserver ); // must be unlinked in dispose
@@ -290,8 +293,8 @@ define( function( require ) {
      * @returns {string}
      */
     getText: function() {
-      return Util.toFixed( this.unitsProperty.get().multiplier * this.tipToBaseDistance / this.scaleProperty.get(),
-          this.significantFigures ) + ' ' + this.unitsProperty.get().name;
+      return Util.toFixed( this.unitsProperty.value.multiplier * this.tipToBaseDistance / this.scaleProperty.value,
+          this.significantFigures ) + ' ' + this.unitsProperty.value.name;
     },
 
     /**
