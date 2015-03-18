@@ -22,7 +22,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  //var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -51,7 +50,7 @@ define( function( require ) {
     options = _.extend( {
       basePositionProperty: new Property( new Vector2( 0, 0 ) ), // base Position in model coordinate reference frame (rightBottom position of the measuring tape image)
       tipPositionProperty: new Property( new Vector2( 1, 0 ) ), // tip Position in model coordinate reference frame (center position of the tip)
-      dragBounds: Bounds2.EVERYTHING,// bounds for the measuring tape (in model coordinate reference frame), default value is no (effective) bounds
+      dragBounds: Bounds2.EVERYTHING,// bounds for the measuring tape (in model coordinate reference frame), default value is everything, effectively no bounds
       textPosition: new Vector2( 0, 30 ), // position of the text relative to center of the base image in view units
       modelViewTransform: ModelViewTransform2.createIdentity(),
       scaleProperty: new Property( 1 ), // scale the apparent length of the unrolled Tape, without changing the measurement, analogous to a zoom factor
@@ -149,7 +148,7 @@ define( function( require ) {
           // the basePosition value has not been updated yet, hence it is the old value of the basePosition;
           var translationDelta = constrainedBaseLocation.minus( options.basePositionProperty.value ); // in model reference frame
 
-          // translation of the basePosition (subject to the constraining bounds)
+          // translation of the basePosition (subject to the constraining drag bounds)
           options.basePositionProperty.set( constrainedBaseLocation );
 
           // translate the position of the tip if it is not being dragged
@@ -167,8 +166,6 @@ define( function( require ) {
     var isDraggingTip = false;
 
     // init drag and drop for tip
-    // TODO: this simpleDragHandler could be changed to MovableDragHandler, Should we change it.
-    // Note that it is not possible to use MovableDragHandler for the baseImage
     tip.addInputListener( new SimpleDragHandler( {
       startOffset: 0,
       allowTouchSnag: true,
@@ -182,7 +179,7 @@ define( function( require ) {
         var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( this.startOffset );
         var unconstrainedTipLocation = options.modelViewTransform.viewToModelPosition( parentPoint );
         var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
-        // translation of the basePosition (subject to the constraining bounds)
+        // translation of the tipPosition (subject to the constraining drag bounds)
         measuringTape.tipPositionProperty.set( constrainedTipLocation );
       },
 
