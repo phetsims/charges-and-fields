@@ -939,7 +939,9 @@ define( function( require ) {
           var electricFieldLine = {};
           electricFieldLine.position = position;
           electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
-          this.electricFieldLinesArray.push( electricFieldLine );
+          if ( electricFieldLine.positionArray ) {
+            this.electricFieldLinesArray.push( electricFieldLine );
+          }
         }
       },
 
