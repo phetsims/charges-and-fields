@@ -71,6 +71,7 @@ define( function( require ) {
 
 
     assert && assert( Math.abs( options.modelViewTransform.modelToViewDeltaX( 1 ) ) === Math.abs( options.modelViewTransform.modelToViewDeltaY( 1 ) ), 'The y and x scale factor are not identical' );
+
     this.significantFigures = options.significantFigures; // @private
     this.unitsProperty = unitsProperty; // @private
     this.isVisibleProperty = isVisibleProperty; // @private
@@ -276,16 +277,17 @@ define( function( require ) {
 
   return inherit( Node, MeasuringTape, {
     /**
-     * Reset the MeasuringTape to its initial configuration
+     * Resets the MeasuringTape to its initial configuration
      * @public
      */
     reset: function() {
       this.basePositionProperty.reset();
       this.tipPositionProperty.reset();
+      //TODO: should we reset the dragBounds?
     },
 
     /**
-     * returns a readout of the current measurement
+     * Returns a readout of the current measurement
      * @public
      * @returns {string}
      */
@@ -295,7 +297,7 @@ define( function( require ) {
     },
 
     /**
-     * Ensure that this node is subject to garbage collection
+     * Ensures that this node is subject to garbage collection
      * @public
      */
     dispose: function() {
@@ -305,7 +307,7 @@ define( function( require ) {
     },
 
     /**
-     * Set the dragBounds of the of the measuringTape.
+     * Sets the dragBounds of the of the measuringTape.
      * In addition, it forces the tip and base of the measuring tape to be within the new bounds.
      * @param {Bounds2} dragBounds
      */
@@ -316,16 +318,15 @@ define( function( require ) {
     },
 
     /**
-     * Return the dragBounds of the sim
-     * May Return null if the dragBounds
-     * @returns {Bounds2||null}
+     * Returns the dragBounds of the sim
+     * @returns {Bounds2}
      */
     getDragBounds: function() {
       return this._dragBounds;
     },
 
     /**
-     * Set the color of the text label
+     * Sets the color of the text label
      * @param {string||Color} color
      */
     setTextColor: function( color ) {
