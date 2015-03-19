@@ -12,7 +12,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargesAndFieldschargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldschargesAndFieldsControlPanel' );
+  var ChargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsControlPanel' );
   //var ChargesAndFieldschargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldschargesAndFieldsControlPanel' );
   var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
@@ -160,7 +160,7 @@ define( function( require ) {
       viewProperty.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
-    var chargesAndFieldsControlPanel = new ChargesAndFieldschargesAndFieldsControlPanel(
+    var chargesAndFieldsControlPanel = new ChargesAndFieldsControlPanel(
       model.isElectricFieldGridVisibleProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricPotentialGridVisibleProperty,

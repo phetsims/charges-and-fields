@@ -40,7 +40,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isTapeMeasureVisibleProperty
    * @constructor
    */
-  function ControlPanel( isElectricFieldGridVisibleProperty,
+  function ChargesAndFieldsControlPanel( isElectricFieldGridVisibleProperty,
                          isDirectionOnlyElectricFieldGridVisibleProperty,
                          isElectricPotentialGridVisibleProperty,
                          isElectricPotentialSensorVisibleProperty,
@@ -184,7 +184,7 @@ define( function( require ) {
 
   }
 
-  return inherit( Panel, ControlPanel );
+  return inherit( Panel, ChargesAndFieldsControlPanel );
 
 } )
 ;
