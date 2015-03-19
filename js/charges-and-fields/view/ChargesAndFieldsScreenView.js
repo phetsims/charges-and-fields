@@ -12,9 +12,10 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var ChargesAndFieldschargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldschargesAndFieldsControlPanel' );
+  //var ChargesAndFieldschargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldschargesAndFieldsControlPanel' );
   var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
-  var ControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ControlPanel' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
@@ -159,7 +160,7 @@ define( function( require ) {
       viewProperty.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
-    var controlPanel = new ControlPanel(
+    var chargesAndFieldsControlPanel = new ChargesAndFieldschargesAndFieldsControlPanel(
       model.isElectricFieldGridVisibleProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricPotentialGridVisibleProperty,
@@ -252,8 +253,8 @@ define( function( require ) {
     } );
 
     // layout the objects
-    controlPanel.right = this.layoutBounds.maxX - 30;
-    controlPanel.top = 30;
+    chargesAndFieldsControlPanel.right = this.layoutBounds.maxX - 30;
+    chargesAndFieldsControlPanel.top = 30;
     gridNode.centerX = this.layoutBounds.centerX;
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
     resetAllButton.right = this.layoutBounds.maxX - 30;
@@ -291,7 +292,7 @@ define( function( require ) {
     this.addChild( electricFieldGridNode );
     this.addChild( electricFieldLineNode );
     this.addChild( equipotentialLineNode );
-    this.addChild( controlPanel );
+    this.addChild( chargesAndFieldsControlPanel );
     this.addChild( resetAllButton );
     this.addChild( chargeAndSensorEnclosure );
 
