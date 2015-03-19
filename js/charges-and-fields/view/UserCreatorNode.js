@@ -42,6 +42,8 @@ define( function( require ) {
                             availableModelBoundsProperty,
                             options ) {
 
+    var self = this;
+
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the charge
@@ -52,18 +54,6 @@ define( function( require ) {
       element: 'electricFieldSensor' // other valid inputs are 'positive' and 'negative'
     }, options );
 
-
-    var self = this;
-
-    // this is where the center of this is in model coordinate
-    var viewPosition = new Vector2( options.centerX, options.centerY );
-
-    var offset = new Vector2( 0, -20 );
-
-    var movingObject = new Node();
-    var staticObject = new Node();
-    this.addChild( staticObject );
-    this.addChild( movingObject );
 
     /**
      * Function that returns the view Node associated to options.element
@@ -107,17 +97,36 @@ define( function( require ) {
       return modelElement;
     }
 
+    // this is where the center of 'this' is in the ScreenView reference frame
+    var viewPosition = new Vector2( options.centerX, options.centerY );
+
+    // Create and add two nodes: the first one contains the static representation of the node
+    // whereas the second is the dynamic representation of the node (but with no model counterpart)
+    var movingObject = new Node();
+    var staticObject = new Node();
+    this.addChild( staticObject );
+    this.addChild( movingObject );
+
+    // offset between the  position of the static object and position of the movingObject after the tween animation
+    // needed for the 'pop' effect
+    var offset = new Vector2( 0, -20 ); // in view coordinate frame
+
     // Create and add a static view node
     staticObject.addChild( representationCreatorNode() );
 
     // let's make this node very easy to pick
     this.touchArea = staticObject.localBounds.dilated( 20 );
 
+    // position for the moving object in model coordinate, note that the initial value will be reset right away by
+    // the movableDragHandler
+
     var movingObjectPositionProperty = new Property(
       modelViewTransform.viewToModelPosition( viewPosition ) );
 
     movingObjectPositionProperty.link( function( movingObjectPosition ) {
-      // top left corner
+      // a position of (0,0) for the movingObject corresponds to the position of the staticObject
+      // since the modelToViewPosition is given in the ScreenView coordinate frame one need to subtract the viewPosition
+      // i.e. the position of thisNode with respect to the ScreenView
       movingObject.translation = modelViewTransform.modelToViewPosition( movingObjectPosition ).minus( viewPosition );
     } );
 
@@ -131,98 +140,60 @@ define( function( require ) {
             // add the fake view element (no corresponding model element associated with this view)
             movingObject.addChild( representationCreatorNode() );
 
-            // Determine the center position of the static element underneath the moving object,
-            // used it as a destination position for the return of the model element to the enclosure
-            var testNode = self;
-            var parentScreen;
-            while ( testNode !== null ) {
-              if ( testNode instanceof ScreenView ) {
-                parentScreen = testNode;
-                break;
-              }
-              testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
-            }
-            var centerPositionGlobal = staticObject.parentToGlobalPoint( staticObject.center );
-            var initialPosition = parentScreen.globalToLocalPoint( centerPositionGlobal );
-            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( initialPosition );
+            // Use the center position of the static element underneath the moving object, i.e. the
+            // center position of this (viewPosition)
+            // and use it as the destination position for the return of the model element to the enclosure
+            // destinationPosition is needed for the tween return animation
+            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
 
-
-            // determine where we picked up this view element
-            // we want to have a pop up effect when the view element is picked up
-            var currentPosition = staticObject.center;
-
-            // move this node upward so that the cursor touches the bottom of the particle
+            // determine the center of the view element we clicked on in the local view
             var position = {
-              x: currentPosition.x,
-              y: currentPosition.y
+              x: staticObject.center.x,
+              y: staticObject.center.y
             };
 
+            // move the movingObject upward (by offset) to get a pop like effect
             var animationTween = new TWEEN.Tween( position ).
               to( {
-                x: currentPosition.plus( offset ).x,
-                y: currentPosition.plus( offset ).y
+                x: staticObject.center.plus( offset ).x,
+                y: staticObject.center.plus( offset ).y
               }, 100 ).
               easing( TWEEN.Easing.Cubic.InOut ).
               onUpdate( function() {
                 movingObject.translation = { x: position.x, y: position.y };
               } );
-
             animationTween.start();
 
-            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( viewPosition.plus(offset)) );
+            // set the position of the fake view element in the model coordinate
+            // note that the movingObjectPosition is subject to the dragBounds
+            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( viewPosition.plus( offset ) ) );
           },
 
           endDrag: function( event ) {
-            // Find the parent screen by moving up the scene graph.
-            var testNode = self;
-            var parentScreen;
-            while ( testNode !== null ) {
-              if ( testNode instanceof ScreenView ) {
-                parentScreen = testNode;
-                break;
-              }
-              testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
-            }
 
-            // Determine the initial position of the new element
-            var centerPositionGlobal = movingObject.parentToGlobalPoint( movingObject.center );
-            var initialPosition = parentScreen.globalToLocalPoint( centerPositionGlobal );
+            // Create the new model element.
+            var modelElement = modelElementCreator( movingObjectPositionProperty.value );
 
-            // Create and add the new model element.
-            var initialModelPosition = modelViewTransform.viewToModelPosition( initialPosition );
-            var modelElement = modelElementCreator( initialModelPosition );
             // set the destination position of the model based on where it was picked up in the enclosure
             modelElement.destinationPosition = movingObject.destinationPosition;
             addModelElementToObservableArray( modelElement, observableArray );
 
             // remove the fake view element
             movingObject.removeAllChildren();
-
-            // TODO: this is not very kosher
-            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( viewPosition) );
           }
         } );
 
     // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
     this.addInputListener( movableDragHandler );
 
-
-    this.availableModelBoundsPropertyListener = function( bounds ) {
+    // no need to dispose of this link since this is present for the lifetime of the sim
+    availableModelBoundsProperty.link( function( bounds ) {
       movableDragHandler.setDragBounds( bounds );
-    };
-
-    availableModelBoundsProperty.link( this.availableModelBoundsPropertyListener );
-
-    this.availableModelBoundsProperty = availableModelBoundsProperty;
+    } );
 
 // Pass options through to parent.
     this.mutate( options );
   }
 
-  return inherit( Node, UserCreatorNode, {
-    dispose: function() {
-      this.availableModelBoundsProperty.unlink( this.availableModelBoundsPropertyListener );
-    }
-  } );
-} )
-;
+  return inherit( Node, UserCreatorNode );
+} );

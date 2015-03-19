@@ -49,6 +49,9 @@ define( function( require ) {
     Node.call( this );
 
     // bounds of the enclosure
+
+    //var maxTextWidth = (new Text( sensorsString, { font: FONT} )).width;
+
     var viewBounds = modelViewTransform.modelToViewBounds( bounds );
 
     // Create the background enclosure
@@ -107,12 +110,13 @@ define( function( require ) {
 
     // Add the nodes
     this.addChild( rectangle );
-    this.addChild( positiveCharge );
-    this.addChild( negativeCharge );
-    this.addChild( electricFieldSensor );
     this.addChild( positiveChargeText );
     this.addChild( negativeChargeText );
     this.addChild( electricFieldSensorText );
+    this.addChild( positiveCharge );
+    this.addChild( negativeCharge );
+    this.addChild( electricFieldSensor );
+
 
     // update the colors on change of color scheme (projector vs default)
     // no need to unlink since the chargeEnclosure is present for the lifetime of the simulation
