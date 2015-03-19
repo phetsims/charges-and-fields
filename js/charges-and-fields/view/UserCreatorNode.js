@@ -4,9 +4,9 @@
  * A Scenery node that can be clicked upon to create a scenery node and a model element.
  *
  * The behavior that is sought after is
- * (1) when clicked upon an additional scenery node (with no model element counterpart) is created and "jump".
- * (2) the additional node can be dragged onto the board but is subject to the some dragBounds
- * (3) when released the additional scenery node should disappeared and be replaced by a model element (which itself is responsible for its view.
+ * (1) when clicked upon, an additional scenery node (with no model element counterpart) is created and "jump".
+ * (2) this additional node can be dragged onto the board but is subject to the some dragBounds
+ * (3) when released the additional scenery node should 'disappeared' and be replaced by a model element (which itself is responsible for its view.
  * (4) the model element should be able to return to its 'destinationPosition', namely the position of the static scenery node
  *
  * @author John Blanco
@@ -183,7 +183,7 @@ define( function( require ) {
           }
         } );
 
-    // Add the listener that will allow the user to click on this and create a new chargedParticle, then position it in the model.
+    // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
     this.addInputListener( movableDragHandler );
 
     // no need to dispose of this link since this is present for the lifetime of the sim
