@@ -55,6 +55,10 @@ define( function( require ) {
 
     var self = this;
 
+    // this is where the center of this is in model coordinate
+    var viewPosition = new Vector2( options.centerX, options.centerY );
+
+    var offset = new Vector2( 0, -20 );
 
     var movingObject = new Node();
     var staticObject = new Node();
@@ -107,14 +111,14 @@ define( function( require ) {
     staticObject.addChild( representationCreatorNode() );
 
     // let's make this node very easy to pick
-    this.touchArea = staticObject.localBounds.dilatedXY( 20, 20 );
+    this.touchArea = staticObject.localBounds.dilated( 20 );
 
     var movingObjectPositionProperty = new Property(
-      modelViewTransform.viewToModelPosition( staticObject.center ) );
+      modelViewTransform.viewToModelPosition( viewPosition ) );
 
     movingObjectPositionProperty.link( function( movingObjectPosition ) {
       // top left corner
-      movingObject.translation = (modelViewTransform.modelToViewPosition( movingObjectPosition )).plusXY( 0, -20 );
+      movingObject.translation = modelViewTransform.modelToViewPosition( movingObjectPosition ).minus( viewPosition );
     } );
 
     var movableDragHandler =
@@ -155,8 +159,8 @@ define( function( require ) {
 
             var animationTween = new TWEEN.Tween( position ).
               to( {
-                x: currentPosition.plusXY( 0, -20 ).x,
-                y: currentPosition.plusXY( 0, -20 ).y
+                x: currentPosition.plus( offset ).x,
+                y: currentPosition.plus( offset ).y
               }, 100 ).
               easing( TWEEN.Easing.Cubic.InOut ).
               onUpdate( function() {
@@ -164,6 +168,8 @@ define( function( require ) {
               } );
 
             animationTween.start();
+
+            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( viewPosition.plus(offset)) );
           },
 
           endDrag: function( event ) {
@@ -193,7 +199,7 @@ define( function( require ) {
             movingObject.removeAllChildren();
 
             // TODO: this is not very kosher
-            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( new Vector2( 0, 0 ) ) );
+            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( viewPosition) );
           }
         } );
 
@@ -201,10 +207,22 @@ define( function( require ) {
     this.addInputListener( movableDragHandler );
 
 
+    this.availableModelBoundsPropertyListener = function( bounds ) {
+      movableDragHandler.setDragBounds( bounds );
+    };
+
+    availableModelBoundsProperty.link( this.availableModelBoundsPropertyListener );
+
+    this.availableModelBoundsProperty = availableModelBoundsProperty;
+
 // Pass options through to parent.
     this.mutate( options );
   }
 
-  return inherit( Node, UserCreatorNode );
+  return inherit( Node, UserCreatorNode, {
+    dispose: function() {
+      this.availableModelBoundsProperty.unlink( this.availableModelBoundsPropertyListener );
+    }
+  } );
 } )
 ;
