@@ -50,6 +50,8 @@ define( function( require ) {
     options = _.extend( {
       basePositionProperty: new Property( new Vector2( 0, 0 ) ), // base Position in model coordinate reference frame (rightBottom position of the measuring tape image)
       tipPositionProperty: new Property( new Vector2( 1, 0 ) ), // tip Position in model coordinate reference frame (center position of the tip)
+      //unrolledTapeDistance: 1, // in model coordinates
+      //angle: 0.0, // angle of the tape in radians, recall that in the view, a positive angle means clockwise rotation
       dragBounds: Bounds2.EVERYTHING,// bounds for the measuring tape (in model coordinate reference frame), default value is everything, effectively no bounds
       textPosition: new Vector2( 0, 30 ), // position of the text relative to center of the base image in view units
       modelViewTransform: ModelViewTransform2.createIdentity(),
@@ -80,7 +82,11 @@ define( function( require ) {
     this.basePositionProperty = options.basePositionProperty;
     this.tipPositionProperty = options.tipPositionProperty;
 
-    this.tipToBaseDistance = (options.basePositionProperty.value).distance( options.tipPositionProperty.value ); // @private
+    //this.tipPositionProperty = new Property( options.basePositionProperty.value.plus( Vector2.createPolar( options.unrolledTapeDistance, options.angle ) ) );
+
+
+
+    this.tipToBaseDistance = (this.basePositionProperty.value).distance( this.tipPositionProperty.value ); // @private
 
     var crosshairShape = new Shape().
       moveTo( -options.crosshairSize, 0 ).
@@ -172,7 +178,7 @@ define( function( require ) {
       allowTouchSnag: true,
       start: function( event, trail ) {
         isDraggingTip = true;
-        var location = options.modelViewTransform.modelToViewPosition( options.tipPositionProperty.value );
+        var location = options.modelViewTransform.modelToViewPosition( measuringTape.tipPositionProperty.value );
         this.startOffset = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( location );
       },
 
