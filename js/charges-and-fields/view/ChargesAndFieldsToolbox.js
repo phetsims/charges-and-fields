@@ -53,7 +53,7 @@ define( function( require ) {
                                     modelViewTransform,
                                     availableModelBoundsProperty ) {
 
-    var self = this;
+    var toolbox = this;
 
     Node.call( this );
 
@@ -79,14 +79,12 @@ define( function( require ) {
       pickable: true
     } );
 
-
     var panelOptions = {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10
     };
     var panel = new Panel( panelContent, panelOptions );
-
     this.addChild( panel );
 
     var measuringTapeMovableDragHandler = new MovableDragHandler( measuringTapeBasePositionProperty,
@@ -99,7 +97,8 @@ define( function( require ) {
         },
         startDrag: function( event ) {
 
-          var testNode = self;
+
+          var testNode = toolbox;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
               this.parentScreen = testNode;
@@ -128,7 +127,7 @@ define( function( require ) {
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
 
-          var testNode = self;
+          var testNode = toolbox;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
               this.parentScreen = testNode;

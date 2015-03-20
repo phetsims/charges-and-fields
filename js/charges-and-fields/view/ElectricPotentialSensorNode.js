@@ -140,7 +140,13 @@ define( function( require ) {
 
     var movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
       dragBounds: availableModelBoundsProperty.value,
-      modelViewTransform: modelViewTransform
+      modelViewTransform: modelViewTransform,
+      startDrag: function( event ) {
+        electricPotentialSensor.userControlled = true;
+      },
+      endDrag: function( event ) {
+        electricPotentialSensor.userControlled = false;
+      }
     });
 
     // When dragging, move the electric potential sensor

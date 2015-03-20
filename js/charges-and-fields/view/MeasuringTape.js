@@ -82,8 +82,10 @@ define( function( require ) {
     this.basePositionProperty = options.basePositionProperty;
     this.tipPositionProperty = options.tipPositionProperty;
 
-    //this.tipPositionProperty = new Property( options.basePositionProperty.value.plus( Vector2.createPolar( options.unrolledTapeDistance, options.angle ) ) );
+    this._isTipUserControlledProperty = new Property( false );// @private
+    this._isBaseUserControlledProperty = new Property( false ); // @private
 
+    //this.tipPositionProperty = new Property( options.basePositionProperty.value.plus( Vector2.createPolar( options.unrolledTapeDistance, options.angle ) ) );
 
 
     this.tipToBaseDistance = (this.basePositionProperty.value).distance( this.tipPositionProperty.value ); // @private
@@ -143,6 +145,7 @@ define( function( require ) {
         startOffset: 0,
         allowTouchSnag: true,
         start: function( event, trail ) {
+          measuringTape._isBaseUserControlledProperty.set( true );
           var location = options.modelViewTransform.modelToViewPosition( options.basePositionProperty.value );
           this.startOffset = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( location );
         },
@@ -159,25 +162,26 @@ define( function( require ) {
           options.basePositionProperty.set( constrainedBaseLocation );
 
           // translate the position of the tip if it is not being dragged
-          if ( !isDraggingTip ) {
+          // when the user is not holding onto the tip, dragging the body will also drag the tip
+          if ( !measuringTape._isTipUserControlled ) {
             var unconstrainedTipLocation = translationDelta.add( measuringTape.tipPositionProperty.value );
-            var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation,measuringTape._dragBounds );
+            var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
             measuringTape.tipPositionProperty.set( constrainedTipLocation );
           }
+        },
+        end: function( event, trail ) {
+          measuringTape._isBaseUserControlledProperty.set( false );
         }
-
       } )
     );
 
-    // when the user is not holding onto the tip, dragging the body will also drag the tip
-    var isDraggingTip = false;
 
     // init drag and drop for tip
     tip.addInputListener( new SimpleDragHandler( {
       startOffset: 0,
       allowTouchSnag: true,
       start: function( event, trail ) {
-        isDraggingTip = true;
+        measuringTape._isTipUserControlledProperty.set( true );
         var location = options.modelViewTransform.modelToViewPosition( measuringTape.tipPositionProperty.value );
         this.startOffset = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( location );
       },
@@ -191,7 +195,7 @@ define( function( require ) {
       },
 
       end: function( event, trail ) {
-        isDraggingTip = false;
+        measuringTape._isTipUserControlledProperty.set( false );
       }
     } ) );
 
@@ -213,7 +217,7 @@ define( function( require ) {
       // in order to avoid all kind of geometrical issues with position, let's reset the baseImage upright and then set its position and rotation
       baseImage.setRotation( 0 );
       baseImage.rightBottom = viewBasePosition;
-      baseImage.rotateAround(  baseImage.rightBottom, angle );
+      baseImage.rotateAround( baseImage.rightBottom, angle );
 
       // reset the text
       measuringTape.tipToBaseDistance = tipPosition.distance( basePosition );
@@ -313,6 +317,21 @@ define( function( require ) {
     },
 
     /**
+     * Returns a property indicating if the tip of the measuring tape is being dragged or not
+     * @returns {Property.<boolean>}
+     */
+    getIsTipUserControlledProperty: function() {
+      return this._isTipUserControlledProperty;
+    },
+
+    /**
+     * Returns a property indicating if the baseImage of the measuring tape is being dragged or not
+     * @returns {Property.<boolean>}
+     */
+    getIsBaseUserControlledProperty: function() {
+      return this._isBaseUserControlledProperty;
+    },
+    /**
      * Sets the dragBounds of the of the measuringTape.
      * In addition, it forces the tip and base of the measuring tape to be within the new bounds.
      * @param {Bounds2} dragBounds
@@ -345,8 +364,11 @@ define( function( require ) {
 
     // ES5 getter and setter for the dragBounds
     set dragBounds( value ) { this.setDragBounds( value ); },
-    get dragBounds() { return this.getDragBounds(); }
+    get dragBounds() { return this.getDragBounds(); },
 
+    // ES5 getters
+    get isBaseUserControlledProperty() { return this.getIsBaseUserControlledProperty(); },
+    get isTipUserControlledProperty() { return this.getIsTipUserControlledProperty(); }
   } );
 } );
 
