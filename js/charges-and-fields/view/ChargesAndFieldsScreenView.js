@@ -13,7 +13,7 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsControlPanel' );
-  //var ChargesAndFieldschargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldschargesAndFieldsControlPanel' );
+  var ChargesAndFieldsToolbox = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolbox' );
   var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
@@ -70,10 +70,10 @@ define( function( require ) {
       isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the equipotential sensor
       isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
-      isTapeMeasureVisible: false, // control the visibility of the measuring tape
-      tapeMeasureUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
-      tapeMeasureBasePosition: new Vector2( 0, 0 ),
-      tapeMeasureTipPosition: new Vector2( 1, 0 )
+      isMeasuringTapeVisible: false, // control the visibility of the measuring tape
+      measuringTapeUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
+      measuringTapeBasePosition: new Vector2( 0, 0 ),
+      measuringTapeTipPosition: new Vector2( 1, 0 )
     } );
 
     // The origin of the model is sets in the middle of the scree. There are 8 meters across the width of the dev bounds.
@@ -160,14 +160,23 @@ define( function( require ) {
       viewProperty.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
-    var chargesAndFieldsControlPanel = new ChargesAndFieldsControlPanel(
+    var controlPanel = new ChargesAndFieldsControlPanel(
       model.isElectricFieldGridVisibleProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricPotentialGridVisibleProperty,
-      viewProperty.isElectricPotentialSensorVisibleProperty,
       viewProperty.isValuesVisibleProperty,
-      viewProperty.isGridVisibleProperty,
-      viewProperty.isTapeMeasureVisibleProperty );
+      viewProperty.isGridVisibleProperty );
+
+    // Create the toolbox with the measuring tape and the electric potential sensor icons
+    var toolbox = new ChargesAndFieldsToolbox(
+      model.electricPotentialSensor.positionProperty,
+      viewProperty.measuringTapeBasePositionProperty,
+      viewProperty.measuringTapeTipPositionProperty,
+      viewProperty.isElectricPotentialSensorVisibleProperty,
+      viewProperty.isMeasuringTapeVisibleProperty,
+      modelViewTransform,
+      viewProperty.availableModelBoundsProperty
+    );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
@@ -183,12 +192,12 @@ define( function( require ) {
     var tapeOptions = {
       dragBounds: viewProperty.availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
-      basePositionProperty: viewProperty.tapeMeasureBasePositionProperty,
-      tipPositionProperty: viewProperty.tapeMeasureTipPositionProperty
+      basePositionProperty: viewProperty.measuringTapeBasePositionProperty,
+      tipPositionProperty: viewProperty.measuringTapeTipPositionProperty
     };
 
     // Create a measuring tape
-    var measuringTape = new MeasuringTape( viewProperty.tapeMeasureUnitsProperty, viewProperty.isTapeMeasureVisibleProperty,
+    var measuringTape = new MeasuringTape( viewProperty.measuringTapeUnitsProperty, viewProperty.isMeasuringTapeVisibleProperty,
       tapeOptions );
 
     viewProperty.availableModelBoundsProperty.link( function( bounds ) {
@@ -198,6 +207,7 @@ define( function( require ) {
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
     } );
+
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
     var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
@@ -253,12 +263,21 @@ define( function( require ) {
     } );
 
     // layout the objects
-    chargesAndFieldsControlPanel.right = this.layoutBounds.maxX - 30;
-    chargesAndFieldsControlPanel.top = 30;
+    controlPanel.right = this.layoutBounds.maxX - 30;
+    controlPanel.top = 30;
+    toolbox.right = controlPanel.right;
+    toolbox.top = controlPanel.bottom + 10;
     gridNode.centerX = this.layoutBounds.centerX;
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
     resetAllButton.right = this.layoutBounds.maxX - 30;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
+
+    //viewProperty.measuringTapeBasePositionProperty.link( function( position ) {
+    //  if ( toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition( position ) ) ) {
+    //    viewProperty.isMeasuringTapeVisible.set( false );
+    //  }
+    //} );
+
 
     // if in debug mode
     if ( IS_DEBUG ) {
@@ -292,10 +311,10 @@ define( function( require ) {
     this.addChild( electricFieldGridNode );
     this.addChild( electricFieldLineNode );
     this.addChild( equipotentialLineNode );
-    this.addChild( chargesAndFieldsControlPanel );
+    this.addChild( controlPanel );
     this.addChild( resetAllButton );
     this.addChild( chargeAndSensorEnclosure );
-
+    this.addChild( toolbox );
     this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );

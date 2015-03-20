@@ -13,21 +13,13 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var EraserButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EraserButton' );
-  // var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
-  //var HStrut = require( 'SUN/HStrut' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  //var Panel = require( 'SUN/Panel' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
-  // tools for drawing
-  //var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
-  //var Path = require( 'SCENERY/nodes/Path' );
-  //var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  //var Shape = require( 'KITE/Shape' );
 
   // strings
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );

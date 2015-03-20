@@ -151,8 +151,6 @@ define( function( require ) {
       movableDragHandler.setDragBounds( bounds );
     } );
 
-
-
   }
 
   return inherit( Node, ElectricPotentialSensorNode );

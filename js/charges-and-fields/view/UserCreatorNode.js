@@ -23,7 +23,7 @@ define( function( require ) {
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
-  var ScreenView = require( 'JOIST/ScreenView' );
+  //var ScreenView = require( 'JOIST/ScreenView' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -42,7 +42,7 @@ define( function( require ) {
                             availableModelBoundsProperty,
                             options ) {
 
-    var self = this;
+    //var self = this;
 
     // Call the super constructor
     Node.call( this, {

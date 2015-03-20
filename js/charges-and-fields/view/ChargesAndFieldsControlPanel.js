@@ -24,29 +24,23 @@ define( function( require ) {
   var electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
   var directionOnlyString = require( 'string!CHARGES_AND_FIELDS/directionOnly' );
   var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
-  var equipotentialSensorString = require( 'string!CHARGES_AND_FIELDS/equipotentialSensor' );
   var gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
   var valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
-  var tapeMeasureString = require( 'string!CHARGES_AND_FIELDS/tapeMeasure' );
 
   /**
    * Control panel constructor
    * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty
    * @param {Property.<boolean>} isElectricPotentialGridVisibleProperty
-   * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @param {Property.<boolean>} isGridVisibleProperty
-   * @param {Property.<boolean>} isTapeMeasureVisibleProperty
    * @constructor
    */
   function ChargesAndFieldsControlPanel( isElectricFieldGridVisibleProperty,
                          isDirectionOnlyElectricFieldGridVisibleProperty,
                          isElectricPotentialGridVisibleProperty,
-                         isElectricPotentialSensorVisibleProperty,
                          isValuesVisibleProperty,
-                         isGridVisibleProperty,
-                         isTapeMeasureVisibleProperty ) {
+                         isGridVisibleProperty) {
 
     var controlPanel = this;
 
@@ -68,18 +62,14 @@ define( function( require ) {
     var electricFieldText = new Text( electricFieldString, textOptions );
     var directionOnlyText = new Text( directionOnlyString, textOptions );
     var voltageText = new Text( voltageString, textOptions );
-    var equipotentialSensorText = new Text( equipotentialSensorString, textOptions );
     var valuesText = new Text( gridString, textOptions );
     var gridText = new Text( valuesString, textOptions );
-    var tapeMeasureText = new Text( tapeMeasureString, textOptions );
 
     var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldGridVisibleProperty, checkBoxOptions );
     var directionOnlyCheckBox = new CheckBox( directionOnlyText, isDirectionOnlyElectricFieldGridVisibleProperty, checkBoxOptions );
     var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialGridVisibleProperty, checkBoxOptions );
-    var equipotentialSensorCheckBox = new CheckBox( equipotentialSensorText, isElectricPotentialSensorVisibleProperty, checkBoxOptions );
     var valuesCheckBox = new CheckBox( gridText, isValuesVisibleProperty, checkBoxOptions );
     var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, checkBoxOptions );
-    var tapeMeasureCheckBox = new CheckBox( tapeMeasureText, isTapeMeasureVisibleProperty, checkBoxOptions );
 
     var directionOnlyGroup = new Node();
     var hStrut = new HStrut( 25 );
@@ -93,10 +83,8 @@ define( function( require ) {
         electricFieldCheckBox,
         directionOnlyGroup,
         voltageCheckBox,
-        equipotentialSensorCheckBox,
         valuesCheckBox,
         gridCheckBox,
-        tapeMeasureCheckBox
       ], align: 'left'
     } );
 
@@ -114,10 +102,8 @@ define( function( require ) {
     ChargesAndFieldsColors.controlPanelTextProperty.link( function( color ) {
       electricFieldText.fill = color;
       voltageText.fill = color;
-      equipotentialSensorText.fill = color;
       valuesText.fill = color;
       gridText.fill = color;
-      tapeMeasureText.fill = color;
     } );
 
     // create a derived property to be used for the content of directionOnlyCheckBox
@@ -148,10 +134,8 @@ define( function( require ) {
       electricFieldCheckBox,
       directionOnlyCheckBox,
       voltageCheckBox,
-      equipotentialSensorCheckBox,
       valuesCheckBox,
       gridCheckBox,
-      tapeMeasureCheckBox
     ];
 
     ChargesAndFieldsColors.checkBoxProperty.link( function( color ) {
