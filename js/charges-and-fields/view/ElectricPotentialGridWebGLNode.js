@@ -161,18 +161,18 @@ define( function( require ) {
 
         drawable.computeShaderProgram = new ShaderProgram( gl, [
           // vertex shader
-          'attribute vec3 aPosition;\n',
-          'varying vec2 vPos;\n',
-          'void main() {\n',
-          '  vPos = aPosition.xy * 0.5 + 0.5;\n',
-          '  gl_Position = vec4( aPosition, 1 );\n',
+          'attribute vec3 aPosition;',
+          'varying vec2 vPos;',
+          'void main() {',
+          '  vPos = aPosition.xy * 0.5 + 0.5;',
+          '  gl_Position = vec4( aPosition, 1 );',
           '}'
         ].join( '\n' ), [
           // fragment shader
-          'precision mediump float;\n',
-          'varying vec2 vPos;\n',
-          'void main() {\n',
-          '  gl_FragColor = vec4( sin( vPos.x * 40.0 ) + 2.0 * cos( vPos.y * vPos.x * 50.0 ), 0.0, 0.0, 1.0 );\n',
+          'precision mediump float;',
+          'varying vec2 vPos;',
+          'void main() {',
+          '  gl_FragColor = vec4( 12.0 * ( sin( vPos.x * 40.0 ) + 2.0 * cos( vPos.y * vPos.x * 50.0 ) ), 0.0, 0.0, 1.0 );',
           '}'
         ].join( '\n' ), {
           attributes: [ 'aPosition' ],
@@ -181,31 +181,36 @@ define( function( require ) {
 
         drawable.displayShaderProgram = new ShaderProgram( gl, [
           // vertex shader
-          'attribute vec3 aPosition;\n',
-          'varying vec2 texCoord;\n',
-          'void main() {\n',
-          '  texCoord = aPosition.xy * 0.5 + 0.5;\n',
-          '  gl_Position = vec4( aPosition, 1 );\n',
+          'attribute vec3 aPosition;',
+          'varying vec2 texCoord;',
+          'void main() {',
+          '  texCoord = aPosition.xy * 0.5 + 0.5;',
+          '  gl_Position = vec4( aPosition, 1 );',
           '}'
         ].join( '\n' ), [
           // fragment shader
-          'precision mediump float;\n',
-          'varying vec2 texCoord;\n',
-          'uniform sampler2D uTexture;\n',
-          'uniform vec2 uScale;\n',
-          'void main() {\n',
-          // '  gl_FragColor = texture2D( uTexture, texCoord );\n',
-          '  float value = texture2D( uTexture, vec2( texCoord.x * uScale.x, texCoord.y * uScale.y ) ).x;\n', // TODO: optimize?
-          '  if ( value > 0.0 ) {\n',
-          '    gl_FragColor = vec4( value, value, 0.0, 1.0 );\n',
-          '  } else {\n',
-          '    gl_FragColor = vec4( 0.0, 0.0, -value, 1.0 );\n',
-          '  }\n',
+          'precision mediump float;',
+          'varying vec2 texCoord;',
+          'uniform sampler2D uTexture;',
+          'uniform vec2 uScale;',
+          'uniform vec3 uZeroColor;',
+          'uniform vec3 uPositiveColor;',
+          'uniform vec3 uNegativeColor;',
+          'void main() {',
+          // '  gl_FragColor = texture2D( uTexture, texCoord );',
+          '  float value = texture2D( uTexture, vec2( texCoord.x * uScale.x, texCoord.y * uScale.y ) ).x;', // TODO: optimize?
+          '  if ( value > 0.0 ) {',
+          '    value = min( value / 40.0, 1.0 );', // clamp to [0,1]
+          '    gl_FragColor = vec4( uPositiveColor * value + uZeroColor * ( 1.0 - value ), 1.0 );',
+          '  } else {',
+          '    value = min( -value / 40.0, 1.0 );', // clamp to [0,1]
+          '    gl_FragColor = vec4( uNegativeColor * value + uZeroColor * ( 1.0 - value ), 1.0 );',
+          '  }',
           '}'
         ].join( '\n' ), {
           attributes: [ 'aPosition' ],
           // uniforms: []
-          uniforms: [ 'uTexture', 'uScale' ]
+          uniforms: [ 'uTexture', 'uScale', 'uZeroColor', 'uPositiveColor', 'uNegativeColor' ]
         } );
 
         drawable.vertexBuffer = gl.createBuffer();
@@ -280,6 +285,12 @@ define( function( require ) {
 
         displayShaderProgram.use();
 
+        var zeroColor = ChargesAndFieldsColors.electricPotentialGridZero;
+        var positiveColor = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;
+        var negativeColor = ChargesAndFieldsColors.electricPotentialGridSaturationNegative;
+        gl.uniform3f( displayShaderProgram.uniformLocations.uZeroColor, zeroColor.red / 255, zeroColor.green / 255, zeroColor.blue / 255 );
+        gl.uniform3f( displayShaderProgram.uniformLocations.uPositiveColor, positiveColor.red / 255, positiveColor.green / 255, positiveColor.blue / 255 );
+        gl.uniform3f( displayShaderProgram.uniformLocations.uNegativeColor, negativeColor.red / 255, negativeColor.green / 255, negativeColor.blue / 255 );
         gl.uniform2f( displayShaderProgram.uniformLocations.uScale, drawable.canvasWidth / drawable.textureWidth, drawable.canvasHeight / drawable.textureHeight );
 
         gl.bindBuffer( gl.ARRAY_BUFFER, drawable.vertexBuffer );
