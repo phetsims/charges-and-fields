@@ -23,15 +23,22 @@ define( function( require ) {
 
     /**
      *
+     * @param model
      * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
      * @param {Function} update -       model.on.bind(model),
-     * @param {Bounds2} bounds
+     * @param {Property.<Bounds2>} availableModelBoundsProperty
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
-    function ElectricPotentialGridWebGLNode( electricPotentialSensorGrid, update, bounds, modelViewTransform, isChargedParticlePresentProperty, isVisibleProperty ) {
+    function ElectricPotentialGridWebGLNode( model,
+                                             electricPotentialSensorGrid,
+                                             update,
+                                             availableModelBoundsProperty,
+                                             modelViewTransform,
+                                             isChargedParticlePresentProperty,
+                                             isVisibleProperty ) {
 
       // prepare the canvas
       this.canvas = document.createElement( 'canvas' );
