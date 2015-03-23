@@ -25,8 +25,9 @@ define( function( require ) {
      *
      * @param model
      * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
-     * @param {Function} update -       model.on.bind(model),
-     * @param {Property.<Bounds2>} availableModelBoundsProperty
+     * @param {Function} update -  model.on.bind(model)
+     * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given an electric potential
+     * @param {Property.<Bounds2>} boundsProperty - bounds of the canvas in model units
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
      * @param {Property.<boolean>} isVisibleProperty
@@ -35,7 +36,8 @@ define( function( require ) {
     function ElectricPotentialGridWebGLNode( model,
                                              electricPotentialSensorGrid,
                                              update,
-                                             availableModelBoundsProperty,
+                                             colorInterpolationFunction,
+                                             boundsProperty,
                                              modelViewTransform,
                                              isChargedParticlePresentProperty,
                                              isVisibleProperty ) {
