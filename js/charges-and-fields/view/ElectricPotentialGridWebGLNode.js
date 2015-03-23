@@ -14,6 +14,7 @@ define( function( require ) {
     var inherit = require( 'PHET_CORE/inherit' );
     var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
     var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
+    var Util = require( 'SCENERY/util/Util' );
 
     /**
      *
@@ -51,123 +52,261 @@ define( function( require ) {
         self.invalidatePaint();
       } );
 
-      update( 'electricPotentialGridUpdated', function() {
-        self.invalidatePaint();
-      } );
-
       isVisibleProperty.link( function( isVisible ) {
         self.visible = isVisible;
       } );
+
+      // Queued changes of type { charge: {number}, oldPosition: {Vector2}, newPosition: {Vector2} }
+      this.queue = [];
+
+      this.positionListeners = []; // functions to be called back when particle positions change
+      model.chargedParticles.addItemAddedListener( this.onParticleAdded.bind( this ) );
+      model.chargedParticles.addItemRemovedListener( this.onParticleRemoved.bind( this ) );
 
       this.invalidatePaint();
     }
 
     return inherit( WebGLNode, ElectricPotentialGridWebGLNode, {
+      onParticleAdded: function( particle ) {
+        this.queue.push( {
+          charge: particle.charge,
+          oldPosition: null,
+          newPosition: particle.position.copy()
+        } );
+        console.log( 'add ' + particle.charge + ' ' + particle.position.toString() );
+
+        // add the position listener
+        var positionListener = this.onParticleMoved.bind( this, particle );
+        positionListener.particle = particle;
+        this.positionListeners.push( positionListener );
+        particle.positionProperty.lazyLink( positionListener );
+
+        this.invalidatePaint();
+      },
+
+      onParticleMoved: function( particle, newPosition, oldPosition ) {
+        // Check to see if we can update an add/move for the same particle to a new position instead of creating
+        // multiple queue entries for a single particle
+        var modified = false;
+        for ( var i = 0; i < this.queue.length; i++ ) {
+          var item = this.queue[i];
+          if ( item.newPosition && item.newPosition.equals( oldPosition ) && item.charge === particle.charge ) {
+            item.newPosition = newPosition;
+            console.log( 'update ' + particle.charge + ' ' + newPosition.toString() );
+            modified = true;
+            break;
+          }
+        }
+
+        if ( !modified ) {
+          this.queue.push( {
+            charge: particle.charge,
+            oldPosition: oldPosition.copy(),
+            newPosition: newPosition.copy()
+          } );
+          console.log( 'move ' + particle.charge + ' ' + oldPosition.toString() + ' to ' + newPosition.toString() );
+        }
+
+        this.invalidatePaint();
+      },
+
+      onParticleRemoved: function( particle ) {
+        var modified = false;
+        for ( var i = 0; i < this.queue.length; i++ ) {
+          var item = this.queue[i];
+          if ( item.newPosition && item.newPosition.equals( particle.position ) && item.charge === particle.charge ) {
+            item.newPosition = null;
+            console.log( 'update ' + particle.charge + ' null' );
+            // remove the item from the list if we would add-remove it
+            if ( item.oldPosition === null && item.newPosition === null ) {
+              this.queue.splice( i, 1 );
+              console.log( 'remove ' + particle.charge + ' ' + particle.position.toString() );
+            }
+            modified = true;
+            break;
+          }
+        }
+
+        if ( !modified ) {
+          this.queue.push( {
+            charge: particle.charge,
+            oldPosition: particle.position.copy(),
+            newPosition: null
+          } );
+          console.log( 'remove ' + particle.charge + ' ' + particle.position.toString() );
+        }
+
+        // remove the position listener
+        for ( var k = 0; k < this.positionListeners.length; k++ ) {
+          if ( this.positionListeners[k].particle === particle ) {
+            particle.positionProperty.unlink( this.positionListeners[k] );
+            this.positionListeners.splice( k, 1 );
+            break;
+          }
+        }
+
+        this.invalidatePaint();
+      },
+
       initializeWebGLDrawable: function( drawable ) {
         var gl = drawable.gl;
 
         // we will need this extension
         gl.getExtension( 'OES_texture_float' );
 
-        var vertexShaderSource = [
-          // Position
-          'attribute vec3 aPosition;',
-          'attribute vec3 aColor;',
-          'varying vec3 vColor;',
-          'uniform mat3 uModelViewMatrix;',
-          'uniform mat3 uProjectionMatrix;',
+        drawable.framebuffer = gl.createFramebuffer();
 
-          'void main( void ) {',
-          '  vColor = aColor;',
-          // homogeneous model-view transformation
-          '  vec3 view = uModelViewMatrix * vec3( aPosition.xy, 1 );',
-          // homogeneous map to to normalized device coordinates
-          '  vec3 ndc = uProjectionMatrix * vec3( view.xy, 1 );',
-          // combine with the z coordinate specified
-          '  gl_Position = vec4( ndc.xy, aPosition.z, 1.0 );',
+        drawable.currentTexture = gl.createTexture();
+        this.sizeTexture( drawable, drawable.currentTexture );
+
+        drawable.computeShaderProgram = new ShaderProgram( gl, [
+          // vertex shader
+          'attribute vec3 aPosition;\n',
+          'varying vec2 vPos;\n',
+          'void main() {\n',
+          '  vPos = aPosition.xy * 0.5 + 0.5;\n',
+          '  gl_Position = vec4( aPosition, 1 );\n',
           '}'
-        ].join( '\n' );
-
-        // Simple demo for custom shader
-        var fragmentShaderSource = [
-          'precision mediump float;',
-          'varying vec3 vColor;',
-
-          // Returns the color from the vertex shader
-          'void main( void ) {',
-          '  gl_FragColor = vec4( vColor, 1.0 );',
+        ].join( '\n' ), [
+          // fragment shader
+          'precision mediump float;\n',
+          'varying vec2 vPos;\n',
+          'void main() {\n',
+          '  gl_FragColor = vec4( sin( vPos.x * 40.0 ) + 2.0 * cos( vPos.y * vPos.x * 50.0 ), 0.0, 0.0, 1.0 );\n',
           '}'
-        ].join( '\n' );
+        ].join( '\n' ), {
+          attributes: [ 'aPosition' ],
+          uniforms: []
+        } );
 
-        drawable.shaderProgram = new ShaderProgram( gl, vertexShaderSource, fragmentShaderSource, {
-          attributes: [ 'aPosition', 'aColor' ],
-          uniforms: [ 'uModelViewMatrix', 'uProjectionMatrix' ]
+        drawable.displayShaderProgram = new ShaderProgram( gl, [
+          // vertex shader
+          'attribute vec3 aPosition;\n',
+          'varying vec2 texCoord;\n',
+          'void main() {\n',
+          '  texCoord = aPosition.xy * 0.5 + 0.5;\n',
+          '  gl_Position = vec4( aPosition, 1 );\n',
+          '}'
+        ].join( '\n' ), [
+          // fragment shader
+          'precision mediump float;\n',
+          'varying vec2 texCoord;\n',
+          'uniform sampler2D uTexture;\n',
+          'uniform vec2 uScale;\n',
+          'void main() {\n',
+          // '  gl_FragColor = texture2D( uTexture, texCoord );\n',
+          '  float value = texture2D( uTexture, vec2( texCoord.x * uScale.x, texCoord.y * uScale.y ) ).x;\n', // TODO: optimize?
+          '  if ( value > 0.0 ) {\n',
+          '    gl_FragColor = vec4( value, value, 0.0, 1.0 );\n',
+          '  } else {\n',
+          '    gl_FragColor = vec4( 0.0, 0.0, -value, 1.0 );\n',
+          '  }\n',
+          '}'
+        ].join( '\n' ), {
+          attributes: [ 'aPosition' ],
+          // uniforms: []
+          uniforms: [ 'uTexture', 'uScale' ]
         } );
 
         drawable.vertexBuffer = gl.createBuffer();
-
-        this.positions = new Float32Array( [
-          0, 0, 0.2,
-          100, 0, 0.2,
-          0, 100, 0.2
-        ] );
         gl.bindBuffer( gl.ARRAY_BUFFER, drawable.vertexBuffer );
-        gl.bufferData( gl.ARRAY_BUFFER, this.positions, gl.STATIC_DRAW );
-
-        drawable.colorBuffer = gl.createBuffer();
-
-        gl.bindBuffer( gl.ARRAY_BUFFER, drawable.colorBuffer );
         gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( [
-          1, 0, 0,
-          0, 1, 0,
-          0, 0, 1
+          -1, -1,
+          -1, +1,
+          +1, -1,
+          +1, +1
         ] ), gl.STATIC_DRAW );
+      },
+
+      sizeTexture: function( drawable, texture ) {
+        var gl = drawable.gl;
+        var width = gl.canvas.width;
+        var height = gl.canvas.height;
+        var powerOf2Width = Util.toPowerOf2( width );
+        var powerOf2Height = Util.toPowerOf2( height );
+        drawable.canvasWidth = width;
+        drawable.canvasHeight = height;
+        drawable.textureWidth = powerOf2Width;
+        drawable.textureHeight = powerOf2Height;
+
+        gl.bindTexture( gl.TEXTURE_2D, texture );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, powerOf2Width, powerOf2Height, 0, gl.RGB, gl.FLOAT, null );
+        gl.bindTexture( gl.TEXTURE_2D, null );
       },
 
       paintWebGLDrawable: function( drawable, matrix ) {
         var gl = drawable.gl;
-        var shaderProgram = drawable.shaderProgram;
+        var computeShaderProgram = drawable.computeShaderProgram;
+        var displayShaderProgram = drawable.displayShaderProgram;
 
-        if ( this.model.chargedParticles.length >= 1 ) {
-          var p1 = this.modelViewTransform.modelToViewPosition( this.model.chargedParticles.get( 0 ).position );
-          this.positions[0] = p1.x;
-          this.positions[1] = p1.y;
-        }
-        if ( this.model.chargedParticles.length >= 2 ) {
-          var p2 = this.modelViewTransform.modelToViewPosition( this.model.chargedParticles.get( 1 ).position );
-          this.positions[3] = p2.x;
-          this.positions[4] = p2.y;
-        }
-        if ( this.model.chargedParticles.length >= 3 ) {
-          var p3 = this.modelViewTransform.modelToViewPosition( this.model.chargedParticles.get( 2 ).position );
-          this.positions[6] = p3.x;
-          this.positions[7] = p3.y;
-        }
-        gl.bindBuffer( gl.ARRAY_BUFFER, drawable.vertexBuffer );
-        gl.bufferData( gl.ARRAY_BUFFER, this.positions, gl.STATIC_DRAW );
+        /*---------------------------------------------------------------------------*
+        * Compute step
+        *----------------------------------------------------------------------------*/
 
+        computeShaderProgram.use();
 
-        shaderProgram.use();
-
-        gl.uniformMatrix3fv( shaderProgram.uniformLocations.uModelViewMatrix, false, matrix.entries );
-        gl.uniformMatrix3fv( shaderProgram.uniformLocations.uProjectionMatrix, false, drawable.webGLBlock.projectionMatrixArray );
+        gl.bindFramebuffer( gl.FRAMEBUFFER, drawable.framebuffer );
+        gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, drawable.currentTexture, 0 );
 
         gl.bindBuffer( gl.ARRAY_BUFFER, drawable.vertexBuffer );
-        gl.vertexAttribPointer( shaderProgram.attributeLocations.aPosition, 3, gl.FLOAT, false, 0, 0 );
+        gl.vertexAttribPointer( computeShaderProgram.attributeLocations.aPosition, 2, gl.FLOAT, false, 0, 0 );
 
-        gl.bindBuffer( gl.ARRAY_BUFFER, drawable.colorBuffer );
-        gl.vertexAttribPointer( shaderProgram.attributeLocations.aColor, 3, gl.FLOAT, false, 0, 0 );
+        gl.activeTexture( gl.TEXTURE0 );
+        // TODO: read from other texture
 
-        gl.drawArrays( gl.TRIANGLES, 0, 3 );
+        gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
+        gl.bindFramebuffer( gl.FRAMEBUFFER, null );
 
-        shaderProgram.unuse();
+        computeShaderProgram.unuse();
+
+        // this.modelViewTransform.modelToViewPosition( this.model.chargedParticles.get( 0 ).position );
+
+        // computeShaderProgram.use();
+
+        // gl.uniformMatrix3fv( computeShaderProgram.uniformLocations.uModelViewMatrix, false, matrix.entries );
+        // gl.uniformMatrix3fv( computeShaderProgram.uniformLocations.uProjectionMatrix, false, drawable.webGLBlock.projectionMatrixArray );
+
+        // gl.bindBuffer( gl.ARRAY_BUFFER, drawable.vertexBuffer );
+        // gl.vertexAttribPointer( computeShaderProgram.attributeLocations.aPosition, 3, gl.FLOAT, false, 0, 0 );
+
+        // gl.bindBuffer( gl.ARRAY_BUFFER, drawable.colorBuffer );
+        // gl.vertexAttribPointer( computeShaderProgram.attributeLocations.aColor, 3, gl.FLOAT, false, 0, 0 );
+
+        // gl.drawArrays( gl.TRIANGLES, 0, 3 );
+
+        // computeShaderProgram.unuse();
+
+        displayShaderProgram.use();
+
+        gl.uniform2f( displayShaderProgram.uniformLocations.uScale, drawable.canvasWidth / drawable.textureWidth, drawable.canvasHeight / drawable.textureHeight );
+
+        gl.bindBuffer( gl.ARRAY_BUFFER, drawable.vertexBuffer );
+        gl.vertexAttribPointer( displayShaderProgram.attributeLocations.aPosition, 2, gl.FLOAT, false, 0, 0 );
+
+        gl.activeTexture( gl.TEXTURE0 );
+        gl.bindTexture( gl.TEXTURE_2D, drawable.currentTexture );
+        gl.uniform1i( displayShaderProgram.uniformLocations.uTexture, 0 );
+
+        gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
+
+        gl.bindTexture( gl.TEXTURE_2D, null );
+
+        displayShaderProgram.unuse();
+
+        this.queue = [];
       },
 
       disposeWebGLDrawable: function( drawable ) {
-        drawable.shaderProgram.dispose();
+        drawable.computeShaderProgram.dispose();
+        drawable.displayShaderProgram.dispose();
+        drawable.gl.deleteTexture( drawable.currentTexture );
         drawable.gl.deleteBuffer( drawable.vertexBuffer );
+        drawable.gl.deleteFramebuffer( drawable.framebuffer );
 
-        drawable.shaderProgram = null;
+        drawable.computeShaderProgram = null;
+        drawable.displayShaderProgram = null;
       }
     } );
   }
