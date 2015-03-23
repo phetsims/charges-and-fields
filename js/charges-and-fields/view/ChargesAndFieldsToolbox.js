@@ -46,8 +46,10 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndFieldsToolbox( electricPotentialSensorPositionProperty,
+                                    electricPotentialUserControlledProperty,
                                     measuringTapeBasePositionProperty,
                                     measuringTapeTipPositionProperty,
+                                    measuringTapeUserControlledProperty,
                                     isElectricPotentialSensorVisibleProperty,
                                     isMeasuringTapeVisibleProperty,
                                     modelViewTransform,
@@ -97,7 +99,7 @@ define( function( require ) {
         },
         startDrag: function( event ) {
 
-
+          measuringTapeUserControlledProperty.set( true );
           var testNode = toolbox;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
@@ -115,6 +117,7 @@ define( function( require ) {
           measuringTapeBasePositionProperty.link( this.positionListener );
         },
         endDrag: function( event ) {
+          measuringTapeUserControlledProperty.set( false );
           measuringTapeBasePositionProperty.unlink( this.positionListener );
         }
       } );
@@ -126,7 +129,7 @@ define( function( require ) {
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
-
+          electricPotentialUserControlledProperty.set( true );
           var testNode = toolbox;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
@@ -143,6 +146,7 @@ define( function( require ) {
           isElectricPotentialSensorVisibleProperty.set( true );
         },
         endDrag: function( event ) {
+          electricPotentialUserControlledProperty.set( false );
         }
       } );
 

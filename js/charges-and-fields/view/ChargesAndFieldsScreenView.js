@@ -167,16 +167,6 @@ define( function( require ) {
       viewProperty.isValuesVisibleProperty,
       viewProperty.isGridVisibleProperty );
 
-    // Create the toolbox with the measuring tape and the electric potential sensor icons
-    var toolbox = new ChargesAndFieldsToolbox(
-      model.electricPotentialSensor.positionProperty,
-      viewProperty.measuringTapeBasePositionProperty,
-      viewProperty.measuringTapeTipPositionProperty,
-      viewProperty.isElectricPotentialSensorVisibleProperty,
-      viewProperty.isMeasuringTapeVisibleProperty,
-      modelViewTransform,
-      viewProperty.availableModelBoundsProperty
-    );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
@@ -207,6 +197,19 @@ define( function( require ) {
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
     } );
+
+    // Create the toolbox with the measuring tape and the electric potential sensor icons
+    var toolbox = new ChargesAndFieldsToolbox(
+      model.electricPotentialSensor.positionProperty,
+      model.electricPotentialSensor.userControlledProperty,
+      viewProperty.measuringTapeBasePositionProperty,
+      viewProperty.measuringTapeTipPositionProperty,
+      measuringTape.isBaseUserControlledProperty,
+      viewProperty.isElectricPotentialSensorVisibleProperty,
+      viewProperty.isMeasuringTapeVisibleProperty,
+      modelViewTransform,
+      viewProperty.availableModelBoundsProperty
+    );
 
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.

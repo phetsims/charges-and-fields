@@ -5,7 +5,6 @@
  * It contains a tip and a base that can be dragged separately,
  * with a text indicating the measurement.
  * The motion of the measuring tape can be confined by drag bounds.
- * It assumes that the position of this node is set to (0,0) in the parent Node.
  *
  * @author Vasily Shakhov (Mlearner)
  * @author Siddhartha Chinthapally (ActualConcepts)
@@ -297,6 +296,16 @@ define( function( require ) {
     },
 
     /**
+     * Ensures that this node is subject to garbage collection
+     * @public
+     */
+    dispose: function() {
+      this.isVisibleProperty.unlink( this.isVisiblePropertyObserver );
+      this.unitsProperty.unlink( this.unitsPropertyObserver );
+      this.scaleProperty.unlink( this.scalePropertyObserver );
+    },
+
+    /**
      * Returns a readout of the current measurement
      * @public
      * @returns {string}
@@ -307,13 +316,19 @@ define( function( require ) {
     },
 
     /**
-     * Ensures that this node is subject to garbage collection
-     * @public
+     * Sets the color of the text label
+     * @param {string||Color} color
      */
-    dispose: function() {
-      this.isVisibleProperty.unlink( this.isVisiblePropertyObserver );
-      this.unitsProperty.unlink( this.unitsPropertyObserver );
-      this.scaleProperty.unlink( this.scalePropertyObserver );
+    setTextColor: function( color ) {
+      this.labelText.fill = color;
+    },
+
+    /**
+     * Sets the visibility of the text label
+     * @param {boolean} visible
+     */
+    setTextVisibility: function( visible ) {
+      this.labelText.visible = visible;
     },
 
     /**
@@ -331,6 +346,15 @@ define( function( require ) {
     getIsBaseUserControlledProperty: function() {
       return this._isBaseUserControlledProperty;
     },
+
+    /**
+     * Set the property indicating if the baseImage of the measuring tape is being dragged or not
+     * @param {boolean} value
+     */
+    setIsBaseUserControlledProperty: function( value ) {
+      this._isBaseUserControlledProperty.set( value );
+    },
+
     /**
      * Sets the dragBounds of the of the measuringTape.
      * In addition, it forces the tip and base of the measuring tape to be within the new bounds.
@@ -350,14 +374,6 @@ define( function( require ) {
       return this._dragBounds;
     },
 
-    /**
-     * Sets the color of the text label
-     * @param {string||Color} color
-     */
-    setTextColor: function( color ) {
-      this.labelText.fill = color;
-    },
-
     // ES5 getter and setter for the textColor
     set textColor( value ) { this.setTextColor( value ); },
     get textColor() { return this.labelText.fill; },
@@ -368,7 +384,10 @@ define( function( require ) {
 
     // ES5 getters
     get isBaseUserControlledProperty() { return this.getIsBaseUserControlledProperty(); },
-    get isTipUserControlledProperty() { return this.getIsTipUserControlledProperty(); }
+    get isTipUserControlledProperty() { return this.getIsTipUserControlledProperty(); },
+
+    set isBaseUserControlledProperty( value ) { return this.setIsBaseUserControlledProperty( value ); },
+    set isTipUserControlledProperty( value ) { return this.setIsTipUserControlledProperty( value ); }
   } );
 } );
 
