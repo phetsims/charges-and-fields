@@ -75,7 +75,7 @@ define( function( require ) {
     var panelContent = new LayoutBox( {
       orientation: 'vertical',
       spacing: 20,
-      children: [ measuringTapeIcon, equipotentialSensorIconImage ],
+      children: [ equipotentialSensorIconImage, measuringTapeIcon ],
       pickable: true
     } );
 
