@@ -197,8 +197,7 @@ define( function( require ) {
           'uniform vec3 uPositiveColor;',
           'uniform vec3 uNegativeColor;',
           'void main() {',
-          // '  gl_FragColor = texture2D( uTexture, texCoord );',
-          '  float value = texture2D( uTexture, vec2( texCoord.x * uScale.x, texCoord.y * uScale.y ) ).x;', // TODO: optimize?
+          '  float value = texture2D( uTexture, texCoord * uScale ).x;',
           '  if ( value > 0.0 ) {',
           '    value = min( value / 40.0, 1.0 );', // clamp to [0,1]
           '    gl_FragColor = vec4( uPositiveColor * value + uZeroColor * ( 1.0 - value ), 1.0 );',
