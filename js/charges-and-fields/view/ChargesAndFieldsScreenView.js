@@ -100,7 +100,8 @@ define( function( require ) {
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
         this.getElectricPotentialColor.bind( this ),
-        viewProperty.availableModelBoundsProperty,
+        viewProperty.avail
+      ableModelBoundsProperty,
         modelViewTransform,
         model.isChargedParticlePresentProperty,
         model.isElectricPotentialGridVisibleProperty
