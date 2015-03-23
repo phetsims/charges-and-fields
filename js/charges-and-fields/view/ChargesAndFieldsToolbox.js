@@ -32,7 +32,7 @@ define( function( require ) {
 
   // images
   var measuringTapeImage = require( 'image!SCENERY_PHET/measuringTape.png' );
-  var equipotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/equipotentialLinePanelOutline.png' );
+  var equipotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/equipotentialSensorIcon.png' );
 
   /**
    * Toolbox constructor
@@ -58,7 +58,7 @@ define( function( require ) {
     Node.call( this );
 
     // Create the icon image for the equipotential sensor
-    var equipotentialSensorIconImage = new Image( equipotentialLinePanelOutlineImage, { cursor: 'pointer' } );
+    var equipotentialSensorIconImage = new Image( equipotentialSensorImage, { cursor: 'pointer', scale: 0.4 } );
 
     //// Create a measuring tape
     //var measuringTapeIcon = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
