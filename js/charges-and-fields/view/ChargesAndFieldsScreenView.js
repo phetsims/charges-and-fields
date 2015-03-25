@@ -190,10 +190,6 @@ define( function( require ) {
     var measuringTape = new MeasuringTape( viewProperty.measuringTapeUnitsProperty, viewProperty.isMeasuringTapeVisibleProperty,
       tapeOptions );
 
-    viewProperty.availableModelBoundsProperty.link( function( bounds ) {
-      measuringTape.dragBounds = bounds;
-    } );
-
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
     } );
@@ -277,6 +273,10 @@ define( function( require ) {
 
 
     this.availableModelBoundsProperty.link( function( bounds ) {
+      // the measuring Tape is subject to dragBounds
+      measuringTape.dragBounds = bounds;
+
+      // the control panel, toolbox and resetAllButtons are set to the right of the bounds
       var right = modelViewTransform.modelToViewX( bounds.maxX );
       controlPanel.right = right - 30;
       resetAllButton.right = controlPanel.right;
