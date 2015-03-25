@@ -272,8 +272,16 @@ define( function( require ) {
     toolbox.top = controlPanel.bottom + 10;
     gridNode.centerX = this.layoutBounds.centerX;
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
-    resetAllButton.right = this.layoutBounds.maxX - 30;
+    resetAllButton.right =  controlPanel.right;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
+
+
+    this.availableModelBoundsProperty.link( function( bounds ) {
+      var right = modelViewTransform.modelToViewX( bounds.maxX );
+      controlPanel.right = right - 30;
+      resetAllButton.right = controlPanel.right;
+      toolbox.right = controlPanel.right;
+    } );
 
     // listens to the userControlled property of the electric potential sensor
     // return the electric Potential sensor to the toolbox if not user Controlled and over the toolbox panel
