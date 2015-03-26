@@ -484,6 +484,26 @@ define( function( require ) {
         drawable.computeShaderProgram = null;
         drawable.displayShaderProgram = null;
       }
+    }, {
+      /**
+       * Detection for support, because iOS Safari 8 doesn't support rendering to a float texture, AND doesn't support
+       * classic detection via an extension (OES_texture_float works).
+       */
+      supportsRenderingToFloatTexture: function() {
+        var canvas = document.createElement( 'canvas' );
+        var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+        gl.getExtension( 'OES_texture_float' );
+        var framebuffer = gl.createFramebuffer();
+        var texture = gl.createTexture();
+        gl.bindTexture( gl.TEXTURE_2D, texture );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, 128, 128, 0, gl.RGB, gl.FLOAT, null );
+        gl.bindTexture( gl.TEXTURE_2D, null );
+        gl.bindFramebuffer( gl.FRAMEBUFFER, framebuffer );
+        gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0 );
+        return gl.checkFramebufferStatus( gl.FRAMEBUFFER ) === gl.FRAMEBUFFER_COMPLETE;
+      }
     } );
   }
 );
