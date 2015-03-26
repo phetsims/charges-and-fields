@@ -61,7 +61,7 @@ define( function( require ) {
                                              isVisibleProperty ) {
       var self = this;
 
-      this.model = model;
+      this.chargedParticles = chargedParticles;
       this.modelViewTransform = modelViewTransform;
       this.isVisibleProperty = isVisibleProperty;
 
@@ -91,8 +91,8 @@ define( function( require ) {
 
       // functions to be called back when particle positions change, tagged with listener.particle = particle
       this.positionListeners = [];
-      model.chargedParticles.addItemAddedListener( this.onParticleAdded.bind( this ) );
-      model.chargedParticles.addItemRemovedListener( this.onParticleRemoved.bind( this ) );
+      chargedParticles.addItemAddedListener( this.onParticleAdded.bind( this ) );
+      chargedParticles.addItemRemovedListener( this.onParticleRemoved.bind( this ) );
 
       this.invalidatePaint();
     }
@@ -100,8 +100,8 @@ define( function( require ) {
     return inherit( WebGLNode, ElectricPotentialGridWebGLNode, {
       // Add notes to the queue to color all particles (without adding listeners)
       addAllParticles: function() {
-        for ( var i = 0; i < this.model.chargedParticles.length; i++ ) {
-          this.addParticle( this.model.chargedParticles.get( i ) );
+        for ( var i = 0; i < this.chargedParticles.length; i++ ) {
+          this.addParticle( this.chargedParticles.get( i ) );
         }
       },
 
@@ -133,7 +133,7 @@ define( function( require ) {
         // one frame.
         var modified = false;
         for ( var i = 0; i < this.queue.length; i++ ) {
-          var item = this.queue[i];
+          var item = this.queue[ i ];
           if ( item.newPosition && item.newPosition.equals( oldPosition ) && item.charge === particle.charge ) {
             item.newPosition = newPosition;
             // console.log( 'update ' + particle.charge + ' ' + newPosition.toString() );
@@ -158,7 +158,7 @@ define( function( require ) {
         // See if we can update an already-in-queue item with a null location.
         var modified = false;
         for ( var i = 0; i < this.queue.length; i++ ) {
-          var item = this.queue[i];
+          var item = this.queue[ i ];
           if ( item.newPosition && item.newPosition.equals( particle.position ) && item.charge === particle.charge ) {
             item.newPosition = null;
             // console.log( 'update ' + particle.charge + ' null' );
@@ -183,8 +183,8 @@ define( function( require ) {
 
         // remove the position listener
         for ( var k = 0; k < this.positionListeners.length; k++ ) {
-          if ( this.positionListeners[k].particle === particle ) {
-            particle.positionProperty.unlink( this.positionListeners[k] );
+          if ( this.positionListeners[ k ].particle === particle ) {
+            particle.positionProperty.unlink( this.positionListeners[ k ] );
             this.positionListeners.splice( k, 1 );
             break;
           }
@@ -373,8 +373,8 @@ define( function( require ) {
         }
 
         /*---------------------------------------------------------------------------*
-        * Compute steps
-        *----------------------------------------------------------------------------*/
+         * Compute steps
+         *----------------------------------------------------------------------------*/
 
         computeShaderProgram.use();
 
@@ -389,7 +389,7 @@ define( function( require ) {
 
         // do a draw call for each particle change
         for ( var i = 0; i < this.queue.length; i++ ) {
-          var item = this.queue[i];
+          var item = this.queue[ i ];
 
           // make future rendering output into currentTexture
           gl.bindFramebuffer( gl.FRAMEBUFFER, drawable.framebuffer );
@@ -438,8 +438,8 @@ define( function( require ) {
         computeShaderProgram.unuse();
 
         /*---------------------------------------------------------------------------*
-        * Display step
-        *----------------------------------------------------------------------------*/
+         * Display step
+         *----------------------------------------------------------------------------*/
 
         displayShaderProgram.use();
 
