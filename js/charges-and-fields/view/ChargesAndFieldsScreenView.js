@@ -89,7 +89,8 @@ define( function( require ) {
 
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
-    var webGLSupported = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowWebGL;
+    var webGLSupported = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowWebGL &&
+                         ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
 
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
