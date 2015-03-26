@@ -107,6 +107,11 @@ define( function( require ) {
       circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
     } );
 
+
+    ChargesAndFieldsColors.on( 'profileChanged', function() {
+    circle.fill = getElectricPotentialColor( electricPotentialSensor.electricPotential, { transparency: 0.5 } );
+    } );
+
     // Show// Hide this node
     // no need to unlink, stays for the lifetime of the simulation
     isElectricPotentialSensorVisibleProperty.linkAttribute( this, 'visible' );
