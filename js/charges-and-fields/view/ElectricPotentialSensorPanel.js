@@ -16,10 +16,11 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Node = require( 'SCENERY/nodes/Node' );
+
 
   // strings
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );

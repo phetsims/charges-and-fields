@@ -108,7 +108,6 @@ define( function( require ) {
         this.getElectricPotentialColor.bind( this ),
         viewProperty.availableModelBoundsProperty,
         modelViewTransform,
-        model.isChargedParticlePresentProperty,
         model.isElectricPotentialGridVisibleProperty
       );
     }

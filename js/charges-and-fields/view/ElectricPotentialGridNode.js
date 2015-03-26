@@ -27,7 +27,6 @@ define( function( require ) {
    * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given an electric potential
    * @param {Property.<Bounds2>} boundsProperty - bounds of the canvas in model units
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isVisibleProperty
    * @constructor
    */
@@ -36,7 +35,6 @@ define( function( require ) {
                                       colorInterpolationFunction,
                                       boundsProperty,
                                       modelViewTransform,
-                                      isChargedParticlePresentProperty,
                                       isVisibleProperty ) {
 
     // Call the super constructor
