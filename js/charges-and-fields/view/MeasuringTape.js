@@ -78,6 +78,7 @@ define( function( require ) {
     this.isVisibleProperty = isVisibleProperty; // @private
     this.scaleProperty = options.scaleProperty; // @private
     this._dragBounds = options.dragBounds; // @private
+    this._modelViewTransform = options.modelViewTransform; // @private
     this.basePositionProperty = options.basePositionProperty;
     this.tipPositionProperty = options.tipPositionProperty;
 
@@ -145,13 +146,13 @@ define( function( require ) {
         allowTouchSnag: true,
         start: function( event, trail ) {
           measuringTape._isBaseUserControlledProperty.set( true );
-          var location = options.modelViewTransform.modelToViewPosition( options.basePositionProperty.value );
+          var location = measuringTape._modelViewTransform.modelToViewPosition( options.basePositionProperty.value );
           this.startOffset = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( location );
         },
 
         drag: function( event ) {
           var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( this.startOffset );
-          var unconstrainedBaseLocation = options.modelViewTransform.viewToModelPosition( parentPoint );
+          var unconstrainedBaseLocation = measuringTape._modelViewTransform.viewToModelPosition( parentPoint );
           var constrainedBaseLocation = constrainToBoundsLocation( unconstrainedBaseLocation, measuringTape._dragBounds );
 
           // the basePosition value has not been updated yet, hence it is the old value of the basePosition;
@@ -181,13 +182,13 @@ define( function( require ) {
       allowTouchSnag: true,
       start: function( event, trail ) {
         measuringTape._isTipUserControlledProperty.set( true );
-        var location = options.modelViewTransform.modelToViewPosition( measuringTape.tipPositionProperty.value );
+        var location = measuringTape._modelViewTransform.modelToViewPosition( measuringTape.tipPositionProperty.value );
         this.startOffset = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( location );
       },
 
       drag: function( event ) {
         var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( this.startOffset );
-        var unconstrainedTipLocation = options.modelViewTransform.viewToModelPosition( parentPoint );
+        var unconstrainedTipLocation = measuringTape._modelViewTransform.viewToModelPosition( parentPoint );
         var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
         // translation of the tipPosition (subject to the constraining drag bounds)
         measuringTape.tipPositionProperty.set( constrainedTipLocation );
@@ -201,8 +202,8 @@ define( function( require ) {
     // link the positions of base and tip to the scenery nodes such as crosshair, tip, labelText, tapeLine, baseImage
     Property.multilink( [ this.basePositionProperty, this.tipPositionProperty ], function( basePosition, tipPosition ) {
 
-      var viewTipPosition = options.modelViewTransform.modelToViewPosition( tipPosition );
-      var viewBasePosition = options.modelViewTransform.modelToViewPosition( basePosition );
+      var viewTipPosition = measuringTape._modelViewTransform.modelToViewPosition( tipPosition );
+      var viewBasePosition = measuringTape._modelViewTransform.modelToViewPosition( basePosition );
 
       // calculate the orientation and change of orientation of the Measuring tape
       var oldAngle = baseImage.getRotation();
@@ -317,6 +318,7 @@ define( function( require ) {
 
     /**
      * Sets the color of the text label
+     * @public
      * @param {string||Color} color
      */
     setTextColor: function( color ) {
@@ -325,6 +327,7 @@ define( function( require ) {
 
     /**
      * Sets the visibility of the text label
+     * @public
      * @param {boolean} visible
      */
     setTextVisibility: function( visible ) {
@@ -333,6 +336,7 @@ define( function( require ) {
 
     /**
      * Returns a property indicating if the tip of the measuring tape is being dragged or not
+     * @public
      * @returns {Property.<boolean>}
      */
     getIsTipUserControlledProperty: function() {
@@ -341,6 +345,7 @@ define( function( require ) {
 
     /**
      * Returns a property indicating if the baseImage of the measuring tape is being dragged or not
+     * @public
      * @returns {Property.<boolean>}
      */
     getIsBaseUserControlledProperty: function() {
@@ -348,7 +353,8 @@ define( function( require ) {
     },
 
     /**
-     * Set the property indicating if the baseImage of the measuring tape is being dragged or not
+     * Sets the property indicating if the baseImage of the measuring tape is being dragged or not
+     * @public
      * @param {boolean} value
      */
     setIsBaseUserControlledProperty: function( value ) {
@@ -358,6 +364,7 @@ define( function( require ) {
     /**
      * Sets the dragBounds of the of the measuringTape.
      * In addition, it forces the tip and base of the measuring tape to be within the new bounds.
+     * @public
      * @param {Bounds2} dragBounds
      */
     setDragBounds: function( dragBounds ) {
@@ -367,22 +374,45 @@ define( function( require ) {
     },
 
     /**
-     * Returns the dragBounds of the sim
+     * Returns the dragBounds of the sim.
+     * @public
      * @returns {Bounds2}
      */
     getDragBounds: function() {
       return this._dragBounds;
     },
 
+    /**
+     * Sets the modelViewTransform.
+     * @public
+     * @param {ModelViewTransform2} modelViewTransform
+     */
+    setModelViewTransform: function( modelViewTransform ) {
+      this._modelViewTransform = modelViewTransform;
+    },
+
+    /**
+     * Gets the modelViewTransform.
+     * @public
+     * @returns {ModelViewTransform2}
+     */
+    getModelViewTransform: function() {
+      return this._modelViewTransform;
+    },
+
     // ES5 getter and setter for the textColor
     set textColor( value ) { this.setTextColor( value ); },
     get textColor() { return this.labelText.fill; },
+
+    // ES5 getter and setter for the modelViewTransform
+    set modelViewTransform( modelViewTransform ) { this._modelViewTransform = modelViewTransform; },
+    get modelViewTransform() { return this._modelViewTransform; },
 
     // ES5 getter and setter for the dragBounds
     set dragBounds( value ) { this.setDragBounds( value ); },
     get dragBounds() { return this.getDragBounds(); },
 
-    // ES5 getters
+    // ES5 getters and setters
     get isBaseUserControlledProperty() { return this.getIsBaseUserControlledProperty(); },
     get isTipUserControlledProperty() { return this.getIsTipUserControlledProperty(); },
 
