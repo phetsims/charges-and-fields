@@ -19,19 +19,19 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   //var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
-  //var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MeasuringTape' );
+  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MeasuringTape' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
-  //var Property = require( 'AXON/Property' );
-  //var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Property = require( 'AXON/Property' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ScreenView = require( 'JOIST/ScreenView' );
   //var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
 
 
   // images
-  var measuringTapeImage = require( 'image!SCENERY_PHET/measuringTape.png' );
+  //var measuringTapeImage = require( 'image!SCENERY_PHET/measuringTape.png' );
   var equipotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/equipotentialSensorIcon.png' );
 
   /**
@@ -62,16 +62,23 @@ define( function( require ) {
     // Create the icon image for the equipotential sensor
     var equipotentialSensorIconImage = new Image( equipotentialSensorImage, { cursor: 'pointer', scale: 0.4 } );
 
-    //// Create a measuring tape
-    //var measuringTapeIcon = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
-    //  {
-    //    tipPositionProperty: new Property( new Vector2( 30, 0 ) ),
-    //    cursor: 'pointer'
-    //  } );
+    // We want to create an icon Image of a measuringTape
+    // First let's create an actual measuring tape
+    var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
+      {
+        tipPositionProperty: new Property( new Vector2( 30, 0 ) ),
+        scale: 0.8 // make it a bit small
+      } );
+    measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
 
-    // Create a measuring tape icon
-    var measuringTapeIcon = new Image( measuringTapeImage, { cursor: 'pointer' } );
+    // create the measuringTape icon with a token rectangle, it must be not empty as the panel will throw an error
+    // if node is empty
+    var measuringTapeIcon = new Node( { children: [ new Rectangle( 0, 0, 1, 1 ) ] } );
 
+    // Create the measuringTape icon using toImage
+    measuringTape.toImage( function( image ) {
+      measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
+    } );
 
     // The content panel with the two icons
     var panelContent = new LayoutBox( {
@@ -81,11 +88,14 @@ define( function( require ) {
       pickable: true
     } );
 
+    // Options for the panel
     var panelOptions = {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10
     };
+
+    // Create and add the panel
     var panel = new Panel( panelContent, panelOptions );
     this.addChild( panel );
 
