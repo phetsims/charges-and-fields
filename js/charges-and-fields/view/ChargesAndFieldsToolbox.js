@@ -37,8 +37,10 @@ define( function( require ) {
   /**
    * Toolbox constructor
    * @param {Property.<Vector2>} electricPotentialSensorPositionProperty
+   * @param {Property.<boolean>}   electricPotentialUserControlledProperty
    * @param {Property.<Vector2>} measuringTapeBasePositionProperty
    * @param {Property.<Vector2>} measuringTapeTipPositionProperty
+   * @param {Property.<boolean>}   measuringTapeUserControlledProperty
    * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty
    * @param {Property.<boolean>} isMeasuringTapeVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
