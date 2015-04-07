@@ -121,7 +121,8 @@ define( function( require ) {
 
           // initial position of the pointer in the screenView coordinates
           var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
-          measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition ) );
+          // TODO: get tid of magic number: use displacement vector based on size of the measuring tape (center to the crosshair base)
+          measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition.plus( new Vector2( 20, 20 ) ) ) );
           isMeasuringTapeVisibleProperty.set( true );
 
           measuringTapeBasePositionProperty.link( this.positionListener );
@@ -151,8 +152,8 @@ define( function( require ) {
 
           // initial position of the pointer in the screenView coordinates
           var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
-
-          electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition ) );
+// TODO: get tid of magic number: use displacement vector based on size of the equipotential sensor
+          electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition.plus( new Vector2( 0, -150 ) ) ) );
           isElectricPotentialSensorVisibleProperty.set( true );
         },
         endDrag: function( event ) {
