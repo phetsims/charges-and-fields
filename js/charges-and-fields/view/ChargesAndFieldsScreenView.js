@@ -60,12 +60,11 @@ define( function( require ) {
    */
   function ChargesAndFieldsScreenView( model ) {
 
-    //var screenView = this;
+    var screenView = this;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
     // Create many properties for checkboxes and Measuring Tape
     var viewProperty = new PropertySet( {
-      availableModelBounds: model.enlargedBounds, // will be used for dragBounds, and the gridNode, set by this.layout
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the equipotential sensor
@@ -76,6 +75,11 @@ define( function( require ) {
       measuringTapeTipPosition: new Vector2( 1, 0 )
     } );
 
+    // Create a property that register the model bounds based on the screen size
+    // Note that unlike the viewProperty set above we do not want the availableModelBounds to reset itself when
+    // the resetAllButton is pressed
+    this.availableModelBoundsProperty = new Property( model.enlargedBounds );
+
     // The origin of the model is sets in the middle of the scree. There are 8 meters across the width of the dev bounds.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       Vector2.ZERO,
@@ -85,7 +89,6 @@ define( function( require ) {
     // convenience variables
     this.modelViewTransform = modelViewTransform;
     this.model = model;
-    this.availableModelBoundsProperty = viewProperty.availableModelBoundsProperty;
 
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
@@ -97,7 +100,7 @@ define( function( require ) {
     if ( webGLSupported ) {
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
         model.chargedParticles,
-        viewProperty.availableModelBoundsProperty,
+        this.availableModelBoundsProperty,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
       );
@@ -107,7 +110,7 @@ define( function( require ) {
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
         this.getElectricPotentialColor.bind( this ),
-        viewProperty.availableModelBoundsProperty,
+        this.availableModelBoundsProperty,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
       );
@@ -118,7 +121,7 @@ define( function( require ) {
       model.electricFieldSensorGrid,
       model.on.bind( model ),
       this.getElectricFieldMagnitudeColor.bind( this ),
-      viewProperty.availableModelBoundsProperty,
+      this.availableModelBoundsProperty,
       modelViewTransform,
       model.isChargedParticlePresentProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
@@ -144,7 +147,7 @@ define( function( require ) {
       model.clearEquipotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
-      viewProperty.availableModelBoundsProperty,
+      this.availableModelBoundsProperty,
       viewProperty.isElectricPotentialSensorVisibleProperty );
 
     // Create a visual grid with major and minor lines on the view
@@ -167,7 +170,6 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         model.reset();
-        //TODO: reset everything but the availableModelBoundsProperty
         viewProperty.reset();
       }
     } );
@@ -175,7 +177,7 @@ define( function( require ) {
 
     // Create a draggable but dragBound Measuring Tape
     var tapeOptions = {
-      dragBounds: viewProperty.availableModelBoundsProperty.value,
+      dragBounds: this.availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       basePositionProperty: viewProperty.measuringTapeBasePositionProperty,
       tipPositionProperty: viewProperty.measuringTapeTipPositionProperty
@@ -199,7 +201,7 @@ define( function( require ) {
       viewProperty.isElectricPotentialSensorVisibleProperty,
       viewProperty.isMeasuringTapeVisibleProperty,
       modelViewTransform,
-      viewProperty.availableModelBoundsProperty
+      this.availableModelBoundsProperty
     );
 
 
@@ -214,7 +216,7 @@ define( function( require ) {
       model.electricFieldSensors,
       model.chargeAndSensorEnclosureBounds,
       modelViewTransform,
-      viewProperty.availableModelBoundsProperty );
+      this.availableModelBoundsProperty );
 
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
@@ -222,7 +224,7 @@ define( function( require ) {
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
         modelViewTransform,
-        viewProperty.availableModelBoundsProperty );
+        screenView.availableModelBoundsProperty );
       draggableElementsLayer.addChild( chargedParticleNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -242,7 +244,7 @@ define( function( require ) {
         addedElectricFieldSensor,
         model.addElectricFieldLine.bind( model ),
         modelViewTransform,
-        viewProperty.availableModelBoundsProperty,
+        screenView.availableModelBoundsProperty,
         viewProperty.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
@@ -427,7 +429,6 @@ define( function( require ) {
       var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
       return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
     },
-    // Layout the EnergySkateParkBasicsScreenView,
 
     /**
      * Function responsible for the layout of the ScreenView.
