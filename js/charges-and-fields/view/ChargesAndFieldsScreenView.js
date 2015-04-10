@@ -1,4 +1,4 @@
-//  Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Main screen View of the Charges and Fields simulation
@@ -75,9 +75,10 @@ define( function( require ) {
       measuringTapeTipPosition: new Vector2( 1, 0 )
     } );
 
-    // Create a property that keep track of the bounds of the screenView. This property can not be part
-    // of the previous PropertySet since unlike the other properties, we dont want to reset it with the resetAllButton.
-    this.availableModelBoundsProperty = new Property( model.enlargedBounds ); // will be used for dragBounds, and the gridNode, set by this.layout
+    // Create a property that register the model bounds based on the screen size
+    // Note that unlike the viewProperty set above we do not want the availableModelBounds to reset itself when
+    // the resetAllButton is pressed
+    this.availableModelBoundsProperty = new Property( model.enlargedBounds );
 
     // The origin of the model is sets in the middle of the scree. There are 8 meters across the width of the dev bounds.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
@@ -88,7 +89,6 @@ define( function( require ) {
     // convenience variables
     this.modelViewTransform = modelViewTransform;
     this.model = model;
-
 
     // Check to see if WebGL was prevented by a query parameter
     var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
@@ -429,7 +429,6 @@ define( function( require ) {
       var b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
       return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
     },
-    // Layout the EnergySkateParkBasicsScreenView,
 
     /**
      * Function responsible for the layout of the ScreenView.

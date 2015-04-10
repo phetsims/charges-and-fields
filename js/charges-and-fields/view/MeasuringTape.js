@@ -31,7 +31,6 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
-
   // images
   var measuringTapeImage = require( 'image!SCENERY_PHET/measuringTape.png' );
 
@@ -49,8 +48,6 @@ define( function( require ) {
     options = _.extend( {
       basePositionProperty: new Property( new Vector2( 0, 0 ) ), // base Position in model coordinate reference frame (rightBottom position of the measuring tape image)
       tipPositionProperty: new Property( new Vector2( 1, 0 ) ), // tip Position in model coordinate reference frame (center position of the tip)
-      //unrolledTapeDistance: 1, // in model coordinates
-      //angle: 0.0, // angle of the tape in radians, recall that in the view, a positive angle means clockwise rotation
       dragBounds: Bounds2.EVERYTHING,// bounds for the measuring tape (in model coordinate reference frame), default value is everything, effectively no bounds
       textPosition: new Vector2( 0, 30 ), // position of the text relative to center of the base image in view units
       modelViewTransform: ModelViewTransform2.createIdentity(),
@@ -293,7 +290,6 @@ define( function( require ) {
     reset: function() {
       this.basePositionProperty.reset();
       this.tipPositionProperty.reset();
-      //TODO: should we reset the dragBounds?
     },
 
     /**
@@ -353,11 +349,21 @@ define( function( require ) {
     },
 
     /**
-     * Sets the property indicating if the baseImage of the measuring tape is being dragged or not
+     * Sets the property indicating if the tip of the measuring tape is being dragged or not.
+     * (Useful to set externally if using a creator node to generate the measuringTape)
      * @public
      * @param {boolean} value
      */
     setIsBaseUserControlledProperty: function( value ) {
+      this._isBaseUserControlledProperty.set( value );
+    },
+
+    /**
+     * Sets the property indicating if the tip of the measuring tape is being dragged or not
+     * @public
+     * @param {boolean} value
+     */
+    setIsTipUserControlledProperty: function( value ) {
       this._isBaseUserControlledProperty.set( value );
     },
 
@@ -419,5 +425,6 @@ define( function( require ) {
     set isBaseUserControlledProperty( value ) { return this.setIsBaseUserControlledProperty( value ); },
     set isTipUserControlledProperty( value ) { return this.setIsTipUserControlledProperty( value ); }
   } );
-} );
+} )
+;
 
