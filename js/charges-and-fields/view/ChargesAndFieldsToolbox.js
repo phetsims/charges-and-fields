@@ -29,7 +29,6 @@ define( function( require ) {
   //var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
 
-
   // images
   //var measuringTapeImage = require( 'image!SCENERY_PHET/measuringTape.png' );
   var equipotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/equipotentialSensorIcon.png' );
