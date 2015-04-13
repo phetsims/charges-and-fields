@@ -57,7 +57,6 @@ define( function( require ) {
       dragBounds: Bounds2.EVERYTHING,
       textPosition: new Vector2( 0, 30 ), // position of the text relative to center of the base image in view units
       modelViewTransform: ModelViewTransform2.createIdentity(),
-
       // scale the apparent length of the unrolled Tape, without changing the measurement, analogous to a zoom factor
       scaleProperty: new Property( 1 ),
       significantFigures: 1, // number of significant figures in the length measurement
@@ -201,9 +200,13 @@ define( function( require ) {
       }
     } ) );
 
-    // link the positions of base and tip to the scenery nodes such as crosshair, tip, labelText, tapeLine, baseImage
-    Property.multilink( [ this.basePositionProperty, this.tipPositionProperty ], function( basePosition, tipPosition ) {
-
+    /**
+     * Update the scenery nodes of the measuring tape such as crosshair, tip, labelText, tapeLine, baseImage
+     * based on the position of the base and tip of the measuringTape
+     * @param {Vector2} basePosition
+     * @param {Vector2} tipPosition
+     */
+    this.updatePosition = function( basePosition, tipPosition ) {
       var viewTipPosition = measuringTape._modelViewTransform.modelToViewPosition( tipPosition );
       var viewBasePosition = measuringTape._modelViewTransform.modelToViewPosition( basePosition );
 
@@ -237,7 +240,11 @@ define( function( require ) {
       if ( options.isBaseCrosshairRotating ) {
         baseCrosshair.rotateAround( viewBasePosition, deltaAngle );
       }
+    };
 
+    // link the positions of base and tip to the measuring tape to the scenery update function
+    Property.multilink( [ this.basePositionProperty, this.tipPositionProperty ], function( basePosition, tipPosition ) {
+      measuringTape.updatePosition( basePosition, tipPosition );
     } );
 
     // @private
@@ -401,6 +408,7 @@ define( function( require ) {
      */
     setModelViewTransform: function( modelViewTransform ) {
       this._modelViewTransform = modelViewTransform;
+      this.updatePosition( this.basePositionProperty.value, this.tipPositionProperty.value );
     },
 
     /**
