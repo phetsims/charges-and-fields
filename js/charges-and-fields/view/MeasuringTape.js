@@ -144,6 +144,7 @@ define( function( require ) {
     baseImage.addInputListener( new SimpleDragHandler( {
         startOffset: 0,
         allowTouchSnag: true,
+
         start: function( event, trail ) {
           measuringTape._isBaseUserControlledProperty.set( true );
           var location = measuringTape._modelViewTransform.modelToViewPosition( options.basePositionProperty.value );
@@ -175,6 +176,7 @@ define( function( require ) {
             }
           }
         },
+
         end: function( event, trail ) {
           measuringTape._isBaseUserControlledProperty.set( false );
         }
@@ -186,6 +188,7 @@ define( function( require ) {
     tip.addInputListener( new SimpleDragHandler( {
       startOffset: 0,
       allowTouchSnag: true,
+
       start: function( event, trail ) {
         measuringTape._isTipUserControlledProperty.set( true );
         var location = measuringTape._modelViewTransform.modelToViewPosition( measuringTape.tipPositionProperty.value );
