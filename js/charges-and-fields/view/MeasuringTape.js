@@ -35,8 +35,9 @@ define( function( require ) {
   var measuringTapeImage = require( 'image!SCENERY_PHET/measuringTape.png' );
 
   /**
-   * Constructor for the measuring Tape
-   * @param {Property.<Object>} unitsProperty - it has two fields, (1) name <string> and (2) multiplier <number>, eg. {name: 'cm', multiplier: 100},
+   * Constructor for the measuring tape
+   * @param {Property.<Object>} unitsProperty - it has two fields, (1) name <string> and (2) multiplier <number>,
+   *                                            eg. {name: 'cm', multiplier: 100},
    * @param {Property.<boolean>} isVisibleProperty
    * @param {Object} [options]
    * @constructor
@@ -46,12 +47,19 @@ define( function( require ) {
 
     Node.call( this );
     options = _.extend( {
-      basePositionProperty: new Property( new Vector2( 0, 0 ) ), // base Position in model coordinate reference frame (rightBottom position of the measuring tape image)
-      tipPositionProperty: new Property( new Vector2( 1, 0 ) ), // tip Position in model coordinate reference frame (center position of the tip)
-      dragBounds: Bounds2.EVERYTHING,// bounds for the measuring tape (in model coordinate reference frame), default value is everything, effectively no bounds
+      // base Position in model coordinate reference frame (rightBottom position of the measuring tape image)
+      basePositionProperty: new Property( new Vector2( 0, 0 ) ),
+
+      // tip Position in model coordinate reference frame (center position of the tip)
+      tipPositionProperty: new Property( new Vector2( 1, 0 ) ),
+
+      // bounds for the measuring tape (in model coordinate reference frame), default value is everything, effectively no bounds
+      dragBounds: Bounds2.EVERYTHING,
       textPosition: new Vector2( 0, 30 ), // position of the text relative to center of the base image in view units
       modelViewTransform: ModelViewTransform2.createIdentity(),
-      scaleProperty: new Property( 1 ), // scale the apparent length of the unrolled Tape, without changing the measurement, analogous to a zoom factor
+
+      // scale the apparent length of the unrolled Tape, without changing the measurement, analogous to a zoom factor
+      scaleProperty: new Property( 1 ),
       significantFigures: 1, // number of significant figures in the length measurement
       textColor: 'white', // color of the length measurement and unit
       textFont: new PhetFont( { size: 16, weight: 'bold' } ), // font for the measurement text
@@ -67,8 +75,8 @@ define( function( require ) {
       isTipCrosshairRotating: true // do crosshairs rotate around their own axis to line up with the tapeline
     }, options );
 
-
-    assert && assert( Math.abs( options.modelViewTransform.modelToViewDeltaX( 1 ) ) === Math.abs( options.modelViewTransform.modelToViewDeltaY( 1 ) ), 'The y and x scale factor are not identical' );
+    assert && assert( Math.abs( options.modelViewTransform.modelToViewDeltaX( 1 ) ) ===
+                      Math.abs( options.modelViewTransform.modelToViewDeltaY( 1 ) ), 'The y and x scale factor are not identical' );
 
     this.significantFigures = options.significantFigures; // @private
     this.unitsProperty = unitsProperty; // @private
@@ -211,7 +219,8 @@ define( function( require ) {
       baseCrosshair.center = viewBasePosition;
       tip.center = viewTipPosition;
 
-      // in order to avoid all kind of geometrical issues with position, let's reset the baseImage upright and then set its position and rotation
+      // in order to avoid all kind of geometrical issues with position,
+      // let's reset the baseImage upright and then set its position and rotation
       baseImage.setRotation( 0 );
       baseImage.rightBottom = viewBasePosition;
       baseImage.rotateAround( baseImage.rightBottom, angle );
@@ -425,6 +434,4 @@ define( function( require ) {
     set isBaseUserControlledProperty( value ) { return this.setIsBaseUserControlledProperty( value ); },
     set isTipUserControlledProperty( value ) { return this.setIsTipUserControlledProperty( value ); }
   } );
-} )
-;
-
+} );
