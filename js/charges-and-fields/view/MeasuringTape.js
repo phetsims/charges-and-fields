@@ -57,8 +57,6 @@ define( function( require ) {
       dragBounds: Bounds2.EVERYTHING,
       textPosition: new Vector2( 0, 30 ), // position of the text relative to center of the base image in view units
       modelViewTransform: ModelViewTransform2.createIdentity(),
-      // scale the apparent length of the unrolled Tape, without changing the measurement, analogous to a zoom factor
-      scaleProperty: new Property( 1 ),
       significantFigures: 1, // number of significant figures in the length measurement
       textColor: 'white', // color of the length measurement and unit
       textFont: new PhetFont( { size: 16, weight: 'bold' } ), // font for the measurement text
@@ -80,7 +78,6 @@ define( function( require ) {
     this.significantFigures = options.significantFigures; // @private
     this.unitsProperty = unitsProperty; // @private
     this.isVisibleProperty = isVisibleProperty; // @private
-    this.scaleProperty = options.scaleProperty; // @private
     this._dragBounds = options.dragBounds; // @private
     this._modelViewTransform = options.modelViewTransform; // @private
     this.basePositionProperty = options.basePositionProperty;
@@ -260,20 +257,6 @@ define( function( require ) {
     // link change of units to the text
     this.unitsProperty.link( this.unitsPropertyObserver ); // must be unlinked in dispose
 
-    // @private length of the unfurled tape scales with the scaleProperty (but text stays the same).
-    this.scalePropertyObserver = function( scale, oldScale ) {
-      // make sure that the oldScale exists, if this is not the case then set to 1.
-      if ( oldScale === null ) {
-        oldScale = 1;
-      }
-      // update the position of the tip
-      var displacementVector = measuringTape.tipPositionProperty.value.minus( measuringTape.basePositionProperty.value );
-      var scaledDisplacementVector = displacementVector.timesScalar( scale / oldScale );
-      measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.value.plus( scaledDisplacementVector ) );
-    };
-    // scaleProperty is analogous to a zoom in/zoom out function
-    this.scaleProperty.link( this.scalePropertyObserver ); // must be unlinked in dispose
-
     this.mutate( options );
   }
 
@@ -312,7 +295,6 @@ define( function( require ) {
     dispose: function() {
       this.isVisibleProperty.unlink( this.isVisiblePropertyObserver );
       this.unitsProperty.unlink( this.unitsPropertyObserver );
-      this.scaleProperty.unlink( this.scalePropertyObserver );
     },
 
     /**
@@ -321,7 +303,7 @@ define( function( require ) {
      * @returns {string}
      */
     getText: function() {
-      return Util.toFixed( this.unitsProperty.value.multiplier * this.tipToBaseDistance / this.scaleProperty.value,
+      return Util.toFixed( this.unitsProperty.value.multiplier * this.tipToBaseDistance,
           this.significantFigures ) + ' ' + this.unitsProperty.value.name;
     },
 
