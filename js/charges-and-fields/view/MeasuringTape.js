@@ -90,9 +90,6 @@ define( function( require ) {
     this._isTipUserControlledProperty = new Property( false );// @private
     this._isBaseUserControlledProperty = new Property( false ); // @private
 
-    //this.tipPositionProperty = new Property( options.basePositionProperty.value.plus( Vector2.createPolar( options.unrolledTapeDistance, options.angle ) ) );
-
-
     this.tipToBaseDistance = (this.basePositionProperty.value).distance( this.tipPositionProperty.value ); // @private
 
     var crosshairShape = new Shape().
