@@ -69,7 +69,8 @@ define( function( require ) {
       crosshairSize: 5, // size of the crosshairs in scenery coordinates ( measured from center)
       crosshairLineWidth: 2, // linewidth of the crosshairs
       isBaseCrosshairRotating: true, // do crosshairs rotate around their own axis to line up with the tapeline
-      isTipCrosshairRotating: true // do crosshairs rotate around their own axis to line up with the tapeline
+      isTipCrosshairRotating: true, // do crosshairs rotate around their own axis to line up with the tapeline
+      isTipDragBounded: false // is the tip subject to dragBounds
     }, options );
 
     assert && assert( Math.abs( options.modelViewTransform.modelToViewDeltaX( 1 ) ) ===
@@ -80,6 +81,7 @@ define( function( require ) {
     this.isVisibleProperty = isVisibleProperty; // @private
     this._dragBounds = options.dragBounds; // @private
     this._modelViewTransform = options.modelViewTransform; // @private
+    this.isTipDragBounded = options.isTipDragBounded; //@private
     this.basePositionProperty = options.basePositionProperty;
     this.tipPositionProperty = options.tipPositionProperty;
 
@@ -163,8 +165,14 @@ define( function( require ) {
           // when the user is not holding onto the tip, dragging the body will also drag the tip
           if ( !measuringTape._isTipUserControlled ) {
             var unconstrainedTipLocation = translationDelta.add( measuringTape.tipPositionProperty.value );
-            var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
-            measuringTape.tipPositionProperty.set( constrainedTipLocation );
+            if ( options.isTipDragBounded ) {
+              var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
+              // translation of the tipPosition (subject to the constraining drag bounds)
+              measuringTape.tipPositionProperty.set( constrainedTipLocation );
+            }
+            else {
+              measuringTape.tipPositionProperty.set( unconstrainedTipLocation );
+            }
           }
         },
         end: function( event, trail ) {
@@ -187,9 +195,15 @@ define( function( require ) {
       drag: function( event ) {
         var parentPoint = event.currentTarget.globalToParentPoint( event.pointer.point ).minus( this.startOffset );
         var unconstrainedTipLocation = measuringTape._modelViewTransform.viewToModelPosition( parentPoint );
-        var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
-        // translation of the tipPosition (subject to the constraining drag bounds)
-        measuringTape.tipPositionProperty.set( constrainedTipLocation );
+
+        if ( options.isTipDragBounded ) {
+          var constrainedTipLocation = constrainToBoundsLocation( unconstrainedTipLocation, measuringTape._dragBounds );
+          // translation of the tipPosition (subject to the constraining drag bounds)
+          measuringTape.tipPositionProperty.set( constrainedTipLocation );
+        }
+        else {
+          measuringTape.tipPositionProperty.set( unconstrainedTipLocation );
+        }
       },
 
       end: function( event, trail ) {
@@ -370,8 +384,12 @@ define( function( require ) {
      */
     setDragBounds: function( dragBounds ) {
       this._dragBounds = dragBounds.copy();
-      this.tipPositionProperty.set( constrainToBoundsLocation( this.tipPositionProperty.value, this._dragBounds ) );
+      // sets the base position of the measuring tape, which may have changed if it was outside of the dragBounds
       this.basePositionProperty.set( constrainToBoundsLocation( this.basePositionProperty.value, this._dragBounds ) );
+      // sets a new tip position if the tip of the measuring tape is subject to dragBounds
+      if ( this.isTipDragBounded ) {
+        this.tipPositionProperty.set( constrainToBoundsLocation( this.tipPositionProperty.value, this._dragBounds ) );
+      }
     },
 
     /**
