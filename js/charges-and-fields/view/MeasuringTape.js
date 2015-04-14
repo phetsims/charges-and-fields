@@ -5,6 +5,8 @@
  * It contains a tip and a base that can be dragged separately,
  * with a text indicating the measurement.
  * The motion of the measuring tape can be confined by drag bounds.
+ * The position of the measuring tape should be set via the basePosition
+ * and tipPosition rather than the scenery coordinates
  *
  * @author Vasily Shakhov (Mlearner)
  * @author Siddhartha Chinthapally (ActualConcepts)
