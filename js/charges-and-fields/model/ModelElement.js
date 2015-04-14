@@ -28,7 +28,12 @@ define( function( require ) {
       position: position,
 
       // @public
-      userControlled: false
+      // Flag that indicates if this model element is controlled by the user
+      userControlled: false,
+
+      // @public
+      // Flag that indicates if the model element is active or dormant (e.g. the charge is 1 or 0)
+      isActive: false
 
     } );
 

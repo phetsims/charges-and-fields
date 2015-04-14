@@ -36,10 +36,10 @@ define( function( require ) {
   /**
    * Toolbox constructor
    * @param {Property.<Vector2>} electricPotentialSensorPositionProperty
-   * @param {Property.<boolean>}   electricPotentialUserControlledProperty
+   * @param {Property.<boolean>} electricPotentialUserControlledProperty
    * @param {Property.<Vector2>} measuringTapeBasePositionProperty
    * @param {Property.<Vector2>} measuringTapeTipPositionProperty
-   * @param {Property.<boolean>}   measuringTapeUserControlledProperty
+   * @param {Property.<boolean>} measuringTapeUserControlledProperty
    * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty
    * @param {Property.<boolean>} isMeasuringTapeVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
@@ -106,6 +106,7 @@ define( function( require ) {
         modelViewTransform: modelViewTransform,
         dragBounds: availableModelBoundsProperty.value,
         positionListener: function( position ) {
+          // the tip of the measuring tape is set one meter away from the base
           measuringTapeTipPositionProperty.set( position.plus( new Vector2( 1, 0 ) ) );
         },
         startDrag: function( event ) {

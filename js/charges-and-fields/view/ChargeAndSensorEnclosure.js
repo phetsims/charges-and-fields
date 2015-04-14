@@ -72,6 +72,7 @@ define( function( require ) {
       chargedParticles,
       modelViewTransform,
       availableModelBoundsProperty,
+      bounds,
       {
         element: 'positive',
         centerX: positiveChargeCenterX,
@@ -83,6 +84,7 @@ define( function( require ) {
       chargedParticles,
       modelViewTransform,
       availableModelBoundsProperty,
+      bounds,
       {
         element: 'negative',
         centerX: negativeChargeCenterX,
@@ -94,6 +96,7 @@ define( function( require ) {
       electricFieldSensors,
       modelViewTransform,
       availableModelBoundsProperty,
+      bounds,
       {
         element: 'electricFieldSensor',
         centerX: electricFieldSensorCenterX,
