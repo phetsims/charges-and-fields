@@ -142,52 +142,62 @@ define( function( require ) {
       // send a trigger signal (go back to origin) if the charge particle is over the enclosure
       chargedParticle.userControlledProperty.link( function( userControlled ) {
         if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
+          chargedParticle.isActive = false;
           chargedParticle.animate();
         }
       } );
 
-      chargedParticle.positionProperty.link( function( position, oldPosition ) {
-
-        // remove equipotential lines and electric field lines when the position of a charged particle changes
+      chargedParticle.isActiveProperty.lazyLink( function() {
+        //debugger;
         thisModel.clearEquipotentialLines();
         thisModel.clearElectricFieldLines();
+        thisModel.updateAllVisibleSensors();
+      } );
 
-        // if oldPosition doesn't exist calculate the sensor properties from the charge configurations (from scratch)
-        if ( oldPosition === null ) {
-          thisModel.updateAllVisibleSensors();
-        }
-        // if oldPosition exists calculate the sensor properties from the delta contribution
-        // this should help if there are many charged particles on the board
-        else {
-          // convenience variable
-          var charge = chargedParticle.charge;
+      chargedParticle.positionProperty.link( function( position, oldPosition ) {
 
-          // update the Electric Potential Sensor by calculating the change in the electric potential
-          thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange(
-            thisModel.electricPotentialSensor.position, position, oldPosition, charge );
+        if ( chargedParticle.isActive ) {
+          // remove equipotential lines and electric field lines when the position of a charged particle changes
+          thisModel.clearEquipotentialLines();
+          thisModel.clearElectricFieldLines();
 
-          // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
-          thisModel.electricFieldSensors.forEach( function( sensorElement ) {
-            // electricField is a property that is being listened to. We want a new vector allocation when the electric field gets updated
-            sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
-          } );
-
-          // update the Electric Field Grid Sensors, but only if the electric Field grid is visible
-          if ( thisModel.isElectricFieldGridVisible === true ) {
-            thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
-              // let's calculate the change in the electric field due to the change in position of one charge
-              sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
-            } );
-            thisModel.trigger( 'electricFieldGridUpdated' );
+          // if oldPosition doesn't exist calculate the sensor properties from the charge configurations (from scratch)
+          if ( oldPosition === null ) {
+            thisModel.updateAllVisibleSensors();
           }
+          // if oldPosition exists calculate the sensor properties from the delta contribution
+          // this should help if there are many charged particles on the board
+          else {
+            // convenience variable
+            var charge = chargedParticle.charge;
 
-          // update the Electric Potential Grid Sensors but only if the electric potential grid is visible
-          if ( thisModel.isElectricPotentialGridVisible === true ) {
-            thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-              // calculating the change in the electric potential due to the change in position of one charge
-              sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
+            // update the Electric Potential Sensor by calculating the change in the electric potential
+            thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange(
+              thisModel.electricPotentialSensor.position, position, oldPosition, charge );
+
+            // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
+            thisModel.electricFieldSensors.forEach( function( sensorElement ) {
+              // electricField is a property that is being listened to. We want a new vector allocation when the electric field gets updated
+              sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
             } );
-            thisModel.trigger( 'electricPotentialGridUpdated' );
+
+            // update the Electric Field Grid Sensors, but only if the electric Field grid is visible
+            if ( thisModel.isElectricFieldGridVisible === true ) {
+              thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
+                // let's calculate the change in the electric field due to the change in position of one charge
+                sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+              } );
+              thisModel.trigger( 'electricFieldGridUpdated' );
+            }
+
+            // update the Electric Potential Grid Sensors but only if the electric potential grid is visible
+            if ( thisModel.isElectricPotentialGridVisible === true ) {
+              thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
+                // calculating the change in the electric potential due to the change in position of one charge
+                sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
+              } );
+              thisModel.trigger( 'electricPotentialGridUpdated' );
+            }
           }
         }
       } );
@@ -198,10 +208,10 @@ define( function( require ) {
     //------------------------
 
     // if any charge is removed, we need to update all the sensors
-    this.chargedParticles.addItemRemovedListener( function() {
+    this.chargedParticles.addItemRemovedListener( function( chargeParticle ) {
       // Remove equipotential lines and electric field lines when the position of a charged particle changes
-      thisModel.clearEquipotentialLines();
-      thisModel.clearElectricFieldLines();
+      //thisModel.clearEquipotentialLines();
+      //thisModel.clearElectricFieldLines();
       // Update all the visible sensors
       thisModel.updateAllVisibleSensors();
       // is there at least one charge on the board ?
@@ -220,6 +230,7 @@ define( function( require ) {
       // send a trigger signal (go back to origin) if the electric field sensor is over the enclosure
       electricFieldSensor.userControlledProperty.link( function( userControlled ) {
         if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
+          electricFieldSensor.isActive = false;
           electricFieldSensor.animate();
         }
       } );
@@ -279,6 +290,7 @@ define( function( require ) {
        * @private
        */
       updateElectricFieldSensors: function() {
+        //debugger;
         var thisModel = this;
         this.electricFieldSensors.forEach( function( sensorElement ) {
           sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
@@ -437,10 +449,10 @@ define( function( require ) {
         return {
           x: ((position.x - newChargePosition.x) / ( newDistancePowerCube ) -
               (position.x - oldChargePosition.x) / ( oldDistancePowerCube )) *
-          ( particleCharge * K_CONSTANT ),
+             ( particleCharge * K_CONSTANT ),
           y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
               (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) *
-          ( particleCharge * K_CONSTANT )
+             ( particleCharge * K_CONSTANT )
         };
       },
 
@@ -471,14 +483,16 @@ define( function( require ) {
       getElectricField: function( position ) {
         var electricField = new Vector2( 0, 0 );
         this.chargedParticles.forEach( function( chargedParticle ) {
-          var distanceSquared = chargedParticle.position.distanceSquared( position );
-          var distancePowerCube = Math.pow( distanceSquared, 1.5 );
-          // For performance reason, we don't want to generate more vector allocations
-          var electricFieldContribution = {
-            x: (position.x - chargedParticle.position.x) * (chargedParticle.charge) / distancePowerCube,
-            y: (position.y - chargedParticle.position.y) * (chargedParticle.charge) / distancePowerCube
-          };
-          electricField.add( electricFieldContribution );
+          if ( chargedParticle.isActive ) {
+            var distanceSquared = chargedParticle.position.distanceSquared( position );
+            var distancePowerCube = Math.pow( distanceSquared, 1.5 );
+            // For performance reason, we don't want to generate more vector allocations
+            var electricFieldContribution = {
+              x: (position.x - chargedParticle.position.x) * (chargedParticle.charge) / distancePowerCube,
+              y: (position.y - chargedParticle.position.y) * (chargedParticle.charge) / distancePowerCube
+            };
+            electricField.add( electricFieldContribution );
+          }
         } );
         electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
         return electricField;
@@ -494,8 +508,10 @@ define( function( require ) {
       getElectricPotential: function( position ) {
         var electricPotential = 0;
         this.chargedParticles.forEach( function( chargedParticle ) {
-          var distance = chargedParticle.position.distance( position );
-          electricPotential += (chargedParticle.charge) / distance;
+          if ( chargedParticle.isActive ) {
+            var distance = chargedParticle.position.distance( position );
+            electricPotential += (chargedParticle.charge) / distance;
+          }
         } );
         electricPotential *= K_CONSTANT; // prefactor depends on units
         return electricPotential;

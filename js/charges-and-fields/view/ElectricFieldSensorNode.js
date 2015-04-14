@@ -115,6 +115,9 @@ define( function( require ) {
     };
     electricFieldSensor.electricFieldProperty.link( this.electricFieldListener );
 
+    electricFieldSensor.isActiveProperty.link( function( isActive ) {
+      arrowNode.visible = isActive;
+    } );
     // Show/hide labels
     this.isValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
@@ -165,7 +168,7 @@ define( function( require ) {
       this.electricFieldSensor.positionProperty.unlink( this.positionListener );
       this.electricFieldSensor.electricFieldProperty.unlink( this.electricFieldListener );
       this.isValuesVisibleProperty.unlink( this.isValuesVisibleListener );
-      this.availableModelBoundsProperty.unlink( this.availableModelBoundsPropertyListener);
+      this.availableModelBoundsProperty.unlink( this.availableModelBoundsPropertyListener );
     }
   } );
 } );

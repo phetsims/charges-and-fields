@@ -20,11 +20,10 @@ define( function( require ) {
   var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
   //var ScreenView = require( 'JOIST/ScreenView' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -33,6 +32,7 @@ define( function( require ) {
    * @param {ObservableArray} observableArray
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the moving view element
+   * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @param {Object} [options]
    * @constructor
    */
@@ -40,6 +40,7 @@ define( function( require ) {
                             observableArray,
                             modelViewTransform,
                             availableModelBoundsProperty,
+                            enclosureBounds,
                             options ) {
 
     //var self = this;
@@ -102,10 +103,9 @@ define( function( require ) {
 
     // Create and add two nodes: the first one contains the static representation of the node
     // whereas the second is the dynamic representation of the node (but with no model counterpart)
-    var movingObject = new Node();
+
     var staticObject = new Node();
     this.addChild( staticObject );
-    this.addChild( movingObject );
 
     // offset between the  position of the static object and position of the movingObject after the tween animation
     // needed for the 'pop' effect
@@ -118,78 +118,62 @@ define( function( require ) {
     this.touchArea = staticObject.localBounds.dilated( 20 );
 
     // position for the moving object in model coordinate, note that the initial value will be reset right away by
-    // the movableDragHandler
-
-    var movingObjectPositionProperty = new Property(
-      modelViewTransform.viewToModelPosition( viewPosition ) );
-
-    movingObjectPositionProperty.link( function( movingObjectPosition ) {
-      // a position of (0,0) for the movingObject corresponds to the position of the staticObject
-      // since the modelToViewPosition is given in the ScreenView coordinate frame one need to subtract the viewPosition
-      // i.e. the position of thisNode with respect to the ScreenView
-      movingObject.translation = modelViewTransform.modelToViewPosition( movingObjectPosition ).minus( viewPosition );
-    } );
 
     var movableDragHandler =
-      new MovableDragHandler( movingObjectPositionProperty,
+      new SimpleDragHandler(
         {
+          modelElement: null,
           modelViewTransform: modelViewTransform,
           dragBounds: availableModelBoundsProperty.value,
-          startDrag: function( event ) {
 
-            // add the fake view element (no corresponding model element associated with this view)
-            movingObject.addChild( representationCreatorNode() );
-
-            // Use the center position of the static element underneath the moving object, i.e. the
-            // center position of this (viewPosition)
-            // and use it as the destination position for the return of the model element to the enclosure
-            // destinationPosition is needed for the tween return animation
-            movingObject.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
-
-            // determine the center of the view element we clicked on in the local view
-            var position = {
-              x: staticObject.center.x,
-              y: staticObject.center.y
-            };
-
-            // move the movingObject upward (by offset) to get a pop like effect
-            var animationTween = new TWEEN.Tween( position ).
-              to( {
-                x: staticObject.center.plus( offset ).x,
-                y: staticObject.center.plus( offset ).y
-              }, 100 ).
-              easing( TWEEN.Easing.Cubic.InOut ).
-              onUpdate( function() {
-                movingObject.translation = { x: position.x, y: position.y };
-              } );
-            animationTween.start();
-
-            // set the position of the fake view element in the model coordinate
-            // note that the movingObjectPosition is subject to the dragBounds
-            movingObjectPositionProperty.set( modelViewTransform.viewToModelPosition( viewPosition.plus( offset ) ) );
-          },
-
-          endDrag: function( event ) {
+          start: function( event ) {
 
             // Create the new model element.
-            var modelElement = modelElementCreator( movingObjectPositionProperty.value );
+            this.modelElement = modelElementCreator( modelViewTransform.viewToModelPosition( viewPosition.plus( offset ) ) );
+            this.modelElement.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
+            this.modelElement.userControlled = true;
+            this.modelElement.isActive = false;
 
-            // set the destination position of the model based on where it was picked up in the enclosure
-            modelElement.destinationPosition = movingObject.destinationPosition;
-            addModelElementToObservableArray( modelElement, observableArray );
+            addModelElementToObservableArray( this.modelElement, observableArray );
+          },
 
-            // remove the fake view element
-            movingObject.removeAllChildren();
+          translate: function( translationParams ) {
+            var unconstrainedLocation = this.modelElement.position.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
+            var constrainedLocation = constrainLocation( unconstrainedLocation, availableModelBoundsProperty.value );
+            this.modelElement.position = constrainedLocation;
+          },
+
+          end: function( event ) {
+            this.modelElement.userControlled = false;
+            if ( !enclosureBounds.containsPoint( this.modelElement.position ) ) {
+              this.modelElement.isActive = true;
+            }
+            this.modelElement = null;
           }
         } );
 
     // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
     this.addInputListener( movableDragHandler );
 
-    // no need to dispose of this link since this is present for the lifetime of the sim
-    availableModelBoundsProperty.link( function( bounds ) {
-      movableDragHandler.setDragBounds( bounds );
-    } );
+    /**
+     * Constrains a location to some bounds.
+     * It returns (1) the same location if the location is within the bounds
+     * or (2) a location on the edge of the bounds if the location is outside the bounds
+     * @param {Vector2} location
+     * @param {Bounds2} bounds
+     * @returns {Vector2}
+     */
+    var constrainLocation = function( location, bounds ) {
+      if ( bounds.containsCoordinates( location.x, location.y ) ) {
+        return location;
+      }
+      else {
+        var xConstrained = Math.max( Math.min( location.x, bounds.maxX ), bounds.x );
+        var yConstrained = Math.max( Math.min( location.y, bounds.maxY ), bounds.y );
+        return new Vector2( xConstrained, yConstrained );
+      }
+    };
+
 
 // Pass options through to parent.
     this.mutate( options );
