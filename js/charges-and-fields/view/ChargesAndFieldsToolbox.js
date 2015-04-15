@@ -17,12 +17,12 @@ define( function( require ) {
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   //var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MeasuringTape' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
@@ -92,18 +92,21 @@ define( function( require ) {
     // add the panelContent
     Panel.call( this, panelContent, panelOptions );
 
-    var measuringTapeMovableDragHandler = new MovableDragHandler( measuringTapeBasePositionProperty,
+    // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
+    var tipToBasePosition = measuringTapeTipPositionProperty.value.minus( measuringTapeBasePositionProperty.value );
+
+    var measuringTapeMovableDragHandler = new SimpleDragHandler(
       {
         parentScreen: null, // needed for coordinate transforms
         modelViewTransform: modelViewTransform,
         dragBounds: availableModelBoundsProperty.value,
+        // create a position listener that will move the tip as the base of the measuring tape is dragged
         positionListener: function( position ) {
-          // the tip of the measuring tape is set one meter away from the base
-          measuringTapeTipPositionProperty.set( position.plus( new Vector2( 1, 0 ) ) );
+          measuringTapeTipPositionProperty.set( position.plus( tipToBasePosition ) );
         },
-        startDrag: function( event ) {
-
+        start: function( event ) {
           measuringTapeUserControlledProperty.set( true );
+
           var testNode = toolboxPanel;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
@@ -118,21 +121,27 @@ define( function( require ) {
           // TODO: get tid of magic number: use displacement vector based on size of the measuring tape (center to the crosshair base)
           measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition.plus( new Vector2( 20, 20 ) ) ) );
           isMeasuringTapeVisibleProperty.set( true );
-
+          // link the position of base of the measuring tape to the tip of the measuring tape
           measuringTapeBasePositionProperty.link( this.positionListener );
         },
-        endDrag: function( event ) {
+        translate: function( translationParams ) {
+          var unconstrainedLocation = measuringTapeBasePositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
+          var constrainedLocation = constrainLocation( unconstrainedLocation, availableModelBoundsProperty.value );
+          measuringTapeBasePositionProperty.set( constrainedLocation );
+        },
+        end: function( event ) {
           measuringTapeUserControlledProperty.set( false );
+
           measuringTapeBasePositionProperty.unlink( this.positionListener );
         }
       } );
 
-    var equipotentialSensorMovableDragHandler = new MovableDragHandler( electricPotentialSensorPositionProperty,
+    var equipotentialSensorMovableDragHandler = new SimpleDragHandler(
       {
         parentScreen: null, // needed for coordinate transforms
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
-        startDrag: function( event ) {
+        start: function( event ) {
           electricPotentialUserControlledProperty.set( true );
           var testNode = toolboxPanel;
           while ( testNode !== null ) {
@@ -147,9 +156,18 @@ define( function( require ) {
           var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
 // TODO: get tid of magic number: use displacement vector based on size of the equipotential sensor
           electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition.plus( new Vector2( 0, -150 ) ) ) );
+
+
           isElectricPotentialSensorVisibleProperty.set( true );
         },
-        endDrag: function( event ) {
+
+        translate: function( translationParams ) {
+          var unconstrainedLocation = electricPotentialSensorPositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
+          var constrainedLocation = constrainLocation( unconstrainedLocation, availableModelBoundsProperty.value );
+          electricPotentialSensorPositionProperty.set( constrainedLocation );
+        },
+
+        end: function( event ) {
           electricPotentialUserControlledProperty.set( false );
         }
       } );
@@ -178,9 +196,29 @@ define( function( require ) {
 
     // no need to dispose of this link since this is present for the lifetime of the sim
     availableModelBoundsProperty.link( function( bounds ) {
-      equipotentialSensorMovableDragHandler.setDragBounds( bounds );
-      measuringTapeMovableDragHandler.setDragBounds( bounds );
+      equipotentialSensorMovableDragHandler.dragBounds = bounds;
+      measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
+
+    /**
+     * Constrains a location to some bounds.
+     * It returns (1) the same location if the location is within the bounds
+     * or (2) a location on the edge of the bounds if the location is outside the bounds
+     * @param {Vector2} location
+     * @param {Bounds2} bounds
+     * @returns {Vector2}
+     */
+    var constrainLocation = function( location, bounds ) {
+      if ( bounds.containsCoordinates( location.x, location.y ) ) {
+        return location;
+      }
+      else {
+        var xConstrained = Math.max( Math.min( location.x, bounds.maxX ), bounds.x );
+        var yConstrained = Math.max( Math.min( location.y, bounds.maxY ), bounds.y );
+        return new Vector2( xConstrained, yConstrained );
+      }
+    };
+
   }
 
   return inherit( Panel, ChargesAndFieldsToolbox );
