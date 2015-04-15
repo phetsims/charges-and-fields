@@ -39,7 +39,7 @@ define( function( require ) {
 
     // @public read-only
     // Flag that indicates whether this element is animating from one location to another, should not be set externally.
-    this.animating = false;
+    this.isAnimated = false;
 
     this.destinationPosition = null; // {Vector2} the final destination when animated
   }
@@ -53,7 +53,7 @@ define( function( require ) {
     animate: function() {
       var self = this;
 
-      this.animating = true;
+      this.isAnimated = true;
 
       var position = {
         x: this.position.x,
@@ -73,7 +73,7 @@ define( function( require ) {
           self.position = new Vector2( position.x, position.y );
         } ).
         onComplete( function() {
-          self.animating = false;
+          self.isAnimated = false;
           self.trigger( 'returnedToOrigin' );
         } );
 
