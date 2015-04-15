@@ -34,7 +34,7 @@ define( function( require ) {
    * @param {Function} addUserCreatedModelElementToObservableArray
    * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
    * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field sensors
-   * @param {Bounds2} bounds - model bounds of the outer enclosure
+   * @param {Bounds2} enclosureBounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds of the charges and sensors in view coordinates
    * @constructor
@@ -42,17 +42,16 @@ define( function( require ) {
   function ChargeAndSensorEnclosure( addUserCreatedModelElementToObservableArray,
                                      chargedParticles,
                                      electricFieldSensors,
-                                     bounds,
+                                     enclosureBounds,
                                      modelViewTransform,
                                      availableModelBoundsProperty ) {
 
     Node.call( this );
 
-    // bounds of the enclosure
-
     //var maxTextWidth = (new Text( sensorsString, { font: FONT} )).width;
 
-    var viewBounds = modelViewTransform.modelToViewBounds( bounds );
+    // bounds of the enclosure in screenView coordinates
+    var viewBounds = modelViewTransform.modelToViewBounds( enclosureBounds );
 
     // Create the background enclosure
     var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, { lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH } );
@@ -72,7 +71,7 @@ define( function( require ) {
       chargedParticles,
       modelViewTransform,
       availableModelBoundsProperty,
-      bounds,
+      enclosureBounds,
       {
         element: 'positive',
         centerX: positiveChargeCenterX,
@@ -84,7 +83,7 @@ define( function( require ) {
       chargedParticles,
       modelViewTransform,
       availableModelBoundsProperty,
-      bounds,
+      enclosureBounds,
       {
         element: 'negative',
         centerX: negativeChargeCenterX,
@@ -96,7 +95,7 @@ define( function( require ) {
       electricFieldSensors,
       modelViewTransform,
       availableModelBoundsProperty,
-      bounds,
+      enclosureBounds,
       {
         element: 'electricFieldSensor',
         centerX: electricFieldSensorCenterX,
