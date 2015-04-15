@@ -33,7 +33,7 @@ define( function( require ) {
    * @param {Object} [options] scenery options for rendering the Electric Potential Sensor Panel, see the constructor for options.
    * @constructor
    */
-  function ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine, options ) {
+  function ElectricPotentialSensorBodyNode( clearEquipotentialLines, addElectricPotentialLine, options ) {
 
     var self = this;
 
@@ -160,5 +160,5 @@ define( function( require ) {
 
   }
 
-  return inherit( Node, ElectricPotentialSensorPanel );
+  return inherit( Node, ElectricPotentialSensorBodyNode );
 } );
