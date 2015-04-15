@@ -45,7 +45,7 @@ define( function( require ) {
           dragBounds: availableModelBoundsProperty.value,
           modelViewTransform: modelViewTransform,
           startDrag: function( event ) {
-            chargedParticle.userControlled = true;
+            chargedParticle.isUserControlled = true;
             // Move the chargedParticle to the front of this layer when grabbed by the user.
             chargedParticleNode.moveToFront();
             var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
@@ -54,7 +54,7 @@ define( function( require ) {
           },
 
           endDrag: function( event ) {
-            chargedParticle.userControlled = false;
+            chargedParticle.isUserControlled = false;
           }
         } );
 
