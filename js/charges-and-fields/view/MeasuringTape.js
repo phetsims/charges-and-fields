@@ -185,7 +185,6 @@ define( function( require ) {
       } )
     );
 
-
     // init drag and drop for tip
     tip.addInputListener( new SimpleDragHandler( {
       startOffset: 0,

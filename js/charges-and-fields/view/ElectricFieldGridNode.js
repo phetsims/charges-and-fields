@@ -160,7 +160,6 @@ define( function( require ) {
     // no need to unlink, present for the lifetime of the simulation
     isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 
-
     // this node is visible if  (1) the electricField is checked AND (2) there is at least one charge particle  on the board
     var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldGridVisibleProperty, isChargedParticlePresentProperty ],
       function( isElectricFieldVisible, isChargedParticlePresent ) {

@@ -129,7 +129,6 @@ define( function( require ) {
       //  shape.lineToPoint( position );
       //} );
 
-
       var equipotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ) );
 
       equipotentialLinePath.colorFunction = function( color ) {
@@ -140,7 +139,6 @@ define( function( require ) {
 
       return equipotentialLinePath;
     }
-
 
     /**
      * Function that generates a label and a path/shape of the equipotential line

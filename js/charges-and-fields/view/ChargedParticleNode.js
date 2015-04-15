@@ -33,7 +33,6 @@ define( function( require ) {
       // Set up the mouse  areas for this node so that this can still be grabbed when invisible.
       this.touchArea = this.localBounds.dilated( 10);
 
-
       // Register for synchronization with model.
       this.positionListener = function( position ) {
         chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );

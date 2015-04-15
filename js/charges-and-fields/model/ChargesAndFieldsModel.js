@@ -25,7 +25,6 @@ define( function( require ) {
   var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
   var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
-
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
    * @constructor
@@ -96,7 +95,6 @@ define( function( require ) {
     // Hook up all the listeners the model
     //
     //----------------------------------------------------------------------------------------
-
 
     //------------------------
     // Position Listener on the electric potential Sensor
@@ -261,7 +259,6 @@ define( function( require ) {
         this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
         PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
       },
-
 
       /**
        * Function that determines if there are charges on the board
@@ -441,7 +438,6 @@ define( function( require ) {
         return gridArray;
       },
 
-
       /**
        * Return the change in the electric field at position Position due to the motion of a
        * charged particle from oldChargePosition to  newChargePosition.
@@ -471,7 +467,6 @@ define( function( require ) {
         };
       },
 
-
       /**
        * Return the change in the electric potential at location 'position' due to the motion of a
        * charged particle from oldChargePosition to newChargePosition.
@@ -487,7 +482,6 @@ define( function( require ) {
         var oldDistance = oldChargePosition.distance( position );
         return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
       },
-
 
       /**
        * Return the electric field ( a vector) at a location 'position'
@@ -513,7 +507,6 @@ define( function( require ) {
         return electricField;
       },
 
-
       /**
        * Return the electric potential at a location 'position' due to the configuration of charges on the board.
        * @public read-Only
@@ -531,7 +524,6 @@ define( function( require ) {
         electricPotential *= K_CONSTANT; // prefactor depends on units
         return electricPotential;
       },
-
 
       /**
        * getNextPositionAlongEquipotential gives the next position (within a distance deltaDistance) with the same electric Potential
@@ -632,7 +624,6 @@ define( function( require ) {
         return position.plus( deltaDisplacement ); // {Vector2} finalPosition
       },
 
-
       /**
        * Given an (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance
        * of the initial position.
@@ -678,7 +669,6 @@ define( function( require ) {
         var deltaDisplacement = midwayElectricField.normalized().multiplyScalar( deltaDistance );
         return deltaDisplacement.add( position ); // {Vector2} finalPosition
       },
-
 
       /**
        * This method returns an array of points (vectors) with the same electric potential as the electric potential
@@ -751,7 +741,6 @@ define( function( require ) {
               initialElectricPotential,
               -epsilonDistance );
 
-
             //nextClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
             //  currentClockwisePosition,
             //  epsilonDistance );
@@ -792,7 +781,6 @@ define( function( require ) {
         }
       },
 
-
       /**
        * This method returns an array of points (vectors) with the same electric potential as the electric potential
        * at the initial position. The array is ordered with position points going counterclockwise.
@@ -807,7 +795,6 @@ define( function( require ) {
         //TODO: complete this algorithm
 
       },
-
 
       /**
        * Starting from an initial position, this method generates a list of points that are
@@ -888,7 +875,6 @@ define( function( require ) {
         return reversedArray.concat( position, forwardPositionArray ); //  positionArray ordered
       },
 
-
       /**
        * Push an equipotentialLine to an observable array
        * The drawing of the equipotential line is handled in the view (equipotentialLineNode)
@@ -913,7 +899,6 @@ define( function( require ) {
         }
       },
 
-
       /**
        * Push an electricFieldLine to an observable array
        * The drawing of the electricField Line is handled in the view.
@@ -931,7 +916,6 @@ define( function( require ) {
           }
         }
       },
-
 
       /**
        * Push many electric Potential Lines to an observable array
@@ -954,7 +938,6 @@ define( function( require ) {
         }
       },
 
-
       /**
        * Push many electric Field Lines to an observable array
        * The drawing of the electric Field Lines and electric Potential Lines is handled in the view.
@@ -975,7 +958,6 @@ define( function( require ) {
         }
       },
 
-
       /**
        * Function that clears the Equipotential Lines Observable Array
        * @public
@@ -983,7 +965,6 @@ define( function( require ) {
       clearEquipotentialLines: function() {
         this.equipotentialLinesArray.clear();
       },
-
 
       /**
        * Function that clears the Electric Field Lines Observable Array

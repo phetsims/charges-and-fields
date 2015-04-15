@@ -21,7 +21,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
 
-
   // strings
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
 

@@ -135,7 +135,6 @@ define( function( require ) {
         }
       } );
 
-
     var equipotentialSensorMovableDragHandler = new MovableDragHandler( electricPotentialSensorPositionProperty,
       {
         parentScreen: null, // needed for coordinate transforms
@@ -174,7 +173,6 @@ define( function( require ) {
     ChargesAndFieldsColors.controlPanelBorderProperty.link( function( color ) {
       panel.stroke = color;
     } );
-
 
     // hide and show
     isElectricPotentialSensorVisibleProperty.link( function( visible ) {

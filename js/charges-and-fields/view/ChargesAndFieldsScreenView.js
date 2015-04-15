@@ -41,7 +41,6 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
-
   // constants
   var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
@@ -165,7 +164,6 @@ define( function( require ) {
       viewProperty.isValuesVisibleProperty,
       viewProperty.isGridVisibleProperty );
 
-
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
       listener: function() {
@@ -173,7 +171,6 @@ define( function( require ) {
         viewProperty.reset();
       }
     } );
-
 
     // Create a draggable but dragBound Measuring Tape
     var tapeOptions = {
@@ -203,7 +200,6 @@ define( function( require ) {
       modelViewTransform,
       this.availableModelBoundsProperty
     );
-
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
     var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
@@ -267,7 +263,6 @@ define( function( require ) {
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
     resetAllButton.right = controlPanel.right;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
-
 
     this.availableModelBoundsProperty.link( function( bounds ) {
       // the measuring Tape is subject to dragBounds

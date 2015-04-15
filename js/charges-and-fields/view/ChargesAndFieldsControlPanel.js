@@ -77,7 +77,6 @@ define( function( require ) {
     directionOnlyGroup.addChild( hStrut );
     directionOnlyGroup.addChild( directionOnlyCheckBox );
 
-
     var checkBoxGroup = new VBox( {
       spacing: 12, children: [
         electricFieldCheckBox,
@@ -155,7 +154,6 @@ define( function( require ) {
         checkBox.checkBoxColorBackground = color;
       } );
     } );
-
 
     // this will only work on change of profile, not for the initialization...
     //ChargesAndFieldsColors.on( 'profileChanged', function() {

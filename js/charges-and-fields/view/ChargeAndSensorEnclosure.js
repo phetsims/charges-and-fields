@@ -120,7 +120,6 @@ define( function( require ) {
     this.addChild( negativeCharge );
     this.addChild( electricFieldSensor );
 
-
     // update the colors on change of color scheme (projector vs default)
     // no need to unlink since the chargeEnclosure is present for the lifetime of the simulation
 

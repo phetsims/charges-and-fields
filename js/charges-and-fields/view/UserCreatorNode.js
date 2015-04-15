@@ -55,7 +55,6 @@ define( function( require ) {
       element: 'electricFieldSensor' // other valid inputs are 'positive' and 'negative'
     }, options );
 
-
     /**
      * Function that returns the view Node associated to options.element
      * @returns {Node}
@@ -173,7 +172,6 @@ define( function( require ) {
         return new Vector2( xConstrained, yConstrained );
       }
     };
-
 
 // Pass options through to parent.
     this.mutate( options );
