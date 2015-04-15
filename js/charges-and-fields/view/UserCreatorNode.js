@@ -100,15 +100,9 @@ define( function( require ) {
     // this is where the center of 'this' is in the ScreenView reference frame
     var viewPosition = new Vector2( options.centerX, options.centerY );
 
-    // Create and add two nodes: the first one contains the static representation of the node
-    // whereas the second is the dynamic representation of the node (but with no model counterpart)
-
+    // Create and add a static representation of the node
     var staticObject = new Node();
     this.addChild( staticObject );
-
-    // offset between the  position of the static object and position of the movingObject after the tween animation
-    // needed for the 'pop' effect
-    var offset = new Vector2( 0, -20 ); // in view coordinate frame
 
     // Create and add a static view node
     staticObject.addChild( representationCreatorNode() );
@@ -116,7 +110,9 @@ define( function( require ) {
     // let's make this node very easy to pick
     this.touchArea = staticObject.localBounds.dilated( 20 );
 
-    // position for the moving object in model coordinate, note that the initial value will be reset right away by
+    // offset between the  position of the static object and the initial position of the movingObject
+    // needed for the 'pop' effect
+    var offset = new Vector2( 0, -20 ); // in view coordinate frame
 
     var movableDragHandler =
       new SimpleDragHandler(
