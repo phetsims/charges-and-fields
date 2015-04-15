@@ -175,7 +175,8 @@ define( function( require ) {
       dragBounds: this.availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       basePositionProperty: viewProperty.measuringTapeBasePositionProperty,
-      tipPositionProperty: viewProperty.measuringTapeTipPositionProperty
+      tipPositionProperty: viewProperty.measuringTapeTipPositionProperty,
+      isTipDragBounded: true
     };
 
     // Create a measuring tape (set to invisible initially)
