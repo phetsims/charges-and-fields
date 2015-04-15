@@ -50,13 +50,11 @@ define( function( require ) {
     /**
      *
      * @param {ObservableArray.<ChargedParticle>} chargedParticles
-     * @param {Property.<Bounds2>} boundsProperty - bounds of the canvas in model units
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
      */
     function ElectricPotentialGridWebGLNode( chargedParticles,
-                                             boundsProperty,
                                              modelViewTransform,
                                              isVisibleProperty ) {
       var self = this;
@@ -69,18 +67,13 @@ define( function( require ) {
         layerSplit: true // ensure we're on our own layer
       } );
 
-      // update the bounds when needed
-      boundsProperty.link( function() {
-        self.canvasBounds = boundsProperty.get();
-      } );
-
       // if our color scheme changes, make sure we update
       ChargesAndFieldsColors.on( 'profileChanged', function() {
         self.invalidatePaint();
       } );
 
       // we handle visibility in our rendering process
-      isVisibleProperty.link( function( isVisible ) {
+      isVisibleProperty.link( function( ) {
         self.invalidatePaint();
       } );
 

@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
-  //var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
+  var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -134,15 +134,33 @@ define( function( require ) {
     var movableDragHandler = new MovableDragHandler(
       electricFieldSensor.positionProperty,
       {
+        startNewTime: 0,
+        startOldTime: 0,
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
+
           electricFieldSensor.isUserControlled = true;
           // Move the sensor to the front of this layer when grabbed by the user.
           electricFieldSensorNode.moveToFront();
+
           var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
-          // move this node upward so that the cursor touches the bottom of the chargedParticle
-          electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
+
+          if ( ChargesAndFieldsGlobals.electricFieldLines ) {
+            // Add an electricFieldLine on a double click event
+            this.startNewTime = new Date().getTime();
+            var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
+            if ( timeDifference < 300 ) {
+              addElectricFieldLine( electricFieldSensor.position );
+            }
+            this.startOldTime = this.startNewTime;
+            // do not move the node since we want to be able to double-click on the node
+            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint );
+          }
+          else {
+            // move this node upward so that the cursor touches the bottom of the chargedParticle
+            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
+          }
         },
 
         endDrag: function( event ) {

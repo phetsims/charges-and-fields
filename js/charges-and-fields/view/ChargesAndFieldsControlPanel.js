@@ -37,13 +37,14 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndFieldsControlPanel( isElectricFieldGridVisibleProperty,
-                         isDirectionOnlyElectricFieldGridVisibleProperty,
-                         isElectricPotentialGridVisibleProperty,
-                         isValuesVisibleProperty,
-                         isGridVisibleProperty) {
+                                         isDirectionOnlyElectricFieldGridVisibleProperty,
+                                         isElectricPotentialGridVisibleProperty,
+                                         isValuesVisibleProperty,
+                                         isGridVisibleProperty ) {
 
     var controlPanel = this;
 
+    // various options for text, checkbox and panel
     var textOptions = {
       font: ChargesAndFieldsConstants.CHECK_BOX_FONT
     };
@@ -59,20 +60,23 @@ define( function( require ) {
       yMargin: 10
     };
 
+    // create text nodes for the checkboxes
     var electricFieldText = new Text( electricFieldString, textOptions );
     var directionOnlyText = new Text( directionOnlyString, textOptions );
     var voltageText = new Text( voltageString, textOptions );
     var valuesText = new Text( gridString, textOptions );
     var gridText = new Text( valuesString, textOptions );
 
+    // create checkboxes
     var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldGridVisibleProperty, checkBoxOptions );
     var directionOnlyCheckBox = new CheckBox( directionOnlyText, isDirectionOnlyElectricFieldGridVisibleProperty, checkBoxOptions );
     var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialGridVisibleProperty, checkBoxOptions );
     var valuesCheckBox = new CheckBox( gridText, isValuesVisibleProperty, checkBoxOptions );
     var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, checkBoxOptions );
 
+    // the checkbox 'direction only' needs to be indented with respect to the other checkboxes
     var directionOnlyGroup = new Node();
-    var hStrut = new HStrut( 25 );
+    var hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
     directionOnlyCheckBox.left = hStrut.right;
     directionOnlyGroup.addChild( hStrut );
     directionOnlyGroup.addChild( directionOnlyCheckBox );
@@ -80,14 +84,19 @@ define( function( require ) {
     var checkBoxGroup = new VBox( {
       spacing: 12, children: [
         electricFieldCheckBox,
-        directionOnlyGroup,
+        directionOnlyGroup, // contains the directionOnlyCheckBox
         voltageCheckBox,
         valuesCheckBox,
-        gridCheckBox,
+        gridCheckBox
       ], align: 'left'
     } );
 
+    // add the checkbox group to the panel
     Panel.call( this, checkBoxGroup, panelOptions );
+
+    //---------------
+    //  Apply the projector/default color scheme to the components of the control panel
+    //--------------
 
     ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
       controlPanel.background.fill = color;
@@ -134,7 +143,7 @@ define( function( require ) {
       directionOnlyCheckBox,
       voltageCheckBox,
       valuesCheckBox,
-      gridCheckBox,
+      gridCheckBox
     ];
 
     ChargesAndFieldsColors.checkBoxProperty.link( function( color ) {
@@ -154,15 +163,6 @@ define( function( require ) {
         checkBox.checkBoxColorBackground = color;
       } );
     } );
-
-    // this will only work on change of profile, not for the initialization...
-    //ChargesAndFieldsColors.on( 'profileChanged', function() {
-    //  checkBoxArray.forEach( function( checkBox ) {
-    //    checkBox.checkBoxColor = ChargesAndFieldsColors.checkBox;
-    //    checkBox.checkBoxColorBackground = ChargesAndFieldsColors.checkBoxBackground;
-    //    checkBox.checkBoxColorDisabled = ChargesAndFieldsColors.checkBoxDisabled;
-    //  } )
-    //} );
 
   }
 

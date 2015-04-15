@@ -51,7 +51,7 @@ define( function( require ) {
       var arrayLength = electricFieldLine.positionArray.length;
       var arrayIndex;
       var arrowHeadLength = 6; // length of the arrow head in scenery coordinates
-      var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) at the tip of the arrow head i.e >
+      var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) at the tip of the arrow head
       var numberOfSegmentsPerArrow = 10; // number of segment intervals between arrows
 
       var shape = new Shape();

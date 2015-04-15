@@ -8,16 +8,14 @@
 define( function( require ) {
   'use strict';
 
-  // imports
+  // modules
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  //var Panel = require ('SUN/Panel');
   var Text = require( 'SCENERY/nodes/Text' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var UserCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/UserCreatorNode' );
-  //var Vector2 = require( 'DOT/Vector2' );
 
   // strings
   var minusOneNanoCoulombString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
@@ -25,7 +23,6 @@ define( function( require ) {
   var sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
 
   // constants
-  //var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of charged particles.
   var FONT = ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT;
 
   /**
@@ -106,9 +103,21 @@ define( function( require ) {
     var textCenterY = viewBounds.centerY + viewBounds.height / 4;
 
     // Create the three text labels
-    var positiveChargeText = new Text( plusOneNanoCoulombString, { font: FONT, centerX: positiveChargeCenterX, centerY: textCenterY } );
-    var negativeChargeText = new Text( minusOneNanoCoulombString, { font: FONT, centerX: negativeChargeCenterX, centerY: textCenterY } );
-    var electricFieldSensorText = new Text( sensorsString, { font: FONT, centerX: electricFieldSensorCenterX, centerY: textCenterY } );
+    var positiveChargeText = new Text( plusOneNanoCoulombString, {
+      font: FONT,
+      centerX: positiveChargeCenterX,
+      centerY: textCenterY
+    } );
+    var negativeChargeText = new Text( minusOneNanoCoulombString, {
+      font: FONT,
+      centerX: negativeChargeCenterX,
+      centerY: textCenterY
+    } );
+    var electricFieldSensorText = new Text( sensorsString, {
+      font: FONT,
+      centerX: electricFieldSensorCenterX,
+      centerY: textCenterY
+    } );
 
     // Add the nodes
     this.addChild( rectangle );
@@ -121,7 +130,6 @@ define( function( require ) {
 
     // update the colors on change of color scheme (projector vs default)
     // no need to unlink since the chargeEnclosure is present for the lifetime of the simulation
-
     ChargesAndFieldsColors.link( 'enclosureText', function( color ) {
       positiveChargeText.fill = color;
       negativeChargeText.fill = color;

@@ -10,11 +10,8 @@ define( function( require ) {
   'use strict';
 
   // imports
-  //var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  //var DerivedProperty = require( 'AXON/DerivedProperty' );
-  //var HStrut = require( 'SUN/HStrut' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
@@ -26,11 +23,9 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  //var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
-  //var measuringTapeImage = require( 'image!SCENERY_PHET/measuringTape.png' );
   var equipotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/equipotentialSensorIcon.png' );
 
   /**
@@ -56,15 +51,13 @@ define( function( require ) {
                                     modelViewTransform,
                                     availableModelBoundsProperty ) {
 
-    var toolbox = this;
-
-    Node.call( this );
+    var toolboxPanel = this;
 
     // Create the icon image for the equipotential sensor
     var equipotentialSensorIconImage = new Image( equipotentialSensorImage, { cursor: 'pointer', scale: 0.4 } );
 
-    // We want to create an icon Image of a measuringTape
-    // First let's create an actual measuring tape
+    // procedure to create an icon Image of a measuringTape
+    // first, create an actual measuring tape
     var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
       {
         tipPositionProperty: new Property( new Vector2( 30, 0 ) ),
@@ -72,7 +65,7 @@ define( function( require ) {
       } );
     measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
 
-    // create the measuringTape icon with a token rectangle, it must be not empty as the panel will throw an error
+    // second, create the measuringTape icon with a token rectangle, it must be not empty as the panel will throw an error
     // if node is empty
     var measuringTapeIcon = new Node( { children: [ new Rectangle( 0, 0, 1, 1 ) ] } );
 
@@ -96,9 +89,8 @@ define( function( require ) {
       yMargin: 10
     };
 
-    // Create and add the panel
-    var panel = new Panel( panelContent, panelOptions );
-    this.addChild( panel );
+    // add the panelContent
+    Panel.call( this, panelContent, panelOptions );
 
     var measuringTapeMovableDragHandler = new MovableDragHandler( measuringTapeBasePositionProperty,
       {
@@ -112,7 +104,7 @@ define( function( require ) {
         startDrag: function( event ) {
 
           measuringTapeUserControlledProperty.set( true );
-          var testNode = toolbox;
+          var testNode = toolboxPanel;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
               this.parentScreen = testNode;
@@ -142,7 +134,7 @@ define( function( require ) {
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
           electricPotentialUserControlledProperty.set( true );
-          var testNode = toolbox;
+          var testNode = toolboxPanel;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
               this.parentScreen = testNode;
@@ -167,11 +159,11 @@ define( function( require ) {
     equipotentialSensorIconImage.addInputListener( equipotentialSensorMovableDragHandler );
 
     ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
-      panel.background.fill = color;
+      toolboxPanel.background.fill = color;
     } );
 
     ChargesAndFieldsColors.controlPanelBorderProperty.link( function( color ) {
-      panel.stroke = color;
+      toolboxPanel.stroke = color;
     } );
 
     // hide and show
@@ -191,10 +183,5 @@ define( function( require ) {
     } );
   }
 
-  return inherit( Node, ChargesAndFieldsToolbox, {
-    reset: function() {
-    }
-  } );
-
-} )
-;
+  return inherit( Panel, ChargesAndFieldsToolbox );
+} );

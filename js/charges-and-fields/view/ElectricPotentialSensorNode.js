@@ -108,7 +108,7 @@ define( function( require ) {
     } );
 
     ChargesAndFieldsColors.on( 'profileChanged', function() {
-    circle.fill = getElectricPotentialColor( electricPotentialSensor.electricPotential, { transparency: 0.5 } );
+      circle.fill = getElectricPotentialColor( electricPotentialSensor.electricPotential, { transparency: 0.5 } );
     } );
 
     // Show// Hide this node
@@ -151,13 +151,13 @@ define( function( require ) {
       endDrag: function( event ) {
         electricPotentialSensor.isUserControlled = false;
       }
-    });
+    } );
 
     // When dragging, move the electric potential sensor
-    electricPotentialSensorNode.addInputListener( movableDragHandler);
+    electricPotentialSensorNode.addInputListener( movableDragHandler );
 
     //no need to unlink, the sensor is present for the lifetime of the simulation.
-    availableModelBoundsProperty.link(function( bounds ) {
+    availableModelBoundsProperty.link( function( bounds ) {
       movableDragHandler.setDragBounds( bounds );
     } );
 

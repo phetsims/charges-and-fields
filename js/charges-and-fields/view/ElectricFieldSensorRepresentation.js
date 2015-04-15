@@ -49,7 +49,7 @@ define( function( require ) {
     };
     ChargesAndFieldsColors.link( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
 
-    // Rendering order
+    // add circle
     this.addChild( circle );
 
   }

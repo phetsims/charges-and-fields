@@ -39,6 +39,7 @@ define( function( require ) {
     var circle = new Circle( CIRCLE_RADIUS );
     this.addChild( circle );
 
+    //TODO: do we need color function for the charges? it seems an overkill, especially that only one color gets changed..
     // Determine the color of the charged particle based on its charge
     var negativeColorFunction = function( color ) {
       circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
@@ -58,11 +59,12 @@ define( function( require ) {
       ChargesAndFieldsColors.link( 'positiveCharge', positiveColorFunction );
     }
     else {
+      // then it must be a negative charge
+      assert && assert( charge === -1, 'charge must be 1 or -1' );
       ChargesAndFieldsColors.link( 'negativeCharge', negativeColorFunction );
     }
 
     // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
-
     var ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
     var pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white', pickable: false };
     if ( charge === 1 ) {

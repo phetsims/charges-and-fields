@@ -27,7 +27,7 @@ define( function( require ) {
    * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
    * @param {Function} update -       model.on.bind(model),
    * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given the magnitude of the electric field
-   * @param {Property.<Bounds2>} boundsProperty - bounds of the canvas in model units
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - bounds of the canvas in model units
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
@@ -37,7 +37,7 @@ define( function( require ) {
   function ElectricFieldGridNode( electricFieldSensorGrid,
                                   update,
                                   colorInterpolationFunction,
-                                  boundsProperty,
+                                  availableModelBoundsProperty,
                                   modelViewTransform,
                                   isChargedParticlePresentProperty,
                                   isDirectionOnlyElectricFieldGridVisibleProperty,
@@ -104,7 +104,7 @@ define( function( require ) {
       var updateArrowNode = function( arrowNode ) {
         // bounds that are slightly larger than the viewport to encompass arrows that are within one row
         // or one column of the nominal bounds
-        var bounds = modelViewTransform.modelToViewBounds( boundsProperty.get().dilated(
+        var bounds = modelViewTransform.modelToViewBounds( availableModelBoundsProperty.get().dilated(
           ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
         if ( bounds.containsPoint( arrowNode.center ) ) {
@@ -148,7 +148,7 @@ define( function( require ) {
       }
     }
 
-    boundsProperty.link( updateElectricFieldGrid );
+    availableModelBoundsProperty.link( updateElectricFieldGrid );
 
     // update the orientation and colors of the electric field arrows upon an update of the electric field grid
     update( 'electricFieldGridUpdated', updateElectricFieldGrid );

@@ -37,7 +37,6 @@ define( function( require ) {
   var Rectangle = require( 'DOT/Rectangle' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  //var Shape = require( 'KITE/Shape' );
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -45,7 +44,6 @@ define( function( require ) {
   var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
   var MIN_ELECTRIC_POTENTIAL = -40; // electric potential   at which color will saturate to minColor
-
   var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
@@ -75,11 +73,11 @@ define( function( require ) {
     } );
 
     // Create a property that register the model bounds based on the screen size
-    // Note that unlike the viewProperty set above we do not want the availableModelBounds to reset itself when
-    // the resetAllButton is pressed
+    // Note that unlike the viewProperty set above, the availableModelBounds should not be reset when
+    // the resetAllButton is pressed, hence the reason it is not part of the previous set
     this.availableModelBoundsProperty = new Property( model.enlargedBounds );
 
-    // The origin of the model is sets in the middle of the scree. There are 8 meters across the width of the dev bounds.
+    // The origin of the model is set to the middle of the dev bounds. There are 8 meters across the width of the dev bounds.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       Vector2.ZERO,
       new Vector2( this.layoutBounds.width / 2, this.layoutBounds.height / 2 ),
@@ -93,13 +91,12 @@ define( function( require ) {
     var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
     var webGLSupported = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowWebGL &&
                          ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
-
+    // TODO: how to pass the webGL status to the model. one could avoid allocating the electric potential grid in this way
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( webGLSupported ) {
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
         model.chargedParticles,
-        this.availableModelBoundsProperty,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
       );
@@ -167,12 +164,13 @@ define( function( require ) {
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
       listener: function() {
+        // do not reset the availableDragBoundsProperty
         model.reset();
         viewProperty.reset();
       }
     } );
 
-    // Create a draggable but dragBound Measuring Tape
+    // Create the options for a draggable but (subject to some dragBound) Measuring Tape
     var tapeOptions = {
       dragBounds: this.availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
@@ -180,15 +178,17 @@ define( function( require ) {
       tipPositionProperty: viewProperty.measuringTapeTipPositionProperty
     };
 
-    // Create a measuring tape
+    // Create a measuring tape (set to invisible initially)
     var measuringTape = new MeasuringTape( viewProperty.measuringTapeUnitsProperty, viewProperty.isMeasuringTapeVisibleProperty,
       tapeOptions );
 
+    // The color of measurement text of the measuting tape updates itself when the projector/default color scheme changes
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
     } );
 
     // Create the toolbox with the measuring tape and the electric potential sensor icons
+    // TODO pass the size of the sensor, measuring tape and tip to base distance
     var toolbox = new ChargesAndFieldsToolbox(
       model.electricPotentialSensor.positionProperty,
       model.electricPotentialSensor.isUserControlledProperty,
@@ -204,8 +204,7 @@ define( function( require ) {
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
     var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
-    // Create the charge and sensor enclosure
-
+    // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(
       model.addUserCreatedModelElementToObservableArray.bind( model ),
       model.chargedParticles,
@@ -264,8 +263,9 @@ define( function( require ) {
     resetAllButton.right = controlPanel.right;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
 
+    // link the available model bounds
     this.availableModelBoundsProperty.link( function( bounds ) {
-      // the measuring Tape is subject to dragBounds
+      // the measuring Tape is subject to dragBounds (specified in model coordinates)
       measuringTape.dragBounds = bounds;
 
       // the control panel, toolbox and resetAllButtons are set to the right of the bounds
@@ -276,26 +276,23 @@ define( function( require ) {
     } );
 
     // listens to the isUserControlled property of the electric potential sensor
-    // return the electric Potential sensor to the toolbox if not user Controlled and over the toolbox panel
+    // return the electric Potential sensor to the toolbox if it is not user Controlled and the
+    // location of the sensor is inside the toolbox panel
     model.electricPotentialSensor.isUserControlledProperty.link( function( isUserControlled ) {
-      //if ( !isUserControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition(
-      //    model.electricPotentialSensor.position ) ) ) {
-      //  viewProperty.isElectricPotentialSensorVisibleProperty.set( false );
       if ( !isUserControlled && toolbox.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
         viewProperty.isElectricPotentialSensorVisibleProperty.set( false );
-
       }
     } );
 
     // listens to the isUserControlled property of the measuring tape
-    // return the measuring tape to the toolbox if not user Controlled and its position is over the toolbox panel
+    // return the measuring tape to the toolbox if not user Controlled and its position is located within the toolbox panel
     measuringTape.isBaseUserControlledProperty.link( function( isUserControlled ) {
       if ( !isUserControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewProperty.measuringTapeBasePositionProperty.value ) ) ) {
         viewProperty.isMeasuringTapeVisibleProperty.set( false );
       }
     } );
 
-    // if in debug mode
+    // if in debug mode add two buttons that allow to add (many at a time) electric potential lines and electric field lines
     if ( IS_DEBUG ) {
       this.addChild( new RectangularPushButton( {
           listener: function() {
@@ -344,7 +341,7 @@ define( function( require ) {
      * The interpolation scheme is somewhat unusual in the sense that it is performed via a piecewise function
      * which relies on three colors and three electric potential anchors. It is essentially two linear interpolation
      * functions put end to end so that the entire domain is covered.
-     *
+     * @private
      * @param {number} electricPotential
      * @param {Object} [options] - useful to set transparency
      * @returns {string} color -  e.g. 'rgba(255, 255, 255, 1)'
@@ -382,7 +379,7 @@ define( function( require ) {
      * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
      * electric field value of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
      * electric field value of MAX_ELECTRIC_FIELD_MAGNITUDE).
-     *
+     * @private
      * @param {number} electricFieldMagnitude - a non negative number
      * @param {Object} [options] - useful to set transparency
      * @returns {string} color - e.g. 'rgba(255, 255, 255, 1)'
