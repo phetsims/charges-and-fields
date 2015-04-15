@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  //var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -35,12 +34,13 @@ define( function( require ) {
 
     var thisModel = this;
 
-    // For performance reasons these two following visibility properties are strongly tied to the model hence the reason they appear here.
+    // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
     PropertySet.call( thisModel, {
       isElectricFieldGridVisible: true, // control the visibility of a grid of arrows representing the local electric field
       isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
-      isChargedParticlePresent: false // is there at least one charged particle on the board
+      // TODO consider renaming
+      isChargedParticlePresent: false // is there at least one active charged particle on the board
     } );
 
     //----------------------------------------------------------------------------------------
@@ -54,39 +54,40 @@ define( function( require ) {
     this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, this.bounds.minY, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
     // @public read-only
+    // all distances are in meter
     this.chargeAndSensorEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
 
-    // Observable arrays of all draggable electric charges
+    // Observable array of all draggable electric charges
     // @public
     this.chargedParticles = new ObservableArray();
 
-    // Observable arrays of all draggable electric field sensors
+    // Observable array of all draggable electric field sensors
     // @public
     this.electricFieldSensors = new ObservableArray();
 
     // electric potential sensor
-    var position = new Vector2( -2.5, -1.0 ); // position of the crosshair on the electric potential sensor
+    var position = new Vector2( 0, 0 ); // position of the crosshair on the electric potential sensor, initial value will be reset by the view
     this.electricPotentialSensor = new SensorElement( position );
-    this.electricPotentialSensor.electricField = thisModel.getElectricField( this.electricPotentialSensor.position );
-    this.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( this.electricPotentialSensor.position );
 
     // electric Field Sensor Grid
     // @public read-only
     this.electricFieldSensorGrid = thisModel.sensorGridFactory( {
       spacing: ELECTRIC_FIELD_SENSOR_SPACING,
-      onOrigin: true
+      onOrigin: true // the origin (0,0) is also the location of a sensor
     } );
 
     // electric potential Sensor Grid, a.k.a in physics as the electric potential 'field'
     // @public read-only
     this.electricPotentialSensorGrid = thisModel.sensorGridFactory( {
       spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
-      onOrigin: false
+      onOrigin: false // the origin is equidistant from the four nearest neighbor sensors.
     } );
 
+    // observable array that contains the model of equipotential line, each element is an equipotential line
     // @public read-only
     this.equipotentialLinesArray = new ObservableArray();
 
+    // observable array that contains the model of equipotential line, each element is an electric field line
     // @public read-only
     this.electricFieldLinesArray = new ObservableArray();
 
@@ -133,40 +134,43 @@ define( function( require ) {
     // AddItem Added Listener on the charged Particles Observable Array
     //------------------------
 
-    // if any charges move, we need to update all the sensors
+    // if any active charges move, we need to update all the sensors
     this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
 
-
+      // TODO consider renaming
       thisModel.checkAtLeastOneChargedParticleOnBoard();
 
-      // send a trigger signal (go back to origin) if the charge particle is over the enclosure
       chargedParticle.isUserControlledProperty.link( function( isUserControlled ) {
+        // determine if the charge particle is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
-          chargedParticle.isActive = false;
-          chargedParticle.animate();
+          chargedParticle.isActive = false; // charge is no longer active, (effectively) equivalent to set its model charge to zero
+          chargedParticle.animate(); // animate the charge to its destination position
         }
       } );
 
       chargedParticle.isActiveProperty.lazyLink( function() {
-        //debugger;
+        // clear all equipotential lines, i.e. remove all elements from the equipotentialLinesArray
         thisModel.clearEquipotentialLines();
+        // clear all electric field lines, i.e. remove all elements from the electricFieldLinesArray
         thisModel.clearElectricFieldLines();
+        // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
         thisModel.updateAllVisibleSensors();
       } );
 
       chargedParticle.positionProperty.link( function( position, oldPosition ) {
 
+        // verify that the charge isActive before doing any charge-dependent updates to the model
         if ( chargedParticle.isActive ) {
-          // remove equipotential lines and electric field lines when the position of a charged particle changes
+          // remove equipotential lines and electric field lines when the position of a charged particle changes and the charge isActive
           thisModel.clearEquipotentialLines();
           thisModel.clearElectricFieldLines();
 
-          // if oldPosition doesn't exist calculate the sensor properties from the charge configurations (from scratch)
+          // if oldPosition doesn't exist then calculate the sensor properties from the charge configurations (from scratch)
           if ( oldPosition === null ) {
             thisModel.updateAllVisibleSensors();
           }
           // if oldPosition exists calculate the sensor properties from the delta contribution
-          // this should help if there are many charged particles on the board
+          // this should help performance if there are many charged particles on the board
           else {
             // convenience variable
             var charge = chargedParticle.charge;
@@ -187,6 +191,7 @@ define( function( require ) {
                 // let's calculate the change in the electric field due to the change in position of one charge
                 sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
               } );
+              // send a signal that the electric field grid has been updated,
               thisModel.trigger( 'electricFieldGridUpdated' );
             }
 
@@ -196,10 +201,11 @@ define( function( require ) {
                 // calculating the change in the electric potential due to the change in position of one charge
                 sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
               } );
+              // send a signal that the electric potential grid has been updated,
               thisModel.trigger( 'electricPotentialGridUpdated' );
             }
-          }
-        }
+          }// end of else statement
+        }// end of if(isActive) statement
       } );
     } );
 
@@ -209,11 +215,15 @@ define( function( require ) {
 
     // if any charge is removed, we need to update all the sensors
     this.chargedParticles.addItemRemovedListener( function( chargeParticle ) {
-      // Remove equipotential lines and electric field lines when the position of a charged particle changes
-      //thisModel.clearEquipotentialLines();
-      //thisModel.clearElectricFieldLines();
-      // Update all the visible sensors
-      thisModel.updateAllVisibleSensors();
+      // check that the particle was active before updating charge dependent model components
+      if ( chargeParticle.isActive ) {
+        // Remove equipotential lines and electric field lines
+        thisModel.clearEquipotentialLines();
+        thisModel.clearElectricFieldLines();
+        // Update all the visible sensors
+        thisModel.updateAllVisibleSensors();
+      }
+
       // is there at least one charge on the board ?
       thisModel.checkAtLeastOneChargedParticleOnBoard();
     } );
@@ -227,8 +237,9 @@ define( function( require ) {
       electricFieldSensor.positionProperty.link( function( position ) {
         electricFieldSensor.electricField = thisModel.getElectricField( position );
       } );
-      // send a trigger signal (go back to origin) if the electric field sensor is over the enclosure
+
       electricFieldSensor.isUserControlledProperty.link( function( isUserControlled ) {
+        // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
           electricFieldSensor.isActive = false;
           electricFieldSensor.animate();
@@ -239,6 +250,7 @@ define( function( require ) {
 
   return inherit( PropertySet, ChargesAndFieldsModel, {
       /**
+       * Reset function
        * @public
        */
       reset: function() {
@@ -247,7 +259,7 @@ define( function( require ) {
         this.equipotentialLinesArray.clear(); // clear the equipotential 'lines'
         this.electricFieldLinesArray.clear(); // clear the electric field 'lines'
         this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
-        PropertySet.prototype.reset.call( this ); // reset the visibility of the check boxes
+        PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
       },
 
 
@@ -275,14 +287,17 @@ define( function( require ) {
        * @private
        */
       updateAllVisibleSensors: function() {
-        this.updateElectricPotentialSensor(); // always visible
         if ( this.isElectricPotentialGridVisible === true ) {
           this.updateElectricPotentialSensorGrid();
         }
-        this.updateElectricFieldSensors(); // always visible
         if ( this.isElectricFieldGridVisible === true ) {
           this.updateElectricFieldSensorGrid();
         }
+        // the following sensors may not be visible or active but
+        // it very inexpensive to update them ( updating them avoid putting extra logic to handle
+        // the transition visible/invisible)
+        this.updateElectricPotentialSensor();
+        this.updateElectricFieldSensors();
       },
 
       /**
@@ -290,7 +305,6 @@ define( function( require ) {
        * @private
        */
       updateElectricFieldSensors: function() {
-        //debugger;
         var thisModel = this;
         this.electricFieldSensors.forEach( function( sensorElement ) {
           sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
@@ -314,6 +328,7 @@ define( function( require ) {
           sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
 
         } );
+        // send a signal that the electric potential grid has just been updated
         this.trigger( 'electricPotentialGridUpdated' );
       },
 
@@ -326,6 +341,7 @@ define( function( require ) {
         this.electricFieldSensorGrid.forEach( function( sensorElement ) {
           sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
         } );
+        // send a signal that the electric field grid has just been updated
         this.trigger( 'electricFieldGridUpdated' );
       },
 
@@ -340,6 +356,7 @@ define( function( require ) {
       addUserCreatedModelElementToObservableArray: function( modelElement, observableArray ) {
         observableArray.push( modelElement );
         modelElement.on( 'returnedToOrigin', function() {
+          // the observable array can removed the model element when the model element has returned to its origin
           observableArray.remove( modelElement );
         } );
       },
@@ -357,7 +374,6 @@ define( function( require ) {
           onOrigin: true // is there  a sensor at the origin (0,0)?, if false the first sensor is put at (spacing/2, spacing/2)
         }, options );
 
-
         /*
          The diagram below represents the bounds used in the model.
          The bounds defined by 'this.bounds' is inscribed in the lower middle portion. The origin (0,0) of the model
@@ -369,7 +385,6 @@ define( function( require ) {
 
          The sensorGridFactory generates an array of equally spaced sensors on the region defined by the
          cross. The four fallow regions are not seeded with sensors.
-
 
          ********---------------********
          *       |             |       *
@@ -401,7 +416,7 @@ define( function( require ) {
         var horizontalBeamBounds = new Bounds2( this.enlargedBounds.minX, this.bounds.minY, this.enlargedBounds.maxX, this.bounds.maxY );
 
         var spacing = options.spacing; // convenience variable
-        var offset = (options.onOrigin) ? 0 : 1 / 2;
+        var offset = (options.onOrigin) ? 0 : 0.5;
 
         // the following variables are integers or half-integers
         var minI = Math.ceil( this.enlargedBounds.minX / spacing ) - offset;
@@ -428,9 +443,9 @@ define( function( require ) {
 
 
       /**
-       * Return the change in the electric field at position Position due to the motion of a charged particle from oldChargePosition to  newChargePosition.
+       * Return the change in the electric field at position Position due to the motion of a
+       * charged particle from oldChargePosition to  newChargePosition.
        * @private
-       *
        * @param {Vector2} position
        * @param {Vector2} newChargePosition
        * @param {Vector2} oldChargePosition
@@ -458,27 +473,27 @@ define( function( require ) {
 
 
       /**
-       * Return the change in the electric potential at position Position due to the motion of a charged particle from oldChargePosition to  newChargePosition.
+       * Return the change in the electric potential at location 'position' due to the motion of a
+       * charged particle from oldChargePosition to newChargePosition.
        * @private
        * @param {Vector2} position
        * @param {Vector2} newChargePosition
        * @param {Vector2} oldChargePosition
        * @param {number} particleCharge
-       * @returns {number}
+       * @returns {number} electricPotentialChange
        */
       getElectricPotentialChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
         var newDistance = newChargePosition.distance( position );
         var oldDistance = oldChargePosition.distance( position );
-        //var electricPotentialChange = particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
         return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
       },
 
 
       /**
-       * Return the electric field ( a vector) at a location position
+       * Return the electric field ( a vector) at a location 'position'
        * @private
        * @param {Vector2} position
-       * @returns {Vector2}
+       * @returns {Vector2} electricField
        */
       getElectricField: function( position ) {
         var electricField = new Vector2( 0, 0 );
@@ -500,10 +515,10 @@ define( function( require ) {
 
 
       /**
-       * Return the electric potential at a location position due to the configuration of charges on the board.
+       * Return the electric potential at a location 'position' due to the configuration of charges on the board.
        * @public read-Only
        * @param {Vector2} position
-       * @returns {number}
+       * @returns {number} electricPotential
        */
       getElectricPotential: function( position ) {
         var electricPotential = 0;
@@ -527,7 +542,7 @@ define( function( require ) {
        * The algorithm works best for small epsilon.
        * @private
        * @param {Vector2} position
-       * @param {Number} deltaDistance - a distance
+       * @param {number} deltaDistance - a distance
        * @returns {Vector2} next point along the equipotential line
        */
       getNextPositionAlongEquipotential: function( position, deltaDistance ) {
@@ -535,9 +550,8 @@ define( function( require ) {
         return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, initialElectricPotential, deltaDistance );
       },
 
-
       /**
-       * Given a (initial) position, find a position with the targeted electric potential within a distance deltaDistance
+       * Given an (initial) position, find a position with the targeted electric potential within a distance 'deltaDistance'
        * @private
        * @param {Vector2} position
        * @param {number} electricPotential
@@ -574,7 +588,7 @@ define( function( require ) {
       },
 
       /**
-       * Given a (initial) position, find a position with the targeted electric potential within a distance deltaDistance
+       * Given an (initial) position, find a position with the targeted electric potential within a distance deltaDistance
        * This uses a standard midpoint algorithm
        * http://en.wikipedia.org/wiki/Midpoint_method
        * @private
@@ -620,7 +634,7 @@ define( function( require ) {
 
 
       /**
-       * Given a (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance
+       * Given an (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance
        * of the initial position.
        *
        * This uses a standard RK4 algorithm generalized to 2D

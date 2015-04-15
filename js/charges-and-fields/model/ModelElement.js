@@ -38,7 +38,7 @@ define( function( require ) {
     } );
 
     // @public read-only
-    // Flag that indicates whether this element is animating from one location to another, should not be set externally.
+    // Flag that indicates whether this element is animated from one location to another
     this.isAnimated = false;
 
     this.destinationPosition = null; // {Vector2} the final destination when animated
@@ -74,7 +74,7 @@ define( function( require ) {
         } ).
         onComplete( function() {
           self.isAnimated = false;
-          self.trigger( 'returnedToOrigin' );
+          self.trigger( 'returnedToOrigin' ); // model element can be removed from its observable array
         } );
 
       animationTween.start();
