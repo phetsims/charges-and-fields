@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ElectricPotentialSensorPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorPanel' );
+  var ElectricPotentialSensorBodyNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorBodyNode' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
@@ -84,17 +84,17 @@ define( function( require ) {
     } );
 
     // Create and add the panel of the sensor with the readout and push buttons
-    var electricPotentialSensorPanel = new ElectricPotentialSensorPanel( clearEquipotentialLines, addElectricPotentialLine );
+    var electricPotentialSensorBodyNode = new ElectricPotentialSensorBodyNode( clearEquipotentialLines, addElectricPotentialLine );
 
     this.addChild( crosshairMount );
     this.addChild( circle );
     this.addChild( crosshair );
-    this.addChild( electricPotentialSensorPanel );
+    this.addChild( electricPotentialSensorBodyNode );
 
     crosshairMount.centerX = circle.centerX;
     crosshairMount.top = circle.bottom;
-    electricPotentialSensorPanel.centerX = crosshairMount.centerX;
-    electricPotentialSensorPanel.top = crosshairMount.bottom;
+    electricPotentialSensorBodyNode.centerX = crosshairMount.centerX;
+    electricPotentialSensorBodyNode.top = crosshairMount.bottom;
 
     // Register for synchronization with model.
     electricPotentialSensor.positionProperty.link( function( position ) {
@@ -103,7 +103,7 @@ define( function( require ) {
 
     // Update the value of the electric potential on the panel and the fill color on the crosshair
     electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
-      electricPotentialSensorPanel.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
+      electricPotentialSensorBodyNode.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
       circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
     } );
 
