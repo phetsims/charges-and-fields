@@ -137,7 +137,7 @@ define( function( require ) {
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
-          electricFieldSensor.userControlled = true;
+          electricFieldSensor.isUserControlled = true;
           // Move the sensor to the front of this layer when grabbed by the user.
           electricFieldSensorNode.moveToFront();
           var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
@@ -146,7 +146,7 @@ define( function( require ) {
         },
 
         endDrag: function( event ) {
-          electricFieldSensor.userControlled = false;
+          electricFieldSensor.isUserControlled = false;
         }
       } );
 

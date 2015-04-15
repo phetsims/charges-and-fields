@@ -131,7 +131,7 @@ define( function( require ) {
             // Create the new model element.
             this.modelElement = modelElementCreator( modelViewTransform.viewToModelPosition( viewPosition.plus( offset ) ) );
             this.modelElement.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
-            this.modelElement.userControlled = true;
+            this.modelElement.isUserControlled = true;
             this.modelElement.isActive = false;
 
             addModelElementToObservableArray( this.modelElement, observableArray );
@@ -144,7 +144,7 @@ define( function( require ) {
           },
 
           end: function( event ) {
-            this.modelElement.userControlled = false;
+            this.modelElement.isUserControlled = false;
             if ( !enclosureBounds.containsPoint( this.modelElement.position ) ) {
               this.modelElement.isActive = true;
             }

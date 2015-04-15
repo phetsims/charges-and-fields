@@ -194,7 +194,7 @@ define( function( require ) {
     // Create the toolbox with the measuring tape and the electric potential sensor icons
     var toolbox = new ChargesAndFieldsToolbox(
       model.electricPotentialSensor.positionProperty,
-      model.electricPotentialSensor.userControlledProperty,
+      model.electricPotentialSensor.isUserControlledProperty,
       viewProperty.measuringTapeBasePositionProperty,
       viewProperty.measuringTapeTipPositionProperty,
       measuringTape.isBaseUserControlledProperty,
@@ -280,22 +280,22 @@ define( function( require ) {
       toolbox.right = controlPanel.right;
     } );
 
-    // listens to the userControlled property of the electric potential sensor
+    // listens to the isUserControlled property of the electric potential sensor
     // return the electric Potential sensor to the toolbox if not user Controlled and over the toolbox panel
-    model.electricPotentialSensor.userControlledProperty.link( function( userControlled ) {
-      //if ( !userControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition(
+    model.electricPotentialSensor.isUserControlledProperty.link( function( isUserControlled ) {
+      //if ( !isUserControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition(
       //    model.electricPotentialSensor.position ) ) ) {
       //  viewProperty.isElectricPotentialSensorVisibleProperty.set( false );
-      if ( !userControlled && toolbox.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded(40) ) ) {
+      if ( !isUserControlled && toolbox.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
         viewProperty.isElectricPotentialSensorVisibleProperty.set( false );
 
       }
     } );
 
-    // listens to the userControlled property of the measuring tape
+    // listens to the isUserControlled property of the measuring tape
     // return the measuring tape to the toolbox if not user Controlled and its position is over the toolbox panel
-    measuringTape.isBaseUserControlledProperty.link( function( userControlled ) {
-      if ( !userControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewProperty.measuringTapeBasePositionProperty.value ) ) ) {
+    measuringTape.isBaseUserControlledProperty.link( function( isUserControlled ) {
+      if ( !isUserControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewProperty.measuringTapeBasePositionProperty.value ) ) ) {
         viewProperty.isMeasuringTapeVisibleProperty.set( false );
       }
     } );

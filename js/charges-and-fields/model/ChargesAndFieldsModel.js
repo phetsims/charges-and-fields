@@ -140,8 +140,8 @@ define( function( require ) {
       thisModel.checkAtLeastOneChargedParticleOnBoard();
 
       // send a trigger signal (go back to origin) if the charge particle is over the enclosure
-      chargedParticle.userControlledProperty.link( function( userControlled ) {
-        if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
+      chargedParticle.isUserControlledProperty.link( function( isUserControlled ) {
+        if ( !isUserControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
           chargedParticle.isActive = false;
           chargedParticle.animate();
         }
@@ -228,8 +228,8 @@ define( function( require ) {
         electricFieldSensor.electricField = thisModel.getElectricField( position );
       } );
       // send a trigger signal (go back to origin) if the electric field sensor is over the enclosure
-      electricFieldSensor.userControlledProperty.link( function( userControlled ) {
-        if ( !userControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
+      electricFieldSensor.isUserControlledProperty.link( function( isUserControlled ) {
+        if ( !isUserControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
           electricFieldSensor.isActive = false;
           electricFieldSensor.animate();
         }
