@@ -18,10 +18,10 @@ define( function( require ) {
    *
    * @param {ObservableArray.<Object>} electricFieldLinesArray
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
+   * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
    * @constructor
    */
-  function ElectricFieldLineNode( electricFieldLinesArray, modelViewTransform, isChargedParticlePresentProperty ) {
+  function ElectricFieldLineNode( electricFieldLinesArray, modelViewTransform, isPlayAreaChargedProperty ) {
 
     Node.call( this );
 

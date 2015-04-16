@@ -29,7 +29,7 @@ define( function( require ) {
    * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given the magnitude of the electric field
    * @param {Property.<Bounds2>} availableModelBoundsProperty - bounds of the canvas in model units
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
+   * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
    * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
    * @constructor
@@ -39,7 +39,7 @@ define( function( require ) {
                                   colorInterpolationFunction,
                                   availableModelBoundsProperty,
                                   modelViewTransform,
-                                  isChargedParticlePresentProperty,
+                                  isPlayAreaChargedProperty,
                                   isDirectionOnlyElectricFieldGridVisibleProperty,
                                   isElectricFieldGridVisibleProperty ) {
 
@@ -161,9 +161,9 @@ define( function( require ) {
     isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 
     // this node is visible if  (1) the electricField is checked AND (2) there is at least one charge particle  on the board
-    var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldGridVisibleProperty, isChargedParticlePresentProperty ],
-      function( isElectricFieldVisible, isChargedParticlePresent ) {
-        return isElectricFieldVisible && isChargedParticlePresent;
+    var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldGridVisibleProperty, isPlayAreaChargedProperty ],
+      function( isElectricFieldVisible, isPlayAreaCharged ) {
+        return isElectricFieldVisible && isPlayAreaCharged;
       } );
 
     // Show or Hide this node

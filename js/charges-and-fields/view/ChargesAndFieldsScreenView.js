@@ -119,7 +119,7 @@ define( function( require ) {
       this.getElectricFieldMagnitudeColor.bind( this ),
       this.availableModelBoundsProperty,
       modelViewTransform,
-      model.isChargedParticlePresentProperty,
+      model.isPlayAreaChargedProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricFieldGridVisibleProperty );
 
@@ -127,14 +127,14 @@ define( function( require ) {
     var equipotentialLineNode = new EquipotentialLineNode(
       model.equipotentialLinesArray,
       modelViewTransform,
-      model.isChargedParticlePresentProperty,
+      model.isPlayAreaChargedProperty,
       viewProperty.isValuesVisibleProperty );
 
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLineNode = new ElectricFieldLineNode(
       model.electricFieldLinesArray,
       modelViewTransform,
-      model.isChargedParticlePresentProperty );
+      model.isPlayAreaChargedProperty );
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(

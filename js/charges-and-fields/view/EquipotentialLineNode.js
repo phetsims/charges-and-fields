@@ -31,11 +31,11 @@ define( function( require ) {
    *
    * @param {ObservableArray.<Object>} equipotentialLinesArray - array of models of equipotentialLine
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isChargedParticlePresentProperty - is there at least one charged particle on the board
+   * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isValuesVisibleProperty - control the visibility of the voltage labels
    * @constructor
    */
-  function EquipotentialLineNode( equipotentialLinesArray, modelViewTransform, isChargedParticlePresentProperty, isValuesVisibleProperty ) {
+  function EquipotentialLineNode( equipotentialLinesArray, modelViewTransform, isPlayAreaChargedProperty, isValuesVisibleProperty ) {
 
     Node.call( this );
 

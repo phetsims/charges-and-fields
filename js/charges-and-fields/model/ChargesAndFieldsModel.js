@@ -38,8 +38,7 @@ define( function( require ) {
     PropertySet.call( thisModel, {
       isElectricFieldGridVisible: true, // control the visibility of a grid of arrows representing the local electric field
       isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
-      // TODO consider renaming
-      isChargedParticlePresent: false // is there at least one active charged particle on the board
+      isPlayAreaCharged: false // is there at least one active charged particle on the board
     } );
 
     //----------------------------------------------------------------------------------------
@@ -135,9 +134,6 @@ define( function( require ) {
     // if any active charges move, we need to update all the sensors
     this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
 
-      // TODO consider renaming
-      thisModel.checkAtLeastOneChargedParticleOnBoard();
-
       chargedParticle.isUserControlledProperty.link( function( isUserControlled ) {
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
@@ -153,6 +149,8 @@ define( function( require ) {
         thisModel.clearElectricFieldLines();
         // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
         thisModel.updateAllVisibleSensors();
+        // update the status of the isPlayAreaCharged,  to find is there is at least one charge particle on board
+        thisModel.updateIsPlayAreaCharged();
       } );
 
       chargedParticle.positionProperty.link( function( position, oldPosition ) {
@@ -222,8 +220,8 @@ define( function( require ) {
         thisModel.updateAllVisibleSensors();
       }
 
-      // is there at least one charge on the board ?
-      thisModel.checkAtLeastOneChargedParticleOnBoard();
+      // update  the property isPlayAreaCharged to see if is there at least one active charge on the board
+      thisModel.updateIsPlayAreaCharged();
     } );
 
     //------------------------
@@ -264,8 +262,14 @@ define( function( require ) {
        * Function that determines if there are charges on the board
        * @private
        */
-      checkAtLeastOneChargedParticleOnBoard: function() {
-        this.isChargedParticlePresent = (this.chargedParticles.length > 0);
+      updateIsPlayAreaCharged: function() {
+        var isActiveChargePresentOnBoard = true;
+
+        this.chargedParticles.forEach( function( chargedParticle ) {
+          isActiveChargePresentOnBoard = isActiveChargePresentOnBoard || chargedParticle.isActive;
+        } );
+
+        this.isPlayAreaCharged = isActiveChargePresentOnBoard;
       },
 
       /**
@@ -678,7 +682,7 @@ define( function( require ) {
        * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
        */
       getEquipotentialPositionArray: function( position ) {
-        if ( !this.isChargedParticlePresent ) {
+        if ( !this.isPlayAreaCharged ) {
           // if there are no charges, don't bother to find the equipotential line
           return null;
         }
@@ -806,7 +810,7 @@ define( function( require ) {
        * UNUSED
        */
       getElectricFieldPositionArray: function( position ) {
-        if ( !this.isChargedParticlePresent ) {
+        if ( !this.isPlayAreaCharged ) {
           // if there are no charges, don't bother to find the electric field lines
           return null;
         }
@@ -908,7 +912,7 @@ define( function( require ) {
       addElectricFieldLine: function( position ) {
         // electric field lines don't exist in a vacuum of charges
         var electricFieldLine = {};
-        if ( this.isChargedParticlePresent ) {
+        if ( this.isPlayAreaCharged ) {
           electricFieldLine.position = position;
           electricFieldLine.positionArray = this.getElectricFieldPositionArray( electricFieldLine.position );
           if ( electricFieldLine.positionArray ) {
