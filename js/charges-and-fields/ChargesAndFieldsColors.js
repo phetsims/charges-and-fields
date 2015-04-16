@@ -63,14 +63,6 @@ define( function( require ) {
       default: new Color( 30, 30, 30 ),
       projector: new Color( 255, 255, 255 )
     },
-    negativeCharge: {
-      default: new Color( 44, 190, 245 ),
-      projector: new Color( 44, 190, 245 )
-    },
-    positiveCharge: {
-      default: new Color( 245, 60, 44 ),
-      projector: new Color( 245, 60, 44 )
-    },
     voltageLabel: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )

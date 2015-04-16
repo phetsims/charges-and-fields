@@ -39,29 +39,18 @@ define( function( require ) {
     var circle = new Circle( CIRCLE_RADIUS );
     this.addChild( circle );
 
-    //TODO: do we need color function for the charges? it seems an overkill, especially that only one color gets changed..
-    // Determine the color of the charged particle based on its charge
-    var negativeColorFunction = function( color ) {
-      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
-        .addColorStop( 0, 'rgb(79,207,255)' )
-        .addColorStop( 0.5, color )
-        .addColorStop( 1, 'rgb(0,169,232)' );
-    };
-
-    var positiveColorFunction = function( color ) {
-      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
-        .addColorStop( 0, 'rgb(255,43,79)' )
-        .addColorStop( 0.5, color )
-        .addColorStop( 1, 'rgb(232,9,0)' );
-    };
-
     if ( charge === 1 ) {
-      ChargesAndFieldsColors.link( 'positiveCharge', positiveColorFunction );
+      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
+        .addColorStop( 0, 'rgb(255,43,79)' ) // mostly red
+        .addColorStop( 0.5, 'rgb(245, 60, 44 )' )
+        .addColorStop( 1, 'rgb(232,9,0)' );
     }
     else {
       // then it must be a negative charge
-      assert && assert( charge === -1, 'charge must be 1 or -1' );
-      ChargesAndFieldsColors.link( 'negativeCharge', negativeColorFunction );
+      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
+        .addColorStop( 0, 'rgb(79,207,255)' ) // mostly blue
+        .addColorStop( 0.5, 'rgb(44, 190, 245)' )
+        .addColorStop( 1, 'rgb(0,169,232)' );
     }
 
     // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
