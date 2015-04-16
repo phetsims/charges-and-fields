@@ -64,33 +64,33 @@ define( function( require ) {
       circle.stroke = color;
     } );
 
-    // Create and add the crosshair
+    // Create the crosshair
     var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
       .lineTo( CIRCLE_RADIUS, 0 )
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
     var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
-      crosshair.stroke = color;
-    } );
-
+    // Create the base of the crosshair
     var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
 
-    // TODO do i need a new color
+    // update the colors on the crosshair components when the color profile changes
     ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+      crosshair.stroke = color;
       crosshairMount.fill = color;
       crosshairMount.stroke = color;
     } );
 
-    // Create and add the panel of the sensor with the readout and push buttons
+    // Create the panel (body) of the sensor with the readout and push buttons
     var electricPotentialSensorBodyNode = new ElectricPotentialSensorBodyNode( clearEquipotentialLines, addElectricPotentialLine );
 
+    // Add the various components
     this.addChild( crosshairMount );
     this.addChild( circle );
     this.addChild( crosshair );
     this.addChild( electricPotentialSensorBodyNode );
 
+    // layout elements
     crosshairMount.centerX = circle.centerX;
     crosshairMount.top = circle.bottom;
     electricPotentialSensorBodyNode.centerX = crosshairMount.centerX;
@@ -104,6 +104,7 @@ define( function( require ) {
     // Update the value of the electric potential on the panel and the fill color on the crosshair
     electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
       electricPotentialSensorBodyNode.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
+      // the color fill inside the circle changes according to the value of the electric potential
       circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
     } );
 
@@ -116,7 +117,7 @@ define( function( require ) {
     isElectricPotentialSensorVisibleProperty.linkAttribute( this, 'visible' );
 
     /**
-     * Function that rounds number according
+     * Function that rounds a number and return it as a string
      * @param {number} number
      * @param {Object} [options]
      * @returns {string}
@@ -160,7 +161,6 @@ define( function( require ) {
     availableModelBoundsProperty.link( function( bounds ) {
       movableDragHandler.setDragBounds( bounds );
     } );
-
   }
 
   return inherit( Node, ElectricPotentialSensorNode );
