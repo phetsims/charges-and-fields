@@ -701,7 +701,7 @@ define( function( require ) {
          */
         var stepCounter = 0; // {number} integer
         var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
-        var epsilonDistance = 0.10; // {number} step length along equipotential in meters
+        var epsilonDistance = 0.05; // {number} step length along equipotential in meters
         var isLinePathClosed = false; // {boolean}
         var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
         assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
