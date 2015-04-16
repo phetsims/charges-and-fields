@@ -341,6 +341,7 @@ define( function( require ) {
         // If we're not visible, clear everything and exit. Our layerSplit above guarantees this won't clear other
         // node's renderings.
         if ( !this.isVisibleProperty.get() ) {
+          // TODO, need something to handle our color scheme projector/default
           gl.clearColor( 0, 0, 0, 1 );
           gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
           return;
