@@ -16,7 +16,6 @@ define( function( require ) {
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  //var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var CIRCLE_RADIUS = 2; // in scenery coordinates

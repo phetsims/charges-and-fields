@@ -11,9 +11,8 @@ define( function( require ) {
 
   // modules
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
-  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ElectricPotentialSensorBodyNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorBodyNode' );
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var ElectricPotentialSensorBodyNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorBodyNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
