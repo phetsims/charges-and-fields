@@ -56,7 +56,12 @@ define( function( require ) {
     var plotElectricPotentialLineButton = new PencilButton( {
       iconWidth: 26, // width of pencil icon, used for scaling, the aspect ratio will determine height
       listener: function() {
+        // TODO: get rid of timing
+        var initialTime = new Date().getTime();
         addElectricPotentialLine();
+        var finalTime = new Date().getTime();
+        var deltaTime = finalTime - initialTime;
+        console.log( 'Time to plot eq line: ', deltaTime, 'ms' );
       }
     } );
 
@@ -82,33 +87,6 @@ define( function( require ) {
       children: [ equipotentialPanelTitleText, backgroundRectangle, buttons ],
       pickable: true
     } );
-
-    //var moreShape = new Shape().
-    //  moveTo( 120.51, 146.7 ).
-    //  cubicCurveToRelative( 0, 6.487, -5.193, 12.895, -11.539, 14.238 ).
-    //  cubicCurveToRelative( 0.001, 0.001, -16.535, 3.5, -20.931, 6.963 ).
-    //  cubicCurveToRelative( -4.372, 3.444, -6.674, 9.611, -11.19, 11.694 ).
-    //  cubicCurveToRelative( -4.514, 2.083, -18.818, 2.167, -23.916, 0 ).
-    //  cubicCurveToRelative( -5.098, -2.167, -5.266, -8.417, -9.856, -11.694 ).
-    //  cubicCurveTo( 38.186, 164.41, 20.831, 160.859, 20.831, 160.858 ).
-    //  cubicCurveTo( 14.476, 159.559, 9.275, 153.187, 9.275, 146.7 ).
-    //  verticalLineTo( 75.639 ). //left vertical
-    //  cubicCurveToRelative( 0, -6.487, 5.308, -11.795, 11.796, -11.795 ).
-    //  horizontalLineToRelative( 87.645 ). // top
-    //  cubicCurveToRelative( 6.486, 0, 11.795, 5.308, 11.795, 11.795 ).
-    //  verticalLineTo( 146.7 ).  //right vertical
-    //  close();
-
-    //var frontPath = new Path( moreShape, {
-    //  stroke: 'white',
-    //  lineWidth: 3,
-    //  fill: '#343c9f'
-    //} );
-    //frontPath.scale( (content.width+30)/frontPath.width,  (content.height+50)/frontPath.height );
-    //frontPath.top=0;
-    //frontPath.centerX=0;
-    //content.top=10;
-    //content.centerX=0;
 
     // Create the body of the sensor
     var outlineImage = new Image( equipotentialLinePanelOutlineImage );
