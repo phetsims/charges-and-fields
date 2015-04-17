@@ -28,6 +28,11 @@ define( function( require ) {
   // images
   var equipotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/equipotentialSensorIcon.png' );
 
+  // constants
+  var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/equipotentialLinePanelOutline.png' ).height;
+  var MEASURING_TAPE_WIDTH = require( 'image!SCENERY_PHET/measuringTape.png' ).width;
+  var MEASURING_TAPE_HEIGHT = require( 'image!SCENERY_PHET/measuringTape.png' ).height;
+
   /**
    * Toolbox constructor
    * @param {Property.<Vector2>} electricPotentialSensorPositionProperty
@@ -118,8 +123,16 @@ define( function( require ) {
 
           // initial position of the pointer in the screenView coordinates
           var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
-          // TODO: get tid of magic number: use displacement vector based on size of the measuring tape (center to the crosshair base)
-          measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition.plus( new Vector2( 20, 20 ) ) ) );
+
+          // the position of the measuring tape is defined as the position of the base crosshair
+          // the cursor should hover over the center of the body of the measuring tape instead.
+          // find the offset
+          var offsetPosition = new Vector2( MEASURING_TAPE_WIDTH / 2, MEASURING_TAPE_HEIGHT / 2 );
+
+          // position of the measuring Tape in ScreenView coordinates
+          var measuringTapeLocation = initialPosition.plus( offsetPosition );
+
+          measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( measuringTapeLocation ) );
           isMeasuringTapeVisibleProperty.set( true );
           // link the position of base of the measuring tape to the tip of the measuring tape
           measuringTapeBasePositionProperty.link( this.positionListener );
@@ -154,9 +167,14 @@ define( function( require ) {
 
           // initial position of the pointer in the screenView coordinates
           var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
-// TODO: get tid of magic number: use displacement vector based on size of the equipotential sensor
-          electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( initialPosition.plus( new Vector2( 0, -150 ) ) ) );
 
+          // recall that the position of the equipotentialSensor is defined as the position of the crosshair
+          // the cursor should not be at the crosshair but at the center bottom of the equipotential tool
+          var offsetPosition = new Vector2( 0, -SENSOR_HEIGHT );
+
+          // position of the  equipotential sensor in ScreenView coordinates
+          var equipotentialSensorLocation = initialPosition.plus( offsetPosition );
+          electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( equipotentialSensorLocation ) );
 
           isElectricPotentialSensorVisibleProperty.set( true );
         },

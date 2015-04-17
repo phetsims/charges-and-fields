@@ -188,7 +188,6 @@ define( function( require ) {
     } );
 
     // Create the toolbox with the measuring tape and the electric potential sensor icons
-    // TODO pass the size of the sensor, measuring tape and tip to base distance
     var toolbox = new ChargesAndFieldsToolbox(
       model.electricPotentialSensor.positionProperty,
       model.electricPotentialSensor.isUserControlledProperty,
