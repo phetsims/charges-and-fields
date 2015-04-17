@@ -45,7 +45,24 @@ define( function( require ) {
 
     Node.call( this );
 
-    //var maxTextWidth = (new Text( sensorsString, { font: FONT} )).width;
+    // width of the strings
+    var minusTextWidth = (new Text( minusOneNanoCoulombString, { font: FONT } )).width;
+    var plusTextWidth = (new Text( plusOneNanoCoulombString, { font: FONT } )).width;
+    var sensorTextWidth = (new Text( sensorsString, { font: FONT } )).width;
+
+    // maximum width of the three strings
+    var maxTextWidth = Math.max( minusTextWidth, plusTextWidth, sensorTextWidth );
+
+    // the width of each string should occupy less than 1/3 of width of the enclosure
+    // translation of the strings could possibly violate this condition
+    var minimumEnclosureModelWidth = modelViewTransform.viewToModelDeltaX( 3 * maxTextWidth );
+
+    // if it is not the case, then increase the model Bounds of the enclosure
+    if ( enclosureBounds.width < minimumEnclosureModelWidth ) {
+      var centerX = enclosureBounds.centerX;
+      enclosureBounds.minX = centerX - enclosureModelWidth / 2;
+      enclosureBounds.maxX = centerX + enclosureModelWidth / 2;
+    }
 
     // bounds of the enclosure in screenView coordinates
     var viewBounds = modelViewTransform.modelToViewBounds( enclosureBounds );
@@ -53,7 +70,6 @@ define( function( require ) {
     // Create the background enclosure
     var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, { lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH } );
 
-    // TODO: find a layout scheme that will not be broken by translation
     // Convenience variable to position the charges and sensor
     var positiveChargeCenterX = viewBounds.centerX - viewBounds.width / 3;
     var positiveChargeCenterY = viewBounds.centerY - viewBounds.height / 5;
