@@ -84,6 +84,8 @@ define( function( require ) {
 
       // functions to be called back when particle positions change, tagged with listener.particle = particle
       this.positionListeners = [];
+
+      //TODO: need to add/remove particles only when they are active/inactive
       chargedParticles.addItemAddedListener( this.onParticleAdded.bind( this ) );
       chargedParticles.addItemRemovedListener( this.onParticleRemoved.bind( this ) );
 
