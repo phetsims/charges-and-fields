@@ -142,15 +142,21 @@ define( function( require ) {
         }
       } );
 
-      chargedParticle.isActiveProperty.lazyLink( function() {
+      chargedParticle.isActiveProperty.lazyLink( function( isActive ) {
         // clear all equipotential lines, i.e. remove all elements from the equipotentialLinesArray
         thisModel.clearEquipotentialLines();
         // clear all electric field lines, i.e. remove all elements from the electricFieldLinesArray
         thisModel.clearElectricFieldLines();
         // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
         thisModel.updateAllVisibleSensors();
-        // update the status of the isPlayAreaCharged,  to find is there is at least one charge particle on board
-        thisModel.updateIsPlayAreaCharged();
+        if ( isActive ) {
+          // we know for sure that there is a least one active charge
+          thisModel.isPlayAreaCharged = true;
+        }
+        else {
+          // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
+          thisModel.updateIsPlayAreaCharged();
+        }
       } );
 
       chargedParticle.positionProperty.link( function( position, oldPosition ) {
@@ -263,7 +269,7 @@ define( function( require ) {
        * @private
        */
       updateIsPlayAreaCharged: function() {
-        var isActiveChargePresentOnBoard = true;
+        var isActiveChargePresentOnBoard = false;
 
         this.chargedParticles.forEach( function( chargedParticle ) {
           isActiveChargePresentOnBoard = isActiveChargePresentOnBoard || chargedParticle.isActive;
