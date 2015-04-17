@@ -725,6 +725,7 @@ define( function( require ) {
         this.chargedParticles.forEach( function( chargedParticle ) {
           isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > closestDistance);
         } );
+
         if ( !isSafeDistance ) {
           return null;
         }
@@ -771,9 +772,8 @@ define( function( require ) {
           if ( !isLinePathClosed && ( this.enlargedBounds.containsPoint( currentClockwisePosition ) ||
                                       this.enlargedBounds.containsPoint( currentCounterClockwisePosition ) ) ) {
             console.log( 'an equipotential line terminates on the screen' );
-            // bring out the big guns
-            // see https://github.com/phetsims/charges-and-fields/issues/1
-            //   this.getEquipotentialThroughMarchingSquaresPositionArray( position );
+            // rather than plotting an unphysical equipotential line, returns null
+            return null;
           }
 
           // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
@@ -781,21 +781,6 @@ define( function( require ) {
           //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
           return reversedArray.concat( position, counterClockwisePositionArray );
         }
-      },
-
-      /**
-       * This method returns an array of points (vectors) with the same electric potential as the electric potential
-       * at the initial position. The array is ordered with position points going counterclockwise.
-       * This method uses a so called 'Marching Squares' Algorithm
-       * see http://en.wikipedia.org/wiki/Marching_squares
-       * @private
-       * @param {Vector2} position - initial position
-       * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
-       */
-      getEquipotentialThroughMarchingSquaresPositionArray: function( position ) {
-
-        //TODO: complete this algorithm
-
       },
 
       /**
