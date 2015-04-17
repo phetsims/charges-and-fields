@@ -1,23 +1,19 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Button with an pencil icon.
+ * RectangularPushButton with a pencil icon.
  *
- * @author Martin Veillette
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
 
   // modules
-  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
-
-  // images
-  var pencilImage = require( 'image!CHARGES_AND_FIELDS/pencil.png' );
 
   /**
    * @param {Object} [options]
@@ -26,7 +22,6 @@ define( function( require ) {
   function PencilButton( options ) {
 
     options = _.extend( {
-      baseColor: 'white',
       iconWidth: 20,
       iconHeight: 18
     }, options );
@@ -191,11 +186,6 @@ define( function( require ) {
         part2Path, part3Path, part4Path, part5Path, part6Path, part7Path, part8Path, part9Path, part10Path,
         part11Path, part12Path ]
     } );
-
-    // pencil icon
-    //options.content = new Image( pencilImage );
-    //TODO get rid unless JO solution for png is working
-    options.useless = new Image( pencilImage );
 
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 

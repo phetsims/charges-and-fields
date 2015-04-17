@@ -346,7 +346,6 @@ define( function( require ) {
         this.trigger( 'electricFieldGridUpdated' );
       },
 
-      //TODO Should that function be here in the first place? It is a pure function. It is called by UserCreatedNode
       /**
        * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
        * some sort of creator node. The function add the type to an observable Array
@@ -731,7 +730,6 @@ define( function( require ) {
         }
         else {
 
-          //TODO: should we use dilated enlargedBounds?: discuss with amy
           while ( stepCounter < stepMax &&
                   this.enlargedBounds.containsPoint( currentClockwisePosition ) ||
                   this.enlargedBounds.containsPoint( currentCounterClockwisePosition ) ) {

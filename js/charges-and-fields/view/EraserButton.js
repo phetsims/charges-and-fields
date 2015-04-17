@@ -1,24 +1,20 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Button with an eraser icon.
+ * RectangularPushButton with an eraser icon.
  *
- * @author John Blanco
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
 
   // modules
-  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
-
-  // images
-  var eraserImage = require( 'image!CHARGES_AND_FIELDS/eraser.png' );
 
   /**
    * @param {Object} [options]
@@ -27,11 +23,11 @@ define( function( require ) {
   function EraserButton( options ) {
 
     options = _.extend( {
-      baseColor: '#F2E916',
       iconWidth: 20,
       iconHeight: 18
     }, options );
 
+    // gradient for the side of the eraser
     var sideLinearGradient = new LinearGradient( 204.9355, 81.1113, 108.6211, 81.1113 ).
       addColorStop( 0, '#F4ABAA' ).
       addColorStop( 0.2769, '#F1A9A8' ).
@@ -40,6 +36,7 @@ define( function( require ) {
       addColorStop( 0.8774, '#BF8685' ).
       addColorStop( 1, '#AB7877' );
 
+    // gradient for the fron side of the eraser
     var frontLinearGradient = new LinearGradient( 10.3359, 131.7725, 123.8398, 131.7725 ).
       addColorStop( 0, '#F4ABAA' ).
       addColorStop( 0.2769, '#F1A9A8' ).
@@ -48,6 +45,7 @@ define( function( require ) {
       addColorStop( 0.8774, '#BF8685' ).
       addColorStop( 1, '#AB7877' );
 
+    // gradient for the top side of the eraser
     var topLinearGradient = new LinearGradient( 25.0527, 53.7559, 204.9355, 53.7559 ).
       addColorStop( 0, '#F4ABAA' ).
       addColorStop( 0.2769, '#F1A9A8' ).
@@ -111,11 +109,6 @@ define( function( require ) {
 
     // eraser icon
     options.content = new Node( { children: [ sidePath, frontPath, topPath ] } );
-
-    // eraser icon
-    //TODO get rid unless JO solution for png is working
-    //options.content = new Image( eraserImage );
-    options.useless = new Image( eraserImage );
 
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
