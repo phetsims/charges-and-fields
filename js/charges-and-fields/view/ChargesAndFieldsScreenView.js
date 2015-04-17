@@ -48,7 +48,7 @@ define( function( require ) {
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
 
-  var IS_DEBUG = true;
+  var IS_DEBUG = false; // debug mode that adds two rectangular push buttons that can add multiple electric field lines and equipotential lines
 
   /**
    *
