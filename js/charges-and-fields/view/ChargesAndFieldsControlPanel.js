@@ -106,7 +106,7 @@ define( function( require ) {
       controlPanel.stroke = color;
     } );
 
-    // update the text fill of all the check boxes except directionOnlyCheckBox
+    // update the text fill of all the check boxes
     ChargesAndFieldsColors.controlPanelTextProperty.link( function( color ) {
       electricFieldText.fill = color;
       directionOnlyText.fill = color;
