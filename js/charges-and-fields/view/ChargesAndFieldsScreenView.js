@@ -91,7 +91,6 @@ define( function( require ) {
     var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
     var webGLSupported = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowWebGL &&
                          ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
-    // TODO: how to pass the webGL status to the model. one could avoid allocating the electric potential grid in this way
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( webGLSupported ) {
