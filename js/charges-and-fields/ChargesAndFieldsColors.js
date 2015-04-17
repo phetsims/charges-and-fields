@@ -35,10 +35,6 @@ define( function( require ) {
       default: new Color( 229, 229, 126 ),
       projector: new Color( 0, 0, 0 )
     },
-    controlPanelTextDisabled: {
-      default: new Color( 100, 100, 100 ),
-      projector: new Color( 150, 150, 150 )
-    },
     enclosureText: {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
@@ -54,10 +50,6 @@ define( function( require ) {
     checkBox: {
       default: new Color( 230, 230, 230 ),
       projector: new Color( 0, 0, 0 )
-    },
-    checkBoxDisabled: {
-      default: new Color( 100, 100, 100 ),
-      projector: new Color( 192, 192, 192 )
     },
     checkBoxBackground: {
       default: new Color( 30, 30, 30 ),

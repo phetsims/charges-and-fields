@@ -109,28 +109,10 @@ define( function( require ) {
     // update the text fill of all the check boxes except directionOnlyCheckBox
     ChargesAndFieldsColors.controlPanelTextProperty.link( function( color ) {
       electricFieldText.fill = color;
+      directionOnlyText.fill = color;
       voltageText.fill = color;
       valuesText.fill = color;
       gridText.fill = color;
-    } );
-
-    // create a derived property to be used for the content of directionOnlyCheckBox
-    var directionOnlyTextFillProperty = new DerivedProperty( [
-        isElectricFieldGridVisibleProperty,
-        ChargesAndFieldsColors.controlPanelTextProperty,
-        ChargesAndFieldsColors.controlPanelTextDisabledProperty ],
-      function( isElectricFieldGridVisible, controlPanelText, controlPanelDisabledText ) {
-        if ( isElectricFieldGridVisible ) {
-          return controlPanelText;
-        }
-        else {
-          return controlPanelDisabledText;
-        }
-      } );
-
-    // update the text fill of the directionOnlyCheckBox checkBox
-    directionOnlyTextFillProperty.link( function( directionOnlyTextFill ) {
-      directionOnlyText.fill = directionOnlyTextFill;
     } );
 
     isElectricFieldGridVisibleProperty.link( function( enabled ) {
@@ -149,12 +131,6 @@ define( function( require ) {
     ChargesAndFieldsColors.checkBoxProperty.link( function( color ) {
       checkBoxArray.forEach( function( checkBox ) {
         checkBox.checkBoxColor = color;
-      } );
-    } );
-
-    ChargesAndFieldsColors.checkBoxDisabledProperty.link( function( color ) {
-      checkBoxArray.forEach( function( checkBox ) {
-        checkBox.checkBoxColorDisabled = color;
       } );
     } );
 
