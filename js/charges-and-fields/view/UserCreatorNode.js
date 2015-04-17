@@ -42,8 +42,6 @@ define( function( require ) {
                             enclosureBounds,
                             options ) {
 
-    //var self = this;
-
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the charge

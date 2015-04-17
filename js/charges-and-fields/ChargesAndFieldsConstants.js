@@ -13,8 +13,6 @@ define( function( require ) {
 
     // height of the screen in the model
 
-    //HEIGHT: 6, // in meters
-    //WIDTH: 10, // in meters
     HEIGHT: 5, // in meters
     WIDTH: 8, // in meters
     GRID_MAJOR_SPACING: 0.5, // in meters
