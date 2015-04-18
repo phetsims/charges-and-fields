@@ -263,6 +263,8 @@ define( function( require ) {
         this.equipotentialLinesArray.clear(); // clear the equipotential 'lines'
         this.electricFieldLinesArray.clear(); // clear the electric field 'lines'
         this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
+        this.updateElectricFieldSensorGrid(); // will reset the grid to zero
+        this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
         PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
       },
 
