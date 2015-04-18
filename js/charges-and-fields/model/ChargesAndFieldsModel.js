@@ -161,6 +161,8 @@ define( function( require ) {
 
       chargedParticle.positionProperty.link( function( position, oldPosition ) {
 
+
+        console.log( thisModel.chargedParticles.length );
         // verify that the charge isActive before doing any charge-dependent updates to the model
         if ( chargedParticle.isActive ) {
           // remove equipotential lines and electric field lines when the position of a charged particle changes and the charge isActive
@@ -265,7 +267,7 @@ define( function( require ) {
       },
 
       /**
-       * Function that determines if there are charges on the board
+       * Function that determines if there are active charges on the board
        * @private
        */
       updateIsPlayAreaCharged: function() {

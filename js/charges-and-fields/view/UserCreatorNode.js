@@ -42,6 +42,7 @@ define( function( require ) {
                             enclosureBounds,
                             options ) {
 
+    var self = this;
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the charge
@@ -97,24 +98,29 @@ define( function( require ) {
     // this is where the center of 'this' is in the ScreenView reference frame
     var viewPosition = new Vector2( options.centerX, options.centerY );
 
-    // Create and add a static representation of the node
-    var staticObject = new Node();
-    this.addChild( staticObject );
-
     // Create and add a static view node
-    staticObject.addChild( representationCreatorNode() );
+    this.addChild( representationCreatorNode() );
 
     // let's make this node very easy to pick
-    this.touchArea = staticObject.localBounds.dilated( 20 );
+    this.touchArea = this.localBounds.dilated( 10 ); // large enough to be easy to pick but small enough that the touch area doesnt spill out of the enclosure
 
     // offset between the  position of the static object and the initial position of the movingObject
-    // needed for the 'pop' effect
-    var offset = new Vector2( 0, -20 ); // in view coordinate frame
+    // needed for the 'pop' effect, value was empirically determined. large enough to be visually apparent
+    // but small enough that it stays within the enclosure
+    var offset = new Vector2( 0, -20 ); // in view coordinate frame,
 
-    var movableDragHandler =
-      new SimpleDragHandler(
+    /**
+     * Recursive function that returns a SimpleDragHandler. Upon a start event, the simpleDragHandler
+     * call this very same function and pass it to an addInputListener. The goal of this is to support multitouch event
+     * i.e. to  have at least one available input listener at all times.
+     * see https://github.com/phetsims/charges-and-fields/issues/22
+     * @returns {SimpleDragHandler}
+     */
+    function createMovableDragHandler() {
+      return new SimpleDragHandler(
         {
-          modelElement: null,
+          movableDragHandler: null, // {SimpleDragHandler}
+          modelElement: null, // {ChargedParticle || SensorElement}
           modelViewTransform: modelViewTransform,
           dragBounds: availableModelBoundsProperty.value,
 
@@ -126,6 +132,9 @@ define( function( require ) {
             this.modelElement.isUserControlled = true;
             this.modelElement.isActive = false;
 
+            // create a new
+            this.movableDragHandler = createMovableDragHandler();
+            self.addInputListener( this.movableDragHandler );
             addModelElementToObservableArray( this.modelElement, observableArray );
           },
 
@@ -136,16 +145,19 @@ define( function( require ) {
           },
 
           end: function( event ) {
+            self.removeInputListener( this.movableDragHandler );
             this.modelElement.isUserControlled = false;
             if ( !enclosureBounds.containsPoint( this.modelElement.position ) ) {
               this.modelElement.isActive = true;
             }
             this.modelElement = null;
+            this.movableDragHandler = null;
           }
         } );
+    }
 
-    // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
-    this.addInputListener( movableDragHandler );
+    // Add a listener that will allow the user to click on this and create a model element, then position it in the model.
+    this.addInputListener( createMovableDragHandler() );
 
     /**
      * Constrains a location to some bounds.
