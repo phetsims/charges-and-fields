@@ -51,7 +51,7 @@ define( function( require ) {
     this.isValuesVisibleProperty = isValuesVisibleProperty;
 
     // Expand the touch area
-    this.touchArea = this.localBounds.dilatedXY( 20, 20 );
+    this.touchArea = this.localBounds.dilated( 10 );
 
     // Create the E-field arrow, (set the arrow horizontally to start with)
     var arrowNode = new ArrowNode( 0, 0, 1, 0, {
