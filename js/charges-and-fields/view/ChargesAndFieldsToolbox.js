@@ -15,8 +15,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  //var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
-  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MeasuringTape' );
+  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var Property = require( 'AXON/Property' );

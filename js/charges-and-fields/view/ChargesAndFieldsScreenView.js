@@ -27,8 +27,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var linear = require( 'DOT/Util' ).linear;
-  //var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
-  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/MeasuringTape' );
+  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
