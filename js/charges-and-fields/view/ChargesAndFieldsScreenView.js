@@ -94,7 +94,7 @@ define( function( require ) {
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( isWebGLSupported ) {
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
-        model.chargedParticles,
+        model.activeChargedParticles,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
       );

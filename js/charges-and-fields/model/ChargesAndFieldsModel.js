@@ -59,6 +59,11 @@ define( function( require ) {
     // @public
     this.chargedParticles = new ObservableArray();
 
+    // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
+    // This is the relevant array to calculate the electric field, and electric potential
+    // @public
+    this.activeChargedParticles = new ObservableArray();
+
     // Observable array of all draggable electric field sensors
     // @public
     this.electricFieldSensors = new ObservableArray();
@@ -131,7 +136,7 @@ define( function( require ) {
     // AddItem Added Listener on the charged Particles Observable Array
     //------------------------
 
-    // if any active charges move, we need to update all the sensors
+    // the following logic is the crux of the simulation
     this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
 
       chargedParticle.isUserControlledProperty.link( function( isUserControlled ) {
@@ -152,10 +157,15 @@ define( function( require ) {
         if ( isActive ) {
           // we know for sure that there is a least one active charge
           thisModel.isPlayAreaCharged = true;
+          // add particle to the activeChargedParticle observable array
+          // use for the webGlNode
+          thisModel.activeChargedParticles.push( chargedParticle );
         }
         else {
           // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
           thisModel.updateIsPlayAreaCharged();
+          // remove particle from the activeChargeParticle array
+          thisModel.activeChargedParticles.remove( chargedParticle );
         }
       } );
 
@@ -224,6 +234,9 @@ define( function( require ) {
         thisModel.clearElectricFieldLines();
         // Update all the visible sensors
         thisModel.updateAllVisibleSensors();
+
+        // remove particle from the activeChargedParticles array
+        thisModel.activeChargedParticles.remove( chargeParticle );
       }
 
       // update  the property isPlayAreaCharged to see if is there at least one active charge on the board
