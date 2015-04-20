@@ -94,6 +94,7 @@ define( function( require ) {
     return inherit( WebGLNode, ElectricPotentialGridWebGLNode, {
       // Add notes to the queue to color all particles (without adding listeners)
       addAllParticles: function() {
+        this.queue = [];
         for ( var i = 0; i < this.chargedParticles.length; i++ ) {
           this.addParticle( this.chargedParticles.get( i ) );
         }
