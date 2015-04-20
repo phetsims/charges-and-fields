@@ -88,9 +88,13 @@ define( function( require ) {
     this.model = model;
 
     // Check to see if WebGL was prevented by a query parameter
-    var allowMobileWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
-    var allowWebGL = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowMobileWebGL &&
-                         ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
+    var disallowWebGL = phet.chipper.getQueryParameter( 'webgl' ) === 'false'
+    // The mobile WebGL implementation will work with basic WebGL support
+    var allowMobileWebGL = Util.checkWebGLSupport() && !disallowWebGL;
+    // The unlimited-particle implementation will work only with OES_texture_float where writing to
+    // float textures is supported.
+    var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
+                     ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( allowWebGL ) {
