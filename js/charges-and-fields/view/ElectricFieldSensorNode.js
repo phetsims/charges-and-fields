@@ -140,26 +140,29 @@ define( function( require ) {
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
 
-          electricFieldSensor.isUserControlled = true;
-          // Move the sensor to the front of this layer when grabbed by the user.
-          electricFieldSensorNode.moveToFront();
+          if ( !electricFieldSensor.isAnimated ) // dont drag nodes that are animated
+          {
+            electricFieldSensor.isUserControlled = true;
+            // Move the sensor to the front of this layer when grabbed by the user.
+            electricFieldSensorNode.moveToFront();
 
-          var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
+            var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
 
-          if ( ChargesAndFieldsGlobals.electricFieldLines ) {
-            // Add an electricFieldLine on a double click event
-            this.startNewTime = new Date().getTime();
-            var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
-            if ( timeDifference < 300 ) {
-              addElectricFieldLine( electricFieldSensor.position );
+            if ( ChargesAndFieldsGlobals.electricFieldLines ) {
+              // Add an electricFieldLine on a double click event
+              this.startNewTime = new Date().getTime();
+              var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
+              if ( timeDifference < 300 ) {
+                addElectricFieldLine( electricFieldSensor.position );
+              }
+              this.startOldTime = this.startNewTime;
+              // do not move the node since we want to be able to double-click on the node
+              electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint );
             }
-            this.startOldTime = this.startNewTime;
-            // do not move the node since we want to be able to double-click on the node
-            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint );
-          }
-          else {
-            // move this node upward so that the cursor touches the bottom of the chargedParticle
-            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
+            else {
+              // move this node upward so that the cursor touches the bottom of the chargedParticle
+              electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
+            }
           }
         },
 

@@ -53,15 +53,17 @@ define( function( require ) {
     animate: function() {
       var self = this;
 
-      this.isAnimated = true;
+      // distance from current position to the destination position
+      var distanceToDestination = this.position.distance( this.destinationPosition );
 
+      // time to perform the animation in milliseconds, time is proportional to distance
+      var animationTime = (distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY) * 1000; // in milliseconds
+
+      // convenience variable for the Tween animation
       var position = {
         x: this.position.x,
         y: this.position.y
       };
-
-      var distanceToDestination = this.position.distance( this.destinationPosition );
-      var animationTime = (distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY) * 1000; // in milliseconds
 
       var animationTween = new TWEEN.Tween( position ).
         to( {
@@ -69,11 +71,14 @@ define( function( require ) {
           y: this.destinationPosition.y
         }, animationTime ).
         easing( TWEEN.Easing.Cubic.InOut ).
+        onStart( function(){
+          self.isAnimated = true;
+        } ).
         onUpdate( function() {
           self.position = new Vector2( position.x, position.y );
         } ).
         onComplete( function() {
-          self.isAnimated = false;
+          self.isAnimated = false; // done with the animation
           self.trigger( 'returnedToOrigin' ); // model element can be removed from its observable array
         } );
 
