@@ -148,7 +148,7 @@ define( function( require ) {
 
             var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
 
-            if ( ChargesAndFieldsGlobals.electricFieldLines ) {
+            if ( ChargesAndFieldsGlobals.isElectricFieldLinesSupported ) {
               // Add an electricFieldLine on a double click event
               this.startNewTime = new Date().getTime();
               var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds

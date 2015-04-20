@@ -25,7 +25,7 @@ define( function( require ) {
 
     if ( !isBasicsVersion ) {
       children.push( new CheckBox( new Text( electricFieldLinesString, { font: OptionsDialog.DEFAULT_FONT } ),
-        ChargesAndFieldsGlobals.electricFieldLinesProperty, {} ) );
+        ChargesAndFieldsGlobals.isElectricFieldLinesSupportedProperty, {} ) );
     }
     children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       ChargesAndFieldsGlobals.projectorColorsProperty, {} ) );

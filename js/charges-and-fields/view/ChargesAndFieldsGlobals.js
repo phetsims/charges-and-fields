@@ -15,7 +15,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
 
   var ChargesAndFieldsGlobals = new PropertySet( {
-    electricFieldLines: !!phet.chipper.getQueryParameter( 'electricFieldLines' ) || false,
+    isElectricFieldLinesSupported: !!phet.chipper.getQueryParameter( 'electricFieldLines' ) || false,
     projectorColors: !!phet.chipper.getQueryParameter( 'projector' ) || false
   } );
 
