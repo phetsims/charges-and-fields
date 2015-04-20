@@ -31,11 +31,10 @@ define( function( require ) {
    *
    * @param {ObservableArray.<Object>} equipotentialLinesArray - array of models of equipotentialLine
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isValuesVisibleProperty - control the visibility of the voltage labels
    * @constructor
    */
-  function EquipotentialLineNode( equipotentialLinesArray, modelViewTransform, isPlayAreaChargedProperty, isValuesVisibleProperty ) {
+  function EquipotentialLineNode( equipotentialLinesArray, modelViewTransform, isValuesVisibleProperty ) {
 
     Node.call( this );
 
@@ -73,8 +72,8 @@ define( function( require ) {
       if ( IS_DEBUG ) {
         var equipotentialCircle = dotElectricPotentialLine( equipotentialLine );
         circleNode.setChildren( equipotentialCircle );
-
       }
+
       equipotentialLinesArray.addItemRemovedListener( function removalListener( removedEquipotentialLine ) {
         if ( removedEquipotentialLine === equipotentialLine ) {
           lineNode.removeChild( equipotentialLinePath );

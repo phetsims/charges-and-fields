@@ -125,14 +125,12 @@ define( function( require ) {
     var equipotentialLineNode = new EquipotentialLineNode(
       model.equipotentialLinesArray,
       modelViewTransform,
-      model.isPlayAreaChargedProperty,
       viewProperty.isValuesVisibleProperty );
 
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLineNode = new ElectricFieldLineNode(
       model.electricFieldLinesArray,
-      modelViewTransform,
-      model.isPlayAreaChargedProperty );
+      modelViewTransform);
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
