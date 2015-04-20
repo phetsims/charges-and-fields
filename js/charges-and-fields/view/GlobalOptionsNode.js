@@ -20,10 +20,10 @@ define( function( require ) {
   var electricFieldLinesString = require( 'string!CHARGES_AND_FIELDS/options.electricFieldLines' );
   var projectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
-  function GlobalOptionsNode( isBasicsVersion ) {
+  function GlobalOptionsNode( isEnhancedVersion ) {
     var children = [];
 
-    if ( !isBasicsVersion ) {
+    if ( isEnhancedVersion ) {
       children.push( new CheckBox( new Text( electricFieldLinesString, { font: OptionsDialog.DEFAULT_FONT } ),
         ChargesAndFieldsGlobals.isElectricFieldLinesSupportedProperty, {} ) );
     }

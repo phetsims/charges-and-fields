@@ -15,4 +15,4 @@ potential array is represented as a webGL node with a canvas fallback.
 
 An equipotential line is represented by a series of positions. The view is responsible
 for linking these points into a series of line segments. The code contains model and view elements
-to generate electric field lines. They can be turn on by setting 'isBasicsVersion' to false.
+to generate electric field lines. They can be turn on by setting 'isEnhancedVersion' to true.

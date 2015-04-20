@@ -19,8 +19,8 @@ define( function( require ) {
   // strings
   var simTitle = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.name' );
 
-  // the basics version does not have capabilities to draw electric field lines
-  var isBasicsVersion = true;
+  // the enhanced version has the capability of drawing electric field lines by double clicking on the electric field sensor nodes
+  var isEnhancedVersion = true;
 
   var simOptions = {
     credits: {
@@ -30,7 +30,7 @@ define( function( require ) {
       softwareDevelopment: 'Martin Veillette, Michael Dubson',
       designTeam: 'Ariel Paul, Amy Rouinfar, Kathy Perkins'
     },
-    optionsNode: new GlobalOptionsNode( isBasicsVersion ),
+    optionsNode: new GlobalOptionsNode( isEnhancedVersion ),
     homeScreenWarningNode: ChargesAndFieldsGlobals.useWebGL ? null : new CanvasWarningNode()
   };
 
