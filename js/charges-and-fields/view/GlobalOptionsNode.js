@@ -20,6 +20,11 @@ define( function( require ) {
   var electricFieldLinesString = require( 'string!CHARGES_AND_FIELDS/options.electricFieldLines' );
   var projectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
+  /**
+   *
+   * @param {boolean} isEnhancedVersion
+   * @constructor
+   */
   function GlobalOptionsNode( isEnhancedVersion ) {
     var children = [];
 

@@ -44,7 +44,7 @@ define( function( require ) {
      *
      * @param {THREE.Material} material
      * @param {Property.<Color>} colorProperty
-     * @returns A callback that will unlink
+     * @returns {Function} A callback that will unlink
      */
     linkColorAndAmbient: function( material, colorProperty ) {
       var colorListener = function( color ) {
@@ -57,6 +57,11 @@ define( function( require ) {
       };
     },
 
+    /**
+     * Returns a color property
+     * @param {string||Color} color
+     * @returns {Property.<Color>}
+     */
     toColorProperty: function( color ) {
       // for now, cast it into place
       var colorProperty;
