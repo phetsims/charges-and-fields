@@ -20,6 +20,7 @@ define( function( require ) {
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
   var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
+  var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
   var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
@@ -87,19 +88,29 @@ define( function( require ) {
     this.model = model;
 
     // Check to see if WebGL was prevented by a query parameter
-    var allowWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
-    var isWebGLSupported = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowWebGL &&
+    var allowMobileWebGL = phet.chipper.getQueryParameter( 'webgl' ) !== 'false';
+    var allowWebGL = Util.checkWebGLSupport( [ 'OES_texture_float' ] ) && allowMobileWebGL &&
                          ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
-    if ( isWebGLSupported ) {
+    if ( allowWebGL ) {
+      console.log( 'desktop WebGL' );
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
       );
     }
+    else if ( allowMobileWebGL ) {
+      console.log( 'mobile WebGL' );
+      electricPotentialGridNode = new ElectricPotentialGridMobileWebGLNode(
+        model.chargedParticles,
+        modelViewTransform,
+        model.isElectricPotentialGridVisibleProperty
+      );
+    }
     else {
+      console.log( 'fallback canvas' );
       electricPotentialGridNode = new ElectricPotentialGridNode(
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
