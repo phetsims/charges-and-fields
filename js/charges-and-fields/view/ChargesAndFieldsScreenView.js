@@ -98,7 +98,6 @@ define( function( require ) {
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( allowWebGL ) {
-      console.log( 'desktop WebGL' );
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
@@ -106,15 +105,13 @@ define( function( require ) {
       );
     }
     else if ( allowMobileWebGL ) {
-      console.log( 'mobile WebGL' );
       electricPotentialGridNode = new ElectricPotentialGridMobileWebGLNode(
-        model.chargedParticles,
+        model.activeChargedParticles,
         modelViewTransform,
         model.isElectricPotentialGridVisibleProperty
       );
     }
     else {
-      console.log( 'fallback canvas' );
       electricPotentialGridNode = new ElectricPotentialGridNode(
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
