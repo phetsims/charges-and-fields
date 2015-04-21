@@ -36,7 +36,8 @@ define( function( require ) {
       this.isVisibleProperty = isVisibleProperty;
 
       WebGLNode.call( this, {
-        layerSplit: true // ensure we're on our own layer
+        layerSplit: true, // ensure we're on our own layer
+        webglScale: 1 / 16
       } );
 
       // if our color scheme changes, make sure we update
