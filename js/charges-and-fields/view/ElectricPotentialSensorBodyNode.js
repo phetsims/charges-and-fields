@@ -25,22 +25,22 @@ define( function( require ) {
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
 
   // images
-  var equipotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/equipotentialLinePanelOutline.png' );
+  var electricPotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
   /**
-   * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
+   * @param {Function} clearElectricPotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {Object} [options] scenery options for rendering the Electric Potential Sensor Panel, see the constructor for options.
    * @constructor
    */
-  function ElectricPotentialSensorBodyNode( clearEquipotentialLines, addElectricPotentialLine, options ) {
+  function ElectricPotentialSensorBodyNode( clearElectricPotentialLines, addElectricPotentialLine, options ) {
 
     var self = this;
 
     Node.call( this );
 
     // Create the text node above the readout
-    var equipotentialPanelTitleText = new Text( equipotentialString, {
+    var electricPotentialPanelTitleText = new Text( equipotentialString, {
       font: ChargesAndFieldsConstants.DEFAULT_FONT
     } );
 
@@ -48,7 +48,7 @@ define( function( require ) {
     var clearButton = new EraserButton( {
       iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
       listener: function() {
-        clearEquipotentialLines();
+        clearElectricPotentialLines();
       }
     } );
 
@@ -84,12 +84,12 @@ define( function( require ) {
     // Organize the content of the control panel
     var content = new LayoutBox( {
       spacing: 10,
-      children: [ equipotentialPanelTitleText, backgroundRectangle, buttons ],
+      children: [ electricPotentialPanelTitleText, backgroundRectangle, buttons ],
       pickable: true
     } );
 
     // Create the body of the sensor
-    var outlineImage = new Image( equipotentialLinePanelOutlineImage );
+    var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
 
     // Add the nodes
     this.addChild( outlineImage ); // must go first
@@ -113,7 +113,7 @@ define( function( require ) {
 
     // Link the fill color for the default/projector mode
     ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', function( color ) {
-      equipotentialPanelTitleText.fill = color;
+      electricPotentialPanelTitleText.fill = color;
     } );
 
     ChargesAndFieldsColors.link( 'electricPotentialSensorBorder', function( color ) {

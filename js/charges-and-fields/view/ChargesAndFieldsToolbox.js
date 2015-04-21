@@ -25,10 +25,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var equipotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/equipotentialSensorIcon.png' );
+  var electricPotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialSensorIcon.png' );
 
   // constants
-  var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/equipotentialLinePanelOutline.png' ).height;
+  var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' ).height;
   var MEASURING_TAPE_WIDTH = require( 'image!SCENERY_PHET/measuringTape.png' ).width;
   var MEASURING_TAPE_HEIGHT = require( 'image!SCENERY_PHET/measuringTape.png' ).height;
 
@@ -57,8 +57,8 @@ define( function( require ) {
 
     var toolboxPanel = this;
 
-    // Create the icon image for the equipotential sensor
-    var equipotentialSensorIconImage = new Image( equipotentialSensorImage, { cursor: 'pointer', scale: 0.4 } );
+    // Create the icon image for the electricPotential sensor
+    var electricPotentialSensorIconImage = new Image( electricPotentialSensorImage, { cursor: 'pointer', scale: 0.4 } );
 
     // procedure to create an icon Image of a measuringTape
     // first, create an actual measuring tape
@@ -82,7 +82,7 @@ define( function( require ) {
     var panelContent = new LayoutBox( {
       orientation: 'vertical',
       spacing: 20,
-      children: [ equipotentialSensorIconImage, measuringTapeIcon ],
+      children: [ electricPotentialSensorIconImage, measuringTapeIcon ],
       pickable: true
     } );
 
@@ -148,7 +148,7 @@ define( function( require ) {
         }
       } );
 
-    var equipotentialSensorMovableDragHandler = new SimpleDragHandler(
+    var electricPotentialSensorMovableDragHandler = new SimpleDragHandler(
       {
         parentScreen: null, // needed for coordinate transforms
         dragBounds: availableModelBoundsProperty.value,
@@ -167,13 +167,13 @@ define( function( require ) {
           // initial position of the pointer in the screenView coordinates
           var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
 
-          // recall that the position of the equipotentialSensor is defined as the position of the crosshair
-          // the cursor should not be at the crosshair but at the center bottom of the equipotential tool
+          // recall that the position of the electricPotentialSensor is defined as the position of the crosshair
+          // the cursor should not be at the crosshair but at the center bottom of the electricPotential tool
           var offsetPosition = new Vector2( 0, -SENSOR_HEIGHT );
 
-          // position of the  equipotential sensor in ScreenView coordinates
-          var equipotentialSensorLocation = initialPosition.plus( offsetPosition );
-          electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( equipotentialSensorLocation ) );
+          // position of the  electricPotential sensor in ScreenView coordinates
+          var electricPotentialSensorLocation = initialPosition.plus( offsetPosition );
+          electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( electricPotentialSensorLocation ) );
 
           isElectricPotentialSensorVisibleProperty.set( true );
         },
@@ -191,7 +191,7 @@ define( function( require ) {
 
     // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
     measuringTapeIcon.addInputListener( measuringTapeMovableDragHandler );
-    equipotentialSensorIconImage.addInputListener( equipotentialSensorMovableDragHandler );
+    electricPotentialSensorIconImage.addInputListener( electricPotentialSensorMovableDragHandler );
 
     ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
       toolboxPanel.background.fill = color;
@@ -203,7 +203,7 @@ define( function( require ) {
 
     // hide and show
     isElectricPotentialSensorVisibleProperty.link( function( visible ) {
-      equipotentialSensorIconImage.visible = !visible;
+      electricPotentialSensorIconImage.visible = !visible;
     } );
 
     // measuringTape visibility has the opposite visibility of the measuringTape Icon
@@ -213,7 +213,7 @@ define( function( require ) {
 
     // no need to dispose of this link since this is present for the lifetime of the sim
     availableModelBoundsProperty.link( function( bounds ) {
-      equipotentialSensorMovableDragHandler.dragBounds = bounds;
+      electricPotentialSensorMovableDragHandler.dragBounds = bounds;
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
 

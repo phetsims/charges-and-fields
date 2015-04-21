@@ -11,6 +11,9 @@ define( function( require ) {
 
   return {
 
+
+    K_CONSTANT: 9, // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
+
     // height of the screen in the model
 
     HEIGHT: 5, // in meters
@@ -27,7 +30,7 @@ define( function( require ) {
     PANEL_LINE_WIDTH: 2, // in scenery coordinates
 
     DEFAULT_FONT: new PhetFont( { size: 12 } ),
-    VOLTAGE_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the equipotential Line voltage label
+    VOLTAGE_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the electricPotential Line voltage label
     GRID_LABEL_FONT: new PhetFont( { size: 12 } ), // font for the label that appears beneath the double arrow (length scale) on the grid
     ENCLOSURE_LABEL_FONT: new PhetFont( { size: 16 } ),  // font for the labels in the enclosure for the charges and sensors
 

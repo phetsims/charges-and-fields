@@ -16,7 +16,7 @@ define( function( require ) {
 
   /**
    *
-   * @param {ObservableArray.<Object>} electricFieldLinesArray
+   * @param {ObservableArray.<ElectricFieldLine>} electricFieldLinesArray
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */

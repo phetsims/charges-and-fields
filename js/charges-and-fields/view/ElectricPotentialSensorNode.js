@@ -33,7 +33,7 @@ define( function( require ) {
    *
    * @param {SensorElement} electricPotentialSensor - model of the electric potential sensor
    * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
-   * @param {Function} clearEquipotentialLines - A function for deleting all electric potential lines in the model
+   * @param {Function} clearElectricPotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
@@ -42,7 +42,7 @@ define( function( require ) {
    */
   function ElectricPotentialSensorNode( electricPotentialSensor,
                                         getElectricPotentialColor,
-                                        clearEquipotentialLines,
+                                        clearElectricPotentialLines,
                                         addElectricPotentialLine,
                                         modelViewTransform,
                                         availableModelBoundsProperty,
@@ -81,7 +81,7 @@ define( function( require ) {
     } );
 
     // Create the panel (body) of the sensor with the readout and push buttons
-    var electricPotentialSensorBodyNode = new ElectricPotentialSensorBodyNode( clearEquipotentialLines, addElectricPotentialLine );
+    var electricPotentialSensorBodyNode = new ElectricPotentialSensorBodyNode( clearElectricPotentialLines, addElectricPotentialLine );
 
     // Add the various components
     this.addChild( crosshairMount );

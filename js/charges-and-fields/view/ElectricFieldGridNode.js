@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * View for the equipotential Lines
+ * View for the electricPotential Lines
  *
  * @author Martin Veillette (Berea College)
  */

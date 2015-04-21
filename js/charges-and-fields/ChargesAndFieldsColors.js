@@ -59,7 +59,7 @@ define( function( require ) {
       default: new Color( 255, 255, 255 ),
       projector: new Color( 0, 0, 0 )
     },
-    equipotentialLine: {
+    electricPotentialLine: {
       default: new Color( 50, 255, 100 ),
       projector: new Color( 0, 0, 0 )
     },

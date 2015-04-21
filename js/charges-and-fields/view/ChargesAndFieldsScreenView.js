@@ -21,7 +21,7 @@ define( function( require ) {
   var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
   var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
-  var EquipotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EquipotentialLineNode' );
+  var ElectricPotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLineNode' );
   var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -47,7 +47,7 @@ define( function( require ) {
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
 
-  var IS_DEBUG = false; // debug mode that adds two rectangular push buttons that can add multiple electric field lines and equipotential lines
+  var IS_DEBUG = false; // debug mode that adds two rectangular push buttons that can add multiple electric field lines and electricPotential lines
 
   /**
    *
@@ -62,8 +62,8 @@ define( function( require ) {
     // Create many properties for checkboxes and Measuring Tape
     var viewProperty = new PropertySet( {
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
-      isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, equipotential lines, etc)
-      isElectricPotentialSensorVisible: false, // control the visibility of the equipotential sensor
+      isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+      isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
       isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
       isMeasuringTapeVisible: false, // control the visibility of the measuring tape
       measuringTapeUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
@@ -121,9 +121,9 @@ define( function( require ) {
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricFieldGridVisibleProperty );
 
-    // Create the scenery node responsible for drawing the equipotential lines
-    var equipotentialLineNode = new EquipotentialLineNode(
-      model.equipotentialLinesArray,
+    // Create the scenery node responsible for drawing the electricPotential lines
+    var electricPotentialLineNode = new ElectricPotentialLineNode(
+      model.electricPotentialLinesArray,
       modelViewTransform,
       viewProperty.isValuesVisibleProperty );
 
@@ -136,7 +136,7 @@ define( function( require ) {
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
       model.electricPotentialSensor,
       this.getElectricPotentialColor.bind( this ),
-      model.clearEquipotentialLines.bind( model ),
+      model.clearElectricPotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
       this.availableModelBoundsProperty,
@@ -292,7 +292,7 @@ define( function( require ) {
     if ( IS_DEBUG ) {
       this.addChild( new RectangularPushButton( {
           listener: function() {
-            model.addManyEquipotentialLines( 20 );
+            model.addManyElectricPotentialLines( 20 );
           },
           baseColor: 'rgb( 0, 222, 120 )',
           minWidth: 20,
@@ -319,7 +319,7 @@ define( function( require ) {
     this.addChild( gridNode ); //
     this.addChild( electricFieldGridNode );
     this.addChild( electricFieldLineNode );
-    this.addChild( equipotentialLineNode );
+    this.addChild( electricPotentialLineNode );
     this.addChild( controlPanel );
     this.addChild( resetAllButton );
     this.addChild( chargeAndSensorEnclosure );
