@@ -102,7 +102,7 @@ define( function( require ) {
     this.addChild( representationCreatorNode() );
 
     // let's make this node very easy to pick
-    this.touchArea = this.localBounds.dilated( 10 ); // large enough to be easy to pick but small enough that the touch area doesnt spill out of the enclosure
+    this.touchArea = this.localBounds.dilated( 10 ); // large enough to be easy to pick but small enough that the touch area doesn't spill out of the enclosure
 
     // offset between the  position of the static object and the initial position of the movingObject
     // needed for the 'pop' effect, value was empirically determined. large enough to be visually apparent

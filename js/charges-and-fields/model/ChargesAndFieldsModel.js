@@ -17,7 +17,7 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
-  var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
+  var SensorGrid = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGrid' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -59,16 +59,16 @@ define( function( require ) {
 
     // Observable array of all draggable electric charges
     // @public
-    this.chargedParticles = new ObservableArray(); // of type <ChargedParticle>
+    this.chargedParticles = new ObservableArray(); // {ObservableArray.<ChargedParticle>}
 
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
     // This is the relevant array to calculate the electric field, and electric potential
     // @public
-    this.activeChargedParticles = new ObservableArray(); // of type <ChargedParticle>
+    this.activeChargedParticles = new ObservableArray(); //  {ObservableArray.<ChargedParticle>}
 
     // Observable array of all draggable electric field sensors
     // @public
-    this.electricFieldSensors = new ObservableArray(); // of type <SensorElement>
+    this.electricFieldSensors = new ObservableArray(); // {ObservableArray.<SensorElement>}
 
     // electric potential sensor
     var position = new Vector2( 0, 0 ); // position of the crosshair on the electric potential sensor, initial value will be reset by the view
@@ -76,25 +76,25 @@ define( function( require ) {
 
     // electric Field Sensor Grid
     // @public read-only
-    this.electricFieldSensorGrid = thisModel.sensorGridFactory( {
+    this.electricFieldSensorGrid = new SensorGrid( this.bounds, this.enlargedBounds, {
       spacing: ELECTRIC_FIELD_SENSOR_SPACING,
       onOrigin: true // the origin (0,0) is also the location of a sensor
-    } );
+    } ); //{Array.<StaticSensorElement>}
 
     // electric potential Sensor Grid, a.k.a in physics as the electric potential 'field'
     // @public read-only
-    this.electricPotentialSensorGrid = thisModel.sensorGridFactory( {
+    this.electricPotentialSensorGrid = new SensorGrid( this.bounds, this.enlargedBounds, {
       spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
       onOrigin: false // the origin is equidistant from the four nearest neighbor sensors.
-    } );
+    } ); //{Array.<StaticSensorElement>}
 
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
-    this.electricPotentialLinesArray = new ObservableArray(); // of type <ElectricPotentialLine>
+    this.electricPotentialLinesArray = new ObservableArray(); // {ObservableArray.<ElectricPotentialLine>}
 
     // observable array that contains the model of electricPotential line, each element is an electric field line
     // @public read-only
-    this.electricFieldLinesArray = new ObservableArray(); // of type <ElectricFieldLine>
+    this.electricFieldLinesArray = new ObservableArray(); // {ObservableArray.<ElectricFieldLine>}
 
     //----------------------------------------------------------------------------------------
     //
@@ -384,85 +384,6 @@ define( function( require ) {
         } );
       },
 
-      /**
-       * Function  that returns an array of equally spaced sensors on a two dimensional grid
-       * The position of the sensors is determined the options parameter
-       * @private
-       * @param {Object} [options]
-       * @returns {Array.<StaticSensorElement>}
-       */
-      sensorGridFactory: function( options ) {
-        options = _.extend( {
-          spacing: 0.5, // separation (distance) in model coordinates between two adjacent sensors
-          onOrigin: true // is there  a sensor at the origin (0,0)?, if false the first sensor is put at (spacing/2, spacing/2)
-        }, options );
-
-        /*
-         The diagram below represents the bounds used in the model.
-         The bounds defined by 'this.bounds' is inscribed in the lower middle portion. The origin (0,0) of the model
-         is located as the center of 'this bounds'. This bounds has a height of HEIGHT and width of WIDTH.
-         The bounds defined by 'this.enlargedBounds' is represented by the largest bounds.
-
-         In the view the viewport will always include 'this.bounds' and may or may not include the optional (OPT) regions
-         depending on the aspect ratio. The viewport will never have access to the fallow regions.
-
-         The sensorGridFactory generates an array of equally spaced sensors on the region defined by the
-         cross. The four fallow regions are not seeded with sensors.
-
-         ********---------------********
-         *       |             |       *
-         *       |             |       *
-         * fallow|     OPT     |fallow *
-         *       |     UP      |       *
-         *       |             |       *
-         |-------|------------ |-------|
-         |  OPT  |             |  OPT  |
-         |  LEFT |             | RIGHT |
-         |       |    (0,0)    |       |
-         |       | this.bounds |       |
-         |       |             |       |
-         |-------|-------------|-------|
-         *       |             |       *
-         *       |             |       *
-         * fallow|     OPT     |fallow *
-         *       |     DOWN    |       *
-         ********---------------********
-
-         */
-
-        var gridArray = [];
-
-        // bounds that includes OPT UP, this bounds, and OPT DOWN
-        var verticalBeamBounds = new Bounds2( this.bounds.minX, this.enlargedBounds.minY, this.bounds.maxX, this.enlargedBounds.maxY );
-
-        // bounds that includes OPT LEFT, this.bounds, and OPT RIGHT
-        var horizontalBeamBounds = new Bounds2( this.enlargedBounds.minX, this.bounds.minY, this.enlargedBounds.maxX, this.bounds.maxY );
-
-        var spacing = options.spacing; // convenience variable
-        var offset = (options.onOrigin) ? 0 : 0.5;
-
-        // the following variables are integers or half-integers
-        var minI = Math.ceil( this.enlargedBounds.minX / spacing ) - offset;
-        var maxI = Math.floor( this.enlargedBounds.maxX / spacing ) + offset;
-        var minJ = Math.ceil( this.enlargedBounds.minY / spacing ) - offset;
-        var maxJ = Math.floor( this.enlargedBounds.maxY / spacing ) + offset;
-
-        var vector;
-        var i;
-        var j;
-
-        for ( i = minI + 1; i < maxI; i++ ) {
-          for ( j = minJ + 1; j < maxJ; j++ ) {
-            vector = new Vector2( i * spacing, j * spacing );
-            // include the sensor element if its location is within the verticalBeam or horizontalBeam bounds;
-            if ( verticalBeamBounds.containsPoint( vector ) || horizontalBeamBounds.containsPoint( vector ) ) {
-              gridArray.push( new StaticSensorElement( vector ) );
-            }
-          }
-        }
-
-        return gridArray;
-      },
 
       /**
        * Return the change in the electric field at position Position due to the motion of a

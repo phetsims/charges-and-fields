@@ -40,7 +40,7 @@ define( function( require ) {
 
     /**
      * Function that returns a Scenery Path for an electric Field Line model
-     * @param {Object} electricFieldLine
+     * @param {ElectricFieldLine} electricFieldLine
      * @returns {Path}
      */
     function traceElectricFieldLine( electricFieldLine ) {

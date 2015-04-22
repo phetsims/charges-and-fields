@@ -140,7 +140,7 @@ define( function( require ) {
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
 
-          if ( !electricFieldSensor.isAnimated ) // dont drag nodes that are animated
+          if ( !electricFieldSensor.isAnimated ) // don't drag nodes that are animated
           {
             electricFieldSensor.isUserControlled = true;
             // Move the sensor to the front of this layer when grabbed by the user.

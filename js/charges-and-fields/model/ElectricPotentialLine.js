@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Type responsible for creating an electricPotentialLine
+ * Type responsible for creating an electric potential line
  *
  * @author Martin Veillette (Berea College)
  */
@@ -9,12 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
-
-  // constants
-  var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
-  var WIDTH = ChargesAndFieldsConstants.WIDTH;
 
   /**
    *
@@ -27,11 +22,11 @@ define( function( require ) {
    * @constructor
    */
   function ElectricPotentialLine( position,
-                              bounds,
-                              chargedParticles,
-                              getElectricPotential,
-                              getElectricField,
-                              isPlayAreaChargedProperty ) {
+                                  bounds,
+                                  chargedParticles,
+                                  getElectricPotential,
+                                  getElectricField,
+                                  isPlayAreaChargedProperty ) {
 
     this.getElectricPotential = getElectricPotential;
     this.getElectricField = getElectricField;
@@ -42,7 +37,7 @@ define( function( require ) {
     this.position = position;
     this.electricPotential = getElectricPotential( position );
     this.positionArray = this.getEquipotentialPositionArray( position );
-    this.isPresent = (this.positionArray!==null);
+    this.isPresent = (this.positionArray !== null);
   }
 
   return inherit( Object, ElectricPotentialLine, {
@@ -182,7 +177,7 @@ define( function( require ) {
       var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
       var epsilonDistance = 0.10; // {number} step length along electricPotential in meters
       var isLinePathClosed = false; // {boolean}
-      var maxDistance = Math.max( WIDTH, HEIGHT ); //maximum distance from the center
+      var maxDistance = Math.max( this.enlargedBounds.width, this.enlargedBounds.height ); //maximum distance from the center
       assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
       var nextClockwisePosition; // {Vector2}
       var nextCounterClockwisePosition; // {Vector2}

@@ -36,7 +36,7 @@ define( function( require ) {
       addColorStop( 0.8774, '#BF8685' ).
       addColorStop( 1, '#AB7877' );
 
-    // gradient for the fron side of the eraser
+    // gradient for the from side of the eraser
     var frontLinearGradient = new LinearGradient( 10.3359, 131.7725, 123.8398, 131.7725 ).
       addColorStop( 0, '#F4ABAA' ).
       addColorStop( 0.2769, '#F1A9A8' ).
