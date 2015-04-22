@@ -5,18 +5,19 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( function ( require ) {
   'use strict';
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Shape = require( 'KITE/Shape' );
 
   /**
    *
    * @param {Vector2} position
-   * @param {Bounds2} bounds
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles,
-   * @param {Function} getElectricPotential
+   * @param {Bounds2} bounds - if an equipotential line is not closed, it will terminate outside these bounds
+   * @param {ObservableArray.<ChargedParticle>} chargedParticles - array of active ChargedParticles
+   * @param {Function} getElectricPotential -
    * @param {Function} getElectricField
    * @param {Property.<boolean>} isPlayAreaChargedProperty
    * @constructor
@@ -28,16 +29,22 @@ define( function( require ) {
                                   getElectricField,
                                   isPlayAreaChargedProperty ) {
 
-    this.getElectricPotential = getElectricPotential;
-    this.getElectricField = getElectricField;
-    this.chargedParticles = chargedParticles;
-    this.enlargedBounds = bounds;
+
+    this.getElectricPotential = getElectricPotential; // @private
+    this.getElectricField = getElectricField; // @private
+    this.chargedParticles = chargedParticles; // @private
+    this.bounds = bounds; // @private
     this.isPlayAreaChargedProperty = isPlayAreaChargedProperty;
 
     this.position = position;
-    this.electricPotential = getElectricPotential( position );
+    this.electricPotential = getElectricPotential( position ); // {number}
+
+    // calculate the array of positions
     this.positionArray = this.getEquipotentialPositionArray( position );
-    this.isLinePresent = (this.positionArray !== null);
+
+    // determine if there is
+    this.isLinePresent = (this.positionArray !== null); // {boolean}
+
   }
 
   return inherit( Object, ElectricPotentialLine, {
@@ -54,7 +61,7 @@ define( function( require ) {
      * @param {number} deltaDistance - a distance
      * @returns {Vector2} next point along the electricPotential line
      */
-    getNextPositionAlongEquipotential: function( position, deltaDistance ) {
+    getNextPositionAlongEquipotential: function ( position, deltaDistance ) {
       var initialElectricPotential = this.getElectricPotential( position );
       return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, initialElectricPotential, deltaDistance );
     },
@@ -67,7 +74,7 @@ define( function( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithElectricPotential: function( position, electricPotential, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithElectricPotential: function ( position, electricPotential, deltaDistance ) {
       /*
        General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
        to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
@@ -105,7 +112,7 @@ define( function( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithMidPoint: function( position, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithMidPoint: function ( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var initialEquipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
@@ -128,7 +135,7 @@ define( function( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithRK4: function( position, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithRK4: function ( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
@@ -150,7 +157,7 @@ define( function( require ) {
      * @param {Vector2} position - initial position
      * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
-    getEquipotentialPositionArray: function( position ) {
+    getEquipotentialPositionArray: function ( position ) {
       if ( !this.isPlayAreaChargedProperty.value ) {
         // if there are no charges, don't bother to find the electricPotential line
         return null;
@@ -176,7 +183,7 @@ define( function( require ) {
       var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
       var epsilonDistance = 0.10; // {number} step length along electricPotential in meters
       var isLinePathClosed = false; // {boolean}
-      var maxDistance = Math.max( this.enlargedBounds.width, this.enlargedBounds.height ); //maximum distance from the center
+      var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
       assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
       var nextClockwisePosition; // {Vector2}
       var nextCounterClockwisePosition; // {Vector2}
@@ -192,7 +199,7 @@ define( function( require ) {
       // see https://github.com/phetsims/charges-and-fields/issues/5
       var closestDistance = 2 * epsilonDistance;
       var isSafeDistance = true;
-      this.chargedParticles.forEach( function( chargedParticle ) {
+      this.chargedParticles.forEach( function ( chargedParticle ) {
         isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > closestDistance);
       } );
 
@@ -202,8 +209,8 @@ define( function( require ) {
       else {
 
         while ( stepCounter < stepMax &&
-                this.enlargedBounds.containsPoint( currentClockwisePosition ) ||
-                this.enlargedBounds.containsPoint( currentCounterClockwisePosition ) ) {
+                this.bounds.containsPoint( currentClockwisePosition ) ||
+                this.bounds.containsPoint( currentCounterClockwisePosition ) ) {
 
           //nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
           //  currentClockwisePosition,
@@ -239,8 +246,8 @@ define( function( require ) {
           stepCounter++;
         }// end of while()
 
-        if ( !isLinePathClosed && ( this.enlargedBounds.containsPoint( currentClockwisePosition ) ||
-                                    this.enlargedBounds.containsPoint( currentCounterClockwisePosition ) ) ) {
+        if ( !isLinePathClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
+                                    this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
           console.log( 'an electricPotential line terminates on the screen' );
           // rather than plotting an unphysical electricPotential line, returns null
           return null;
@@ -251,7 +258,40 @@ define( function( require ) {
         //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
         return reversedArray.concat( position, counterClockwisePositionArray );
       }
+    },
+
+    /**
+     * Returns the Shape of the electric potential line
+     * @public
+     * @returns {Shape}
+     */
+    getShape: function () {
+
+      // Create the electricPotential line shape
+      var shape = new Shape();
+
+      // Draw a quadratic curve through all the point in the array
+      shape.moveToPoint( this.positionArray [ 0 ] );
+      var length = this.positionArray.length;
+
+      var intermediatePoint; // {Vector2}
+      var i;
+
+      for ( i = 1; i < length - 2; i++ ) {
+        intermediatePoint = (this.positionArray[ i ].plus( this.positionArray[ i + 1 ] )).divideScalar( 2 );
+        shape.quadraticCurveToPoint( this.positionArray[ i ], intermediatePoint );
+      }
+      // curve through the last two points
+      shape.quadraticCurveToPoint( this.positionArray[ i ], this.positionArray[ i + 1 ] );
+
+      // Simple and naive method to plot lines between all the points
+      //shape.moveToPoint( this.positionArray [ 0 ] );
+      //this.positionArray.forEach( function( position ) {
+      //  shape.lineToPoint( position );
+      //} );
+      return shape;
     }
   } );
 } );
+
 
