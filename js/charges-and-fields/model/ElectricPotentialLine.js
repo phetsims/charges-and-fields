@@ -15,7 +15,7 @@ define( function( require ) {
    *
    * @param {Vector2} position
    * @param {Bounds2} bounds
-   * @param {Observable.<ChargedParticle>} chargedParticles,
+   * @param {ObservableArray.<ChargedParticle>} chargedParticles,
    * @param {Function} getElectricPotential
    * @param {Function} getElectricField
    * @param {Property.<boolean>} isPlayAreaChargedProperty
