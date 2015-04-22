@@ -516,11 +516,11 @@ define( function( require ) {
           position,
           this.enlargedBounds,
           this.activeChargedParticles,
-          this.getElectricPotential.bind( this ),
           this.getElectricField.bind( this ),
           this.isPlayAreaChargedProperty );
 
-        if ( electricFieldLine.isPresent ) {
+        debugger;
+        if ( electricFieldLine.isLinePresent ) {
           this.electricFieldLinesArray.push( electricFieldLine );
         }
       },

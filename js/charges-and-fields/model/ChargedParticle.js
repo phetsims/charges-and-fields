@@ -1,8 +1,8 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Model of a charged particle
- * The particle has charge (+1 or -1) and a mutable position.
+ * Type of a charged particle
+ * The particle has charge (+1 or -1) and a position.
  *
  * @author Martin Veillette (Berea College)
  */
