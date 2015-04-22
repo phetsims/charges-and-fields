@@ -37,7 +37,7 @@ define( function( require ) {
     this.position = position;
     this.electricPotential = getElectricPotential( position );
     this.positionArray = this.getEquipotentialPositionArray( position );
-    this.isPresent = (this.positionArray !== null);
+    this.isLinePresent = (this.positionArray !== null);
   }
 
   return inherit( Object, ElectricPotentialLine, {
@@ -116,7 +116,6 @@ define( function( require ) {
       var deltaPosition = midwayEquipotentialNormalizedVector.multiplyScalar( deltaDistance ); // {Vector2}
       return deltaPosition.add( position ); // {Vector2} finalPosition
     },
-
 
     /**
      * Given an (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance

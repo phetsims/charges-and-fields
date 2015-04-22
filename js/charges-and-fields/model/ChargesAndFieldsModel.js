@@ -318,7 +318,7 @@ define( function( require ) {
           this.updateElectricFieldSensorGrid();
         }
         // the following sensors may not be visible or active but
-        // it very inexpensive to update them ( updating them avoid putting extra logic to handle
+        // it is very inexpensive to update them ( updating them avoid putting extra logic to handle
         // the transition visible/invisible)
         this.updateElectricPotentialSensor();
         this.updateElectricFieldSensors();
@@ -498,7 +498,7 @@ define( function( require ) {
           this.isPlayAreaChargedProperty );
 
         // make sure the positionArray is not null
-        if ( electricPotentialLine.isPresent ) {
+        if ( electricPotentialLine.isLinePresent ) {
           this.electricPotentialLinesArray.push( electricPotentialLine );
         }
       },

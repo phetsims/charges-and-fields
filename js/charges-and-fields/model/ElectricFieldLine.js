@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
 
+
   // constants
   // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
   var CLOSEST_APPROACH_DISTANCE = 0.05; // in meters, for reference the radius of the charge circle is 0.10 m
