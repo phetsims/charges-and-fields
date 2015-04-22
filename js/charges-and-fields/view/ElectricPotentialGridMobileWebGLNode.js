@@ -21,7 +21,7 @@ define( function( require ) {
 
     /**
      *
-     * @param {ObservableArray.<ChargedParticle>} chargedParticles
+     * @param {ObservableArray.<ChargedParticle>} chargedParticles - all the chargedParticles in this array are active
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} isVisibleProperty
      * @constructor
@@ -52,7 +52,6 @@ define( function( require ) {
 
       this.positionListener = this.onParticleMoved.bind( this );
 
-      //TODO: need to add/remove particles only when they are active/inactive
       chargedParticles.addItemAddedListener( this.onParticleAdded.bind( this ) );
       chargedParticles.addItemRemovedListener( this.onParticleRemoved.bind( this ) );
 
