@@ -519,7 +519,6 @@ define( function( require ) {
           this.getElectricField.bind( this ),
           this.isPlayAreaChargedProperty );
 
-        debugger;
         if ( electricFieldLine.isLinePresent ) {
           this.electricFieldLinesArray.push( electricFieldLine );
         }
