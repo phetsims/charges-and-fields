@@ -14,7 +14,7 @@ define( function ( require ) {
 
   // constants
   // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
-  var CLOSEST_APPROACH_DISTANCE = 0.05; // in meters, for reference the radius of the charge circle is 0.10 m
+  var CLOSEST_APPROACH_DISTANCE = 0.1; // in meters, for reference the radius of the charge circle is 0.10 m
 
   /**
    *
@@ -137,6 +137,27 @@ define( function ( require ) {
       return isSafeDistance;
     },
 
+
+    /**
+     * Function that determines if the location of the closest charge to a given position.
+     * @private
+     * @param {Vector2} position
+     * @returns {Vector2}
+     */
+    getClosestChargedParticlePosition: function ( position ) {
+      var closestChargedParticlePosition; // {Vector2}
+      var closestDistance = Number.POSITIVE_INFINITY;
+      this.chargedParticles.forEach( function ( chargedParticle, index ) {
+        var distance = chargedParticle.position.distance( position );
+        if ( distance < closestDistance ) {
+          closestChargedParticlePosition = chargedParticle.position;
+          closestDistance = distance;
+        }
+      } );
+      return closestChargedParticlePosition;
+    },
+
+
     /**
      * Function that returns an array of positions along (parallel) the electric field .
      * Starting from the initial point it finds the next point that points along the initial electric field.
@@ -153,8 +174,9 @@ define( function ( require ) {
     getPositionArray: function ( position, isSearchingBackward ) {
 
       // the product of stepMax and epsilonDistance should exceed the width and height of the model bounds
-      var stepMax = 2000; // an integer, the maximum number of steps in the algorithm
+      var stepMax = 500; // an integer, the maximum number of steps in the algorithm
       var epsilonDistance = 0.1; // in meter
+      assert && assert( epsilonDistance / 2 <= CLOSEST_APPROACH_DISTANCE, 'the steps are too big and you might skipped over a charge' );
       var maxDistance = Math.max( this.bounds.height, this.bounds.width );
       assert && assert( stepMax * epsilonDistance > maxDistance, ' there are not enough steps to cross the playArea ' );
 
@@ -178,6 +200,10 @@ define( function ( require ) {
         stepCounter++;
       }// end of while()
 
+      // if the last position was close to a charge, let's add that charge position as our final point.
+      if ( !this.getIsSafeDistanceFromChargedParticles( currentPosition ) ) {
+        positionArray.push( this.getClosestChargedParticlePosition( currentPosition ) );
+      }
       return positionArray;
     },
 
@@ -212,17 +238,18 @@ define( function ( require ) {
      */
     getShape: function ( options ) {
       // draw the electricField line shape
+      var shape = new Shape();
 
       var arrayLength = this.positionArray.length; // {number}
       var arrayIndex;  // {number} counter
+      var intermediatePoint; // {Vector2}
       var arrowHeadLength = 0.05; // length of the arrow head in model coordinates
       var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) at the tip of the arrow head
       var numberOfSegmentsPerArrow = 10; // number of segment intervals between arrows
 
-      var shape = new Shape();
       shape.moveToPoint( this.positionArray [ 0 ] );
 
-      for ( arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++ ) {
+      for ( arrayIndex = 1; arrayIndex < arrayLength - 2; arrayIndex++ ) {
 
         var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === Math.floor( numberOfSegmentsPerArrow / 2 ) );  // modulo value is arbitrary, just not zero since it will start on a positive charge
 
@@ -244,12 +271,19 @@ define( function ( require ) {
             } );
         } // end of  if (isArrowSegment)
 
-        shape.lineToPoint( this.positionArray[ arrayIndex ] );
+        // smooth out the curve by creating an average of two consecutive points
+        intermediatePoint = (this.positionArray[ arrayIndex ].plus( this.positionArray[ arrayIndex + 1 ] )).divideScalar( 2 );
+        shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], intermediatePoint );
+
       }
+      // curve through the last two points
+      shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], this.positionArray[ arrayIndex + 1 ] );
+
       return shape;
     }
 
-
-  } );
-} );
+  } )
+    ;
+} )
+;
 
