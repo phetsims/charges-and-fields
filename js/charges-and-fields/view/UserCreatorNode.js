@@ -43,6 +43,7 @@ define( function( require ) {
                             options ) {
 
     var self = this;
+
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the charge
@@ -50,7 +51,8 @@ define( function( require ) {
     } );
 
     options = _.extend( {
-      element: 'electricFieldSensor' // other valid inputs are 'positive' and 'negative'
+      element: 'electricFieldSensor', // other valid inputs are 'positive' and 'negative'
+      observableArrayLengthLimit: Number.POSITIVE_INFINITY    // Max number of model Elements that can be put in the observable array.
     }, options );
 
     /**
@@ -109,6 +111,11 @@ define( function( require ) {
     // but small enough that it stays within the enclosure
     var offset = new Vector2( 0, -20 ); // in view coordinate frame,
 
+    // If the observableArray count exceeds the max, make this node invisible (which also makes it unusable).
+    observableArray.lengthProperty.link( function( number ) {
+      self.visible = (number < options.observableArrayLengthLimit);
+    } );
+
     /**
      * Recursive function that returns a SimpleDragHandler. Upon a start event, the simpleDragHandler
      * call this very same function and pass it to an addInputListener. The goal of this is to support multitouch event
@@ -136,6 +143,7 @@ define( function( require ) {
             this.movableDragHandler = createMovableDragHandler();
             self.addInputListener( this.movableDragHandler );
             addModelElementToObservableArray( this.modelElement, observableArray );
+
           },
 
           translate: function( translationParams ) {

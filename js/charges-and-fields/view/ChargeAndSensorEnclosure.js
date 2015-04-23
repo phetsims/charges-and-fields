@@ -31,6 +31,7 @@ define( function( require ) {
    * @param {Function} addUserCreatedModelElementToObservableArray
    * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
    * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field sensors
+   * @param {number} numberChargesLimit
    * @param {Bounds2} enclosureBounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds of the charges and sensors in view coordinates
@@ -39,6 +40,7 @@ define( function( require ) {
   function ChargeAndSensorEnclosure( addUserCreatedModelElementToObservableArray,
                                      chargedParticles,
                                      electricFieldSensors,
+                                     numberChargesLimit,
                                      enclosureBounds,
                                      modelViewTransform,
                                      availableModelBoundsProperty ) {
@@ -87,6 +89,7 @@ define( function( require ) {
       enclosureBounds,
       {
         element: 'positive',
+        observableArrayLengthLimit: numberChargesLimit,
         centerX: positiveChargeCenterX,
         centerY: positiveChargeCenterY
       } );
@@ -99,6 +102,7 @@ define( function( require ) {
       enclosureBounds,
       {
         element: 'negative',
+        observableArrayLengthLimit: numberChargesLimit,
         centerX: negativeChargeCenterX,
         centerY: negativeChargeCenterY
       } );

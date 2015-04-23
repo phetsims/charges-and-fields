@@ -75,12 +75,24 @@ define( function( require ) {
         particle.positionProperty.unlink( this.positionListener );
       },
 
+      /**
+       * Returns the maximum number of charges supported on Mobile webGL
+       *
+       * @returns {number}
+       * @public read-only
+       */
+      getMaximumNumberOfCharges: function() {
+        return this.maximumNumberOfCharges;
+      },
+
       initializeWebGLDrawable: function( drawable ) {
         var gl = drawable.gl;
 
         var otherVectorCount = 7; // colors, matrix and one extra to be safe
         var maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
         drawable.maximumNumParticles = Math.min( MAX_PARTICLES_LIMIT, maxVertexUniforms - otherVectorCount );
+
+        this.maximumNumberOfCharges = drawable.maximumNumParticles;
 
         // make sure we get repainted
         this.invalidatePaint();

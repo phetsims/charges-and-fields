@@ -14,16 +14,18 @@ define( function( require ) {
 
     K_CONSTANT: 9, // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
 
-    // height of the screen in the model
 
-    HEIGHT: 5, // in meters
+    // width of the dev screen in the model
     WIDTH: 8, // in meters
+    // nominal height of the model play area
+    HEIGHT: 5, // in meters
+
     GRID_MAJOR_SPACING: 0.5, // in meters
     ELECTRIC_FIELD_SENSOR_SPACING: 0.5, // in meters
     ELECTRIC_POTENTIAL_SENSOR_SPACING: 0.1, // in meters
 
     // Velocity at which animated elements move
-    ANIMATION_VELOCITY: 2, // In model coordinates per second
+    ANIMATION_VELOCITY: 2, // In model coordinates (meters) per second
 
     CHARGE_RADIUS: 12, // in scenery coordinates
     ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS: 7, // in scenery coordinates

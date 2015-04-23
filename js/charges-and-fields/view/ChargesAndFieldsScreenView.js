@@ -95,6 +95,7 @@ define( function( require ) {
     // float textures is supported.
     var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
                      ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
+
     var electricPotentialGridNode;
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( allowWebGL ) {
@@ -142,7 +143,7 @@ define( function( require ) {
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLineNode = new ElectricFieldLineNode(
       model.electricFieldLinesArray,
-      modelViewTransform);
+      modelViewTransform );
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
@@ -212,11 +213,18 @@ define( function( require ) {
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
     var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
+
+    // webGL devices that do have have full WebGL support, can have only a finite number of charges on board
+    var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
+    //
+    var numberChargesLimit = (isNumberChargesLimited) ? electricPotentialGridNode.getMaximumNumberOfCharges() : Number.POSITIVE_INFINITY;
+
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(
       model.addUserCreatedModelElementToObservableArray.bind( model ),
       model.chargedParticles,
       model.electricFieldSensors,
+      numberChargesLimit,
       model.chargeAndSensorEnclosureBounds,
       modelViewTransform,
       this.availableModelBoundsProperty );
