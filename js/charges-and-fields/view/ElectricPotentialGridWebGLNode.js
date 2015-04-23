@@ -107,7 +107,6 @@ define( function( require ) {
           oldPosition: null,
           newPosition: particle.position.copy()
         } );
-        // console.log( 'add ' + particle.charge + ' ' + particle.position.toString() );
 
         this.invalidatePaint();
       },

@@ -139,7 +139,7 @@ define( function ( require ) {
 
 
     /**
-     * Function that determines if the location of the closest charge to a given position.
+     * Function that determines the location of the closest charge to a given position.
      * @private
      * @param {Vector2} position
      * @returns {Vector2}
@@ -147,7 +147,7 @@ define( function ( require ) {
     getClosestChargedParticlePosition: function ( position ) {
       var closestChargedParticlePosition; // {Vector2}
       var closestDistance = Number.POSITIVE_INFINITY;
-      this.chargedParticles.forEach( function ( chargedParticle, index ) {
+      this.chargedParticles.forEach( function ( chargedParticle ) {
         var distance = chargedParticle.position.distance( position );
         if ( distance < closestDistance ) {
           closestChargedParticlePosition = chargedParticle.position;
