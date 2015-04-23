@@ -137,7 +137,6 @@ define( function ( require ) {
       return isSafeDistance;
     },
 
-
     /**
      * Function that determines the location of the closest charge to a given position.
      * @private
@@ -156,7 +155,6 @@ define( function ( require ) {
       } );
       return closestChargedParticlePosition;
     },
-
 
     /**
      * Function that returns an array of positions along (parallel) the electric field .
@@ -237,37 +235,41 @@ define( function ( require ) {
      * @returns {Shape}
      */
     getShape: function ( options ) {
+
+      options = _.extend( {
+        arrowHeadLength: 0.05,// length of the arrow head in model coordinates
+        arrowHeadInternalAngle: Math.PI * 6 / 8, // half the internal angle (in radians) at the tip of the arrow head
+        numberOfSegmentsPerArrow: 10 // number of segment intervals between arrows
+      }, options );
+
       // draw the electricField line shape
       var shape = new Shape();
 
       var arrayLength = this.positionArray.length; // {number}
       var arrayIndex;  // {number} counter
       var intermediatePoint; // {Vector2}
-      var arrowHeadLength = 0.05; // length of the arrow head in model coordinates
-      var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) at the tip of the arrow head
-      var numberOfSegmentsPerArrow = 10; // number of segment intervals between arrows
 
       shape.moveToPoint( this.positionArray [ 0 ] );
 
       for ( arrayIndex = 1; arrayIndex < arrayLength - 2; arrayIndex++ ) {
 
-        var isArrowSegment = ( arrayIndex % numberOfSegmentsPerArrow === Math.floor( numberOfSegmentsPerArrow / 2 ) );  // modulo value is arbitrary, just not zero since it will start on a positive charge
+        var isArrowSegment = ( arrayIndex % options.numberOfSegmentsPerArrow === Math.floor( options.numberOfSegmentsPerArrow / 2 ) );  // modulo value is arbitrary, just not zero since it will start on a positive charge
 
         if ( isArrowSegment ) {
           var angle = this.positionArray[ arrayIndex ].minus( shape.getRelativePoint() ).angle(); // angle of the electric field at location 'position'
           // shape of an arrow head (triangle)
           shape
             .lineToPointRelative( {
-              x: arrowHeadLength * Math.cos( angle + arrowHeadInternalAngle ),
-              y: arrowHeadLength * Math.sin( angle + arrowHeadInternalAngle )
+              x: options.arrowHeadLength * Math.cos( angle + options.arrowHeadInternalAngle ),
+              y: options.arrowHeadLength * Math.sin( angle + options.arrowHeadInternalAngle )
             } )
             .lineToPointRelative( {
-              x: 2 * arrowHeadLength * Math.sin( arrowHeadInternalAngle ) * Math.sin( angle ),
-              y: -2 * arrowHeadLength * Math.sin( arrowHeadInternalAngle ) * Math.cos( angle )
+              x: 2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.sin( angle ),
+              y: -2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.cos( angle )
             } )
             .lineToPointRelative( {
-              x: -arrowHeadLength * Math.cos( angle - arrowHeadInternalAngle ),
-              y: -arrowHeadLength * Math.sin( angle - arrowHeadInternalAngle )
+              x: -options.arrowHeadLength * Math.cos( angle - options.arrowHeadInternalAngle ),
+              y: -options.arrowHeadLength * Math.sin( angle - options.arrowHeadInternalAngle )
             } );
         } // end of  if (isArrowSegment)
 
