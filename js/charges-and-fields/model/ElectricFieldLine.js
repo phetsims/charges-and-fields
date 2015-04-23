@@ -97,7 +97,6 @@ define( function ( require ) {
      * @private
      * @param {Vector2} position
      * @returns {Array.<Vector2>|| null}
-     *
      */
     getElectricFieldPositionArray: function ( position ) {
       /*
@@ -130,7 +129,7 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {boolean}
      */
-    isSafeDistanceFromChargedParticles: function ( position ) {
+    getIsSafeDistanceFromChargedParticles: function ( position ) {
       var isSafeDistance = true;
       this.chargedParticles.forEach( function ( chargedParticle ) {
         isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > CLOSEST_APPROACH_DISTANCE);
@@ -172,7 +171,7 @@ define( function ( require ) {
       // find the position array
       while ( stepCounter < stepMax &&
               this.bounds.containsPoint( currentPosition ) &&
-              this.isSafeDistanceFromChargedParticles( currentPosition ) ) {
+              this.getIsSafeDistanceFromChargedParticles( currentPosition ) ) {
         nextPosition = this.getNextPositionAlongElectricFieldWithRK4( currentPosition, epsilonDistance );
         positionArray.push( nextPosition );
         currentPosition = nextPosition;
@@ -190,7 +189,7 @@ define( function ( require ) {
      * @returns {boolean}
      */
     getIsLineStartingNearCharge: function () {
-      return !(this.isSafeDistanceFromChargedParticles( this.positionArray[ 0 ] ));
+      return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ 0 ] ));
     },
 
     /**
@@ -202,7 +201,7 @@ define( function ( require ) {
      */
     getIsLineEndingNearCharge: function () {
       var index = this.positionArray.length - 1;
-      return !(this.isSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
+      return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
     },
 
     /**
@@ -216,7 +215,7 @@ define( function ( require ) {
 
       var arrayLength = this.positionArray.length; // {number}
       var arrayIndex;  // {number} counter
-      var arrowHeadLength = 6 / 128; // length of the arrow head in scenery coordinates
+      var arrowHeadLength = 0.05; // length of the arrow head in model coordinates
       var arrowHeadInternalAngle = Math.PI * 6.5 / 8; // half the internal angle (in radians) at the tip of the arrow head
       var numberOfSegmentsPerArrow = 10; // number of segment intervals between arrows
 
