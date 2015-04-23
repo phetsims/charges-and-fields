@@ -262,10 +262,10 @@ define( function ( require ) {
       }
     },
 
-    getIsLineClose: function () {
-      var isLinePathClosed = false; // {boolean}
-
-    },
+//    getIsLineClose: function () {
+//      var isLinePathClosed = false; // {boolean}
+//return
+//    },
 
 
     /**
