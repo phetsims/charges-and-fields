@@ -64,7 +64,7 @@ define( function ( require ) {
       };
       ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
 
-      var electricPotentialLinePath = traceElectricPotentialLine( electricPotentialLine );
+      var electricPotentialLinePath = traceElectricPotentialLine( electricPotentialLine.getShape() );
 
       lineNode.addChild( electricPotentialLinePath );
       labelNode.addChild( rectangle );
@@ -98,38 +98,14 @@ define( function ( require ) {
     isValuesVisibleProperty.linkAttribute( labelNode, 'visible' );
 
     /**
-     * Function that generates a path/shape of the electricPotential line
-     * @param {ElectricPotentialLine} electricPotentialLine - Object of the form {position, positionArray, electricPotential}
+     * Function that generates a path from the electricPotential line shape
+     * @param {Shape} electricPotentialLineShape
      * @returns {Path}
      */
-    function traceElectricPotentialLine( electricPotentialLine ) {
+    function traceElectricPotentialLine( electricPotentialLineShape ) {
 
-      // Create and add the electricPotential line
-      var shape = new Shape();
 
-      // Draw a quadratic curve through all the point in the array
-      shape.moveToPoint( electricPotentialLine.positionArray [ 0 ] );
-      var length = electricPotentialLine.positionArray.length;
-      var i;
-      for ( i = 1; i < length - 2; i++ ) {
-        var xc = (electricPotentialLine.positionArray[ i ].x + electricPotentialLine.positionArray[ i + 1 ].x) / 2;
-        var yc = (electricPotentialLine.positionArray[ i ].y + electricPotentialLine.positionArray[ i + 1 ].y) / 2;
-        shape.quadraticCurveTo( electricPotentialLine.positionArray[ i ].x, electricPotentialLine.positionArray[ i ].y, xc, yc );
-      }
-      // curve through the last two points
-      shape.quadraticCurveTo(
-        electricPotentialLine.positionArray[ i ].x,
-        electricPotentialLine.positionArray[ i ].y,
-        electricPotentialLine.positionArray[ i + 1 ].x,
-        electricPotentialLine.positionArray[ i + 1 ].y );
-
-      // Simple and naive method to plot lines between all the points
-      //shape.moveToPoint( electricPotentialLine.positionArray [ 0 ] );
-      //electricPotentialLine.positionArray.forEach( function( position ) {
-      //  shape.lineToPoint( position );
-      //} );
-
-      var electricPotentialLinePath = new Path( modelViewTransform.modelToViewShape( shape ) );
+      var electricPotentialLinePath = new Path( modelViewTransform.modelToViewShape( electricPotentialLineShape ) );
 
       electricPotentialLinePath.colorFunction = function ( color ) {
         electricPotentialLinePath.stroke = color;
@@ -142,8 +118,8 @@ define( function ( require ) {
 
     /**
      * Function that generates a label and a path/shape of the electricPotential line
-     * @param {ElectricPotentialLine} electricPotentialLine - Object of the form {position, positionArray, electricPotential}
-     * @returns {Path}
+     * @param {ElectricPotentialLine} electricPotentialLine
+     * @returns {Array.{Circle}}
      */
     function dotElectricPotentialLine( electricPotentialLine ) {
 
@@ -169,7 +145,7 @@ define( function ( require ) {
 
     /**
      * Function that generates a voltage label for the electricPotential line
-     * @param {ElectricPotentialLine} electricPotentialLine - Object of the form {position, positionArray, electricPotential}
+     * @param {ElectricPotentialLine} electricPotentialLine
      * @returns {Text}
      */
     function labelElectricPotentialLine( electricPotentialLine ) {

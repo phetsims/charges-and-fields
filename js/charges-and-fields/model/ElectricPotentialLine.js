@@ -45,6 +45,7 @@ define( function ( require ) {
     // determine if there is
     this.isLinePresent = (this.positionArray !== null); // {boolean}
 
+
   }
 
   return inherit( Object, ElectricPotentialLine, {
@@ -255,10 +256,17 @@ define( function ( require ) {
 
         // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
         var reversedArray = clockwisePositionArray.reverse();
-        //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
+
+        // lets returned the entire array , i.e. the reversed clockwise array, the initial position, and the counterclockwise array
         return reversedArray.concat( position, counterClockwisePositionArray );
       }
     },
+
+    getIsLineClose: function () {
+      var isLinePathClosed = false; // {boolean}
+
+    },
+
 
     /**
      * Returns the Shape of the electric potential line
