@@ -17,7 +17,7 @@ define( function ( require ) {
    * @param {Vector2} position
    * @param {Bounds2} bounds - if an equipotential line is not closed, it will terminate outside these bounds
    * @param {ObservableArray.<ChargedParticle>} chargedParticles - array of active ChargedParticles
-   * @param {Function} getElectricPotential -
+   * @param {Function} getElectricPotential
    * @param {Function} getElectricField
    * @param {Property.<boolean>} isPlayAreaChargedProperty
    * @constructor
@@ -42,9 +42,8 @@ define( function ( require ) {
     // calculate the array of positions
     this.positionArray = this.getEquipotentialPositionArray( position );
 
-    // determine if there is
+    // determine if there is an electric potential line
     this.isLinePresent = (this.positionArray !== null); // {boolean}
-
 
   }
 
@@ -183,7 +182,7 @@ define( function ( require ) {
       var stepCounter = 0; // {number} integer
       var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
       var epsilonDistance = 0.10; // {number} step length along electricPotential in meters
-      var isLinePathClosed = false; // {boolean}
+      this.isLineClosed = false; // {boolean}
       var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
       assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
       var nextClockwisePosition; // {Vector2}
@@ -198,7 +197,7 @@ define( function ( require ) {
 
       // return a null array if the initial point for the electricPotential line is too close to a charged particle
       // see https://github.com/phetsims/charges-and-fields/issues/5
-      var closestDistance = 2 * epsilonDistance;
+      var closestDistance = 0.1;
       var isSafeDistance = true;
       this.chargedParticles.forEach( function ( chargedParticle ) {
         isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > closestDistance);
@@ -229,17 +228,20 @@ define( function ( require ) {
             currentCounterClockwisePosition,
             -epsilonDistance );
 
+
+          //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
           clockwisePositionArray.push( nextClockwisePosition );
           counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
-          //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
 
-          // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
+          // if the clockwise and counterclockwise points are closing in on one another let's break the loop
           if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
-            isLinePathClosed = true;
-            clockwisePositionArray.push( nextCounterClockwisePosition ); // let's close the 'path'
+            clockwisePositionArray.push( nextCounterClockwisePosition );
+            counterClockwisePositionArray.push( nextClockwisePosition );
+            this.isLineClosed = true;
             break;
           }
+
 
           currentClockwisePosition = nextClockwisePosition;
           currentCounterClockwisePosition = nextCounterClockwisePosition;
@@ -247,8 +249,8 @@ define( function ( require ) {
           stepCounter++;
         }// end of while()
 
-        if ( !isLinePathClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
-                                    this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
+        if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
+                                     this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
           console.log( 'an electricPotential line terminates on the screen' );
           // rather than plotting an unphysical electricPotential line, returns null
           return null;
@@ -275,28 +277,25 @@ define( function ( require ) {
      */
     getShape: function () {
 
-      // Create the electricPotential line shape
+      // Draw a quadratic curve through all the point in the array
       var shape = new Shape();
 
-      // Draw a quadratic curve through all the point in the array
-      shape.moveToPoint( this.positionArray [ 0 ] );
-      var length = this.positionArray.length;
-
+      var arrayLength = this.positionArray.length; // {number}
+      var arrayIndex;  // {number} counter
       var intermediatePoint; // {Vector2}
-      var i;
 
-      for ( i = 1; i < length - 2; i++ ) {
-        intermediatePoint = (this.positionArray[ i ].plus( this.positionArray[ i + 1 ] )).divideScalar( 2 );
-        shape.quadraticCurveToPoint( this.positionArray[ i ], intermediatePoint );
+      shape.moveToPoint( this.positionArray [ 0 ] );
+
+      for ( arrayIndex = 1; arrayIndex < arrayLength - 2; arrayIndex++ ) {
+
+        // smooth out the curve by creating an average of two consecutive points
+        intermediatePoint = (this.positionArray[ arrayIndex ].plus( this.positionArray[ arrayIndex + 1 ] )).divideScalar( 2 );
+        shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], intermediatePoint );
+
       }
       // curve through the last two points
-      shape.quadraticCurveToPoint( this.positionArray[ i ], this.positionArray[ i + 1 ] );
+      shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], this.positionArray[ arrayIndex + 1 ] );
 
-      // Simple and naive method to plot lines between all the points
-      //shape.moveToPoint( this.positionArray [ 0 ] );
-      //this.positionArray.forEach( function( position ) {
-      //  shape.lineToPoint( position );
-      //} );
       return shape;
     }
   } );

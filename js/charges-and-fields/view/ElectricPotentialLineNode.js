@@ -24,7 +24,7 @@ define( function ( require ) {
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // constants
-  var IS_DEBUG = false;
+  var IS_DEBUG = true;
 
   /**
    *
@@ -126,7 +126,7 @@ define( function ( require ) {
 
       //Simple and naive method to plot lines between all the points
       electricPotentialLine.positionArray.forEach( function ( position ) {
-        var circle = new Circle( 1 );
+        var circle = new Circle( 3, {fill: 'yellow'} );
         circle.center = modelViewTransform.modelToViewPosition( position );
         circleArray.push( circle );
       } );

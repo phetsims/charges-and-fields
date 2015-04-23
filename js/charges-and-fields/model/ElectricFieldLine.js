@@ -229,7 +229,8 @@ define( function ( require ) {
     },
 
     /**
-     * Function that returns the shape of the electric field line.
+     * Function that returns the shape of the electric field line. The line
+     * is a directed line with arrows.
      * @public read-only
      * @param {Object} [options]
      * @returns {Shape}
