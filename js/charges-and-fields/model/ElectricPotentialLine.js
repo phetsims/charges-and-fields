@@ -181,7 +181,7 @@ define( function ( require ) {
        */
       var stepCounter = 0; // {number} integer
       var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
-      var epsilonDistance = 0.10; // {number} step length along electricPotential in meters
+      var epsilonDistance = 0.50; // {number} step length along electricPotential in meters
       var isLinePathClosed = false; // {boolean}
       var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
       assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
@@ -197,7 +197,7 @@ define( function ( require ) {
 
       // return a null array if the initial point for the electricPotential line is too close to a charged particle
       // see https://github.com/phetsims/charges-and-fields/issues/5
-      var closestDistance = 2 * epsilonDistance;
+      var closestDistance = 1 * epsilonDistance;
       var isSafeDistance = true;
       this.chargedParticles.forEach( function ( chargedParticle ) {
         isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > closestDistance);
@@ -236,7 +236,7 @@ define( function ( require ) {
           // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
           if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
             isLinePathClosed = true;
-            clockwisePositionArray.push( nextCounterClockwisePosition ); // let's close the 'path'
+            //clockwisePositionArray.push( nextCounterClockwisePosition ); // let's close the 'path'
             break;
           }
 
@@ -268,29 +268,109 @@ define( function ( require ) {
     getShape: function () {
 
       // Create the electricPotential line shape
-      var shape = new Shape();
+      //var shape = new Shape();
 
-      // Draw a quadratic curve through all the point in the array
-      shape.moveToPoint( this.positionArray [ 0 ] );
-      var length = this.positionArray.length;
-
-      var intermediatePoint; // {Vector2}
-      var i;
-
-      for ( i = 1; i < length - 2; i++ ) {
-        intermediatePoint = (this.positionArray[ i ].plus( this.positionArray[ i + 1 ] )).divideScalar( 2 );
-        shape.quadraticCurveToPoint( this.positionArray[ i ], intermediatePoint );
-      }
-      // curve through the last two points
-      shape.quadraticCurveToPoint( this.positionArray[ i ], this.positionArray[ i + 1 ] );
-
-      // Simple and naive method to plot lines between all the points
+      //// Draw a quadratic curve through all the point in the array
       //shape.moveToPoint( this.positionArray [ 0 ] );
-      //this.positionArray.forEach( function( position ) {
-      //  shape.lineToPoint( position );
-      //} );
-      return shape;
+      //var length = this.positionArray.length;
+      //
+      //var intermediatePoint; // {Vector2}
+      //var i;
+      //
+      //for ( i = 1; i < length - 2; i++ ) {
+      //  intermediatePoint = (this.positionArray[ i ].plus( this.positionArray[ i + 1 ] )).divideScalar( 2 );
+      //  shape.quadraticCurveToPoint( this.positionArray[ i ], intermediatePoint );
+      //}
+      //// curve through the last two points
+      //shape.quadraticCurveToPoint( this.positionArray[ i ], this.positionArray[ i + 1 ] );
+      //
+      //// Simple and naive method to plot lines between all the points
+      ////shape.moveToPoint( this.positionArray [ 0 ] );
+      ////this.positionArray.forEach( function( position ) {
+      ////  shape.lineToPoint( position );
+      ////} );
+
+      this.catmullRom(this.positionArray, {isClosePath: true});
+      return this.catmullRom(this.positionArray, {isClosePath: true});
+    },
+
+    /**
+     *
+     * @param {Array.<Vector2>}
+     * @param {Object} [options]
+     * @returns {Shape}
+     */
+    catmullRom: function( pointsArray, options ) {
+
+      var shape = new Shape();
+      options = _.extend( {
+        isClosePath: false
+      }, options );
+
+
+      if ( options.isClosePath ) {
+
+        var length = pointsArray.length;
+        for ( var i = 0; i < length; i++ ) {
+
+          var p = []; // {Array.<Vector2>} catmullControlPointsArray
+          p.push(
+            pointsArray[ (i - 1 + length) % length ],
+            pointsArray[ (i) % length ],
+            pointsArray[ (i + 1 ) % length ],
+            pointsArray[ (i + 2 ) % length ] );
+
+          // Catmull-Rom to Cubic Bezier conversion matrix
+          //    0       1       0       0
+          //  -1/6      1      1/6      0
+          //    0      1/6      1     -1/6
+          //    0       0       1       0
+
+          var bezierPoints = [];
+          bezierPoints.push( p[ 1 ] );
+          bezierPoints.push( v( (-p[ 0 ].x + 6 * p[ 1 ].x + p[ 2 ].x) / 6, (-p[ 0 ].y + 6 * p[ 1 ].y + p[ 2 ].y) / 6 ) );
+          bezierPoints.push( v( (p[ 1 ].x + 6 * p[ 2 ].x - p[ 3 ].x) / 6, (p[ 1 ].y + 6 * p[ 2 ].y - p[ 3 ].y) / 6 ) );
+          bezierPoints.push( p[ 2 ] );
+
+          shape.moveToPoint(  bezierPoints[ 0 ] );
+          shape.cubicCurveToPoint( bezierPoints[ 1 ], bezierPoints[ 2 ], bezierPoints[ 3 ] );
+
+        }
+      }
+      else {
+        shape.moveToPoint( pointsArray[ 0 ] );
+
+        for ( var i = 1, iLen = pointsArray.length; iLen - 2 > i; i += 1 ) {
+
+          var p = []; // {Array.<Vector2>} catmullControlPointsArray
+          if ( 0 == i ) {
+            p.push( pointsArray[ 1 ], pointsArray[ 1 ], pointsArray[ 2 ], pointsArray[ 3 ] );
+          }
+          else if ( iLen - 4 == i ) {
+            p.push( pointsArray[ i - 1 ], pointsArray[ i ], pointsArray[ i + 1 ], pointsArray[ i + 1 ] );
+          }
+          else {
+            p.push( pointsArray[ i - 1 ], pointsArray[ i ], pointsArray[ i + 1 ], pointsArray[ i + 2 ] );
+          }
+
+          // Catmull-Rom to Cubic Bezier conversion matrix
+          //    0       1       0       0
+          //  -1/6      1      1/6      0
+          //    0      1/6      1     -1/6
+          //    0       0       1       0
+
+          var bp = [];
+          bp.push( p[ 1 ] );
+          bp.push( v( (-p[ 0 ].x + 6 * p[ 1 ].x + p[ 2 ].x) / 6, (-p[ 0 ].y + 6 * p[ 1 ].y + p[ 2 ].y) / 6 ) );
+          bp.push( v( (p[ 1 ].x + 6 * p[ 2 ].x - p[ 3 ].x) / 6, (p[ 1 ].y + 6 * p[ 2 ].y - p[ 3 ].y) / 6 ) );
+          bp.push( p[ 2 ] );
+
+          shape.cubicCurveToPoint( bp[ 1 ], bp[ 2 ], bp[ 3 ] );
+        }
+      }
+      return shape  ;
     }
+
   } );
 } );
 
