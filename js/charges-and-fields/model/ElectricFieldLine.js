@@ -287,6 +287,5 @@ define( function ( require ) {
 
   } )
     ;
-} )
-;
+} );
 

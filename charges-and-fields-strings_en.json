@@ -1,0 +1,53 @@
+{
+  "charges-and-fields.name": {
+    "value": "Charges And Fields"
+  },
+  "plusOneNanoC": {
+    "value": "+1 nC"
+  },
+  "minusOneNanoC": {
+    "value": "-1 nC"
+  },
+  "electricField": {
+    "value": "Electric Field"
+  },
+  "directionOnly": {
+    "value": "Direction only"
+  },
+  "voltage": {
+    "value": "Voltage"
+  },
+  "values": {
+    "value": "Values"
+  },
+  "grid": {
+    "value": "Grid"
+  },
+  "sensors": {
+    "value": "Sensors"
+  },
+  "eFieldUnit": {
+    "value": "V/m"
+  },
+  "angleUnit": {
+    "value": "deg"
+  },
+  "voltageUnit": {
+    "value": "V"
+  },
+  "oneMeter": {
+    "value": "1 meter"
+  },
+  "equipotential": {
+    "value": "Equipotential"
+  },
+  "pattern.0value.1units": {
+    "value": "{0} {1}"
+  },
+  "options.electricFieldLines": {
+    "value": "Electric Field Lines Support"
+  },
+  "options.projectorColors": {
+    "value": "Projector Mode"
+  }
+}
