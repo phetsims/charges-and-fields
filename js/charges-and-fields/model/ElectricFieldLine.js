@@ -5,16 +5,16 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( function ( require ) {
   'use strict';
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-
+  var Shape = require( 'KITE/Shape' );
 
   // constants
   // closest approach distance to a charge in meters, should be smaller than the radius of a charge in the view
-  var CLOSEST_APPROACH_DISTANCE = 0.05; // in meters, for reference the radius of the charge circle is 0.10 m
+  var CLOSEST_APPROACH_DISTANCE = 0.1; // in meters, for reference the radius of the charge circle is 0.10 m
 
   /**
    *
@@ -56,7 +56,7 @@ define( function( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongElectricFieldWithRK4: function( position, deltaDistance ) {
+    getNextPositionAlongElectricFieldWithRK4: function ( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var k1Vector = this.getElectricField( position ).normalize(); // {Vector2} normalized Vector along electricPotential
@@ -80,7 +80,7 @@ define( function( require ) {
      * @param {number} deltaDistance - can be positive (for forward direction) or negative (for backward direction) (units of meter)
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongElectricField: function( position, deltaDistance ) {
+    getNextPositionAlongElectricField: function ( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position );
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero' );
       var midwayDisplacement = initialElectricField.normalized().multiplyScalar( deltaDistance / 2 );
@@ -97,9 +97,8 @@ define( function( require ) {
      * @private
      * @param {Vector2} position
      * @returns {Array.<Vector2>|| null}
-     *
      */
-    getElectricFieldPositionArray: function( position ) {
+    getElectricFieldPositionArray: function ( position ) {
       /*
        Two arrays of points are generated. One is called forwardPositionArray and is made of all the points
        (excluding the initial point) that are along the electric field. The point are generated sequentially.
@@ -130,12 +129,31 @@ define( function( require ) {
      * @param {Vector2} position
      * @returns {boolean}
      */
-    isSafeDistanceFromChargedParticles: function( position ) {
+    getIsSafeDistanceFromChargedParticles: function ( position ) {
       var isSafeDistance = true;
-      this.chargedParticles.forEach( function( chargedParticle ) {
+      this.chargedParticles.forEach( function ( chargedParticle ) {
         isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > CLOSEST_APPROACH_DISTANCE);
       } );
       return isSafeDistance;
+    },
+
+    /**
+     * Function that determines the location of the closest charge to a given position.
+     * @private
+     * @param {Vector2} position
+     * @returns {Vector2}
+     */
+    getClosestChargedParticlePosition: function ( position ) {
+      var closestChargedParticlePosition; // {Vector2}
+      var closestDistance = Number.POSITIVE_INFINITY;
+      this.chargedParticles.forEach( function ( chargedParticle ) {
+        var distance = chargedParticle.position.distance( position );
+        if ( distance < closestDistance ) {
+          closestChargedParticlePosition = chargedParticle.position;
+          closestDistance = distance;
+        }
+      } );
+      return closestChargedParticlePosition;
     },
 
     /**
@@ -151,11 +169,12 @@ define( function( require ) {
      * @param {boolean} isSearchingBackward
      * @returns {Array.<Vector2>} positionArray
      */
-    getPositionArray: function( position, isSearchingBackward ) {
+    getPositionArray: function ( position, isSearchingBackward ) {
 
       // the product of stepMax and epsilonDistance should exceed the width and height of the model bounds
-      var stepMax = 2000; // an integer, the maximum number of steps in the algorithm
+      var stepMax = 500; // an integer, the maximum number of steps in the algorithm
       var epsilonDistance = 0.1; // in meter
+      assert && assert( epsilonDistance / 2 <= CLOSEST_APPROACH_DISTANCE, 'the steps are too big and you might skipped over a charge' );
       var maxDistance = Math.max( this.bounds.height, this.bounds.width );
       assert && assert( stepMax * epsilonDistance > maxDistance, ' there are not enough steps to cross the playArea ' );
 
@@ -172,13 +191,17 @@ define( function( require ) {
       // find the position array
       while ( stepCounter < stepMax &&
               this.bounds.containsPoint( currentPosition ) &&
-              this.isSafeDistanceFromChargedParticles( currentPosition ) ) {
+              this.getIsSafeDistanceFromChargedParticles( currentPosition ) ) {
         nextPosition = this.getNextPositionAlongElectricFieldWithRK4( currentPosition, epsilonDistance );
         positionArray.push( nextPosition );
         currentPosition = nextPosition;
         stepCounter++;
       }// end of while()
 
+      // if the last position was close to a charge, let's add that charge position as our final point.
+      if ( !this.getIsSafeDistanceFromChargedParticles( currentPosition ) ) {
+        positionArray.push( this.getClosestChargedParticlePosition( currentPosition ) );
+      }
       return positionArray;
     },
 
@@ -189,8 +212,8 @@ define( function( require ) {
      * @public read-only
      * @returns {boolean}
      */
-    getIsLineStartingNearCharge: function() {
-      return !(this.isSafeDistanceFromChargedParticles( this.positionArray[ 0 ] ));
+    getIsLineStartingNearCharge: function () {
+      return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ 0 ] ));
     },
 
     /**
@@ -200,11 +223,69 @@ define( function( require ) {
      * @public read-only
      * @returns {boolean}
      */
-    getIsLineEndingNearCharge: function() {
+    getIsLineEndingNearCharge: function () {
       var index = this.positionArray.length - 1;
-      return !(this.isSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
+      return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
+    },
+
+    /**
+     * Function that returns the shape of the electric field line. The line
+     * is a directed line with arrows.
+     * @public read-only
+     * @param {Object} [options]
+     * @returns {Shape}
+     */
+    getShape: function ( options ) {
+
+      options = _.extend( {
+        arrowHeadLength: 0.05,// length of the arrow head in model coordinates
+        arrowHeadInternalAngle: Math.PI * 6 / 8, // half the internal angle (in radians) at the tip of the arrow head
+        numberOfSegmentsPerArrow: 10 // number of segment intervals between arrows
+      }, options );
+
+      // draw the electricField line shape
+      var shape = new Shape();
+
+      var arrayLength = this.positionArray.length; // {number}
+      var arrayIndex;  // {number} counter
+      var intermediatePoint; // {Vector2}
+
+      shape.moveToPoint( this.positionArray [ 0 ] );
+
+      for ( arrayIndex = 1; arrayIndex < arrayLength - 2; arrayIndex++ ) {
+
+        var isArrowSegment = ( arrayIndex % options.numberOfSegmentsPerArrow === Math.floor( options.numberOfSegmentsPerArrow / 2 ) );  // modulo value is arbitrary, just not zero since it will start on a positive charge
+
+        if ( isArrowSegment ) {
+          var angle = this.positionArray[ arrayIndex ].minus( shape.getRelativePoint() ).angle(); // angle of the electric field at location 'position'
+          // shape of an arrow head (triangle)
+          shape
+            .lineToPointRelative( {
+              x: options.arrowHeadLength * Math.cos( angle + options.arrowHeadInternalAngle ),
+              y: options.arrowHeadLength * Math.sin( angle + options.arrowHeadInternalAngle )
+            } )
+            .lineToPointRelative( {
+              x: 2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.sin( angle ),
+              y: -2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.cos( angle )
+            } )
+            .lineToPointRelative( {
+              x: -options.arrowHeadLength * Math.cos( angle - options.arrowHeadInternalAngle ),
+              y: -options.arrowHeadLength * Math.sin( angle - options.arrowHeadInternalAngle )
+            } );
+        } // end of  if (isArrowSegment)
+
+        // smooth out the curve by creating an average of two consecutive points
+        intermediatePoint = (this.positionArray[ arrayIndex ].plus( this.positionArray[ arrayIndex + 1 ] )).divideScalar( 2 );
+        shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], intermediatePoint );
+
+      }
+      // curve through the last two points
+      shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], this.positionArray[ arrayIndex + 1 ] );
+
+      return shape;
     }
 
-  } );
+  } )
+    ;
 } );
 
