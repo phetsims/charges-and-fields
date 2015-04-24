@@ -42,7 +42,7 @@ define( function ( require ) {
     // calculate the array of positions
     this.positionArray = this.getEquipotentialPositionArray( position );
 
-    // determine if there is
+    // determine if there is an electric potential line
     this.isLinePresent = (this.positionArray !== null); // {boolean}
 
   }
@@ -181,8 +181,8 @@ define( function ( require ) {
        */
       var stepCounter = 0; // {number} integer
       var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
-      var epsilonDistance = 0.50; // {number} step length along electricPotential in meters
-      var isLinePathClosed = false; // {boolean}
+      var epsilonDistance = 0.10; // {number} step length along electricPotential in meters
+      this.isLineClosed = false; // {boolean}
       var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
       assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
       var nextClockwisePosition; // {Vector2}
@@ -197,7 +197,7 @@ define( function ( require ) {
 
       // return a null array if the initial point for the electricPotential line is too close to a charged particle
       // see https://github.com/phetsims/charges-and-fields/issues/5
-      var closestDistance = 1 * epsilonDistance;
+      var closestDistance = 0.1;
       var isSafeDistance = true;
       this.chargedParticles.forEach( function ( chargedParticle ) {
         isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > closestDistance);
@@ -228,17 +228,21 @@ define( function ( require ) {
             currentCounterClockwisePosition,
             -epsilonDistance );
 
+
+          //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
           clockwisePositionArray.push( nextClockwisePosition );
           counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
           //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
 
-          // if the clockwise and counterclockwise points are closing in on one another let's stop after one more pass
+          // if the clockwise and counterclockwise points are closing in on one another let's break the loop
           if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
-            isLinePathClosed = true;
-            //clockwisePositionArray.push( nextCounterClockwisePosition ); // let's close the 'path'
+            clockwisePositionArray.push( nextCounterClockwisePosition );
+            counterClockwisePositionArray.push( nextClockwisePosition );
+            this.isLineClosed = true;
             break;
           }
+
 
           currentClockwisePosition = nextClockwisePosition;
           currentCounterClockwisePosition = nextCounterClockwisePosition;
@@ -246,8 +250,8 @@ define( function ( require ) {
           stepCounter++;
         }// end of while()
 
-        if ( !isLinePathClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
-                                    this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
+        if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
+                                     this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
           console.log( 'an electricPotential line terminates on the screen' );
           // rather than plotting an unphysical electricPotential line, returns null
           return null;
@@ -255,7 +259,8 @@ define( function ( require ) {
 
         // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
         var reversedArray = clockwisePositionArray.reverse();
-        //var positionArray = reversedArray.concat( position, counterClockwisePositionArray );
+
+        // lets returned the entire array , i.e. the reversed clockwise array, the initial position, and the counterclockwise array
         return reversedArray.concat( position, counterClockwisePositionArray );
       }
     },
@@ -268,40 +273,6 @@ define( function ( require ) {
     getShape: function () {
 
       // Create the electricPotential line shape
-      //var shape = new Shape();
-
-      //// Draw a quadratic curve through all the point in the array
-      //shape.moveToPoint( this.positionArray [ 0 ] );
-      //var length = this.positionArray.length;
-      //
-      //var intermediatePoint; // {Vector2}
-      //var i;
-      //
-      //for ( i = 1; i < length - 2; i++ ) {
-      //  intermediatePoint = (this.positionArray[ i ].plus( this.positionArray[ i + 1 ] )).divideScalar( 2 );
-      //  shape.quadraticCurveToPoint( this.positionArray[ i ], intermediatePoint );
-      //}
-      //// curve through the last two points
-      //shape.quadraticCurveToPoint( this.positionArray[ i ], this.positionArray[ i + 1 ] );
-      //
-      //// Simple and naive method to plot lines between all the points
-      ////shape.moveToPoint( this.positionArray [ 0 ] );
-      ////this.positionArray.forEach( function( position ) {
-      ////  shape.lineToPoint( position );
-      ////} );
-
-      this.catmullRom(this.positionArray, {isClosePath: true});
-      return this.catmullRom(this.positionArray, {isClosePath: true});
-    },
-
-    /**
-     *
-     * @param {Array.<Vector2>}
-     * @param {Object} [options]
-     * @returns {Shape}
-     */
-    catmullRom: function( pointsArray, options ) {
-
       var shape = new Shape();
       options = _.extend( {
         isClosePath: false
@@ -337,40 +308,16 @@ define( function ( require ) {
 
         }
       }
-      else {
-        shape.moveToPoint( pointsArray[ 0 ] );
+      // curve through the last two points
+      shape.quadraticCurveToPoint( this.positionArray[ i ], this.positionArray[ i + 1 ] );
 
-        for ( var i = 1, iLen = pointsArray.length; iLen - 2 > i; i += 1 ) {
-
-          var p = []; // {Array.<Vector2>} catmullControlPointsArray
-          if ( 0 == i ) {
-            p.push( pointsArray[ 1 ], pointsArray[ 1 ], pointsArray[ 2 ], pointsArray[ 3 ] );
-          }
-          else if ( iLen - 4 == i ) {
-            p.push( pointsArray[ i - 1 ], pointsArray[ i ], pointsArray[ i + 1 ], pointsArray[ i + 1 ] );
-          }
-          else {
-            p.push( pointsArray[ i - 1 ], pointsArray[ i ], pointsArray[ i + 1 ], pointsArray[ i + 2 ] );
-          }
-
-          // Catmull-Rom to Cubic Bezier conversion matrix
-          //    0       1       0       0
-          //  -1/6      1      1/6      0
-          //    0      1/6      1     -1/6
-          //    0       0       1       0
-
-          var bp = [];
-          bp.push( p[ 1 ] );
-          bp.push( v( (-p[ 0 ].x + 6 * p[ 1 ].x + p[ 2 ].x) / 6, (-p[ 0 ].y + 6 * p[ 1 ].y + p[ 2 ].y) / 6 ) );
-          bp.push( v( (p[ 1 ].x + 6 * p[ 2 ].x - p[ 3 ].x) / 6, (p[ 1 ].y + 6 * p[ 2 ].y - p[ 3 ].y) / 6 ) );
-          bp.push( p[ 2 ] );
-
-          shape.cubicCurveToPoint( bp[ 1 ], bp[ 2 ], bp[ 3 ] );
-        }
-      }
-      return shape  ;
+      // Simple and naive method to plot lines between all the points
+      //shape.moveToPoint( this.positionArray [ 0 ] );
+      //this.positionArray.forEach( function( position ) {
+      //  shape.lineToPoint( position );
+      //} );
+      return shape;
     }
-
   } );
 } );
 

@@ -59,16 +59,30 @@ define( function( require ) {
     }
 
     return inherit( WebGLNode, ElectricPotentialGridMobileWebGLNode, {
+      /**
+       * Function that redraw the canvas and link a listener upon the addition of a chargedParticle
+       * @private
+       * @param {ChargedParticle} particle
+       */
       onParticleAdded: function( particle ) {
         this.invalidatePaint();
 
         particle.positionProperty.lazyLink( this.positionListener );
       },
 
+      /**
+       * Function that redraw the canvas, called when a charged particle changes its position
+       * @private
+       */
       onParticleMoved: function() {
         this.invalidatePaint();
       },
 
+      /**
+       * Function that redraw the canvas and unlink the listener upon the removing of a chargedParticle
+       * @private
+       * @param {ChargedParticle} particle
+       */
       onParticleRemoved: function( particle ) {
         this.invalidatePaint();
 
