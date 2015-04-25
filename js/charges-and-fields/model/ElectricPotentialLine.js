@@ -9,8 +9,10 @@ define( function ( require ) {
   'use strict';
 
   // modules
+  var dot = require( 'DOT/dot' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
@@ -181,10 +183,11 @@ define( function ( require ) {
        */
       var stepCounter = 0; // {number} integer
       var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
-      var epsilonDistance = 0.10; // {number} step length along electricPotential in meters
+      var maxEpsilonDistance = 0.50; // {number} step length along electricPotential in meters
+      var minEpsilonDistance = 0.05; // {number} step length along electricPotential in meters
       this.isLineClosed = false; // {boolean}
       var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
-      assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
+      //assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
       var nextClockwisePosition; // {Vector2}
       var nextCounterClockwisePosition; // {Vector2}
       var currentClockwisePosition = position; // {Vector2}
@@ -192,8 +195,6 @@ define( function ( require ) {
       var clockwisePositionArray = [];
       var counterClockwisePositionArray = [];
 
-      // electric potential associated with the position
-      //var initialElectricPotential = this.getElectricPotential( position ); // {number} in volts
 
       // return a null array if the initial point for the electricPotential line is too close to a charged particle
       // see https://github.com/phetsims/charges-and-fields/issues/5
@@ -208,9 +209,13 @@ define( function ( require ) {
       }
       else {
 
-        while ( stepCounter < stepMax &&
-                this.bounds.containsPoint( currentClockwisePosition ) ||
-                this.bounds.containsPoint( currentCounterClockwisePosition ) ) {
+        // electric potential associated with the position
+        //var initialElectricPotential = this.getElectricPotential( position ); // {number} in volts
+        var clockwiseEpsilonDistance = Math.sqrt( minEpsilonDistance * maxEpsilonDistance );
+        var counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+        while ( (stepCounter < stepMax ) && (!this.isLineClosed) &&
+                ( this.bounds.containsPoint( currentClockwisePosition ) ||
+                  this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
 
           //nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
           //  currentClockwisePosition,
@@ -221,41 +226,51 @@ define( function ( require ) {
           //  initialElectricPotential,
           //  -epsilonDistance );
 
+
           nextClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
             currentClockwisePosition,
-            epsilonDistance );
+            clockwiseEpsilonDistance );
           nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
             currentCounterClockwisePosition,
-            -epsilonDistance );
+            counterClockwiseEpsilonDistance );
 
-
-          //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
           clockwisePositionArray.push( nextClockwisePosition );
           counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
-          //TODO: the epsilonDistance should be adaptative and get smaller once the two heads get within some distance.
-
-          // if the clockwise and counterclockwise points are closing in on one another let's break the loop
-          if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < epsilonDistance ) {
-            clockwisePositionArray.push( nextCounterClockwisePosition );
-            counterClockwisePositionArray.push( nextClockwisePosition );
-            this.isLineClosed = true;
-            break;
+          if ( clockwisePositionArray.length > 3 ) {
+            clockwiseEpsilonDistance *= Math.PI / (20 * this.getRotationAngle( clockwisePositionArray ));
+            clockwiseEpsilonDistance = dot.clamp( clockwiseEpsilonDistance, minEpsilonDistance, maxEpsilonDistance );
+          }
+          if ( counterClockwisePositionArray.length > 3 ) {
+            counterClockwiseEpsilonDistance *= Math.PI / (20 * this.getRotationAngle( counterClockwisePositionArray ));
+            counterClockwiseEpsilonDistance = dot.clamp( counterClockwiseEpsilonDistance, -1 * maxEpsilonDistance, -1 * minEpsilonDistance );
           }
 
+          if ( clockwisePositionArray.length > 3 ) {
+            var approachDistance = nextClockwisePosition.distance( nextCounterClockwisePosition );
+            if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
+              clockwiseEpsilonDistance = approachDistance / 3;
+              counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+              if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < 2 * minEpsilonDistance ) {
+                // if the clockwise and counterclockwise points are close,
+                this.isLineClosed = true;
+              }
+            }
+          }
 
           currentClockwisePosition = nextClockwisePosition;
           currentCounterClockwisePosition = nextCounterClockwisePosition;
 
           stepCounter++;
+
         }// end of while()
 
-        if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
-                                     this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
-          console.log( 'an electricPotential line terminates on the screen' );
-          // rather than plotting an unphysical electricPotential line, returns null
-          return null;
-        }
+        //if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
+        //                             this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
+        //  console.log( 'an electricPotential line terminates on the screen' );
+        //  // rather than plotting an unphysical electricPotential line, returns null
+        //  return null;
+        //}
 
         // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
         var reversedArray = clockwisePositionArray.reverse();
@@ -266,59 +281,139 @@ define( function ( require ) {
     },
 
     /**
+     *
+     * @private
+     * @param {Array.<Vector2>} positionArray
+     * @returns {number}
+     */
+    getRotationAngle: function ( positionArray ) {
+      var length = positionArray.length;
+      var newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
+      var oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
+      return newDeltaPosition.angleBetween( oldDeltaPosition );
+    },
+
+    /**
      * Returns the Shape of the electric potential line
      * @public
      * @returns {Shape}
      */
     getShape: function () {
 
-      // Create the electricPotential line shape
       var shape = new Shape();
+      return this.positionArrayToCardinalSpline( shape, this.positionArray,
+        {isClosedLineSegments: this.isLineClosed}
+      );
+    },
+
+    /**
+     * Function that returns a weighted vector
+     * @private
+     * @param {Vector2} beforeVector
+     * @param {Vector2} currentVector
+     * @param {Vector2} afterVector
+     * @param {Object} [options]
+     * @returns {Vector2}
+     */
+    getWeightedVector: function ( beforeVector, currentVector, afterVector, options ) {
       options = _.extend( {
-        isClosePath: false
+        // the ‘tension’ parameter controls how smoothly the curve turns through its
+        // control points. For a Catmull-Rom curve the tension is zero.
+        // the tension should range from -1 to 1
+        tension: 0
+      }, options );
+
+      var workingVector = new Vector2();
+      workingVector.add( afterVector ).subtract( beforeVector );
+      workingVector.multiplyScalar( (1 - options.tension) / 6 );
+      workingVector.add( currentVector );
+      return workingVector;
+    },
+
+    /**
+     *
+     * This is a convenience function that allows to generate Cardinal splines
+     * from a position array. Cardinal spline differs from Bezier curves in that all
+     * defined points on a Cardinal spline are on the path itself.
+     *
+     * It include a 'tension' parameter to allow the client to specify how tightly
+     * the path interpolates between points. One can think of the tension as the tension in
+     * a rubber band around pegs. however unlike a rubber band the tension can be negative.
+     * the tension ranges from -1 to 1.
+     * @private
+     * @param {Shape} shape
+     * @param {Array.<Vector2>} positionArray
+     * @param {Object} [options]
+     * @returns {Shape}
+     */
+    positionArrayToCardinalSpline: function ( shape, positionArray, options ) {
+      options = _.extend( {
+        // the ‘tension’ parameter controls how smoothly the curve turns through its
+        // control points. For a Catmull-Rom curve the tension is zero.
+        // the tension should range from -1 to 1
+        tension: 0,
+
+        // is the resulting shape forming a close path
+        isClosedLineSegments: false,
+
+        // is this part of another shape, it should link to
+        //TODO
+        isSubPath: false
       }, options );
 
 
-      if ( options.isClosePath ) {
+      var cardinalPoints = []; // {Array.<Vector2>} cardinal points Array
+      var bezierPoints = []; // {Array.<Vector2>} bezier points Array
 
-        var length = pointsArray.length;
-        for ( var i = 0; i < length; i++ ) {
+      // if the line is open, there is one less segment than point vectors
+      var segmentNumber = (options.isClosedLineSegments) ? positionArray.length : positionArray.length - 1;
 
-          var p = []; // {Array.<Vector2>} catmullControlPointsArray
-          p.push(
-            pointsArray[ (i - 1 + length) % length ],
-            pointsArray[ (i) % length ],
-            pointsArray[ (i + 1 ) % length ],
-            pointsArray[ (i + 2 ) % length ] );
-
-          // Catmull-Rom to Cubic Bezier conversion matrix
-          //    0       1       0       0
-          //  -1/6      1      1/6      0
-          //    0      1/6      1     -1/6
-          //    0       0       1       0
-
-          var bezierPoints = [];
-          bezierPoints.push( p[ 1 ] );
-          bezierPoints.push( v( (-p[ 0 ].x + 6 * p[ 1 ].x + p[ 2 ].x) / 6, (-p[ 0 ].y + 6 * p[ 1 ].y + p[ 2 ].y) / 6 ) );
-          bezierPoints.push( v( (p[ 1 ].x + 6 * p[ 2 ].x - p[ 3 ].x) / 6, (p[ 1 ].y + 6 * p[ 2 ].y - p[ 3 ].y) / 6 ) );
-          bezierPoints.push( p[ 2 ] );
-
-          shape.moveToPoint(  bezierPoints[ 0 ] );
-          shape.cubicCurveToPoint( bezierPoints[ 1 ], bezierPoints[ 2 ], bezierPoints[ 3 ] );
-
+      for ( var i = 0; i < segmentNumber; i++ ) {
+        cardinalPoints = [];
+        if ( i === 0 && !options.isClosedLineSegments ) {
+          cardinalPoints.push(
+            positionArray[ 0 ],
+            positionArray[ 0 ],
+            positionArray[ 1 ],
+            positionArray[ 2 ] );
         }
-      }
-      // curve through the last two points
-      shape.quadraticCurveToPoint( this.positionArray[ i ], this.positionArray[ i + 1 ] );
+        else if ( (i === segmentNumber - 1) && !options.isClosedLineSegments ) {
+          cardinalPoints.push(
+            positionArray[ i - 1 ],
+            positionArray[ i ],
+            positionArray[ i + 1 ],
+            positionArray[ i + 1 ] );
+        }
+        else {
+          cardinalPoints.push(
+            positionArray[ (i - 1 + segmentNumber) % segmentNumber ],
+            positionArray[ (i) % segmentNumber ],
+            positionArray[ (i + 1 ) % segmentNumber ],
+            positionArray[ (i + 2 ) % segmentNumber ] );
+        }
 
-      // Simple and naive method to plot lines between all the points
-      //shape.moveToPoint( this.positionArray [ 0 ] );
-      //this.positionArray.forEach( function( position ) {
-      //  shape.lineToPoint( position );
-      //} );
+
+        // Cardinal Spline to Cubic Bezier conversion matrix
+        //    0                 1             0            0
+        //  (-1+tension)/6      1      (1-tension)/6       0
+        //    0            (1-tension)/6      1       (-1+tension)/6
+        //    0                 0             1           0
+
+        bezierPoints = [];
+        bezierPoints.push( cardinalPoints[ 1 ] );
+        bezierPoints.push( this.getWeightedVector( cardinalPoints[ 0 ], cardinalPoints[ 1 ], cardinalPoints[ 2 ], options ) );
+        bezierPoints.push( this.getWeightedVector( cardinalPoints[ 3 ], cardinalPoints[ 2 ], cardinalPoints[ 1 ], options ) );
+        bezierPoints.push( cardinalPoints[ 2 ] );
+
+        shape.moveToPoint( bezierPoints[ 0 ] );
+        shape.cubicCurveToPoint( bezierPoints[ 1 ], bezierPoints[ 2 ], bezierPoints[ 3 ] );
+      }
       return shape;
     }
+
   } );
+
 } );
+
 
 
