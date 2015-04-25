@@ -24,7 +24,7 @@ define( function ( require ) {
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // constants
-  var IS_DEBUG = true;
+  var IS_DEBUG = false;
 
   /**
    *

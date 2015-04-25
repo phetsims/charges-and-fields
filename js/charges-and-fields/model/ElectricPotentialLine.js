@@ -164,6 +164,16 @@ define( function ( require ) {
         // if there are no charges, don't bother to find the electricPotential line
         return null;
       }
+
+      var closestChargeDistance = this.getClosestChargedParticlePosition( position ).distance( position );
+      var closestDistance = 0.1;
+
+      if ( closestChargeDistance < closestDistance ) {
+        // return a null array if the initial point for the electricPotential line is too close to a charged particle
+        // see https://github.com/phetsims/charges-and-fields/issues/5
+        return null;
+      }
+
       /*
        General Idea of this algorithm
 
@@ -182,12 +192,12 @@ define( function ( require ) {
        pointing clockwise (yes  clockwise) to the direction of the line.
        */
       var stepCounter = 0; // {number} integer
-      var stepMax = 500; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
-      var maxEpsilonDistance = 0.50; // {number} step length along electricPotential in meters
-      var minEpsilonDistance = 0.05; // {number} step length along electricPotential in meters
+      var stepMax = 10000; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
+      var maxEpsilonDistance = 0.10; // {number} step length along electricPotential in meters
+      var minEpsilonDistance = 0.01; // {number} step length along electricPotential in meters
       this.isLineClosed = false; // {boolean}
-      var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
-      //assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
+      //var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
+//assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
       var nextClockwisePosition; // {Vector2}
       var nextCounterClockwisePosition; // {Vector2}
       var currentClockwisePosition = position; // {Vector2}
@@ -196,88 +206,115 @@ define( function ( require ) {
       var counterClockwisePositionArray = [];
 
 
-      // return a null array if the initial point for the electricPotential line is too close to a charged particle
-      // see https://github.com/phetsims/charges-and-fields/issues/5
-      var closestDistance = 0.1;
-      var isSafeDistance = true;
-      this.chargedParticles.forEach( function ( chargedParticle ) {
-        isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > closestDistance);
-      } );
+      // electric potential associated with the position
+      //var initialElectricPotential = this.getElectricPotential( position ); // {number} in volts
+      var clockwiseEpsilonDistance = minEpsilonDistance;
+      var counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+      while ( (stepCounter < stepMax ) && (!this.isLineClosed) &&
+              ( this.bounds.containsPoint( currentClockwisePosition ) ||
+                this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
 
-      if ( !isSafeDistance ) {
-        return null;
-      }
-      else {
-
-        // electric potential associated with the position
-        //var initialElectricPotential = this.getElectricPotential( position ); // {number} in volts
-        var clockwiseEpsilonDistance = Math.sqrt( minEpsilonDistance * maxEpsilonDistance );
-        var counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
-        while ( (stepCounter < stepMax ) && (!this.isLineClosed) &&
-                ( this.bounds.containsPoint( currentClockwisePosition ) ||
-                  this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
-
-          //nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
-          //  currentClockwisePosition,
-          //  initialElectricPotential,
-          //  epsilonDistance );
-          //nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
-          //  currentCounterClockwisePosition,
-          //  initialElectricPotential,
-          //  -epsilonDistance );
+        //nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
+        //  currentClockwisePosition,
+        //  initialElectricPotential,
+        //  epsilonDistance );
+        //nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
+        //  currentCounterClockwisePosition,
+        //  initialElectricPotential,
+        //  -epsilonDistance );
 
 
-          nextClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
-            currentClockwisePosition,
-            clockwiseEpsilonDistance );
-          nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
-            currentCounterClockwisePosition,
-            counterClockwiseEpsilonDistance );
+        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
+          currentClockwisePosition,
+          clockwiseEpsilonDistance );
+        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
+          currentCounterClockwisePosition,
+          counterClockwiseEpsilonDistance );
 
-          clockwisePositionArray.push( nextClockwisePosition );
-          counterClockwisePositionArray.push( nextCounterClockwisePosition );
+        clockwisePositionArray.push( nextClockwisePosition );
+        counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
-          if ( clockwisePositionArray.length > 3 ) {
-            clockwiseEpsilonDistance *= Math.PI / (20 * this.getRotationAngle( clockwisePositionArray ));
-            clockwiseEpsilonDistance = dot.clamp( clockwiseEpsilonDistance, minEpsilonDistance, maxEpsilonDistance );
-          }
-          if ( counterClockwisePositionArray.length > 3 ) {
-            counterClockwiseEpsilonDistance *= Math.PI / (20 * this.getRotationAngle( counterClockwisePositionArray ));
-            counterClockwiseEpsilonDistance = dot.clamp( counterClockwiseEpsilonDistance, -1 * maxEpsilonDistance, -1 * minEpsilonDistance );
-          }
+        if ( stepCounter > 3 ) {
+          clockwiseEpsilonDistance *= Math.PI / (180 * this.getRotationAngle( clockwisePositionArray ));
+          clockwiseEpsilonDistance = dot.clamp( clockwiseEpsilonDistance, minEpsilonDistance, maxEpsilonDistance );
 
-          if ( clockwisePositionArray.length > 3 ) {
-            var approachDistance = nextClockwisePosition.distance( nextCounterClockwisePosition );
-            if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
-              clockwiseEpsilonDistance = approachDistance / 3;
-              counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
-              if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < 2 * minEpsilonDistance ) {
-                // if the clockwise and counterclockwise points are close,
-                this.isLineClosed = true;
-              }
+          counterClockwiseEpsilonDistance *= Math.PI / (180 * this.getRotationAngle( counterClockwisePositionArray ));
+          counterClockwiseEpsilonDistance = dot.clamp( counterClockwiseEpsilonDistance, -1 * maxEpsilonDistance, -1 * minEpsilonDistance );
+
+          var approachDistance = nextClockwisePosition.distance( nextCounterClockwisePosition );
+
+          if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
+            clockwiseEpsilonDistance = approachDistance / 3;
+            counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+            if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < 2 * minEpsilonDistance ) {
+              // if the clockwise and counterclockwise points are close,
+              this.isLineClosed = true;
             }
           }
+        }
 
-          currentClockwisePosition = nextClockwisePosition;
-          currentCounterClockwisePosition = nextCounterClockwisePosition;
+        currentClockwisePosition = nextClockwisePosition;
+        currentCounterClockwisePosition = nextCounterClockwisePosition;
 
-          stepCounter++;
+        stepCounter++;
 
-        }// end of while()
+      }// end of while()
 
-        //if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
-        //                             this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
-        //  console.log( 'an electricPotential line terminates on the screen' );
-        //  // rather than plotting an unphysical electricPotential line, returns null
-        //  return null;
-        //}
+      //if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
+      //                             this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
+      //  console.log( 'an electricPotential line terminates on the screen' );
+      //  // rather than plotting an unphysical electricPotential line, returns null
+      //  return null;
+      //}
 
-        // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
-        var reversedArray = clockwisePositionArray.reverse();
+      // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
+      var reversedArray = clockwisePositionArray.reverse();
 
-        // lets returned the entire array , i.e. the reversed clockwise array, the initial position, and the counterclockwise array
-        return reversedArray.concat( position, counterClockwisePositionArray );
+      // lets returned the entire array , i.e. the reversed clockwise array, the initial position, and the counterclockwise array
+      return reversedArray.concat( position, counterClockwisePositionArray );
+    },
+
+    /**
+     * Function that determines the location of the closest charge to a given position.
+     * @private
+     * @param {Vector2} position
+     * @returns {Array.<Vector2>}
+     */
+    getCleanUpPositionArray: function () {
+      var length = this.positionArray.length;
+      var cleanUpPositionArray = [];
+      cleanUpPositionArray.push( this.positionArray[ 0 ] );
+      cleanUpPositionArray.push( this.positionArray[ 1 ] );
+      for ( var i = 2; i < length - 2; i++ ) {
+        var cleanUpLength = cleanUpPositionArray.length;
+        var newDeltaPosition = this.positionArray[ i + 1 ].minus( cleanUpPositionArray[ cleanUpLength - 1 ] );
+        var oldDeltaPosition = cleanUpPositionArray[ cleanUpLength - 1 ].minus( cleanUpPositionArray[ cleanUpLength - 2 ] );
+        var angle = newDeltaPosition.angleBetween( oldDeltaPosition );
+        if ( angle > Math.PI / 360 ) {
+          cleanUpPositionArray.push( this.positionArray[ i + 1 ] );
+        }
       }
+      cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
+      return cleanUpPositionArray;
+    },
+
+    /**
+     * Function that determines the location of the closest charge to a given position.
+     * @private
+     * @param {Vector2} position
+     * @returns {Vector2}
+     */
+    getClosestChargedParticlePosition: function ( position ) {
+      var closestChargedParticlePosition; // {Vector2}
+      var closestDistance = Number.POSITIVE_INFINITY;
+      this.chargedParticles.forEach( function ( chargedParticle ) {
+        var distance = chargedParticle.position.distance( position );
+        if ( distance < closestDistance ) {
+          closestChargedParticlePosition = chargedParticle.position;
+          closestDistance = distance;
+        }
+      } );
+      return closestChargedParticlePosition;
     },
 
     /**
@@ -299,11 +336,17 @@ define( function ( require ) {
      * @returns {Shape}
      */
     getShape: function () {
-
       var shape = new Shape();
-      return this.positionArrayToCardinalSpline( shape, this.positionArray,
+      //return this.positionArrayToStraightLine( shape, this.positionArray,
+      //  {isClosedLineSegments: this.isLineClosed}
+      //);
+      return this.positionArrayToStraightLine( shape, this.getCleanUpPositionArray(),
         {isClosedLineSegments: this.isLineClosed}
       );
+
+      //return this.positionArrayToCardinalSpline( shape, this.positionArray,
+      //  {isClosedLineSegments: this.isLineClosed}
+      //);
     },
 
     /**
@@ -317,7 +360,7 @@ define( function ( require ) {
      */
     getWeightedVector: function ( beforeVector, currentVector, afterVector, options ) {
       options = _.extend( {
-        // the ‘tension’ parameter controls how smoothly the curve turns through its
+        // the tension parameter controls how smoothly the curve turns through its
         // control points. For a Catmull-Rom curve the tension is zero.
         // the tension should range from -1 to 1
         tension: 0
@@ -336,7 +379,7 @@ define( function ( require ) {
      * from a position array. Cardinal spline differs from Bezier curves in that all
      * defined points on a Cardinal spline are on the path itself.
      *
-     * It include a 'tension' parameter to allow the client to specify how tightly
+     * It include a tension parameter to allow the client to specify how tightly
      * the path interpolates between points. One can think of the tension as the tension in
      * a rubber band around pegs. however unlike a rubber band the tension can be negative.
      * the tension ranges from -1 to 1.
@@ -348,7 +391,7 @@ define( function ( require ) {
      */
     positionArrayToCardinalSpline: function ( shape, positionArray, options ) {
       options = _.extend( {
-        // the ‘tension’ parameter controls how smoothly the curve turns through its
+        // the tension parameter controls how smoothly the curve turns through its
         // control points. For a Catmull-Rom curve the tension is zero.
         // the tension should range from -1 to 1
         tension: 0,
@@ -407,6 +450,39 @@ define( function ( require ) {
 
         shape.moveToPoint( bezierPoints[ 0 ] );
         shape.cubicCurveToPoint( bezierPoints[ 1 ], bezierPoints[ 2 ], bezierPoints[ 3 ] );
+      }
+      return shape;
+    },
+
+    /**
+     *
+     * This is a convenience function that allows to generate Cardinal splines
+     * from a position array. Cardinal spline differs from Bezier curves in that all
+     * defined points on a Cardinal spline are on the path itself.
+     *
+     * It include a 'tension' parameter to allow the client to specify how tightly
+     * the path interpolates between points. One can think of the tension as the tension in
+     * a rubber band around pegs. however unlike a rubber band the tension can be negative.
+     * the tension ranges from -1 to 1.
+     * @private
+     * @param {Shape} shape
+     * @param {Array.<Vector2>} positionArray
+     * @param {Object} [options]
+     * @returns {Shape}
+     */
+    positionArrayToStraightLine: function ( shape, positionArray, options ) {
+      options = _.extend( {
+        // is the resulting shape forming a close path
+        isClosedLineSegments: false
+      }, options );
+
+
+      // if the line is open, there is one less segment than point vectors
+      var segmentNumber = (options.isClosedLineSegments) ? positionArray.length : positionArray.length - 1;
+
+      shape.moveToPoint( positionArray[ 0 ] );
+      for ( var i = 1; i < segmentNumber + 1; i++ ) {
+        shape.lineToPoint( positionArray[ (i) % positionArray.length ] );
       }
       return shape;
     }
