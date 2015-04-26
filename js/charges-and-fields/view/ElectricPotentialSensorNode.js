@@ -6,7 +6,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( function ( require ) {
   'use strict';
 
   // modules
@@ -57,9 +57,9 @@ define( function( require ) {
     } );
 
     // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
-    var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
+    var circle = new Circle( CIRCLE_RADIUS, {lineWidth: 3, centerX: 0, centerY: 0} );
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function ( color ) {
       circle.stroke = color;
     } );
 
@@ -68,13 +68,13 @@ define( function( require ) {
       .lineTo( CIRCLE_RADIUS, 0 )
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
-    var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
+    var crosshair = new Path( crosshairShape, {centerX: 0, centerY: 0} );
 
     // Create the base of the crosshair
     var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
 
     // update the colors on the crosshair components when the color profile changes
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function ( color ) {
       crosshair.stroke = color;
       crosshairMount.fill = color;
       crosshairMount.stroke = color;
@@ -96,19 +96,19 @@ define( function( require ) {
     electricPotentialSensorBodyNode.top = crosshairMount.bottom;
 
     // Register for synchronization with model.
-    electricPotentialSensor.positionProperty.link( function( position ) {
+    electricPotentialSensor.positionProperty.link( function ( position ) {
       electricPotentialSensorNode.translation = modelViewTransform.modelToViewPosition( position );
     } );
 
     // Update the value of the electric potential on the panel and the fill color on the crosshair
-    electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
+    electricPotentialSensor.electricPotentialProperty.link( function ( electricPotential ) {
       electricPotentialSensorBodyNode.voltageReading.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
       // the color fill inside the circle changes according to the value of the electric potential
-      circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
+      circle.fill = getElectricPotentialColor( electricPotential, {transparency: 0.5} );
     } );
 
-    ChargesAndFieldsColors.on( 'profileChanged', function() {
-      circle.fill = getElectricPotentialColor( electricPotentialSensor.electricPotential, { transparency: 0.5 } );
+    ChargesAndFieldsColors.on( 'profileChanged', function () {
+      circle.fill = getElectricPotentialColor( electricPotentialSensor.electricPotential, {transparency: 0.5} );
     } );
 
     // Show// Hide this node
@@ -145,10 +145,10 @@ define( function( require ) {
     var movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
       dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
-      startDrag: function( event ) {
+      startDrag: function ( event ) {
         electricPotentialSensor.isUserControlled = true;
       },
-      endDrag: function( event ) {
+      endDrag: function ( event ) {
         electricPotentialSensor.isUserControlled = false;
       }
     } );
@@ -157,10 +157,35 @@ define( function( require ) {
     electricPotentialSensorNode.addInputListener( movableDragHandler );
 
     //no need to unlink, the sensor is present for the lifetime of the simulation.
-    availableModelBoundsProperty.link( function( bounds ) {
+    availableModelBoundsProperty.link( function ( bounds ) {
       movableDragHandler.setDragBounds( bounds );
     } );
+
+
+    /**
+     * Returns a scale Node of thhe electric potential sensor
+     * @private
+     * @returns {Node}
+     */
+    this.toIcon = function () {
+      var node = new Node();
+      var body = electricPotentialSensorBodyNode.getIcon();
+      body.scale( 0.8 );
+      body.centerX = crosshair.centerX;
+      body.top = crosshairMount.bottom;
+      node.addChild( crosshairMount );
+      node.addChild( circle );
+      node.addChild( crosshair );
+      node.addChild( body );
+
+      node.scale( 0.5 );
+      return node;
+    }
   }
 
-  return inherit( Node, ElectricPotentialSensorNode );
+  return inherit( Node, ElectricPotentialSensorNode, {
+    getIcon: function () {
+      return this.toIcon();
+    }
+  } );
 } );

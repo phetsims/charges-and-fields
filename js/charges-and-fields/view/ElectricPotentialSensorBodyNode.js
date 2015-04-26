@@ -6,7 +6,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( function ( require ) {
   'use strict';
 
   // modules
@@ -47,7 +47,7 @@ define( function( require ) {
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
       iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
-      listener: function() {
+      listener: function () {
         clearElectricPotentialLines();
       }
     } );
@@ -55,7 +55,7 @@ define( function( require ) {
     // Create the button that allows to plot the ElectricPotential Lines
     var plotElectricPotentialLineButton = new PencilButton( {
       iconWidth: 26, // width of pencil icon, used for scaling, the aspect ratio will determine height
-      listener: function() {
+      listener: function () {
         // TODO: get rid of timing
         var initialTime = new Date().getTime();
         addElectricPotentialLine();
@@ -106,37 +106,53 @@ define( function( require ) {
     // hookup the colors
 
     // Link the stroke color for the default/projector mode
-    ChargesAndFieldsColors.link( 'buttonBaseColor', function( color ) {
+    ChargesAndFieldsColors.link( 'buttonBaseColor', function ( color ) {
       clearButton.baseColor = color;
       plotElectricPotentialLineButton.baseColor = color;
     } );
 
     // Link the fill color for the default/projector mode
-    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', function ( color ) {
       electricPotentialPanelTitleText.fill = color;
     } );
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorBorder', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialSensorBorder', function ( color ) {
       self.stroke = color;
     } );
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorBackgroundFill', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialSensorBackgroundFill', function ( color ) {
       self.fill = color;
     } );
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', function ( color ) {
       self.voltageReading.fill = color;
     } );
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', function ( color ) {
       backgroundRectangle.stroke = color;
     } );
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', function( color ) {
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', function ( color ) {
       backgroundRectangle.fill = color;
     } );
 
+    /**
+     * Returns an icon of the sensor (without the two buttons and the voltage reading)
+     * @private
+     * @returns {Node}
+     */
+    this.toIcon = function () {
+      var node = new Node();
+      node.addChild( outlineImage ); // must go first
+      node.addChild( backgroundRectangle ); // must be last
+      return node;
+    }
   }
 
-  return inherit( Node, ElectricPotentialSensorBodyNode );
+  return inherit( Node, ElectricPotentialSensorBodyNode, {
+    getIcon: function () {
+      return this.toIcon();
+    }
+
+  } );
 } );

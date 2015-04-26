@@ -173,7 +173,7 @@ define( function ( require ) {
 
       // the product of stepMax and epsilonDistance should exceed the width and height of the model bounds
       var stepMax = 500; // an integer, the maximum number of steps in the algorithm
-      var epsilonDistance = 0.1; // in meter
+      var epsilonDistance = 0.02; // in meter
       assert && assert( epsilonDistance / 2 <= CLOSEST_APPROACH_DISTANCE, 'the steps are too big and you might skipped over a charge' );
       var maxDistance = Math.max( this.bounds.height, this.bounds.width );
       assert && assert( stepMax * epsilonDistance > maxDistance, ' there are not enough steps to cross the playArea ' );
@@ -275,12 +275,13 @@ define( function ( require ) {
         } // end of  if (isArrowSegment)
 
         // smooth out the curve by creating an average of two consecutive points
-        intermediatePoint = (this.positionArray[ arrayIndex ].plus( this.positionArray[ arrayIndex + 1 ] )).divideScalar( 2 );
-        shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], intermediatePoint );
+        //intermediatePoint = (this.positionArray[ arrayIndex ].plus( this.positionArray[ arrayIndex + 1 ] )).divideScalar( 2 );
+        //shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], intermediatePoint );
+        shape.lineToPoint( this.positionArray[ arrayIndex ] );
 
       }
       // curve through the last two points
-      shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], this.positionArray[ arrayIndex + 1 ] );
+      //shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], this.positionArray[ arrayIndex + 1 ] );
 
       return shape;
     }

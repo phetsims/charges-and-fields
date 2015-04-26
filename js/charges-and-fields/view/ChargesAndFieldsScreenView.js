@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( function ( require ) {
   'use strict';
 
   // modules
@@ -58,7 +58,7 @@ define( function( require ) {
   function ChargesAndFieldsScreenView( model ) {
 
     var screenView = this;
-    ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
+    ScreenView.call( this, {layoutBounds: new Bounds2( 0, 0, 1024, 618 )} );
 
     // Create many properties for checkboxes and Measuring Tape
     var viewProperty = new PropertySet( {
@@ -67,7 +67,7 @@ define( function( require ) {
       isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
       isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
       isMeasuringTapeVisible: false, // control the visibility of the measuring tape
-      measuringTapeUnits: { name: 'cm', multiplier: 100 }, // needed for the measuring tape scenery node
+      measuringTapeUnits: {name: 'cm', multiplier: 100}, // needed for the measuring tape scenery node
       measuringTapeBasePosition: new Vector2( 0, 0 ),
       measuringTapeTipPosition: new Vector2( 1, 0 )
     } );
@@ -172,7 +172,7 @@ define( function( require ) {
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
-      listener: function() {
+      listener: function () {
         // do not reset the availableDragBoundsProperty
         model.reset();
         viewProperty.reset();
@@ -193,7 +193,7 @@ define( function( require ) {
       tapeOptions );
 
     // The color of measurement text of the measuting tape updates itself when the projector/default color scheme changes
-    ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
+    ChargesAndFieldsColors.link( 'measuringTapeText', function ( color ) {
       measuringTape.textColor = color;
     } );
 
@@ -201,6 +201,7 @@ define( function( require ) {
     var toolbox = new ChargesAndFieldsToolbox(
       model.electricPotentialSensor.positionProperty,
       model.electricPotentialSensor.isUserControlledProperty,
+      electricPotentialSensorNode,
       viewProperty.measuringTapeBasePositionProperty,
       viewProperty.measuringTapeTipPositionProperty,
       measuringTape.isBaseUserControlledProperty,
@@ -211,7 +212,7 @@ define( function( require ) {
     );
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
-    var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
+    var draggableElementsLayer = new Node( {layerSplit: true} ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
 
     // webGL devices that do have have full WebGL support, can have only a finite number of charges on board
     var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
@@ -230,7 +231,7 @@ define( function( require ) {
       this.availableModelBoundsProperty );
 
     // Handle the comings and goings of charged particles.
-    model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
+    model.chargedParticles.addItemAddedListener( function ( addedChargedParticle ) {
       // Create and add the view representation for this chargedParticle.
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
@@ -249,7 +250,7 @@ define( function( require ) {
     } );
 
     // Handle the comings and goings of charged particles.
-    model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
+    model.electricFieldSensors.addItemAddedListener( function ( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
         addedElectricFieldSensor,
@@ -280,7 +281,7 @@ define( function( require ) {
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
 
     // link the available model bounds
-    this.availableModelBoundsProperty.link( function( bounds ) {
+    this.availableModelBoundsProperty.link( function ( bounds ) {
       // the measuring Tape is subject to dragBounds (specified in model coordinates)
       measuringTape.dragBounds = bounds;
 
@@ -294,7 +295,7 @@ define( function( require ) {
     // listens to the isUserControlled property of the electric potential sensor
     // return the electric Potential sensor to the toolbox if it is not user Controlled and the
     // location of the sensor is inside the toolbox panel
-    model.electricPotentialSensor.isUserControlledProperty.link( function( isUserControlled ) {
+    model.electricPotentialSensor.isUserControlledProperty.link( function ( isUserControlled ) {
       if ( !isUserControlled && toolbox.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
         viewProperty.isElectricPotentialSensorVisibleProperty.set( false );
       }
@@ -302,7 +303,7 @@ define( function( require ) {
 
     // listens to the isUserControlled property of the measuring tape
     // return the measuring tape to the toolbox if not user Controlled and its position is located within the toolbox panel
-    measuringTape.isBaseUserControlledProperty.link( function( isUserControlled ) {
+    measuringTape.isBaseUserControlledProperty.link( function ( isUserControlled ) {
       if ( !isUserControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewProperty.measuringTapeBasePositionProperty.value ) ) ) {
         viewProperty.isMeasuringTapeVisibleProperty.set( false );
       }
@@ -311,7 +312,7 @@ define( function( require ) {
     // if in debug mode add two buttons that allow to add (many at a time) electric potential lines and electric field lines
     if ( IS_DEBUG ) {
       this.addChild( new RectangularPushButton( {
-          listener: function() {
+          listener: function () {
             model.addManyElectricPotentialLines( 20 );
           },
           baseColor: 'rgb( 0, 222, 120 )',
@@ -323,7 +324,7 @@ define( function( require ) {
       ) );
 
       this.addChild( new RectangularPushButton( {
-          listener: function() {
+          listener: function () {
             model.addManyElectricFieldLines( 20 );
           },
           baseColor: 'rgb( 204, 122, 24  )',
@@ -362,7 +363,7 @@ define( function( require ) {
      * @param {Object} [options] - useful to set transparency
      * @returns {string} color -  e.g. 'rgba(255, 255, 255, 1)'
      */
-    getElectricPotentialColor: function( electricPotential, options ) {
+    getElectricPotentialColor: function ( electricPotential, options ) {
 
       var finalColor; // {string} e.g. 'rgba(0,0,0,1)'
       var distance; // {number}  between 0 and 1
@@ -401,7 +402,7 @@ define( function( require ) {
      * @returns {string} color - e.g. 'rgba(255, 255, 255, 1)'
      *
      */
-    getElectricFieldMagnitudeColor: function( electricFieldMagnitude, options ) {
+    getElectricFieldMagnitudeColor: function ( electricFieldMagnitude, options ) {
 
       // ELECTRIC_FIELD_LINEAR_FUNCTION is a clamped linear function
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
@@ -423,7 +424,7 @@ define( function( require ) {
      * @param {Object} [options]
      * @returns {string} color - e.g. 'rgba(0,0,0,1)'
      */
-    interpolateRGBA: function( color1, color2, distance, options ) {
+    interpolateRGBA: function ( color1, color2, distance, options ) {
       options = _.extend( {
         // defaults
         transparency: 1
@@ -448,7 +449,7 @@ define( function( require ) {
      * @param {number} width
      * @param {number} height
      */
-    layout: function( width, height ) {
+    layout: function ( width, height ) {
 
       this.resetTransform();
 
