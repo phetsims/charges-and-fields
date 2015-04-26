@@ -98,7 +98,7 @@ define( function ( require ) {
       // if 'the second order correction is larger than the first'
       if ( deltaPosition.magnitude() > Math.abs( deltaDistance ) ) {
         // use a fail safe method
-        return this.getNextPositionAlongEquipotentialWithMidPoint( position, deltaDistance );
+        return this.getNextPositionAlongEquipotentialWithRK4( position, deltaDistance );
       }
       else {
         return midwayPosition.add( deltaPosition ); // {Vector2} finalPosition
@@ -214,21 +214,13 @@ define( function ( require ) {
               ( this.bounds.containsPoint( currentClockwisePosition ) ||
                 this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
 
-        //nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
-        //  currentClockwisePosition,
-        //  initialElectricPotential,
-        //  epsilonDistance );
-        //nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
-        //  currentCounterClockwisePosition,
-        //  initialElectricPotential,
-        //  -epsilonDistance );
-
-
-        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
+        nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
           currentClockwisePosition,
+          this.electricPotential,
           clockwiseEpsilonDistance );
-        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithRK4(
+        nextCounterClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
           currentCounterClockwisePosition,
+          this.electricPotential,
           counterClockwiseEpsilonDistance );
 
         clockwisePositionArray.push( nextClockwisePosition );
@@ -238,8 +230,21 @@ define( function ( require ) {
           clockwiseEpsilonDistance *= Math.PI / (180 * this.getRotationAngle( clockwisePositionArray ));
           clockwiseEpsilonDistance = dot.clamp( clockwiseEpsilonDistance, minEpsilonDistance, maxEpsilonDistance );
 
+          //closestChargeDistance = this.getClosestChargedParticlePosition( nextClockwisePosition ).distance( nextClockwisePosition);
+          //if (closestChargeDistance< 20*clockwiseEpsilonDistance){
+          //  clockwiseEpsilonDistance =minEpsilonDistance;
+          //}
+
+
+
           counterClockwiseEpsilonDistance *= Math.PI / (180 * this.getRotationAngle( counterClockwisePositionArray ));
           counterClockwiseEpsilonDistance = dot.clamp( counterClockwiseEpsilonDistance, -1 * maxEpsilonDistance, -1 * minEpsilonDistance );
+
+          //closestChargeDistance = this.getClosestChargedParticlePosition( nextCounterClockwisePosition  ).distance( nextCounterClockwisePosition );
+          //if (closestChargeDistance<20* counterClockwiseEpsilonDistance){
+          //  counterClockwiseEpsilonDistance =-minEpsilonDistance;
+          //}
+
 
           var approachDistance = nextClockwisePosition.distance( nextCounterClockwisePosition );
 
@@ -260,12 +265,12 @@ define( function ( require ) {
 
       }// end of while()
 
-      //if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
-      //                             this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
-      //  console.log( 'an electricPotential line terminates on the screen' );
-      //  // rather than plotting an unphysical electricPotential line, returns null
-      //  return null;
-      //}
+      if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
+                                   this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
+        console.log( 'an electricPotential line terminates on the screen' );
+        // rather than plotting an unphysical electricPotential line, returns null
+        return null;
+      }
 
       // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
       var reversedArray = clockwisePositionArray.reverse();

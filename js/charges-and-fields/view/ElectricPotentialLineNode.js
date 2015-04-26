@@ -24,7 +24,7 @@ define( function ( require ) {
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // constants
-  var IS_DEBUG = false;
+  var IS_DEBUG = true;
 
   /**
    *
@@ -71,7 +71,10 @@ define( function ( require ) {
 
       if ( IS_DEBUG ) {
         var electricPotentialCircle = dotElectricPotentialLine( electricPotentialLine );
+        var electricPotentialCircle2 = dot2ElectricPotentialLine( electricPotentialLine );
+        //
         circleNode.setChildren( electricPotentialCircle );
+        circleNode.setChildren( electricPotentialCircle.concat( electricPotentialCircle2 ) );
       }
 
       electricPotentialLinesArray.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
@@ -116,7 +119,7 @@ define( function ( require ) {
     }
 
     /**
-     * Function that generates a label and a path/shape of the electricPotential line
+     * Function that generates an array of dot of the electricPotential line
      * @param {ElectricPotentialLine} electricPotentialLine
      * @returns {Array.{Circle}}
      */
@@ -126,7 +129,7 @@ define( function ( require ) {
 
       //Simple and naive method to plot lines between all the points
       electricPotentialLine.positionArray.forEach( function ( position ) {
-        var circle = new Circle( 3, {fill: 'yellow'} );
+        var circle = new Circle( 2, {fill: 'yellow'} );
         circle.center = modelViewTransform.modelToViewPosition( position );
         circleArray.push( circle );
       } );
@@ -141,6 +144,27 @@ define( function ( require ) {
 
       return circleArray;
     }
+
+    /**
+     * Function that generates an array of dot of the electricPotential line
+     * @param {ElectricPotentialLine} electricPotentialLine
+     * @returns {Array.{Circle}}
+     */
+    function dot2ElectricPotentialLine( electricPotentialLine ) {
+
+      var circleArray = [];
+      var positionArray = electricPotentialLine.getCleanUpPositionArray();
+
+      //Simple and naive method to plot lines between all the points
+      positionArray.forEach( function ( position ) {
+        var circle = new Circle( 2, {fill: 'red'} );
+        circle.center = modelViewTransform.modelToViewPosition( position );
+        circleArray.push( circle );
+      } );
+
+      return circleArray;
+    }
+
 
     /**
      * Function that generates a voltage label for the electricPotential line
