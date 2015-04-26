@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // modules
@@ -39,7 +39,8 @@ define( function ( require ) {
     this.isPlayAreaChargedProperty = isPlayAreaChargedProperty;
 
     this.position = position;
-    this.electricPotential = getElectricPotential( position ); // {number}
+    this.electricPotential = getElectricPotential( position ); // {number} in volts
+    this.isLineClosed = false; // {boolean}  value will be updated by  this.getEquipotentialPositionArray
 
     // calculate the array of positions
     this.positionArray = this.getEquipotentialPositionArray( position );
@@ -63,20 +64,25 @@ define( function ( require ) {
      * @param {number} deltaDistance - a distance
      * @returns {Vector2} next point along the electricPotential line
      */
-    getNextPositionAlongEquipotential: function ( position, deltaDistance ) {
-      var initialElectricPotential = this.getElectricPotential( position );
-      return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, initialElectricPotential, deltaDistance );
+    getNextPositionAlongEquipotential: function( position, deltaDistance ) {
+      return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, this.electricPotential, deltaDistance );
     },
 
     /**
      * Given an (initial) position, find a position with the targeted electric potential within a distance 'deltaDistance'
+     * This finds the next position with a precision of  ('deltaDistance')^2. There are other algorithms
+     * that are more precise however, this is globally quite precise since it keeps track of the targeted electric potential
+     * and therefore there is no electric potential drift over large distance. The drawback of this approach is that
+     * there is no guarantee that the next position is within a delta distance from the initial point.
+     * see https://github.com/phetsims/charges-and-fields/issues/5
+     *
      * @private
      * @param {Vector2} position
      * @param {number} electricPotential
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithElectricPotential: function ( position, electricPotential, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithElectricPotential: function( position, electricPotential, deltaDistance ) {
       /*
        General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
        to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
@@ -108,13 +114,17 @@ define( function ( require ) {
     /**
      * Given an (initial) position, find a position with the targeted electric potential within a distance deltaDistance
      * This uses a standard midpoint algorithm
+     * This is guaranteed to be within a distance deltaDistance of the initial position.
+     * Although it is locally more precise than getNextPositionAlongEquipotentialWithElectricPotential,
+     * this algorithm is not symplectic and the equipotential will start to drift over many steps.
+     *
      * http://en.wikipedia.org/wiki/Midpoint_method
      * @private
      * @param {Vector2} position
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithMidPoint: function ( position, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithMidPoint: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var initialEquipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
@@ -128,7 +138,8 @@ define( function ( require ) {
 
     /**
      * Given an (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance
-     * of the initial position.
+     * of the initial position. This is locally precise to (deltaDistance)^4 and guaranteed to be within a distance deltaDistance
+     * from the starting point.
      *
      * This uses a standard RK4 algorithm generalized to 2D
      * http://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
@@ -137,7 +148,7 @@ define( function ( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithRK4: function ( position, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithRK4: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
@@ -159,7 +170,7 @@ define( function ( require ) {
      * @param {Vector2} position - initial position
      * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
-    getEquipotentialPositionArray: function ( position ) {
+    getEquipotentialPositionArray: function( position ) {
       if ( !this.isPlayAreaChargedProperty.value ) {
         // if there are no charges, don't bother to find the electricPotential line
         return null;
@@ -192,12 +203,9 @@ define( function ( require ) {
        pointing clockwise (yes  clockwise) to the direction of the line.
        */
       var stepCounter = 0; // {number} integer
-      var stepMax = 10000; // {number} integer, the product of stepMax and epsilonDistance should be larger than maxDistance
-      var maxEpsilonDistance = 0.10; // {number} step length along electricPotential in meters
-      var minEpsilonDistance = 0.01; // {number} step length along electricPotential in meters
-      this.isLineClosed = false; // {boolean}
-      //var maxDistance = Math.max( this.bounds.width, this.bounds.height ); //maximum distance from the center
-//assert && assert( stepMax * epsilonDistance > maxDistance, 'the length of the "path" should be larger than the linear size of the screen ' );
+      var stepMax = 5000; // {number} integer, the product of stepMax and minEpsilonDistance should be larger than bounds.width
+      var maxEpsilonDistance = 0.10; // {number} maximum step length along electricPotential in meters
+      var minEpsilonDistance = 0.01; // {number} minimum step length along electricPotential in meters
       var nextClockwisePosition; // {Vector2}
       var nextCounterClockwisePosition; // {Vector2}
       var currentClockwisePosition = position; // {Vector2}
@@ -205,11 +213,10 @@ define( function ( require ) {
       var clockwisePositionArray = [];
       var counterClockwisePositionArray = [];
 
-
-      // electric potential associated with the position
-      //var initialElectricPotential = this.getElectricPotential( position ); // {number} in volts
+      // initial epsilon distance for the two heads.
       var clockwiseEpsilonDistance = minEpsilonDistance;
       var counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+
       while ( (stepCounter < stepMax ) && (!this.isLineClosed) &&
               ( this.bounds.containsPoint( currentClockwisePosition ) ||
                 this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
@@ -226,44 +233,40 @@ define( function ( require ) {
         clockwisePositionArray.push( nextClockwisePosition );
         counterClockwisePositionArray.push( nextCounterClockwisePosition );
 
-        if ( stepCounter > 3 ) {
-          clockwiseEpsilonDistance *= Math.PI / (180 * this.getRotationAngle( clockwisePositionArray ));
-          clockwiseEpsilonDistance = dot.clamp( clockwiseEpsilonDistance, minEpsilonDistance, maxEpsilonDistance );
-
-          //closestChargeDistance = this.getClosestChargedParticlePosition( nextClockwisePosition ).distance( nextClockwisePosition);
-          //if (closestChargeDistance< 20*clockwiseEpsilonDistance){
-          //  clockwiseEpsilonDistance =minEpsilonDistance;
-          //}
-
-
-
-          counterClockwiseEpsilonDistance *= Math.PI / (180 * this.getRotationAngle( counterClockwisePositionArray ));
-          counterClockwiseEpsilonDistance = dot.clamp( counterClockwiseEpsilonDistance, -1 * maxEpsilonDistance, -1 * minEpsilonDistance );
-
-          //closestChargeDistance = this.getClosestChargedParticlePosition( nextCounterClockwisePosition  ).distance( nextCounterClockwisePosition );
-          //if (closestChargeDistance<20* counterClockwiseEpsilonDistance){
-          //  counterClockwiseEpsilonDistance =-minEpsilonDistance;
-          //}
-
-
-          var approachDistance = nextClockwisePosition.distance( nextCounterClockwisePosition );
-
-          if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
-            clockwiseEpsilonDistance = approachDistance / 3;
-            counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
-            if ( nextClockwisePosition.distance( nextCounterClockwisePosition ) < 2 * minEpsilonDistance ) {
-              // if the clockwise and counterclockwise points are close,
-              this.isLineClosed = true;
-            }
-          }
-        }
-
         currentClockwisePosition = nextClockwisePosition;
         currentCounterClockwisePosition = nextCounterClockwisePosition;
 
         stepCounter++;
 
+        //
+        if ( stepCounter > 3 ) {
+          // adaptative epsilon distance
+
+          // for a perfect circle equipotential, let's set to objective to 360 points per equipotential line
+          clockwiseEpsilonDistance *= (Math.PI / 180) / this.getRotationAngle( clockwisePositionArray );
+          counterClockwiseEpsilonDistance *= (Math.PI / 180) / this.getRotationAngle( counterClockwisePositionArray );
+
+          clockwiseEpsilonDistance = dot.clamp( clockwiseEpsilonDistance, minEpsilonDistance, maxEpsilonDistance );
+          counterClockwiseEpsilonDistance = dot.clamp( counterClockwiseEpsilonDistance, -1 * maxEpsilonDistance, -1 * minEpsilonDistance );
+
+          // distance between the two searching heads
+          var approachDistance = currentClockwisePosition.distance( currentCounterClockwisePosition );
+
+          // logic to stop the while loop when the two heads are getting closer
+          if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
+            // we want to perform more steps as the two head get closer but we want to avoid the two heads to pass
+            // one another. Let's reduce the epsilon distance
+            clockwiseEpsilonDistance = approachDistance / 3;
+            counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+            if ( approachDistance < 2 * minEpsilonDistance ) {
+              // if the clockwise and counterclockwise points are close, set this.isLineClose to true to get out of this while loop
+              this.isLineClosed = true;
+            }
+          }
+        }
+
       }// end of while()
+      console.log( stepCounter );
 
       if ( !this.isLineClosed && ( this.bounds.containsPoint( currentClockwisePosition ) ||
                                    this.bounds.containsPoint( currentCounterClockwisePosition ) ) ) {
@@ -285,7 +288,7 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {Array.<Vector2>}
      */
-    getCleanUpPositionArray: function () {
+    getCleanUpPositionArray: function() {
       var length = this.positionArray.length;
       var cleanUpPositionArray = [];
       cleanUpPositionArray.push( this.positionArray[ 0 ] );
@@ -309,10 +312,10 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {Vector2}
      */
-    getClosestChargedParticlePosition: function ( position ) {
+    getClosestChargedParticlePosition: function( position ) {
       var closestChargedParticlePosition; // {Vector2}
       var closestDistance = Number.POSITIVE_INFINITY;
-      this.chargedParticles.forEach( function ( chargedParticle ) {
+      this.chargedParticles.forEach( function( chargedParticle ) {
         var distance = chargedParticle.position.distance( position );
         if ( distance < closestDistance ) {
           closestChargedParticlePosition = chargedParticle.position;
@@ -328,7 +331,7 @@ define( function ( require ) {
      * @param {Array.<Vector2>} positionArray
      * @returns {number}
      */
-    getRotationAngle: function ( positionArray ) {
+    getRotationAngle: function( positionArray ) {
       var length = positionArray.length;
       var newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
       var oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
@@ -340,13 +343,13 @@ define( function ( require ) {
      * @public
      * @returns {Shape}
      */
-    getShape: function () {
+    getShape: function() {
       var shape = new Shape();
       //return this.positionArrayToStraightLine( shape, this.positionArray,
       //  {isClosedLineSegments: this.isLineClosed}
       //);
       return this.positionArrayToStraightLine( shape, this.getCleanUpPositionArray(),
-        {isClosedLineSegments: this.isLineClosed}
+        { isClosedLineSegments: this.isLineClosed }
       );
 
       //return this.positionArrayToCardinalSpline( shape, this.positionArray,
@@ -363,7 +366,7 @@ define( function ( require ) {
      * @param {Object} [options]
      * @returns {Vector2}
      */
-    getWeightedVector: function ( beforeVector, currentVector, afterVector, options ) {
+    getWeightedVector: function( beforeVector, currentVector, afterVector, options ) {
       options = _.extend( {
         // the tension parameter controls how smoothly the curve turns through its
         // control points. For a Catmull-Rom curve the tension is zero.
@@ -394,7 +397,7 @@ define( function ( require ) {
      * @param {Object} [options]
      * @returns {Shape}
      */
-    positionArrayToCardinalSpline: function ( shape, positionArray, options ) {
+    positionArrayToCardinalSpline: function( shape, positionArray, options ) {
       options = _.extend( {
         // the tension parameter controls how smoothly the curve turns through its
         // control points. For a Catmull-Rom curve the tension is zero.
@@ -475,7 +478,7 @@ define( function ( require ) {
      * @param {Object} [options]
      * @returns {Shape}
      */
-    positionArrayToStraightLine: function ( shape, positionArray, options ) {
+    positionArrayToStraightLine: function( shape, positionArray, options ) {
       options = _.extend( {
         // is the resulting shape forming a close path
         isClosedLineSegments: false

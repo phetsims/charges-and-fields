@@ -24,7 +24,7 @@ define( function ( require ) {
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // constants
-  var IS_DEBUG = true;
+  var IS_DEBUG = false;
 
   /**
    *
@@ -73,7 +73,6 @@ define( function ( require ) {
         var electricPotentialCircle = dotElectricPotentialLine( electricPotentialLine );
         var electricPotentialCircle2 = dot2ElectricPotentialLine( electricPotentialLine );
         //
-        circleNode.setChildren( electricPotentialCircle );
         circleNode.setChildren( electricPotentialCircle.concat( electricPotentialCircle2 ) );
       }
 
@@ -120,6 +119,7 @@ define( function ( require ) {
 
     /**
      * Function that generates an array of dot of the electricPotential line
+     * This includes all the data points calculated in the model
      * @param {ElectricPotentialLine} electricPotentialLine
      * @returns {Array.{Circle}}
      */
@@ -147,6 +147,8 @@ define( function ( require ) {
 
     /**
      * Function that generates an array of dot of the electricPotential line
+     * the dots are from the clean array, i.e. the position array that is used
+     * to plot straight lines
      * @param {ElectricPotentialLine} electricPotentialLine
      * @returns {Array.{Circle}}
      */
