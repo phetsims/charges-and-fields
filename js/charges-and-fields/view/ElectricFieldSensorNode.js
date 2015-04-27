@@ -94,7 +94,7 @@ define( function ( require ) {
     directionLabel.right = fieldStrengthLabel.right;
 
     // when the electric field changes update the arrow and the labels
-    this.electricFieldListener = function ( electricField ) {
+    var electricFieldListener = function ( electricField ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
@@ -113,23 +113,23 @@ define( function ( require ) {
       var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
       directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
     };
-    electricFieldSensor.electricFieldProperty.link( this.electricFieldListener );
+    electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
     electricFieldSensor.isActiveProperty.link( function ( isActive ) {
       arrowNode.visible = isActive;
     } );
     // Show/hide labels
-    this.isValuesVisibleListener = function ( isVisible ) {
+    var isValuesVisibleListener = function ( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
       directionLabel.visible = isVisible;
     };
-    isValuesVisibleProperty.link( this.isValuesVisibleListener );
+    isValuesVisibleProperty.link( isValuesVisibleListener );
 
     // Register for synchronization with model.
-    this.positionListener = function ( position ) {
+    var positionListener = function ( position ) {
       electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
     };
-    electricFieldSensor.positionProperty.link( this.positionListener );
+    electricFieldSensor.positionProperty.link( positionListener );
 
     var movableDragHandler = new MovableDragHandler(
       electricFieldSensor.positionProperty,
@@ -178,22 +178,26 @@ define( function ( require ) {
     // When dragging, move the electric Field Sensor
     electricFieldSensorNode.addInputListener( movableDragHandler );
 
-    this.availableModelBoundsPropertyListener = function ( bounds ) {
+    var availableModelBoundsPropertyListener = function ( bounds ) {
       movableDragHandler.setDragBounds( bounds );
     };
 
-    availableModelBoundsProperty.link( this.availableModelBoundsPropertyListener );
+    availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
 
     this.availableModelBoundsProperty = availableModelBoundsProperty;
+
+    this.disposeElectricFieldSensor = function () {
+      electricFieldSensor.positionProperty.unlink( positionListener );
+      electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
+      isValuesVisibleProperty.unlink( isValuesVisibleListener );
+      availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
+    }
 
   }
 
   return inherit( ElectricFieldSensorRepresentation, ElectricFieldSensorNode, {
     dispose: function () {
-      this.electricFieldSensor.positionProperty.unlink( this.positionListener );
-      this.electricFieldSensor.electricFieldProperty.unlink( this.electricFieldListener );
-      this.isValuesVisibleProperty.unlink( this.isValuesVisibleListener );
-      this.availableModelBoundsProperty.unlink( this.availableModelBoundsPropertyListener );
+      this.disposeElectricFieldSensor();
     }
   } );
 } );

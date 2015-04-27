@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( function ( require ) {
     'use strict';
 
     // modules
@@ -34,18 +34,18 @@ define( function( require ) {
       this.touchArea = this.localBounds.dilated( 10 );
 
       // Register for synchronization with model.
-      this.positionListener = function( position ) {
+      var positionListener = function ( position ) {
         chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
       };
-      chargedParticle.positionProperty.link( this.positionListener );
+      chargedParticle.positionProperty.link( positionListener );
 
       var movableDragHandler = new MovableDragHandler(
         chargedParticle.positionProperty,
         {
           dragBounds: availableModelBoundsProperty.value,
           modelViewTransform: modelViewTransform,
-          startDrag: function( event ) {
-            if (!chargedParticle.isAnimated) // you cant dragged an animated particle
+          startDrag: function ( event ) {
+            if ( !chargedParticle.isAnimated ) // you cant dragged an animated particle
             {
               chargedParticle.isUserControlled = true;
               // Move the chargedParticle to the front of this layer when grabbed by the user.
@@ -56,29 +56,30 @@ define( function( require ) {
             }
           },
 
-          endDrag: function( event ) {
+          endDrag: function ( event ) {
             chargedParticle.isUserControlled = false;
           }
         } );
 
       // readjust the dragBounds of the movable drag handler when the screen is resized
-      this.availableModelBoundsPropertyListener = function( bounds ) {
+      var availableModelBoundsPropertyListener = function ( bounds ) {
         movableDragHandler.setDragBounds( bounds );
       };
 
-      availableModelBoundsProperty.link( this.availableModelBoundsPropertyListener );
+      availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
 
       // When dragging, move the charge
       chargedParticleNode.addInputListener( movableDragHandler );
 
-      this.availableModelBoundsProperty = availableModelBoundsProperty;
-      this.positionProperty = chargedParticle.positionProperty;
+      this.disposeChargedParticleNode = function () {
+        availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
+        chargedParticle.positionProperty.unlink( positionListener );
+      }
     }
 
     return inherit( ChargedParticleRepresentation, ChargedParticleNode, {
-      dispose: function() {
-        this.positionProperty.unlink( this.positionListener );
-        this.availableModelBoundsProperty.unlink( this.availableModelBoundsPropertyListener );
+      dispose: function () {
+        this.disposeChargedParticleNode();
       }
 
     } );
