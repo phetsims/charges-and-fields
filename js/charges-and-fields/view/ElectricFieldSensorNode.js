@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( function ( require ) {
   'use strict';
 
   // modules
@@ -59,7 +59,7 @@ define( function( require ) {
     } );
 
     // hook up colors for default/projector mode
-    var arrowColorFunction = function( color ) {
+    var arrowColorFunction = function ( color ) {
       arrowNode.stroke = color;
       arrowNode.fill = color;
     };
@@ -74,7 +74,7 @@ define( function( require ) {
     var directionLabel = new Text( '', textOptions );
 
     // Hook up colors for default/projector mode
-    var labelColorFunction = function( color ) {
+    var labelColorFunction = function ( color ) {
       fieldStrengthLabel.fill = color;
       directionLabel.fill = color;
     };
@@ -94,7 +94,7 @@ define( function( require ) {
     directionLabel.right = fieldStrengthLabel.right;
 
     // when the electric field changes update the arrow and the labels
-    this.electricFieldListener = function( electricField ) {
+    this.electricFieldListener = function ( electricField ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
@@ -115,18 +115,18 @@ define( function( require ) {
     };
     electricFieldSensor.electricFieldProperty.link( this.electricFieldListener );
 
-    electricFieldSensor.isActiveProperty.link( function( isActive ) {
+    electricFieldSensor.isActiveProperty.link( function ( isActive ) {
       arrowNode.visible = isActive;
     } );
     // Show/hide labels
-    this.isValuesVisibleListener = function( isVisible ) {
+    this.isValuesVisibleListener = function ( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
       directionLabel.visible = isVisible;
     };
     isValuesVisibleProperty.link( this.isValuesVisibleListener );
 
     // Register for synchronization with model.
-    this.positionListener = function( position ) {
+    this.positionListener = function ( position ) {
       electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
     };
     electricFieldSensor.positionProperty.link( this.positionListener );
@@ -138,7 +138,7 @@ define( function( require ) {
         startOldTime: 0,
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
-        startDrag: function( event ) {
+        startDrag: function ( event ) {
 
           if ( !electricFieldSensor.isAnimated ) // don't drag nodes that are animated
           {
@@ -153,7 +153,11 @@ define( function( require ) {
               this.startNewTime = new Date().getTime();
               var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
               if ( timeDifference < 300 ) {
+                var initialTime = new Date().getTime();
                 addElectricFieldLine( electricFieldSensor.position );
+                var finalTime = new Date().getTime();
+                var deltaTime = finalTime - initialTime;
+                console.log( 'Time to plot el line: ', deltaTime, 'ms' );
               }
               this.startOldTime = this.startNewTime;
               // do not move the node since we want to be able to double-click on the node
@@ -166,7 +170,7 @@ define( function( require ) {
           }
         },
 
-        endDrag: function( event ) {
+        endDrag: function ( event ) {
           electricFieldSensor.isUserControlled = false;
         }
       } );
@@ -174,7 +178,7 @@ define( function( require ) {
     // When dragging, move the electric Field Sensor
     electricFieldSensorNode.addInputListener( movableDragHandler );
 
-    this.availableModelBoundsPropertyListener = function( bounds ) {
+    this.availableModelBoundsPropertyListener = function ( bounds ) {
       movableDragHandler.setDragBounds( bounds );
     };
 
@@ -185,7 +189,7 @@ define( function( require ) {
   }
 
   return inherit( ElectricFieldSensorRepresentation, ElectricFieldSensorNode, {
-    dispose: function() {
+    dispose: function () {
       this.electricFieldSensor.positionProperty.unlink( this.positionListener );
       this.electricFieldSensor.electricFieldProperty.unlink( this.electricFieldListener );
       this.isValuesVisibleProperty.unlink( this.isValuesVisibleListener );

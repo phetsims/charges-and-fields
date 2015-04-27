@@ -9,6 +9,7 @@ define( function ( require ) {
   'use strict';
 
   // modules
+  var dot = require( 'DOT/dot' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
 
@@ -155,6 +156,18 @@ define( function ( require ) {
       } );
       return closestChargedParticlePosition;
     },
+    /**
+     *
+     * @private
+     * @param {Array.<Vector2>} positionArray
+     * @returns {number}
+     */
+    getRotationAngle: function ( positionArray ) {
+      var length = positionArray.length;
+      var newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
+      var oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
+      return newDeltaPosition.angleBetween( oldDeltaPosition );
+    },
 
     /**
      * Function that returns an array of positions along (parallel) the electric field .
@@ -172,14 +185,20 @@ define( function ( require ) {
     getPositionArray: function ( position, isSearchingBackward ) {
 
       // the product of stepMax and epsilonDistance should exceed the width and height of the model bounds
-      var stepMax = 500; // an integer, the maximum number of steps in the algorithm
-      var epsilonDistance = 0.02; // in meter
-      assert && assert( epsilonDistance / 2 <= CLOSEST_APPROACH_DISTANCE, 'the steps are too big and you might skipped over a charge' );
-      var maxDistance = Math.max( this.bounds.height, this.bounds.width );
-      assert && assert( stepMax * epsilonDistance > maxDistance, ' there are not enough steps to cross the playArea ' );
+      var maxSteps = 20000; // an integer, the maximum number of steps in the algorithm
+      var minSteps = 5000; // an integer, the maximum number of steps in the algorithm
+      var minEpsilonDistance = 0.02; // in meter
+      var maxEpsilonDistance = 0.10;
+      //assert && assert( epsilonDistance / 2 <= CLOSEST_APPROACH_DISTANCE, 'the steps are too big and you might skipped over a charge' );
+      //var maxDistance = Math.max( this.bounds.height, this.bounds.width );
+      //assert && assert( stepMax * epsilonDistance > maxDistance, ' there are not enough steps to cross the playArea ' );
 
+
+      var epsilonDistance = minEpsilonDistance;
+
+      var sign = 1;
       if ( isSearchingBackward ) {
-        epsilonDistance *= -1;
+        sign = -1;
       }
 
       var currentPosition = position;
@@ -188,20 +207,51 @@ define( function ( require ) {
 
       var stepCounter = 0; // our step counter
 
+      var isOnCharge = false;
+
       // find the position array
-      while ( stepCounter < stepMax &&
-              this.bounds.containsPoint( currentPosition ) &&
-              this.getIsSafeDistanceFromChargedParticles( currentPosition ) ) {
-        nextPosition = this.getNextPositionAlongElectricFieldWithRK4( currentPosition, epsilonDistance );
-        positionArray.push( nextPosition );
+      while ( !isOnCharge && ((
+                              stepCounter < maxSteps &&
+                              this.bounds.containsPoint( currentPosition )
+                              )
+                              ||
+                              stepCounter < minSteps
+      )
+        ) {
+        nextPosition = this.getNextPositionAlongElectricFieldWithRK4( currentPosition, sign * epsilonDistance );
+
         currentPosition = nextPosition;
+        positionArray.push( currentPosition );
+
+        var closestChargeDistance = this.getClosestChargedParticlePosition( currentPosition ).distance( currentPosition );
+
+        if ( closestChargeDistance < minEpsilonDistance ) {
+          isOnCharge = true;
+          positionArray.push( this.getClosestChargedParticlePosition( currentPosition ) );
+        }
+
+        //
+        if ( stepCounter > 3 ) {
+          // adaptative epsilon distance
+          epsilonDistance *= (2 * Math.PI / 360) / this.getRotationAngle( positionArray );
+
+          epsilonDistance = dot.clamp( epsilonDistance, minEpsilonDistance, maxEpsilonDistance );
+        }
+
+        if ( !this.bounds.containsPoint( currentPosition ) ) {
+          epsilonDistance = maxEpsilonDistance;
+        }
+        // logic to stop the while loop when the two heads are getting closer
+        if ( closestChargeDistance < 4 * epsilonDistance ) {
+          epsilonDistance = minEpsilonDistance;
+
+        }
+
+
         stepCounter++;
       }// end of while()
 
-      // if the last position was close to a charge, let's add that charge position as our final point.
-      if ( !this.getIsSafeDistanceFromChargedParticles( currentPosition ) ) {
-        positionArray.push( this.getClosestChargedParticlePosition( currentPosition ) );
-      }
+
       return positionArray;
     },
 
@@ -214,7 +264,8 @@ define( function ( require ) {
      */
     getIsLineStartingNearCharge: function () {
       return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ 0 ] ));
-    },
+    }
+    ,
 
     /**
      * Method that determines if the ending point of the position array is close to an active charge
@@ -226,7 +277,36 @@ define( function ( require ) {
     getIsLineEndingNearCharge: function () {
       var index = this.positionArray.length - 1;
       return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
-    },
+    }
+    ,
+
+
+    /**
+     * Function that determines the location of the closest charge to a given position.
+     * @private
+     * @param {Vector2} position
+     * @returns {Array.<Vector2>}
+     */
+    getCleanUpPositionArray: function () {
+      var length = this.positionArray.length;
+      var cleanUpPositionArray = [];
+      cleanUpPositionArray.push( this.positionArray[ 0 ] );
+      cleanUpPositionArray.push( this.positionArray[ 1 ] );
+      for ( var i = 1; i < length - 2; i++ ) {
+        var cleanUpLength = cleanUpPositionArray.length;
+        var newDeltaPosition = this.positionArray[ i + 1 ].minus( cleanUpPositionArray[ cleanUpLength - 1 ] );
+        var oldDeltaPosition = cleanUpPositionArray[ cleanUpLength - 1 ].minus( cleanUpPositionArray[ cleanUpLength - 2 ] );
+        var angle = newDeltaPosition.angleBetween( oldDeltaPosition );
+        if ( Math.sin( angle ) * (newDeltaPosition.magnitude()) > 0.001 ) {
+          cleanUpPositionArray.push( this.positionArray[ i + 1 ] );
+        }
+      }
+      console.log( 'clean length', cleanUpPositionArray.length );
+      cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
+      return cleanUpPositionArray;
+    }
+    ,
+
 
     /**
      * Function that returns the shape of the electric field line. The line
@@ -246,47 +326,82 @@ define( function ( require ) {
       // draw the electricField line shape
       var shape = new Shape();
 
-      var arrayLength = this.positionArray.length; // {number}
-      var arrayIndex;  // {number} counter
-      var intermediatePoint; // {Vector2}
+      var positionArray = this.getCleanUpPositionArray();
+      var arrayLength = positionArray.length; // {number}
 
-      shape.moveToPoint( this.positionArray [ 0 ] );
+      shape.moveToPoint( positionArray [ 0 ] );
 
-      for ( arrayIndex = 1; arrayIndex < arrayLength - 2; arrayIndex++ ) {
-
+      for ( var arrayIndex = 1; arrayIndex < arrayLength; arrayIndex++ ) {
         var isArrowSegment = ( arrayIndex % options.numberOfSegmentsPerArrow === Math.floor( options.numberOfSegmentsPerArrow / 2 ) );  // modulo value is arbitrary, just not zero since it will start on a positive charge
 
         if ( isArrowSegment ) {
-          var angle = this.positionArray[ arrayIndex ].minus( shape.getRelativePoint() ).angle(); // angle of the electric field at location 'position'
+          var angle = positionArray[ arrayIndex ].minus( shape.getRelativePoint() ).angle(); // angle of the electric field at location 'position'
           // shape of an arrow head (triangle)
-          shape
-            .lineToPointRelative( {
-              x: options.arrowHeadLength * Math.cos( angle + options.arrowHeadInternalAngle ),
-              y: options.arrowHeadLength * Math.sin( angle + options.arrowHeadInternalAngle )
-            } )
-            .lineToPointRelative( {
-              x: 2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.sin( angle ),
-              y: -2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.cos( angle )
-            } )
-            .lineToPointRelative( {
-              x: -options.arrowHeadLength * Math.cos( angle - options.arrowHeadInternalAngle ),
-              y: -options.arrowHeadLength * Math.sin( angle - options.arrowHeadInternalAngle )
-            } );
+          shape = this.appendArrow( shape, angle, options );
         } // end of  if (isArrowSegment)
 
-        // smooth out the curve by creating an average of two consecutive points
-        //intermediatePoint = (this.positionArray[ arrayIndex ].plus( this.positionArray[ arrayIndex + 1 ] )).divideScalar( 2 );
-        //shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], intermediatePoint );
-        shape.lineToPoint( this.positionArray[ arrayIndex ] );
-
+        shape.lineToPoint( positionArray[ arrayIndex ] );
       }
-      // curve through the last two points
-      //shape.quadraticCurveToPoint( this.positionArray[ arrayIndex ], this.positionArray[ arrayIndex + 1 ] );
+      return shape;
+    }
+    ,
 
+
+    appendArrow: function ( shape, angle, options ) {
+      options = _.extend( {
+        arrowHeadLength: 0.05,// length of the arrow head in model coordinates
+        arrowHeadInternalAngle: Math.PI * 6 / 8 // half the internal angle (in radians) at the tip of the arrow head
+      }, options );
+
+      shape
+        .lineToPointRelative( {
+          x: options.arrowHeadLength * Math.cos( angle + options.arrowHeadInternalAngle ),
+          y: options.arrowHeadLength * Math.sin( angle + options.arrowHeadInternalAngle )
+        } )
+        .lineToPointRelative( {
+          x: 2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.sin( angle ),
+          y: -2 * options.arrowHeadLength * Math.sin( options.arrowHeadInternalAngle ) * Math.cos( angle )
+        } )
+        .lineToPointRelative( {
+          x: -options.arrowHeadLength * Math.cos( angle - options.arrowHeadInternalAngle ),
+          y: -options.arrowHeadLength * Math.sin( angle - options.arrowHeadInternalAngle )
+        } );
+      return shape;
+    }
+    ,
+
+
+    /**
+     *
+     * This is a convenience function that allows to generate a shape
+     * from a position array. Cardinal spline differs from Bezier curves in that all
+     * defined points on a Cardinal spline are on the path itself.
+     *
+     * @private
+     * @param {Shape} shape
+     * @param {Array.<Vector2>} positionArray
+     * @param {Object} [options]
+     * @returns {Shape}
+     */
+    positionArrayToStraightLine: function ( shape, positionArray, options ) {
+      options = _.extend( {
+        // is the resulting shape forming a close path
+        isClosedLineSegments: false
+      }, options );
+
+
+      // if the line is open, there is one less segment than point vectors
+      var segmentNumber = (options.isClosedLineSegments) ? positionArray.length : positionArray.length - 1;
+
+      shape.moveToPoint( positionArray[ 0 ] );
+      for ( var i = 1; i < segmentNumber + 1; i++ ) {
+        shape.lineToPoint( positionArray[ (i) % positionArray.length ] );
+      }
       return shape;
     }
 
   } )
     ;
-} );
+} )
+;
 

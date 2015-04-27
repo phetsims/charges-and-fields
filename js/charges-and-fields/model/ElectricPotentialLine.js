@@ -292,9 +292,8 @@ define( function ( require ) {
     },
 
     /**
-     * Function that determines the location of the closest charge to a given position.
+     * Function that prunes points from this.positionArray
      * @private
-     * @param {Vector2} position
      * @returns {Array.<Vector2>}
      */
     getCleanUpPositionArray: function () {
@@ -355,16 +354,9 @@ define( function ( require ) {
      */
     getShape: function () {
       var shape = new Shape();
-      //return this.positionArrayToStraightLine( shape, this.positionArray,
-      //  {isClosedLineSegments: this.isLineClosed}
-      //);
       return this.positionArrayToStraightLine( shape, this.getCleanUpPositionArray(),
         {isClosedLineSegments: this.isLineClosed}
       );
-
-      //return this.positionArrayToCardinalSpline( shape, this.positionArray,
-      //  {isClosedLineSegments: this.isLineClosed}
-      //);
     },
 
     /**
@@ -473,15 +465,7 @@ define( function ( require ) {
     },
 
     /**
-     *
-     * This is a convenience function that allows to generate Cardinal splines
-     * from a position array. Cardinal spline differs from Bezier curves in that all
-     * defined points on a Cardinal spline are on the path itself.
-     *
-     * It include a 'tension' parameter to allow the client to specify how tightly
-     * the path interpolates between points. One can think of the tension as the tension in
-     * a rubber band around pegs. however unlike a rubber band the tension can be negative.
-     * the tension ranges from -1 to 1.
+     * Function that returns an appended shape with lines between points.
      * @private
      * @param {Shape} shape
      * @param {Array.<Vector2>} positionArray
