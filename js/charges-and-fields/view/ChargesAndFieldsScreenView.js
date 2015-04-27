@@ -48,7 +48,7 @@ define( function ( require ) {
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
 
-  var IS_DEBUG = false; // debug mode that adds two rectangular push buttons that can add multiple electric field lines and electricPotential lines
+  var IS_DEBUG_MODE = false; // debug mode that adds two rectangular push buttons that can add multiple electric field lines and electricPotential lines
 
   /**
    *
@@ -270,28 +270,6 @@ define( function ( require ) {
       } );
     } );
 
-    // layout the objects
-    controlPanel.right = this.layoutBounds.maxX - 30;
-    controlPanel.top = 30;
-    toolbox.right = controlPanel.right;
-    toolbox.top = controlPanel.bottom + 10;
-    gridNode.centerX = this.layoutBounds.centerX;
-    gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
-    resetAllButton.right = controlPanel.right;
-    resetAllButton.bottom = this.layoutBounds.maxY - 20;
-
-    // link the available model bounds
-    this.availableModelBoundsProperty.link( function ( bounds ) {
-      // the measuring Tape is subject to dragBounds (specified in model coordinates)
-      measuringTape.dragBounds = bounds;
-
-      // the control panel, toolbox and resetAllButtons are set to the right of the bounds
-      var right = modelViewTransform.modelToViewX( bounds.maxX );
-      controlPanel.right = right - 30;
-      resetAllButton.right = controlPanel.right;
-      toolbox.right = controlPanel.right;
-    } );
-
     // listens to the isUserControlled property of the electric potential sensor
     // return the electric Potential sensor to the toolbox if it is not user Controlled and the
     // location of the sensor is inside the toolbox panel
@@ -309,8 +287,46 @@ define( function ( require ) {
       }
     } );
 
+    // link the available model bounds
+    this.availableModelBoundsProperty.link( function ( bounds ) {
+      // the measuring Tape is subject to dragBounds (specified in model coordinates)
+      measuringTape.dragBounds = bounds;
+
+      // the control panel, toolbox and resetAllButtons are set to the right of the bounds
+      var right = modelViewTransform.modelToViewX( bounds.maxX );
+      controlPanel.right = right - 30;
+      resetAllButton.right = controlPanel.right;
+      toolbox.right = right - 30;
+    } );
+
+
+    // layout the objects
+    controlPanel.right = this.layoutBounds.maxX - 30;
+    controlPanel.top = 30;
+
+    gridNode.centerX = this.layoutBounds.centerX;
+    gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
+    resetAllButton.right = controlPanel.right;
+    resetAllButton.bottom = this.layoutBounds.maxY - 20;
+    toolbox.right = controlPanel.right;
+    toolbox.top = controlPanel.bottom + 10;
+
+    this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
+    this.addChild( gridNode ); //
+    this.addChild( electricFieldGridNode );
+    this.addChild( electricFieldLineNode );
+    this.addChild( electricPotentialLineNode );
+    this.addChild( toolbox );
+    this.addChild( controlPanel );
+    this.addChild( resetAllButton );
+    this.addChild( chargeAndSensorEnclosure );
+    this.addChild( draggableElementsLayer );
+    this.addChild( electricPotentialSensorNode );
+    this.addChild( measuringTape );
+
+
     // if in debug mode add two buttons that allow to add (many at a time) electric potential lines and electric field lines
-    if ( IS_DEBUG ) {
+    if ( IS_DEBUG_MODE ) {
       this.addChild( new RectangularPushButton( {
           listener: function () {
             model.addManyElectricPotentialLines( 20 );
@@ -335,19 +351,6 @@ define( function ( require ) {
         }
       ) );
     }
-
-    this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
-    this.addChild( gridNode ); //
-    this.addChild( electricFieldGridNode );
-    this.addChild( electricFieldLineNode );
-    this.addChild( electricPotentialLineNode );
-    this.addChild( controlPanel );
-    this.addChild( resetAllButton );
-    this.addChild( chargeAndSensorEnclosure );
-    this.addChild( toolbox );
-    this.addChild( draggableElementsLayer );
-    this.addChild( electricPotentialSensorNode );
-    this.addChild( measuringTape );
 
   }
 

@@ -83,7 +83,6 @@ define( function ( require ) {
 
     // The content panel with the two icons
     var panelContent = new LayoutBox( {
-      orientation: 'vertical',
       spacing: 20,
       children: [ electricPotentialSensorIcon, measuringTapeIcon ],
       pickable: true

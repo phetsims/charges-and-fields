@@ -170,14 +170,13 @@ define( function ( require ) {
     this.toIcon = function () {
       var node = new Node();
       var body = electricPotentialSensorBodyNode.getIcon();
-      body.scale( 0.8 );
+      body.scale( 1.0 );
       body.centerX = crosshair.centerX;
       body.top = crosshairMount.bottom;
       node.addChild( crosshairMount );
       node.addChild( circle );
       node.addChild( crosshair );
       node.addChild( body );
-
       node.scale( 0.5 );
       return node;
     };
