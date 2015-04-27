@@ -184,68 +184,66 @@ define( function ( require ) {
      */
     getPositionArray: function ( position, isSearchingBackward ) {
 
-      // the product of stepMax and epsilonDistance should exceed the width and height of the model bounds
-      var maxSteps = 20000; // an integer, the maximum number of steps in the algorithm
-      var minSteps = 5000; // an integer, the maximum number of steps in the algorithm
-      var minEpsilonDistance = 0.02; // in meter
-      var maxEpsilonDistance = 0.10;
-      //assert && assert( epsilonDistance / 2 <= CLOSEST_APPROACH_DISTANCE, 'the steps are too big and you might skipped over a charge' );
-      //var maxDistance = Math.max( this.bounds.height, this.bounds.width );
-      //assert && assert( stepMax * epsilonDistance > maxDistance, ' there are not enough steps to cross the playArea ' );
-
-
-      var epsilonDistance = minEpsilonDistance;
-
+      // convenience variable
       var sign = 1;
       if ( isSearchingBackward ) {
         sign = -1;
       }
 
-      var currentPosition = position;
+      // the product of stepMax and epsilonDistance should exceed the width and height of the model bounds
+      var maxSteps = 5000; // an integer, the maximum number of steps in the algorithm
+      var minSteps = 2000; // an integer, the minimum number of steps in the algorithm
+      var minEpsilonDistance = 0.02; // in meter, the minimum distance covered by a step
+      var maxEpsilonDistance = 0.10; // in meter, the maximim distance covered by a step
+
+      assert && assert( maxSteps > minSteps, 'maxSteps must be larger than minSteps' );
+      assert && assert( maxEpsilonDistance > minEpsilonDistance, 'maxEpsilonDistance must be larger than minEpsilonDistance' );
+
+      var epsilonDistance = minEpsilonDistance; // initial working value of epsilon distance
+      var currentPosition = position; // {Vector2} initial value  for the search position
       var nextPosition; // {Vector2}
-      var positionArray = [];
+      var positionArray = []; // {Array.<Vector2>}
 
       var stepCounter = 0; // our step counter
 
-      var isOnCharge = false;
+      // is our starting position matching the position of a charge.
+      var isPositionOnCharge = (this.getClosestChargedParticlePosition( currentPosition ) == currentPosition);//  {boolean}
 
-      // find the position array
-      while ( !isOnCharge && ((
-                              stepCounter < maxSteps &&
-                              this.bounds.containsPoint( currentPosition )
-                              ) ||
-                              stepCounter < minSteps)
+      // the order of the parenthesis is crucial here..
+      while ( !isPositionOnCharge && ( stepCounter < minSteps ||
+                                       (stepCounter < maxSteps &&
+                                        this.bounds.containsPoint( currentPosition )))
         ) {
         nextPosition = this.getNextPositionAlongElectricFieldWithRK4( currentPosition, sign * epsilonDistance );
-
         currentPosition = nextPosition;
         positionArray.push( currentPosition );
 
-        var closestChargeDistance = this.getClosestChargedParticlePosition( currentPosition ).distance( currentPosition );
-
-        if ( closestChargeDistance < minEpsilonDistance ) {
-          isOnCharge = true;
-          positionArray.push( this.getClosestChargedParticlePosition( currentPosition ) );
-        }
-
-        //
+        // after three steps starts monitoring the curvature of the path and change
+        // the epsilonDistance accordingly
         if ( stepCounter > 3 ) {
           // adaptative epsilon distance
           epsilonDistance *= (2 * Math.PI / 360) / this.getRotationAngle( positionArray );
-
           epsilonDistance = dot.clamp( epsilonDistance, minEpsilonDistance, maxEpsilonDistance );
         }
 
+        // however, if the current position is outside the visible bounds, then it's metal to pedal
         if ( !this.bounds.containsPoint( currentPosition ) ) {
           epsilonDistance = maxEpsilonDistance;
         }
-        // logic to stop the while loop when the two heads are getting closer
-        if ( closestChargeDistance < 4 * epsilonDistance ) {
-          epsilonDistance = minEpsilonDistance;
 
+        var closestChargedParticlePosition = this.getClosestChargedParticlePosition( currentPosition );
+        var closestChargeDistance = closestChargedParticlePosition.distance( currentPosition );
+
+        // if the current position is very close to a charge, call it quits
+        if ( closestChargeDistance < minEpsilonDistance ) {
+          positionArray.push( closestChargedParticlePosition );
+          isPositionOnCharge = true;
         }
 
-
+        // if the current position is getting close to ca charge, slow down, you dont want to over shoot it.
+        if ( closestChargeDistance < 4 * epsilonDistance ) {
+          epsilonDistance = minEpsilonDistance;
+        }
         stepCounter++;
       }// end of while()
 
@@ -293,7 +291,7 @@ define( function ( require ) {
         var newDeltaPosition = this.positionArray[ i + 1 ].minus( cleanUpPositionArray[ cleanUpLength - 1 ] );
         var oldDeltaPosition = cleanUpPositionArray[ cleanUpLength - 1 ].minus( cleanUpPositionArray[ cleanUpLength - 2 ] );
         var angle = newDeltaPosition.angleBetween( oldDeltaPosition );
-        if ( Math.sin( angle ) * (newDeltaPosition.magnitude()) > 0.001 ) {
+        if ( Math.sin( angle ) * (newDeltaPosition.magnitude()) > 0.0001 ) {
           cleanUpPositionArray.push( this.positionArray[ i + 1 ] );
         }
       }
@@ -321,7 +319,7 @@ define( function ( require ) {
       // draw the electricField line shape
       var shape = new Shape();
 
-      var positionArray = this.getCleanUpPositionArray();
+      var positionArray = this.getCleanUpPositionArray(); //{Array.<Vector2>}
       var arrayLength = positionArray.length; // {number}
 
       shape.moveToPoint( positionArray [ 0 ] );
@@ -340,7 +338,15 @@ define( function ( require ) {
       return shape;
     },
 
-
+    /**
+     * Appends an arrow head shape to an existing shape. The arrow head is rotated with an angle
+     * 'angle' with respect to the positive x -axis
+     *
+     * @param {Shape} shape
+     * @param {number} angle - in radians
+     * @param {Object} [options]
+     * @returns {Shape}
+     */
     appendArrow: function ( shape, angle, options ) {
       options = _.extend( {
         arrowHeadLength: 0.05,// length of the arrow head in model coordinates
@@ -361,40 +367,9 @@ define( function ( require ) {
           y: -options.arrowHeadLength * Math.sin( angle - options.arrowHeadInternalAngle )
         } );
       return shape;
-    },
-
-
-    /**
-     *
-     * This is a convenience function that allows to generate a shape
-     * from a position array. Cardinal spline differs from Bezier curves in that all
-     * defined points on a Cardinal spline are on the path itself.
-     *
-     * @private
-     * @param {Shape} shape
-     * @param {Array.<Vector2>} positionArray
-     * @param {Object} [options]
-     * @returns {Shape}
-     */
-    positionArrayToStraightLine: function ( shape, positionArray, options ) {
-      options = _.extend( {
-        // is the resulting shape forming a close path
-        isClosedLineSegments: false
-      }, options );
-
-
-      // if the line is open, there is one less segment than point vectors
-      var segmentNumber = (options.isClosedLineSegments) ? positionArray.length : positionArray.length - 1;
-
-      shape.moveToPoint( positionArray[ 0 ] );
-      for ( var i = 1; i < segmentNumber + 1; i++ ) {
-        shape.lineToPoint( positionArray[ (i) % positionArray.length ] );
-      }
-      return shape;
     }
 
-  } )
-    ;
-} )
-;
+  } );
+} );
+
 
