@@ -207,7 +207,7 @@ define( function ( require ) {
       var stepCounter = 0; // our step counter
 
       // is our starting position matching the position of a charge.
-      var isPositionOnCharge = (this.getClosestChargedParticlePosition( currentPosition ) == currentPosition);//  {boolean}
+      var isPositionOnCharge = (this.getClosestChargedParticlePosition( currentPosition ).equals( currentPosition ));//  {boolean}
 
       // the order of the parenthesis is crucial here..
       while ( !isPositionOnCharge && ( stepCounter < minSteps ||
