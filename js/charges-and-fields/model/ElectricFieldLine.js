@@ -213,10 +213,8 @@ define( function ( require ) {
       while ( !isOnCharge && ((
                               stepCounter < maxSteps &&
                               this.bounds.containsPoint( currentPosition )
-                              )
-                              ||
-                              stepCounter < minSteps
-      )
+                              ) ||
+                              stepCounter < minSteps)
         ) {
         nextPosition = this.getNextPositionAlongElectricFieldWithRK4( currentPosition, sign * epsilonDistance );
 
@@ -264,8 +262,7 @@ define( function ( require ) {
      */
     getIsLineStartingNearCharge: function () {
       return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ 0 ] ));
-    }
-    ,
+    },
 
     /**
      * Method that determines if the ending point of the position array is close to an active charge
@@ -277,8 +274,7 @@ define( function ( require ) {
     getIsLineEndingNearCharge: function () {
       var index = this.positionArray.length - 1;
       return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
-    }
-    ,
+    },
 
 
     /**
@@ -304,8 +300,7 @@ define( function ( require ) {
       console.log( 'clean length', cleanUpPositionArray.length );
       cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
       return cleanUpPositionArray;
-    }
-    ,
+    },
 
 
     /**
@@ -343,8 +338,7 @@ define( function ( require ) {
         shape.lineToPoint( positionArray[ arrayIndex ] );
       }
       return shape;
-    }
-    ,
+    },
 
 
     appendArrow: function ( shape, angle, options ) {
@@ -367,8 +361,7 @@ define( function ( require ) {
           y: -options.arrowHeadLength * Math.sin( angle - options.arrowHeadInternalAngle )
         } );
       return shape;
-    }
-    ,
+    },
 
 
     /**

@@ -25,7 +25,7 @@ define( function ( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var electricPotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialSensorIcon.png' );
+  //var electricPotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialSensorIcon.png' );
 
   // constants
   var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' ).height;

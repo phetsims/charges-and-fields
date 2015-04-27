@@ -191,7 +191,7 @@ define( function ( require ) {
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
       isValuesVisibleProperty.unlink( isValuesVisibleListener );
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
-    }
+    };
 
   }
 

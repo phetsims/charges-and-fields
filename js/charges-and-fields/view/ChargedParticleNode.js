@@ -74,7 +74,7 @@ define( function ( require ) {
       this.disposeChargedParticleNode = function () {
         availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
         chargedParticle.positionProperty.unlink( positionListener );
-      }
+      };
     }
 
     return inherit( ChargedParticleRepresentation, ChargedParticleNode, {

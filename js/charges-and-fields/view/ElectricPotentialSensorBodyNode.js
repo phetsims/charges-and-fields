@@ -146,7 +146,7 @@ define( function ( require ) {
       node.addChild( outlineImage ); // must go first
       node.addChild( backgroundRectangle ); // must be last
       return node;
-    }
+    };
   }
 
   return inherit( Node, ElectricPotentialSensorBodyNode, {

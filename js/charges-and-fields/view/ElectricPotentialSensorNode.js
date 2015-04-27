@@ -180,7 +180,7 @@ define( function ( require ) {
 
       node.scale( 0.5 );
       return node;
-    }
+    };
   }
 
   return inherit( Node, ElectricPotentialSensorNode, {
