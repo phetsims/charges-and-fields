@@ -162,29 +162,7 @@ define( function ( require ) {
     } );
 
 
-    /**
-     * Returns a scale Node of thhe electric potential sensor
-     * @private
-     * @returns {Node}
-     */
-    this.toIcon = function () {
-      var node = new Node();
-      var body = electricPotentialSensorBodyNode.getIcon();
-      body.scale( 1.0 );
-      body.centerX = crosshair.centerX;
-      body.top = crosshairMount.bottom;
-      node.addChild( crosshairMount );
-      node.addChild( circle );
-      node.addChild( crosshair );
-      node.addChild( body );
-      node.scale( 0.5 );
-      return node;
-    };
   }
 
-  return inherit( Node, ElectricPotentialSensorNode, {
-    getIcon: function () {
-      return this.toIcon();
-    }
-  } );
+  return inherit( Node, ElectricPotentialSensorNode);
 } );

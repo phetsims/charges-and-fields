@@ -201,7 +201,6 @@ define( function ( require ) {
     var toolbox = new ChargesAndFieldsToolbox(
       model.electricPotentialSensor.positionProperty,
       model.electricPotentialSensor.isUserControlledProperty,
-      electricPotentialSensorNode,
       viewProperty.measuringTapeBasePositionProperty,
       viewProperty.measuringTapeTipPositionProperty,
       measuringTape.isBaseUserControlledProperty,

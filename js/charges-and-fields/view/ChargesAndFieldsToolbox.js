@@ -6,37 +6,107 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // imports
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
-
   // images
   //var electricPotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialSensorIcon.png' );
+  // images
+  var electricPotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
   // constants
   var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' ).height;
   var MEASURING_TAPE_WIDTH = require( 'image!SCENERY_PHET/measuringTape.png' ).width;
   var MEASURING_TAPE_HEIGHT = require( 'image!SCENERY_PHET/measuringTape.png' ).height;
 
+  // constants
+  var CIRCLE_RADIUS = 12; // radius of the circle around the crosshair
+
+  /**
+   * Returns an icon of the sensor (without the two buttons)
+   * @private
+   * @returns {Node}
+   */
+  function electricPotentialSensortoIcon()  {
+
+    var node = new Node();
+
+    // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
+    var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 2, centerX: 0, centerY: 0 } );
+
+    // Create the crosshair
+    var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
+      .lineTo( CIRCLE_RADIUS, 0 )
+      .moveTo( 0, -CIRCLE_RADIUS )
+      .lineTo( 0, CIRCLE_RADIUS );
+    var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
+
+    // Create the base of the crosshair
+    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
+
+    // Create the voltage Reading reading
+    var voltageReading = new Text( '0.0 V', {
+      font: ChargesAndFieldsConstants.DEFAULT_FONT,
+      fill: 'black',
+      stroke: 'black'
+    } );
+    var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
+    outlineImage.scale(0.5);
+
+    // Create the background rectangle behind the voltage Reading
+    var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width*0.8, voltageReading.height *1.5, 5, 5, {
+      fill: 'white',
+      stroke: 'black'
+    } );
+
+    // update the colors on the crosshair components when the color profile changes
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+      circle.stroke = color;
+      crosshair.stroke = color;
+      crosshairMount.fill = color;
+      crosshairMount.stroke = color;
+    } );
+
+    crosshairMount.centerX = circle.centerX;
+    crosshairMount.top = circle.bottom;
+    voltageReading.centerX = circle.centerX;
+    backgroundRectangle.centerX= circle.centerX;
+    outlineImage.centerX= circle.centerX;
+    outlineImage.top= crosshairMount.bottom;
+    voltageReading.top = outlineImage.top+20;
+    backgroundRectangle.centerY= voltageReading.centerY;
+
+    node.addChild( crosshairMount );
+    node.addChild( circle );
+    node.addChild( crosshair );
+    node.addChild( outlineImage ); // must go first
+    node.addChild( backgroundRectangle ); // must be last
+    node.addChild( voltageReading ); // must be last
+    return node;
+  }
+
   /**
    * Toolbox constructor
    * @param {Property.<Vector2>} electricPotentialSensorPositionProperty
    * @param {Property.<boolean>} electricPotentialUserControlledProperty
-   * @param {ElectricPotentialSensorNodeNode}  electricPotentialSensorNode
    * @param {Property.<Vector2>} measuringTapeBasePositionProperty
    * @param {Property.<Vector2>} measuringTapeTipPositionProperty
    * @param {Property.<boolean>} measuringTapeUserControlledProperty
@@ -48,7 +118,6 @@ define( function ( require ) {
    */
   function ChargesAndFieldsToolbox( electricPotentialSensorPositionProperty,
                                     electricPotentialUserControlledProperty,
-                                    electricPotentialSensorNode,
                                     measuringTapeBasePositionProperty,
                                     measuringTapeTipPositionProperty,
                                     measuringTapeUserControlledProperty,
@@ -62,10 +131,10 @@ define( function ( require ) {
     //TODO fix the slight shift of panel
     // Create the icon image for the electricPotential sensor
     //var electricPotentialSensorIconImage = new Image( electricPotentialSensorImage, {cursor: 'pointer', scale: 0.4} );
-    var electricPotentialSensorIcon = electricPotentialSensorNode.getIcon();
+    var electricPotentialSensorIcon = electricPotentialSensortoIcon();
     // procedure to create an icon Image of a measuringTape
     // first, create an actual measuring tape
-    var measuringTape = new MeasuringTape( new Property( {name: '', multiplier: 1} ), new Property( true ),
+    var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
       {
         tipPositionProperty: new Property( new Vector2( 30, 0 ) ),
         scale: 0.8 // make it a bit small
@@ -74,11 +143,11 @@ define( function ( require ) {
 
     // second, create the measuringTape icon with a token rectangle, it must be not empty as the panel will throw an error
     // if node is empty
-    var measuringTapeIcon = new Node( {children: [ new Rectangle( 0, 0, 1, 1 ) ]} );
+    var measuringTapeIcon = new Node( { children: [ new Rectangle( 0, 0, 1, 1 ) ] } );
 
     // Create the measuringTape icon using toImage
-    measuringTape.toImage( function ( image ) {
-      measuringTapeIcon.children = [ new Image( image, {cursor: 'pointer'} ) ];
+    measuringTape.toImage( function( image ) {
+      measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
     } );
 
     // The content panel with the two icons
@@ -107,10 +176,10 @@ define( function ( require ) {
         modelViewTransform: modelViewTransform,
         dragBounds: availableModelBoundsProperty.value,
         // create a position listener that will move the tip as the base of the measuring tape is dragged
-        positionListener: function ( position ) {
+        positionListener: function( position ) {
           measuringTapeTipPositionProperty.set( position.plus( tipToBasePosition ) );
         },
-        start: function ( event ) {
+        start: function( event ) {
           measuringTapeUserControlledProperty.set( true );
 
           var testNode = toolboxPanel;
@@ -138,12 +207,12 @@ define( function ( require ) {
           // link the position of base of the measuring tape to the tip of the measuring tape
           measuringTapeBasePositionProperty.link( this.positionListener );
         },
-        translate: function ( translationParams ) {
+        translate: function( translationParams ) {
           var unconstrainedLocation = measuringTapeBasePositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
           var constrainedLocation = constrainLocation( unconstrainedLocation, availableModelBoundsProperty.value );
           measuringTapeBasePositionProperty.set( constrainedLocation );
         },
-        end: function ( event ) {
+        end: function( event ) {
           measuringTapeUserControlledProperty.set( false );
 
           measuringTapeBasePositionProperty.unlink( this.positionListener );
@@ -155,7 +224,7 @@ define( function ( require ) {
         parentScreen: null, // needed for coordinate transforms
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
-        start: function ( event ) {
+        start: function( event ) {
           electricPotentialUserControlledProperty.set( true );
           var testNode = toolboxPanel;
           while ( testNode !== null ) {
@@ -180,13 +249,13 @@ define( function ( require ) {
           isElectricPotentialSensorVisibleProperty.set( true );
         },
 
-        translate: function ( translationParams ) {
+        translate: function( translationParams ) {
           var unconstrainedLocation = electricPotentialSensorPositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
           var constrainedLocation = constrainLocation( unconstrainedLocation, availableModelBoundsProperty.value );
           electricPotentialSensorPositionProperty.set( constrainedLocation );
         },
 
-        end: function ( event ) {
+        end: function( event ) {
           electricPotentialUserControlledProperty.set( false );
         }
       } );
@@ -195,29 +264,33 @@ define( function ( require ) {
     measuringTapeIcon.addInputListener( measuringTapeMovableDragHandler );
     electricPotentialSensorIcon.addInputListener( electricPotentialSensorMovableDragHandler );
 
-    ChargesAndFieldsColors.controlPanelFillProperty.link( function ( color ) {
+    ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
       toolboxPanel.background.fill = color;
     } );
 
-    ChargesAndFieldsColors.controlPanelBorderProperty.link( function ( color ) {
+    ChargesAndFieldsColors.controlPanelBorderProperty.link( function( color ) {
       toolboxPanel.stroke = color;
     } );
 
     // hide and show
-    isElectricPotentialSensorVisibleProperty.link( function ( visible ) {
+    isElectricPotentialSensorVisibleProperty.link( function( visible ) {
       electricPotentialSensorIcon.visible = !visible;
     } );
 
     // measuringTape visibility has the opposite visibility of the measuringTape Icon
-    isMeasuringTapeVisibleProperty.link( function ( visible ) {
+    isMeasuringTapeVisibleProperty.link( function( visible ) {
       measuringTapeIcon.visible = !visible;
     } );
 
     // no need to dispose of this link since this is present for the lifetime of the sim
-    availableModelBoundsProperty.link( function ( bounds ) {
+    availableModelBoundsProperty.link( function( bounds ) {
       electricPotentialSensorMovableDragHandler.dragBounds = bounds;
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
+
+
+
+
 
     /**
      * Constrains a location to some bounds.
@@ -227,7 +300,7 @@ define( function ( require ) {
      * @param {Bounds2} bounds
      * @returns {Vector2}
      */
-    var constrainLocation = function ( location, bounds ) {
+    var constrainLocation = function( location, bounds ) {
       if ( bounds.containsCoordinates( location.x, location.y ) ) {
         return location;
       }
@@ -237,6 +310,7 @@ define( function ( require ) {
         return new Vector2( xConstrained, yConstrained );
       }
     };
+
 
   }
 
