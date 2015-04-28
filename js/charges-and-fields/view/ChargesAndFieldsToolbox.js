@@ -38,7 +38,7 @@ define( function( require ) {
   var MEASURING_TAPE_HEIGHT = require( 'image!SCENERY_PHET/measuringTape.png' ).height;
 
   // constants
-  var CIRCLE_RADIUS = 12; // radius of the circle around the crosshair
+  var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
 
   /**
    * Returns an icon of the sensor (without the two buttons)
@@ -97,9 +97,9 @@ define( function( require ) {
     node.addChild( crosshairMount );
     node.addChild( circle );
     node.addChild( crosshair );
-    node.addChild( outlineImage ); // must go first
-    node.addChild( backgroundRectangle ); // must be last
-    node.addChild( voltageReading ); // must be last
+    node.addChild( outlineImage );
+    node.addChild( backgroundRectangle );
+    node.addChild( voltageReading );
     return node;
   }
 
