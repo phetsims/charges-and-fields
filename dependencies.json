@@ -1,7 +1,7 @@
 {
-  "comment": "# charges-and-fields 1.0.0-dev.10 Mon Apr 27 2015 14:44:13 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# charges-and-fields 1.0.0-dev.11 Tue Apr 28 2015 14:44:56 GMT-0600 (Mountain Daylight Time)",
   "charges-and-fields": {
-    "sha": "a0e82b9434bee93cd261f2e3671ccfd1a2051191",
+    "sha": "2f73a49896adecd5912ff8e8ba32a632f73de233",
     "branch": "master"
   },
   "assert": {
@@ -17,7 +17,7 @@
     "branch": "master"
   },
   "chipper": {
-    "sha": "2266c19a0c09e3220674490713b6653b9ca7359b",
+    "sha": "d9779fc2934611b856976d6dabfa09b3b61a3d14",
     "branch": "master"
   },
   "dot": {
@@ -53,7 +53,7 @@
     "branch": "master"
   },
   "sun": {
-    "sha": "26910b9ef85c326496e1c4cb3053b8fd4b9664ba",
+    "sha": "fa941006bdcf931e3d2cdcd2cbefb13930088497",
     "branch": "master"
   }
 }
