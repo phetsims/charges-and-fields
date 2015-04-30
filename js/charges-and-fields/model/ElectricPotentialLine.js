@@ -31,7 +31,6 @@ define( function ( require ) {
                                   getElectricField,
                                   isPlayAreaChargedProperty ) {
 
-
     this.getElectricPotential = getElectricPotential; // @private
     this.getElectricField = getElectricField; // @private
     this.chargedParticles = chargedParticles; // @private
@@ -269,7 +268,6 @@ define( function ( require ) {
           ( this.bounds.containsPoint( currentClockwisePosition ) ||
             this.bounds.containsPoint( currentCounterClockwisePosition ) );
 
-
       }// end of while()
       console.log( 'model array', stepCounter * 2 );
 
@@ -414,7 +412,6 @@ define( function ( require ) {
         isSubPath: false
       }, options );
 
-
       var cardinalPoints = []; // {Array.<Vector2>} cardinal points Array
       var bezierPoints = []; // {Array.<Vector2>} bezier points Array
 
@@ -444,7 +441,6 @@ define( function ( require ) {
             positionArray[ (i + 1 ) % segmentNumber ],
             positionArray[ (i + 2 ) % segmentNumber ] );
         }
-
 
         // Cardinal Spline to Cubic Bezier conversion matrix
         //    0                 1             0            0
@@ -478,7 +474,6 @@ define( function ( require ) {
         isClosedLineSegments: false
       }, options );
 
-
       // if the line is open, there is one less segment than point vectors
       var segmentNumber = (options.isClosedLineSegments) ? positionArray.length : positionArray.length - 1;
 
@@ -492,6 +487,5 @@ define( function ( require ) {
   } );
 
 } );
-
 
 

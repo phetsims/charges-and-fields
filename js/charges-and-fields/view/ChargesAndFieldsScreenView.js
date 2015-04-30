@@ -298,7 +298,6 @@ define( function ( require ) {
       toolbox.right = right - 30;
     } );
 
-
     // layout the objects
     controlPanel.right = this.layoutBounds.maxX - 30;
     controlPanel.top = 30;
@@ -322,7 +321,6 @@ define( function ( require ) {
     this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );
-
 
     // if in debug mode add two buttons that allow to add (many at a time) electric potential lines and electric field lines
     if ( IS_DEBUG_MODE ) {

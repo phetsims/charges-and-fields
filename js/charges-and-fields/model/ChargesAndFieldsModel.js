@@ -384,7 +384,6 @@ define( function( require ) {
         } );
       },
 
-
       /**
        * Return the change in the electric field at position Position due to the motion of a
        * charged particle from oldChargePosition to  newChargePosition.

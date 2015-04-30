@@ -105,7 +105,6 @@ define( function ( require ) {
      */
     function traceElectricPotentialLine( electricPotentialLineShape ) {
 
-
       var electricPotentialLinePath = new Path( modelViewTransform.modelToViewShape( electricPotentialLineShape ) );
 
       electricPotentialLinePath.colorFunction = function ( color ) {
@@ -166,7 +165,6 @@ define( function ( require ) {
 
       return circleArray;
     }
-
 
     /**
      * Function that generates a voltage label for the electricPotential line

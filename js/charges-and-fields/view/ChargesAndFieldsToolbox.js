@@ -27,8 +27,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
-  // images
-  //var electricPotentialSensorImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialSensorIcon.png' );
+
   // images
   var electricPotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
@@ -290,8 +289,6 @@ define( function( require ) {
 
 
 
-
-
     /**
      * Constrains a location to some bounds.
      * It returns (1) the same location if the location is within the bounds
@@ -310,7 +307,6 @@ define( function( require ) {
         return new Vector2( xConstrained, yConstrained );
       }
     };
-
 
   }
 

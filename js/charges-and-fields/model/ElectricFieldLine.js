@@ -247,7 +247,6 @@ define( function ( require ) {
         stepCounter++;
       }// end of while()
 
-
       return positionArray;
     },
 
@@ -274,7 +273,6 @@ define( function ( require ) {
       return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
     },
 
-
     /**
      * Function that determines the location of the closest charge to a given position.
      * @private
@@ -299,7 +297,6 @@ define( function ( require ) {
       cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
       return cleanUpPositionArray;
     },
-
 
     /**
      * Function that returns the shape of the electric field line. The line
@@ -371,5 +368,4 @@ define( function ( require ) {
 
   } );
 } );
-
 

@@ -28,7 +28,6 @@ define( function( require ) {
       onOrigin: true // is there  a sensor at the origin (0,0)?, if false the first sensor is put at (spacing/2, spacing/2)
     }, options );
 
-
     /*
      The diagram below represents the bounds used in the model.
      The bounds defined by 'bounds' is inscribed in the lower middle portion. The origin (0,0) of the model

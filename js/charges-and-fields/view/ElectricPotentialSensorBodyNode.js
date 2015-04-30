@@ -136,7 +136,6 @@ define( function( require ) {
       backgroundRectangle.fill = color;
     } );
 
-
   }
 
   return inherit( Node, ElectricPotentialSensorBodyNode);

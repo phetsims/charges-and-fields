@@ -27,7 +27,7 @@ define( function( require ) {
 
       // all credits fields are optional
       leadDesign: 'Amy Rouinfar, Michael Dubson',
-      softwareDevelopment: 'Martin Veillette, Michael Dubson',
+      softwareDevelopment: 'Martin Veillette, Jonathan Olson, Micheal Dubson',
       designTeam: 'Ariel Paul, Amy Rouinfar, Kathy Perkins'
     },
     optionsNode: new GlobalOptionsNode( isEnhancedVersion ),

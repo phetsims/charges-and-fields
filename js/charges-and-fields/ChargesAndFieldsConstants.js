@@ -11,9 +11,7 @@ define( function( require ) {
 
   return {
 
-
     K_CONSTANT: 9, // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
-
 
     // width of the dev screen in the model
     WIDTH: 8, // in meters
