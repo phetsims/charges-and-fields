@@ -156,6 +156,7 @@ define( function ( require ) {
       } );
       return closestChargedParticlePosition;
     },
+
     /**
      *
      * @private

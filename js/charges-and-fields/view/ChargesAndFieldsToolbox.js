@@ -32,19 +32,20 @@ define( function( require ) {
   var electricPotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
   // constants
-  var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' ).height;
+  var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
   var MEASURING_TAPE_WIDTH = require( 'image!SCENERY_PHET/measuringTape.png' ).width;
   var MEASURING_TAPE_HEIGHT = require( 'image!SCENERY_PHET/measuringTape.png' ).height;
+  var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' ).height;
 
-  // constants
-  var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
+  // strings
+  var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   /**
    * Returns an icon of the sensor (without the two buttons)
    * @private
    * @returns {Node}
    */
-  function electricPotentialSensortoIcon()  {
+  function electricPotentialSensortoIcon() {
 
     var node = new Node();
 
@@ -62,16 +63,16 @@ define( function( require ) {
     var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
 
     // Create the voltage Reading reading
-    var voltageReading = new Text( '0.0 V', {
+    var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       fill: 'black',
       stroke: 'black'
     } );
     var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
-    outlineImage.scale(0.5);
+    outlineImage.scale( 0.5 );
 
     // Create the background rectangle behind the voltage Reading
-    var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width*0.8, voltageReading.height *1.5, 5, 5, {
+    var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
       fill: 'white',
       stroke: 'black'
     } );
@@ -87,11 +88,11 @@ define( function( require ) {
     crosshairMount.centerX = circle.centerX;
     crosshairMount.top = circle.bottom;
     voltageReading.centerX = circle.centerX;
-    backgroundRectangle.centerX= circle.centerX;
-    outlineImage.centerX= circle.centerX;
-    outlineImage.top= crosshairMount.bottom;
-    voltageReading.top = outlineImage.top+20;
-    backgroundRectangle.centerY= voltageReading.centerY;
+    backgroundRectangle.centerX = circle.centerX;
+    outlineImage.centerX = circle.centerX;
+    outlineImage.top = crosshairMount.bottom;
+    voltageReading.top = outlineImage.top + 20;
+    backgroundRectangle.centerY = voltageReading.centerY;
 
     node.addChild( crosshairMount );
     node.addChild( circle );
@@ -286,7 +287,6 @@ define( function( require ) {
       electricPotentialSensorMovableDragHandler.dragBounds = bounds;
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
-
 
 
     /**

@@ -50,6 +50,10 @@ define( function ( require ) {
 
   var IS_DEBUG_MODE = false; // debug mode that adds two rectangular push buttons that can add multiple electric field lines and electricPotential lines
 
+  // strings
+
+  var cmString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
+
   /**
    *
    * @param {ChargesAndFieldsModel} model - main model of the simulation
@@ -67,7 +71,7 @@ define( function ( require ) {
       isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
       isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
       isMeasuringTapeVisible: false, // control the visibility of the measuring tape
-      measuringTapeUnits: {name: 'cm', multiplier: 100}, // needed for the measuring tape scenery node
+      measuringTapeUnits: {name: cmString, multiplier: 100}, // needed for the measuring tape scenery node
       measuringTapeBasePosition: new Vector2( 0, 0 ),
       measuringTapeTipPosition: new Vector2( 1, 0 )
     } );

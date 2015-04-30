@@ -29,6 +29,9 @@
   "eFieldUnit": {
     "value": "V/m"
   },
+  "centimeterUnit": {
+    "value": "cm"
+  },
   "angleUnit": {
     "value": "deg"
   },

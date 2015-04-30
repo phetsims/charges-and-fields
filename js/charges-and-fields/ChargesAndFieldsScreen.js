@@ -8,8 +8,8 @@ define( function( require ) {
 
   // modules
   var ChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModel' );
-  var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
 
@@ -36,11 +36,9 @@ define( function( require ) {
       { backgroundColor: ChargesAndFieldsColors.background.toCSS() }
     );
 
-    var colorFunction = function( color ) {
+    ChargesAndFieldsColors.link( 'background', function( color ) {
       screen.backgroundColor = color;
-    };
-
-    ChargesAndFieldsColors.link( 'background', colorFunction );
+    } );
 
   }
 
