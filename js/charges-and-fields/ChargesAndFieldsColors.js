@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Location for all colors (especially those that could be tweaked)
+ * Location for most colors of the simulation (especially those that could be tweaked)
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  * @author Martin Veillette (Berea College)
@@ -14,14 +14,20 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var PropertySet = require( 'AXON/PropertySet' );
 
+  // constants
+  var BLACK = new Color( 0, 0, 0 );
+  var WHITE = new Color( 255, 255, 255 );
+  var RED = new Color( 255, 0, 0 );
+  var BLUE = new Color( 0, 0, 255 );
+
   var colors = {
     background: {
-      default: new Color( 0, 0, 0 ),
-      projector: new Color( 255, 255, 255 )
+      default: BLACK,
+      projector: WHITE
     },
     reversedBackground: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      default: WHITE,
+      projector: BLACK
     },
     controlPanelBorder: {
       default: new Color( 210, 210, 210 ),
@@ -33,11 +39,11 @@ define( function( require ) {
     },
     controlPanelText: {
       default: new Color( 229, 229, 126 ),
-      projector: new Color( 0, 0, 0 )
+      projector: BLACK
     },
     enclosureText: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      default: WHITE,
+      projector: BLACK
     },
     enclosureFill: {
       default: new Color( 10, 10, 10 ),
@@ -49,23 +55,23 @@ define( function( require ) {
     },
     checkBox: {
       default: new Color( 230, 230, 230 ),
-      projector: new Color( 0, 0, 0 )
+      projector: BLACK
     },
     checkBoxBackground: {
       default: new Color( 30, 30, 30 ),
-      projector: new Color( 255, 255, 255 )
+      projector: WHITE
     },
     voltageLabel: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      default: WHITE,
+      projector: BLACK
     },
     electricPotentialLine: {
       default: new Color( 50, 255, 100 ),
-      projector: new Color( 0, 0, 0 )
+      projector: BLACK
     },
     measuringTapeText: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      default: WHITE,
+      projector: BLACK
     },
     electricFieldSensorCircleFill: {
       default: new Color( 255, 255, 0 ),
@@ -73,59 +79,59 @@ define( function( require ) {
     },
     electricFieldSensorCircleStroke: {
       default: new Color( 128, 120, 133 ),
-      projector: new Color( 0, 0, 0 )
+      projector: BLACK
     },
     electricFieldSensorArrow: {
-      default: new Color( 255, 0, 0 ),
-      projector: new Color( 255, 0, 0 )
+      default: RED,
+      projector: RED
     },
     electricFieldSensorLabel: {
       default: new Color( 229, 229, 126 ),
-      projector: new Color( 0, 0, 0 )
+      projector: BLACK
     },
     gridStroke: {
       default: new Color( 50, 50, 50 ),
       projector: new Color( 255, 204, 51 )
     },
     gridLengthScaleArrowStroke: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 255, 0, 0 )
+      default: WHITE,
+      projector: RED
     },
     gridLengthScaleArrowFill: {
-      default: new Color( 255, 255, 255 ),
+      default: WHITE,
       projector: new Color( 255, 153, 0 )
     },
     gridTextFill: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      default: WHITE,
+      projector: BLACK
     },
     electricPotentialSensorCircleStroke: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      default: WHITE,
+      projector: BLACK
     },
     electricPotentialSensorCrosshairStroke: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 0, 0, 0 )
+      default: WHITE,
+      projector: BLACK
     },
     buttonBaseColor: {
       default: new Color( 200, 200, 200 ),
       projector: new Color( 200, 200, 200 )
     },
     electricPotentialPanelTitleText: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 255, 255, 255 )
+      default: WHITE,
+      projector: WHITE
     },
     electricPotentialSensorTextPanelTextFill: {
-      default: new Color( 0, 0, 0 ),
-      projector: new Color( 0, 0, 0 )
+      default: BLACK,
+      projector: BLACK
     },
     electricPotentialSensorTextPanelBorder: {
-      default: new Color( 0, 0, 0 ),
+      default: BLACK,
       projector: new Color( 250, 250, 250 )
     },
     electricPotentialSensorTextPanelBackground: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 255, 255, 255 )
+      default: WHITE,
+      projector: WHITE
     },
     electricPotentialSensorBorder: {
       default: new Color( 210, 210, 210 ),
@@ -136,24 +142,24 @@ define( function( require ) {
       projector: new Color( 52, 60, 159 )
     },
     electricFieldGridSaturation: {
-      default: new Color( 255, 255, 255 ),
-      projector: new Color( 255, 0, 0 )
+      default: WHITE,
+      projector: RED
     },
     electricFieldGridZero: {
-      default: new Color( 0, 0, 0 ),
-      projector: new Color( 255, 255, 255 )
+      default: BLACK,
+      projector: WHITE
     },
     electricPotentialGridSaturationPositive: {
-      default: new Color( 255, 0, 0 ),
-      projector: new Color( 255, 0, 0 )
+      default: RED,
+      projector: RED
     },
     electricPotentialGridZero: {
-      default: new Color( 0, 0, 0 ),
-      projector: new Color( 255, 255, 255 )
+      default: BLACK,
+      projector: WHITE
     },
     electricPotentialGridSaturationNegative: {
-      default: new Color( 0, 0, 255 ),
-      projector: new Color( 0, 0, 255 )
+      default: BLUE,
+      projector: BLUE
     }
 
   };
