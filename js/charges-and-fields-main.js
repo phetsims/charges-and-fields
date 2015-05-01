@@ -28,7 +28,8 @@ define( function( require ) {
       // all credits fields are optional
       leadDesign: 'Amy Rouinfar, Michael Dubson',
       softwareDevelopment: 'Martin Veillette, Jonathan Olson, Micheal Dubson',
-      designTeam: 'Ariel Paul, Amy Rouinfar, Kathy Perkins'
+      team: 'Ariel Paul, Kathy Perkins',
+      qualityAssurance: 'Steele Dalton, Oliver Orejola'
     },
     optionsNode: new GlobalOptionsNode( isEnhancedVersion ),
     homeScreenWarningNode: ChargesAndFieldsGlobals.useWebGL ? null : new CanvasWarningNode()
