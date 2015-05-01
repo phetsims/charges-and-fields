@@ -10,8 +10,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var extend = require( 'PHET_CORE/extend' );
   var Color = require( 'SCENERY/util/Color' );
+  var extend = require( 'PHET_CORE/extend' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   // constants
