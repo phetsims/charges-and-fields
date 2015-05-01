@@ -13,6 +13,7 @@ define( function ( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsControlPanel' );
+  var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsToolbox = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolbox' );
   var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
@@ -92,7 +93,7 @@ define( function ( require ) {
     this.model = model;
 
     // Check to see if WebGL was prevented by a query parameter
-    var disallowWebGL = phet.chipper.getQueryParameter( 'webgl' ) === 'false';
+    var disallowWebGL = ChargesAndFieldsGlobals.disallowWebGL;
     // The mobile WebGL implementation will work with basic WebGL support
     var allowMobileWebGL = Util.checkWebGLSupport() && !disallowWebGL;
     // The unlimited-particle implementation will work only with OES_texture_float where writing to

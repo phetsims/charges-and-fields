@@ -20,7 +20,7 @@ define( function( require ) {
   } );
 
   return _.extend( ChargesAndFieldsGlobals, {
-    useWebGL: ( phet.chipper.getQueryParameter( 'webgl' ) !== 'false' ) && Util.isWebGLSupported,
+    disallowWebGL : phet.chipper.getQueryParameter( 'webgl' ) === 'false',
 
     /*
      * Applies color changes to the material's color field, and also does so immediately upon being called.
