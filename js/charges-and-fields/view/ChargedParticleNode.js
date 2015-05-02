@@ -48,9 +48,11 @@ define( function( require ) {
           if ( !chargedParticle.isAnimated ) // you cant dragged an animated particle
           {
             chargedParticle.isUserControlled = true;
+
             // Move the chargedParticle to the front of this layer when grabbed by the user.
             chargedParticleNode.moveToFront();
             var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
+
             // move this node upward so that the cursor touches the bottom of the chargedParticle
             chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -CIRCLE_RADIUS ) );
           }
