@@ -133,14 +133,6 @@ define( function( require ) {
       default: WHITE,
       projector: WHITE
     },
-    electricPotentialSensorBorder: {
-      default: new Color( 210, 210, 210 ),
-      projector: new Color( 150, 150, 150 )
-    },
-    electricPotentialSensorBackgroundFill: {
-      default: new Color( 52, 50, 159 ),
-      projector: new Color( 52, 60, 159 )
-    },
     electricFieldGridSaturation: {
       default: WHITE,
       projector: RED
