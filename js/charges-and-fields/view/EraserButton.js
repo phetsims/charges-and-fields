@@ -110,8 +110,10 @@ define( function( require ) {
     // eraser icon
     options.content = new Node( { children: [ sidePath, frontPath, topPath ] } );
 
+    // resize the icon
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
+    // call the superconstructor
     RectangularPushButton.call( this, options );
   }
 
