@@ -12,9 +12,9 @@ define( function( require ) {
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var CheckBox = require( 'SUN/CheckBox' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   var electricFieldLinesString = require( 'string!CHARGES_AND_FIELDS/options.electricFieldLines' );
@@ -35,12 +35,12 @@ define( function( require ) {
     children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       ChargesAndFieldsGlobals.projectorColorsProperty, {} ) );
 
-    VBox.call( this, _.extend( {
+    LayoutBox.call( this, _.extend( {
       children: children,
       spacing: OptionsDialog.DEFAULT_SPACING,
       align: 'left'
     } ) );
   }
 
-  return inherit( VBox, GlobalOptionsNode );
+  return inherit( LayoutBox, GlobalOptionsNode );
 } );
