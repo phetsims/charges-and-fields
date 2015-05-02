@@ -1,4 +1,4 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Scenery Node representing grid lines (located in the model) with major and minor lines.
@@ -10,7 +10,7 @@
 define( function( require ) {
   'use strict';
 
-  // imports
+  // modules
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
@@ -153,5 +153,4 @@ define( function( require ) {
   }
 
   return inherit( Node, Grid );
-} )
-;
+} );

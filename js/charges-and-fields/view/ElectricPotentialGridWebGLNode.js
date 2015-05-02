@@ -343,7 +343,7 @@ define( function( require ) {
         // node's renderings.
         if ( !this.isVisibleProperty.get() ) {
           var backgroundColor = ChargesAndFieldsColors.background;
-          gl.clearColor( backgroundColor.r/255, backgroundColor.g/255, backgroundColor.b/255, 1 );
+          gl.clearColor( backgroundColor.r / 255, backgroundColor.g / 255, backgroundColor.b / 255, 1 );
           gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
           return;
         }

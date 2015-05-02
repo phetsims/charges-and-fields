@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // modules
@@ -49,7 +49,7 @@ define( function ( require ) {
     this.addChild( circleNode );
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-    electricPotentialLinesArray.addItemAddedListener( function ( electricPotentialLine ) {
+    electricPotentialLinesArray.addItemAddedListener( function( electricPotentialLine ) {
 
       var voltageLabel = labelElectricPotentialLine( electricPotentialLine );
       var rectangle = new Rectangle( 0, 0, voltageLabel.width * 1.5, voltageLabel.height * 1.5,
@@ -58,7 +58,7 @@ define( function ( require ) {
         } );
 
       // Link the fill color for the default/projector mode
-      var rectangleColorFunction = function ( color ) {
+      var rectangleColorFunction = function( color ) {
         rectangle.fill = color;
       };
       ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
@@ -107,7 +107,7 @@ define( function ( require ) {
 
       var electricPotentialLinePath = new Path( modelViewTransform.modelToViewShape( electricPotentialLineShape ) );
 
-      electricPotentialLinePath.colorFunction = function ( color ) {
+      electricPotentialLinePath.colorFunction = function( color ) {
         electricPotentialLinePath.stroke = color;
       };
       // Link the stroke color for the default/projector mode
@@ -127,14 +127,14 @@ define( function ( require ) {
       var circleArray = [];
 
       //Simple and naive method to plot lines between all the points
-      electricPotentialLine.positionArray.forEach( function ( position ) {
-        var circle = new Circle( 2, {fill: 'yellow'} );
+      electricPotentialLine.positionArray.forEach( function( position ) {
+        var circle = new Circle( 2, { fill: 'yellow' } );
         circle.center = modelViewTransform.modelToViewPosition( position );
         circleArray.push( circle );
       } );
 
-      circleArray.colorFunction = function ( color ) {
-        circleArray.forEach( function ( circle ) {
+      circleArray.colorFunction = function( color ) {
+        circleArray.forEach( function( circle ) {
           circle.stroke = color;
         } );
       };
@@ -157,8 +157,8 @@ define( function ( require ) {
       var positionArray = electricPotentialLine.getCleanUpPositionArray();
 
       //Simple and naive method to plot lines between all the points
-      positionArray.forEach( function ( position ) {
-        var circle = new Circle( 2, {fill: 'red'} );
+      positionArray.forEach( function( position ) {
+        var circle = new Circle( 2, { fill: 'red' } );
         circle.center = modelViewTransform.modelToViewPosition( position );
         circleArray.push( circle );
       } );
@@ -182,7 +182,7 @@ define( function ( require ) {
         } );
 
       // Link the fill color for the default/projector mode
-      voltageLabel.colorFunction = function ( color ) {
+      voltageLabel.colorFunction = function( color ) {
         voltageLabel.fill = color;
       };
 

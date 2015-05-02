@@ -182,9 +182,8 @@ define( function( require ) {
 
     // pencil icon
     options.content = new Node( {
-      children: [ part1Path,
-        part2Path, part3Path, part4Path, part5Path, part6Path, part7Path, part8Path, part9Path, part10Path,
-        part11Path, part12Path ]
+      children: [ part1Path, part2Path, part3Path, part4Path, part5Path,
+        part6Path, part7Path, part8Path, part9Path, part10Path, part11Path, part12Path ]
     } );
 
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );

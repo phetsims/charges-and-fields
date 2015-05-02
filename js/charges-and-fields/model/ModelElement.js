@@ -71,7 +71,7 @@ define( function( require ) {
           y: this.destinationPosition.y
         }, animationTime ).
         easing( TWEEN.Easing.Cubic.InOut ).
-        onStart( function(){
+        onStart( function() {
           self.isAnimated = true;
         } ).
         onUpdate( function() {

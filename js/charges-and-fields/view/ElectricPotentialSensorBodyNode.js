@@ -138,5 +138,5 @@ define( function( require ) {
 
   }
 
-  return inherit( Node, ElectricPotentialSensorBodyNode);
+  return inherit( Node, ElectricPotentialSensorBodyNode );
 } );

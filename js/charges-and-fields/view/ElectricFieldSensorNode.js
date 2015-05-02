@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // modules
@@ -59,7 +59,7 @@ define( function ( require ) {
     } );
 
     // hook up colors for default/projector mode
-    var arrowColorFunction = function ( color ) {
+    var arrowColorFunction = function( color ) {
       arrowNode.stroke = color;
       arrowNode.fill = color;
     };
@@ -74,7 +74,7 @@ define( function ( require ) {
     var directionLabel = new Text( '', textOptions );
 
     // Hook up colors for default/projector mode
-    var labelColorFunction = function ( color ) {
+    var labelColorFunction = function( color ) {
       fieldStrengthLabel.fill = color;
       directionLabel.fill = color;
     };
@@ -94,7 +94,7 @@ define( function ( require ) {
     directionLabel.right = fieldStrengthLabel.right;
 
     // when the electric field changes update the arrow and the labels
-    var electricFieldListener = function ( electricField ) {
+    var electricFieldListener = function( electricField ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
@@ -115,18 +115,18 @@ define( function ( require ) {
     };
     electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
-    electricFieldSensor.isActiveProperty.link( function ( isActive ) {
+    electricFieldSensor.isActiveProperty.link( function( isActive ) {
       arrowNode.visible = isActive;
     } );
     // Show/hide labels
-    var isValuesVisibleListener = function ( isVisible ) {
+    var isValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
       directionLabel.visible = isVisible;
     };
     isValuesVisibleProperty.link( isValuesVisibleListener );
 
     // Register for synchronization with model.
-    var positionListener = function ( position ) {
+    var positionListener = function( position ) {
       electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
     };
     electricFieldSensor.positionProperty.link( positionListener );
@@ -138,7 +138,7 @@ define( function ( require ) {
         startOldTime: 0,
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
-        startDrag: function ( event ) {
+        startDrag: function( event ) {
 
           if ( !electricFieldSensor.isAnimated ) // don't drag nodes that are animated
           {
@@ -170,7 +170,7 @@ define( function ( require ) {
           }
         },
 
-        endDrag: function ( event ) {
+        endDrag: function( event ) {
           electricFieldSensor.isUserControlled = false;
         }
       } );
@@ -178,7 +178,7 @@ define( function ( require ) {
     // When dragging, move the electric Field Sensor
     electricFieldSensorNode.addInputListener( movableDragHandler );
 
-    var availableModelBoundsPropertyListener = function ( bounds ) {
+    var availableModelBoundsPropertyListener = function( bounds ) {
       movableDragHandler.setDragBounds( bounds );
     };
 
@@ -186,7 +186,7 @@ define( function ( require ) {
 
     this.availableModelBoundsProperty = availableModelBoundsProperty;
 
-    this.disposeElectricFieldSensor = function () {
+    this.disposeElectricFieldSensor = function() {
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
       isValuesVisibleProperty.unlink( isValuesVisibleListener );
@@ -196,7 +196,7 @@ define( function ( require ) {
   }
 
   return inherit( ElectricFieldSensorRepresentation, ElectricFieldSensorNode, {
-    dispose: function () {
+    dispose: function() {
       this.disposeElectricFieldSensor();
     }
   } );

@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // modules
@@ -31,7 +31,7 @@ define( function ( require ) {
 
     var electricFieldLineNode = this;
 
-    electricFieldLinesArray.addItemAddedListener( function ( electricFieldLine ) {
+    electricFieldLinesArray.addItemAddedListener( function( electricFieldLine ) {
       var electricFieldLinePath = new Path( modelViewTransform.modelToViewShape( electricFieldLine.getShape() ), options );
       electricFieldLineNode.addChild( electricFieldLinePath );
 
