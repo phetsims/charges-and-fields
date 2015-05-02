@@ -46,7 +46,7 @@ define( function( require ) {
 
     // Call the super constructor
     Node.call( this, {
-      // Show a cursor hand over the charge
+      // Show a cursor hand over this node
       cursor: 'pointer'
     } );
 
@@ -138,12 +138,11 @@ define( function( require ) {
             this.modelElement.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
             this.modelElement.isUserControlled = true;
             this.modelElement.isActive = false;
-
-            // create a new
-            this.movableDragHandler = createMovableDragHandler();
-            self.addInputListener( this.movableDragHandler );
             addModelElementToObservableArray( this.modelElement, observableArray );
 
+            // create a new movable drag handler
+            this.movableDragHandler = createMovableDragHandler();
+            self.addInputListener( this.movableDragHandler );
           },
 
           translate: function( translationParams ) {
@@ -186,7 +185,7 @@ define( function( require ) {
       }
     };
 
-// Pass options through to parent.
+    // Pass options through to parent.
     this.mutate( options );
   }
 
