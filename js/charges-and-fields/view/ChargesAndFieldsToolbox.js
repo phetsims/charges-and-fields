@@ -41,69 +41,6 @@ define( function( require ) {
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   /**
-   * Returns an icon of the sensor (without the two buttons)
-   * @private
-   * @returns {Node}
-   */
-  function electricPotentialSensortoIcon() {
-
-    var node = new Node();
-
-    // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
-    var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 2, centerX: 0, centerY: 0 } );
-
-    // Create the crosshair
-    var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
-      .lineTo( CIRCLE_RADIUS, 0 )
-      .moveTo( 0, -CIRCLE_RADIUS )
-      .lineTo( 0, CIRCLE_RADIUS );
-    var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
-
-    // Create the base of the crosshair
-    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
-
-    // Create the voltage Reading reading
-    var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
-      font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      fill: 'black',
-      stroke: 'black'
-    } );
-    var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
-    outlineImage.scale( 0.5 );
-
-    // Create the background rectangle behind the voltage Reading
-    var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
-      fill: 'white',
-      stroke: 'black'
-    } );
-
-    // update the colors on the crosshair components when the color profile changes
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
-      circle.stroke = color;
-      crosshair.stroke = color;
-      crosshairMount.fill = color;
-      crosshairMount.stroke = color;
-    } );
-
-    crosshairMount.centerX = circle.centerX;
-    crosshairMount.top = circle.bottom;
-    voltageReading.centerX = circle.centerX;
-    backgroundRectangle.centerX = circle.centerX;
-    outlineImage.centerX = circle.centerX;
-    outlineImage.top = crosshairMount.bottom;
-    voltageReading.top = outlineImage.top + 20;
-    backgroundRectangle.centerY = voltageReading.centerY;
-
-    node.addChild( crosshairMount );
-    node.addChild( circle );
-    node.addChild( crosshair );
-    node.addChild( outlineImage );
-    node.addChild( backgroundRectangle );
-    node.addChild( voltageReading );
-    return node;
-  }
-
-  /**
    * Toolbox constructor
    * @param {Property.<Vector2>} electricPotentialSensorPositionProperty
    * @param {Property.<boolean>} electricPotentialUserControlledProperty
@@ -130,30 +67,15 @@ define( function( require ) {
 
     //TODO fix the slight shift of panel
     // Create the icon image for the electricPotential sensor
-    //var electricPotentialSensorIconImage = new Image( electricPotentialSensorImage, {cursor: 'pointer', scale: 0.4} );
-    var electricPotentialSensorIcon = electricPotentialSensortoIcon();
-    // procedure to create an icon Image of a measuringTape
-    // first, create an actual measuring tape
-    var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
-      {
-        tipPositionProperty: new Property( new Vector2( 30, 0 ) ),
-        scale: 0.8 // make it a bit small
-      } );
-    measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
+    var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon(); //{Node}
 
-    // second, create the measuringTape icon with a token rectangle, it must be not empty as the panel will throw an error
-    // if node is empty
-    var measuringTapeIcon = new Node( { children: [ new Rectangle( 0, 0, 1, 1 ) ] } );
-
-    // Create the measuringTape icon using toImage
-    measuringTape.toImage( function( image ) {
-      measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
-    } );
+    // Create the icon image for the measuring Tape
+    var measuringTapeIconNode = this.createMeasuringTapeIcon(); // {Node}
 
     // The content panel with the two icons
     var panelContent = new LayoutBox( {
       spacing: 20,
-      children: [ electricPotentialSensorIcon, measuringTapeIcon ],
+      children: [ electricPotentialSensorIconNode, measuringTapeIconNode ],
       pickable: true
     } );
 
@@ -261,8 +183,8 @@ define( function( require ) {
       } );
 
     // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
-    measuringTapeIcon.addInputListener( measuringTapeMovableDragHandler );
-    electricPotentialSensorIcon.addInputListener( electricPotentialSensorMovableDragHandler );
+    measuringTapeIconNode.addInputListener( measuringTapeMovableDragHandler );
+    electricPotentialSensorIconNode.addInputListener( electricPotentialSensorMovableDragHandler );
 
     ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
       toolboxPanel.background.fill = color;
@@ -274,12 +196,12 @@ define( function( require ) {
 
     // hide and show
     isElectricPotentialSensorVisibleProperty.link( function( visible ) {
-      electricPotentialSensorIcon.visible = !visible;
+      electricPotentialSensorIconNode.visible = !visible;
     } );
 
     // measuringTape visibility has the opposite visibility of the measuringTape Icon
     isMeasuringTapeVisibleProperty.link( function( visible ) {
-      measuringTapeIcon.visible = !visible;
+      measuringTapeIconNode.visible = !visible;
     } );
 
     // no need to dispose of this link since this is present for the lifetime of the sim
@@ -308,7 +230,97 @@ define( function( require ) {
       }
     };
 
+
   }
 
-  return inherit( Panel, ChargesAndFieldsToolbox );
+  return inherit( Panel, ChargesAndFieldsToolbox, {
+    /**
+     * Returns an icon of the sensor (without the two buttons)
+     * @private
+     * @returns {Node}
+     */
+    createElectricPotentialSensorIcon: function() {
+
+      var node = new Node();
+
+      // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
+      var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 2, centerX: 0, centerY: 0 } );
+
+      // Create the crosshair
+      var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
+        .lineTo( CIRCLE_RADIUS, 0 )
+        .moveTo( 0, -CIRCLE_RADIUS )
+        .lineTo( 0, CIRCLE_RADIUS );
+      var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
+
+      // Create the base of the crosshair
+      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
+
+      // Create the voltage Reading reading
+      var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
+        font: ChargesAndFieldsConstants.DEFAULT_FONT,
+        fill: 'black',
+        stroke: 'black'
+      } );
+      var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
+      outlineImage.scale( 0.5 );
+
+      // Create the background rectangle behind the voltage Reading
+      var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
+        fill: 'white',
+        stroke: 'black'
+      } );
+
+      // update the colors on the crosshair components when the color profile changes
+      ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+        circle.stroke = color;
+        crosshair.stroke = color;
+        crosshairMount.fill = color;
+        crosshairMount.stroke = color;
+      } );
+
+      crosshairMount.centerX = circle.centerX;
+      crosshairMount.top = circle.bottom;
+      voltageReading.centerX = circle.centerX;
+      backgroundRectangle.centerX = circle.centerX;
+      outlineImage.centerX = circle.centerX;
+      outlineImage.top = crosshairMount.bottom;
+      voltageReading.top = outlineImage.top + 20;
+      backgroundRectangle.centerY = voltageReading.centerY;
+
+      node.addChild( crosshairMount );
+      node.addChild( circle );
+      node.addChild( crosshair );
+      node.addChild( outlineImage );
+      node.addChild( backgroundRectangle );
+      node.addChild( voltageReading );
+
+      return node;
+    },
+
+    /**
+     * Returns an icon of the measuring tape
+     * @private
+     * @returns {Node}
+     */
+    createMeasuringTapeIcon: function() {
+      // procedure to create an icon Image of a measuringTape
+      // first, create an actual measuring tape
+      var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
+        {
+          tipPositionProperty: new Property( new Vector2( 30, 0 ) ),
+          scale: 0.8 // make it a bit small
+        } );
+      measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
+
+      // second, create the measuringTape icon with a token rectangle so that it is not empty
+      var measuringTapeIcon = new Node( { children: [ new Rectangle( 0, 0, 1, 1 ) ] } );
+
+      // Create the measuringTape icon using toImage
+      measuringTape.toImage( function( image ) {
+        measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
+      } );
+      return measuringTapeIcon;
+    }
+  } );
 } );
