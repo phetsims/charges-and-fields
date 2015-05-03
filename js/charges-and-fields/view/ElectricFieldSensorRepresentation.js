@@ -2,9 +2,7 @@
 
 /**
  *  Scenery Node for the electric field sensor.
- *  The sensor is made of a circle and an arrow that points along the local electric field
- *  and changes its length according to the magnitude of the electric field
- *  A text label of the direction and magnitude of the local electric field is also displayed
+ *  The representation of the sensor is a circle
  *
  * @author Martin Veillette (Berea College)
  */

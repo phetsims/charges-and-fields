@@ -46,6 +46,8 @@ define( function( require ) {
 
     // find the distance between two adjacent sensors in view coordinates.
     var unitDistance = modelViewTransform.modelToViewDeltaX( ELECTRIC_POTENTIAL_SENSOR_SPACING );
+
+    // sets the positions of all the rectangles that forms our array
     this.rectangleArray = [];
     electricPotentialSensorGrid.forEach( function( electricPotentialSensor ) {
       var modelPosition = electricPotentialSensor.position;

@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // modules
@@ -57,7 +57,7 @@ define( function ( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongElectricFieldWithRK4: function ( position, deltaDistance ) {
+    getNextPositionAlongElectricFieldWithRK4: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var k1Vector = this.getElectricField( position ).normalize(); // {Vector2} normalized Vector along electricPotential
@@ -81,7 +81,7 @@ define( function ( require ) {
      * @param {number} deltaDistance - can be positive (for forward direction) or negative (for backward direction) (units of meter)
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongElectricField: function ( position, deltaDistance ) {
+    getNextPositionAlongElectricField: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position );
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero' );
       var midwayDisplacement = initialElectricField.normalized().multiplyScalar( deltaDistance / 2 );
@@ -99,7 +99,7 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {Array.<Vector2>|| null}
      */
-    getElectricFieldPositionArray: function ( position ) {
+    getElectricFieldPositionArray: function( position ) {
       /*
        Two arrays of points are generated. One is called forwardPositionArray and is made of all the points
        (excluding the initial point) that are along the electric field. The point are generated sequentially.
@@ -130,9 +130,9 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {boolean}
      */
-    getIsSafeDistanceFromChargedParticles: function ( position ) {
+    getIsSafeDistanceFromChargedParticles: function( position ) {
       var isSafeDistance = true;
-      this.chargedParticles.forEach( function ( chargedParticle ) {
+      this.chargedParticles.forEach( function( chargedParticle ) {
         isSafeDistance = isSafeDistance && (chargedParticle.position.distance( position ) > CLOSEST_APPROACH_DISTANCE);
       } );
       return isSafeDistance;
@@ -144,10 +144,10 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {Vector2}
      */
-    getClosestChargedParticlePosition: function ( position ) {
+    getClosestChargedParticlePosition: function( position ) {
       var closestChargedParticlePosition; // {Vector2}
       var closestDistance = Number.POSITIVE_INFINITY;
-      this.chargedParticles.forEach( function ( chargedParticle ) {
+      this.chargedParticles.forEach( function( chargedParticle ) {
         var distance = chargedParticle.position.distance( position );
         if ( distance < closestDistance ) {
           closestChargedParticlePosition = chargedParticle.position;
@@ -163,7 +163,7 @@ define( function ( require ) {
      * @param {Array.<Vector2>} positionArray
      * @returns {number}
      */
-    getRotationAngle: function ( positionArray ) {
+    getRotationAngle: function( positionArray ) {
       var length = positionArray.length;
       var newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
       var oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
@@ -183,7 +183,7 @@ define( function ( require ) {
      * @param {boolean} isSearchingBackward
      * @returns {Array.<Vector2>} positionArray
      */
-    getPositionArray: function ( position, isSearchingBackward ) {
+    getPositionArray: function( position, isSearchingBackward ) {
 
       // convenience variable
       var sign = 1;
@@ -258,7 +258,7 @@ define( function ( require ) {
      * @public read-only
      * @returns {boolean}
      */
-    getIsLineStartingNearCharge: function () {
+    getIsLineStartingNearCharge: function() {
       return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ 0 ] ));
     },
 
@@ -269,7 +269,7 @@ define( function ( require ) {
      * @public read-only
      * @returns {boolean}
      */
-    getIsLineEndingNearCharge: function () {
+    getIsLineEndingNearCharge: function() {
       var index = this.positionArray.length - 1;
       return !(this.getIsSafeDistanceFromChargedParticles( this.positionArray[ index ] ));
     },
@@ -280,7 +280,7 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {Array.<Vector2>}
      */
-    getCleanUpPositionArray: function () {
+    getCleanUpPositionArray: function() {
       var length = this.positionArray.length;
       var cleanUpPositionArray = [];
       cleanUpPositionArray.push( this.positionArray[ 0 ] );
@@ -306,7 +306,7 @@ define( function ( require ) {
      * @param {Object} [options]
      * @returns {Shape}
      */
-    getShape: function ( options ) {
+    getShape: function( options ) {
 
       options = _.extend( {
         arrowHeadLength: 0.05,// length of the arrow head in model coordinates
@@ -345,7 +345,7 @@ define( function ( require ) {
      * @param {Object} [options]
      * @returns {Shape}
      */
-    appendArrow: function ( shape, angle, options ) {
+    appendArrow: function( shape, angle, options ) {
       options = _.extend( {
         arrowHeadLength: 0.05,// length of the arrow head in model coordinates
         arrowHeadInternalAngle: Math.PI * 6 / 8 // half the internal angle (in radians) at the tip of the arrow head

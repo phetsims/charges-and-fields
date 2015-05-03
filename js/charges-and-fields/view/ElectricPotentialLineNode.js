@@ -2,10 +2,12 @@
 
 /**
  * Scenery Node responsible for the drawing of the electricPotential lines and their accompanying voltage labels
+ * A debug option can enabled the view of the (model) position points used to calculate the electric potential line.
+ * The (pruned) position points that are used to draw the electric potential line can also be displayed.
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // modules
@@ -24,9 +26,118 @@ define( function ( require ) {
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // constants
-  var IS_DEBUG = false;
+  var IS_DEBUG = false; // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
+
+  //----------------------------------------------------------------------------------------
+  // Function that generates a voltage label for the electricPotential line
+  // @param {number} electricPotential
+  // @param {Vector2} position
+  // @param {ModelViewTransform2} modelViewTransform
+  //----------------------------------------------------------------------------------------
+  function VoltageLabel( electricPotential, position, modelViewTransform ) {
+
+    Node.call( this );
+
+    // a smaller electric potential should have more precision
+    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? electricPotential.toFixed( 2 ) : electricPotential.toFixed( 1 );
+
+    // Create the voltage label for the electricPotential line
+    var voltageLabelString = StringUtils.format( pattern_0value_1units, electricPotentialValueString, voltageUnitString );
+    var voltageLabelText = new Text( voltageLabelString,
+      {
+        font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
+        center: modelViewTransform.modelToViewPosition( position )
+      } );
+
+    // Create a background rectangle for the voltage label
+    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.5, voltageLabelText.height * 1.5,
+      {
+        center: modelViewTransform.modelToViewPosition( position )
+      } );
+
+    this.addChild( backgroundRectangle ); // must go first
+    this.addChild( voltageLabelText );
+
+    // Link the fill color of the background to the default/projector mode
+    var rectangleColorFunction = function( color ) {
+      backgroundRectangle.fill = color;
+    };
+    ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
+
+    // Link the fill color of the text for the default/projector mode
+    var textColorFunction = function( color ) {
+      voltageLabelText.fill = color;
+    };
+    ChargesAndFieldsColors.link( 'electricPotentialLine', textColorFunction ); // text has the same color as the equipotential line
+
+    // create a dispose function to unlink the color functions
+    this.disposeVoltageLabel = function() {
+      ChargesAndFieldsColors.unlink( 'electricPotentialLine', textColorFunction );
+      ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
+    };
+  }
+
+  inherit( Node, VoltageLabel, {
+    dispose: function() {
+      this.disposeVoltageLabel();
+    }
+  } );
+
+  //----------------------------------------------------------------------------------------
+  // Function that generates a scenery path from the shape of the electricPotential line
+  // @param {Shape} electricPotentialLineShape
+  // @param {ModelViewTransform2} modelViewTransform
+  //----------------------------------------------------------------------------------------
+  function ElectricPotentialLinePath( electricPotentialLineShape, modelViewTransform ) {
+
+    var self = this;
+
+    Path.call( this, modelViewTransform.modelToViewShape( electricPotentialLineShape ) );
+
+    // Link the stroke color for the default/projector mode
+    var pathColorFunction = function( color ) {
+      self.stroke = color;
+    };
+    ChargesAndFieldsColors.link( 'electricPotentialLine', pathColorFunction );
+
+    // create a dispose function to unlink the color functions
+    this.disposeElectricPotentialLinePath = function() {
+      ChargesAndFieldsColors.unlink( 'electricPotentialLine', pathColorFunction );
+    };
+  }
+
+  inherit( Path, ElectricPotentialLinePath, {
+    dispose: function() {
+      this.disposeElectricPotentialLinePath();
+    }
+  } );
+
+  //----------------------------------------------------------------------------------------
+  // Function that generates an array of Circles with their centers determined by the position array
+  // @param {Array.<Vector2>} positionArray
+  // @param {Shape} electricPotentialLineShape
+  // @param {ModelViewTransform2} modelViewTransform
+  //----------------------------------------------------------------------------------------
+  function Circles( positionArray, modelViewTransform, options ) {
+
+    var self = this;
+
+    Node.call( this );
+
+    var circleRadius = 2;
+
+    // create and add all the circles
+    positionArray.forEach( function( position ) {
+      var circle = new Circle( circleRadius, options );
+      circle.center = modelViewTransform.modelToViewPosition( position );
+      self.addChild( circle );
+    } );
+  }
+
+  inherit( Node, Circles );
 
   /**
+   * Scenery node that is responsible for displaying the electric potential lines
    *
    * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLinesArray - array of models of electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
@@ -35,161 +146,70 @@ define( function ( require ) {
    */
   function ElectricPotentialLineNode( electricPotentialLinesArray, modelViewTransform, isValuesVisibleProperty ) {
 
+    // call the super constructor
     Node.call( this );
 
-    // Create and add the parent node for all the line nodes
-    var lineNode = new Node();
-    this.addChild( lineNode );
+    // Create and add the parent node for all the lines (paths)
+    var pathsNode = new Node();
+    this.addChild( pathsNode );
+
+    // Create and add the parent node for the circles (used in DEBUG mode)
+    if ( IS_DEBUG ) {
+      var circlesNode = new Node();
+      this.addChild( circlesNode );
+    }
 
     // Create and add the parent node for the label nodes
-    var labelNode = new Node();
-    this.addChild( labelNode );
-
-    var circleNode = new Node();
-    this.addChild( circleNode );
+    var labelsNode = new Node();
+    this.addChild( labelsNode );
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-    electricPotentialLinesArray.addItemAddedListener( function ( electricPotentialLine ) {
+    electricPotentialLinesArray.addItemAddedListener( function( electricPotentialLine ) {
 
-      var voltageLabel = labelElectricPotentialLine( electricPotentialLine );
-      var rectangle = new Rectangle( 0, 0, voltageLabel.width * 1.5, voltageLabel.height * 1.5,
-        {
-          center: modelViewTransform.modelToViewPosition( electricPotentialLine.position )
-        } );
+      var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
+      pathsNode.addChild( electricPotentialLinePath );
 
-      // Link the fill color for the default/projector mode
-      var rectangleColorFunction = function ( color ) {
-        rectangle.fill = color;
-      };
-      ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
-
-      var electricPotentialLinePath = traceElectricPotentialLine( electricPotentialLine.getShape() );
-
-      lineNode.addChild( electricPotentialLinePath );
-      labelNode.addChild( rectangle );
-      labelNode.addChild( voltageLabel );
+      var voltageLabel = new VoltageLabel(
+        electricPotentialLine.electricPotential,
+        electricPotentialLine.position,
+        modelViewTransform );
+      labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
-        var electricPotentialCircle = dotElectricPotentialLine( electricPotentialLine );
-        var electricPotentialCircle2 = dot2ElectricPotentialLine( electricPotentialLine );
-        //
-        circleNode.setChildren( electricPotentialCircle.concat( electricPotentialCircle2 ) );
+
+        // create all the circles corresponding to the positions calculated in the model
+        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, { fill: 'pink' } );
+
+        // create all the circles corresponding to the positions used to create the shape of the electric potential line
+        var electricPotentialViewCircles = new Circles( electricPotentialLine.getCleanUpPositionArray(), modelViewTransform, { fill: 'yellow' } );
+
+        // add the circles
+        circlesNode.addChild( electricPotentialModelCircles );
+        circlesNode.addChild( electricPotentialViewCircles );
       }
 
       electricPotentialLinesArray.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
         if ( removedElectricPotentialLine === electricPotentialLine ) {
-          lineNode.removeChild( electricPotentialLinePath );
-          labelNode.removeChild( rectangle );
-          labelNode.removeChild( voltageLabel );
+
+          pathsNode.removeChild( electricPotentialLinePath );
+          labelsNode.removeChild( voltageLabel );
           if ( IS_DEBUG ) {
-            circleNode.removeAllChildren();
+            circlesNode.removeAllChildren();
           }
-          ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
-          ChargesAndFieldsColors.unlink( 'electricPotentialLine', electricPotentialLinePath.colorFunction );
-          ChargesAndFieldsColors.unlink( 'electricPotentialLine', voltageLabel.colorFunction );
+
+          // dispose of the link for garbage collection
+          electricPotentialLinePath.dispose();
+          voltageLabel.dispose();
 
           electricPotentialLinesArray.removeItemRemovedListener( removalListener );
         }
-      } );
+      } ); // end of addItemRemovedListener
 
-    } );
+    } ); // end of addItemAddedListener
 
     // Control the visibility of the value (voltage) labels
     // no need to unlink present for the lifetime of the sim
-    isValuesVisibleProperty.linkAttribute( labelNode, 'visible' );
-
-    /**
-     * Function that generates a path from the electricPotential line shape
-     * @param {Shape} electricPotentialLineShape
-     * @returns {Path}
-     */
-    function traceElectricPotentialLine( electricPotentialLineShape ) {
-
-      var electricPotentialLinePath = new Path( modelViewTransform.modelToViewShape( electricPotentialLineShape ) );
-
-      electricPotentialLinePath.colorFunction = function ( color ) {
-        electricPotentialLinePath.stroke = color;
-      };
-      // Link the stroke color for the default/projector mode
-      ChargesAndFieldsColors.link( 'electricPotentialLine', electricPotentialLinePath.colorFunction );
-
-      return electricPotentialLinePath;
-    }
-
-    /**
-     * Function that generates an array of dot of the electricPotential line
-     * This includes all the data points calculated in the model
-     * @param {ElectricPotentialLine} electricPotentialLine
-     * @returns {Array.{Circle}}
-     */
-    function dotElectricPotentialLine( electricPotentialLine ) {
-
-      var circleArray = [];
-
-      //Simple and naive method to plot lines between all the points
-      electricPotentialLine.positionArray.forEach( function ( position ) {
-        var circle = new Circle( 2, {fill: 'yellow'} );
-        circle.center = modelViewTransform.modelToViewPosition( position );
-        circleArray.push( circle );
-      } );
-
-      circleArray.colorFunction = function ( color ) {
-        circleArray.forEach( function ( circle ) {
-          circle.stroke = color;
-        } );
-      };
-      // Link the stroke color for the default/projector mode
-      ChargesAndFieldsColors.link( 'electricPotentialLine', circleArray.colorFunction );
-
-      return circleArray;
-    }
-
-    /**
-     * Function that generates an array of dot of the electricPotential line
-     * the dots are from the clean array, i.e. the position array that is used
-     * to plot straight lines
-     * @param {ElectricPotentialLine} electricPotentialLine
-     * @returns {Array.{Circle}}
-     */
-    function dot2ElectricPotentialLine( electricPotentialLine ) {
-
-      var circleArray = [];
-      var positionArray = electricPotentialLine.getCleanUpPositionArray();
-
-      //Simple and naive method to plot lines between all the points
-      positionArray.forEach( function ( position ) {
-        var circle = new Circle( 2, {fill: 'red'} );
-        circle.center = modelViewTransform.modelToViewPosition( position );
-        circleArray.push( circle );
-      } );
-
-      return circleArray;
-    }
-
-    /**
-     * Function that generates a voltage label for the electricPotential line
-     * @param {ElectricPotentialLine} electricPotentialLine
-     * @returns {Text}
-     */
-    function labelElectricPotentialLine( electricPotentialLine ) {
-
-      //Create the voltage label for the electricPotential line
-      var voltageLabelText = StringUtils.format( pattern_0value_1units, electricPotentialLine.electricPotential.toFixed( 1 ), voltageUnitString );
-      var voltageLabel = new Text( voltageLabelText,
-        {
-          font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
-          center: modelViewTransform.modelToViewPosition( electricPotentialLine.position )
-        } );
-
-      // Link the fill color for the default/projector mode
-      voltageLabel.colorFunction = function ( color ) {
-        voltageLabel.fill = color;
-      };
-
-      ChargesAndFieldsColors.link( 'electricPotentialLine', voltageLabel.colorFunction );
-
-      return voltageLabel;
-    }
+    isValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
   }
 
   return inherit( Node, ElectricPotentialLineNode );

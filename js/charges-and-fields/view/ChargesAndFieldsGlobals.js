@@ -17,6 +17,6 @@ define( function( require ) {
   } );
 
   return _.extend( ChargesAndFieldsGlobals, {
-    disallowWebGL : phet.chipper.getQueryParameter( 'webgl' ) === 'false'
+    disallowWebGL: phet.chipper.getQueryParameter( 'webgl' ) === 'false'
   } );
 } );

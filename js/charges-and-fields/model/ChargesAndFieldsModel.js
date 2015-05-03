@@ -571,6 +571,5 @@ define( function( require ) {
     }
   )
     ;
-} )
-;
+} );
 

@@ -1,4 +1,4 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Scenery Node representing grid lines (located in the model) with major and minor lines.
@@ -10,7 +10,7 @@
 define( function( require ) {
   'use strict';
 
-  // imports
+  // modules
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
@@ -40,7 +40,10 @@ define( function( require ) {
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
-  function Grid( modelViewTransform, boundsProperty, isGridVisibleProperty, isValuesVisibleProperty ) {
+  function GridNode( modelViewTransform,
+                     boundsProperty,
+                     isGridVisibleProperty,
+                     isValuesVisibleProperty ) {
 
     var thisGrid = this;
 
@@ -113,8 +116,8 @@ define( function( require ) {
     this.addChild( text );
 
     // layout
-    arrowPath.top = modelViewTransform.modelToViewY( -2.20 );
-    arrowPath.left = modelViewTransform.modelToViewX( 2 );
+    arrowPath.top = modelViewTransform.modelToViewY( -2.20 ); // empirically determined such that the electric field arrows do not overlap with it
+    arrowPath.left = modelViewTransform.modelToViewX( 2 ); // should be set to an integer value such that it spans two majorGridlines
     text.centerX = arrowPath.centerX;
     text.top = arrowPath.bottom;
 
@@ -152,6 +155,5 @@ define( function( require ) {
 
   }
 
-  return inherit( Node, Grid );
-} )
-;
+  return inherit( Node, GridNode );
+} );

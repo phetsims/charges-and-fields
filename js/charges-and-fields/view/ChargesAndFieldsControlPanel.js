@@ -8,7 +8,7 @@
 define( function( require ) {
   'use strict';
 
-  // imports
+  // modules
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var CheckBox = require( 'SUN/CheckBox' );
@@ -143,5 +143,4 @@ define( function( require ) {
 
   return inherit( Panel, ChargesAndFieldsControlPanel );
 
-} )
-;
+} );

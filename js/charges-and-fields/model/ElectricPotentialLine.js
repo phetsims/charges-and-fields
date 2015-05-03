@@ -5,7 +5,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // modules
@@ -64,7 +64,7 @@ define( function ( require ) {
      * @param {number} deltaDistance - a distance
      * @returns {Vector2} next point along the electricPotential line
      */
-    getNextPositionAlongEquipotential: function ( position, deltaDistance ) {
+    getNextPositionAlongEquipotential: function( position, deltaDistance ) {
       return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, this.electricPotential, deltaDistance );
     },
 
@@ -82,7 +82,7 @@ define( function ( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithElectricPotential: function ( position, electricPotential, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithElectricPotential: function( position, electricPotential, deltaDistance ) {
       /*
        General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
        to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
@@ -124,7 +124,7 @@ define( function ( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithMidPoint: function ( position, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithMidPoint: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var initialEquipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
@@ -148,7 +148,7 @@ define( function ( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithRK4: function ( position, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithRK4: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
@@ -170,7 +170,7 @@ define( function ( require ) {
      * @param {Vector2} position - initial position
      * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
      */
-    getEquipotentialPositionArray: function ( position ) {
+    getEquipotentialPositionArray: function( position ) {
       if ( !this.isPlayAreaChargedProperty.value ) {
         // if there are no charges, don't bother to find the electricPotential line
         return null;
@@ -294,7 +294,7 @@ define( function ( require ) {
      * @private
      * @returns {Array.<Vector2>}
      */
-    getCleanUpPositionArray: function () {
+    getCleanUpPositionArray: function() {
       var length = this.positionArray.length;
       var cleanUpPositionArray = [];
       cleanUpPositionArray.push( this.positionArray[ 0 ] );
@@ -319,10 +319,10 @@ define( function ( require ) {
      * @param {Vector2} position
      * @returns {Vector2}
      */
-    getClosestChargedParticlePosition: function ( position ) {
+    getClosestChargedParticlePosition: function( position ) {
       var closestChargedParticlePosition; // {Vector2}
       var closestDistance = Number.POSITIVE_INFINITY;
-      this.chargedParticles.forEach( function ( chargedParticle ) {
+      this.chargedParticles.forEach( function( chargedParticle ) {
         var distance = chargedParticle.position.distance( position );
         if ( distance < closestDistance ) {
           closestChargedParticlePosition = chargedParticle.position;
@@ -338,7 +338,7 @@ define( function ( require ) {
      * @param {Array.<Vector2>} positionArray
      * @returns {number}
      */
-    getRotationAngle: function ( positionArray ) {
+    getRotationAngle: function( positionArray ) {
       var length = positionArray.length;
       var newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
       var oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
@@ -350,10 +350,10 @@ define( function ( require ) {
      * @public
      * @returns {Shape}
      */
-    getShape: function () {
+    getShape: function() {
       var shape = new Shape();
       return this.positionArrayToStraightLine( shape, this.getCleanUpPositionArray(),
-        {isClosedLineSegments: this.isLineClosed}
+        { isClosedLineSegments: this.isLineClosed }
       );
     },
 
@@ -365,7 +365,7 @@ define( function ( require ) {
      * @param {Object} [options]
      * @returns {Shape}
      */
-    positionArrayToStraightLine: function ( shape, positionArray, options ) {
+    positionArrayToStraightLine: function( shape, positionArray, options ) {
       options = _.extend( {
         // is the resulting shape forming a close path
         isClosedLineSegments: false

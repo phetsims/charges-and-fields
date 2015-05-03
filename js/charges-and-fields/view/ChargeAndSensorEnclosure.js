@@ -167,5 +167,4 @@ define( function( require ) {
 
   return inherit( Node, ChargeAndSensorEnclosure );
 
-} )
-;
+} );
