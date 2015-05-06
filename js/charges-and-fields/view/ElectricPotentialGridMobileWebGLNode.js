@@ -221,13 +221,13 @@ define( function( require ) {
     }, {
       /**
        * Detection for how many particles we can support.
+       * @public read-only
        */
       getNumberOfParticlesSupported: function() {
         var canvas = document.createElement( 'canvas' );
         var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
         return ElectricPotentialGridMobileWebGLNode.particlesSupportedForContext( gl );
       },
-
       particlesSupportedForContext: function( gl ) {
         var otherVectorCount = 7; // colors, matrix and one extra to be safe
         var maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );

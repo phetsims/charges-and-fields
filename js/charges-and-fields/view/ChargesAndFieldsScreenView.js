@@ -219,7 +219,6 @@ define( function( require ) {
     // webGL devices that do have have full WebGL support, can have only a finite number of charges on board
     var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
 
-    // TODO: it may no be even be a constant since it depends on device
     var numberChargesLimit = ( isNumberChargesLimited ) ?
                                ElectricPotentialGridMobileWebGLNode.getNumberOfParticlesSupported() :
                                Number.POSITIVE_INFINITY;
