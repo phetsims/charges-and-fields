@@ -27,7 +27,7 @@ define( function( require ) {
 
       // all credits fields are optional
       leadDesign: 'Amy Rouinfar, Michael Dubson',
-      softwareDevelopment: 'Martin Veillette, Jonathan Olson, Micheal Dubson',
+      softwareDevelopment: 'Martin Veillette, Jonathan Olson, Michael Dubson',
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Oliver Orejola'
     },
