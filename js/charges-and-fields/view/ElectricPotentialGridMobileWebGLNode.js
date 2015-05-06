@@ -89,24 +89,10 @@ define( function( require ) {
         particle.positionProperty.unlink( this.positionListener );
       },
 
-      /**
-       * Returns the maximum number of charges supported on Mobile webGL
-       *
-       * @returns {number}
-       * @public read-only
-       */
-      getMaximumNumberOfCharges: function() {
-        return this.maximumNumberOfCharges;
-      },
-
       initializeWebGLDrawable: function( drawable ) {
         var gl = drawable.gl;
 
-        var otherVectorCount = 7; // colors, matrix and one extra to be safe
-        var maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
-        drawable.maximumNumParticles = Math.min( MAX_PARTICLES_LIMIT, maxVertexUniforms - otherVectorCount );
-
-        this.maximumNumberOfCharges = drawable.maximumNumParticles;
+        drawable.maximumNumParticles = ElectricPotentialGridMobileWebGLNode.particlesSupportedForContext( gl );
 
         // make sure we get repainted
         this.invalidatePaint();
@@ -231,6 +217,21 @@ define( function( require ) {
         drawable.gl.deleteBuffer( drawable.vertexBuffer );
 
         drawable.displayShaderProgram = null;
+      }
+    }, {
+      /**
+       * Detection for how many particles we can support.
+       */
+      getNumberOfParticlesSupported: function() {
+        var canvas = document.createElement( 'canvas' );
+        var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+        return ElectricPotentialGridMobileWebGLNode.particlesSupportedForContext( gl );
+      },
+
+      particlesSupportedForContext: function( gl ) {
+        var otherVectorCount = 7; // colors, matrix and one extra to be safe
+        var maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
+        return Math.min( MAX_PARTICLES_LIMIT, maxVertexUniforms - otherVectorCount );
       }
     } );
   }

@@ -220,7 +220,9 @@ define( function( require ) {
     var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
 
     // TODO: it may no be even be a constant since it depends on device
-    var numberChargesLimit = (isNumberChargesLimited) ? 32 : Number.POSITIVE_INFINITY;
+    var numberChargesLimit = ( isNumberChargesLimited ) ?
+                               ElectricPotentialGridMobileWebGLNode.getNumberOfParticlesSupported() :
+                               Number.POSITIVE_INFINITY;
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(
