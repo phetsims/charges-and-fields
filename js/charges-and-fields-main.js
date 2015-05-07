@@ -8,7 +8,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CanvasWarningNode = require( 'SCENERY_PHET/CanvasWarningNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsScreen = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsScreen' );
@@ -31,8 +30,7 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Oliver Orejola'
     },
-    optionsNode: new GlobalOptionsNode( isEnhancedVersion ),
-    homeScreenWarningNode: ChargesAndFieldsGlobals.useWebGL ? null : new CanvasWarningNode()
+    optionsNode: new GlobalOptionsNode( isEnhancedVersion )
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
