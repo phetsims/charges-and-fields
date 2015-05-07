@@ -252,7 +252,9 @@ define( function( require ) {
     }
 
     /**
-     * Function that rounds a number and return it as a string
+     * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
+     * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
+     *
      * @param {number} number
      * @param {Object} [options]
      * @returns {string}
@@ -262,20 +264,32 @@ define( function( require ) {
         maxSigFigs: 3
       }, options );
 
-      var roundedNumber;
-      if ( Math.abs( number ) < 1 ) {
-        roundedNumber = Util.toFixed( number, options.maxSigFigs );
+
+      // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
+      // 999.111 -> 999.1
+      // 99.1111 -> 99.11
+      // 9.11111 -> 9.111
+      // 1.11111 -> 1.111
+      // 0.11111 -> 0.111
+      // 0.01111 -> 0.011
+      // 0.00111 -> 0.001
+      // 0.00011 -> 0.000
+
+      // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
+      var exponent = Math.floor( Math.log10( Math.abs( number ) ) );
+
+      var decimalPlaces;
+      if ( exponent >= options.maxSigFigs ) {
+        decimalPlaces = 0;
       }
-      else if ( Math.abs( number ) < 10 ) {
-        roundedNumber = Util.toFixed( number, options.maxSigFigs - 1 );
-      }
-      else if ( Math.abs( number ) < 100 ) {
-        roundedNumber = Util.toFixed( number, options.maxSigFigs - 2 );
+      else if ( exponent > 0 ) {
+        decimalPlaces = options.maxSigFigs - exponent;
       }
       else {
-        roundedNumber = Util.toFixed( number, options.maxSigFigs - 3 );
+        decimalPlaces = options.maxSigFigs;
       }
-      return roundedNumber;
+
+      return Util.toFixed( number, decimalPlaces );
     }
 
   }
