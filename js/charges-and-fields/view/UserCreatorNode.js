@@ -16,7 +16,7 @@ define( function( require ) {
 
   // modules
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
-  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
+  var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
   var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -62,10 +62,10 @@ define( function( require ) {
       var representationNode;
       switch( options.element ) {
         case 'positive':
-          representationNode = new ChargedParticleRepresentation( 1 );
+          representationNode = new ChargedParticleRepresentationNode( 1 );
           break;
         case 'negative':
-          representationNode = new ChargedParticleRepresentation( -1 );
+          representationNode = new ChargedParticleRepresentationNode( -1 );
           break;
         case 'electricFieldSensor':
           representationNode = new ElectricFieldSensorRepresentation();

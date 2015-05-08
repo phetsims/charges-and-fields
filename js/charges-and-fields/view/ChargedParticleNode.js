@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargedParticleRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentation' );
+  var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
@@ -28,7 +28,7 @@ define( function( require ) {
 
     var chargedParticleNode = this;
 
-    ChargedParticleRepresentation.call( this, chargedParticle.charge );
+    ChargedParticleRepresentationNode.call( this, chargedParticle.charge );
 
     // Set up the mouse  areas for this node so that this can still be grabbed when invisible.
     this.touchArea = this.localBounds.dilated( 10 );
@@ -79,7 +79,7 @@ define( function( require ) {
     };
   }
 
-  return inherit( ChargedParticleRepresentation, ChargedParticleNode, {
+  return inherit( ChargedParticleRepresentationNode, ChargedParticleNode, {
     dispose: function() {
       this.disposeChargedParticleNode();
     }

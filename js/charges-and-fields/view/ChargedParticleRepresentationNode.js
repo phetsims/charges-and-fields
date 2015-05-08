@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {number} charge
    * @constructor
    */
-  function ChargedParticleRepresentation( charge ) {
+  function ChargedParticleRepresentationNode( charge ) {
 
     Node.call( this, {
       // Show a cursor hand over the charge
@@ -76,5 +76,5 @@ define( function( require ) {
     }
   }
 
-  return inherit( Node, ChargedParticleRepresentation );
+  return inherit( Node, ChargedParticleRepresentationNode );
 } );
