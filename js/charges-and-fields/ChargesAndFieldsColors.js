@@ -29,6 +29,10 @@ define( function( require ) {
       default: WHITE,
       projector: BLACK
     },
+    chargedParticleStroke:{
+      default: BLACK,
+      projector: WHITE
+    },
     controlPanelBorder: {
       default: new Color( 210, 210, 210 ),
       projector: new Color( 192, 192, 192 )

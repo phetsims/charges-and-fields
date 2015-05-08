@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -51,6 +52,10 @@ define( function( require ) {
         .addColorStop( 0.5, 'rgb(44, 190, 245)' )
         .addColorStop( 1, 'rgb(0,169,232)' );
     }
+
+    ChargesAndFieldsColors.chargedParticleStrokeProperty.link( function( color ) {
+      circle.stroke = color;
+    } );
 
     // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
     var ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
