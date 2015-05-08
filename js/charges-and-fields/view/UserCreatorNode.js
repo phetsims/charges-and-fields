@@ -187,7 +187,8 @@ define( function( require ) {
         return new Vector2( xConstrained, yConstrained );
       }
     };
-
+    // Pass options through to parent.
+    this.mutate( options );
   }
 
   return inherit( Node, UserCreatorNode );
