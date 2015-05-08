@@ -47,6 +47,8 @@ define( function( require ) {
     // Initialize variables
     //----------------------------------------------------------------------------------------
 
+    this.isResetting = false; // is the model being reset
+
     // @public read-only
     this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
 
@@ -230,7 +232,7 @@ define( function( require ) {
     // if any charge is removed, we need to update all the sensors
     this.chargedParticles.addItemRemovedListener( function( chargeParticle ) {
       // check that the particle was active before updating charge dependent model components
-      if ( chargeParticle.isActive ) {
+      if ( chargeParticle.isActive && !thisModel.isResetting ) {
         // Remove electricPotential lines and electric field lines
         thisModel.clearElectricPotentialLines();
         thisModel.clearElectricFieldLines();
@@ -271,7 +273,9 @@ define( function( require ) {
        * @public
        */
       reset: function() {
+        this.isResetting = true; // we will avoid the cost of updating the grids when emptying the chargedParticles array
         this.chargedParticles.clear(); // clear all the charges
+        this.activeChargedParticles.clear(); // clear all the active charges
         this.electricFieldSensors.clear(); // clear all the electric field sensors
         this.electricPotentialLinesArray.clear(); // clear the electricPotential 'lines'
         this.electricFieldLinesArray.clear(); // clear the electric field 'lines'
@@ -279,6 +283,7 @@ define( function( require ) {
         this.updateElectricFieldSensorGrid(); // will reset the grid to zero
         this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
         PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
+        this.isResetting = false; // done with the re3stting process
       },
 
       /**

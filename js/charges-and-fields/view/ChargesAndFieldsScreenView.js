@@ -76,8 +76,8 @@ define( function( require ) {
     } );
 
     // Create a property that register the model bounds based on the screen size
-    // Note that unlike the viewPropertySet set above, the availableModelBounds should not be reset when
-    // the resetAllButton is pressed, hence the reason it is not part of the previous set
+    // Note that unlike the viewPropertySet above, the availableModelBounds should not be reset when
+    // the resetAllButton is pressed, hence the reason it is not part of the previous propertySet
     this.availableModelBoundsProperty = new Property( model.enlargedBounds );
 
     // The origin of the model is set to the middle of the dev bounds. There are 8 meters across the width of the dev bounds.
@@ -92,14 +92,17 @@ define( function( require ) {
 
     // Check to see if WebGL was prevented by a query parameter
     var disallowWebGL = ChargesAndFieldsGlobals.disallowWebGL;
+
     // The mobile WebGL implementation will work with basic WebGL support
     var allowMobileWebGL = Util.checkWebGLSupport() && !disallowWebGL;
+
     // The unlimited-particle implementation will work only with OES_texture_float where writing to
     // float textures is supported.
     var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
                      ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
 
     var electricPotentialGridNode;
+
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( allowWebGL ) {
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
@@ -292,10 +295,11 @@ define( function( require ) {
 
     // link the available model bounds
     this.availableModelBoundsProperty.link( function( bounds ) {
+
       // the measuring Tape is subject to dragBounds (specified in model coordinates)
       measuringTape.dragBounds = bounds;
 
-      // the control panel, toolboxPanel and resetAllButtons are set to the right of the bounds
+      // the control panel, toolbox panel and resetAllButtons are set to the right of the bounds
       var right = modelViewTransform.modelToViewX( bounds.maxX );
       controlPanel.right = right - 30;
       resetAllButton.right = controlPanel.right;
@@ -305,7 +309,6 @@ define( function( require ) {
     // layout the objects
     controlPanel.right = this.layoutBounds.maxX - 30;
     controlPanel.top = 30;
-
     gridNode.centerX = this.layoutBounds.centerX;
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
     resetAllButton.right = controlPanel.right;
@@ -326,7 +329,7 @@ define( function( require ) {
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );
 
-    // if in debug mode add two buttons that allow to add (many at a time) electric potential lines and electric field lines
+    // if in debug mode, add two buttons that allow to add (many at a time) electric potential lines and electric field lines
     if ( IS_DEBUG_MODE ) {
       this.addChild( new RectangularPushButton( {
           listener: function() {
