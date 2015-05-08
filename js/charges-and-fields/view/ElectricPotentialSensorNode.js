@@ -1,9 +1,11 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * View for the ElectricFieldSensorNode which renders the sensor as a scenery node.
- * The sensor is draggable and that can generate or delete an electric potential field line.
- * The sensor has a readout of the electric potential at a given position.
+ * View for the ElectricPotentialSensorNode which renders the sensor as a scenery node.
+ * The sensor is draggable, has a readout of the electric potential ( that matches the
+ * electric potential at the crosshair position). The electric potential sensor has two
+ * push buttons: One of them send a callback that creates an electric potential line whereas
+ * the second push buttons deletes all the electric potential lines on the board.
  *
  * @author Martin Veillette (Berea College)
  */
@@ -146,7 +148,7 @@ define( function( require ) {
     bodyNode.addChild( bodyContent );
     bodyNode.addChild( voltageReadout ); // must be last
 
-    // layout all the remaining nodes
+    // layout the elements of bodyNode
     outlineImage.scale( 1.2 * bodyContent.width / outlineImage.width );
     outlineImage.centerX = bodyContent.centerX;
     outlineImage.top = bodyContent.top - 15;
