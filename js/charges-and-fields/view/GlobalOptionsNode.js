@@ -23,14 +23,13 @@ define( function( require ) {
    *
    * @constructor
    */
-  function GlobalOptionsNode( ) {
-    var children = [];
+  function GlobalOptionsNode() {
 
-    children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
-      ChargesAndFieldsGlobals.projectorColorsProperty, {} ) );
+    var projectorCheckBox = new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
+      ChargesAndFieldsGlobals.projectorColorsProperty, {} );
 
     LayoutBox.call( this, _.extend( {
-      children: children,
+      children: [ projectorCheckBox ],
       spacing: OptionsDialog.DEFAULT_SPACING,
       align: 'left'
     } ) );
