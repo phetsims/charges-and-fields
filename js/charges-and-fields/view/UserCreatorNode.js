@@ -1,13 +1,12 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * A Scenery node that can be clicked upon to create a scenery node and a model element.
+ * A Scenery node that can be clicked upon to create a model element.
  *
  * The behavior that is sought after is
- * (1) when clicked upon, an additional scenery node (with no model element counterpart) is created and "jump".
- * (2) this additional node can be dragged onto the board but is subject to the some dragBounds
- * (3) when released the additional scenery node should 'disappeared' and be replaced by a model element (which itself is responsible for its view.
- * (4) the model element should be able to return to its 'destinationPosition', namely the position of the static scenery node
+ * (1) when clicked upon, an inactive model element is created is created and "jump up".
+ * (2) the model element can be dragged onto the board but is subject to the some dragBounds
+ * (3) when released, the model element becomes active
  *
  * @author John Blanco
  * @author Martin Veillette (Berea College)
@@ -136,7 +135,7 @@ define( function( require ) {
             // Create the new model element.
             this.modelElement = modelElementCreator( modelViewTransform.viewToModelPosition( viewPosition.plus( offset ) ) );
             this.modelElement.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
-            this.modelElement.isUserControlled = true;
+            this.modelElement.isUserControlledProperty.set( true );
             this.modelElement.isActive = false;
             addModelElementToObservableArray( this.modelElement, observableArray );
 
@@ -152,8 +151,12 @@ define( function( require ) {
           },
 
           end: function( event ) {
+            // remove the additional movable drag handler
             self.removeInputListener( this.movableDragHandler );
-            this.modelElement.isUserControlled = false;
+
+            this.modelElement.isUserControlledProperty.set( false );
+
+            // set the modelElement to be active if its current position is not in the enclosure
             if ( !enclosureBounds.containsPoint( this.modelElement.position ) ) {
               this.modelElement.isActive = true;
             }
@@ -185,8 +188,6 @@ define( function( require ) {
       }
     };
 
-    // Pass options through to parent.
-    this.mutate( options );
   }
 
   return inherit( Node, UserCreatorNode );
