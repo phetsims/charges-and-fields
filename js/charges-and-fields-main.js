@@ -18,9 +18,6 @@ define( function( require ) {
   // strings
   var simTitle = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.name' );
 
-  // the enhanced version has the capability of drawing electric field lines by double clicking on the electric field sensor nodes
-  var isEnhancedVersion = true;
-
   var simOptions = {
     credits: {
 
@@ -30,7 +27,7 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Oliver Orejola'
     },
-    optionsNode: new GlobalOptionsNode( isEnhancedVersion )
+    optionsNode: new GlobalOptionsNode( )
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {

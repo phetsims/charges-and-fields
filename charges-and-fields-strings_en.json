@@ -47,9 +47,6 @@
   "pattern.0value.1units": {
     "value": "{0} {1}"
   },
-  "options.electricFieldLines": {
-    "value": "Electric Field Lines Support"
-  },
   "options.projectorColors": {
     "value": "Projector Mode"
   }

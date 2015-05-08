@@ -17,7 +17,6 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   // strings
-  var electricFieldLinesString = require( 'string!CHARGES_AND_FIELDS/options.electricFieldLines' );
   var projectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
   /**
@@ -25,13 +24,9 @@ define( function( require ) {
    * @param {boolean} isEnhancedVersion
    * @constructor
    */
-  function GlobalOptionsNode( isEnhancedVersion ) {
+  function GlobalOptionsNode( ) {
     var children = [];
 
-    if ( isEnhancedVersion ) {
-      children.push( new CheckBox( new Text( electricFieldLinesString, { font: OptionsDialog.DEFAULT_FONT } ),
-        ChargesAndFieldsGlobals.isElectricFieldLinesSupportedProperty, {} ) );
-    }
     children.push( new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       ChargesAndFieldsGlobals.projectorColorsProperty, {} ) );
 
