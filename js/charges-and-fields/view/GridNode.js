@@ -19,6 +19,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants related to text
   var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
@@ -28,6 +29,7 @@ define( function( require ) {
   var MAJOR_GRIDLINE_LINEWIDTH = 2;
   var MINOR_GRIDLINE_LINEWIDTH = 1;
   var ARROW_LENGTH = 1; // in model coordinates
+  var ARROW_POSITION = new Vector2( -2.20, 2 ); // top left position in model coordinates
 
   // strings
   var oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
@@ -49,7 +51,7 @@ define( function( require ) {
 
     Node.call( this );
 
-    var gridlinesParent = new Node();
+    var gridLinesParent = new Node();
 
     // separation in model coordinates of the major grid lines
     var majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
@@ -60,44 +62,44 @@ define( function( require ) {
     var deltaY = majorDeltaY / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
 
     // the following variables are integers
-    var minI = Math.ceil( boundsProperty.get().minX / deltaX );
-    var maxI = Math.floor( boundsProperty.get().maxX / deltaX );
-    var minJ = Math.ceil( boundsProperty.get().minY / deltaY );
-    var maxJ = Math.floor( boundsProperty.get().maxY / deltaY );
+    var minI = Math.ceil( boundsProperty.value.minX / deltaX );
+    var maxI = Math.floor( boundsProperty.value.maxX / deltaX );
+    var minJ = Math.ceil( boundsProperty.value.minY / deltaY );
+    var maxJ = Math.floor( boundsProperty.value.maxY / deltaY );
 
     var i; // {number} an integer
     var j; // {number} an integer
-    var isMajorGridline; // {boolean}
-    var majorGridlinesShape = new Shape();
-    var minorGridlinesShape = new Shape();
+    var isMajorGridLine; // {boolean}
+    var majorGridLinesShape = new Shape();
+    var minorGridLinesShape = new Shape();
 
-    // vertical gridlines
+    // vertical gridLines
     for ( i = minI; i <= maxI; i++ ) {
-      isMajorGridline = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
-      if ( isMajorGridline ) {
-        majorGridlinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
+      isMajorGridLine = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+      if ( isMajorGridLine ) {
+        majorGridLinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
       }
       else {
-        minorGridlinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
+        minorGridLinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
       }
     }
 
-    // horizontal gridlines
+    // horizontal gridLines
     for ( j = minJ; j <= maxJ; j++ ) {
-      isMajorGridline = ( j % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
-      if ( isMajorGridline ) {
-        majorGridlinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
+      isMajorGridLine = ( j % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+      if ( isMajorGridLine ) {
+        majorGridLinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
       }
       else {
-        minorGridlinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
+        minorGridLinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
       }
     }
 
-    var majorGridLinesPath = new Path( modelViewTransform.modelToViewShape( majorGridlinesShape ), {
+    var majorGridLinesPath = new Path( modelViewTransform.modelToViewShape( majorGridLinesShape ), {
       lineWidth: MAJOR_GRIDLINE_LINEWIDTH, lineCap: 'butt', lineJoin: 'bevel'
     } );
 
-    var minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridlinesShape ), {
+    var minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH, lineCap: 'butt', lineJoin: 'bevel'
     } );
 
@@ -109,15 +111,15 @@ define( function( require ) {
     var text = new Text( oneMeterString, { font: FONT } );
 
     // add all the nodes
-    gridlinesParent.addChild( minorGridLinesPath );
-    gridlinesParent.addChild( majorGridLinesPath );
-    this.addChild( gridlinesParent );
+    gridLinesParent.addChild( minorGridLinesPath );
+    gridLinesParent.addChild( majorGridLinesPath );
+    this.addChild( gridLinesParent );
     this.addChild( arrowPath );
     this.addChild( text );
 
     // layout
-    arrowPath.top = modelViewTransform.modelToViewY( -2.20 ); // empirically determined such that the electric field arrows do not overlap with it
-    arrowPath.left = modelViewTransform.modelToViewX( 2 ); // should be set to an integer value such that it spans two majorGridlines
+    arrowPath.top = modelViewTransform.modelToViewY( ARROW_POSITION.y ); // empirically determined such that the electric field arrows do not overlap with it
+    arrowPath.left = modelViewTransform.modelToViewX( ARROW_POSITION.x ); // should be set to an integer value such that it spans two majorGridLines
     text.centerX = arrowPath.centerX;
     text.top = arrowPath.bottom;
 
