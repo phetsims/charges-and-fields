@@ -120,8 +120,8 @@ define( function( require ) {
         model.electricPotentialSensorGrid,
         model.on.bind( model ),
         this.getElectricPotentialColor.bind( this ),
-        this.availableModelBoundsProperty,
         modelViewTransform,
+        this.availableModelBoundsProperty,
         model.isElectricPotentialGridVisibleProperty
       );
     }
@@ -131,8 +131,8 @@ define( function( require ) {
       model.electricFieldSensorGrid,
       model.on.bind( model ),
       this.getElectricFieldMagnitudeColor.bind( this ),
-      this.availableModelBoundsProperty,
       modelViewTransform,
+      this.availableModelBoundsProperty,
       model.isPlayAreaChargedProperty,
       viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricFieldGridVisibleProperty );

@@ -115,7 +115,7 @@ define( function( require ) {
      * @param {number} electricPotential
      */
     function updateVoltageReadout( electricPotential ) {
-      voltageReadout.text = StringUtils.format( pattern_0value_1units, roundNumber( electricPotential ), voltageUnitString );
+      voltageReadout.text = StringUtils.format( pattern_0value_1units, decimalAdjust( electricPotential ), voltageUnitString );
     }
 
     // update text of the voltage readout according to the current value of the electric potential
@@ -252,20 +252,22 @@ define( function( require ) {
     }
 
     /**
+     * Decimal adjustment of a number.
      * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
-     * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
+     * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures that
+     * is at least equal to the number of decimal places (or larger)
      *
      * @param {number} number
      * @param {Object} [options]
      * @returns {string}
      */
-    function roundNumber( number, options ) {
+    function decimalAdjust( number, options ) {
       options = _.extend( {
-        maxSigFigs: 3
+        maxDecimalPlaces: 3
       }, options );
 
-
-      // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
+      // e.g. for  maxDecimalPlaces: 3
+      // 9999.11 -> 9999  (numbers larger than 10^maxDecimalPlaces) are rounded to unity
       // 999.111 -> 999.1
       // 99.1111 -> 99.11
       // 9.11111 -> 9.111
@@ -279,14 +281,14 @@ define( function( require ) {
       var exponent = Math.floor( Math.log10( Math.abs( number ) ) );
 
       var decimalPlaces;
-      if ( exponent >= options.maxSigFigs ) {
+      if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
       }
       else if ( exponent > 0 ) {
-        decimalPlaces = options.maxSigFigs - exponent;
+        decimalPlaces = options.maxDecimalPlaces - exponent;
       }
       else {
-        decimalPlaces = options.maxSigFigs;
+        decimalPlaces = options.maxDecimalPlaces;
       }
 
       return Util.toFixed( number, decimalPlaces );

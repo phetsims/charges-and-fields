@@ -84,9 +84,9 @@ define( function( require ) {
     var positiveCharge = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
       chargedParticles,
+      enclosureBounds,
       modelViewTransform,
       availableModelBoundsProperty,
-      enclosureBounds,
       {
         element: 'positive',
         observableArrayLengthLimit: numberChargesLimit,
@@ -97,9 +97,9 @@ define( function( require ) {
     var negativeCharge = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
       chargedParticles,
+      enclosureBounds,
       modelViewTransform,
       availableModelBoundsProperty,
-      enclosureBounds,
       {
         element: 'negative',
         observableArrayLengthLimit: numberChargesLimit,
@@ -110,9 +110,9 @@ define( function( require ) {
     var electricFieldSensor = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
       electricFieldSensors,
+      enclosureBounds,
       modelViewTransform,
       availableModelBoundsProperty,
-      enclosureBounds,
       {
         element: 'electricFieldSensor',
         centerX: electricFieldSensorCenterX,

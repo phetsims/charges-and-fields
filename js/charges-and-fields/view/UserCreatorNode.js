@@ -29,17 +29,17 @@ define( function( require ) {
    *
    * @param {Function} addModelElementToObservableArray - A function that add a modelElement to an Observable Array in the model
    * @param {ObservableArray} observableArray
+   * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the moving view element
-   * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @param {Object} [options]
    * @constructor
    */
   function UserCreatorNode( addModelElementToObservableArray,
                             observableArray,
+                            enclosureBounds,
                             modelViewTransform,
                             availableModelBoundsProperty,
-                            enclosureBounds,
                             options ) {
 
     var self = this;

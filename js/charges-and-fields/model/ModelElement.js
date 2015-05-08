@@ -41,6 +41,7 @@ define( function( require ) {
     // Flag that indicates whether this element is animated from one location to another
     this.isAnimated = false;
 
+    // @public
     this.destinationPosition = null; // {Vector2} the final destination when animated
   }
 

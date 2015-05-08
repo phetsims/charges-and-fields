@@ -50,7 +50,7 @@ define( function( require ) {
       } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.5, voltageLabelText.height * 1.5,
+    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.4, voltageLabelText.height * 1.4, 3, 3,
       {
         center: modelViewTransform.modelToViewPosition( position )
       } );

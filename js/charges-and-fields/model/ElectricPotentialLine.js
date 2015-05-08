@@ -35,9 +35,9 @@ define( function( require ) {
     this.getElectricField = getElectricField; // @private
     this.chargedParticles = chargedParticles; // @private
     this.bounds = bounds; // @private
-    this.isPlayAreaChargedProperty = isPlayAreaChargedProperty;
+    this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @
+    this.position = position; // {Vector2} @public read-only
 
-    this.position = position;
     this.electricPotential = getElectricPotential( position ); // {number} in volts
     this.isLineClosed = false; // {boolean}  value will be updated by  this.getEquipotentialPositionArray
     this.isEquipotentialLineTerminatingInsideBounds = true;
@@ -46,6 +46,7 @@ define( function( require ) {
     this.positionArray = this.getEquipotentialPositionArray( position );
 
     // determine if there is an electric potential line
+    // @public read-only
     this.isLinePresent = (this.positionArray !== null); // {boolean}
 
   }

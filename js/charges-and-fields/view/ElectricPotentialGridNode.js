@@ -23,16 +23,16 @@ define( function( require ) {
    * @param {Array.<StaticSensorElement>} electricPotentialSensorGrid
    * @param {Function} update -  model.on.bind(model)
    * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given an electric potential
-   * @param {Property.<Bounds2>} availableModelBoundsProperty - bounds of the canvas in model units
    * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - bounds of the canvas in model units
    * @param {Property.<boolean>} isVisibleProperty
    * @constructor
    */
   function ElectricPotentialGridNode( electricPotentialSensorGrid,
                                       update,
                                       colorInterpolationFunction,
-                                      availableModelBoundsProperty,
                                       modelViewTransform,
+                                      availableModelBoundsProperty,
                                       isVisibleProperty ) {
 
     // Call the super constructor
