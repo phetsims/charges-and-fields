@@ -14,13 +14,20 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
 
+  // constants
+  // see getEquipotentialPositionArray to find how these are used
+  var MAX_STEPS = 5000; // {number} integer, the maximum number of steps in the search for a closed path
+  var MIN_STEPS = 1000; // {number} integer, the minimum number of steps it will do while searching for a closed path
+  var MAX_EPSILON_DISTANCE = 0.10; // {number} maximum step length along electricPotential in meters
+  var MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
+
   /**
    *
    * @param {Vector2} position
    * @param {Bounds2} bounds - if an equipotential line is not closed, it will terminate outside these bounds
    * @param {ObservableArray.<ChargedParticle>} chargedParticles - array of active ChargedParticles
-   * @param {Function} getElectricPotential -
-   * @param {Function} getElectricField
+   * @param {Function} getElectricPotential - function that retruns a number
+   * @param {Function} getElectricField - function that returns a vector
    * @param {Property.<boolean>} isPlayAreaChargedProperty
    * @constructor
    */
@@ -35,19 +42,21 @@ define( function( require ) {
     this.getElectricField = getElectricField; // @private
     this.chargedParticles = chargedParticles; // @private
     this.bounds = bounds; // @private
-    this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @
-    this.position = position; // {Vector2} @public read-only
+    this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private
 
-    this.electricPotential = getElectricPotential( position ); // {number} in volts
-    this.isLineClosed = false; // {boolean}  value will be updated by  this.getEquipotentialPositionArray
-    this.isEquipotentialLineTerminatingInsideBounds = true;
+    this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
+    this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
 
     // calculate the array of positions
-    this.positionArray = this.getEquipotentialPositionArray( position );
+    this.position = position; // {Vector2} @public read-only
+    this.electricPotential = getElectricPotential( position ); // {number} @public read-only, value in volts
+    this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
+    // this.getEquipotentialPositionArray has for side effects to update
+    // this.isLineClosed, and this.isEquipotentialLineTerminatingInsideBounds
 
     // determine if there is an electric potential line
     // @public read-only
-    this.isLinePresent = (this.positionArray !== null); // {boolean}
+    this.isLinePresent = (this.positionArray !== null); // {boolean} @public read-only
 
   }
 
@@ -101,7 +110,8 @@ define( function( require ) {
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
-      //assert && assert( deltaPosition.magnitude() < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
+      assert && assert( deltaPosition.magnitude() < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
+
       // if 'the second order correction is larger than the first'
       if ( deltaPosition.magnitude() > Math.abs( deltaDistance ) ) {
         // use a fail safe method
@@ -165,8 +175,12 @@ define( function( require ) {
     },
 
     /**
-     * This method returns an array of points (vectors) with the same electric potential as the electric potential
+     * This method returns an array of points {Vector2} with the same electric potential as the electric potential
      * at the initial position. The array is ordered with position points going counterclockwise.
+     *
+     * This function has side effects and updates this.isEquipotentialLineTerminatingInsideBounds and
+     * this.isLineClosed.
+     *
      * @private
      * @param {Vector2} position - initial position
      * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
@@ -178,7 +192,7 @@ define( function( require ) {
       }
 
       var closestChargeDistance = this.getClosestChargedParticlePosition( position ).distance( position );
-      var closestDistance = 0.1;
+      var closestDistance = 0.05; // in model coordinates, should be less than the radius of a charged particle
 
       if ( closestChargeDistance < closestDistance ) {
         // return a null array if the initial point for the electricPotential line is too close to a charged particle
@@ -204,10 +218,7 @@ define( function( require ) {
        pointing clockwise (yes  clockwise) to the direction of the line.
        */
       var stepCounter = 0; // {number} integer
-      var stepMax = 5000; // {number} integer, the product of stepMax and minEpsilonDistance should be larger than bounds.width
-      var stepMin = 1000; // {number} integer, the minimum number of steps it will do while searching for a closed path
-      var maxEpsilonDistance = 0.10; // {number} maximum step length along electricPotential in meters
-      var minEpsilonDistance = 0.01; // {number} minimum step length along electricPotential in meters
+
       var nextClockwisePosition; // {Vector2}
       var nextCounterClockwisePosition; // {Vector2}
       var currentClockwisePosition = position; // {Vector2}
@@ -216,11 +227,11 @@ define( function( require ) {
       var counterClockwisePositionArray = [];
 
       // initial epsilon distance for the two heads.
-      var clockwiseEpsilonDistance = minEpsilonDistance;
+      var clockwiseEpsilonDistance = MIN_EPSILON_DISTANCE;
       var counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
 
-      while ( (stepCounter < stepMax ) && !this.isLineClosed &&
-              (this.isEquipotentialLineTerminatingInsideBounds || (stepCounter < stepMin ) ) ) {
+      while ( (stepCounter < MAX_STEPS ) && !this.isLineClosed &&
+              (this.isEquipotentialLineTerminatingInsideBounds || (stepCounter < MIN_STEPS ) ) ) {
 
         nextClockwisePosition = this.getNextPositionAlongEquipotentialWithElectricPotential(
           currentClockwisePosition,
@@ -239,32 +250,35 @@ define( function( require ) {
 
         stepCounter++;
 
-        //
+        // after three steps, the epsilon distance is adaptative, i.e. large distance when 'easy', small when 'difficult'
         if ( stepCounter > 3 ) {
+
           // adaptative epsilon distance
+          clockwiseEpsilonDistance = this.getAdaptativeEpsilonDistance( clockwiseEpsilonDistance, clockwisePositionArray, true );
+          counterClockwiseEpsilonDistance = this.getAdaptativeEpsilonDistance( counterClockwiseEpsilonDistance, counterClockwisePositionArray, false );
 
-          // for a perfect circle equipotential, let's set to objective to 360 points per equipotential line
-          clockwiseEpsilonDistance *= (2 * Math.PI / 360) / this.getRotationAngle( clockwisePositionArray );
-          counterClockwiseEpsilonDistance *= (2 * Math.PI / 360) / this.getRotationAngle( counterClockwisePositionArray );
-
-          clockwiseEpsilonDistance = dot.clamp( clockwiseEpsilonDistance, minEpsilonDistance, maxEpsilonDistance );
-          counterClockwiseEpsilonDistance = dot.clamp( counterClockwiseEpsilonDistance, -1 * maxEpsilonDistance, -1 * minEpsilonDistance );
+          assert && assert( clockwiseEpsilonDistance > 0 ); // sanity check
+          assert && assert( counterClockwiseEpsilonDistance < 0 );
 
           // distance between the two searching heads
           var approachDistance = currentClockwisePosition.distance( currentCounterClockwisePosition );
 
           // logic to stop the while loop when the two heads are getting closer
           if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
+
             // we want to perform more steps as the two head get closer but we want to avoid the two heads to pass
             // one another. Let's reduce the epsilon distance
             clockwiseEpsilonDistance = approachDistance / 3;
             counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
-            if ( approachDistance < 2 * minEpsilonDistance ) {
-              // if the clockwise and counterclockwise points are close, set this.isLineClose to true to get out of this while loop
+            if ( approachDistance < 2 * MIN_EPSILON_DISTANCE ) {
+
+              // if the clockwise and counterclockwise points are close, set this.isLineClosed to true to get out of this while loop
               this.isLineClosed = true;
             }
           }
-        }
+        } // end of if(stepCounter>3)
+
+        // is at least one current head inside the bounds ?
         this.isEquipotentialLineTerminatingInsideBounds =
           ( this.bounds.containsPoint( currentClockwisePosition ) ||
             this.bounds.containsPoint( currentCounterClockwisePosition ) );
@@ -279,7 +293,7 @@ define( function( require ) {
         // this is very difficult to come up with such a scenario. so far this
         // was encountered only with a pure quadrupole configuration.
         // let's redo the entire process but starting a tad to the right so we don't get stuck in our search
-        var weeVector = new Vector2( 0.00031415, 0.00027178 );
+        var weeVector = new Vector2( 0.00031415, 0.00027178 ); // (pi,e)
         return this.getEquipotentialPositionArray( position.plus( weeVector ) );
       }
 
@@ -323,6 +337,7 @@ define( function( require ) {
     getClosestChargedParticlePosition: function( position ) {
       var closestChargedParticlePosition; // {Vector2}
       var closestDistance = Number.POSITIVE_INFINITY;
+      assert && assert( this.chargedParticles.length > 0, ' the chargedParticles array must contain at least one element' );
       this.chargedParticles.forEach( function( chargedParticle ) {
         var distance = chargedParticle.position.distance( position );
         if ( distance < closestDistance ) {
@@ -334,24 +349,55 @@ define( function( require ) {
     },
 
     /**
+     * Function that returns the an updated epsilonDistance based on the three last points
+     * of positionArray
+     *
+     * @param {number} epsilonDistance
+     * @param {Array.<Vector2>} positionArray
+     * @param {boolean} isClockwise
+     * @returns {number}
+     */
+    getAdaptativeEpsilonDistance: function( epsilonDistance, positionArray, isClockwise ) {
+      var deflectionAngle = this.getRotationAngle( positionArray ); // non negative number in radians
+      if ( deflectionAngle === 0 ) {
+
+        // pedal to metal
+        epsilonDistance = MAX_EPSILON_DISTANCE;
+      }
+      else {
+
+        // shorten the epsilon distance in tight turns, longer steps in straighter stretch
+        // 360 implies that a perfect circle could be generated by 360 points, i.e. a rotation of 1 degree doesn't change epsilonDistance.
+        epsilonDistance *= (2 * Math.PI / 360) / deflectionAngle;
+      }
+      // clamp the value of epsilonDistance to be within this range
+      epsilonDistance = dot.clamp( Math.abs( epsilonDistance ), MIN_EPSILON_DISTANCE, MAX_EPSILON_DISTANCE );
+      epsilonDistance = isClockwise ? epsilonDistance : -epsilonDistance;
+      return epsilonDistance;
+    },
+
+    /**
+     * Function that returns the rotation angle between the three last points of a position array
      *
      * @private
      * @param {Array.<Vector2>} positionArray
      * @returns {number}
      */
     getRotationAngle: function( positionArray ) {
+      assert && assert( positionArray.length > 2, 'the positionArray must contain at least three elements' );
       var length = positionArray.length;
       var newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
       var oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
-      return newDeltaPosition.angleBetween( oldDeltaPosition );
+      return newDeltaPosition.angleBetween( oldDeltaPosition ); // a positive number
     },
 
     /**
      * Returns the Shape of the electric potential line
-     * @public
+     * @public read-only
      * @returns {Shape}
      */
     getShape: function() {
+      assert && assert( this.isLinePresent, 'the positionArray cannot be empty' );
       var shape = new Shape();
       return this.positionArrayToStraightLine( shape, this.getCleanUpPositionArray(),
         { isClosedLineSegments: this.isLineClosed }
