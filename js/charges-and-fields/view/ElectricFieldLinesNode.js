@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function ElectricFieldLineNode( electricFieldLinesArray, modelViewTransform, options ) {
+  function ElectricFieldLinesNode( electricFieldLinesArray, modelViewTransform, options ) {
 
     Node.call( this );
 
@@ -29,20 +29,20 @@ define( function( require ) {
       lineWidth: 2
     }, options );
 
-    var electricFieldLineNode = this;
+    var electricFieldLinesNode = this;
 
     electricFieldLinesArray.addItemAddedListener( function( electricFieldLine ) {
       var electricFieldLinePath = new Path( modelViewTransform.modelToViewShape( electricFieldLine.getShape() ), options );
-      electricFieldLineNode.addChild( electricFieldLinePath );
+      electricFieldLinesNode.addChild( electricFieldLinePath );
 
       electricFieldLinesArray.addItemRemovedListener( function removalListener( removedElectricFieldLine ) {
         if ( removedElectricFieldLine === electricFieldLine ) {
-          electricFieldLineNode.removeChild( electricFieldLinePath );
+          electricFieldLinesNode.removeChild( electricFieldLinePath );
           electricFieldLinesArray.removeItemRemovedListener( removalListener );
         }
       } );
     } );
   }
 
-  return inherit( Node, ElectricFieldLineNode );
+  return inherit( Node, ElectricFieldLinesNode );
 } );

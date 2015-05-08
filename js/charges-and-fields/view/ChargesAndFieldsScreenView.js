@@ -24,7 +24,7 @@ define( function( require ) {
   var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var ElectricPotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLineNode' );
-  var ElectricFieldLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLineNode' );
+  var ElectricFieldLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLinesNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
@@ -144,7 +144,7 @@ define( function( require ) {
       viewProperty.isValuesVisibleProperty );
 
     // Create the scenery node responsible for drawing the electric field lines
-    var electricFieldLineNode = new ElectricFieldLineNode(
+    var electricFieldLinesNode = new ElectricFieldLinesNode(
       model.electricFieldLinesArray,
       modelViewTransform );
 
@@ -316,7 +316,7 @@ define( function( require ) {
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
     this.addChild( gridNode ); //
     this.addChild( electricFieldGridNode );
-    this.addChild( electricFieldLineNode );
+    this.addChild( electricFieldLinesNode );
     this.addChild( electricPotentialLineNode );
     this.addChild( toolboxPanel );
     this.addChild( controlPanel );
