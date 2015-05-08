@@ -14,8 +14,8 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsControlPanel' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
-  var ChargesAndFieldsToolbox = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolbox' );
-  var ChargeAndSensorEnclosure = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeAndSensorEnclosure' );
+  var ChargesAndFieldsToolboxPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolboxPanel' );
+  var ChargesAndSensorsEnclosureNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsEnclosureNode' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
@@ -200,8 +200,8 @@ define( function( require ) {
       measuringTape.textColor = color;
     } );
 
-    // Create the toolbox with the measuring tape and the electric potential sensor icons
-    var toolbox = new ChargesAndFieldsToolbox(
+    // Create the toolboxPanel with the measuring tape and the electric potential sensor icons
+    var toolboxPanel = new ChargesAndFieldsToolboxPanel(
       model.electricPotentialSensor.positionProperty,
       model.electricPotentialSensor.isUserControlledProperty,
       viewProperty.measuringTapeBasePositionProperty,
@@ -224,12 +224,12 @@ define( function( require ) {
                                Number.POSITIVE_INFINITY;
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
-    var chargeAndSensorEnclosure = new ChargeAndSensorEnclosure(
+    var chargesAndSensorsEnclosureNode = new ChargesAndSensorsEnclosureNode(
       model.addUserCreatedModelElementToObservableArray.bind( model ),
       model.chargedParticles,
       model.electricFieldSensors,
       numberChargesLimit,
-      model.chargeAndSensorEnclosureBounds,
+      model.chargesAndSensorsEnclosureBounds,
       modelViewTransform,
       this.availableModelBoundsProperty );
 
@@ -274,18 +274,18 @@ define( function( require ) {
     } );
 
     // listens to the isUserControlled property of the electric potential sensor
-    // return the electric Potential sensor to the toolbox if it is not user Controlled and the
-    // location of the sensor is inside the toolbox panel
+    // return the electric Potential sensor to the toolboxPanel if it is not user Controlled and the
+    // location of the sensor is inside the toolboxPanel panel
     model.electricPotentialSensor.isUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolbox.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
+      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
         viewProperty.isElectricPotentialSensorVisibleProperty.set( false );
       }
     } );
 
     // listens to the isUserControlled property of the measuring tape
-    // return the measuring tape to the toolbox if not user Controlled and its position is located within the toolbox panel
+    // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the toolbox panel
     measuringTape.isBaseUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolbox.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewProperty.measuringTapeBasePositionProperty.value ) ) ) {
+      if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewProperty.measuringTapeBasePositionProperty.value ) ) ) {
         viewProperty.isMeasuringTapeVisibleProperty.set( false );
       }
     } );
@@ -295,11 +295,11 @@ define( function( require ) {
       // the measuring Tape is subject to dragBounds (specified in model coordinates)
       measuringTape.dragBounds = bounds;
 
-      // the control panel, toolbox and resetAllButtons are set to the right of the bounds
+      // the control panel, toolboxPanel and resetAllButtons are set to the right of the bounds
       var right = modelViewTransform.modelToViewX( bounds.maxX );
       controlPanel.right = right - 30;
       resetAllButton.right = controlPanel.right;
-      toolbox.right = right - 30;
+      toolboxPanel.right = right - 30;
     } );
 
     // layout the objects
@@ -310,18 +310,18 @@ define( function( require ) {
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
     resetAllButton.right = controlPanel.right;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
-    toolbox.right = controlPanel.right;
-    toolbox.top = controlPanel.bottom + 10;
+    toolboxPanel.right = controlPanel.right;
+    toolboxPanel.top = controlPanel.bottom + 10;
 
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
     this.addChild( gridNode ); //
     this.addChild( electricFieldGridNode );
     this.addChild( electricFieldLineNode );
     this.addChild( electricPotentialLineNode );
-    this.addChild( toolbox );
+    this.addChild( toolboxPanel );
     this.addChild( controlPanel );
     this.addChild( resetAllButton );
-    this.addChild( chargeAndSensorEnclosure );
+    this.addChild( chargesAndSensorsEnclosureNode );
     this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );

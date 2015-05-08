@@ -37,7 +37,7 @@ define( function( require ) {
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds of the charges and sensors in view coordinates
    * @constructor
    */
-  function ChargeAndSensorEnclosure( addUserCreatedModelElementToObservableArray,
+  function ChargesAndSensorsEnclosureNode( addUserCreatedModelElementToObservableArray,
                                      chargedParticles,
                                      electricFieldSensors,
                                      numberChargesLimit,
@@ -165,6 +165,6 @@ define( function( require ) {
     } );
   }
 
-  return inherit( Node, ChargeAndSensorEnclosure );
+  return inherit( Node, ChargesAndSensorsEnclosureNode );
 
 } );

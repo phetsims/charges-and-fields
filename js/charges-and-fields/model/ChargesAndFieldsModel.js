@@ -55,7 +55,7 @@ define( function( require ) {
 
     // @public read-only
     // all distances are in meter
-    this.chargeAndSensorEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
+    this.chargesAndSensorsEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
 
     // Observable array of all draggable electric charges
     // @public
@@ -143,7 +143,7 @@ define( function( require ) {
 
       chargedParticle.isUserControlledProperty.link( function( isUserControlled ) {
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( chargedParticle.position ) ) {
+        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( chargedParticle.position ) ) {
           chargedParticle.isActive = false; // charge is no longer active, (effectively) equivalent to set its model charge to zero
           chargedParticle.animate(); // animate the charge to its destination position
         }
@@ -257,7 +257,7 @@ define( function( require ) {
 
       electricFieldSensor.isUserControlledProperty.link( function( isUserControlled ) {
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && thisModel.chargeAndSensorEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
+        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
           electricFieldSensor.isActive = false;
           electricFieldSensor.animate();
         }

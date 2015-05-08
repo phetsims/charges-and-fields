@@ -53,7 +53,7 @@ define( function( require ) {
    * @param {Property.<Bounds2>} availableModelBoundsProperty
    * @constructor
    */
-  function ChargesAndFieldsToolbox( electricPotentialSensorPositionProperty,
+  function ChargesAndFieldsToolboxPanel( electricPotentialSensorPositionProperty,
                                     electricPotentialUserControlledProperty,
                                     measuringTapeBasePositionProperty,
                                     measuringTapeTipPositionProperty,
@@ -233,7 +233,7 @@ define( function( require ) {
 
   }
 
-  return inherit( Panel, ChargesAndFieldsToolbox, {
+  return inherit( Panel, ChargesAndFieldsToolboxPanel, {
     /**
      * Returns an icon of the sensor (without the two buttons)
      * @private
