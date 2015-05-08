@@ -23,7 +23,7 @@ define( function( require ) {
   var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
   var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
-  var ElectricPotentialLineNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLineNode' );
+  var ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
   var ElectricFieldLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLinesNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -138,7 +138,7 @@ define( function( require ) {
       model.isElectricFieldGridVisibleProperty );
 
     // Create the scenery node responsible for drawing the electricPotential lines
-    var electricPotentialLineNode = new ElectricPotentialLineNode(
+    var electricPotentialLinesNode = new ElectricPotentialLinesNode(
       model.electricPotentialLinesArray,
       modelViewTransform,
       viewProperty.isValuesVisibleProperty );
@@ -317,7 +317,7 @@ define( function( require ) {
     this.addChild( gridNode ); //
     this.addChild( electricFieldGridNode );
     this.addChild( electricFieldLinesNode );
-    this.addChild( electricPotentialLineNode );
+    this.addChild( electricPotentialLinesNode );
     this.addChild( toolboxPanel );
     this.addChild( controlPanel );
     this.addChild( resetAllButton );

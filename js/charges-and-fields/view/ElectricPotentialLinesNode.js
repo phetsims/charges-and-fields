@@ -144,7 +144,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isValuesVisibleProperty - control the visibility of the voltage labels
    * @constructor
    */
-  function ElectricPotentialLineNode( electricPotentialLinesArray, modelViewTransform, isValuesVisibleProperty ) {
+  function ElectricPotentialLinesNode( electricPotentialLinesArray, modelViewTransform, isValuesVisibleProperty ) {
 
     // call the super constructor
     Node.call( this );
@@ -212,5 +212,5 @@ define( function( require ) {
     isValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
   }
 
-  return inherit( Node, ElectricPotentialLineNode );
+  return inherit( Node, ElectricPotentialLinesNode );
 } );
