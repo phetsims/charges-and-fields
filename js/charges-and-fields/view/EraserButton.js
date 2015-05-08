@@ -23,7 +23,7 @@ define( function( require ) {
   function EraserButton( options ) {
 
     options = _.extend( {
-      iconWidth: 20,
+      iconWidth: 26,
       iconHeight: 18
     }, options );
 
@@ -113,7 +113,7 @@ define( function( require ) {
     // resize the icon
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
-    // call the superconstructor
+    // call the super constructor
     RectangularPushButton.call( this, options );
   }
 

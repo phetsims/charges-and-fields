@@ -22,7 +22,7 @@ define( function( require ) {
   function PencilButton( options ) {
 
     options = _.extend( {
-      iconWidth: 20,
+      iconWidth: 26,
       iconHeight: 18
     }, options );
 

@@ -86,7 +86,6 @@ define( function( require ) {
 
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
-      iconWidth: 26, // width of eraser icon, used for scaling, the aspect ratio will determine height
       listener: function() {
         clearElectricPotentialLines();
       }
@@ -94,7 +93,6 @@ define( function( require ) {
 
     // Create the button that allows to plot the ElectricPotential Lines
     var plotElectricPotentialLineButton = new PencilButton( {
-      iconWidth: 26, // width of pencil icon, used for scaling, the aspect ratio will determine height
       listener: function() {
         // TODO: get rid of timing
         var initialTime = new Date().getTime();
@@ -252,10 +250,10 @@ define( function( require ) {
     }
 
     /**
-     * Decimal adjustment of a number.
-     * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
-     * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures that
-     * is at least equal to the number of decimal places (or larger)
+     * Decimal adjustment of a number is a function that round a number and returns a string.
+     * For numbers between -10 and 10, the return strings has a fixed number of decimal places (determined by maxDecimalPlaces)
+     * whereas for numbers larger than ten, (or smaller than -10)  the number returned has with a fixed number of significant figures that
+     * is at least equal to the number of decimal places (or larger). See example below
      *
      * @param {number} number
      * @param {Object} [options]
@@ -270,17 +268,18 @@ define( function( require ) {
       // 9999.11 -> 9999  (numbers larger than 10^maxDecimalPlaces) are rounded to unity
       // 999.111 -> 999.1
       // 99.1111 -> 99.11
-      // 9.11111 -> 9.111
+      // 9.11111 -> 9.111 (numbers smaller than 10 have maxDecimalPlaces decimal places)
       // 1.11111 -> 1.111
       // 0.11111 -> 0.111
-      // 0.01111 -> 0.011
       // 0.00111 -> 0.001
       // 0.00011 -> 0.000
 
+      // let's find the exponent as in
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
       var exponent = Math.floor( Math.log10( Math.abs( number ) ) );
 
       var decimalPlaces;
+
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
       }
