@@ -13,7 +13,7 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
-  var ElectricFieldSensorRepresentation = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentation' );
+  var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -43,7 +43,7 @@ define( function( require ) {
                                     availableModelBoundsProperty,
                                     isValuesVisibleProperty ) {
 
-    ElectricFieldSensorRepresentation.call( this );
+    ElectricFieldSensorRepresentationNode.call( this );
 
     var electricFieldSensorNode = this;
 
@@ -88,7 +88,7 @@ define( function( require ) {
     // layout
     arrowNode.left = 0;
     arrowNode.centerY = 0;
-    fieldStrengthLabel.bottom = this.top; // 'this' is the ElectricFieldSensorRepresentation, i.e. the circle
+    fieldStrengthLabel.bottom = this.top; // 'this' is the ElectricFieldSensorRepresentationNode, i.e. the circle
     directionLabel.bottom = fieldStrengthLabel.top;
     fieldStrengthLabel.right = this.left - 20;
     directionLabel.right = fieldStrengthLabel.right;
@@ -195,7 +195,7 @@ define( function( require ) {
 
   }
 
-  return inherit( ElectricFieldSensorRepresentation, ElectricFieldSensorNode, {
+  return inherit( ElectricFieldSensorRepresentationNode, ElectricFieldSensorNode, {
     dispose: function() {
       this.disposeElectricFieldSensor();
     }

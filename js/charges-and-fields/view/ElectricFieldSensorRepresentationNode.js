@@ -20,10 +20,10 @@ define( function( require ) {
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS;
 
   /**
-   * Constructor for the ElectricFieldSensorRepresentation which renders the sensor as a scenery node.
+   * Constructor for the ElectricFieldSensorRepresentationNode which renders the sensor as a scenery node.
    * @constructor
    */
-  function ElectricFieldSensorRepresentation() {
+  function ElectricFieldSensorRepresentationNode() {
 
     // Call the super constructor
     Node.call( this, {
@@ -52,5 +52,5 @@ define( function( require ) {
 
   }
 
-  return inherit( Node, ElectricFieldSensorRepresentation );
+  return inherit( Node, ElectricFieldSensorRepresentationNode );
 } );
