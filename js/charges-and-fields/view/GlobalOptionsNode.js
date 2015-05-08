@@ -21,7 +21,6 @@ define( function( require ) {
 
   /**
    *
-   * @param {boolean} isEnhancedVersion
    * @constructor
    */
   function GlobalOptionsNode( ) {
