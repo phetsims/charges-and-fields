@@ -64,7 +64,7 @@ define( function( require ) {
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
     // Create many properties for checkboxes and Measuring Tape
-    var viewProperty = new PropertySet( {
+    var viewPropertySet = new PropertySet( {
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
@@ -76,7 +76,7 @@ define( function( require ) {
     } );
 
     // Create a property that register the model bounds based on the screen size
-    // Note that unlike the viewProperty set above, the availableModelBounds should not be reset when
+    // Note that unlike the viewPropertySet set above, the availableModelBounds should not be reset when
     // the resetAllButton is pressed, hence the reason it is not part of the previous set
     this.availableModelBoundsProperty = new Property( model.enlargedBounds );
 
@@ -134,14 +134,14 @@ define( function( require ) {
       modelViewTransform,
       this.availableModelBoundsProperty,
       model.isPlayAreaChargedProperty,
-      viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
+      viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricFieldGridVisibleProperty );
 
     // Create the scenery node responsible for drawing the electricPotential lines
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
       model.electricPotentialLinesArray,
       modelViewTransform,
-      viewProperty.isValuesVisibleProperty );
+      viewPropertySet.isValuesVisibleProperty );
 
     // Create the scenery node responsible for drawing the electric field lines
     var electricFieldLinesNode = new ElectricFieldLinesNode(
@@ -156,29 +156,29 @@ define( function( require ) {
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
       this.availableModelBoundsProperty,
-      viewProperty.isElectricPotentialSensorVisibleProperty );
+      viewPropertySet.isElectricPotentialSensorVisibleProperty );
 
     // Create a visual grid with major and minor lines on the view
     var gridNode = new GridNode(
       modelViewTransform,
       new Property( model.enlargedBounds ),
-      viewProperty.isGridVisibleProperty,
-      viewProperty.isValuesVisibleProperty );
+      viewPropertySet.isGridVisibleProperty,
+      viewPropertySet.isValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ChargesAndFieldsControlPanel(
       model.isElectricFieldGridVisibleProperty,
-      viewProperty.isDirectionOnlyElectricFieldGridVisibleProperty,
+      viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricPotentialGridVisibleProperty,
-      viewProperty.isValuesVisibleProperty,
-      viewProperty.isGridVisibleProperty );
+      viewPropertySet.isValuesVisibleProperty,
+      viewPropertySet.isGridVisibleProperty );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         // do not reset the availableDragBoundsProperty
         model.reset();
-        viewProperty.reset();
+        viewPropertySet.reset();
       }
     } );
 
@@ -186,13 +186,13 @@ define( function( require ) {
     var tapeOptions = {
       dragBounds: this.availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
-      basePositionProperty: viewProperty.measuringTapeBasePositionProperty,
-      tipPositionProperty: viewProperty.measuringTapeTipPositionProperty,
+      basePositionProperty: viewPropertySet.measuringTapeBasePositionProperty,
+      tipPositionProperty: viewPropertySet.measuringTapeTipPositionProperty,
       isTipDragBounded: true
     };
 
     // Create a measuring tape (set to invisible initially)
-    var measuringTape = new MeasuringTape( viewProperty.measuringTapeUnitsProperty, viewProperty.isMeasuringTapeVisibleProperty,
+    var measuringTape = new MeasuringTape( viewPropertySet.measuringTapeUnitsProperty, viewPropertySet.isMeasuringTapeVisibleProperty,
       tapeOptions );
 
     // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
@@ -204,11 +204,11 @@ define( function( require ) {
     var toolboxPanel = new ChargesAndFieldsToolboxPanel(
       model.electricPotentialSensor.positionProperty,
       model.electricPotentialSensor.isUserControlledProperty,
-      viewProperty.measuringTapeBasePositionProperty,
-      viewProperty.measuringTapeTipPositionProperty,
+      viewPropertySet.measuringTapeBasePositionProperty,
+      viewPropertySet.measuringTapeTipPositionProperty,
       measuringTape.isBaseUserControlledProperty,
-      viewProperty.isElectricPotentialSensorVisibleProperty,
-      viewProperty.isMeasuringTapeVisibleProperty,
+      viewPropertySet.isElectricPotentialSensorVisibleProperty,
+      viewPropertySet.isMeasuringTapeVisibleProperty,
       modelViewTransform,
       this.availableModelBoundsProperty
     );
@@ -260,7 +260,7 @@ define( function( require ) {
         model.addElectricFieldLine.bind( model ),
         modelViewTransform,
         screenView.availableModelBoundsProperty,
-        viewProperty.isValuesVisibleProperty );
+        viewPropertySet.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -278,15 +278,15 @@ define( function( require ) {
     // location of the sensor is inside the toolboxPanel panel
     model.electricPotentialSensor.isUserControlledProperty.link( function( isUserControlled ) {
       if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
-        viewProperty.isElectricPotentialSensorVisibleProperty.set( false );
+        viewPropertySet.isElectricPotentialSensorVisibleProperty.set( false );
       }
     } );
 
     // listens to the isUserControlled property of the measuring tape
     // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the toolbox panel
     measuringTape.isBaseUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewProperty.measuringTapeBasePositionProperty.value ) ) ) {
-        viewProperty.isMeasuringTapeVisibleProperty.set( false );
+      if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewPropertySet.measuringTapeBasePositionProperty.value ) ) ) {
+        viewPropertySet.isMeasuringTapeVisibleProperty.set( false );
       }
     } );
 
