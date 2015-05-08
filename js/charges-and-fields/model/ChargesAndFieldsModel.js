@@ -47,7 +47,7 @@ define( function( require ) {
     // Initialize variables
     //----------------------------------------------------------------------------------------
 
-    this.isResetting = false; // is the model being reset
+    this.isResetting = false; // is the model being reset, necessary flag to address performance issues in the reset process
 
     // @public read-only
     this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
@@ -144,6 +144,7 @@ define( function( require ) {
     this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
 
       chargedParticle.isUserControlledProperty.link( function( isUserControlled ) {
+
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( chargedParticle.position ) ) {
           chargedParticle.isActive = false; // charge is no longer active, (effectively) equivalent to set its model charge to zero
@@ -152,22 +153,29 @@ define( function( require ) {
       } );
 
       chargedParticle.isActiveProperty.lazyLink( function( isActive ) {
+
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLinesArray
         thisModel.clearElectricPotentialLines();
+
         // clear all electric field lines, i.e. remove all elements from the electricFieldLinesArray
         thisModel.clearElectricFieldLines();
+
         // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
         thisModel.updateAllVisibleSensors();
         if ( isActive ) {
+
           // we know for sure that there is a least one active charge
           thisModel.isPlayAreaCharged = true;
+
           // add particle to the activeChargedParticle observable array
           // use for the webGlNode
           thisModel.activeChargedParticles.push( chargedParticle );
         }
         else {
+
           // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
           thisModel.updateIsPlayAreaCharged();
+
           // remove particle from the activeChargeParticle array
           thisModel.activeChargedParticles.remove( chargedParticle );
         }
@@ -177,6 +185,7 @@ define( function( require ) {
 
         // verify that the charge isActive before doing any charge-dependent updates to the model
         if ( chargedParticle.isActive ) {
+
           // remove electricPotential lines and electric field lines when the position of a charged particle changes and the charge isActive
           thisModel.clearElectricPotentialLines();
           thisModel.clearElectricFieldLines();
@@ -197,6 +206,7 @@ define( function( require ) {
 
             // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
             thisModel.electricFieldSensors.forEach( function( sensorElement ) {
+
               // electricField is a property that is being listened to. We want a new vector allocation when the electric field gets updated
               sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
             } );
@@ -204,6 +214,7 @@ define( function( require ) {
             // update the Electric Field Grid Sensors, but only if the electric Field grid is visible
             if ( thisModel.isElectricFieldGridVisible === true ) {
               thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
+
                 // let's calculate the change in the electric field due to the change in position of one charge
                 sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
               } );
@@ -214,6 +225,7 @@ define( function( require ) {
             // update the Electric Potential Grid Sensors but only if the electric potential grid is visible
             if ( thisModel.isElectricPotentialGridVisible === true ) {
               thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
+
                 // calculating the change in the electric potential due to the change in position of one charge
                 sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
               } );
@@ -233,9 +245,11 @@ define( function( require ) {
     this.chargedParticles.addItemRemovedListener( function( chargeParticle ) {
       // check that the particle was active before updating charge dependent model components
       if ( chargeParticle.isActive && !thisModel.isResetting ) {
+
         // Remove electricPotential lines and electric field lines
         thisModel.clearElectricPotentialLines();
         thisModel.clearElectricFieldLines();
+
         // Update all the visible sensors
         thisModel.updateAllVisibleSensors();
 
@@ -252,12 +266,14 @@ define( function( require ) {
     //------------------------
 
     this.electricFieldSensors.addItemAddedListener( function( electricFieldSensor ) {
+
       // update the Electric Field Sensors upon a change of its own position
       electricFieldSensor.positionProperty.link( function( position ) {
         electricFieldSensor.electricField = thisModel.getElectricField( position );
       } );
 
       electricFieldSensor.isUserControlledProperty.link( function( isUserControlled ) {
+
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
           electricFieldSensor.isActive = false;
@@ -273,7 +289,10 @@ define( function( require ) {
        * @public
        */
       reset: function() {
-        this.isResetting = true; // we will avoid the cost of updating the grids when emptying the chargedParticles array
+        // we want to avoid the cost of constantly re-updating the grids when emptying the chargedParticles array
+        // so we set the flag isResetting to true.
+        this.isResetting = true;
+        PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
         this.chargedParticles.clear(); // clear all the charges
         this.activeChargedParticles.clear(); // clear all the active charges
         this.electricFieldSensors.clear(); // clear all the electric field sensors
@@ -282,8 +301,7 @@ define( function( require ) {
         this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
         this.updateElectricFieldSensorGrid(); // will reset the grid to zero
         this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
-        PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
-        this.isResetting = false; // done with the re3stting process
+        this.isResetting = false; // done with the resetting process
       },
 
       /**
