@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * View for the electricPotential Lines
+ * Scenery Node for the electricPotential Lines
  *
  * @author Martin Veillette (Berea College)
  */
@@ -24,7 +24,7 @@ define( function( require ) {
   /**
    *
    * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
-   * @param {Function} update -       model.on.bind(model),
+   * @param {Function} update - function that registers a listener when the specified eventName is triggered. (model.on.bind(model)),
    * @param {Function} colorInterpolationFunction - a function that returns a color (as a string) given the magnitude of the electric field
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - bounds of the canvas in model units
@@ -74,12 +74,12 @@ define( function( require ) {
       var positionInModel = electricFieldSensor.position; // position of the sensor in model
       var positionInView = modelViewTransform.modelToViewPosition( positionInModel ); // position of the sensor in the view
 
-      // Create the centered circle. The arrow will rotate around this center
+      // creates the centered circle. The arrow will rotate around this center
       var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 0 } );
       circle.center = positionInView; // center the circle at the sensor position
       circleArray.push( circle );
 
-      // Create the arrow
+      // creates the arrow
       var arrowNode = new ArrowNode( tailX, 0, tipX, 0, arrowOptions );
       arrowNode.center = positionInView.addXY( offsetCenterX, 0 );
       arrowNode.electricFieldSensor = electricFieldSensor;
@@ -91,7 +91,7 @@ define( function( require ) {
     } ); // end of forEach loop
 
     /**
-     *  Update the orientation of the arrows (and possibly their fill) according to the value of the electric field
+     *  Updates the orientation of the arrows (and possibly their fill) according to the value of the electric field
      *  at the position in the model
      */
     function updateElectricFieldGrid() {
@@ -101,16 +101,19 @@ define( function( require ) {
        * @param {ArrowNode} arrowNode
        */
       var updateArrowNode = function( arrowNode ) {
+
         // bounds that are slightly larger than the viewport to encompass arrows that are within one row
         // or one column of the nominal bounds
         var bounds = modelViewTransform.modelToViewBounds( availableModelBoundsProperty.get().dilated(
           ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
         if ( bounds.containsPoint( arrowNode.center ) ) {
+
           // Rotate the arrow according to the direction of the electric field
           // Since the model View Transform is  Y inverted, the angle in the view and in the model
           // differs by a minus sign
           arrowNode.setRotation( -1 * arrowNode.electricFieldSensor.electricField.angle() );
+
           // Controls the arrows fill - from uniform, i.e. single color (true) to variable color (false)
           if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
             arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
@@ -129,12 +132,12 @@ define( function( require ) {
      */
     function updateElectricFieldGridColors() {
 
-      // update the color of the button circles
+      // updates the color of the button circles
       circleArray.forEach( function( circle ) {
         circle.fill = ChargesAndFieldsColors.background;
       } );
 
-      // update the color of the arrows
+      // updates the color of the arrows
       if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
         arrowArray.forEach( function( arrowNode ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
@@ -147,15 +150,16 @@ define( function( require ) {
       }
     }
 
+    // no need to unlink since it is present for the lifetime of the sim
     availableModelBoundsProperty.link( updateElectricFieldGrid );
 
-    // update the orientation and colors of the electric field arrows upon an update of the electric field grid
+    // updates the orientation and colors of the electric field arrows upon an update of the electric field grid
     update( 'electricFieldGridUpdated', updateElectricFieldGrid );
 
-    // update the colors of the electric field arrows upon an change of profile mode i.e. default/projector
+    // updates the colors of the electric field arrows upon an change of profile mode i.e. default/projector
     ChargesAndFieldsColors.on( 'profileChanged', updateElectricFieldGridColors );
 
-    // update the colors of the electric field arrows if the checkbox 'Direction Only' is checked/unchecked
+    // updates the colors of the electric field arrows if the checkbox 'Direction Only' is checked/unchecked
     // no need to unlink, present for the lifetime of the simulation
     isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 

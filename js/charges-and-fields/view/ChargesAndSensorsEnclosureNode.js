@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- * Scenery Node that contains an enclosure for a positive, a negative electric charge and an electric sensor
+ * Scenery Node that contains an enclosure for a positive, a negative electric charge and an electric sensor.
  *
  * @author Martin Veillette (Berea College)
  */
@@ -38,12 +38,12 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndSensorsEnclosureNode( addUserCreatedModelElementToObservableArray,
-                                     chargedParticles,
-                                     electricFieldSensors,
-                                     numberChargesLimit,
-                                     enclosureBounds,
-                                     modelViewTransform,
-                                     availableModelBoundsProperty ) {
+                                           chargedParticles,
+                                           electricFieldSensors,
+                                           numberChargesLimit,
+                                           enclosureBounds,
+                                           modelViewTransform,
+                                           availableModelBoundsProperty ) {
 
     Node.call( this );
 
