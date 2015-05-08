@@ -224,10 +224,10 @@ define( function( require ) {
       dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
-        electricPotentialSensor.isUserControlled = true;
+        electricPotentialSensor.isUserControlledProperty.set( true );
       },
       endDrag: function( event ) {
-        electricPotentialSensor.isUserControlled = false;
+        electricPotentialSensor.isUserControlledProperty.set( false );
       }
     } );
 

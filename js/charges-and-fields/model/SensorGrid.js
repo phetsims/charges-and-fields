@@ -18,7 +18,7 @@ define( function( require ) {
    *
    * @param {Bounds2} bounds
    * @param {Bounds2} enlargedBounds
-   * @param {Object] [options]
+   * @param {Object} [options]
    * @constructor
    */
   function SensorGrid( bounds, enlargedBounds, options ) {

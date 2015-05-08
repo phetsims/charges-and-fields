@@ -47,7 +47,7 @@ define( function( require ) {
         startDrag: function( event ) {
           if ( !chargedParticle.isAnimated ) // you cant dragged an animated particle
           {
-            chargedParticle.isUserControlled = true;
+            chargedParticle.isUserControlledProperty.set( true );
 
             // Move the chargedParticle to the front of this layer when grabbed by the user.
             chargedParticleNode.moveToFront();
@@ -59,7 +59,7 @@ define( function( require ) {
         },
 
         endDrag: function( event ) {
-          chargedParticle.isUserControlled = false;
+          chargedParticle.isUserControlledProperty.set( false );
         }
       } );
 

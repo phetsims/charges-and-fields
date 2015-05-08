@@ -142,7 +142,7 @@ define( function( require ) {
 
           if ( !electricFieldSensor.isAnimated ) // don't drag nodes that are animated
           {
-            electricFieldSensor.isUserControlled = true;
+            electricFieldSensor.isUserControlledProperty.set( true );
             // Move the sensor to the front of this layer when grabbed by the user.
             electricFieldSensorNode.moveToFront();
 
@@ -171,7 +171,7 @@ define( function( require ) {
         },
 
         endDrag: function( event ) {
-          electricFieldSensor.isUserControlled = false;
+          electricFieldSensor.isUserControlledProperty.set( false );
         }
       } );
 

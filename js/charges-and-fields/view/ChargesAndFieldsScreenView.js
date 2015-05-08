@@ -195,7 +195,7 @@ define( function( require ) {
     var measuringTape = new MeasuringTape( viewProperty.measuringTapeUnitsProperty, viewProperty.isMeasuringTapeVisibleProperty,
       tapeOptions );
 
-    // The color of measurement text of the measuting tape updates itself when the projector/default color scheme changes
+    // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
       measuringTape.textColor = color;
     } );
