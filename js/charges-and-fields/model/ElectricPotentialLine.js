@@ -38,30 +38,59 @@ define( function( require ) {
                                   getElectricField,
                                   isPlayAreaChargedProperty ) {
 
-    this.getElectricPotential = getElectricPotential; // @private
-    this.getElectricField = getElectricField; // @private
-    this.chargedParticles = chargedParticles; // @private
-    this.bounds = bounds; // @private
-    this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private
+    this.getElectricPotential = getElectricPotential; // @private static
+    this.getElectricField = getElectricField; // @private static
+    this.chargedParticles = chargedParticles; // @private static
+    this.bounds = bounds; // @private static
+    this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private static
 
-    this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
-    this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
+    this.position = position; // {Vector2} @public read-only static
+    this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
 
-    // calculate the array of positions
-    this.position = position; // {Vector2} @public read-only
-    this.electricPotential = getElectricPotential( position ); // {number} @public read-only, value in volts
-    this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
-    // this.getEquipotentialPositionArray has for side effects to update
-    // this.isLineClosed, and this.isEquipotentialLineTerminatingInsideBounds
+    this.isLinePresent = this.getIsLinePresent(); // {boolean} @public read-only static
 
-    // determine if there is an electric potential line
-    // @public read-only
-    this.isLinePresent = (this.positionArray !== null); // {boolean} @public read-only
+    if ( this.isLinePresent ) {
+      this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
+      this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
+      this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
+      // this.getEquipotentialPositionArray has for side effects to update
+      // this.isLineClosed, and this.isEquipotentialLineTerminatingInsideBounds
+    }
 
   }
 
   return inherit( Object, ElectricPotentialLine, {
 
+    /**
+     * Method that determines if an equipotential line is present based on
+     * (1) are there charges on the board?, (2) is the initial point of the search far away from all the charges?
+     * If both answers are yes, the function returns true;
+     *
+     * @public
+     * @returns {boolean}
+     */
+    getIsLinePresent: function() {
+      var isLinePresent; // {boolean}
+      if ( !this.isPlayAreaChargedProperty.value ) {
+        // if there are no charges, don't bother to find the electricPotential line
+        isLinePresent = false;
+      }
+      else {
+        var closestChargeDistance = this.getClosestChargedParticlePosition( this.position ).distance( this.position );
+        var closestDistance = 0.03; // in model coordinates, should be less than the radius (in the view) of a charged particle
+
+        if ( closestChargeDistance < closestDistance ) {
+          // if the initial point for the electricPotential line search is too close to a charged particle, then
+          // the equipotential line will not be visible
+          // also see https://github.com/phetsims/charges-and-fields/issues/5
+          isLinePresent = false;
+        }
+        else {
+          isLinePresent = true;
+        }
+      }
+      return isLinePresent;
+    },
     /**
      * getNextPositionAlongEquipotential gives the next position (within a distance deltaDistance) with the same electric Potential
      * as the initial position.  If delta epsilon is positive, it gives as the next position, a point that is pointing (approximately) 90 degrees
@@ -126,8 +155,8 @@ define( function( require ) {
      * Given an (initial) position, find a position with the targeted electric potential within a distance deltaDistance
      * This uses a standard midpoint algorithm
      * This is guaranteed to be within a distance deltaDistance of the initial position.
-     * Although it is locally more precise than getNextPositionAlongEquipotentialWithElectricPotential,
-     * this algorithm is not symplectic and the equipotential will start to drift over many steps.
+     * Although it is locally more precise than getNextPositionAlongEquipotentialWithElectricPotential (by a very small margin though),
+     * this algorithm is not stable and the equipotential will start to drift over many steps.
      *
      * http://en.wikipedia.org/wiki/Midpoint_method
      * @private
@@ -183,22 +212,9 @@ define( function( require ) {
      *
      * @private
      * @param {Vector2} position - initial position
-     * @returns {Array.<Vector2>|| null} a series of positions with the same electric Potential as the initial position
+     * @returns {Array.<Vector2>} a series of positions with the same electric Potential as the initial position
      */
     getEquipotentialPositionArray: function( position ) {
-      if ( !this.isPlayAreaChargedProperty.value ) {
-        // if there are no charges, don't bother to find the electricPotential line
-        return null;
-      }
-
-      var closestChargeDistance = this.getClosestChargedParticlePosition( position ).distance( position );
-      var closestDistance = 0.05; // in model coordinates, should be less than the radius of a charged particle
-
-      if ( closestChargeDistance < closestDistance ) {
-        // return a null array if the initial point for the electricPotential line is too close to a charged particle
-        // see https://github.com/phetsims/charges-and-fields/issues/5
-        return null;
-      }
 
       /*
        General Idea of this algorithm
@@ -272,7 +288,7 @@ define( function( require ) {
             counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
             if ( approachDistance < 2 * MIN_EPSILON_DISTANCE ) {
 
-              // if the clockwise and counterclockwise points are close, set this.isLineClosed to true to get out of this while loop
+              // if the clockwise and counterclockwise points are close to one another, set this.isLineClosed to true to get out of this while loop
               this.isLineClosed = true;
             }
           }
@@ -418,11 +434,11 @@ define( function( require ) {
         isClosedLineSegments: false
       }, options );
 
-      // if the line is open, there is one less segment than point vectors
-      var segmentNumber = (options.isClosedLineSegments) ? positionArray.length : positionArray.length - 1;
+      // if the line is open, there is one less segments than point vectors
+      var segmentsNumber = (options.isClosedLineSegments) ? positionArray.length : positionArray.length - 1;
 
       shape.moveToPoint( positionArray[ 0 ] );
-      for ( var i = 1; i < segmentNumber + 1; i++ ) {
+      for ( var i = 1; i < segmentsNumber + 1; i++ ) {
         shape.lineToPoint( positionArray[ (i) % positionArray.length ] );
       }
       return shape;
