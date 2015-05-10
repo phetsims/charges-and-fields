@@ -31,7 +31,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isPlayAreaChargedProperty
    * @constructor
    */
-  function  ElectricPotentialLine( position,
+  function ElectricPotentialLine( position,
                                   bounds,
                                   chargedParticles,
                                   getElectricPotential,
@@ -376,13 +376,13 @@ define( function( require ) {
 
       var maxOffset = 0.001;
       var lastPushedIndex = 0;
-      var greatestDistance=0;
+      var greatestDistance = 0;
 
       for ( var i = 1; i < length - 1; i++ ) {
         var cleanUpLength = cleanUpPositionArray.length;
         var lastPushedPoint = cleanUpPositionArray[ cleanUpLength - 1 ];
 
-        for ( var j = lastPushedIndex; j < i+1; j++ ) {
+        for ( var j = lastPushedIndex; j < i + 1; j++ ) {
           var distance = this.getDistanceFromLine( lastPushedPoint, this.positionArray[ j + 1 ], this.positionArray[ i + 1 ] );
           if ( distance > greatestDistance ) {
             greatestDistance = distance;
@@ -392,7 +392,7 @@ define( function( require ) {
         if ( greatestDistance > maxOffset ) {
           cleanUpPositionArray.push( this.positionArray[ i ] );
           lastPushedIndex = i;
-          greatestDistance=0; // reset greatest distance to zero
+          greatestDistance = 0; // reset greatest distance to zero
         }
       }
 
