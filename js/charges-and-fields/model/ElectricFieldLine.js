@@ -174,7 +174,7 @@ define( function( require ) {
         var closestChargedParticlePosition = this.getClosestChargedParticlePosition( currentPosition );
         var closestChargeDistance = closestChargedParticlePosition.distance( currentPosition );
 
-        // if the current position is getting close to a charge, slow down, you dont want to over shoot it.
+        // if the current position is getting close to a charge, slow down, you don't want to over shoot it.
         if ( closestChargeDistance < Math.abs( 2 * epsilonDistance ) ) {
           epsilonDistance = sign * MIN_EPSILON_DISTANCE;
         }
@@ -276,7 +276,7 @@ define( function( require ) {
       // push first data point
       prunedPositionArray.push( positionArray[ 0 ] );
 
-      var maxOffset = 0.001; // in model coordinates,  the threshold of visual acuity when rendred on the screen
+      var maxOffset = 0.001; // in model coordinates,  the threshold of visual acuity when rendered on the screen
       var lastPushedIndex = 0; // index of the last positionArray element pushed into prunedPosition
 
       for ( var i = 1; i < length - 1; i++ ) {
@@ -354,7 +354,7 @@ define( function( require ) {
     /**
      * Appends an arrow head shape to an existing shape. The arrow head is rotated with an angle
      * 'angle' with respect to the positive x -axis
-     *
+     * @private
      * @param {Shape} shape
      * @param {number} angle - in radians
      * @param {Object} [options]
