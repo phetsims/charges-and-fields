@@ -31,7 +31,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isPlayAreaChargedProperty
    * @constructor
    */
-  function ElectricPotentialLine( position,
+  function  ElectricPotentialLine( position,
                                   bounds,
                                   chargedParticles,
                                   getElectricPotential,
@@ -300,10 +300,8 @@ define( function( require ) {
             this.bounds.containsPoint( currentCounterClockwisePosition ) );
 
       }// end of while()
-      console.log( 'model array', stepCounter * 2 );
 
       if ( !this.isLineClosed && this.isEquipotentialLineTerminatingInsideBounds ) {
-        console.log( 'an electricPotential line terminates on the screen' );
 
         // see https://github.com/phetsims/charges-and-fields/issues/1
         // this is very difficult to come up with such a scenario. so far this
@@ -339,7 +337,6 @@ define( function( require ) {
           cleanUpPositionArray.push( this.positionArray[ i + 1 ] );
         }
       }
-      console.log( 'clean length', cleanUpPositionArray.length );
       cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
       return cleanUpPositionArray;
     },
@@ -362,6 +359,59 @@ define( function( require ) {
         }
       } );
       return closestChargedParticlePosition;
+    },
+
+    /**
+     * Function that prunes points from this.positionArray
+     * The pruning is done on the basis of distance.
+     * @private
+     * @returns {Array.<Vector2>}
+     */
+    getPrunedPositionArray: function() {
+      var length = this.positionArray.length;
+      var cleanUpPositionArray = [];
+
+      // push first data point
+      cleanUpPositionArray.push( this.positionArray[ 0 ] );
+
+      var maxOffset = 0.001;
+      var lastPushedIndex = 0;
+      var greatestDistance=0;
+
+      for ( var i = 1; i < length - 1; i++ ) {
+        var cleanUpLength = cleanUpPositionArray.length;
+        var lastPushedPoint = cleanUpPositionArray[ cleanUpLength - 1 ];
+
+        for ( var j = lastPushedIndex; j < i+1; j++ ) {
+          var distance = this.getDistanceFromLine( lastPushedPoint, this.positionArray[ j + 1 ], this.positionArray[ i + 1 ] );
+          if ( distance > greatestDistance ) {
+            greatestDistance = distance;
+          }
+
+        }
+        if ( greatestDistance > maxOffset ) {
+          cleanUpPositionArray.push( this.positionArray[ i ] );
+          lastPushedIndex = i;
+          greatestDistance=0; // reset greatest distance to zero
+        }
+      }
+
+      // push last data point
+      cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
+      return cleanUpPositionArray;
+    },
+
+    /**
+     *
+     * @param {Vector2} initialPoint
+     * @param {Vector2} midwayPoint
+     * @param {Vector2} finalPoint
+     */
+    getDistanceFromLine: function( initialPoint, midwayPoint, finalPoint ) {
+      var midwayDisplacement = midwayPoint.minus( initialPoint );
+      var finalDisplacement = finalPoint.minus( initialPoint );
+      var distance = Math.abs( midwayDisplacement.crossScalar( finalDisplacement.normalized() ) );
+      return distance;
     },
 
     /**
@@ -415,7 +465,7 @@ define( function( require ) {
     getShape: function() {
       assert && assert( this.isLinePresent, 'the positionArray cannot be empty' );
       var shape = new Shape();
-      return this.positionArrayToStraightLine( shape, this.getCleanUpPositionArray(),
+      return this.positionArrayToStraightLine( shape, this.getPrunedPositionArray(),
         { isClosedLineSegments: this.isLineClosed }
       );
     },
