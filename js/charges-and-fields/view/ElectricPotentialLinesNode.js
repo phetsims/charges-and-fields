@@ -124,11 +124,13 @@ define( function( require ) {
 
     Node.call( this );
 
-    var circleRadius = 2;
+    options = _.extend( {
+      radius: 2
+    }, options );
 
     // create and add all the circles
     positionArray.forEach( function( position ) {
-      var circle = new Circle( circleRadius, options );
+      var circle = new Circle( options.radius, options );
       circle.center = modelViewTransform.modelToViewPosition( position );
       self.addChild( circle );
     } );
@@ -178,14 +180,24 @@ define( function( require ) {
       if ( IS_DEBUG ) {
 
         // create all the circles corresponding to the positions calculated in the model
-        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, { fill: 'pink' } );
+        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, { fill: 'pink', radius: 1 } );
 
         // create all the circles corresponding to the positions used to create the shape of the electric potential line
-        var electricPotentialViewCircles = new Circles( electricPotentialLine.getCleanUpPositionArray(), modelViewTransform, { fill: 'yellow' } );
+        var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
 
-        // add the circles
+        // no translatable strings, for debug only
+        var text = new Text( 'model=' + electricPotentialLine.positionArray.length +
+                             '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length,
+          {
+            center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
+            fill: 'green',
+            font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
+          } );
+
+        // add the circles and text
         circlesNode.addChild( electricPotentialModelCircles );
         circlesNode.addChild( electricPotentialViewCircles );
+        circlesNode.addChild( text );
       }
 
       electricPotentialLinesArray.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
