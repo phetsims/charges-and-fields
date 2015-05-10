@@ -12,7 +12,6 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
 
   var ChargesAndFieldsGlobals = new PropertySet( {
-    isElectricFieldLinesSupported: !!phet.chipper.getQueryParameter( 'electricFieldLines' ) || false,
     projectorColors: !!phet.chipper.getQueryParameter( 'projector' ) || false
   } );
 

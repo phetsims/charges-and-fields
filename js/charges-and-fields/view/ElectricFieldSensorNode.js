@@ -31,14 +31,13 @@ define( function( require ) {
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
    * @param {SensorElement} electricFieldSensor
-   * @param {Function} addElectricFieldLine - function that add an electricFieldLine to the model
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
-                                    addElectricFieldLine,
+
                                     modelViewTransform,
                                     availableModelBoundsProperty,
                                     isValuesVisibleProperty ) {
@@ -134,8 +133,6 @@ define( function( require ) {
     var movableDragHandler = new MovableDragHandler(
       electricFieldSensor.positionProperty,
       {
-        startNewTime: 0,
-        startOldTime: 0,
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
@@ -148,25 +145,9 @@ define( function( require ) {
 
             var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
 
-            if ( ChargesAndFieldsGlobals.isElectricFieldLinesSupported ) {
-              // Add an electricFieldLine on a double click event
-              this.startNewTime = new Date().getTime();
-              var timeDifference = this.startNewTime - this.startOldTime; // in milliseconds
-              if ( timeDifference < 300 ) {
-                var initialTime = new Date().getTime();
-                addElectricFieldLine( electricFieldSensor.position );
-                var finalTime = new Date().getTime();
-                var deltaTime = finalTime - initialTime;
-                console.log( 'Time to plot el line: ', deltaTime, 'ms' );
-              }
-              this.startOldTime = this.startNewTime;
-              // do not move the node since we want to be able to double-click on the node
-              electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint );
-            }
-            else {
-              // move this node upward so that the cursor touches the bottom of the chargedParticle
-              electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
-            }
+            // move this node upward so that the cursor touches the bottom of the chargedParticle
+            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
+
           }
         },
 

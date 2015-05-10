@@ -24,7 +24,6 @@ define( function( require ) {
   var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
-  var ElectricFieldLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldLinesNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
@@ -51,7 +50,7 @@ define( function( require ) {
   var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
-  var IS_DEBUG_MODE = false; // debug mode that adds two rectangular push buttons that can add multiple electric field lines and electricPotential lines
+  var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
 
   /**
    *
@@ -145,11 +144,6 @@ define( function( require ) {
       model.electricPotentialLinesArray,
       modelViewTransform,
       viewPropertySet.isValuesVisibleProperty );
-
-    // Create the scenery node responsible for drawing the electric field lines
-    var electricFieldLinesNode = new ElectricFieldLinesNode(
-      model.electricFieldLinesArray,
-      modelViewTransform );
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
@@ -260,7 +254,6 @@ define( function( require ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
         addedElectricFieldSensor,
-        model.addElectricFieldLine.bind( model ),
         modelViewTransform,
         screenView.availableModelBoundsProperty,
         viewPropertySet.isValuesVisibleProperty );
@@ -319,7 +312,6 @@ define( function( require ) {
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
     this.addChild( gridNode ); //
     this.addChild( electricFieldGridNode );
-    this.addChild( electricFieldLinesNode );
     this.addChild( electricPotentialLinesNode );
     this.addChild( toolboxPanel );
     this.addChild( controlPanel );
@@ -329,7 +321,7 @@ define( function( require ) {
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );
 
-    // if in debug mode, add two buttons that allow to add (many at a time) electric potential lines and electric field lines
+    // if in debug mode, add a button that allows to add (many at a time) electric potential lines
     if ( IS_DEBUG_MODE ) {
       this.addChild( new RectangularPushButton( {
           listener: function() {
@@ -340,18 +332,6 @@ define( function( require ) {
           minHeight: 20,
           centerX: resetAllButton.centerX,
           centerY: resetAllButton.centerY - 40
-        }
-      ) );
-
-      this.addChild( new RectangularPushButton( {
-          listener: function() {
-            model.addManyElectricFieldLines( 20 );
-          },
-          baseColor: 'rgb( 204, 122, 24  )',
-          minWidth: 20,
-          minHeight: 20,
-          centerX: resetAllButton.centerX,
-          centerY: resetAllButton.centerY - 70
         }
       ) );
     }

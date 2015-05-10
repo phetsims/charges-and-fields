@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ElectricFieldLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldLine' );
   var ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
@@ -94,10 +93,6 @@ define( function( require ) {
     // @public read-only
     this.electricPotentialLinesArray = new ObservableArray(); // {ObservableArray.<ElectricPotentialLine>}
 
-    // observable array that contains the model of electricPotential line, each element is an electric field line
-    // @public read-only
-    this.electricFieldLinesArray = new ObservableArray(); // {ObservableArray.<ElectricFieldLine>}
-
     //----------------------------------------------------------------------------------------
     //
     // Hook up all the listeners the model
@@ -157,9 +152,6 @@ define( function( require ) {
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLinesArray
         thisModel.clearElectricPotentialLines();
 
-        // clear all electric field lines, i.e. remove all elements from the electricFieldLinesArray
-        thisModel.clearElectricFieldLines();
-
         // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
         thisModel.updateAllVisibleSensors();
         if ( isActive ) {
@@ -188,7 +180,6 @@ define( function( require ) {
 
           // remove electricPotential lines and electric field lines when the position of a charged particle changes and the charge isActive
           thisModel.clearElectricPotentialLines();
-          thisModel.clearElectricFieldLines();
 
           // if oldPosition doesn't exist then calculate the sensor properties from the charge configurations (from scratch)
           if ( oldPosition === null ) {
@@ -248,7 +239,6 @@ define( function( require ) {
 
         // Remove electricPotential lines and electric field lines
         thisModel.clearElectricPotentialLines();
-        thisModel.clearElectricFieldLines();
 
         // Update all the visible sensors
         thisModel.updateAllVisibleSensors();
@@ -297,7 +287,6 @@ define( function( require ) {
         this.activeChargedParticles.clear(); // clear all the active charges
         this.electricFieldSensors.clear(); // clear all the electric field sensors
         this.electricPotentialLinesArray.clear(); // clear the electricPotential 'lines'
-        this.electricFieldLinesArray.clear(); // clear the electric field 'lines'
         this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
         this.updateElectricFieldSensorGrid(); // will reset the grid to zero
         this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
@@ -526,27 +515,6 @@ define( function( require ) {
       },
 
       /**
-       * Push an electricFieldLine to an observable array
-       * The drawing of the electricField Line is handled in the view.
-       * @public
-       * @param {Vector2} position - starting point to calculate the electric field line
-       */
-      addElectricFieldLine: function( position ) {
-        // electric field lines don't exist in a vacuum of charges
-
-        var electricFieldLine = new ElectricFieldLine(
-          position,
-          this.enlargedBounds,
-          this.activeChargedParticles,
-          this.getElectricField.bind( this ),
-          this.isPlayAreaChargedProperty );
-
-        if ( electricFieldLine.isLinePresent ) {
-          this.electricFieldLinesArray.push( electricFieldLine );
-        }
-      },
-
-      /**
        * Push many electric Potential Lines to an observable array
        * The drawing of the electric Potential Lines is handled in the view.
        * @param {number} numberOfLines
@@ -561,35 +529,12 @@ define( function( require ) {
       },
 
       /**
-       * Push many electric Field Lines to an observable array
-       * The drawing of the electric Field Lines and electric Potential Lines is handled in the view.
-
-       * @param {number} numberOfLines
-       * USED IN DEBUGGING MODE
-       */
-      addManyElectricFieldLines: function( numberOfLines ) {
-        var i;
-        for ( i = 0; i < numberOfLines; i++ ) {
-          var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
-          this.addElectricFieldLine( position );
-        }
-      },
-
-      /**
        * Function that clears the Equipotential Lines Observable Array
        * @public
        */
       clearElectricPotentialLines: function() {
         this.electricPotentialLinesArray.clear();
       },
-
-      /**
-       * Function that clears the Electric Field Lines Observable Array
-       * @public
-       */
-      clearElectricFieldLines: function() {
-        this.electricFieldLinesArray.clear();
-      }
 
     }
   )
