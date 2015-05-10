@@ -53,8 +53,6 @@ define( function( require ) {
       this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
       this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
       this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
-      // this.getEquipotentialPositionArray has for side effects to update
-      // this.isLineClosed, and this.isEquipotentialLineTerminatingInsideBounds
     }
 
   }
@@ -77,17 +75,13 @@ define( function( require ) {
       }
       else {
         var closestChargeDistance = this.getClosestChargedParticlePosition( this.position ).distance( this.position );
-        var closestDistance = 0.03; // in model coordinates, should be less than the radius (in the view) of a charged particle
+        var closestAllowedDistance = 0.03; // in model coordinates, should be less than the radius (in the view) of a charged particle
 
-        if ( closestChargeDistance < closestDistance ) {
-          // if the initial point for the electricPotential line search is too close to a charged particle, then
-          // the equipotential line will not be visible
-          // also see https://github.com/phetsims/charges-and-fields/issues/5
-          isLinePresent = false;
-        }
-        else {
-          isLinePresent = true;
-        }
+        // if the initial point for the electricPotential line search is too close to a charged particle, then
+        // the equipotential line will not be visible
+        // also see https://github.com/phetsims/charges-and-fields/issues/5
+        isLinePresent = (closestChargeDistance > closestAllowedDistance);
+
       }
       return isLinePresent;
     },
@@ -319,29 +313,6 @@ define( function( require ) {
     },
 
     /**
-     * Function that prunes points from this.positionArray
-     * @private
-     * @returns {Array.<Vector2>}
-     */
-    getCleanUpPositionArray: function() {
-      var length = this.positionArray.length;
-      var cleanUpPositionArray = [];
-      cleanUpPositionArray.push( this.positionArray[ 0 ] );
-      cleanUpPositionArray.push( this.positionArray[ 1 ] );
-      for ( var i = 2; i < length - 2; i++ ) {
-        var cleanUpLength = cleanUpPositionArray.length;
-        var newDeltaPosition = this.positionArray[ i + 1 ].minus( cleanUpPositionArray[ cleanUpLength - 1 ] );
-        var oldDeltaPosition = cleanUpPositionArray[ cleanUpLength - 1 ].minus( cleanUpPositionArray[ cleanUpLength - 2 ] );
-        var angle = newDeltaPosition.angleBetween( oldDeltaPosition );
-        if ( angle > (2 * Math.PI / 400 ) ) {
-          cleanUpPositionArray.push( this.positionArray[ i + 1 ] );
-        }
-      }
-      cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
-      return cleanUpPositionArray;
-    },
-
-    /**
      * Function that determines the location of the closest charge to a given position.
      * @private
      * @param {Vector2} position
@@ -353,7 +324,7 @@ define( function( require ) {
       assert && assert( this.chargedParticles.length > 0, ' the chargedParticles array must contain at least one element' );
       this.chargedParticles.forEach( function( chargedParticle ) {
         var distance = chargedParticle.position.distance( position );
-        if ( distance < closestDistance ) {
+        if ( closestDistance > distance ) {
           closestChargedParticlePosition = chargedParticle.position;
           closestDistance = distance;
         }
@@ -362,50 +333,54 @@ define( function( require ) {
     },
 
     /**
-     * Function that prunes points from this.positionArray
-     * The pruning is done on the basis of distance.
+     * Function that prunes points from a positionArray. The goal of this method is to
+     * speed up the laying out the line by passing to scenery the minimal number of points
+     * in the position array while being visually equivalent.
+     * For instance this method would remove the middle point of three consecutive collinear points.
+     * More generally, if the middle point is a distance less than maxOffset of the line connecting the two
+     * neighboring points, then it is removed.
+     *
      * @private
+     * @param {Array.<Vector2>} positionArray
      * @returns {Array.<Vector2>}
      */
-    getPrunedPositionArray: function() {
-      var length = this.positionArray.length;
-      var cleanUpPositionArray = [];
+    getPrunedPositionArray: function( positionArray ) {
+      var length = positionArray.length;
+      var prunedPositionArray = []; //{Array.<Vector2>}
 
       // push first data point
-      cleanUpPositionArray.push( this.positionArray[ 0 ] );
+      prunedPositionArray.push( positionArray[ 0 ] );
 
-      var maxOffset = 0.001;
-      var lastPushedIndex = 0;
-      var greatestDistance = 0;
+      var maxOffset = 0.001; // in model coordinates,  the threshold of visual acuity when rendred on the screen
+      var lastPushedIndex = 0; // index of the last positionArray element pushed into prunedPosition
 
       for ( var i = 1; i < length - 1; i++ ) {
-        var cleanUpLength = cleanUpPositionArray.length;
-        var lastPushedPoint = cleanUpPositionArray[ cleanUpLength - 1 ];
+        var lastPushedPoint = prunedPositionArray[ prunedPositionArray.length - 1 ];
 
         for ( var j = lastPushedIndex; j < i + 1; j++ ) {
-          var distance = this.getDistanceFromLine( lastPushedPoint, this.positionArray[ j + 1 ], this.positionArray[ i + 1 ] );
-          if ( distance > greatestDistance ) {
-            greatestDistance = distance;
+          var distance = this.getDistanceFromLine( lastPushedPoint, positionArray[ j + 1 ], positionArray[ i + 1 ] );
+          if ( distance > maxOffset ) {
+            prunedPositionArray.push( positionArray[ i ] );
+            lastPushedIndex = i;
+            break; // breaks out of the inner for loop
           }
-
-        }
-        if ( greatestDistance > maxOffset ) {
-          cleanUpPositionArray.push( this.positionArray[ i ] );
-          lastPushedIndex = i;
-          greatestDistance = 0; // reset greatest distance to zero
         }
       }
 
       // push last data point
-      cleanUpPositionArray.push( this.positionArray[ length - 1 ] );
-      return cleanUpPositionArray;
+      prunedPositionArray.push( positionArray[ length - 1 ] );
+      return prunedPositionArray;
     },
 
     /**
-     *
+     * Function that returns the smallest distance between the midwayPoint and
+     * a straight line that would connect initialPoint and finalPoint.
+     * see http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
+     * @private
      * @param {Vector2} initialPoint
      * @param {Vector2} midwayPoint
      * @param {Vector2} finalPoint
+     * @returns {number}
      */
     getDistanceFromLine: function( initialPoint, midwayPoint, finalPoint ) {
       var midwayDisplacement = midwayPoint.minus( initialPoint );
@@ -417,7 +392,7 @@ define( function( require ) {
     /**
      * Function that returns the an updated epsilonDistance based on the three last points
      * of positionArray
-     *
+     * @private
      * @param {number} epsilonDistance
      * @param {Array.<Vector2>} positionArray
      * @param {boolean} isClockwise
@@ -465,7 +440,8 @@ define( function( require ) {
     getShape: function() {
       assert && assert( this.isLinePresent, 'the positionArray cannot be empty' );
       var shape = new Shape();
-      return this.positionArrayToStraightLine( shape, this.getPrunedPositionArray(),
+      var prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
+      return this.positionArrayToStraightLine( shape, prunedPositionArray,
         { isClosedLineSegments: this.isLineClosed }
       );
     },
