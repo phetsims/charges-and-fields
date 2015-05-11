@@ -29,10 +29,6 @@ define( function( require ) {
       default: WHITE,
       projector: BLACK
     },
-    chargedParticleStroke:{
-      default: BLACK,
-      projector: WHITE
-    },
     controlPanelBorder: {
       default: new Color( 210, 210, 210 ),
       projector: new Color( 192, 192, 192 )
@@ -146,8 +142,8 @@ define( function( require ) {
       projector: WHITE
     },
     electricPotentialGridSaturationPositive: {
-      default: RED,
-      projector: RED
+      default: new Color(210,0,0),
+      projector: new Color(210,0,0)
     },
     electricPotentialGridZero: {
       default: BLACK,
