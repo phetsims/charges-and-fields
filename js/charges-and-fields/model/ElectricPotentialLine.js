@@ -18,7 +18,7 @@ define( function( require ) {
   // see getEquipotentialPositionArray to find how these are used
   var MAX_STEPS = 5000; // {number} integer, the maximum number of steps in the search for a closed path
   var MIN_STEPS = 1000; // {number} integer, the minimum number of steps it will do while searching for a closed path
-  var MAX_EPSILON_DISTANCE = 0.10; // {number} maximum step length along electricPotential in meters
+  var MAX_EPSILON_DISTANCE = 0.05; // {number} maximum step length along electricPotential in meters
   var MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
 
   /**
