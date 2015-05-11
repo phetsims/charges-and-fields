@@ -1,6 +1,6 @@
 {
   "name": "charges-and-fields",
-  "version": "1.0.0-dev.11",
+  "version": "1.0.0-dev.12",
   "license": "GPLv3",
   "simTitleStringKey": "CHARGES_AND_FIELDS/charges-and-fields.name",
   "phetLibs": [
