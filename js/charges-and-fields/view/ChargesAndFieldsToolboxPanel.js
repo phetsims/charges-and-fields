@@ -54,14 +54,14 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndFieldsToolboxPanel( electricPotentialSensorPositionProperty,
-                                    electricPotentialUserControlledProperty,
-                                    measuringTapeBasePositionProperty,
-                                    measuringTapeTipPositionProperty,
-                                    measuringTapeUserControlledProperty,
-                                    isElectricPotentialSensorVisibleProperty,
-                                    isMeasuringTapeVisibleProperty,
-                                    modelViewTransform,
-                                    availableModelBoundsProperty ) {
+                                         electricPotentialUserControlledProperty,
+                                         measuringTapeBasePositionProperty,
+                                         measuringTapeTipPositionProperty,
+                                         measuringTapeUserControlledProperty,
+                                         isElectricPotentialSensorVisibleProperty,
+                                         isMeasuringTapeVisibleProperty,
+                                         modelViewTransform,
+                                         availableModelBoundsProperty ) {
 
     var toolboxPanel = this;
 
@@ -306,20 +306,23 @@ define( function( require ) {
     createMeasuringTapeIcon: function() {
       // procedure to create an icon Image of a measuringTape
       // first, create an actual measuring tape
+
+      var unspooledMeterTape =30; // in view coordinates
       var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
         {
-          tipPositionProperty: new Property( new Vector2( 30, 0 ) ),
+          tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ) ),
           scale: 0.8 // make it a bit small
         } );
       measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
 
       // second, create the measuringTape icon with a token rectangle so that it is not empty
-      var measuringTapeIcon = new Node( { children: [ new Rectangle( 0, 0, 1, 1 ) ] } );
+      // TODO: ask JO if this is really necessary
+      var measuringTapeIcon = new Node( { children: [ new Rectangle(measuringTape.width-unspooledMeterTape, measuringTape.height-5, measuringTape.width, measuringTape.height ) ] } );
 
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {
         measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
-      } );
+      }, measuringTape.width-unspooledMeterTape, measuringTape.height-5, measuringTape.width, measuringTape.height );
       return measuringTapeIcon;
     }
   } );
