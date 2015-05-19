@@ -4,21 +4,7 @@
   "license": "GPLv3",
   "simTitleStringKey": "CHARGES_AND_FIELDS/charges-and-fields.name",
   "phetLibs": [
-    "charges-and-fields",
-    "assert",
-    "axon",
-    "babel",
-    "brand",
-    "chipper",
-    "dot",
-    "joist",
-    "kite",
-    "phet-core",
-    "phetcommon",
-    "scenery",
-    "scenery-phet",
-    "sherpa",
-    "sun"
+    "charges-and-fields"
   ],
   "preload": [
     "../sherpa/lib/Tween-r12.js"
