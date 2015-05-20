@@ -22,7 +22,7 @@ This simulation handles color properties using ChargesAndFieldsColors, and updat
 color editor (charges-and-fields-colors.html), and switch between color schemes (projector or default).
   
 All the movable object handled in the simulation are subject to drag bounds that are determined by the
- extended bounds or the screen size bounds, whichever is smaller.
+extended bounds or the screen size bounds, whichever is smaller.
 
 An equipotential line is represented by a series of positions. The view is responsible
 for linking these points into a series of line segments. 
