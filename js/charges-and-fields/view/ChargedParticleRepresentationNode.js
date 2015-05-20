@@ -18,7 +18,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
 
   // constants
-  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS;// radius of a charged particle
+  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
   /**
    * Constructor for the scenery node of the charge
@@ -47,7 +47,7 @@ define( function( require ) {
     else {
       // then it must be a negative charge
       circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
-    .addColorStop( 0, 'rgb(79,207,255)' ) // mostly blue
+        .addColorStop( 0, 'rgb(79,207,255)' ) // mostly blue
         .addColorStop( 0.5, 'rgb(44, 190, 245)' )
         .addColorStop( 1, 'rgb(0,169,232)' );
     }

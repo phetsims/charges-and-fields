@@ -30,7 +30,7 @@ define( function( require ) {
 
     ChargedParticleRepresentationNode.call( this, chargedParticle.charge );
 
-    // Set up the mouse  areas for this node so that this can still be grabbed when invisible.
+    // Set up the mouse areas for this node so that this can still be grabbed when invisible.
     this.touchArea = this.localBounds.dilated( 10 );
 
     // Register for synchronization with model.
@@ -45,7 +45,7 @@ define( function( require ) {
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
-          if ( !chargedParticle.isAnimated ) // you cant dragged an animated particle
+          if ( !chargedParticle.isAnimated ) // you can't drag an animated particle
           {
             chargedParticle.isUserControlledProperty.set( true );
 

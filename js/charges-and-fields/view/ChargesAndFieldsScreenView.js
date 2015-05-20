@@ -45,11 +45,11 @@ define( function( require ) {
 
   // constants
   var MAX_ELECTRIC_FIELD_MAGNITUDE = 5; // electricField at which color will saturate to maxColor (in Volts/meter)
-  var MAX_ELECTRIC_POTENTIAL = 40; // electric potential   (in volts) at which color will saturate to colorMax
-  var MIN_ELECTRIC_POTENTIAL = -40; // electric potential   at which color will saturate to minColor
+  var MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
+  var MIN_ELECTRIC_POTENTIAL = -40; // electric potential at which color will saturate to minColor
   var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
-  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );  // clamp the linear interpolation function;
-  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );  // clamp the linear interpolation function;
+  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true ); // clamp the linear interpolation function;
+  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true ); // clamp the linear interpolation function;
   var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
 
   /**
@@ -65,16 +65,16 @@ define( function( require ) {
     // Create many properties for checkboxes and Measuring Tape
     var viewPropertySet = new PropertySet( {
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
-      isValuesVisible: false,  // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+      isValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
-      isGridVisible: false,  //  control the visibility of the simple grid with minor and major axes
+      isGridVisible: false, // control the visibility of the simple grid with minor and major axes
       isMeasuringTapeVisible: false, // control the visibility of the measuring tape
       measuringTapeUnits: { name: cmString, multiplier: 100 }, // needed for the measuring tape scenery node
       measuringTapeBasePosition: new Vector2( 0, 0 ),
       measuringTapeTipPosition: new Vector2( 1, 0 )
     } );
 
-    // Create a property that register the model bounds based on the screen size
+    // Create a property that registers the model bounds based on the screen size
     // Note that unlike the viewPropertySet above, the availableModelBounds should not be reset when
     // the resetAllButton is pressed, hence the reason it is not part of the previous propertySet
     this.availableModelBoundsProperty = new Property( model.enlargedBounds );
@@ -211,7 +211,8 @@ define( function( require ) {
     );
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
-    var draggableElementsLayer = new Node( { layerSplit: true } ); // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
+    // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
+    var draggableElementsLayer = new Node( { layerSplit: true } );
 
     // webGL devices that do not have have full WebGL support can only have a finite number of charges on board
     var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
@@ -249,7 +250,7 @@ define( function( require ) {
       } );
     } );
 
-    // Handle the comings and goings of charged particles.
+    // Handle the comings and goings of charged electric field sensors.
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
@@ -259,7 +260,7 @@ define( function( require ) {
         viewPropertySet.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
-      // Add the removal listener for if and when this chargedParticle is removed from the model.
+      // Add the removal listener for if and when this electric field sensor is removed from the model.
       model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
           electricFieldSensorNode.dispose();
