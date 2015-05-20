@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {Vector2} position
    * @param {Bounds2} bounds - if an equipotential line is not closed, it will terminate outside these bounds
    * @param {ObservableArray.<ChargedParticle>} chargedParticles - array of active ChargedParticles
-   * @param {Function} getElectricPotential - function that retruns a number
+   * @param {Function} getElectricPotential - function that returns a number
    * @param {Function} getElectricField - function that returns a vector
    * @param {Property.<boolean>} isPlayAreaChargedProperty
    * @constructor
@@ -85,6 +85,7 @@ define( function( require ) {
       }
       return isLinePresent;
     },
+
     /**
      * getNextPositionAlongEquipotential gives the next position (within a distance deltaDistance) with the same electric Potential
      * as the initial position.  If delta epsilon is positive, it gives as the next position, a point that is pointing (approximately) 90 degrees
@@ -117,12 +118,12 @@ define( function( require ) {
      */
     getNextPositionAlongEquipotentialWithElectricPotential: function( position, electricPotential, deltaDistance ) {
       /*
-       General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
-       to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
-       A further correction is applied since this intermediate point will not have the same electric potential
-       as the targeted electric potential. To find the final point, the electric potential offset between the targeted
-       and the electric potential at the intermediate point is found. By knowing the electric field at the intermediate point
-       the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
+       * General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
+       * to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
+       * A further correction is applied since this intermediate point will not have the same electric potential
+       * as the targeted electric potential. To find the final point, the electric potential offset between the targeted
+       * and the electric potential at the intermediate point is found. By knowing the electric field at the intermediate point
+       * the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
        */
       var initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
@@ -211,21 +212,21 @@ define( function( require ) {
     getEquipotentialPositionArray: function( position ) {
 
       /*
-       General Idea of this algorithm
-
-       The electricPotential line is found using two searches. Starting from an initial point, we find the electric field at
-       this position and define the point to the left of the electric field as the counterclockwise point, whereas the point that is
-       90 degree right of the electric field is the clockwise point. The points are stored in a counterclockwise and clockwise array.
-       The search of the clockwise and counterclockwise points done concurrently. The search stops if (1) the number of
-       searching steps exceeds a large number and (2) either the clockwise or counterClockwise point is very far away from the origin.
-       A third condition to bailout of the search is that the clockwise and counterClockwise position are very close to one another
-       in which case we have a closed electricPotential line. Note that if the conditions (1) and (2) are fulfilled the electricPotential line
-       is not going to be a closed line but this is so far away from the screenview that the end user will simply see the line going
-       beyond the screen.
-
-       After the search is done, the function returns an array of points ordered in a counterclockwise direction, i.e. after
-       joining all the points, the directed line would be made of points that have an electric field
-       pointing clockwise (yes  clockwise) to the direction of the line.
+       * General Idea of this algorithm
+       *
+       * The electricPotential line is found using two searches. Starting from an initial point, we find the electric field at
+       * this position and define the point to the left of the electric field as the counterclockwise point, whereas the point that is
+       * 90 degree right of the electric field is the clockwise point. The points are stored in a counterclockwise and clockwise array.
+       * The search of the clockwise and counterclockwise points done concurrently. The search stops if (1) the number of
+       * searching steps exceeds a large number and (2) either the clockwise or counterClockwise point is very far away from the origin.
+       * A third condition to bailout of the search is that the clockwise and counterClockwise position are very close to one another
+       * in which case we have a closed electricPotential line. Note that if the conditions (1) and (2) are fulfilled the electricPotential line
+       * is not going to be a closed line but this is so far away from the screenview that the end user will simply see the line going
+       * beyond the screen.
+       *
+       * After the search is done, the function returns an array of points ordered in a counterclockwise direction, i.e. after
+       * joining all the points, the directed line would be made of points that have an electric field
+       * pointing clockwise (yes  clockwise) to the direction of the line.
        */
       var stepCounter = 0; // {number} integer
 
@@ -286,14 +287,13 @@ define( function( require ) {
               this.isLineClosed = true;
             }
           }
-        } // end of if(stepCounter>3)
+        } // end of if (stepCounter>3)
 
-        // is at least one current head inside the bounds ?
+        // is at least one current head inside the bounds?
         this.isEquipotentialLineTerminatingInsideBounds =
-          ( this.bounds.containsPoint( currentClockwisePosition ) ||
-            this.bounds.containsPoint( currentCounterClockwisePosition ) );
+        ( this.bounds.containsPoint( currentClockwisePosition ) || this.bounds.containsPoint( currentCounterClockwisePosition ) );
 
-      }// end of while()
+      } // end of while()
 
       if ( !this.isLineClosed && this.isEquipotentialLineTerminatingInsideBounds ) {
 
@@ -301,14 +301,14 @@ define( function( require ) {
         // this is very difficult to come up with such a scenario. so far this
         // was encountered only with a pure quadrupole configuration.
         // let's redo the entire process but starting a tad to the right so we don't get stuck in our search
-        var weeVector = new Vector2( 0.00031415, 0.00027178 ); // (pi,e)
+        var weeVector = new Vector2( 0.00031415, 0.00027178 ); // (pi, e)
         return this.getEquipotentialPositionArray( position.plus( weeVector ) );
       }
 
       // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
       var reversedArray = clockwisePositionArray.reverse();
 
-      // lets returned the entire array , i.e. the reversed clockwise array, the initial position, and the counterclockwise array
+      // let's return the entire array, i.e. the reversed clockwise array, the initial position, and the counterclockwise array
       return reversedArray.concat( position, counterClockwisePositionArray );
     },
 
@@ -346,12 +346,12 @@ define( function( require ) {
      */
     getPrunedPositionArray: function( positionArray ) {
       var length = positionArray.length;
-      var prunedPositionArray = []; //{Array.<Vector2>}
+      var prunedPositionArray = []; // {Array.<Vector2>}
 
       // push first data point
       prunedPositionArray.push( positionArray[ 0 ] );
 
-      var maxOffset = 0.001; // in model coordinates,  the threshold of visual acuity when rendred on the screen
+      var maxOffset = 0.001; // in model coordinates, the threshold of visual acuity when rendered on the screen
       var lastPushedIndex = 0; // index of the last positionArray element pushed into prunedPosition
 
       for ( var i = 1; i < length - 1; i++ ) {
@@ -385,8 +385,7 @@ define( function( require ) {
     getDistanceFromLine: function( initialPoint, midwayPoint, finalPoint ) {
       var midwayDisplacement = midwayPoint.minus( initialPoint );
       var finalDisplacement = finalPoint.minus( initialPoint );
-      var distance = Math.abs( midwayDisplacement.crossScalar( finalDisplacement.normalized() ) );
-      return distance;
+      return Math.abs( midwayDisplacement.crossScalar( finalDisplacement.normalized() ) );
     },
 
     /**
@@ -441,9 +440,7 @@ define( function( require ) {
       assert && assert( this.isLinePresent, 'the positionArray cannot be empty' );
       var shape = new Shape();
       var prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
-      return this.positionArrayToStraightLine( shape, prunedPositionArray,
-        { isClosedLineSegments: this.isLineClosed }
-      );
+      return this.positionArrayToStraightLine( shape, prunedPositionArray, { isClosedLineSegments: this.isLineClosed } );
     },
 
     /**
@@ -471,7 +468,4 @@ define( function( require ) {
     }
 
   } );
-
 } );
-
-
