@@ -65,7 +65,7 @@ define( function( require ) {
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
     // This is the relevant array to calculate the electric field, and electric potential
     // @public
-    this.activeChargedParticles = new ObservableArray(); //  {ObservableArray.<ChargedParticle>}
+    this.activeChargedParticles = new ObservableArray(); // {ObservableArray.<ChargedParticle>}
 
     // Observable array of all draggable electric field sensors
     // @public
@@ -87,7 +87,7 @@ define( function( require ) {
     this.electricPotentialSensorGrid = new SensorGrid( this.bounds, this.enlargedBounds, {
       spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
       onOrigin: false // the origin is equidistant from the four nearest neighbor sensors.
-    } ); //{Array.<StaticSensorElement>}
+    } ); // {Array.<StaticSensorElement>}
 
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
@@ -109,7 +109,7 @@ define( function( require ) {
     } );
 
     //------------------------
-    // isElectricFieldGridVisible Listener  (update all the electric field grid sensors a.k.a. grid of arrows)
+    // isElectricFieldGridVisible Listener (update all the electric field grid sensors a.k.a. grid of arrows)
     //------------------------
 
     // for performance reason, the electric field of the sensors on the grid is calculated and updated only if the
@@ -223,8 +223,8 @@ define( function( require ) {
               // send a signal that the electric potential grid has been updated,
               thisModel.trigger( 'electricPotentialGridUpdated' );
             }
-          }// end of else statement
-        }// end of if(isActive) statement
+          } // end of else statement
+        } // end of if (isActive) statement
       } );
     } );
 
@@ -412,16 +412,14 @@ define( function( require ) {
 
         // For performance reason, we don't want to generate more vector allocations
         // Here is the original code
-        //var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
-        //var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
-        //var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
+        // var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
+        // var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
+        // var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
         return {
           x: ((position.x - newChargePosition.x) / ( newDistancePowerCube ) -
-              (position.x - oldChargePosition.x) / ( oldDistancePowerCube )) *
-             ( particleCharge * K_CONSTANT ),
+              (position.x - oldChargePosition.x) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT ),
           y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
-              (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) *
-             ( particleCharge * K_CONSTANT )
+              (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT )
         };
       },
 
@@ -534,7 +532,7 @@ define( function( require ) {
        */
       clearElectricPotentialLines: function() {
         this.electricPotentialLinesArray.clear();
-      },
+      }
 
     }
   )
