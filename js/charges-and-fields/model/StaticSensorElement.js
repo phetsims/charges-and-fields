@@ -2,7 +2,7 @@
 
 /**
  * Type of a Static Sensor Element
- * Model element for the electric Field Sensor Grid  and the electric Potential Sensor Field
+ * Model element for the electric Field Sensor Grid and the electric Potential Sensor Field
  *
  * @author Martin Veillette (Berea College)
  */

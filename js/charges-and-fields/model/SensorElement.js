@@ -24,7 +24,7 @@ define( function( require ) {
     ModelElement.call( this, position );
 
     // @public
-    this.addProperty( 'electricField', new Vector2( 0, 0 ) );  // the default value assumes there are no electric charges on the board
+    this.addProperty( 'electricField', new Vector2( 0, 0 ) ); // the default value assumes there are no electric charges on the board
 
     // @public
     this.addProperty( 'electricPotential', 0 ); // the default value assumes there are no electric charges on the board
