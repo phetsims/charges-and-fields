@@ -27,7 +27,7 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Oliver Orejola'
     },
-    optionsNode: new GlobalOptionsNode( )
+    optionsNode: new GlobalOptionsNode()
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
