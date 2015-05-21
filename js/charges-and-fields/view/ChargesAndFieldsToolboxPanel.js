@@ -65,9 +65,9 @@ define( function( require ) {
 
     var toolboxPanel = this;
 
-    //TODO fix the slight shift of panel
+    // TODO fix the slight shift of panel
     // Create the icon image for the electricPotential sensor
-    var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon(); //{Node}
+    var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon(); // {Node}
 
     // Create the icon image for the measuring Tape
     var measuringTapeIconNode = this.createMeasuringTapeIcon(); // {Node}
@@ -230,7 +230,6 @@ define( function( require ) {
       }
     };
 
-
   }
 
   return inherit( Panel, ChargesAndFieldsToolboxPanel, {
@@ -307,7 +306,7 @@ define( function( require ) {
       // procedure to create an icon Image of a measuringTape
       // first, create an actual measuring tape
 
-      var unspooledMeterTape =30; // in view coordinates
+      var unspooledMeterTape = 30; // in view coordinates
       var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
         {
           tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ) ),
@@ -317,12 +316,12 @@ define( function( require ) {
 
       // second, create the measuringTape icon with a token rectangle so that it is not empty
       // TODO: ask JO if this is really necessary
-      var measuringTapeIcon = new Node( { children: [ new Rectangle(measuringTape.width-unspooledMeterTape, measuringTape.height-5, measuringTape.width, measuringTape.height ) ] } );
+      var measuringTapeIcon = new Node( { children: [ new Rectangle( measuringTape.width - unspooledMeterTape, measuringTape.height - 5, measuringTape.width, measuringTape.height ) ] } );
 
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {
         measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
-      }, measuringTape.width-unspooledMeterTape, measuringTape.height-5, measuringTape.width, measuringTape.height );
+      }, measuringTape.width - unspooledMeterTape, measuringTape.height - 5, measuringTape.width, measuringTape.height );
       return measuringTapeIcon;
     }
   } );
