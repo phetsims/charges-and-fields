@@ -2,7 +2,7 @@
 
 /**
  * View for the ElectricPotentialSensorNode which renders the sensor as a scenery node.
- * The sensor is draggable, has a readout of the electric potential ( that matches the
+ * The sensor is draggable, has a readout of the electric potential (that matches the
  * electric potential at the crosshair position). The electric potential sensor has two
  * push buttons: One of them send a callback that creates an electric potential line whereas
  * the second push buttons deletes all the electric potential lines on the board.

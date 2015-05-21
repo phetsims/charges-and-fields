@@ -51,7 +51,7 @@ define( function( require ) {
 
     options = _.extend( {
       element: 'electricFieldSensor', // other valid inputs are 'positive' and 'negative'
-      observableArrayLengthLimit: Number.POSITIVE_INFINITY    // Max number of model Elements that can be put in the observable array.
+      observableArrayLengthLimit: Number.POSITIVE_INFINITY // Max number of model Elements that can be put in the observable array.
     }, options );
 
     /**

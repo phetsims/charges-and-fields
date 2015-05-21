@@ -88,7 +88,7 @@ define( function( require ) {
 
   return inherit( CanvasNode, ElectricPotentialGridNode, {
 
-    /*
+    /**
      * Function responsible for painting the canvas Node as a grid array of squares
      * @override
      * @param {CanvasContextWrapper} wrapper
