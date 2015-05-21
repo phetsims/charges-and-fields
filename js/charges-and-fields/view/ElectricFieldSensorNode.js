@@ -36,7 +36,6 @@ define( function( require ) {
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
-
                                     modelViewTransform,
                                     availableModelBoundsProperty,
                                     isValuesVisibleProperty ) {
@@ -96,7 +95,7 @@ define( function( require ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
-      var arrowLength = 15 * magnitude;// arbitrary multiplicative factor for the view
+      var arrowLength = 15 * magnitude; // arbitrary multiplicative factor for the view
 
       // note that the angleInView = -1 * angleInModel
       // since the vertical direction is reversed between the view and the model

@@ -49,7 +49,7 @@ define( function( require ) {
     var arrowArray = []; // arrays of the arrows
     var circleArray = []; // array of the 'transparent' circles on the arrows.
 
-    /**
+    /*
      * First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
      * The point for the center of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
      *
@@ -88,7 +88,7 @@ define( function( require ) {
       electricFieldGridNode.addChild( arrowNode );
       electricFieldGridNode.addChild( circle ); // circle should come after arrowNode
 
-    } ); // end of forEach loop
+    } ); // end of forEach
 
     /**
      *  Updates the orientation of the arrows (and possibly their fill) according to the value of the electric field
@@ -110,7 +110,7 @@ define( function( require ) {
         if ( bounds.containsPoint( arrowNode.center ) ) {
 
           // Rotate the arrow according to the direction of the electric field
-          // Since the model View Transform is  Y inverted, the angle in the view and in the model
+          // Since the model View Transform is Y inverted, the angle in the view and in the model
           // differs by a minus sign
           arrowNode.setRotation( -1 * arrowNode.electricFieldSensor.electricField.angle() );
 
@@ -163,7 +163,7 @@ define( function( require ) {
     // no need to unlink, present for the lifetime of the simulation
     isDirectionOnlyElectricFieldGridVisibleProperty.link( updateElectricFieldGridColors );
 
-    // this node is visible if  (1) the electricField is checked AND (2) there is at least one charge particle  on the board
+    // this node is visible if (1) the electricField is checked AND (2) there is at least one charge particle  on the board
     var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldGridVisibleProperty, isPlayAreaChargedProperty ],
       function( isElectricFieldVisible, isPlayAreaCharged ) {
         return isElectricFieldVisible && isPlayAreaCharged;

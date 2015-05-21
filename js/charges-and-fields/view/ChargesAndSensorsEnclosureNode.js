@@ -72,7 +72,7 @@ define( function( require ) {
     // Create the background enclosure
     var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, { lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH } );
 
-    // Convenience variable to position the charges and sensor
+    // Convenience variables to position the charges and sensor
     var positiveChargeCenterX = viewBounds.centerX - viewBounds.width / 3;
     var positiveChargeCenterY = viewBounds.centerY - viewBounds.height / 5;
     var negativeChargeCenterX = viewBounds.centerX;
