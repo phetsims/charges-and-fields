@@ -28,12 +28,13 @@ define( function( require ) {
   // constants
   var IS_DEBUG = false; // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
 
-  //----------------------------------------------------------------------------------------
-  // Function that generates a voltage label for the electricPotential line
-  // @param {number} electricPotential
-  // @param {Vector2} position
-  // @param {ModelViewTransform2} modelViewTransform
-  //----------------------------------------------------------------------------------------
+  /**
+   * Function that generates a voltage label for the electricPotential line
+   * @param {number} electricPotential
+   * @param {Vector2} position
+   * @param {ModelViewTransform2} modelViewTransform
+   * @constructor
+   */
   function VoltageLabel( electricPotential, position, modelViewTransform ) {
 
     Node.call( this );
@@ -83,11 +84,12 @@ define( function( require ) {
     }
   } );
 
-  //----------------------------------------------------------------------------------------
-  // Function that generates a scenery path from the shape of the electricPotential line
-  // @param {Shape} electricPotentialLineShape
-  // @param {ModelViewTransform2} modelViewTransform
-  //----------------------------------------------------------------------------------------
+  /**
+   * Function that generates a scenery path from the shape of the electricPotential line
+   * @param {Shape} electricPotentialLineShape
+   * @param {ModelViewTransform2} modelViewTransform
+   * @constructor
+   */
   function ElectricPotentialLinePath( electricPotentialLineShape, modelViewTransform ) {
 
     var self = this;
@@ -112,12 +114,13 @@ define( function( require ) {
     }
   } );
 
-  //----------------------------------------------------------------------------------------
-  // Function that generates an array of Circles with their centers determined by the position array
-  // @param {Array.<Vector2>} positionArray
-  // @param {Shape} electricPotentialLineShape
-  // @param {ModelViewTransform2} modelViewTransform
-  //----------------------------------------------------------------------------------------
+  /**
+   * Function that generates an array of Circles with their centers determined by the position array
+   * @param {Array.<Vector2>} positionArray
+   * @param {ModelViewTransform2} modelViewTransform
+   * @param {Object} [options]
+   * @constructor
+   */
   function Circles( positionArray, modelViewTransform, options ) {
 
     var self = this;
