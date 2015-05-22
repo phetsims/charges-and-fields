@@ -131,7 +131,7 @@ define( function( require ) {
         },
         translate: function( translationParams ) {
           var unconstrainedLocation = measuringTapeBasePositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
-          var constrainedLocation = constrainLocation( unconstrainedLocation, availableModelBoundsProperty.value );
+          var constrainedLocation = availableModelBoundsProperty.value.closestPointTo( unconstrainedLocation );
           measuringTapeBasePositionProperty.set( constrainedLocation );
         },
         end: function( event ) {
@@ -173,7 +173,7 @@ define( function( require ) {
 
         translate: function( translationParams ) {
           var unconstrainedLocation = electricPotentialSensorPositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
-          var constrainedLocation = constrainLocation( unconstrainedLocation, availableModelBoundsProperty.value );
+          var constrainedLocation = availableModelBoundsProperty.value.closestPointTo( unconstrainedLocation );
           electricPotentialSensorPositionProperty.set( constrainedLocation );
         },
 
@@ -209,27 +209,6 @@ define( function( require ) {
       electricPotentialSensorMovableDragHandler.dragBounds = bounds;
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
-
-
-    /**
-     * Constrains a location to some bounds.
-     * It returns (1) the same location if the location is within the bounds
-     * or (2) a location on the edge of the bounds if the location is outside the bounds
-     * @param {Vector2} location
-     * @param {Bounds2} bounds
-     * @returns {Vector2}
-     */
-    var constrainLocation = function( location, bounds ) {
-      if ( bounds.containsCoordinates( location.x, location.y ) ) {
-        return location;
-      }
-      else {
-        var xConstrained = Math.max( Math.min( location.x, bounds.maxX ), bounds.x );
-        var yConstrained = Math.max( Math.min( location.y, bounds.maxY ), bounds.y );
-        return new Vector2( xConstrained, yConstrained );
-      }
-    };
-
   }
 
   return inherit( Panel, ChargesAndFieldsToolboxPanel, {
