@@ -471,6 +471,7 @@ define( function( require ) {
         // clears all of our resources
         drawable.computeShaderProgram.dispose();
         drawable.displayShaderProgram.dispose();
+        drawable.clearShaderProgram.dispose();
         drawable.gl.deleteTexture( drawable.currentTexture );
         drawable.gl.deleteTexture( drawable.previousTexture );
         drawable.gl.deleteBuffer( drawable.vertexBuffer );
@@ -478,6 +479,7 @@ define( function( require ) {
 
         drawable.computeShaderProgram = null;
         drawable.displayShaderProgram = null;
+        drawable.clearShaderProgram = null;
       }
     }, {
       /**
