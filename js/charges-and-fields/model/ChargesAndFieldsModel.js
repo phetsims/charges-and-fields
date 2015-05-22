@@ -61,6 +61,7 @@ define( function( require ) {
     // Observable array of all draggable electric charges
     // @public
     this.chargedParticles = new ObservableArray(); // {ObservableArray.<ChargedParticle>}
+    var chargedParticles = this.chargedParticles;
 
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
     // This is the relevant array to calculate the electric field, and electric potential
@@ -136,18 +137,20 @@ define( function( require ) {
     //------------------------
 
     // the following logic is the crux of the simulation
-    this.chargedParticles.addItemAddedListener( function( chargedParticle ) {
+    this.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
 
-      chargedParticle.isUserControlledProperty.link( function( isUserControlled ) {
+      var userControlledListener = function( isUserControlled ) {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( chargedParticle.position ) ) {
-          chargedParticle.isActive = false; // charge is no longer active, (effectively) equivalent to set its model charge to zero
-          chargedParticle.animate(); // animate the charge to its destination position
+        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( addedChargedParticle.position ) ) {
+          addedChargedParticle.isActive = false; // charge is no longer active, (effectively) equivalent to set its model charge to zero
+          addedChargedParticle.animate(); // animate the charge to its destination position
         }
-      } );
+      };
 
-      chargedParticle.isActiveProperty.lazyLink( function( isActive ) {
+      addedChargedParticle.isUserControlledProperty.link( userControlledListener );
+
+      var isActiveListener = function( isActive ) {
 
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLinesArray
         thisModel.clearElectricPotentialLines();
@@ -161,7 +164,7 @@ define( function( require ) {
 
           // add particle to the activeChargedParticle observable array
           // use for the webGlNode
-          thisModel.activeChargedParticles.push( chargedParticle );
+          thisModel.activeChargedParticles.push( addedChargedParticle );
         }
         else {
 
@@ -169,14 +172,16 @@ define( function( require ) {
           thisModel.updateIsPlayAreaCharged();
 
           // remove particle from the activeChargeParticle array
-          thisModel.activeChargedParticles.remove( chargedParticle );
+          thisModel.activeChargedParticles.remove( addedChargedParticle );
         }
-      } );
+      };
 
-      chargedParticle.positionProperty.link( function( position, oldPosition ) {
+      addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
+
+      var positionListener = function( position, oldPosition ) {
 
         // verify that the charge isActive before doing any charge-dependent updates to the model
-        if ( chargedParticle.isActive ) {
+        if ( addedChargedParticle.isActive ) {
 
           // remove electricPotential lines and electric field lines when the position of a charged particle changes and the charge isActive
           thisModel.clearElectricPotentialLines();
@@ -189,7 +194,7 @@ define( function( require ) {
           // this should help performance if there are many charged particles on the board
           else {
             // convenience variable
-            var charge = chargedParticle.charge;
+            var charge = addedChargedParticle.charge;
 
             // update the Electric Potential Sensor by calculating the change in the electric potential
             thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange(
@@ -225,6 +230,18 @@ define( function( require ) {
             }
           } // end of else statement
         } // end of if (isActive) statement
+      };
+
+      addedChargedParticle.positionProperty.link( positionListener );
+
+      // remove listeners when a chargedParticle is removed
+      chargedParticles.addItemRemovedListener( function removalListener( removedChargeParticle ) {
+        if ( removedChargeParticle === addedChargedParticle ) {
+          addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
+          addedChargedParticle.isActiveProperty.unlink( isActiveListener );
+          addedChargedParticle.positionProperty.unlink( positionListener );
+          chargedParticles.removeItemRemovedListener( removalListener );
+        }
       } );
     } );
 
@@ -232,10 +249,9 @@ define( function( require ) {
     // AddItem Removed Listener on the charged Particles Observable Array
     //------------------------
 
-    // if any charge is removed, we need to update all the sensors
-    this.chargedParticles.addItemRemovedListener( function( chargeParticle ) {
+    this.chargedParticles.addItemRemovedListener( function( removedChargeParticle ) {
       // check that the particle was active before updating charge dependent model components
-      if ( chargeParticle.isActive && !thisModel.isResetting ) {
+      if ( removedChargeParticle.isActive && !thisModel.isResetting ) {
 
         // Remove electricPotential lines and electric field lines
         thisModel.clearElectricPotentialLines();
@@ -244,10 +260,10 @@ define( function( require ) {
         thisModel.updateAllVisibleSensors();
 
         // remove particle from the activeChargedParticles array
-        thisModel.activeChargedParticles.remove( chargeParticle );
+        thisModel.activeChargedParticles.remove( removedChargeParticle );
       }
 
-      // update  the property isPlayAreaCharged to see if is there at least one active charge on the board
+      // update the property isPlayAreaCharged to see if is there at least one active charge on the board
       thisModel.updateIsPlayAreaCharged();
     } );
 
