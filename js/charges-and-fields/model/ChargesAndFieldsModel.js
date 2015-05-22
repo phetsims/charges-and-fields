@@ -71,6 +71,7 @@ define( function( require ) {
     // Observable array of all draggable electric field sensors
     // @public
     this.electricFieldSensors = new ObservableArray(); // {ObservableArray.<SensorElement>}
+    var electricFieldSensors = this.electricFieldSensors;
 
     // electric potential sensor
     var position = new Vector2( 0, 0 ); // position of the crosshair on the electric potential sensor, initial value will be reset by the view
@@ -271,19 +272,32 @@ define( function( require ) {
     // AddItem Added Listener on the electric Field Sensors Observable Array
     //------------------------
 
-    this.electricFieldSensors.addItemAddedListener( function( electricFieldSensor ) {
+    this.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
+
+      var positionListener = function( position ) {
+        addedElectricFieldSensor.electricField = thisModel.getElectricField( position );
+      };
 
       // update the Electric Field Sensors upon a change of its own position
-      electricFieldSensor.positionProperty.link( function( position ) {
-        electricFieldSensor.electricField = thisModel.getElectricField( position );
-      } );
+      addedElectricFieldSensor.positionProperty.link( positionListener );
 
-      electricFieldSensor.isUserControlledProperty.link( function( isUserControlled ) {
+      var userControlledListener = function( isUserControlled ) {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( electricFieldSensor.position ) ) {
-          electricFieldSensor.isActive = false;
-          electricFieldSensor.animate();
+        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.position ) ) {
+          addedElectricFieldSensor.isActive = false;
+          addedElectricFieldSensor.animate();
+        }
+      };
+
+      addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
+
+      // remove listeners when an electricFieldSensor is removed
+      electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
+        if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
+          addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
+          addedElectricFieldSensor.positionProperty.unlink( positionListener );
+          electricFieldSensors.removeItemRemovedListener( removalListener );
         }
       } );
     } );
