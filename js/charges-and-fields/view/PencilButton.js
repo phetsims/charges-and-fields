@@ -23,7 +23,8 @@ define( function( require ) {
 
     options = _.extend( {
       iconWidth: 26,
-      iconHeight: 18
+      iconHeight: 20,
+      baseColor: 'rgb(242, 242, 242)'
     }, options );
 
     // eraser
