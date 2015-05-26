@@ -16,7 +16,7 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var EraserButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/EraserButton' );
+  var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
@@ -88,6 +88,8 @@ define( function( require ) {
 
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
+      baseColor: 'rgb(242, 242, 242)',
+      iconWidth: 23,
       listener: function() {
         clearElectricPotentialLines();
       }
