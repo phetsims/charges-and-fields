@@ -88,7 +88,7 @@ define( function( require ) {
 
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
-      baseColor: '#F2F2F2',
+      baseColor: '#f2f2f2',
       iconWidth: 23,
       listener: function() {
         clearElectricPotentialLines();
@@ -97,6 +97,7 @@ define( function( require ) {
 
     // Create the button that allows to plot the ElectricPotential Lines
     var plotElectricPotentialLineButton = new PencilButton( {
+      baseColor: '#f2f2f2',
       listener: function() {
         // TODO: get rid of timing
         var initialTime = new Date().getTime();
@@ -167,11 +168,6 @@ define( function( require ) {
       crosshair.stroke = color;
       crosshairMount.fill = color;
       crosshairMount.stroke = color;
-    } );
-
-    ChargesAndFieldsColors.link( 'buttonBaseColor', function( color ) {
-      clearButton.baseColor = color;
-      plotElectricPotentialLineButton.baseColor = color;
     } );
 
     ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', function( color ) {

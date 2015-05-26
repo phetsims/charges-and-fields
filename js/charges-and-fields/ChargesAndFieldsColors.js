@@ -113,10 +113,6 @@ define( function( require ) {
       default: WHITE,
       projector: BLACK
     },
-    buttonBaseColor: {
-      default: new Color( 200, 200, 200 ),
-      projector: new Color( 200, 200, 200 )
-    },
     electricPotentialPanelTitleText: {
       default: WHITE,
       projector: WHITE
