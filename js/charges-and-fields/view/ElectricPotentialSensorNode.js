@@ -88,7 +88,7 @@ define( function( require ) {
 
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
-      baseColor: 'rgb(242, 242, 242)',
+      baseColor: '#F2F2F2',
       iconWidth: 23,
       listener: function() {
         clearElectricPotentialLines();
