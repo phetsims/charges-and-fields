@@ -99,12 +99,7 @@ define( function( require ) {
     var plotElectricPotentialLineButton = new PencilButton( {
       baseColor: '#f2f2f2',
       listener: function() {
-        // TODO: get rid of timing
-        var initialTime = new Date().getTime();
         addElectricPotentialLine();
-        var finalTime = new Date().getTime();
-        var deltaTime = finalTime - initialTime;
-        console.log( 'Time to plot eq line: ', deltaTime, 'ms' );
       }
     } );
 
