@@ -65,7 +65,6 @@ define( function( require ) {
 
     var toolboxPanel = this;
 
-    // TODO fix the slight shift of panel
     // Create the icon image for the electricPotential sensor
     var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon(); // {Node}
 
