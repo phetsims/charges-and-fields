@@ -47,6 +47,11 @@ define( function( require ) {
     var TYPE_REMOVE = 1;
     var TYPE_MOVE = 2;
 
+    // persistent matrices/arrays so we minimize the number of created objects during rendering
+    var scratchProjectionMatrix = new Matrix3();
+    var scratchInverseMatrix = new Matrix3();
+    var scratchFloatArray = new Float32Array( 9 );
+
     /**
      *
      * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
@@ -376,10 +381,11 @@ define( function( require ) {
         gl.uniform2f( computeShaderProgram.uniformLocations.uCanvasSize, drawable.canvasWidth, drawable.canvasHeight );
         gl.uniform2f( computeShaderProgram.uniformLocations.uTextureSize, drawable.textureWidth, drawable.textureHeight );
 
-        // TODO: reduce allocations
-        var projectionMatrixInverse = new Matrix3().setArray( drawable.webGLBlock.projectionMatrixArray ).invert();
-        var matrixInverse = this.modelViewTransform.getInverse().timesMatrix( matrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
-        var matrixInverseEntries = new Float32Array( matrixInverse.entries );
+        var matrixInverse = scratchInverseMatrix;
+        var matrixInverseEntries = scratchFloatArray;
+        var projectionMatrixInverse = scratchProjectionMatrix.setArray( drawable.webGLBlock.projectionMatrixArray ).invert();
+        matrixInverse.set( this.modelViewTransform.getInverse() ).multiplyMatrix( matrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
+        matrixInverseEntries.set( matrixInverse.entries );
         gl.uniformMatrix3fv( computeShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverseEntries );
 
         // do a draw call for each particle change
