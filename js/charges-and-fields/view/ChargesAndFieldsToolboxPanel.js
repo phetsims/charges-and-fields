@@ -292,9 +292,8 @@ define( function( require ) {
         } );
       measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
 
-      // second, create the measuringTape icon with a token rectangle so that it is not empty
-      // TODO: ask JO if this is really necessary
-      var measuringTapeIcon = new Node( { children: [ new Rectangle( measuringTape.width - unspooledMeterTape, measuringTape.height - 5, measuringTape.width, measuringTape.height ) ] } );
+      // second, create the measuringTape icon
+      var measuringTapeIcon = new Node( { children: [ measuringTape ]} );
 
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {
