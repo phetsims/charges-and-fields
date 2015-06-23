@@ -14,7 +14,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
 
   // images
-  var pencilImage = require( 'image!CHARGES_AND_FIELDS/pencil.png' );
+  var pencilImage = require( 'mipmap!CHARGES_AND_FIELDS/pencil.png' );
 
   /**
    * @param {Object} [options]
