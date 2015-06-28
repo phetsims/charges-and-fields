@@ -52,7 +52,7 @@ define( function( require ) {
       } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.4, voltageLabelText.height * 1.4, 3, 3,
+    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3,
       {
         center: modelViewTransform.modelToViewPosition( position )
       } );
@@ -64,7 +64,7 @@ define( function( require ) {
     var rectangleColorFunction = function( color ) {
       backgroundRectangle.fill = color;
     };
-    ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
+    ChargesAndFieldsColors.link( 'voltageLabelBackground', rectangleColorFunction );
 
     // Link the fill color of the text for the default/projector mode
     var textColorFunction = function( color ) {
