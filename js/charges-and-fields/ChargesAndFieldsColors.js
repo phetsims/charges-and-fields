@@ -65,6 +65,10 @@ define( function( require ) {
       default: WHITE,
       projector: BLACK
     },
+    voltageLabelBackground: {
+      default: new Color( 0, 0, 0, 0.5 ),
+      projector: new Color( 255, 255, 255, 0.5 ),
+    },
     electricPotentialLine: {
       default: new Color( 50, 255, 100 ),
       projector: BLACK
@@ -138,8 +142,8 @@ define( function( require ) {
       projector: WHITE
     },
     electricPotentialGridSaturationPositive: {
-      default: new Color(210,0,0),
-      projector: new Color(210,0,0)
+      default: new Color( 210, 0, 0 ),
+      projector: new Color( 210, 0, 0 )
     },
     electricPotentialGridZero: {
       default: BLACK,

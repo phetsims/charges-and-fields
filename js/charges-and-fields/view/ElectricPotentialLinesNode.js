@@ -20,6 +20,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Util = require( 'DOT/Util');
 
   // strings
   var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -40,7 +41,7 @@ define( function( require ) {
     Node.call( this );
 
     // a smaller electric potential should have more precision
-    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? electricPotential.toFixed( 2 ) : electricPotential.toFixed( 1 );
+    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed(electricPotential,2) : Util.toFixed(electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern_0value_1units, electricPotentialValueString, voltageUnitString );
@@ -51,7 +52,7 @@ define( function( require ) {
       } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.4, voltageLabelText.height * 1.4, 3, 3,
+    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3,
       {
         center: modelViewTransform.modelToViewPosition( position )
       } );
@@ -63,7 +64,7 @@ define( function( require ) {
     var rectangleColorFunction = function( color ) {
       backgroundRectangle.fill = color;
     };
-    ChargesAndFieldsColors.link( 'background', rectangleColorFunction );
+    ChargesAndFieldsColors.link( 'voltageLabelBackground', rectangleColorFunction );
 
     // Link the fill color of the text for the default/projector mode
     var textColorFunction = function( color ) {
