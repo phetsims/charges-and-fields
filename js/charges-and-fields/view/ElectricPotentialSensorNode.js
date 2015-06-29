@@ -271,7 +271,7 @@ define( function( require ) {
 
       // let's find the exponent as in
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
-      var exponent = Math.floor( Math.log10( Math.abs( number ) ) );
+      var exponent = Math.floor( Math.log( Math.abs( number ) ) / Math.log( 10 ) );
 
       var decimalPlaces;
 
