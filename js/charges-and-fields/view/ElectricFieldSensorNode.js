@@ -12,6 +12,7 @@ define( function( require ) {
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
@@ -32,20 +33,19 @@ define( function( require ) {
    * @param {SensorElement} electricFieldSensor
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
+   * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
                                     modelViewTransform,
                                     availableModelBoundsProperty,
+                                    isPlayAreaChargedProperty,
                                     isValuesVisibleProperty ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
     var electricFieldSensorNode = this;
-
-    this.electricFieldSensor = electricFieldSensor;
-    this.isValuesVisibleProperty = isValuesVisibleProperty;
 
     // Expand the touch area
     this.touchArea = this.localBounds.dilated( 10 );
@@ -118,9 +118,20 @@ define( function( require ) {
     // Show/hide labels
     var isValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
-      directionLabel.visible = isVisible;
     };
     isValuesVisibleProperty.link( isValuesVisibleListener );
+
+    // the direction label is visible if (1) 'values' is checked  and (2) there is at least one charge particle  on the board
+    var isDirectionLabelVisibleProperty = new DerivedProperty( [ isValuesVisibleProperty, isPlayAreaChargedProperty ],
+      function( isValuesVisible, isPlayAreaCharged ) {
+        return isValuesVisible && isPlayAreaCharged;
+      } );
+
+    // Show/hide labels
+    var isDirectionLabelVisibleListener = function( isVisible ) {
+      directionLabel.visible = isVisible;
+    };
+    isDirectionLabelVisibleProperty.link( isDirectionLabelVisibleListener );
 
     // Register for synchronization with model.
     var positionListener = function( position ) {
@@ -169,6 +180,7 @@ define( function( require ) {
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
       isValuesVisibleProperty.unlink( isValuesVisibleListener );
+      isDirectionLabelVisibleProperty.unlink( isDirectionLabelVisibleListener );
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
     };
 

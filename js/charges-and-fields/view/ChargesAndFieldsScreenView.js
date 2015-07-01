@@ -258,6 +258,7 @@ define( function( require ) {
         addedElectricFieldSensor,
         modelViewTransform,
         screenView.availableModelBoundsProperty,
+        model.isPlayAreaChargedProperty,
         viewPropertySet.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
