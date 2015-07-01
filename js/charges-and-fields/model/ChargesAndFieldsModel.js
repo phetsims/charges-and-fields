@@ -355,25 +355,23 @@ define( function( require ) {
           }
         }
         else if ( sumActiveChargedParticle === 4 ) {
-          // recall that the net charge is zero
-          // two charges are necessarily positive and the other two negative
-          var dipoleXMoment = 0;
-          var dipoleYMoment = 0;
-          var quadrupoleXXMoment = 0;
-          var quadrupoleXYMoment = 0;
-          var quadrupoleYYMoment = 0;
+          var positiveChargePositionArray = [];
+          var negativeChargePositionArray = [];
           this.activeChargedParticles.forEach( function( chargedParticle ) {
-            dipoleXMoment += chargedParticle.charge * chargedParticle.position.x;
-            dipoleYMoment += chargedParticle.charge * chargedParticle.position.y;
-            quadrupoleXXMoment += chargedParticle.charge * chargedParticle.position.x * chargedParticle.position.x;
-            quadrupoleXYMoment += chargedParticle.charge * chargedParticle.position.x * chargedParticle.position.y;
-            quadrupoleYYMoment += chargedParticle.charge * chargedParticle.position.y * chargedParticle.position.y;
+            if ( chargedParticle.charge === 1 ) {
+              positiveChargePositionArray.push( chargedParticle.position );
+            }
+            else {
+              negativeChargePositionArray.push( chargedParticle.position );
+            }
           } );
-          if ( dipoleXMoment === 0 &&
-               dipoleYMoment === 0 &&
-               quadrupoleXXMoment === 0 &&
-               quadrupoleXYMoment === 0 &&
-               quadrupoleYYMoment === 0 ) {
+
+          if (
+            (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
+             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] )) ||
+            (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
+             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) )
+          {
             this.isPlayAreaCharged = false;
           }
           else {
