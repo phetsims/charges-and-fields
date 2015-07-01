@@ -156,30 +156,28 @@ define( function( require ) {
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLinesArray
         thisModel.clearElectricPotentialLines();
 
-        // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
-        thisModel.updateAllVisibleSensors();
         if ( isActive ) {
-
-          // we know for sure that there is a least one active charge
-          thisModel.isPlayAreaCharged = true;
-
           // add particle to the activeChargedParticle observable array
           // use for the webGlNode
           thisModel.activeChargedParticles.push( addedChargedParticle );
         }
         else {
-
-          // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
-          thisModel.updateIsPlayAreaCharged();
-
           // remove particle from the activeChargeParticle array
           thisModel.activeChargedParticles.remove( addedChargedParticle );
         }
+        // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
+        thisModel.updateIsPlayAreaCharged();
+
+        // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
+        thisModel.updateAllVisibleSensors();
       };
+
 
       addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
       var positionListener = function( position, oldPosition ) {
+
+        thisModel.updateIsPlayAreaCharged();
 
         // verify that the charge isActive before doing any charge-dependent updates to the model
         if ( addedChargedParticle.isActive ) {
@@ -324,19 +322,73 @@ define( function( require ) {
       },
 
       /**
-       * Function that determines if there are active charges on the board
+       * Function that determines if there is at least one active and "uncompensated" charge
+       * on the board. If this is not the case, it implies that the E-field is zero everywhere
+       * (see https://github.com/phetsims/charges-and-fields/issues/46)
        * @private
        */
       updateIsPlayAreaCharged: function() {
-        var isActiveChargePresentOnBoard = false;
+        var sumElectricCharge = 0; // {number}
+        var sumActiveChargedParticle = 0; // {number}
 
-        this.chargedParticles.forEach( function( chargedParticle ) {
-          isActiveChargePresentOnBoard = isActiveChargePresentOnBoard || chargedParticle.isActive;
+        this.activeChargedParticles.forEach( function( chargedParticle ) {
+          sumActiveChargedParticle++;
+          sumElectricCharge += chargedParticle.charge;
         } );
 
-        this.isPlayAreaCharged = isActiveChargePresentOnBoard;
-      },
-
+        if ( sumElectricCharge !== 0 ) {
+          this.isPlayAreaCharged = true; // by Gauss's law there must be an electric field
+        }
+        // then the sum of the charge is necessarily zero
+        else if ( sumActiveChargedParticle === 0 ) {
+          // there is not net charge on the board
+          this.isPlayAreaCharged = false;
+        }
+        else if ( sumActiveChargedParticle === 2 ) {
+          // one charge is necessarily positive and the other one negative
+          if ( (this.activeChargedParticles.get( 1 ).position).equals( this.activeChargedParticles.get( 0 ).position ) ) {
+            // the charges occupy the same position and are therefore compensated
+            this.isPlayAreaCharged = false;
+          }
+          else {
+            this.isPlayAreaCharged = true;
+          }
+        }
+        else if ( sumActiveChargedParticle === 4 ) {
+          // recall that the net charge is zero
+          // two charges are necessarily positive and the other two negative
+          var dipoleXMoment = 0;
+          var dipoleYMoment = 0;
+          var quadrupoleXXMoment = 0;
+          var quadrupoleXYMoment = 0;
+          var quadrupoleYYMoment = 0;
+          this.activeChargedParticles.forEach( function( chargedParticle ) {
+            dipoleXMoment += chargedParticle.charge * chargedParticle.position.x;
+            dipoleYMoment += chargedParticle.charge * chargedParticle.position.y;
+            quadrupoleXXMoment += chargedParticle.charge * chargedParticle.position.x * chargedParticle.position.x;
+            quadrupoleXYMoment += chargedParticle.charge * chargedParticle.position.x * chargedParticle.position.y;
+            quadrupoleYYMoment += chargedParticle.charge * chargedParticle.position.y * chargedParticle.position.y;
+          } );
+          if ( dipoleXMoment === 0 &&
+               dipoleYMoment === 0 &&
+               quadrupoleXXMoment === 0 &&
+               quadrupoleXYMoment === 0 &&
+               quadrupoleYYMoment === 0 ) {
+            this.isPlayAreaCharged = false;
+          }
+          else {
+            this.isPlayAreaCharged = true;
+          }
+        }
+        // for more than six charges
+        else {
+          // there are cases with six charges (and above) that can be compensated
+          // however it is quite expensive to make this type of check as well as
+          // incredibly unlikely to be the case in the first place.
+          this.isPlayAreaCharged = true;
+        }
+      }
+      ,
       /**
        * Update the four types of sensors
        * @private
@@ -346,7 +398,8 @@ define( function( require ) {
         this.updateElectricPotentialSensorGrid();
         this.updateElectricFieldSensors();
         this.updateElectricFieldSensorGrid();
-      },
+      }
+      ,
 
       /**
        * Update all the visible sensors
@@ -364,7 +417,8 @@ define( function( require ) {
         // the transition visible/invisible)
         this.updateElectricPotentialSensor();
         this.updateElectricFieldSensors();
-      },
+      }
+      ,
 
       /**
        * Update the Electric Field Sensors
@@ -375,14 +429,16 @@ define( function( require ) {
         this.electricFieldSensors.forEach( function( sensorElement ) {
           sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
         } );
-      },
+      }
+      ,
       /**
        * Update the Electric Potential Sensor
        * @private
        */
       updateElectricPotentialSensor: function() {
         this.electricPotentialSensor.electricPotential = this.getElectricPotential( this.electricPotentialSensor.position );
-      },
+      }
+      ,
 
       /**
        * Update the Electric Potential Grid Sensors
@@ -396,7 +452,8 @@ define( function( require ) {
         } );
         // send a signal that the electric potential grid has just been updated
         this.trigger( 'electricPotentialGridUpdated' );
-      },
+      }
+      ,
 
       /**
        * Update the Electric Field Grid Sensors
@@ -409,7 +466,8 @@ define( function( require ) {
         } );
         // send a signal that the electric field grid has just been updated
         this.trigger( 'electricFieldGridUpdated' );
-      },
+      }
+      ,
 
       /**
        * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
@@ -424,7 +482,8 @@ define( function( require ) {
           // the observable array can removed the model element when the model element has returned to its origin
           observableArray.remove( modelElement );
         } );
-      },
+      }
+      ,
 
       /**
        * Return the change in the electric field at position Position due to the motion of a
@@ -451,7 +510,8 @@ define( function( require ) {
           y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
               (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT )
         };
-      },
+      }
+      ,
 
       /**
        * Return the change in the electric potential at location 'position' due to the motion of a
@@ -467,7 +527,8 @@ define( function( require ) {
         var newDistance = newChargePosition.distance( position );
         var oldDistance = oldChargePosition.distance( position );
         return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
-      },
+      }
+      ,
 
       /**
        * Return the electric field ( a vector) at a location 'position'
@@ -491,7 +552,8 @@ define( function( require ) {
         } );
         electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
         return electricField;
-      },
+      }
+      ,
 
       /**
        * Return the electric potential at a location 'position' due to the configuration of charges on the board.
@@ -509,7 +571,8 @@ define( function( require ) {
         } );
         electricPotential *= K_CONSTANT; // prefactor depends on units
         return electricPotential;
-      },
+      }
+      ,
 
       /**
        * Push an electricPotentialLine to an observable array
@@ -540,7 +603,8 @@ define( function( require ) {
         if ( electricPotentialLine.isLinePresent ) {
           this.electricPotentialLinesArray.push( electricPotentialLine );
         }
-      },
+      }
+      ,
 
       /**
        * Push many electric Potential Lines to an observable array
@@ -554,7 +618,8 @@ define( function( require ) {
           var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
           this.addElectricPotentialLine( position );
         }
-      },
+      }
+      ,
 
       /**
        * Function that clears the Equipotential Lines Observable Array
