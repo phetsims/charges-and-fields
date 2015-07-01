@@ -387,8 +387,7 @@ define( function( require ) {
           // incredibly unlikely to be the case in the first place.
           this.isPlayAreaCharged = true;
         }
-      }
-      ,
+      },
       /**
        * Update the four types of sensors
        * @private
@@ -398,8 +397,7 @@ define( function( require ) {
         this.updateElectricPotentialSensorGrid();
         this.updateElectricFieldSensors();
         this.updateElectricFieldSensorGrid();
-      }
-      ,
+      },
 
       /**
        * Update all the visible sensors
@@ -417,8 +415,7 @@ define( function( require ) {
         // the transition visible/invisible)
         this.updateElectricPotentialSensor();
         this.updateElectricFieldSensors();
-      }
-      ,
+      },
 
       /**
        * Update the Electric Field Sensors
@@ -429,16 +426,14 @@ define( function( require ) {
         this.electricFieldSensors.forEach( function( sensorElement ) {
           sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
         } );
-      }
-      ,
+      },
       /**
        * Update the Electric Potential Sensor
        * @private
        */
       updateElectricPotentialSensor: function() {
         this.electricPotentialSensor.electricPotential = this.getElectricPotential( this.electricPotentialSensor.position );
-      }
-      ,
+      },
 
       /**
        * Update the Electric Potential Grid Sensors
@@ -452,8 +447,7 @@ define( function( require ) {
         } );
         // send a signal that the electric potential grid has just been updated
         this.trigger( 'electricPotentialGridUpdated' );
-      }
-      ,
+      },
 
       /**
        * Update the Electric Field Grid Sensors
@@ -466,8 +460,7 @@ define( function( require ) {
         } );
         // send a signal that the electric field grid has just been updated
         this.trigger( 'electricFieldGridUpdated' );
-      }
-      ,
+      },
 
       /**
        * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
@@ -482,8 +475,7 @@ define( function( require ) {
           // the observable array can removed the model element when the model element has returned to its origin
           observableArray.remove( modelElement );
         } );
-      }
-      ,
+      },
 
       /**
        * Return the change in the electric field at position Position due to the motion of a
@@ -510,8 +502,7 @@ define( function( require ) {
           y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
               (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT )
         };
-      }
-      ,
+      },
 
       /**
        * Return the change in the electric potential at location 'position' due to the motion of a
@@ -527,8 +518,7 @@ define( function( require ) {
         var newDistance = newChargePosition.distance( position );
         var oldDistance = oldChargePosition.distance( position );
         return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
-      }
-      ,
+      },
 
       /**
        * Return the electric field ( a vector) at a location 'position'
@@ -552,8 +542,7 @@ define( function( require ) {
         } );
         electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
         return electricField;
-      }
-      ,
+      },
 
       /**
        * Return the electric potential at a location 'position' due to the configuration of charges on the board.
@@ -571,8 +560,7 @@ define( function( require ) {
         } );
         electricPotential *= K_CONSTANT; // prefactor depends on units
         return electricPotential;
-      }
-      ,
+      },
 
       /**
        * Push an electricPotentialLine to an observable array
@@ -603,8 +591,7 @@ define( function( require ) {
         if ( electricPotentialLine.isLinePresent ) {
           this.electricPotentialLinesArray.push( electricPotentialLine );
         }
-      }
-      ,
+      },
 
       /**
        * Push many electric Potential Lines to an observable array
@@ -618,8 +605,7 @@ define( function( require ) {
           var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
           this.addElectricPotentialLine( position );
         }
-      }
-      ,
+      },
 
       /**
        * Function that clears the Equipotential Lines Observable Array
