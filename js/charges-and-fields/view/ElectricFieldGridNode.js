@@ -141,7 +141,7 @@ define( function( require ) {
       if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
         arrowArray.forEach( function( arrowNode ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
-        } );
+      } );
       }
       else {
         arrowArray.forEach( function( arrowNode ) {
