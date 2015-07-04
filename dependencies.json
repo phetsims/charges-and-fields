@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.0-rc.2 Mon Jun 29 2015 13:39:55 GMT-0400 (Est (heure d’été))",
+  "comment": "# charges-and-fields 1.0.0-rc.3 Fri Jul 03 2015 21:00:43 GMT-0400 (Est (heure d’été))",
   "assert": {
     "sha": "903564a25a0f26acdbd334d3e104039864b405ef",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "c8c24e4b24b143d520f42342966f64766abf8c9b",
+    "sha": "1f1baa1987432669a99bff108ee8458035c7d412",
     "branch": "1.0"
   },
   "chipper": {
