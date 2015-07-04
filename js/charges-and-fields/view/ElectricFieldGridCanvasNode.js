@@ -123,19 +123,25 @@ define( function( require ) {
         // or one column of the border
         var bounds = self.modelViewTransform.modelToViewBounds( self.availableModelBoundsProperty.get().dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
-        // update only the rectangles that are within the visible bounds
+        // update only the arrows that are within the visible bounds
         var location = self.modelViewTransform.modelToViewPosition( electricFieldSensor.position );
         if ( bounds.containsPoint( location ) ) {
+          // minus sign for the angle since the modelviewTransform inverts the y-axis
           var angle = -electricFieldSensor.electricField.angle();
+          // convenience variables
           var cosine = Math.cos( angle );
           var sine = Math.sin( angle );
+
+
           if ( self.isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
             context.fillStyle = ChargesAndFieldsColors.electricFieldGridSaturation.toCSS();
           }
           else {
             context.fillStyle = self.colorInterpolationFunction( electricFieldSensor.electricField.magnitude() );
           }
+          // start arrow path
           context.beginPath();
+          // move to the tip of the arrow
           context.moveTo(
             location.x + tipLength * cosine,
             location.y + tipLength * sine );
@@ -145,6 +151,7 @@ define( function( require ) {
           context.lineTo(
             location.x + (tipLength - options.headHeight) * cosine - options.tailWidth / 2 * sine,
             location.y + (tipLength - options.headHeight) * sine + options.tailWidth / 2 * cosine );
+          // line to the tail end of the arrow
           context.lineTo(
             location.x - (tailLength) * cosine - options.tailWidth / 2 * sine,
             location.y - (tailLength) * sine + options.tailWidth / 2 * cosine );
@@ -160,6 +167,7 @@ define( function( require ) {
           context.closePath();
           context.fill();
 
+          // add circle representing the pivot point
           context.fillStyle = ChargesAndFieldsColors.background.toCSS();
           context.beginPath();
           context.arc( location.x, location.y, CIRCLE_RADIUS, 0, 2 * Math.PI );
