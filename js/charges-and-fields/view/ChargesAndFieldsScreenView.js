@@ -131,9 +131,10 @@ define( function( require ) {
       );
     }
 
+    var electricFieldGridNode;
     // Create a grid of electric field arrow sensors
     if ( IS_CANVAS_ELECTRIC_FIELD_GRID ) {
-      var electricFieldGridNode = new ElectricFieldGridCanvasNode(
+      electricFieldGridNode = new ElectricFieldGridCanvasNode(
         model.electricFieldSensorGrid,
         model.on.bind( model ),
         this.getElectricFieldMagnitudeColor.bind( this ),
@@ -144,7 +145,7 @@ define( function( require ) {
         model.isElectricFieldGridVisibleProperty );
     }
     else {
-      var electricFieldGridNode = new ElectricFieldGridNode(
+      electricFieldGridNode = new ElectricFieldGridNode(
         model.electricFieldSensorGrid,
         model.on.bind( model ),
         this.getElectricFieldMagnitudeColor.bind( this ),
