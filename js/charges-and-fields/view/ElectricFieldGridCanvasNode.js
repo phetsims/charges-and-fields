@@ -11,14 +11,14 @@ define( function( require ) {
   // modules
   var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
-  //var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
   var CIRCLE_RADIUS = 2; // in scenery coordinates
   var ARROW_LENGTH = 40; // in scenery coordinates
-
+  var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
   /**
    *
    * @param {Array.<StaticSensorElement>} electricFieldSensorGrid
@@ -97,10 +97,6 @@ define( function( require ) {
       var self = this;
       var context = wrapper.context;
 
-      // It is expensive to set the fill and the stroke of the rectangle. Instead of setting the stroke
-      // with the same color as the fill, we set the fill on a rectangle that is slightly larger (hence the +1) than its nominal value
-      // In this way we indirectly set the stroke. This simple optimization nearly doubled the number of fps.
-
       /*
        * First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
        * The point for the center of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
@@ -123,9 +119,9 @@ define( function( require ) {
        * of the arrow
        */
       var updateArrow = function( electricFieldSensor ) {
-        // bounds that are slightly larger than the viewport to encompass rectangles that are within one row
+        // bounds that are slightly larger than the viewport to encompass arrows that are within one row
         // or one column of the border
-        var bounds = self.modelViewTransform.modelToViewBounds( self.availableModelBoundsProperty.get() );
+        var bounds = self.modelViewTransform.modelToViewBounds( self.availableModelBoundsProperty.get().dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
         // update only the rectangles that are within the visible bounds
         var location = self.modelViewTransform.modelToViewPosition( electricFieldSensor.position );
