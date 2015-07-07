@@ -25,7 +25,7 @@ define( function( require ) {
       leadDesign: 'Amy Rouinfar, Michael Dubson',
       softwareDevelopment: 'Martin Veillette, Jonathan Olson, Michael Dubson',
       team: 'Ariel Paul, Kathy Perkins',
-      qualityAssurance: 'Steele Dalton, Oliver Orejola'
+      qualityAssurance: 'Steele Dalton, Elise Morgan, Oliver Orejola, Bryan Yoelin'
     },
     optionsNode: new GlobalOptionsNode()
   };
