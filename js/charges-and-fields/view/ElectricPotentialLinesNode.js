@@ -15,12 +15,14 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util');
+  var Util = require( 'DOT/Util' );
 
   // strings
   var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -33,15 +35,28 @@ define( function( require ) {
    * Function that generates a voltage label for the electricPotential line
    * @param {number} electricPotential
    * @param {Vector2} position
+   * @param {Array.<Vector2>} positionArray
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function VoltageLabel( electricPotential, position, modelViewTransform ) {
+  function VoltageLabel( electricPotential, position, positionArray, modelViewTransform ) {
 
-    Node.call( this );
+    Node.call( this, { cursor: 'pointer' } );
+
+    var self = this;
+    var locationProperty = new Property( position );
+    this.addInputListener( new MovableDragHandler( locationProperty,
+      {
+        modelViewTransform: modelViewTransform,
+        startDrag: function( event ) {
+          // Move the label to the front of this layer when grabbed by the user.
+          self.moveToFront();
+        }
+      } ) );
+
 
     // a smaller electric potential should have more precision
-    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed(electricPotential,2) : Util.toFixed(electricPotential, 1 );
+    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed( electricPotential, 2 ) : Util.toFixed( electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern_0value_1units, electricPotentialValueString, voltageUnitString );
@@ -72,11 +87,30 @@ define( function( require ) {
     };
     ChargesAndFieldsColors.link( 'electricPotentialLine', textColorFunction ); // text has the same color as the equipotential line
 
+    // finds the closest location on positionArray to the position of the cursor
+    var locationFunction = function( cursorLocation ) {
+      var smallestDistanceSquared = Number.POSITIVE_INFINITY;
+      var closestLocation; // {Vector2}
+      positionArray.forEach( function( position ) {
+        var distanceSquared = position.distanceSquared( cursorLocation );
+        if ( distanceSquared < smallestDistanceSquared ) {
+          smallestDistanceSquared = distanceSquared;
+          closestLocation = position;
+        }
+      } );
+      self.center = modelViewTransform.modelToViewPosition( closestLocation );
+    };
+
+    locationProperty.link( locationFunction );
+
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = function() {
       ChargesAndFieldsColors.unlink( 'electricPotentialLine', textColorFunction );
       ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
+      locationProperty.unlink( locationFunction);
     };
+
+
   }
 
   inherit( Node, VoltageLabel, {
@@ -178,6 +212,7 @@ define( function( require ) {
       var voltageLabel = new VoltageLabel(
         electricPotentialLine.electricPotential,
         electricPotentialLine.position,
+        electricPotentialLine.positionArray,
         modelViewTransform );
       labelsNode.addChild( voltageLabel );
 
