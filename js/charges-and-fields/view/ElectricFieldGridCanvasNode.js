@@ -45,11 +45,19 @@ define( function( require ) {
     // Call the super constructor
     CanvasNode.call( this, { canvasBounds: modelViewTransform.modelToViewBounds( availableModelBoundsProperty.get() ) } );
 
-    this.availableModelBoundsProperty = availableModelBoundsProperty;
     this.modelViewTransform = modelViewTransform;
     this.colorInterpolationFunction = colorInterpolationFunction;
     this.electricFieldSensorGrid = electricFieldSensorGrid;
     this.isDirectionOnlyElectricFieldGridVisibleProperty = isDirectionOnlyElectricFieldGridVisibleProperty;
+    this.localBounds = modelViewTransform.modelToViewBounds( bounds.dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) )
+
+    availableModelBoundsProperty.link( function( bounds ) {
+      electricFieldGridNode.setCanvasBounds( modelViewTransform.modelToViewBounds( bounds ) );
+      // bounds that are slightly larger than the viewport to encompass arrows that are within one row
+      // or one column of the border
+      electricFieldGridNode.localBounds = modelViewTransform.modelToViewBounds( bounds.dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
+      electricFieldGridNode.invalidatePaint(); // redraw the canvas
+    } );
 
     // this node is visible if (1) the electricField is checked AND (2) there is at least one charge particle  on the board
     var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldGridVisibleProperty, isPlayAreaChargedProperty ],
@@ -77,10 +85,7 @@ define( function( require ) {
       electricFieldGridNode.visible = isVisible;
     } );
 
-    availableModelBoundsProperty.link( function( bounds ) {
-      electricFieldGridNode.setCanvasBounds( modelViewTransform.modelToViewBounds( bounds ) );
-      electricFieldGridNode.invalidatePaint(); // redraw the canvas
-    } );
+
 
     this.invalidatePaint();
 
@@ -119,14 +124,11 @@ define( function( require ) {
        * of the arrow
        */
       var updateArrow = function( electricFieldSensor ) {
-        // bounds that are slightly larger than the viewport to encompass arrows that are within one row
-        // or one column of the border
-        var bounds = self.modelViewTransform.modelToViewBounds( self.availableModelBoundsProperty.get().dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
         // update only the arrows that are within the visible bounds
         var location = self.modelViewTransform.modelToViewPosition( electricFieldSensor.position );
-        if ( bounds.containsPoint( location ) ) {
-          // minus sign for the angle since the modelviewTransform inverts the y-axis
+        if ( self.localBounds.containsPoint( location ) ) {
+          // minus sign for the angle since the modelViewTransform inverts the y-axis
           var angle = -electricFieldSensor.electricField.angle();
           // convenience variables
           var cosine = Math.cos( angle );
@@ -173,7 +175,6 @@ define( function( require ) {
           context.arc( location.x, location.y, CIRCLE_RADIUS, 0, 2 * Math.PI );
           context.closePath();
           context.fill();
-
         }
       };
 
