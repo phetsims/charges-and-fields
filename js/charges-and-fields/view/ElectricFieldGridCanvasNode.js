@@ -49,7 +49,7 @@ define( function( require ) {
     this.colorInterpolationFunction = colorInterpolationFunction;
     this.electricFieldSensorGrid = electricFieldSensorGrid;
     this.isDirectionOnlyElectricFieldGridVisibleProperty = isDirectionOnlyElectricFieldGridVisibleProperty;
-    this.localBounds = modelViewTransform.modelToViewBounds( bounds.dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) )
+    this.localBounds = modelViewTransform.modelToViewBounds( availableModelBoundsProperty.get().dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
     availableModelBoundsProperty.link( function( bounds ) {
       electricFieldGridNode.setCanvasBounds( modelViewTransform.modelToViewBounds( bounds ) );
