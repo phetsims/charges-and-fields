@@ -20,7 +20,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util');
+  var Util = require( 'DOT/Util' );
 
   // strings
   var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -41,7 +41,7 @@ define( function( require ) {
     Node.call( this );
 
     // a smaller electric potential should have more precision
-    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed(electricPotential,2) : Util.toFixed(electricPotential, 1 );
+    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed( electricPotential, 2 ) : Util.toFixed( electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern_0value_1units, electricPotentialValueString, voltageUnitString );
@@ -184,7 +184,10 @@ define( function( require ) {
       if ( IS_DEBUG ) {
 
         // create all the circles corresponding to the positions calculated in the model
-        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, { fill: 'pink', radius: 1 } );
+        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, {
+          fill: 'pink',
+          radius: 1
+        } );
 
         // create all the circles corresponding to the positions used to create the shape of the electric potential line
         var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
