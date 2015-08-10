@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
-/**
- * Scenery Node for the electricPotential Lines
+/** 
+ * Scenery Node for the electric field Grid (the network of arrows)
  *
  * @author Martin Veillette (Berea College)
  */
@@ -141,7 +141,7 @@ define( function( require ) {
       if ( isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
         arrowArray.forEach( function( arrowNode ) {
           arrowNode.fill = ChargesAndFieldsColors.electricFieldGridSaturation;
-        } );
+      } );
       }
       else {
         arrowArray.forEach( function( arrowNode ) {

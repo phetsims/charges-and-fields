@@ -218,7 +218,11 @@ define( function( require ) {
      */
     createElectricPotentialSensorIcon: function() {
 
-      var node = new Node();
+      var node = new Node( {
+          // Show a cursor hand over the sensor icon
+          cursor: 'pointer'
+        }
+      );
 
       // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
       var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 2, centerX: 0, centerY: 0 } );
@@ -293,7 +297,7 @@ define( function( require ) {
       measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
 
       // second, create the measuringTape icon
-      var measuringTapeIcon = new Node( { children: [ measuringTape ]} );
+      var measuringTapeIcon = new Node( { children: [ measuringTape ] } );
 
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {

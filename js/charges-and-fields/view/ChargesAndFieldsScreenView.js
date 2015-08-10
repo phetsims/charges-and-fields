@@ -16,7 +16,9 @@ define( function( require ) {
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsToolboxPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolboxPanel' );
   var ChargesAndSensorsEnclosureNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsEnclosureNode' );
+  var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
+  var ElectricFieldGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridCanvasNode' );
   var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
@@ -50,6 +52,7 @@ define( function( require ) {
   var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true ); // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true ); // clamp the linear interpolation function;
+  var IS_CANVAS_ELECTRIC_FIELD_GRID = true;
   var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
 
   /**
@@ -128,16 +131,30 @@ define( function( require ) {
       );
     }
 
+    var electricFieldGridNode;
     // Create a grid of electric field arrow sensors
-    var electricFieldGridNode = new ElectricFieldGridNode(
-      model.electricFieldSensorGrid,
-      model.on.bind( model ),
-      this.getElectricFieldMagnitudeColor.bind( this ),
-      modelViewTransform,
-      this.availableModelBoundsProperty,
-      model.isPlayAreaChargedProperty,
-      viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
-      model.isElectricFieldGridVisibleProperty );
+    if ( IS_CANVAS_ELECTRIC_FIELD_GRID ) {
+      electricFieldGridNode = new ElectricFieldGridCanvasNode(
+        model.electricFieldSensorGrid,
+        model.on.bind( model ),
+        this.getElectricFieldMagnitudeColor.bind( this ),
+        modelViewTransform,
+        this.availableModelBoundsProperty,
+        model.isPlayAreaChargedProperty,
+        viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
+        model.isElectricFieldGridVisibleProperty );
+    }
+    else {
+      electricFieldGridNode = new ElectricFieldGridNode(
+        model.electricFieldSensorGrid,
+        model.on.bind( model ),
+        this.getElectricFieldMagnitudeColor.bind( this ),
+        modelViewTransform,
+        this.availableModelBoundsProperty,
+        model.isPlayAreaChargedProperty,
+        viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
+        model.isElectricFieldGridVisibleProperty );
+    }
 
     // Create the scenery node responsible for drawing the electricPotential lines
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
@@ -218,8 +235,8 @@ define( function( require ) {
     var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
 
     var numberChargesLimit = ( isNumberChargesLimited ) ?
-                               ElectricPotentialGridMobileWebGLNode.getNumberOfParticlesSupported() :
-                               Number.POSITIVE_INFINITY;
+                             ElectricPotentialGridMobileWebGLNode.getNumberOfParticlesSupported() :
+                             Number.POSITIVE_INFINITY;
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargesAndSensorsEnclosureNode = new ChargesAndSensorsEnclosureNode(
@@ -257,6 +274,7 @@ define( function( require ) {
         addedElectricFieldSensor,
         modelViewTransform,
         screenView.availableModelBoundsProperty,
+        model.isPlayAreaChargedProperty,
         viewPropertySet.isValuesVisibleProperty );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
@@ -323,6 +341,7 @@ define( function( require ) {
     this.addChild( measuringTape );
 
     // if in debug mode, add a button that allows to add (many at a time) electric potential lines
+    // and set up initial charges on the play area
     if ( IS_DEBUG_MODE ) {
       this.addChild( new RectangularPushButton( {
           listener: function() {
@@ -335,7 +354,26 @@ define( function( require ) {
           centerY: resetAllButton.centerY - 40
         }
       ) );
+
+
+      var position1 = new Vector2( 0.1, 0.1 );
+      var position2 = new Vector2( 1.2, 1.2 );
+      var charge1 = new ChargedParticle( position1, 1 );
+      var charge2 = new ChargedParticle( position2, -1 );
+      charge1.destinationPosition = new Vector2( 0, -1.5 );
+      charge2.destinationPosition = new Vector2( 0, -1.5 );
+      charge1.isActiveProperty.set( true );
+      charge2.isActiveProperty.set( true );
+
+      model.chargedParticles.push( charge1 );
+      model.chargedParticles.push( charge2 );
+
+      model.activeChargedParticles.push( charge1 );
+      model.activeChargedParticles.push( charge2 );
+
+      model.isPlayAreaCharged = true; // set isPlayAreaCharged to true since there are charges
     }
+
 
   }
 

@@ -156,30 +156,28 @@ define( function( require ) {
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLinesArray
         thisModel.clearElectricPotentialLines();
 
-        // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
-        thisModel.updateAllVisibleSensors();
         if ( isActive ) {
-
-          // we know for sure that there is a least one active charge
-          thisModel.isPlayAreaCharged = true;
-
           // add particle to the activeChargedParticle observable array
           // use for the webGlNode
           thisModel.activeChargedParticles.push( addedChargedParticle );
         }
         else {
-
-          // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
-          thisModel.updateIsPlayAreaCharged();
-
           // remove particle from the activeChargeParticle array
           thisModel.activeChargedParticles.remove( addedChargedParticle );
         }
+        // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
+        thisModel.updateIsPlayAreaCharged();
+
+        // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
+        thisModel.updateAllVisibleSensors();
       };
+
 
       addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
       var positionListener = function( position, oldPosition ) {
+
+        thisModel.updateIsPlayAreaCharged();
 
         // verify that the charge isActive before doing any charge-dependent updates to the model
         if ( addedChargedParticle.isActive ) {
@@ -324,19 +322,70 @@ define( function( require ) {
       },
 
       /**
-       * Function that determines if there are active charges on the board
+       * Function that determines if there is at least one active and "uncompensated" charge
+       * on the board. If this is not the case, it implies that the E-field is zero everywhere
+       * (see https://github.com/phetsims/charges-and-fields/issues/46)
        * @private
        */
       updateIsPlayAreaCharged: function() {
-        var isActiveChargePresentOnBoard = false;
+        var sumElectricCharge = 0; // {number}
+        var sumActiveChargedParticle = 0; // {number}
 
-        this.chargedParticles.forEach( function( chargedParticle ) {
-          isActiveChargePresentOnBoard = isActiveChargePresentOnBoard || chargedParticle.isActive;
+        this.activeChargedParticles.forEach( function( chargedParticle ) {
+          sumActiveChargedParticle++;
+          sumElectricCharge += chargedParticle.charge;
         } );
 
-        this.isPlayAreaCharged = isActiveChargePresentOnBoard;
-      },
+        if ( sumElectricCharge !== 0 ) {
+          this.isPlayAreaCharged = true; // by Gauss's law there must be an electric field
+        }
+        // then the sum of the charge is necessarily zero
+        else if ( sumActiveChargedParticle === 0 ) {
+          // there is not net charge on the board
+          this.isPlayAreaCharged = false;
+        }
+        else if ( sumActiveChargedParticle === 2 ) {
+          // one charge is necessarily positive and the other one negative
+          if ( (this.activeChargedParticles.get( 1 ).position).equals( this.activeChargedParticles.get( 0 ).position ) ) {
+            // the charges occupy the same position and are therefore compensated
+            this.isPlayAreaCharged = false;
+          }
+          else {
+            this.isPlayAreaCharged = true;
+          }
+        }
+        else if ( sumActiveChargedParticle === 4 ) {
+          var positiveChargePositionArray = [];
+          var negativeChargePositionArray = [];
+          this.activeChargedParticles.forEach( function( chargedParticle ) {
+            if ( chargedParticle.charge === 1 ) {
+              positiveChargePositionArray.push( chargedParticle.position );
+            }
+            else {
+              negativeChargePositionArray.push( chargedParticle.position );
+            }
+          } );
 
+          if (
+            (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
+             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] )) ||
+            (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
+             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) )
+          {
+            this.isPlayAreaCharged = false;
+          }
+          else {
+            this.isPlayAreaCharged = true;
+          }
+        }
+        // for more than six charges
+        else {
+          // there are cases with six charges (and above) that can be compensated
+          // however it is quite expensive to make this type of check as well as
+          // incredibly unlikely to be the case in the first place.
+          this.isPlayAreaCharged = true;
+        }
+      },
       /**
        * Update the four types of sensors
        * @private

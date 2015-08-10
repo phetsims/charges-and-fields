@@ -12,6 +12,7 @@ define( function( require ) {
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
@@ -32,20 +33,19 @@ define( function( require ) {
    * @param {SensorElement} electricFieldSensor
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
+   * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
                                     modelViewTransform,
                                     availableModelBoundsProperty,
+                                    isPlayAreaChargedProperty,
                                     isValuesVisibleProperty ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
     var electricFieldSensorNode = this;
-
-    this.electricFieldSensor = electricFieldSensor;
-    this.isValuesVisibleProperty = isValuesVisibleProperty;
 
     // Expand the touch area
     this.touchArea = this.localBounds.dilated( 10 );
@@ -105,7 +105,7 @@ define( function( require ) {
       arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
 
       // Update the strings in the labels
-      var fieldMagnitudeString = Util.toFixed( magnitude, 1 );
+      var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
       fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
       var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
       directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
@@ -118,9 +118,20 @@ define( function( require ) {
     // Show/hide labels
     var isValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
-      directionLabel.visible = isVisible;
     };
     isValuesVisibleProperty.link( isValuesVisibleListener );
+
+    // the direction label is visible if (1) 'values' is checked  and (2) there is at least one charge particle  on the board
+    var isDirectionLabelVisibleProperty = new DerivedProperty( [ isValuesVisibleProperty, isPlayAreaChargedProperty ],
+      function( isValuesVisible, isPlayAreaCharged ) {
+        return isValuesVisible && isPlayAreaCharged;
+      } );
+
+    // Show/hide labels
+    var isDirectionLabelVisibleListener = function( isVisible ) {
+      directionLabel.visible = isVisible;
+    };
+    isDirectionLabelVisibleProperty.link( isDirectionLabelVisibleListener );
 
     // Register for synchronization with model.
     var positionListener = function( position ) {
@@ -169,9 +180,53 @@ define( function( require ) {
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
       isValuesVisibleProperty.unlink( isValuesVisibleListener );
+      isDirectionLabelVisibleProperty.unlink( isDirectionLabelVisibleListener );
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
     };
 
+    /**
+     * Decimal adjustment of a number is a function that round a number and returns a string.
+     * For numbers between -10 and 10, the return strings has a fixed number of decimal places (determined by maxDecimalPlaces)
+     * whereas for numbers larger than ten, (or smaller than -10)  the number returned has with a fixed number of significant figures that
+     * is at least equal to the number of decimal places (or larger). See example below
+     *
+     * @param {number} number
+     * @param {Object} [options]
+     * @returns {string}
+     */
+    function decimalAdjust( number, options ) {
+      options = _.extend( {
+        maxDecimalPlaces: 3
+      }, options );
+
+      // e.g. for  maxDecimalPlaces: 3
+      // 9999.11 -> 9999  (numbers larger than 10^maxDecimalPlaces) are rounded to unity
+      // 999.111 -> 999.1
+      // 99.1111 -> 99.11
+      // 9.11111 -> 9.111 (numbers smaller than 10 have maxDecimalPlaces decimal places)
+      // 1.11111 -> 1.111
+      // 0.11111 -> 0.111
+      // 0.00111 -> 0.001
+      // 0.00011 -> 0.000
+
+      // let's find the exponent as in
+      // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
+      var exponent = Math.floor( Math.log( Math.abs( number ) ) / Math.log( 10 ) );
+
+      var decimalPlaces;
+
+      if ( exponent >= options.maxDecimalPlaces ) {
+        decimalPlaces = 0;
+      }
+      else if ( exponent > 0 ) {
+        decimalPlaces = options.maxDecimalPlaces - exponent;
+      }
+      else {
+        decimalPlaces = options.maxDecimalPlaces;
+      }
+
+      return Util.toFixed( number, decimalPlaces );
+    }
   }
 
   return inherit( ElectricFieldSensorRepresentationNode, ElectricFieldSensorNode, {
