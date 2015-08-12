@@ -1,2 +1,0 @@
-electricPotentialPanelOutline.png source=PhET author=Amy Rouinfar
-pencil.png source=PhET author=Amy Rouinfar

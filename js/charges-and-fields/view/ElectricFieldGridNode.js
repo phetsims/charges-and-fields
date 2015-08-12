@@ -1,6 +1,6 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
-/** 
+/**
  * Scenery Node for the electric field Grid (the network of arrows)
  *
  * @author Martin Veillette (Berea College)
@@ -95,18 +95,16 @@ define( function( require ) {
      *  at the position in the model
      */
     function updateElectricFieldGrid() {
+      // bounds that are slightly larger than the viewport to encompass arrows that are within one row
+      // or one column of the nominal bounds
+      var bounds = modelViewTransform.modelToViewBounds( availableModelBoundsProperty.get().dilated(
+        ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
       /**
        * Function that updates the orientation and fill of an arrow
        * @param {ArrowNode} arrowNode
        */
       var updateArrowNode = function( arrowNode ) {
-
-        // bounds that are slightly larger than the viewport to encompass arrows that are within one row
-        // or one column of the nominal bounds
-        var bounds = modelViewTransform.modelToViewBounds( availableModelBoundsProperty.get().dilated(
-          ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
-
         if ( bounds.containsPoint( arrowNode.center ) ) {
 
           // Rotate the arrow according to the direction of the electric field

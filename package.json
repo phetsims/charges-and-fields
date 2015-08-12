@@ -2,6 +2,7 @@
   "name": "charges-and-fields",
   "version": "1.0.0-rc.3",
   "license": "GPLv3",
+  "requirejsNamespace": "CHARGES_AND_FIELDS",
   "simTitleStringKey": "CHARGES_AND_FIELDS/charges-and-fields.name",
   "phetLibs": [
     "charges-and-fields"

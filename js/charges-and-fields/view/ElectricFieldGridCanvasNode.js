@@ -71,6 +71,7 @@ define( function( require ) {
 
     ChargesAndFieldsColors.on( 'profileChanged', function() {
       // redraw the canvas
+      electricFieldGridNode.updateArrowImage();
       electricFieldGridNode.invalidatePaint();
     } );
 
@@ -85,30 +86,21 @@ define( function( require ) {
       electricFieldGridNode.visible = isVisible;
     } );
 
-
+    // We store an image of the arrow to be drawn in arrowCanvas. It is scaled up by arrowScale (to deal with
+    // resolution), and the pivot point of the arrow on the image is at arrowScale*arrowOffset[X/Y].
+    this.arrowScale = 2;
+    this.arrowOffsetX = 25;
+    this.arrowOffsetY = 10;
+    this.arrowCanvas = null; // will be filled in by updateArrowImage()
+    this.updateArrowImage();
 
     this.invalidatePaint();
-
   }
 
   return inherit( CanvasNode, ElectricFieldGridCanvasNode, {
-
-    /**
-     * Function responsible for painting the canvas Node as a grid array of squares
-     * @override
-     * @param {CanvasContextWrapper} wrapper
-     */
-    paintCanvas: function( wrapper ) {
-      var self = this;
-      var context = wrapper.context;
-
+    updateArrowImage: function() {
       /*
-       * First we set the arrow horizontally to point along the positive x direction. its orientation will be updated later
-       * The point for the center of rotation is measured from the tail and is given by fraction*ARROW_LENGTH;
-       *
-       * fraction=1/2 => rotate around the center of the arrow,
-       * fraction=0 => rotate around the tail
-       * fraction=1 => rotate around the tip,
+       * The arrow is drawn pointing to the right, inside a Canvas to be used for drawing in the future.
        */
       var fraction = 2 / 5;
       var tailLength = ARROW_LENGTH * (fraction);
@@ -119,66 +111,93 @@ define( function( require ) {
         headHeight: 10
       };
 
+      var canvas = document.createElement( 'canvas' );
+      var context = canvas.getContext( '2d' );
+      canvas.width = 55 * this.arrowScale;
+      canvas.height = 20 * this.arrowScale;
+
+      var locationX = this.arrowOffsetX;
+      var locationY = this.arrowOffsetY;
+
+      // convenience variables
+      var cosine = 1;
+      var sine = 0;
+
+      context.fillStyle = ChargesAndFieldsColors.electricFieldGridSaturation.toCSS();
+
+      context.scale( this.arrowScale, this.arrowScale );
+
+      // start arrow path
+      context.beginPath();
+      // move to the tip of the arrow
+      context.moveTo(
+        locationX + tipLength * cosine,
+        locationY + tipLength * sine );
+      context.lineTo(
+        locationX + (tipLength - options.headHeight) * cosine - options.headWidth / 2 * sine,
+        locationY + (tipLength - options.headHeight) * sine + options.headWidth / 2 * cosine );
+      context.lineTo(
+        locationX + (tipLength - options.headHeight) * cosine - options.tailWidth / 2 * sine,
+        locationY + (tipLength - options.headHeight) * sine + options.tailWidth / 2 * cosine );
+      // line to the tail end of the arrow
+      context.lineTo(
+        locationX - (tailLength) * cosine - options.tailWidth / 2 * sine,
+        locationY - (tailLength) * sine + options.tailWidth / 2 * cosine );
+      context.lineTo(
+        locationX - (tailLength) * cosine + options.tailWidth / 2 * sine,
+        locationY - (tailLength) * sine - options.tailWidth / 2 * cosine );
+      context.lineTo(
+        locationX + (tipLength - options.headHeight) * cosine + options.tailWidth / 2 * sine,
+        locationY + (tipLength - options.headHeight) * sine - options.tailWidth / 2 * cosine );
+      context.lineTo(
+        locationX + (tipLength - options.headHeight) * cosine + options.headWidth / 2 * sine,
+        locationY + (tipLength - options.headHeight) * sine - options.headWidth / 2 * cosine );
+      context.closePath();
+      context.fill();
+
+      // add circle representing the pivot point
+      context.fillStyle = ChargesAndFieldsColors.background.toCSS();
+      context.beginPath();
+      context.arc( locationX, locationY, CIRCLE_RADIUS, 0, 2 * Math.PI );
+      context.closePath();
+      context.fill();
+
+      this.arrowCanvas = canvas;
+    },
+
+    /**
+     * Function responsible for painting the canvas Node as a grid array of squares
+     * @override
+     * @param {CanvasContextWrapper} wrapper
+     */
+    paintCanvas: function( wrapper ) {
+      var self = this;
+      var context = wrapper.context;
+
       /**
-       * Function that updates the direction and fill of an arrow : the fill color corresponds to the electricField value at the center
+       * Updates the direction and fill of an arrow : the fill color corresponds to the electricField value at the center
        * of the arrow
        */
-      var updateArrow = function( electricFieldSensor ) {
-
+      this.electricFieldSensorGrid.forEach( function( electricFieldSensor ) {
         // update only the arrows that are within the visible bounds
         var location = self.modelViewTransform.modelToViewPosition( electricFieldSensor.position );
+
+        // Don't draw the arrow if it won't be seen
         if ( self.localBounds.containsPoint( location ) ) {
-          // minus sign for the angle since the modelViewTransform inverts the y-axis
-          var angle = -electricFieldSensor.electricField.angle();
-          // convenience variables
-          var cosine = Math.cos( angle );
-          var sine = Math.sin( angle );
+          // Saving the context allows us to restore the current state at a later time
+          context.save();
 
+          // Instead of varying the fill, we change the opacity of the arrow
+          context.globalAlpha = electricFieldSensor.electricField.magnitude() / ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE;
 
-          if ( self.isDirectionOnlyElectricFieldGridVisibleProperty.value ) {
-            context.fillStyle = ChargesAndFieldsColors.electricFieldGridSaturation.toCSS();
-          }
-          else {
-            context.fillStyle = self.colorInterpolationFunction( electricFieldSensor.electricField.magnitude() );
-          }
-          // start arrow path
-          context.beginPath();
-          // move to the tip of the arrow
-          context.moveTo(
-            location.x + tipLength * cosine,
-            location.y + tipLength * sine );
-          context.lineTo(
-            location.x + (tipLength - options.headHeight) * cosine - options.headWidth / 2 * sine,
-            location.y + (tipLength - options.headHeight) * sine + options.headWidth / 2 * cosine );
-          context.lineTo(
-            location.x + (tipLength - options.headHeight) * cosine - options.tailWidth / 2 * sine,
-            location.y + (tipLength - options.headHeight) * sine + options.tailWidth / 2 * cosine );
-          // line to the tail end of the arrow
-          context.lineTo(
-            location.x - (tailLength) * cosine - options.tailWidth / 2 * sine,
-            location.y - (tailLength) * sine + options.tailWidth / 2 * cosine );
-          context.lineTo(
-            location.x - (tailLength) * cosine + options.tailWidth / 2 * sine,
-            location.y - (tailLength) * sine - options.tailWidth / 2 * cosine );
-          context.lineTo(
-            location.x + (tipLength - options.headHeight) * cosine + options.tailWidth / 2 * sine,
-            location.y + (tipLength - options.headHeight) * sine - options.tailWidth / 2 * cosine );
-          context.lineTo(
-            location.x + (tipLength - options.headHeight) * cosine + options.headWidth / 2 * sine,
-            location.y + (tipLength - options.headHeight) * sine - options.headWidth / 2 * cosine );
-          context.closePath();
-          context.fill();
-
-          // add circle representing the pivot point
-          context.fillStyle = ChargesAndFieldsColors.background.toCSS();
-          context.beginPath();
-          context.arc( location.x, location.y, CIRCLE_RADIUS, 0, 2 * Math.PI );
-          context.closePath();
-          context.fill();
+          context.translate( location.x, location.y );
+          context.rotate( -electricFieldSensor.electricField.angle() );
+          context.translate( -self.arrowOffsetX, -self.arrowOffsetY ); // put our pivot point on the origin
+          context.scale( 1 / self.arrowScale, 1 / self.arrowScale ); // compensate for the scaling
+          context.drawImage( self.arrowCanvas, 0, 0 );
+          context.restore();
         }
-      };
-
-      this.electricFieldSensorGrid.forEach( updateArrow );
+      } );
     }
   } );
 } );

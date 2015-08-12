@@ -219,7 +219,10 @@ define( function( require ) {
       if ( IS_DEBUG ) {
 
         // create all the circles corresponding to the positions calculated in the model
-        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, { fill: 'pink', radius: 1 } );
+        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, {
+          fill: 'pink',
+          radius: 1
+        } );
 
         // create all the circles corresponding to the positions used to create the shape of the electric potential line
         var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );

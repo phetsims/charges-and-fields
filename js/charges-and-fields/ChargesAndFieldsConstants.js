@@ -35,7 +35,9 @@ define( function( require ) {
     ENCLOSURE_LABEL_FONT: new PhetFont( { size: 16 } ),  // font for the labels in the enclosure for the charges and sensors
 
     ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the strength and angle of the electric field sensors
-    CHECK_BOX_FONT: new PhetFont( { size: 16 } ) // font for the control panel on the upper right hand side
+    CHECK_BOX_FONT: new PhetFont( { size: 16 } ), // font for the control panel on the upper right hand side
+
+    MAX_ELECTRIC_FIELD_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
 
   };
 } );
