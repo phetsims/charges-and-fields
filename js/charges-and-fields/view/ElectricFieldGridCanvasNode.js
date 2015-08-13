@@ -113,15 +113,11 @@ define( function( require ) {
 
       var canvas = document.createElement( 'canvas' );
       var context = canvas.getContext( '2d' );
-      canvas.width = 55 * this.arrowScale;
-      canvas.height = 20 * this.arrowScale;
+      canvas.width = (ARROW_LENGTH + options.headHeight) * this.arrowScale;
+      canvas.height = (options.headWidth + 2) * this.arrowScale;
 
       var locationX = this.arrowOffsetX;
       var locationY = this.arrowOffsetY;
-
-      // convenience variables
-      var cosine = 1;
-      var sine = 0;
 
       context.fillStyle = ChargesAndFieldsColors.electricFieldGridSaturation.toCSS();
 
@@ -131,27 +127,27 @@ define( function( require ) {
       context.beginPath();
       // move to the tip of the arrow
       context.moveTo(
-        locationX + tipLength * cosine,
-        locationY + tipLength * sine );
+        locationX + tipLength,
+        locationY );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine - options.headWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine + options.headWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY + options.headWidth / 2 );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine - options.tailWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine + options.tailWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY + options.tailWidth / 2 );
       // line to the tail end of the arrow
       context.lineTo(
-        locationX - (tailLength) * cosine - options.tailWidth / 2 * sine,
-        locationY - (tailLength) * sine + options.tailWidth / 2 * cosine );
+        locationX - (tailLength),
+        locationY + options.tailWidth / 2 );
       context.lineTo(
-        locationX - (tailLength) * cosine + options.tailWidth / 2 * sine,
-        locationY - (tailLength) * sine - options.tailWidth / 2 * cosine );
+        locationX - (tailLength),
+        locationY - options.tailWidth / 2 );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine + options.tailWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine - options.tailWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY - options.tailWidth / 2 );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine + options.headWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine - options.headWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY - options.headWidth / 2 );
       context.closePath();
       context.fill();
 
