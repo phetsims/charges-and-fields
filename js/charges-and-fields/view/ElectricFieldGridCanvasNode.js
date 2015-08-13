@@ -16,8 +16,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
-  var CIRCLE_RADIUS = 2; // in scenery coordinates
-  var ARROW_LENGTH = 40; // in scenery coordinates
+  var CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_GRID_CIRCLE_RADIUS; // in scenery coordinates
+  var ARROW_LENGTH = ChargesAndFieldsConstants.ELECTRIC_FIELD_GRID_ARROW_LENGTH; // in scenery coordinates
   var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
   /**
    *
