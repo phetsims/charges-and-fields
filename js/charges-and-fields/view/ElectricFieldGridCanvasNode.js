@@ -183,8 +183,14 @@ define( function( require ) {
           // Saving the context allows us to restore the current state at a later time
           context.save();
 
-          // Instead of varying the fill, we change the opacity of the arrow
-          context.globalAlpha = electricFieldSensor.electricField.magnitude() / ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE;
+          // change the opacity of the arrow (as a function of the magnitude of the electric field) (unless isDirection is checked)
+          if(self.isDirectionOnlyElectricFieldGridVisibleProperty.value) {
+            context.globalAlpha = 1;
+          }
+          else{
+            // Instead of varying the fill, we change the opacity of the arrow
+            context.globalAlpha = electricFieldSensor.electricField.magnitude() / ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE;
+          }
 
           context.translate( location.x, location.y );
           context.rotate( -electricFieldSensor.electricField.angle() );
