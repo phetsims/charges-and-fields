@@ -1,15 +1,7 @@
 {
   "name": "charges-and-fields",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-dev.13",
   "license": "GPLv3",
-  "requirejsNamespace": "CHARGES_AND_FIELDS",
-  "simTitleStringKey": "CHARGES_AND_FIELDS/charges-and-fields.name",
-  "phetLibs": [
-    "charges-and-fields"
-  ],
-  "preload": [
-    "../sherpa/lib/Tween-r12.js"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/charges-and-fields.git"
@@ -20,5 +12,11 @@
     "grunt-contrib-jshint": "~0.6.4",
     "uglify-js": "~2.4.0",
     "requirejs": "~2.1.8"
+  },
+  "phet": {
+    "requirejsNamespace": "CHARGES_AND_FIELDS",
+    "preload": [
+      "../sherpa/lib/Tween-r12.js"
+    ]
   }
 }

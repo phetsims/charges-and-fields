@@ -16,8 +16,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
-  var CIRCLE_RADIUS = 2; // in scenery coordinates
-  var ARROW_LENGTH = 40; // in scenery coordinates
+  var CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_GRID_CIRCLE_RADIUS; // in scenery coordinates
+  var ARROW_LENGTH = ChargesAndFieldsConstants.ELECTRIC_FIELD_GRID_ARROW_LENGTH; // in scenery coordinates
   var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
   /**
    *
@@ -113,15 +113,11 @@ define( function( require ) {
 
       var canvas = document.createElement( 'canvas' );
       var context = canvas.getContext( '2d' );
-      canvas.width = 55 * this.arrowScale;
-      canvas.height = 20 * this.arrowScale;
+      canvas.width = (ARROW_LENGTH + options.headHeight) * this.arrowScale;
+      canvas.height = (options.headWidth + 2) * this.arrowScale;
 
       var locationX = this.arrowOffsetX;
       var locationY = this.arrowOffsetY;
-
-      // convenience variables
-      var cosine = 1;
-      var sine = 0;
 
       context.fillStyle = ChargesAndFieldsColors.electricFieldGridSaturation.toCSS();
 
@@ -131,27 +127,27 @@ define( function( require ) {
       context.beginPath();
       // move to the tip of the arrow
       context.moveTo(
-        locationX + tipLength * cosine,
-        locationY + tipLength * sine );
+        locationX + tipLength,
+        locationY );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine - options.headWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine + options.headWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY + options.headWidth / 2 );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine - options.tailWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine + options.tailWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY + options.tailWidth / 2 );
       // line to the tail end of the arrow
       context.lineTo(
-        locationX - (tailLength) * cosine - options.tailWidth / 2 * sine,
-        locationY - (tailLength) * sine + options.tailWidth / 2 * cosine );
+        locationX - (tailLength),
+        locationY + options.tailWidth / 2 );
       context.lineTo(
-        locationX - (tailLength) * cosine + options.tailWidth / 2 * sine,
-        locationY - (tailLength) * sine - options.tailWidth / 2 * cosine );
+        locationX - (tailLength),
+        locationY - options.tailWidth / 2 );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine + options.tailWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine - options.tailWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY - options.tailWidth / 2 );
       context.lineTo(
-        locationX + (tipLength - options.headHeight) * cosine + options.headWidth / 2 * sine,
-        locationY + (tipLength - options.headHeight) * sine - options.headWidth / 2 * cosine );
+        locationX + (tipLength - options.headHeight),
+        locationY - options.headWidth / 2 );
       context.closePath();
       context.fill();
 
@@ -187,8 +183,14 @@ define( function( require ) {
           // Saving the context allows us to restore the current state at a later time
           context.save();
 
-          // Instead of varying the fill, we change the opacity of the arrow
-          context.globalAlpha = electricFieldSensor.electricField.magnitude() / ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE;
+          // change the opacity of the arrow (as a function of the magnitude of the electric field) (unless isDirection is checked)
+          if(self.isDirectionOnlyElectricFieldGridVisibleProperty.value) {
+            context.globalAlpha = 1;
+          }
+          else{
+            // Instead of varying the fill, we change the opacity of the arrow
+            context.globalAlpha = electricFieldSensor.electricField.magnitude() / ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE;
+          }
 
           context.translate( location.x, location.y );
           context.rotate( -electricFieldSensor.electricField.angle() );

@@ -19,7 +19,6 @@ define( function( require ) {
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
   var ElectricFieldGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridCanvasNode' );
-  var ElectricFieldGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
@@ -51,7 +50,6 @@ define( function( require ) {
   var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true ); // clamp the linear interpolation function;
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true ); // clamp the linear interpolation function;
-  var IS_CANVAS_ELECTRIC_FIELD_GRID = true;
   var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
 
   /**
@@ -130,10 +128,8 @@ define( function( require ) {
       );
     }
 
-    var electricFieldGridNode;
     // Create a grid of electric field arrow sensors
-    if ( IS_CANVAS_ELECTRIC_FIELD_GRID ) {
-      electricFieldGridNode = new ElectricFieldGridCanvasNode(
+    var electricFieldGridNode = new ElectricFieldGridCanvasNode(
         model.electricFieldSensorGrid,
         model.on.bind( model ),
         this.getElectricFieldMagnitudeColor.bind( this ),
@@ -142,18 +138,7 @@ define( function( require ) {
         model.isPlayAreaChargedProperty,
         viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
         model.isElectricFieldGridVisibleProperty );
-    }
-    else {
-      electricFieldGridNode = new ElectricFieldGridNode(
-        model.electricFieldSensorGrid,
-        model.on.bind( model ),
-        this.getElectricFieldMagnitudeColor.bind( this ),
-        modelViewTransform,
-        this.availableModelBoundsProperty,
-        model.isPlayAreaChargedProperty,
-        viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
-        model.isElectricFieldGridVisibleProperty );
-    }
+
 
     // Create the scenery node responsible for drawing the electricPotential lines
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
