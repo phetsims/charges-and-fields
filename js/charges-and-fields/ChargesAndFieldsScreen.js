@@ -14,7 +14,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var chargesAndFieldsSimString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.name' );
+  var chargesAndFieldsSimString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
 
   /**
    * @constructor
