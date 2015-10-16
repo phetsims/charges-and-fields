@@ -258,9 +258,10 @@ define( function( require ) {
         // Update all the visible sensors
         thisModel.updateAllVisibleSensors();
 
-        // remove particle from the activeChargedParticles array
-        thisModel.activeChargedParticles.remove( removedChargeParticle );
       }
+
+      // remove particle from the activeChargedParticles array
+      thisModel.activeChargedParticles.remove( removedChargeParticle );
 
       // update the property isPlayAreaCharged to see if is there at least one active charge on the board
       thisModel.updateIsPlayAreaCharged();
@@ -370,8 +371,7 @@ define( function( require ) {
             (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
              negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] )) ||
             (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
-             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) )
-          {
+             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) ) {
             this.isPlayAreaCharged = false;
           }
           else {
