@@ -1,7 +1,7 @@
 {
   "name": "charges-and-fields",
   "version": "1.0.0-dev.13",
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/charges-and-fields.git"
