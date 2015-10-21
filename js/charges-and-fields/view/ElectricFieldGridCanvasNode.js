@@ -164,11 +164,10 @@ define( function( require ) {
     /**
      * Function responsible for painting the canvas Node as a grid array of squares
      * @override
-     * @param {CanvasContextWrapper} wrapper
+     * @param {CanvasRenderingContext2D} context
      */
-    paintCanvas: function( wrapper ) {
+    paintCanvas: function( context ) {
       var self = this;
-      var context = wrapper.context;
 
       /**
        * Updates the direction and fill of an arrow : the fill color corresponds to the electricField value at the center
