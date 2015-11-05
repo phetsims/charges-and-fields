@@ -42,7 +42,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  var cmString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
+  var centimeterUnitString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
 
   // constants
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
@@ -69,7 +69,7 @@ define( function( require ) {
       isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
       isGridVisible: false, // control the visibility of the simple grid with minor and major axes
       isMeasuringTapeVisible: false, // control the visibility of the measuring tape
-      measuringTapeUnits: { name: cmString, multiplier: 100 }, // needed for the measuring tape scenery node
+      measuringTapeUnits: { name: centimeterUnitString, multiplier: 100 }, // needed for the measuring tape scenery node
       measuringTapeBasePosition: new Vector2( 0, 0 ),
       measuringTapeTipPosition: new Vector2( 1, 0 )
     } );

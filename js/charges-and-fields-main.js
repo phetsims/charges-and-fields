@@ -16,7 +16,7 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var simTitle = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
+  var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
 
   var simOptions = {
     credits: {
@@ -40,7 +40,7 @@ define( function( require ) {
   } );
 
   SimLauncher.launch( function() {
-    var sim = new Sim( simTitle, [ new ChargesAndFieldsScreen() ], simOptions );
+    var sim = new Sim( chargesAndFieldsTitleString, [ new ChargesAndFieldsScreen() ], simOptions );
     sim.start();
   } );
 } );

@@ -21,9 +21,9 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // strings
-  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+  var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var eFieldUnitString = require( 'string!CHARGES_AND_FIELDS/eFieldUnit' );
-  var angleUnit = require( 'string!CHARGES_AND_FIELDS/angleUnit' );
+  var angleUnitString = require( 'string!CHARGES_AND_FIELDS/angleUnit' );
 
   // constants
   var LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
@@ -106,9 +106,9 @@ define( function( require ) {
 
       // Update the strings in the labels
       var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
-      fieldStrengthLabel.text = StringUtils.format( pattern_0value_1units, fieldMagnitudeString, eFieldUnitString );
+      fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
       var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
-      directionLabel.text = StringUtils.format( pattern_0value_1units, angleString, angleUnit );
+      directionLabel.text = StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString );
     };
     electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 

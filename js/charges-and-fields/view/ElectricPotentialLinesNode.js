@@ -25,7 +25,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // strings
-  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+  var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // constants
@@ -59,7 +59,7 @@ define( function( require ) {
     var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed( electricPotential, 2 ) : Util.toFixed( electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
-    var voltageLabelString = StringUtils.format( pattern_0value_1units, electricPotentialValueString, voltageUnitString );
+    var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
     var voltageLabelText = new Text( voltageLabelString,
       {
         font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
