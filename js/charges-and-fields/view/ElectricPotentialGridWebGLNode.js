@@ -112,12 +112,11 @@ define( function( require ) {
           oldPosition: null,
           newPosition: particle.position.copy()
         } );
-
-        this.invalidatePaint();
       },
 
       onParticleAdded: function( particle ) {
         this.addParticle( particle );
+        this.invalidatePaint();
 
         // add the position listener (need a reference to the particle with the listener, so we can't use the same one)
         var positionListener = this.onParticleMoved.bind( this, particle );
