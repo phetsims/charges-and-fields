@@ -329,8 +329,8 @@ define( function( require ) {
        * @private
        */
       updateIsPlayAreaCharged: function() {
-        var sumElectricCharge = 0; // {number}
-        var sumActiveChargedParticle = 0; // {number}
+        var sumElectricCharge = 0; // {number} keep track of the electric charge
+        var sumActiveChargedParticle = 0; // {number} keep track of the numbers of active charges on the board
 
         this.activeChargedParticles.forEach( function( chargedParticle ) {
           sumActiveChargedParticle++;
@@ -340,9 +340,9 @@ define( function( require ) {
         if ( sumElectricCharge !== 0 ) {
           this.isPlayAreaCharged = true; // by Gauss's law there must be an electric field
         }
-        // then the sum of the charge is necessarily zero
+        // then the sum of the charge is necessarily zero, however the electric field may not be zero
         else if ( sumActiveChargedParticle === 0 ) {
-          // there is not net charge on the board
+          // there is not net charge on the board, hence no electric field
           this.isPlayAreaCharged = false;
         }
         else if ( sumActiveChargedParticle === 2 ) {
