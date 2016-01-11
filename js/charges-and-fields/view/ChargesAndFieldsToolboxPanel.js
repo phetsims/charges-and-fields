@@ -29,7 +29,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var electricPotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
+  var electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
   // constants
   var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
@@ -173,7 +173,7 @@ define( function( require ) {
 
         // recall that the position of the electricPotentialSensor is defined as the position of the crosshair
         // the cursor should not be at the crosshair but at the center bottom of the electricPotential tool
-        var offsetPosition = new Vector2( 0, -SENSOR_HEIGHT );
+        var offsetPosition = new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 );
 
         // position of the  electricPotential sensor in ScreenView coordinates
         var electricPotentialSensorLocation = initialPosition.plus( offsetPosition );
@@ -256,7 +256,7 @@ define( function( require ) {
         stroke: 'black'
       } );
       var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
-      outlineImage.scale( 0.5 );
+      outlineImage.scale( 0.5 * 6 / 25 );
 
       // Create the background rectangle behind the voltage Reading
       var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
