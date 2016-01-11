@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2015, University of Colorado Boulder
 
 /**
  * Scenery Node that contains an enclosure for a positive, a negative electric charge and an electric sensor.
@@ -18,8 +18,8 @@ define( function( require ) {
   var UserCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/UserCreatorNode' );
 
   // strings
-  var minusOneNanoCoulombString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
-  var plusOneNanoCoulombString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
+  var minusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
+  var plusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
   var sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
 
   // constants
@@ -48,8 +48,8 @@ define( function( require ) {
     Node.call( this );
 
     // width of the strings
-    var minusTextWidth = (new Text( minusOneNanoCoulombString, { font: FONT } )).width;
-    var plusTextWidth = (new Text( plusOneNanoCoulombString, { font: FONT } )).width;
+    var minusTextWidth = (new Text( minusOneNanoCString, { font: FONT } )).width;
+    var plusTextWidth = (new Text( plusOneNanoCString, { font: FONT } )).width;
     var sensorTextWidth = (new Text( sensorsString, { font: FONT } )).width;
 
     // maximum width of the three strings
@@ -123,12 +123,12 @@ define( function( require ) {
     var textCenterY = viewBounds.centerY + viewBounds.height / 4;
 
     // Create the three text labels
-    var positiveChargeText = new Text( plusOneNanoCoulombString, {
+    var positiveChargeText = new Text( plusOneNanoCString, {
       font: FONT,
       centerX: positiveChargeCenterX,
       centerY: textCenterY
     } );
-    var negativeChargeText = new Text( minusOneNanoCoulombString, {
+    var negativeChargeText = new Text( minusOneNanoCString, {
       font: FONT,
       centerX: negativeChargeCenterX,
       centerY: textCenterY

@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2015, University of Colorado Boulder
 
 /**
  * Location for most colors of the simulation (especially those that could be tweaked)
@@ -67,7 +67,7 @@ define( function( require ) {
     },
     voltageLabelBackground: {
       default: new Color( 0, 0, 0, 0.5 ),
-      projector: new Color( 255, 255, 255, 0.5 ),
+      projector: new Color( 255, 255, 255, 0.5 )
     },
     electricPotentialLine: {
       default: new Color( 50, 255, 100 ),

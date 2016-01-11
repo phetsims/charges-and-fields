@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Charges and Fields main Screen
@@ -14,7 +14,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var chargesAndFieldsSimString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.name' );
+  var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
 
   /**
    * @constructor
@@ -26,7 +26,7 @@ define( function( require ) {
     // If this is a single-screen sim, then no icon is necessary.
     var icon = null;
 
-    Screen.call( this, chargesAndFieldsSimString, icon,
+    Screen.call( this, chargesAndFieldsTitleString, icon,
       function() {
         return new ChargesAndFieldsModel();
       },

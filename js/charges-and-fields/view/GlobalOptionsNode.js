@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2015, University of Colorado Boulder
 
 /**
  * Global options shown in the "Options" dialog from the PhET Menu
@@ -17,7 +17,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   // strings
-  var projectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
+  var optionsProjectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
   /**
    *
@@ -25,7 +25,7 @@ define( function( require ) {
    */
   function GlobalOptionsNode() {
 
-    var projectorCheckBox = new CheckBox( new Text( projectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
+    var projectorCheckBox = new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       ChargesAndFieldsGlobals.projectorColorsProperty, {} );
 
     LayoutBox.call( this, _.extend( {

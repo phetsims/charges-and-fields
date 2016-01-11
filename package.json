@@ -1,7 +1,7 @@
 {
   "name": "charges-and-fields",
-  "version": "1.0.0-rc.4",
-  "license": "GPLv3",
+  "version": "1.0.0-dev.13",
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/charges-and-fields.git"
@@ -9,7 +9,7 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-requirejs": "~0.4.0",
-    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-eslint": "~17.2.0",
     "uglify-js": "~2.4.0",
     "requirejs": "~2.1.8"
   },

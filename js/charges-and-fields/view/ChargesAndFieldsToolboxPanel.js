@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2015, University of Colorado Boulder
 
 /**
  * Toolbox from which the user can drag (or otherwise enable) tools.
@@ -93,7 +93,7 @@ define( function( require ) {
 
     var measuringTapeMovableDragHandler = new SimpleDragHandler(
       {
-        parentScreen: null, // needed for coordinate transforms
+        parentScreenView: null, // needed for coordinate transforms
         modelViewTransform: modelViewTransform,
         dragBounds: availableModelBoundsProperty.value,
         // create a position listener that will move the tip as the base of the measuring tape is dragged
@@ -103,17 +103,22 @@ define( function( require ) {
         start: function( event ) {
           measuringTapeUserControlledProperty.set( true );
 
-          var testNode = toolboxPanel;
-          while ( testNode !== null ) {
-            if ( testNode instanceof ScreenView ) {
-              this.parentScreen = testNode;
-              break;
+          if ( !this.parentScreenView ) {
+
+            // find the parent screen view by moving up the scene graph
+            var testNode = toolboxPanel;
+            while ( testNode !== null ) {
+              if ( testNode instanceof ScreenView ) {
+                this.parentScreenView = testNode;
+                break;
+              }
+              testNode = testNode.parents[ 0 ]; // move up the scene graph by one level
             }
-            testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
+            assert && assert( this.parentScreenView, 'unable to find parent screen view' );
           }
 
           // initial position of the pointer in the screenView coordinates
-          var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
+          var initialPosition = this.parentScreenView.globalToLocalPoint( event.pointer.point );
 
           // the position of the measuring tape is defined as the position of the base crosshair
           // the cursor should hover over the center of the body of the measuring tape instead.
@@ -140,46 +145,53 @@ define( function( require ) {
         }
       } );
 
-    var electricPotentialSensorMovableDragHandler = new SimpleDragHandler(
-      {
-        parentScreen: null, // needed for coordinate transforms
-        dragBounds: availableModelBoundsProperty.value,
-        modelViewTransform: modelViewTransform,
-        start: function( event ) {
-          electricPotentialUserControlledProperty.set( true );
+    var electricPotentialSensorMovableDragHandler = new SimpleDragHandler( {
+
+      parentScreenView: null, // needed for coordinate transforms
+      dragBounds: availableModelBoundsProperty.value,
+      modelViewTransform: modelViewTransform,
+
+      start: function( event ) {
+
+        electricPotentialUserControlledProperty.set( true );
+
+        // find the parent screen if not already found by moving up the scene graph
+        if ( !this.parentScreenView ) {
           var testNode = toolboxPanel;
           while ( testNode !== null ) {
             if ( testNode instanceof ScreenView ) {
-              this.parentScreen = testNode;
+              this.parentScreenView = testNode;
               break;
             }
-            testNode = testNode.parents[ 0 ]; // Move up the scene graph by one level
+            testNode = testNode.parents[ 0 ]; // move up the scene graph by one level
           }
-
-          // initial position of the pointer in the screenView coordinates
-          var initialPosition = this.parentScreen.globalToLocalPoint( event.pointer.point );
-
-          // recall that the position of the electricPotentialSensor is defined as the position of the crosshair
-          // the cursor should not be at the crosshair but at the center bottom of the electricPotential tool
-          var offsetPosition = new Vector2( 0, -SENSOR_HEIGHT );
-
-          // position of the  electricPotential sensor in ScreenView coordinates
-          var electricPotentialSensorLocation = initialPosition.plus( offsetPosition );
-          electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( electricPotentialSensorLocation ) );
-
-          isElectricPotentialSensorVisibleProperty.set( true );
-        },
-
-        translate: function( translationParams ) {
-          var unconstrainedLocation = electricPotentialSensorPositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
-          var constrainedLocation = availableModelBoundsProperty.value.closestPointTo( unconstrainedLocation );
-          electricPotentialSensorPositionProperty.set( constrainedLocation );
-        },
-
-        end: function( event ) {
-          electricPotentialUserControlledProperty.set( false );
+          assert && assert( this.parentScreenView, 'unable to find parent screen view' );
         }
-      } );
+
+        // initial position of the pointer in the screenView coordinates
+        var initialPosition = this.parentScreenView.globalToLocalPoint( event.pointer.point );
+
+        // recall that the position of the electricPotentialSensor is defined as the position of the crosshair
+        // the cursor should not be at the crosshair but at the center bottom of the electricPotential tool
+        var offsetPosition = new Vector2( 0, -SENSOR_HEIGHT );
+
+        // position of the  electricPotential sensor in ScreenView coordinates
+        var electricPotentialSensorLocation = initialPosition.plus( offsetPosition );
+        electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( electricPotentialSensorLocation ) );
+
+        isElectricPotentialSensorVisibleProperty.set( true );
+      },
+
+      translate: function( translationParams ) {
+        var unconstrainedLocation = electricPotentialSensorPositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        var constrainedLocation = availableModelBoundsProperty.value.closestPointTo( unconstrainedLocation );
+        electricPotentialSensorPositionProperty.set( constrainedLocation );
+      },
+
+      end: function( event ) {
+        electricPotentialUserControlledProperty.set( false );
+      }
+    } );
 
     // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
     measuringTapeIconNode.addInputListener( measuringTapeMovableDragHandler );

@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View for the ElectricPotentialSensorNode which renders the sensor as a scenery node.
@@ -34,7 +34,7 @@ define( function( require ) {
   var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
 
   // strings
-  var pattern_0value_1units = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+  var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
   var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
 
@@ -113,7 +113,7 @@ define( function( require ) {
      * @param {number} electricPotential
      */
     function updateVoltageReadout( electricPotential ) {
-      voltageReadout.text = StringUtils.format( pattern_0value_1units, decimalAdjust( electricPotential ), voltageUnitString );
+      voltageReadout.text = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
     }
 
     // update text of the voltage readout according to the current value of the electric potential

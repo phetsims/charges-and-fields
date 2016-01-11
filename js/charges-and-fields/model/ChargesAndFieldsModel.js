@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Model of the charges and fields simulation
@@ -258,9 +258,10 @@ define( function( require ) {
         // Update all the visible sensors
         thisModel.updateAllVisibleSensors();
 
-        // remove particle from the activeChargedParticles array
-        thisModel.activeChargedParticles.remove( removedChargeParticle );
       }
+
+      // remove particle from the activeChargedParticles array
+      thisModel.activeChargedParticles.remove( removedChargeParticle );
 
       // update the property isPlayAreaCharged to see if is there at least one active charge on the board
       thisModel.updateIsPlayAreaCharged();
@@ -328,8 +329,8 @@ define( function( require ) {
        * @private
        */
       updateIsPlayAreaCharged: function() {
-        var sumElectricCharge = 0; // {number}
-        var sumActiveChargedParticle = 0; // {number}
+        var sumElectricCharge = 0; // {number} keep track of the electric charge
+        var sumActiveChargedParticle = 0; // {number} keep track of the numbers of active charges on the board
 
         this.activeChargedParticles.forEach( function( chargedParticle ) {
           sumActiveChargedParticle++;
@@ -339,9 +340,9 @@ define( function( require ) {
         if ( sumElectricCharge !== 0 ) {
           this.isPlayAreaCharged = true; // by Gauss's law there must be an electric field
         }
-        // then the sum of the charge is necessarily zero
+        // then the sum of the charge is necessarily zero, however the electric field may not be zero
         else if ( sumActiveChargedParticle === 0 ) {
-          // there is not net charge on the board
+          // there is not net charge on the board, hence no electric field
           this.isPlayAreaCharged = false;
         }
         else if ( sumActiveChargedParticle === 2 ) {
@@ -370,8 +371,7 @@ define( function( require ) {
             (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
              negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] )) ||
             (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
-             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) )
-          {
+             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) ) {
             this.isPlayAreaCharged = false;
           }
           else {

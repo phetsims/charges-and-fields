@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * View for the electric potential Grid Node that displays a two dimensional grid of rectangles that represent the electric potential field
@@ -91,11 +91,10 @@ define( function( require ) {
     /**
      * Function responsible for painting the canvas Node as a grid array of squares
      * @override
-     * @param {CanvasContextWrapper} wrapper
+     * @param {CanvasRenderingContext2D} context
      */
-    paintCanvas: function( wrapper ) {
+    paintCanvas: function( context ) {
       var self = this;
-      var context = wrapper.context;
 
       /**
        * Function that updates the fill of a square with a color that corresponds to the electricPotential value at the center
