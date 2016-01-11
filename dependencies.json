@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.0-dev.13 Thu Aug 13 2015 12:52:49 GMT-0400 (Eastern Daylight Time)",
+  "comment": "# charges-and-fields 1.0.0-rc.4 Fri Aug 21 2015 11:43:25 GMT-0400 (Eastern Daylight Time)",
   "assert": {
     "sha": "858e65ac477bf1861883ce06eed56d9fdefa5027",
     "branch": "master"
@@ -9,15 +9,15 @@
     "branch": "master"
   },
   "brand": {
-    "sha": "aa39bc48491aaee6c9059e0194c8974fd02bceba",
+    "sha": "ffae69f4b1dfb6cebf84a20a92b8203ec5328cf3",
     "branch": "master"
   },
   "charges-and-fields": {
-    "sha": "6972eaac5753bdcf92d5f0162072fc928a695219",
-    "branch": "master"
+    "sha": "c610f58127ef98d8f13307f4fe3d427f434bce85",
+    "branch": "1.0"
   },
   "chipper": {
-    "sha": "51c45026022c5096cd180c6f578379cfda7c5414",
+    "sha": "9b362c00caac54808cfeb6ec2a3bf735b7b9c4d6",
     "branch": "master"
   },
   "dot": {
@@ -25,7 +25,7 @@
     "branch": "master"
   },
   "joist": {
-    "sha": "e9f47dd31e40b11de634fec9e82a12939c98031d",
+    "sha": "a6ea86cbc8323b0efb8663fe70db6c0380a8728e",
     "branch": "master"
   },
   "kite": {
@@ -37,15 +37,15 @@
     "branch": "master"
   },
   "phetcommon": {
-    "sha": "89a44d2cefd4b66f031f7f3fc30c0578a3130b5e",
+    "sha": "e33e2f8ca8a4d8e98c23b6c3c9c0336b387643a7",
     "branch": "master"
   },
   "scenery": {
-    "sha": "3a136ff106beeb71270b3d3e60fd95b7490f2be7",
+    "sha": "3c146e8fdc133a50751851374dd51e6729ac374d",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "9d57d70eacd33fa5342d548f775040a4f70c72b1",
+    "sha": "1fa88998cbe6292e06c46842a8e6c0c55a5e3a7f",
     "branch": "master"
   },
   "sherpa": {
@@ -53,7 +53,7 @@
     "branch": "master"
   },
   "sun": {
-    "sha": "1320a557747cdae948b731a9398ec3670b139334",
+    "sha": "e400abb482b66d703556f9899cf224f2a3488f35",
     "branch": "master"
   }
 }
