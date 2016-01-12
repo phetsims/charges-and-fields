@@ -122,20 +122,22 @@ define( function( require ) {
     // The clear and plot buttons
     var buttonsBox = new LayoutBox( {
       orientation: 'horizontal',
-      spacing: 20,
+      spacing: 10,
       children: [ clearButton, plotElectricPotentialLineButton ],
-      pickable: true
+      pickable: true,
+      scale: 0.8
     } );
 
     // Create the background rectangle behind the voltage Reading
-    var backgroundRectangle = new Rectangle( 0, 0, buttonsBox.width, voltageReadout.height * 1.5, 5, 5 );
+    var backgroundAdjustment = 0;
+    var backgroundRectangle = new Rectangle( backgroundAdjustment, 0, buttonsBox.width - backgroundAdjustment * 2, voltageReadout.height * 1.5, 5, 5 );
 
     // Create the body of the sensor
     var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
 
     // Organize the content of the control panel
     var bodyContent = new LayoutBox( {
-      spacing: 10,
+      spacing: 7,
       children: [ electricPotentialPanelTitleText, backgroundRectangle, buttonsBox ],
       pickable: true
     } );
@@ -147,7 +149,7 @@ define( function( require ) {
     bodyNode.addChild( voltageReadout ); // must be last
 
     // layout the elements of bodyNode
-    outlineImage.scale( 1.2 * bodyContent.width / outlineImage.width );
+    outlineImage.scale( 1.55 * bodyContent.width / outlineImage.width );
     outlineImage.centerX = bodyContent.centerX;
     outlineImage.top = bodyContent.top - 15;
     voltageReadout.centerX = bodyContent.centerX;

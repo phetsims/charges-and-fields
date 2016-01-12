@@ -62,8 +62,8 @@ define( function( require ) {
     // if it is not the case, then increase the model Bounds of the enclosure
     if ( enclosureBounds.width < minimumEnclosureModelWidth ) {
       var centerX = enclosureBounds.centerX;
-      enclosureBounds.minX = centerX - minimumEnclosureModelWidth / 2;
-      enclosureBounds.maxX = centerX + minimumEnclosureModelWidth / 2;
+      enclosureBounds.minX = centerX - minimumEnclosureModelWidth / 2 - 0.4;
+      enclosureBounds.maxX = centerX + minimumEnclosureModelWidth / 2 + 0.4;
     }
 
     // bounds of the enclosure in screenView coordinates
