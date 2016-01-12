@@ -27,6 +27,7 @@ define( function( require ) {
   /**
    *
    * @param {Function} addModelElementToObservableArray - A function that add a modelElement to an Observable Array in the model
+   * @param {Function} attachInputListener - function(modelElement,array) Called when the element is dropped into the play area, to add its normal listener.
    * @param {ObservableArray} observableArray
    * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @param {ModelViewTransform2} modelViewTransform
@@ -35,6 +36,7 @@ define( function( require ) {
    * @constructor
    */
   function UserCreatorNode( addModelElementToObservableArray,
+                            attachInputListener,
                             observableArray,
                             enclosureBounds,
                             modelViewTransform,
@@ -160,8 +162,10 @@ define( function( require ) {
             if ( !enclosureBounds.containsPoint( this.modelElement.position ) ) {
               this.modelElement.isActive = true;
             }
-            this.modelElement = null;
             this.movableDragHandler = null;
+
+            attachInputListener( this.modelElement, observableArray );
+            this.modelElement = null;
           }
         } );
     }

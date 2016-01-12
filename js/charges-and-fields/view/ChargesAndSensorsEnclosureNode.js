@@ -29,6 +29,7 @@ define( function( require ) {
    * Enclosure that contains the charges and sensor
    *
    * @param {Function} addUserCreatedModelElementToObservableArray
+   * @param {Function} attachInputListener - function(modelElement,array) Called when the element is dropped into the play area, to add its normal listener.
    * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
    * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field sensors
    * @param {number} numberChargesLimit
@@ -38,6 +39,7 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndSensorsEnclosureNode( addUserCreatedModelElementToObservableArray,
+                                           attachInputListener,
                                            chargedParticles,
                                            electricFieldSensors,
                                            numberChargesLimit,
@@ -83,6 +85,7 @@ define( function( require ) {
     // Create the charges and sensor
     var positiveCharge = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
+      attachInputListener,
       chargedParticles,
       enclosureBounds,
       modelViewTransform,
@@ -96,6 +99,7 @@ define( function( require ) {
 
     var negativeCharge = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
+      attachInputListener,
       chargedParticles,
       enclosureBounds,
       modelViewTransform,
@@ -109,6 +113,7 @@ define( function( require ) {
 
     var electricFieldSensor = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
+      attachInputListener,
       electricFieldSensors,
       enclosureBounds,
       modelViewTransform,

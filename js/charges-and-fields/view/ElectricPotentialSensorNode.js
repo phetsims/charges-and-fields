@@ -62,6 +62,8 @@ define( function( require ) {
 
     var electricPotentialSensorNode = this;
 
+    this.modelElement = electricPotentialSensor;
+
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the sensor
@@ -216,7 +218,8 @@ define( function( require ) {
       updateCircleFill( electricPotential );
     } );
 
-    var movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
+    // Should be added as a listener by our parent when the time is right
+    this.movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
       dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
@@ -228,11 +231,11 @@ define( function( require ) {
     } );
 
     // When dragging, move the electric potential sensor
-    electricPotentialSensorNode.addInputListener( movableDragHandler );
+    // electricPotentialSensorNode.addInputListener( this.movableDragHandler );
 
     //no need to unlink, the sensor is present for the lifetime of the simulation.
     availableModelBoundsProperty.link( function( bounds ) {
-      movableDragHandler.setDragBounds( bounds );
+      electricPotentialSensorNode.movableDragHandler.setDragBounds( bounds );
     } );
 
     // Show/Hide this node

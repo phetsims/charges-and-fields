@@ -28,6 +28,8 @@ define( function( require ) {
 
     var chargedParticleNode = this;
 
+    this.modelElement = chargedParticle;
+
     ChargedParticleRepresentationNode.call( this, chargedParticle.charge );
 
     // Set up the mouse areas for this node so that this can still be grabbed when invisible.
@@ -39,7 +41,8 @@ define( function( require ) {
     };
     chargedParticle.positionProperty.link( positionListener );
 
-    var movableDragHandler = new MovableDragHandler(
+    // Should be added as a listener by our parent when the time is right
+    this.movableDragHandler = new MovableDragHandler(
       chargedParticle.positionProperty,
       {
         dragBounds: availableModelBoundsProperty.value,
@@ -65,13 +68,13 @@ define( function( require ) {
 
     // readjust the dragBounds of the movable drag handler when the screen is resized
     var availableModelBoundsPropertyListener = function( bounds ) {
-      movableDragHandler.setDragBounds( bounds );
+      chargedParticleNode.movableDragHandler.setDragBounds( bounds );
     };
 
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
 
     // When dragging, move the charge
-    chargedParticleNode.addInputListener( movableDragHandler );
+    // chargedParticleNode.addInputListener( this.movableDragHandler );
 
     this.disposeChargedParticleNode = function() {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );

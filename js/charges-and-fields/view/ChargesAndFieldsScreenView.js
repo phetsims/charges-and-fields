@@ -225,6 +225,19 @@ define( function( require ) {
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargesAndSensorsEnclosureNode = new ChargesAndSensorsEnclosureNode(
       model.addUserCreatedModelElementToObservableArray.bind( model ),
+      function( modelElement, array ) {
+        // if ( array === model.chargedParticles ) {
+        // }
+        // else if ( array === model.electricFieldSensors ) {
+        // }
+
+        // Horrible horrible hacks
+        draggableElementsLayer.children.forEach( function( potentialView ) {
+          if ( potentialView.modelElement === modelElement ) {
+            potentialView.addInputListener( potentialView.movableDragHandler );
+          }
+        } );
+      },
       model.chargedParticles,
       model.electricFieldSensors,
       numberChargesLimit,
