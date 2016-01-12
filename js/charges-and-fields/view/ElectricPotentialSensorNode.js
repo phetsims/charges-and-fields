@@ -83,6 +83,7 @@ define( function( require ) {
 
     // Create the text node above the readout
     var electricPotentialPanelTitleText = new Text( equipotentialString, {
+      maxWidth: 85,
       font: ChargesAndFieldsConstants.DEFAULT_FONT
     } );
 
@@ -149,7 +150,7 @@ define( function( require ) {
     bodyNode.addChild( voltageReadout ); // must be last
 
     // layout the elements of bodyNode
-    outlineImage.scale( 1.55 * bodyContent.width / outlineImage.width );
+    outlineImage.scale( 1.55 * 73.6 / outlineImage.width );
     outlineImage.centerX = bodyContent.centerX;
     outlineImage.top = bodyContent.top - 15;
     voltageReadout.centerX = bodyContent.centerX;
