@@ -56,8 +56,12 @@ define( function( require ) {
             chargedParticleNode.moveToFront();
             var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
 
+            if ( event.pointer.isTouch ) {
+              globalPoint.addXY( 0, -2 * CIRCLE_RADIUS );
+            }
+
             // move this node upward so that the cursor touches the bottom of the chargedParticle
-            chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -CIRCLE_RADIUS ) );
+            chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint );
           }
         },
 

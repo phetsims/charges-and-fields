@@ -231,7 +231,7 @@ define( function( require ) {
     } );
 
     // When dragging, move the electric potential sensor
-    // electricPotentialSensorNode.addInputListener( this.movableDragHandler );
+    electricPotentialSensorNode.addInputListener( this.movableDragHandler );
 
     //no need to unlink, the sensor is present for the lifetime of the simulation.
     availableModelBoundsProperty.link( function( bounds ) {

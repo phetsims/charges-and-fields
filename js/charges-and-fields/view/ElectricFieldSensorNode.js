@@ -45,6 +45,8 @@ define( function( require ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
+    this.modelElement = electricFieldSensor;
+
     var electricFieldSensorNode = this;
 
     // Expand the touch area
@@ -139,7 +141,7 @@ define( function( require ) {
     };
     electricFieldSensor.positionProperty.link( positionListener );
 
-    var movableDragHandler = new MovableDragHandler(
+    this.movableDragHandler = new MovableDragHandler(
       electricFieldSensor.positionProperty,
       {
         dragBounds: availableModelBoundsProperty.value,
@@ -154,8 +156,12 @@ define( function( require ) {
 
             var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
 
+            if ( event.pointer.isTouch ) {
+              globalPoint.addXY( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS );
+            }
+
             // move this node upward so that the cursor touches the bottom of the chargedParticle
-            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
+            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint );
 
           }
         },
@@ -166,10 +172,10 @@ define( function( require ) {
       } );
 
     // When dragging, move the electric Field Sensor
-    electricFieldSensorNode.addInputListener( movableDragHandler );
+    // electricFieldSensorNode.addInputListener( movableDragHandler );
 
     var availableModelBoundsPropertyListener = function( bounds ) {
-      movableDragHandler.setDragBounds( bounds );
+      electricFieldSensorNode.movableDragHandler.setDragBounds( bounds );
     };
 
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );

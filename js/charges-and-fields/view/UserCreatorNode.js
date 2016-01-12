@@ -98,9 +98,6 @@ define( function( require ) {
       return modelElement;
     }
 
-    // this is where the center of 'this' is in the ScreenView reference frame
-    var viewPosition = new Vector2( options.centerX, options.centerY );
-
     // Create and add a static view node
     this.addChild( representationCreatorNode() );
 
@@ -110,7 +107,7 @@ define( function( require ) {
     // offset between the  position of the static object and the initial position of the movingObject
     // needed for the 'pop' effect, value was empirically determined. large enough to be visually apparent
     // but small enough that it stays within the enclosure
-    var offset = new Vector2( 0, -20 ); // in view coordinate frame,
+    var offset = new Vector2( 0, -30 ); // in view coordinate frame,
 
     // If the observableArray count exceeds the max, make this node invisible (which also makes it unusable).
     observableArray.lengthProperty.link( function( number ) {
@@ -133,9 +130,13 @@ define( function( require ) {
           dragBounds: availableModelBoundsProperty.value,
 
           start: function( event ) {
+            var viewPosition = event.currentTarget.globalToParentPoint( event.pointer.point );
+            if ( event.pointer.isTouch ) {
+              viewPosition.add( offset );
+            }
 
             // Create the new model element.
-            this.modelElement = modelElementCreator( modelViewTransform.viewToModelPosition( viewPosition.plus( offset ) ) );
+            this.modelElement = modelElementCreator( modelViewTransform.viewToModelPosition( viewPosition ) );
             this.modelElement.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
             this.modelElement.isUserControlledProperty.set( true );
             this.modelElement.isActive = false;
