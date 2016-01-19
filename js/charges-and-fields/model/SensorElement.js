@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {Vector2} position - initial position of the sensor element
    * @constructor
    */
-  function SensorElement( position ) {
+  function SensorElement( position, tandem ) {
     ModelElement.call( this, position );
 
     // @public
@@ -29,6 +29,7 @@ define( function( require ) {
     // @public
     this.addProperty( 'electricPotential', 0 ); // the default value assumes there are no electric charges on the board
 
+    tandem.addInstance( this );
   }
 
   return inherit( ModelElement, SensorElement );

@@ -32,6 +32,7 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the moving view element
    * @param {Tandem} tandem
+   * @param {Tandem} modelGroupTandem - Because we currently construct part of the model here. TODO!
    * @param {Object} [options]
    * @constructor
    */
@@ -42,6 +43,7 @@ define( function( require ) {
                             modelViewTransform,
                             availableModelBoundsProperty,
                             tandem,
+                            modelGroupTandem,
                             options ) {
 
     var self = this;
@@ -88,13 +90,13 @@ define( function( require ) {
 
       switch( options.element ) {
         case 'positive':
-          modelElement = new ChargedParticle( initialPosition, 1 );
+          modelElement = new ChargedParticle( initialPosition, 1, modelGroupTandem.createNextTandem() );
           break;
         case 'negative':
-          modelElement = new ChargedParticle( initialPosition, -1 );
+          modelElement = new ChargedParticle( initialPosition, -1, modelGroupTandem.createNextTandem() );
           break;
         case 'electricFieldSensor':
-          modelElement = new SensorElement( initialPosition );
+          modelElement = new SensorElement( initialPosition, modelGroupTandem.createNextTandem() ); // TODO: instrument!
           break;
       }
       return modelElement;

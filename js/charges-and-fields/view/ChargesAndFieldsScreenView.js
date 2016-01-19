@@ -243,7 +243,9 @@ define( function( require ) {
       model.chargesAndSensorsEnclosureBounds,
       modelViewTransform,
       this.availableModelBoundsProperty,
-      tandem.createTandem( 'chargesAndSensorsPanel' ) );
+      tandem.createTandem( 'chargesAndSensorsPanel' ),
+      model.chargedParticleGroupTandem,
+      model.electricFieldSensorGroupTandem );
 
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {

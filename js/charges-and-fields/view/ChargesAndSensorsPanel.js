@@ -40,17 +40,21 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds of the charges and sensors in view coordinates
    * @param {Tandem} tandem
+   * @param {Tandem} chargedParticleGroupTandem - Because we currently construct part of the model here. TODO!
+   * @param {Tandem} electricFieldSensorGroupTandem - Because we currently construct part of the model here. TODO!
    * @constructor
    */
   function ChargesAndSensorsPanel( addUserCreatedModelElementToObservableArray,
-                                           hookDragHandler,
-                                           chargedParticles,
-                                           electricFieldSensors,
-                                           numberChargesLimit,
-                                           enclosureBounds,
-                                           modelViewTransform,
-                                           availableModelBoundsProperty,
-                                           tandem ) {
+                                   hookDragHandler,
+                                   chargedParticles,
+                                   electricFieldSensors,
+                                   numberChargesLimit,
+                                   enclosureBounds,
+                                   modelViewTransform,
+                                   availableModelBoundsProperty,
+                                   tandem,
+                                   chargedParticleGroupTandem,
+                                   electricFieldSensorGroupTandem ) {
 
     Node.call( this );
 
@@ -96,6 +100,7 @@ define( function( require ) {
       modelViewTransform,
       availableModelBoundsProperty,
       tandem.createTandem( 'positiveCharge' ),
+      chargedParticleGroupTandem,
       {
         element: 'positive',
         observableArrayLengthLimit: numberChargesLimit,
@@ -111,6 +116,7 @@ define( function( require ) {
       modelViewTransform,
       availableModelBoundsProperty,
       tandem.createTandem( 'negativeCharge' ),
+      chargedParticleGroupTandem,
       {
         element: 'negative',
         observableArrayLengthLimit: numberChargesLimit,
@@ -126,6 +132,7 @@ define( function( require ) {
       modelViewTransform,
       availableModelBoundsProperty,
       tandem.createTandem( 'electricFieldSensor' ),
+      electricFieldSensorGroupTandem,
       {
         element: 'electricFieldSensor',
         centerX: electricFieldSensorCenterX,

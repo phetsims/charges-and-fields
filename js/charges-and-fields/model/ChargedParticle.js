@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {number} charge - (positive=+1 or negative=-1)
    * @constructor
    */
-  function ChargedParticle( position, charge ) {
+  function ChargedParticle( position, charge, tandem ) {
 
     ModelElement.call( this, position );
 
@@ -29,6 +29,7 @@ define( function( require ) {
     // @public read-only
     this.charge = charge;
 
+    tandem.addInstance( this );
   }
 
   return inherit( ModelElement, ChargedParticle );

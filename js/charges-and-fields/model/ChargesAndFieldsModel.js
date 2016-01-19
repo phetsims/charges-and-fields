@@ -34,6 +34,12 @@ define( function( require ) {
    */
   function ChargesAndFieldsModel( tandem ) {
 
+    // @public - Because we need to export our tandem for now. TODO!
+    this.tandem = tandem;
+
+    this.chargedParticleGroupTandem = tandem.createGroupTandem( 'chargedParticle' );
+    this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
+
     var thisModel = this;
 
     // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
@@ -62,7 +68,7 @@ define( function( require ) {
 
     // Observable array of all draggable electric charges
     // @public
-    this.chargedParticles = new ObservableArray(); // {ObservableArray.<ChargedParticle>}
+    this.chargedParticles = new ObservableArray( { tandem: tandem.createTandem( 'chargedParticles' ) } ); // {ObservableArray.<ChargedParticle>}
     var chargedParticles = this.chargedParticles;
 
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
@@ -77,7 +83,7 @@ define( function( require ) {
 
     // electric potential sensor
     var position = new Vector2( 0, 0 ); // position of the crosshair on the electric potential sensor, initial value will be reset by the view
-    this.electricPotentialSensor = new SensorElement( position );
+    this.electricPotentialSensor = new SensorElement( position, tandem.createTandem( 'electricPotentialSensor' ) );
 
     // electric Field Sensor Grid
     // @public read-only
