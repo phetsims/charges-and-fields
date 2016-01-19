@@ -42,7 +42,7 @@ define( function( require ) {
     this.isAnimated = false;
 
     // @public
-    this.destinationPosition = null; // {Vector2} the final destination when animated
+    this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
   }
 
   return inherit( PropertySet, ModelElement, {
@@ -55,7 +55,7 @@ define( function( require ) {
       var self = this;
 
       // distance from current position to the destination position
-      var distanceToDestination = this.position.distance( this.destinationPosition );
+      var distanceToDestination = this.position.distance( this.initialPosition );
 
       // time to perform the animation in milliseconds, time is proportional to distance
       var animationTime = (distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY) * 1000; // in milliseconds
@@ -68,8 +68,8 @@ define( function( require ) {
 
       var animationTween = new TWEEN.Tween( position ).
         to( {
-          x: this.destinationPosition.x,
-          y: this.destinationPosition.y
+          x: this.initialPosition.x,
+          y: this.initialPosition.y
         }, animationTime ).
         easing( TWEEN.Easing.Cubic.InOut ).
         onStart( function() {

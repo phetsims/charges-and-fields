@@ -51,6 +51,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isMeasuringTapeVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty
+   * @param {Tandem} tandem
    * @constructor
    */
   function ChargesAndFieldsToolboxPanel( electricPotentialSensorPositionProperty,
@@ -61,7 +62,8 @@ define( function( require ) {
                                          isElectricPotentialSensorVisibleProperty,
                                          isMeasuringTapeVisibleProperty,
                                          modelViewTransform,
-                                         availableModelBoundsProperty ) {
+                                         availableModelBoundsProperty,
+                                         tandem ) {
 
     var toolboxPanel = this;
 
@@ -220,6 +222,8 @@ define( function( require ) {
       electricPotentialSensorMovableDragHandler.dragBounds = bounds;
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
+
+    tandem.addInstance( this );
   }
 
   return inherit( Panel, ChargesAndFieldsToolboxPanel, {

@@ -14,9 +14,12 @@ define( function( require ) {
   var GlobalOptionsNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GlobalOptionsNode' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // strings
   var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
+
+  var tandem = Tandem.createRootTandem();
 
   var simOptions = {
     credits: {
@@ -27,7 +30,8 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Elise Morgan, Oliver Orejola, Bryan Yoelin'
     },
-    optionsNode: new GlobalOptionsNode()
+    optionsNode: new GlobalOptionsNode(),
+    tandem: tandem
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
@@ -40,7 +44,7 @@ define( function( require ) {
   } );
 
   SimLauncher.launch( function() {
-    var sim = new Sim( chargesAndFieldsTitleString, [ new ChargesAndFieldsScreen() ], simOptions );
+    var sim = new Sim( chargesAndFieldsTitleString, [ new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) ) ], simOptions );
     sim.start();
   } );
 } );

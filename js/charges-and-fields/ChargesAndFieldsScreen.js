@@ -18,8 +18,10 @@ define( function( require ) {
 
   /**
    * @constructor
+   *
+   * @param {Tandem} tandem
    */
-  function ChargesAndFieldsScreen() {
+  function ChargesAndFieldsScreen( tandem ) {
 
     var screen = this;
 
@@ -28,12 +30,14 @@ define( function( require ) {
 
     Screen.call( this, chargesAndFieldsTitleString, icon,
       function() {
-        return new ChargesAndFieldsModel();
+        return new ChargesAndFieldsModel( tandem.createTandem( 'model' ) );
       },
       function( model ) {
-        return new ChargesAndFieldsScreenView( model );
+        return new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) );
       },
-      { backgroundColor: ChargesAndFieldsColors.background.toCSS() }
+      {
+        backgroundColor: ChargesAndFieldsColors.background.toCSS(), tandem: tandem
+      }
     );
 
     ChargesAndFieldsColors.link( 'background', function( color ) {

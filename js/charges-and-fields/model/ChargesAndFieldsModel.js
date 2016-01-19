@@ -29,8 +29,10 @@ define( function( require ) {
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
    * @constructor
+   *
+   * @param {Tandem} tandem
    */
-  function ChargesAndFieldsModel() {
+  function ChargesAndFieldsModel( tandem ) {
 
     var thisModel = this;
 

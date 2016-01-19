@@ -27,19 +27,21 @@ define( function( require ) {
   var valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
 
   /**
-   * Control panel constructor
+   * @constructor
+   *
    * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
    * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty
    * @param {Property.<boolean>} isElectricPotentialGridVisibleProperty
    * @param {Property.<boolean>} isValuesVisibleProperty
    * @param {Property.<boolean>} isGridVisibleProperty
-   * @constructor
+   * @param {Tandem} tandem
    */
   function ChargesAndFieldsControlPanel( isElectricFieldGridVisibleProperty,
                                          isDirectionOnlyElectricFieldGridVisibleProperty,
                                          isElectricPotentialGridVisibleProperty,
                                          isValuesVisibleProperty,
-                                         isGridVisibleProperty ) {
+                                         isGridVisibleProperty,
+                                         tandem ) {
 
     var controlPanel = this;
 
@@ -67,11 +69,21 @@ define( function( require ) {
     var gridText = new Text( valuesString, textOptions );
 
     // create checkboxes
-    var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldGridVisibleProperty, checkBoxOptions );
-    var directionOnlyCheckBox = new CheckBox( directionOnlyText, isDirectionOnlyElectricFieldGridVisibleProperty, checkBoxOptions );
-    var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialGridVisibleProperty, checkBoxOptions );
-    var valuesCheckBox = new CheckBox( gridText, isValuesVisibleProperty, checkBoxOptions );
-    var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, checkBoxOptions );
+    var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldGridVisibleProperty, _.extend( {
+      tandem: tandem.createTandem( 'electricFieldCheckBox' )
+    }, checkBoxOptions ) );
+    var directionOnlyCheckBox = new CheckBox( directionOnlyText, isDirectionOnlyElectricFieldGridVisibleProperty, _.extend( {
+      tandem: tandem.createTandem( 'directionOnlyCheckBox' )
+    }, checkBoxOptions ) );
+    var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialGridVisibleProperty, _.extend( {
+      tandem: tandem.createTandem( 'voltageCheckBox' )
+    }, checkBoxOptions ) );
+    var valuesCheckBox = new CheckBox( gridText, isValuesVisibleProperty, _.extend( {
+      tandem: tandem.createTandem( 'valuesCheckBox' )
+    }, checkBoxOptions ) );
+    var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, _.extend( {
+      tandem: tandem.createTandem( 'gridCheckBox' )
+    }, checkBoxOptions ) );
 
     // the checkbox 'direction only' needs to be indented with respect to the other checkboxes
     var directionOnlyGroup = new Node();
@@ -139,6 +151,7 @@ define( function( require ) {
       } );
     } );
 
+    tandem.addInstance( this );
   }
 
   return inherit( Panel, ChargesAndFieldsControlPanel );

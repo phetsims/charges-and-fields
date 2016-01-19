@@ -22,9 +22,10 @@ define( function( require ) {
    * @param {ChargedParticle} chargedParticle - the model of the charged particle
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
+   * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @constructor
    */
-  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty ) {
+  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty, enclosureBounds ) {
 
     var chargedParticleNode = this;
 
@@ -41,7 +42,6 @@ define( function( require ) {
     };
     chargedParticle.positionProperty.link( positionListener );
 
-    // Should be added as a listener by our parent when the time is right
     this.movableDragHandler = new MovableDragHandler(
       chargedParticle.positionProperty,
       {
@@ -66,7 +66,11 @@ define( function( require ) {
         },
 
         endDrag: function( event ) {
-          chargedParticle.isUserControlledProperty.set( false );
+          chargedParticle.isUserControlled = false;
+
+          if ( !enclosureBounds.containsPoint( chargedParticle.position ) ) {
+            chargedParticle.isActive = true;
+          }
         }
       } );
 
@@ -78,7 +82,7 @@ define( function( require ) {
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
 
     // When dragging, move the charge
-    // chargedParticleNode.addInputListener( this.movableDragHandler );
+    this.addInputListener( this.movableDragHandler );
 
     this.disposeChargedParticleNode = function() {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );

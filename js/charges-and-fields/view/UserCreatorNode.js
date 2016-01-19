@@ -21,26 +21,27 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
    * @param {Function} addModelElementToObservableArray - A function that add a modelElement to an Observable Array in the model
-   * @param {Function} attachInputListener - function(modelElement,array) Called when the element is dropped into the play area, to add its normal listener.
+   * @param {Function} hookDragHandler - function(modelElement,array) Called when the element is dropped into the play area, to add its normal listener.
    * @param {ObservableArray} observableArray
    * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the moving view element
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function UserCreatorNode( addModelElementToObservableArray,
-                            attachInputListener,
+                            hookDragHandler,
                             observableArray,
                             enclosureBounds,
                             modelViewTransform,
                             availableModelBoundsProperty,
+                            tandem,
                             options ) {
 
     var self = this;
@@ -81,101 +82,64 @@ define( function( require ) {
      * @param {Vector2} initialModelPosition
      * @returns {ModelElement}
      */
-    function modelElementCreator( initialModelPosition ) {
+    function modelElementCreator() {
       var modelElement;
+      var initialPosition = new Vector2(); // overwritten by drag handler
 
       switch( options.element ) {
         case 'positive':
-          modelElement = new ChargedParticle( initialModelPosition, 1 );
+          modelElement = new ChargedParticle( initialPosition, 1 );
           break;
         case 'negative':
-          modelElement = new ChargedParticle( initialModelPosition, -1 );
+          modelElement = new ChargedParticle( initialPosition, -1 );
           break;
         case 'electricFieldSensor':
-          modelElement = new SensorElement( initialModelPosition );
+          modelElement = new SensorElement( initialPosition );
           break;
       }
       return modelElement;
     }
 
     // Create and add a static view node
-    this.addChild( representationCreatorNode() );
+    this.representationNode = representationCreatorNode();
+    this.addChild( this.representationNode );
 
     // let's make this node very easy to pick
     this.touchArea = this.localBounds.dilated( 10 ); // large enough to be easy to pick but small enough that the touch area doesn't spill out of the enclosure
-
-    // offset between the  position of the static object and the initial position of the movingObject
-    // needed for the 'pop' effect, value was empirically determined. large enough to be visually apparent
-    // but small enough that it stays within the enclosure
-    var offset = new Vector2( 0, -30 ); // in view coordinate frame,
 
     // If the observableArray count exceeds the max, make this node invisible (which also makes it unusable).
     observableArray.lengthProperty.link( function( number ) {
       self.visible = (number < options.observableArrayLengthLimit);
     } );
 
-    /**
-     * Recursive function that returns a SimpleDragHandler. Upon a start event, the simpleDragHandler
-     * call this very same function and pass it to an addInputListener. The goal of this is to support multitouch event
-     * i.e. to  have at least one available input listener at all times.
-     * see https://github.com/phetsims/charges-and-fields/issues/22
-     * @returns {SimpleDragHandler}
-     */
-    function createMovableDragHandler() {
-      return new SimpleDragHandler(
-        {
-          movableDragHandler: null, // {SimpleDragHandler}
-          modelElement: null, // {ChargedParticle || SensorElement}
-          modelViewTransform: modelViewTransform,
-          dragBounds: availableModelBoundsProperty.value,
+    // When pressed, creates a model element and triggers startDrag() on the corresponding view
+    this.addInputListener( {
+      down: function( event ) {
+        // Ignore non-left-mouse-button
+        if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
+          return;
+        }
 
-          start: function( event ) {
-            var viewPosition = event.currentTarget.globalToParentPoint( event.pointer.point );
-            if ( event.pointer.isTouch ) {
-              viewPosition.add( offset );
-            }
+        // Representation node location, so that when being "disposed" it will animate back towards the the right place.
+        var initialViewPosition = event.currentTarget.globalToParentPoint( self.representationNode.localToGlobalPoint( Vector2.ZERO ) );
 
-            // Create the new model element.
-            this.modelElement = modelElementCreator( modelViewTransform.viewToModelPosition( viewPosition ) );
-            this.modelElement.destinationPosition = modelViewTransform.viewToModelPosition( viewPosition );
-            this.modelElement.isUserControlledProperty.set( true );
-            this.modelElement.isActive = false;
-            addModelElementToObservableArray( this.modelElement, observableArray );
+        // Create the new model element.
+        var modelElement = modelElementCreator();
+        modelElement.initialPosition = modelViewTransform.viewToModelPosition( initialViewPosition );
+        modelElement.isActive = false;
 
-            // create a new movable drag handler
-            this.movableDragHandler = createMovableDragHandler();
-            self.addInputListener( this.movableDragHandler );
-          },
+        // Add it to the model
+        addModelElementToObservableArray( modelElement, observableArray );
 
-          translate: function( translationParams ) {
-            var unconstrainedLocation = this.modelElement.position.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
-            var constrainedLocation = availableModelBoundsProperty.value.closestPointTo( unconstrainedLocation );
-            this.modelElement.position = constrainedLocation;
-          },
-
-          end: function( event ) {
-            // remove the additional movable drag handler
-            self.removeInputListener( this.movableDragHandler );
-
-            this.modelElement.isUserControlledProperty.set( false );
-
-            // set the modelElement to be active if its current position is not in the enclosure
-            if ( !enclosureBounds.containsPoint( this.modelElement.position ) ) {
-              this.modelElement.isActive = true;
-            }
-            this.movableDragHandler = null;
-
-            attachInputListener( this.modelElement, observableArray );
-            this.modelElement = null;
-          }
-        } );
-    }
-
-    // Add a listener that will allow the user to click on this and create a model element, then position it in the model.
-    this.addInputListener( createMovableDragHandler() );
+        // Hook up the initial drag to the corresponding view element
+        hookDragHandler( modelElement, event );
+      }
+    } );
 
     // Pass options through to parent.
     this.mutate( options );
+
+    tandem.addInstance( this );
   }
 
   return inherit( Node, UserCreatorNode );

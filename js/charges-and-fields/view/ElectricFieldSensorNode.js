@@ -41,7 +41,8 @@ define( function( require ) {
                                     modelViewTransform,
                                     availableModelBoundsProperty,
                                     isPlayAreaChargedProperty,
-                                    isValuesVisibleProperty ) {
+                                    isValuesVisibleProperty,
+                                    enclosureBounds ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
@@ -168,11 +169,15 @@ define( function( require ) {
 
         endDrag: function( event ) {
           electricFieldSensor.isUserControlledProperty.set( false );
+
+          if ( !enclosureBounds.containsPoint( electricFieldSensor.position ) ) {
+            electricFieldSensor.isActive = true;
+          }
         }
       } );
 
     // When dragging, move the electric Field Sensor
-    // electricFieldSensorNode.addInputListener( movableDragHandler );
+    this.addInputListener( this.movableDragHandler );
 
     var availableModelBoundsPropertyListener = function( bounds ) {
       electricFieldSensorNode.movableDragHandler.setDragBounds( bounds );

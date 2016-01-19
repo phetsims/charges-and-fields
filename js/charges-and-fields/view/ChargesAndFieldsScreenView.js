@@ -15,7 +15,7 @@ define( function( require ) {
   var ChargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsControlPanel' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsToolboxPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolboxPanel' );
-  var ChargesAndSensorsEnclosureNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsEnclosureNode' );
+  var ChargesAndSensorsPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsPanel' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
   var ElectricFieldGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridCanvasNode' );
@@ -53,11 +53,12 @@ define( function( require ) {
   var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
 
   /**
+   * @constructor
    *
    * @param {ChargesAndFieldsModel} model - main model of the simulation
-   * @constructor
+   * @param {Tandem} tandem
    */
-  function ChargesAndFieldsScreenView( model ) {
+  function ChargesAndFieldsScreenView( model, tandem ) {
 
     var screenView = this;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
@@ -169,7 +170,8 @@ define( function( require ) {
       viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
       model.isElectricPotentialGridVisibleProperty,
       viewPropertySet.isValuesVisibleProperty,
-      viewPropertySet.isGridVisibleProperty );
+      viewPropertySet.isGridVisibleProperty,
+      tandem.createTandem( 'controlPanel' ) );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
@@ -177,7 +179,8 @@ define( function( require ) {
         // do not reset the availableDragBoundsProperty
         model.reset();
         viewPropertySet.reset();
-      }
+      },
+      tandem: tandem.createTandem( 'resetAllButton' )
     } );
 
     // Create the options for a draggable but (subject to some dragBound) Measuring Tape
@@ -208,7 +211,8 @@ define( function( require ) {
       viewPropertySet.isElectricPotentialSensorVisibleProperty,
       viewPropertySet.isMeasuringTapeVisibleProperty,
       modelViewTransform,
-      this.availableModelBoundsProperty
+      this.availableModelBoundsProperty,
+      tandem.createTandem( 'toolboxPanel' )
     );
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
@@ -223,18 +227,13 @@ define( function( require ) {
                              Number.POSITIVE_INFINITY;
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
-    var chargesAndSensorsEnclosureNode = new ChargesAndSensorsEnclosureNode(
+    var chargesAndSensorsPanel = new ChargesAndSensorsPanel(
       model.addUserCreatedModelElementToObservableArray.bind( model ),
-      function( modelElement, array ) {
-        // if ( array === model.chargedParticles ) {
-        // }
-        // else if ( array === model.electricFieldSensors ) {
-        // }
-
+      function( modelElement, event ) {
         // Horrible horrible hacks
         draggableElementsLayer.children.forEach( function( potentialView ) {
           if ( potentialView.modelElement === modelElement ) {
-            potentialView.addInputListener( potentialView.movableDragHandler );
+            potentialView.movableDragHandler.startDrag( event );
           }
         } );
       },
@@ -243,7 +242,8 @@ define( function( require ) {
       numberChargesLimit,
       model.chargesAndSensorsEnclosureBounds,
       modelViewTransform,
-      this.availableModelBoundsProperty );
+      this.availableModelBoundsProperty,
+      tandem.createTandem( 'chargesAndSensorsPanel' ) );
 
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
@@ -251,7 +251,8 @@ define( function( require ) {
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
         modelViewTransform,
-        screenView.availableModelBoundsProperty );
+        screenView.availableModelBoundsProperty,
+        model.chargesAndSensorsEnclosureBounds );
       draggableElementsLayer.addChild( chargedParticleNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -272,7 +273,8 @@ define( function( require ) {
         modelViewTransform,
         screenView.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,
-        viewPropertySet.isValuesVisibleProperty );
+        viewPropertySet.isValuesVisibleProperty,
+        model.chargesAndSensorsEnclosureBounds );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this electric field sensor is removed from the model.
@@ -332,7 +334,7 @@ define( function( require ) {
     this.addChild( toolboxPanel );
     this.addChild( controlPanel );
     this.addChild( resetAllButton );
-    this.addChild( chargesAndSensorsEnclosureNode );
+    this.addChild( chargesAndSensorsPanel );
     this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
     this.addChild( measuringTape );
@@ -357,8 +359,8 @@ define( function( require ) {
       var position2 = new Vector2( 1.2, 1.2 );
       var charge1 = new ChargedParticle( position1, 1 );
       var charge2 = new ChargedParticle( position2, -1 );
-      charge1.destinationPosition = new Vector2( 0, -1.5 );
-      charge2.destinationPosition = new Vector2( 0, -1.5 );
+      charge1.initialPosition = new Vector2( 0, -1.5 );
+      charge2.initialPosition = new Vector2( 0, -1.5 );
       charge1.isActiveProperty.set( true );
       charge2.isActiveProperty.set( true );
 

@@ -29,23 +29,28 @@ define( function( require ) {
    * Enclosure that contains the charges and sensor
    *
    * @param {Function} addUserCreatedModelElementToObservableArray
-   * @param {Function} attachInputListener - function(modelElement,array) Called when the element is dropped into the play area, to add its normal listener.
+   * @param {Function} hookDragHandler - function(modelElement,event) Called when the element is dropped into the play
+   *                                     area, hooks up the provided event to the modelElement's corresponding view's
+   *                                     drag handler (starts the drag).
    * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
-   * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field sensors
+   * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field
+   *                                                 sensors
    * @param {number} numberChargesLimit
    * @param {Bounds2} enclosureBounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds of the charges and sensors in view coordinates
+   * @param {Tandem} tandem
    * @constructor
    */
-  function ChargesAndSensorsEnclosureNode( addUserCreatedModelElementToObservableArray,
-                                           attachInputListener,
+  function ChargesAndSensorsPanel( addUserCreatedModelElementToObservableArray,
+                                           hookDragHandler,
                                            chargedParticles,
                                            electricFieldSensors,
                                            numberChargesLimit,
                                            enclosureBounds,
                                            modelViewTransform,
-                                           availableModelBoundsProperty ) {
+                                           availableModelBoundsProperty,
+                                           tandem ) {
 
     Node.call( this );
 
@@ -85,11 +90,12 @@ define( function( require ) {
     // Create the charges and sensor
     var positiveCharge = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
-      attachInputListener,
+      hookDragHandler,
       chargedParticles,
       enclosureBounds,
       modelViewTransform,
       availableModelBoundsProperty,
+      tandem.createTandem( 'positiveCharge' ),
       {
         element: 'positive',
         observableArrayLengthLimit: numberChargesLimit,
@@ -99,11 +105,12 @@ define( function( require ) {
 
     var negativeCharge = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
-      attachInputListener,
+      hookDragHandler,
       chargedParticles,
       enclosureBounds,
       modelViewTransform,
       availableModelBoundsProperty,
+      tandem.createTandem( 'negativeCharge' ),
       {
         element: 'negative',
         observableArrayLengthLimit: numberChargesLimit,
@@ -113,11 +120,12 @@ define( function( require ) {
 
     var electricFieldSensor = new UserCreatorNode(
       addUserCreatedModelElementToObservableArray,
-      attachInputListener,
+      hookDragHandler,
       electricFieldSensors,
       enclosureBounds,
       modelViewTransform,
       availableModelBoundsProperty,
+      tandem.createTandem( 'electricFieldSensor' ),
       {
         element: 'electricFieldSensor',
         centerX: electricFieldSensorCenterX,
@@ -168,8 +176,10 @@ define( function( require ) {
     ChargesAndFieldsColors.link( 'enclosureFill', function( color ) {
       rectangle.fill = color;
     } );
+
+    tandem.addInstance( this );
   }
 
-  return inherit( Node, ChargesAndSensorsEnclosureNode );
+  return inherit( Node, ChargesAndSensorsPanel );
 
 } );

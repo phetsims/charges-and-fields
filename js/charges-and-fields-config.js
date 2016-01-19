@@ -35,6 +35,7 @@ require.config( {
     SCENERY: '../../scenery/js',
     SCENERY_PHET: '../../scenery-phet/js',
     SUN: '../../sun/js',
+    TANDEM: '../../tandem/js',
 
     // this sim
     CHARGES_AND_FIELDS: '.'
