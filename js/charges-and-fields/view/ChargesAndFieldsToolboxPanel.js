@@ -69,10 +69,10 @@ define( function( require ) {
     var toolboxPanel = this;
 
     // Create the icon image for the electricPotential sensor
-    var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon(); // {Node}
+    var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon( tandem ); // {Node}
 
     // Create the icon image for the measuring Tape
-    var measuringTapeIconNode = this.createMeasuringTapeIcon(); // {Node}
+    var measuringTapeIconNode = this.createMeasuringTapeIcon( tandem ); // {Node}
 
     // The content panel with the two icons
     var panelContent = new LayoutBox( {
@@ -201,7 +201,7 @@ define( function( require ) {
      * @private
      * @returns {Node}
      */
-    createElectricPotentialSensorIcon: function() {
+    createElectricPotentialSensorIcon: function( tandem ) {
 
       var node = new Node( {
           // Show a cursor hand over the sensor icon
@@ -261,6 +261,8 @@ define( function( require ) {
       node.addChild( backgroundRectangle );
       node.addChild( voltageReading );
 
+      tandem.createTandem( 'electricPotentialSensor' ).addInstance( node );
+
       return node;
     },
 
@@ -269,7 +271,7 @@ define( function( require ) {
      * @private
      * @returns {Node}
      */
-    createMeasuringTapeIcon: function() {
+    createMeasuringTapeIcon: function( tandem ) {
       // procedure to create an icon Image of a measuringTape
       // first, create an actual measuring tape
 
@@ -288,6 +290,9 @@ define( function( require ) {
       measuringTape.toImage( function( image ) {
         measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
       }, measuringTape.width - unspooledMeterTape, measuringTape.height - 5, measuringTape.width, measuringTape.height );
+
+      tandem.createTandem( 'measuringTape' ).addInstance( measuringTape );
+
       return measuringTapeIcon;
     }
   } );
