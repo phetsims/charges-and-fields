@@ -16,16 +16,18 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   *
-   * @param {Vector2} position - initial position of the model element
    * @constructor
+   *
+   * @param {Tandem} tandem
+   * @param {Object} [options] - PropertySet properties to be initialized
+   * @param {Object} [tandemSetOptions]
    */
-  function ModelElement( position ) {
+  function ModelElement( tandem, options, tandemSetOptions ) {
 
-    PropertySet.call( this, {
+    PropertySet.call( this, _.extend( {
 
       // @public
-      position: position,
+      position: new Vector2(),
 
       // @public
       // Flag that indicates if this model element is controlled by the user
@@ -35,6 +37,12 @@ define( function( require ) {
       // Flag that indicates if the model element is active or dormant
       isActive: false
 
+    }, options ), {
+      tandemSet: _.extend( {
+        position: tandem.createTandem( 'positionProperty' ),
+        isUserControlled: tandem.createTandem( 'isUserControlledProperty' ),
+        isActive: tandem.createTandem( 'isActiveProperty' )
+      }, tandemSetOptions )
     } );
 
     // @public read-only

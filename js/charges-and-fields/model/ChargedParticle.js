@@ -22,7 +22,9 @@ define( function( require ) {
    */
   function ChargedParticle( position, charge, tandem ) {
 
-    ModelElement.call( this, position );
+    ModelElement.call( this, tandem, {
+      position: position
+    } );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 

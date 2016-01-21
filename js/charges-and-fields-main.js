@@ -30,7 +30,7 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Elise Morgan, Oliver Orejola, Bryan Yoelin'
     },
-    optionsNode: new GlobalOptionsNode(),
+    optionsNode: new GlobalOptionsNode( tandem.createTandem( 'options' ) ),
     tandem: tandem
   };
 

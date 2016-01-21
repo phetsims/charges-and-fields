@@ -23,10 +23,12 @@ define( function( require ) {
    *
    * @constructor
    */
-  function GlobalOptionsNode() {
+  function GlobalOptionsNode( tandem ) {
 
     var projectorCheckBox = new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
-      ChargesAndFieldsGlobals.projectorColorsProperty, {} );
+      ChargesAndFieldsGlobals.projectorColorsProperty, {
+        tandem: tandem.createTandem( 'projectorCheckBox' )
+      } );
 
     LayoutBox.call( this, _.extend( {
       children: [ projectorCheckBox ],

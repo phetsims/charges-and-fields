@@ -21,13 +21,18 @@ define( function( require ) {
    * @constructor
    */
   function SensorElement( position, tandem ) {
-    ModelElement.call( this, position );
+    ModelElement.call( this, tandem, {
+      position: position,
 
-    // @public
-    this.addProperty( 'electricField', new Vector2( 0, 0 ) ); // the default value assumes there are no electric charges on the board
+      // @public - The default value assumes there are no electric charges on the board
+      electricField: new Vector2(),
 
-    // @public
-    this.addProperty( 'electricPotential', 0 ); // the default value assumes there are no electric charges on the board
+      // @public - The default value assumes there are no electric charges on the board
+      electricPotential: 0
+    }, {
+      electricField: tandem.createTandem( 'electricFieldProperty' ),
+      electricPotential: tandem.createTandem( 'electricPotentialProperty' )
+    } );
 
     tandem.addInstance( this );
   }
