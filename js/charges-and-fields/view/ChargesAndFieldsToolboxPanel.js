@@ -51,6 +51,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isMeasuringTapeVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty
+   * @param {ElectricPotentialSensorNode} electricPotentialSensorNode
    * @param {Tandem} tandem
    * @constructor
    */
@@ -63,8 +64,8 @@ define( function( require ) {
                                          isMeasuringTapeVisibleProperty,
                                          modelViewTransform,
                                          availableModelBoundsProperty,
+                                         electricPotentialSensorNode,
                                          tandem ) {
-
     var toolboxPanel = this;
 
     // Create the icon image for the electricPotential sensor
@@ -147,57 +148,26 @@ define( function( require ) {
         }
       } );
 
-    var electricPotentialSensorMovableDragHandler = new SimpleDragHandler( {
-
-      parentScreenView: null, // needed for coordinate transforms
-      dragBounds: availableModelBoundsProperty.value,
-      modelViewTransform: modelViewTransform,
-
-      start: function( event ) {
-
-        electricPotentialUserControlledProperty.set( true );
-
-        // find the parent screen if not already found by moving up the scene graph
-        if ( !this.parentScreenView ) {
-          var testNode = toolboxPanel;
-          while ( testNode !== null ) {
-            if ( testNode instanceof ScreenView ) {
-              this.parentScreenView = testNode;
-              break;
-            }
-            testNode = testNode.parents[ 0 ]; // move up the scene graph by one level
-          }
-          assert && assert( this.parentScreenView, 'unable to find parent screen view' );
+    // When pressed, creates a model element and triggers startDrag() on the corresponding view
+    electricPotentialSensorIconNode.addInputListener( {
+      down: function( event ) {
+        // Ignore non-left-mouse-button
+        if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
+          return;
         }
 
-        // initial position of the pointer in the screenView coordinates
-        var initialPosition = this.parentScreenView.globalToLocalPoint( event.pointer.point );
-
-        // recall that the position of the electricPotentialSensor is defined as the position of the crosshair
-        // the cursor should not be at the crosshair but at the center bottom of the electricPotential tool
-        var offsetPosition = new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 );
-
-        // position of the  electricPotential sensor in ScreenView coordinates
-        var electricPotentialSensorLocation = initialPosition.plus( offsetPosition );
-        electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( electricPotentialSensorLocation ) );
-
         isElectricPotentialSensorVisibleProperty.set( true );
-      },
 
-      translate: function( translationParams ) {
-        var unconstrainedLocation = electricPotentialSensorPositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
-        var constrainedLocation = availableModelBoundsProperty.value.closestPointTo( unconstrainedLocation );
-        electricPotentialSensorPositionProperty.set( constrainedLocation );
-      },
+        // initial position of the pointer in the screenView coordinates
+        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point ).plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
+        electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
-      end: function( event ) {
-        electricPotentialUserControlledProperty.set( false );
+        electricPotentialSensorNode.movableDragHandler.startDrag( event );
       }
     } );
 
     // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
     measuringTapeIconNode.addInputListener( measuringTapeMovableDragHandler );
-    electricPotentialSensorIconNode.addInputListener( electricPotentialSensorMovableDragHandler );
 
     ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
       toolboxPanel.background.fill = color;
@@ -219,7 +189,6 @@ define( function( require ) {
 
     // no need to dispose of this link since this is present for the lifetime of the sim
     availableModelBoundsProperty.link( function( bounds ) {
-      electricPotentialSensorMovableDragHandler.dragBounds = bounds;
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
 

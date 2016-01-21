@@ -155,7 +155,8 @@ define( function( require ) {
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
       this.availableModelBoundsProperty,
-      viewPropertySet.isElectricPotentialSensorVisibleProperty );
+      viewPropertySet.isElectricPotentialSensorVisibleProperty,
+      tandem.createTandem( 'electricPotentialSensorNode' ) );
 
     // Create a visual grid with major and minor lines on the view
     var gridNode = new GridNode(
@@ -212,6 +213,7 @@ define( function( require ) {
       viewPropertySet.isMeasuringTapeVisibleProperty,
       modelViewTransform,
       this.availableModelBoundsProperty,
+      electricPotentialSensorNode,
       tandem.createTandem( 'toolboxPanel' )
     );
 

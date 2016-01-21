@@ -50,6 +50,7 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
    * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty - control the visibility of this node
+   * @param {Tandem} tandem
    * @constructor
    */
   function ElectricPotentialSensorNode( electricPotentialSensor,
@@ -58,7 +59,8 @@ define( function( require ) {
                                         addElectricPotentialLine,
                                         modelViewTransform,
                                         availableModelBoundsProperty,
-                                        isElectricPotentialSensorVisibleProperty ) {
+                                        isElectricPotentialSensorVisibleProperty,
+                                        tandem ) {
 
     var electricPotentialSensorNode = this;
 
@@ -220,6 +222,7 @@ define( function( require ) {
 
     // Should be added as a listener by our parent when the time is right
     this.movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
+      tandem: tandem.createTandem( 'movableDragHandler' ),
       dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
@@ -295,6 +298,7 @@ define( function( require ) {
       return Util.toFixed( number, decimalPlaces );
     }
 
+    tandem.addInstance( this );
   }
 
   return inherit( Node, ElectricPotentialSensorNode );
