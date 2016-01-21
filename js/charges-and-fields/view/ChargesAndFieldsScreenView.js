@@ -248,13 +248,15 @@ define( function( require ) {
       model.electricFieldSensorGroupTandem );
 
     // Handle the comings and goings of charged particles.
+    var chargedParticleNodeGroupTandem = tandem.createGroupTandem( 'chargedParticleNode' );
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
       // Create and add the view representation for this chargedParticle.
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
         modelViewTransform,
         screenView.availableModelBoundsProperty,
-        model.chargesAndSensorsEnclosureBounds );
+        model.chargesAndSensorsEnclosureBounds,
+        chargedParticleNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( chargedParticleNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -268,6 +270,7 @@ define( function( require ) {
     } );
 
     // Handle the comings and goings of charged electric field sensors.
+    var electricFieldSensorNodeGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
@@ -276,7 +279,8 @@ define( function( require ) {
         screenView.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,
         viewPropertySet.isValuesVisibleProperty,
-        model.chargesAndSensorsEnclosureBounds );
+        model.chargesAndSensorsEnclosureBounds,
+        electricFieldSensorNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this electric field sensor is removed from the model.

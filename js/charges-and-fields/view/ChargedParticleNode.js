@@ -23,13 +23,15 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
    * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
+   * @param {Tandem} tandem
    * @constructor
    */
-  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty, enclosureBounds ) {
+  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty, enclosureBounds, tandem ) {
 
     var chargedParticleNode = this;
 
     this.modelElement = chargedParticle;
+    this.tandem = tandem;
 
     ChargedParticleRepresentationNode.call( this, chargedParticle.charge );
 
@@ -45,6 +47,7 @@ define( function( require ) {
     this.movableDragHandler = new MovableDragHandler(
       chargedParticle.positionProperty,
       {
+        tandem: tandem.createTandem( 'movableDragHandler' ),
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
@@ -88,11 +91,14 @@ define( function( require ) {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       chargedParticle.positionProperty.unlink( positionListener );
     };
+
+    tandem.addInstance( this );
   }
 
   return inherit( ChargedParticleRepresentationNode, ChargedParticleNode, {
     dispose: function() {
       this.disposeChargedParticleNode();
+      this.tandem.removeInstance( this );
     }
 
   } );

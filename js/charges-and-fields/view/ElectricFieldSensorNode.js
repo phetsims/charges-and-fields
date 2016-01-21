@@ -35,6 +35,7 @@ define( function( require ) {
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
    * @param {Property.<boolean>} isValuesVisibleProperty
+   * @param {Tandem} tandem
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
@@ -42,11 +43,13 @@ define( function( require ) {
                                     availableModelBoundsProperty,
                                     isPlayAreaChargedProperty,
                                     isValuesVisibleProperty,
-                                    enclosureBounds ) {
+                                    enclosureBounds,
+                                    tandem ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
     this.modelElement = electricFieldSensor;
+    this.tandem = tandem;
 
     var electricFieldSensorNode = this;
 
@@ -145,6 +148,7 @@ define( function( require ) {
     this.movableDragHandler = new MovableDragHandler(
       electricFieldSensor.positionProperty,
       {
+        tandem: tandem.createTandem( 'movableDragHandler' ),
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
@@ -238,11 +242,14 @@ define( function( require ) {
 
       return Util.toFixed( number, decimalPlaces );
     }
+
+    tandem.addInstance( this );
   }
 
   return inherit( ElectricFieldSensorRepresentationNode, ElectricFieldSensorNode, {
     dispose: function() {
       this.disposeElectricFieldSensor();
+      this.tandem.removeInstance( this );
     }
   } );
 } );
