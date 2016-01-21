@@ -270,7 +270,7 @@ define( function( require ) {
     } );
 
     // Handle the comings and goings of charged electric field sensors.
-    var electricFieldSensorNodeGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
+    var electricFieldSensorNodeGroupTandem = tandem.createGroupTandem( 'electricFieldSensorNode' );
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
