@@ -15,6 +15,7 @@ define( function( require ) {
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var optionsProjectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
@@ -36,6 +37,8 @@ define( function( require ) {
       align: 'left'
     } ) );
   }
+
+  chargesAndFields.register( 'GlobalOptionsNode', GlobalOptionsNode );
 
   return inherit( LayoutBox, GlobalOptionsNode );
 } );

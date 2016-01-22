@@ -20,6 +20,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants related to text
   var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
@@ -156,6 +157,8 @@ define( function( require ) {
     } );
 
   }
+
+  chargesAndFields.register( 'GridNode', GridNode );
 
   return inherit( Node, GridNode );
 } );

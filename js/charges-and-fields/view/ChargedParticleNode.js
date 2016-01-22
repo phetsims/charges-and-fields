@@ -13,6 +13,7 @@ define( function( require ) {
   var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
@@ -94,6 +95,8 @@ define( function( require ) {
 
     tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );
 
   return inherit( ChargedParticleRepresentationNode, ChargedParticleNode, {
     dispose: function() {

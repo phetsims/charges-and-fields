@@ -16,6 +16,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
@@ -70,6 +71,8 @@ define( function( require ) {
       this.addChild( new Path( minusShape, pathOptions ) );
     }
   }
+
+  chargesAndFields.register( 'ChargedParticleRepresentationNode', ChargedParticleRepresentationNode );
 
   return inherit( Node, ChargedParticleRepresentationNode );
 } );

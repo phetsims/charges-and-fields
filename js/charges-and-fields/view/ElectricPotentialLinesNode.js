@@ -23,6 +23,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -265,6 +266,8 @@ define( function( require ) {
     // no need to unlink present for the lifetime of the sim
     isValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
   }
+
+  chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );
 
   return inherit( Node, ElectricPotentialLinesNode );
 } );

@@ -41,6 +41,7 @@ define( function( require ) {
     var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
     var Util = require( 'SCENERY/util/Util' );
     var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
+    var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
     // integer constants for our shader
     var TYPE_ADD = 0;
@@ -95,6 +96,8 @@ define( function( require ) {
 
       this.invalidatePaint();
     }
+
+    chargesAndFields.register( 'ElectricPotentialGridWebGLNode', ElectricPotentialGridWebGLNode );
 
     return inherit( WebGLNode, ElectricPotentialGridWebGLNode, {
       // Add notes to the queue to color all particles (without adding listeners)

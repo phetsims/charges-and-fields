@@ -15,6 +15,7 @@ define( function( require ) {
     var Matrix3 = require( 'DOT/Matrix3' );
     var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
     var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
+    var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
     // higher values support more particles, but may compromise performance
     var MAX_PARTICLES_LIMIT = 32;
@@ -57,6 +58,8 @@ define( function( require ) {
 
       this.invalidatePaint();
     }
+
+    chargesAndFields.register( 'ElectricPotentialGridMobileWebGLNode', ElectricPotentialGridMobileWebGLNode );
 
     return inherit( WebGLNode, ElectricPotentialGridMobileWebGLNode, {
       /**

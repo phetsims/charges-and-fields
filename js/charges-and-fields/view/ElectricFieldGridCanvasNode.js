@@ -14,6 +14,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_GRID_CIRCLE_RADIUS; // in scenery coordinates
@@ -96,6 +97,8 @@ define( function( require ) {
 
     this.invalidatePaint();
   }
+
+  chargesAndFields.register( 'ElectricFieldGridCanvasNode', ElectricFieldGridCanvasNode );
 
   return inherit( CanvasNode, ElectricFieldGridCanvasNode, {
     updateArrowImage: function() {

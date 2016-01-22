@@ -13,6 +13,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   /**
    *
@@ -31,6 +32,8 @@ define( function( require ) {
     this.electricField = new Vector2( 0, 0 );  // the default value assumes there are no electric charges on the board
 
   }
+
+  chargesAndFields.register( 'StaticSensorElement', StaticSensorElement );
 
   return inherit( Object, StaticSensorElement );
 

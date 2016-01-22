@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   /**
    *
@@ -92,6 +93,8 @@ define( function( require ) {
       }
     }
   }
+
+  chargesAndFields.register( 'SensorGrid', SensorGrid );
 
   return inherit( Array, SensorGrid );
 } );

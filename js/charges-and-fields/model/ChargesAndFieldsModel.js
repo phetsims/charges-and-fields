@@ -18,6 +18,7 @@ define( function( require ) {
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var SensorGrid = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGrid' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
@@ -309,6 +310,8 @@ define( function( require ) {
       } );
     } );
   }
+
+  chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
 
   return inherit( PropertySet, ChargesAndFieldsModel, {
       /**

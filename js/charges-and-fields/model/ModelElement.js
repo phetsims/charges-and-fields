@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   /**
    * @constructor
@@ -52,6 +53,8 @@ define( function( require ) {
     // @public
     this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
   }
+
+  chargesAndFields.register( 'ModelElement', ModelElement );
 
   return inherit( PropertySet, ModelElement, {
 

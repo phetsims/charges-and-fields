@@ -12,6 +12,7 @@ define( function( require ) {
   var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
@@ -45,6 +46,8 @@ define( function( require ) {
     } );
 
   }
+
+  chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
 
   return inherit( Screen, ChargesAndFieldsScreen );
 } );

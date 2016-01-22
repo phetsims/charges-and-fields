@@ -8,8 +8,9 @@ define( function( require ) {
   'use strict';
 
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
-  return {
+  return chargesAndFields.register( 'ChargesAndFieldsConstants', {
 
     K_CONSTANT: 9, // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
 
@@ -41,5 +42,5 @@ define( function( require ) {
     ELECTRIC_FIELD_GRID_ARROW_LENGTH: 40, // in scenery coordinates
     ELECTRIC_FIELD_GRID_CIRCLE_RADIUS: 2 // radius of small disk on top of each electric field grid arrows ( indicates the pivot point of the electric field vector)
 
-  };
+  } );
 } );

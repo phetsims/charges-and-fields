@@ -18,6 +18,7 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
@@ -153,6 +154,8 @@ define( function( require ) {
 
     tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'ChargesAndFieldsControlPanel', ChargesAndFieldsControlPanel );
 
   return inherit( Panel, ChargesAndFieldsControlPanel );
 

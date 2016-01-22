@@ -16,6 +16,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var UserCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/UserCreatorNode' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var minusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
@@ -186,6 +187,8 @@ define( function( require ) {
 
     tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'ChargesAndSensorsPanel', ChargesAndSensorsPanel );
 
   return inherit( Node, ChargesAndSensorsPanel );
 

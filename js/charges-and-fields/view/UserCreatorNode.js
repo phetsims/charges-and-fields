@@ -22,6 +22,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   /**
    *
@@ -143,6 +144,8 @@ define( function( require ) {
 
     tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'UserCreatorNode', UserCreatorNode );
 
   return inherit( Node, UserCreatorNode );
 } );

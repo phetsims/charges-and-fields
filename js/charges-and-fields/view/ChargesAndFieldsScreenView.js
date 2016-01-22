@@ -40,6 +40,7 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var centimeterUnitString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
@@ -383,6 +384,8 @@ define( function( require ) {
 
 
   }
+
+  chargesAndFields.register( 'ChargesAndFieldsScreenView', ChargesAndFieldsScreenView );
 
   return inherit( ScreenView, ChargesAndFieldsScreenView, {
 

@@ -29,6 +29,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
@@ -300,6 +301,8 @@ define( function( require ) {
 
     tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );
 
   return inherit( Node, ElectricPotentialSensorNode );
 } );

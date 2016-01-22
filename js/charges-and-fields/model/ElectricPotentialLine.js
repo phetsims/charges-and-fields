@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   // see getEquipotentialPositionArray to find how these are used
@@ -56,6 +57,8 @@ define( function( require ) {
     }
 
   }
+
+  chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
 
   return inherit( Object, ElectricPotentialLine, {
 

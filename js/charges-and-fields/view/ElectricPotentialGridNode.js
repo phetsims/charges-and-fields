@@ -14,6 +14,7 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
@@ -85,6 +86,8 @@ define( function( require ) {
     this.invalidatePaint();
 
   }
+
+  chargesAndFields.register( 'ElectricPotentialGridNode', ElectricPotentialGridNode );
 
   return inherit( CanvasNode, ElectricPotentialGridNode, {
 
