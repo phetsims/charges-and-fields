@@ -65,7 +65,6 @@ define( function( require ) {
     var viewPropertySet = new PropertySet( {
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
-      isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
       isGridVisible: false // control the visibility of the simple grid with minor and major axes
     } );
 
@@ -149,7 +148,6 @@ define( function( require ) {
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
       this.availableModelBoundsProperty,
-      viewPropertySet.isElectricPotentialSensorVisibleProperty,
       tandem.createTandem( 'electricPotentialSensorNode' ) );
 
     // Create a visual grid with major and minor lines on the view
@@ -192,11 +190,10 @@ define( function( require ) {
     // Create the toolboxPanel with the measuring tape and the electric potential sensor icons
     var toolboxPanel = new ChargesAndFieldsToolboxPanel(
       model.electricPotentialSensor.positionProperty,
-      model.electricPotentialSensor.isUserControlledProperty,
       model.measuringTape.basePositionProperty, // TODO: refactor!
       model.measuringTape.tipPositionProperty,
       measuringTapeNode.isBaseUserControlledProperty,
-      viewPropertySet.isElectricPotentialSensorVisibleProperty,
+      model.electricPotentialSensor.isActiveProperty,
       model.measuringTape.visibleProperty,
       modelViewTransform,
       this.availableModelBoundsProperty,
@@ -286,9 +283,9 @@ define( function( require ) {
     // listens to the isUserControlled property of the electric potential sensor
     // return the electric Potential sensor to the toolboxPanel if it is not user Controlled and the
     // location of the sensor is inside the toolboxPanel panel
-    model.electricPotentialSensor.isUserControlledProperty.link( function( isUserControlled ) {
+    electricPotentialSensorNode.isUserControlledProperty.link( function( isUserControlled ) {
       if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
-        viewPropertySet.isElectricPotentialSensorVisibleProperty.set( false );
+        model.electricPotentialSensor.isActive = false;
       }
     } );
 

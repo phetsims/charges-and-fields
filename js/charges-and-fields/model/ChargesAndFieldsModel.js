@@ -16,6 +16,7 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
+  var ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
   var SensorGrid = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGrid' );
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -84,8 +85,8 @@ define( function( require ) {
     var electricFieldSensors = this.electricFieldSensors;
 
     // electric potential sensor
-    var position = new Vector2( 0, 0 ); // position of the crosshair on the electric potential sensor, initial value will be reset by the view
-    this.electricPotentialSensor = new SensorElement( position, tandem.createTandem( 'electricPotentialSensor' ) );
+    this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
+                                                                tandem.createTandem( 'electricPotentialSensor' ) );
 
     this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
@@ -112,15 +113,6 @@ define( function( require ) {
     // Hook up all the listeners the model
     //
     //----------------------------------------------------------------------------------------
-
-    //------------------------
-    // Position Listener on the electric potential Sensor
-    //------------------------
-
-    // update the Electric Potential Sensor upon a change of position
-    this.electricPotentialSensor.positionProperty.link( function( position ) {
-      thisModel.electricPotentialSensor.electricPotential = thisModel.getElectricPotential( position );
-    } );
 
     //------------------------
     // isElectricFieldGridVisible Listener (update all the electric field grid sensors a.k.a. grid of arrows)
@@ -405,7 +397,7 @@ define( function( require ) {
        * @private
        */
       updateAllSensors: function() {
-        this.updateElectricPotentialSensor();
+        this.electricPotentialSensor.update();
         this.updateElectricPotentialSensorGrid();
         this.updateElectricFieldSensors();
         this.updateElectricFieldSensorGrid();
@@ -425,7 +417,7 @@ define( function( require ) {
         // the following sensors may not be visible or active but
         // it is very inexpensive to update them ( updating them avoid putting extra logic to handle
         // the transition visible/invisible)
-        this.updateElectricPotentialSensor();
+        this.electricPotentialSensor.update();
         this.updateElectricFieldSensors();
       },
 
@@ -438,13 +430,6 @@ define( function( require ) {
         this.electricFieldSensors.forEach( function( sensorElement ) {
           sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
         } );
-      },
-      /**
-       * Update the Electric Potential Sensor
-       * @private
-       */
-      updateElectricPotentialSensor: function() {
-        this.electricPotentialSensor.electricPotential = this.getElectricPotential( this.electricPotentialSensor.position );
       },
 
       /**

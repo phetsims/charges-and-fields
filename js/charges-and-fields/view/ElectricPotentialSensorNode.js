@@ -29,6 +29,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var Property = require( 'AXON/Property' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
@@ -50,7 +51,6 @@ define( function( require ) {
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
-   * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty - control the visibility of this node
    * @param {Tandem} tandem
    * @constructor
    */
@@ -60,18 +60,21 @@ define( function( require ) {
                                         addElectricPotentialLine,
                                         modelViewTransform,
                                         availableModelBoundsProperty,
-                                        isElectricPotentialSensorVisibleProperty,
                                         tandem ) {
 
-    var electricPotentialSensorNode = this;
-
-    this.modelElement = electricPotentialSensor;
+    var self = this;
 
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the sensor
       cursor: 'pointer'
     } );
+
+    // TODO: private/public? Can't rename yet
+    this.modelElement = electricPotentialSensor;
+
+    // @public
+    Property.addProperty( this, 'isUserControlled', false );
 
     // Create the centered circle around the crosshair. The origin of this node is the center of the circle
     var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
@@ -208,7 +211,7 @@ define( function( require ) {
 
     // Register for synchronization with model.
     electricPotentialSensor.positionProperty.link( function( position ) {
-      electricPotentialSensorNode.translation = modelViewTransform.modelToViewPosition( position );
+      self.translation = modelViewTransform.modelToViewPosition( position );
     } );
 
     // Update the value of the electric potential on the panel and the fill color on the crosshair
@@ -227,24 +230,24 @@ define( function( require ) {
       dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
-        electricPotentialSensor.isUserControlledProperty.set( true );
+        self.isUserControlled = true;
       },
       endDrag: function( event ) {
-        electricPotentialSensor.isUserControlledProperty.set( false );
+        self.isUserControlled = false;
       }
     } );
 
     // When dragging, move the electric potential sensor
-    electricPotentialSensorNode.addInputListener( this.movableDragHandler );
+    self.addInputListener( this.movableDragHandler );
 
     //no need to unlink, the sensor is present for the lifetime of the simulation.
     availableModelBoundsProperty.link( function( bounds ) {
-      electricPotentialSensorNode.movableDragHandler.setDragBounds( bounds );
+      self.movableDragHandler.setDragBounds( bounds );
     } );
 
     // Show/Hide this node
     // no need to unlink, stays for the lifetime of the simulation
-    isElectricPotentialSensorVisibleProperty.linkAttribute( this, 'visible' );
+    electricPotentialSensor.isActiveProperty.linkAttribute( this, 'visible' );
 
     /**
      * The color fill inside the circle changes according to the value of the electric potential*

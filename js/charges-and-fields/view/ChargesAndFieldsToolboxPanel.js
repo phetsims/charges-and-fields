@@ -40,11 +40,10 @@ define( function( require ) {
   /**
    * Toolbox constructor
    * @param {Property.<Vector2>} electricPotentialSensorPositionProperty
-   * @param {Property.<boolean>} electricPotentialUserControlledProperty
    * @param {Property.<Vector2>} measuringTapeBasePositionProperty
    * @param {Property.<Vector2>} measuringTapeTipPositionProperty
    * @param {Property.<boolean>} measuringTapeUserControlledProperty
-   * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty
+   * @param {Property.<boolean>} isElectricPotentialSensorActiveProperty
    * @param {Property.<boolean>} isMeasuringTapeVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty
@@ -54,11 +53,10 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndFieldsToolboxPanel( electricPotentialSensorPositionProperty,
-                                         electricPotentialUserControlledProperty,
                                          measuringTapeBasePositionProperty,
                                          measuringTapeTipPositionProperty,
                                          measuringTapeUserControlledProperty,
-                                         isElectricPotentialSensorVisibleProperty,
+                                         isElectricPotentialSensorActiveProperty,
                                          isMeasuringTapeVisibleProperty,
                                          modelViewTransform,
                                          availableModelBoundsProperty,
@@ -118,7 +116,7 @@ define( function( require ) {
           return;
         }
 
-        isElectricPotentialSensorVisibleProperty.set( true );
+        isElectricPotentialSensorActiveProperty.set( true );
 
         // initial position of the pointer in the screenView coordinates
         var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point ).plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
@@ -140,7 +138,7 @@ define( function( require ) {
     } );
 
     // hide and show
-    isElectricPotentialSensorVisibleProperty.link( function( visible ) {
+    isElectricPotentialSensorActiveProperty.link( function( visible ) {
       electricPotentialSensorIconNode.visible = !visible;
     } );
 
