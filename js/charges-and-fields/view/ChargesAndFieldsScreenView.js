@@ -25,11 +25,11 @@ define( function( require ) {
   var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
   var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
   var ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
+  var ChargesAndFieldsMeasuringTapeNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsMeasuringTapeNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var linear = require( 'DOT/Util' ).linear;
-  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
@@ -41,9 +41,6 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-
-  // strings
-  var centimeterUnitString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
 
   // constants
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
@@ -69,11 +66,7 @@ define( function( require ) {
       isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
       isValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
       isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
-      isGridVisible: false, // control the visibility of the simple grid with minor and major axes
-      isMeasuringTapeVisible: false, // control the visibility of the measuring tape
-      measuringTapeUnits: { name: centimeterUnitString, multiplier: 100 }, // needed for the measuring tape scenery node
-      measuringTapeBasePosition: new Vector2( 0, 0 ),
-      measuringTapeTipPosition: new Vector2( 1, 0 )
+      isGridVisible: false // control the visibility of the simple grid with minor and major axes
     } );
 
     // Create a property that registers the model bounds based on the screen size
@@ -185,36 +178,30 @@ define( function( require ) {
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
 
-    // Create the options for a draggable but (subject to some dragBound) Measuring Tape
-    var tapeOptions = {
-      dragBounds: this.availableModelBoundsProperty.value,
-      modelViewTransform: modelViewTransform,
-      basePositionProperty: viewPropertySet.measuringTapeBasePositionProperty,
-      tipPositionProperty: viewPropertySet.measuringTapeTipPositionProperty,
-      isTipDragBounded: true
-    };
-
     // Create a measuring tape (set to invisible initially)
-    var measuringTape = new MeasuringTape( viewPropertySet.measuringTapeUnitsProperty, viewPropertySet.isMeasuringTapeVisibleProperty,
-      tapeOptions );
+    var measuringTapeNode = new ChargesAndFieldsMeasuringTapeNode( model.measuringTape,
+                                                                   modelViewTransform,
+                                                                   this.availableModelBoundsProperty,
+                                                                   tandem.createTandem( 'measuringTapeNode' ) );
 
     // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
-      measuringTape.textColor = color;
+      measuringTapeNode.textColor = color;
     } );
 
     // Create the toolboxPanel with the measuring tape and the electric potential sensor icons
     var toolboxPanel = new ChargesAndFieldsToolboxPanel(
       model.electricPotentialSensor.positionProperty,
       model.electricPotentialSensor.isUserControlledProperty,
-      viewPropertySet.measuringTapeBasePositionProperty,
-      viewPropertySet.measuringTapeTipPositionProperty,
-      measuringTape.isBaseUserControlledProperty,
+      model.measuringTape.basePositionProperty, // TODO: refactor!
+      model.measuringTape.tipPositionProperty,
+      measuringTapeNode.isBaseUserControlledProperty,
       viewPropertySet.isElectricPotentialSensorVisibleProperty,
-      viewPropertySet.isMeasuringTapeVisibleProperty,
+      model.measuringTape.visibleProperty,
       modelViewTransform,
       this.availableModelBoundsProperty,
       electricPotentialSensorNode,
+      measuringTapeNode,
       tandem.createTandem( 'toolboxPanel' )
     );
 
@@ -307,9 +294,9 @@ define( function( require ) {
 
     // listens to the isUserControlled property of the measuring tape
     // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the toolbox panel
-    measuringTape.isBaseUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewPropertySet.measuringTapeBasePositionProperty.value ) ) ) {
-        viewPropertySet.isMeasuringTapeVisibleProperty.set( false );
+    measuringTapeNode.isBaseUserControlledProperty.link( function( isUserControlled ) {
+      if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( model.measuringTape.basePosition ) ) ) {
+        model.measuringTape.visible = false;
       }
     } );
 
@@ -317,7 +304,7 @@ define( function( require ) {
     this.availableModelBoundsProperty.link( function( bounds ) {
 
       // the measuring Tape is subject to dragBounds (specified in model coordinates)
-      measuringTape.dragBounds = bounds;
+      measuringTapeNode.dragBounds = bounds;
 
       // the control panel, toolbox panel and resetAllButtons are set to the right of the bounds
       var right = modelViewTransform.modelToViewX( bounds.maxX );
@@ -337,7 +324,7 @@ define( function( require ) {
     toolboxPanel.top = controlPanel.bottom + 10;
 
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
-    this.addChild( gridNode ); //
+    this.addChild( gridNode );
     this.addChild( electricFieldGridNode );
     this.addChild( electricPotentialLinesNode );
     this.addChild( toolboxPanel );
@@ -346,7 +333,7 @@ define( function( require ) {
     this.addChild( chargesAndSensorsPanel );
     this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
-    this.addChild( measuringTape );
+    this.addChild( measuringTapeNode );
 
     // if in debug mode, add a button that allows to add (many at a time) electric potential lines
     // and set up initial charges on the play area

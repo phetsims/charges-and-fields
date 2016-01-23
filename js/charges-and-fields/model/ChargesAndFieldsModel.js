@@ -17,6 +17,7 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
   var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var SensorGrid = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGrid' );
+  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -85,6 +86,8 @@ define( function( require ) {
     // electric potential sensor
     var position = new Vector2( 0, 0 ); // position of the crosshair on the electric potential sensor, initial value will be reset by the view
     this.electricPotentialSensor = new SensorElement( position, tandem.createTandem( 'electricPotentialSensor' ) );
+
+    this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
     // electric Field Sensor Grid
     // @public read-only

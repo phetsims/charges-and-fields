@@ -22,9 +22,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var ScreenView = require( 'JOIST/ScreenView' );
   var Shape = require( 'KITE/Shape' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
@@ -34,8 +32,6 @@ define( function( require ) {
 
   // constants
   var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
-  var MEASURING_TAPE_WIDTH = require( 'image!SCENERY_PHET/measuringTape.png' ).width;
-  var MEASURING_TAPE_HEIGHT = require( 'image!SCENERY_PHET/measuringTape.png' ).height;
   var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' ).height;
 
   // strings
@@ -53,6 +49,7 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty
    * @param {ElectricPotentialSensorNode} electricPotentialSensorNode
+   * @param {ChargesAndFieldsMeasuringTapeNode} measuringTapeNode
    * @param {Tandem} tandem
    * @constructor
    */
@@ -66,6 +63,7 @@ define( function( require ) {
                                          modelViewTransform,
                                          availableModelBoundsProperty,
                                          electricPotentialSensorNode,
+                                         measuringTapeNode,
                                          tandem ) {
     var toolboxPanel = this;
 
@@ -95,59 +93,22 @@ define( function( require ) {
     // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
     var tipToBasePosition = measuringTapeTipPositionProperty.value.minus( measuringTapeBasePositionProperty.value );
 
-    var measuringTapeMovableDragHandler = new SimpleDragHandler(
-      {
-        parentScreenView: null, // needed for coordinate transforms
-        modelViewTransform: modelViewTransform,
-        dragBounds: availableModelBoundsProperty.value,
-        // create a position listener that will move the tip as the base of the measuring tape is dragged
-        positionListener: function( position ) {
-          measuringTapeTipPositionProperty.set( position.plus( tipToBasePosition ) );
-        },
-        start: function( event ) {
-          measuringTapeUserControlledProperty.set( true );
-
-          if ( !this.parentScreenView ) {
-
-            // find the parent screen view by moving up the scene graph
-            var testNode = toolboxPanel;
-            while ( testNode !== null ) {
-              if ( testNode instanceof ScreenView ) {
-                this.parentScreenView = testNode;
-                break;
-              }
-              testNode = testNode.parents[ 0 ]; // move up the scene graph by one level
-            }
-            assert && assert( this.parentScreenView, 'unable to find parent screen view' );
-          }
-
-          // initial position of the pointer in the screenView coordinates
-          var initialPosition = this.parentScreenView.globalToLocalPoint( event.pointer.point );
-
-          // the position of the measuring tape is defined as the position of the base crosshair
-          // the cursor should hover over the center of the body of the measuring tape instead.
-          // find the offset
-          var offsetPosition = new Vector2( MEASURING_TAPE_WIDTH / 2, MEASURING_TAPE_HEIGHT / 2 );
-
-          // position of the measuring Tape in ScreenView coordinates
-          var measuringTapeLocation = initialPosition.plus( offsetPosition );
-
-          measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( measuringTapeLocation ) );
-          isMeasuringTapeVisibleProperty.set( true );
-          // link the position of base of the measuring tape to the tip of the measuring tape
-          measuringTapeBasePositionProperty.link( this.positionListener );
-        },
-        translate: function( translationParams ) {
-          var unconstrainedLocation = measuringTapeBasePositionProperty.value.plus( this.modelViewTransform.viewToModelDelta( translationParams.delta ) );
-          var constrainedLocation = availableModelBoundsProperty.value.closestPointTo( unconstrainedLocation );
-          measuringTapeBasePositionProperty.set( constrainedLocation );
-        },
-        end: function( event ) {
-          measuringTapeUserControlledProperty.set( false );
-
-          measuringTapeBasePositionProperty.unlink( this.positionListener );
+    var measuringTapeMovableDragHandler = {
+      down: function( event ) {
+        // Ignore non-left-mouse-button
+        if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
+          return;
         }
-      } );
+
+        isMeasuringTapeVisibleProperty.set( true );
+
+        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point ).minus( measuringTapeNode.getLocalBaseCenter() );
+        measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
+        measuringTapeTipPositionProperty.set( measuringTapeBasePositionProperty.value.plus( tipToBasePosition ) );
+
+        measuringTapeNode.startBaseDrag( event );
+      }
+    };
 
     // When pressed, creates a model element and triggers startDrag() on the corresponding view
     electricPotentialSensorIconNode.addInputListener( {
