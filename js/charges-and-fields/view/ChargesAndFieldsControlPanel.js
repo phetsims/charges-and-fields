@@ -30,17 +30,17 @@ define( function( require ) {
   /**
    * @constructor
    *
-   * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
-   * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty
-   * @param {Property.<boolean>} isElectricPotentialGridVisibleProperty
-   * @param {Property.<boolean>} isValuesVisibleProperty
+   * @param {Property.<boolean>} isElectricFieldVisibleProperty
+   * @param {Property.<boolean>} isElectricFieldDirectionOnlyProperty
+   * @param {Property.<boolean>} isElectricPotentialVisibleProperty
+   * @param {Property.<boolean>} areValuesVisibleProperty
    * @param {Property.<boolean>} isGridVisibleProperty
    * @param {Tandem} tandem
    */
-  function ChargesAndFieldsControlPanel( isElectricFieldGridVisibleProperty,
-                                         isDirectionOnlyElectricFieldGridVisibleProperty,
-                                         isElectricPotentialGridVisibleProperty,
-                                         isValuesVisibleProperty,
+  function ChargesAndFieldsControlPanel( isElectricFieldVisibleProperty,
+                                         isElectricFieldDirectionOnlyProperty,
+                                         isElectricPotentialVisibleProperty,
+                                         areValuesVisibleProperty,
                                          isGridVisibleProperty,
                                          tandem ) {
 
@@ -70,16 +70,16 @@ define( function( require ) {
     var gridText = new Text( valuesString, textOptions );
 
     // create checkboxes
-    var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldGridVisibleProperty, _.extend( {
+    var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldVisibleProperty, _.extend( {
       tandem: tandem.createTandem( 'electricFieldCheckBox' )
     }, checkBoxOptions ) );
-    var directionOnlyCheckBox = new CheckBox( directionOnlyText, isDirectionOnlyElectricFieldGridVisibleProperty, _.extend( {
+    var directionOnlyCheckBox = new CheckBox( directionOnlyText, isElectricFieldDirectionOnlyProperty, _.extend( {
       tandem: tandem.createTandem( 'directionOnlyCheckBox' )
     }, checkBoxOptions ) );
-    var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialGridVisibleProperty, _.extend( {
+    var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialVisibleProperty, _.extend( {
       tandem: tandem.createTandem( 'voltageCheckBox' )
     }, checkBoxOptions ) );
-    var valuesCheckBox = new CheckBox( gridText, isValuesVisibleProperty, _.extend( {
+    var valuesCheckBox = new CheckBox( gridText, areValuesVisibleProperty, _.extend( {
       tandem: tandem.createTandem( 'valuesCheckBox' )
     }, checkBoxOptions ) );
     var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, _.extend( {
@@ -127,7 +127,7 @@ define( function( require ) {
       gridText.fill = color;
     } );
 
-    isElectricFieldGridVisibleProperty.link( function( enabled ) {
+    isElectricFieldVisibleProperty.link( function( enabled ) {
       directionOnlyCheckBox.enabled = enabled;
     } );
 

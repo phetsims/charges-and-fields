@@ -47,9 +47,20 @@ define( function( require ) {
     // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
     PropertySet.call( thisModel, {
-      isElectricFieldGridVisible: true, // control the visibility of a grid of arrows representing the local electric field
-      isElectricPotentialGridVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
+      isElectricFieldVisible: true, // control the visibility of a grid of arrows representing the local electric field
+      isElectricFieldDirectionOnly: false, // controls the color shading in the fill of the electric field arrows
+      isElectricPotentialVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
+      areValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+      isGridVisible: false, // control the visibility of the simple grid with minor and major axes
       isPlayAreaCharged: false // is there at least one active charged particle on the board
+    }, {
+      tandemSet: {
+        isElectricFieldVisible: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
+        isElectricFieldDirectionOnly: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' ),
+        isElectricPotentialVisible: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
+        areValuesVisible: tandem.createTandem( 'areValuesVisibleProperty' ),
+        isGridVisible: tandem.createTandem( 'isGridVisibleProperty' )
+      }
     } );
 
     //----------------------------------------------------------------------------------------
@@ -114,23 +125,23 @@ define( function( require ) {
     //----------------------------------------------------------------------------------------
 
     //------------------------
-    // isElectricFieldGridVisible Listener (update all the electric field grid sensors a.k.a. grid of arrows)
+    // isElectricFieldVisible Listener (update all the electric field grid sensors a.k.a. grid of arrows)
     //------------------------
 
     // for performance reason, the electric field of the sensors on the grid is calculated and updated only if the
     // visibility of the grid is set to true
-    this.isElectricFieldGridVisibleProperty.link( function( isVisible ) {
+    this.isElectricFieldVisibleProperty.link( function( isVisible ) {
       if ( isVisible ) {
         thisModel.updateElectricFieldSensorGrid();
       }
     } );
 
     //------------------------
-    // isElectricPotentialGridVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric potential field)
+    // isElectricPotentialVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric potential field)
     //------------------------
 
     // for performance reason, the electric potential is calculated and updated only if it is set to visible
-    this.isElectricPotentialGridVisibleProperty.link( function( isVisible ) {
+    this.isElectricPotentialVisibleProperty.link( function( isVisible ) {
       if ( isVisible ) {
         thisModel.updateElectricPotentialSensorGrid();
       }
@@ -210,7 +221,7 @@ define( function( require ) {
             } );
 
             // update the Electric Field Grid Sensors, but only if the electric Field grid is visible
-            if ( thisModel.isElectricFieldGridVisible === true ) {
+            if ( thisModel.isElectricFieldVisible === true ) {
               thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
 
                 // let's calculate the change in the electric field due to the change in position of one charge
@@ -221,7 +232,7 @@ define( function( require ) {
             }
 
             // update the Electric Potential Grid Sensors but only if the electric potential grid is visible
-            if ( thisModel.isElectricPotentialGridVisible === true ) {
+            if ( thisModel.isElectricPotentialVisible === true ) {
               thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
 
                 // calculating the change in the electric potential due to the change in position of one charge
@@ -407,10 +418,10 @@ define( function( require ) {
        * @private
        */
       updateAllVisibleSensors: function() {
-        if ( this.isElectricPotentialGridVisible === true ) {
+        if ( this.isElectricPotentialVisible === true ) {
           this.updateElectricPotentialSensorGrid();
         }
-        if ( this.isElectricFieldGridVisible === true ) {
+        if ( this.isElectricFieldVisible === true ) {
           this.updateElectricFieldSensorGrid();
         }
         // the following sensors may not be visible or active but

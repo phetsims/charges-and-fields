@@ -61,13 +61,6 @@ define( function( require ) {
     var screenView = this;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
-    // Create many properties for checkboxes and Measuring Tape
-    var viewPropertySet = new PropertySet( {
-      isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
-      isValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
-      isGridVisible: false // control the visibility of the simple grid with minor and major axes
-    } );
-
     // Create a property that registers the model bounds based on the screen size
     // Note that unlike the viewPropertySet above, the availableModelBounds should not be reset when
     // the resetAllButton is pressed, hence the reason it is not part of the previous propertySet
@@ -101,14 +94,14 @@ define( function( require ) {
       electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
-        model.isElectricPotentialGridVisibleProperty
+        model.isElectricPotentialVisibleProperty
       );
     }
     else if ( allowMobileWebGL ) {
       electricPotentialGridNode = new ElectricPotentialGridMobileWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
-        model.isElectricPotentialGridVisibleProperty
+        model.isElectricPotentialVisibleProperty
       );
     }
     else {
@@ -118,7 +111,7 @@ define( function( require ) {
         this.getElectricPotentialColor.bind( this ),
         modelViewTransform,
         this.availableModelBoundsProperty,
-        model.isElectricPotentialGridVisibleProperty
+        model.isElectricPotentialVisibleProperty
       );
     }
 
@@ -130,15 +123,15 @@ define( function( require ) {
         modelViewTransform,
         this.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,
-        viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
-        model.isElectricFieldGridVisibleProperty );
+        model.isElectricFieldDirectionOnlyProperty,
+        model.isElectricFieldVisibleProperty );
 
 
     // Create the scenery node responsible for drawing the electricPotential lines
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
       model.electricPotentialLinesArray,
       modelViewTransform,
-      viewPropertySet.isValuesVisibleProperty );
+      model.areValuesVisibleProperty );
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
@@ -154,16 +147,16 @@ define( function( require ) {
     var gridNode = new GridNode(
       modelViewTransform,
       new Property( model.enlargedBounds ),
-      viewPropertySet.isGridVisibleProperty,
-      viewPropertySet.isValuesVisibleProperty );
+      model.isGridVisibleProperty,
+      model.areValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ChargesAndFieldsControlPanel(
-      model.isElectricFieldGridVisibleProperty,
-      viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
-      model.isElectricPotentialGridVisibleProperty,
-      viewPropertySet.isValuesVisibleProperty,
-      viewPropertySet.isGridVisibleProperty,
+      model.isElectricFieldVisibleProperty,
+      model.isElectricFieldDirectionOnlyProperty,
+      model.isElectricPotentialVisibleProperty,
+      model.areValuesVisibleProperty,
+      model.isGridVisibleProperty,
       tandem.createTandem( 'controlPanel' ) );
 
     // Create the Reset All Button in the bottom right, which resets the model
@@ -171,7 +164,6 @@ define( function( require ) {
       listener: function() {
         // do not reset the availableDragBoundsProperty
         model.reset();
-        viewPropertySet.reset();
       },
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
@@ -265,7 +257,7 @@ define( function( require ) {
         modelViewTransform,
         screenView.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,
-        viewPropertySet.isValuesVisibleProperty,
+        model.areValuesVisibleProperty,
         model.chargesAndSensorsEnclosureBounds,
         electricFieldSensorNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( electricFieldSensorNode );

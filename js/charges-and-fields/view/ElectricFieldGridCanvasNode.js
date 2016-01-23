@@ -28,8 +28,8 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - bounds of the canvas in model units
    * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
-   * @param {Property.<boolean>} isDirectionOnlyElectricFieldGridVisibleProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
-   * @param {Property.<boolean>} isElectricFieldGridVisibleProperty
+   * @param {Property.<boolean>} isElectricFieldDirectionOnlyProperty - Controls the arrows Fill - from uniform (true) to variable colors (false)
+   * @param {Property.<boolean>} isElectricFieldVisibleProperty
    * @constructor
    */
   function ElectricFieldGridCanvasNode( electricFieldSensorGrid,
@@ -38,8 +38,8 @@ define( function( require ) {
                                         modelViewTransform,
                                         availableModelBoundsProperty,
                                         isPlayAreaChargedProperty,
-                                        isDirectionOnlyElectricFieldGridVisibleProperty,
-                                        isElectricFieldGridVisibleProperty ) {
+                                        isElectricFieldDirectionOnlyProperty,
+                                        isElectricFieldVisibleProperty ) {
 
     var electricFieldGridNode = this;
 
@@ -49,7 +49,7 @@ define( function( require ) {
     this.modelViewTransform = modelViewTransform;
     this.colorInterpolationFunction = colorInterpolationFunction;
     this.electricFieldSensorGrid = electricFieldSensorGrid;
-    this.isDirectionOnlyElectricFieldGridVisibleProperty = isDirectionOnlyElectricFieldGridVisibleProperty;
+    this.isElectricFieldDirectionOnlyProperty = isElectricFieldDirectionOnlyProperty;
     this.localBounds = modelViewTransform.modelToViewBounds( availableModelBoundsProperty.get().dilated( ELECTRIC_FIELD_SENSOR_SPACING / 2 ) );
 
     availableModelBoundsProperty.link( function( bounds ) {
@@ -61,12 +61,12 @@ define( function( require ) {
     } );
 
     // this node is visible if (1) the electricField is checked AND (2) there is at least one charge particle  on the board
-    var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldGridVisibleProperty, isPlayAreaChargedProperty ],
+    var isElectricFieldGridNodeVisibleProperty = new DerivedProperty( [ isElectricFieldVisibleProperty, isPlayAreaChargedProperty ],
       function( isElectricFieldVisible, isPlayAreaCharged ) {
         return isElectricFieldVisible && isPlayAreaCharged;
       } );
 
-    isDirectionOnlyElectricFieldGridVisibleProperty.link( function() {
+    isElectricFieldDirectionOnlyProperty.link( function() {
       electricFieldGridNode.invalidatePaint(); // redraw the canvas );
     } );
 
@@ -186,7 +186,7 @@ define( function( require ) {
           context.save();
 
           // change the opacity of the arrow (as a function of the magnitude of the electric field) (unless isDirection is checked)
-          if(self.isDirectionOnlyElectricFieldGridVisibleProperty.value) {
+          if(self.isElectricFieldDirectionOnlyProperty.value) {
             context.globalAlpha = 1;
           }
           else{

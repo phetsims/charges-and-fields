@@ -182,10 +182,10 @@ define( function( require ) {
    *
    * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLinesArray - array of models of electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isValuesVisibleProperty - control the visibility of the voltage labels
+   * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
    * @constructor
    */
-  function ElectricPotentialLinesNode( electricPotentialLinesArray, modelViewTransform, isValuesVisibleProperty ) {
+  function ElectricPotentialLinesNode( electricPotentialLinesArray, modelViewTransform, areValuesVisibleProperty ) {
 
     // call the super constructor
     Node.call( this );
@@ -264,7 +264,7 @@ define( function( require ) {
 
     // Control the visibility of the value (voltage) labels
     // no need to unlink present for the lifetime of the sim
-    isValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
+    areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
   }
 
   chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );

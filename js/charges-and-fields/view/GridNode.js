@@ -40,13 +40,13 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} boundsProperty - bounds in model coordinates
    * @param {Property.<boolean>} isGridVisibleProperty
-   * @param {Property.<boolean>} isValuesVisibleProperty
+   * @param {Property.<boolean>} areValuesVisibleProperty
    * @constructor
    */
   function GridNode( modelViewTransform,
                      boundsProperty,
                      isGridVisibleProperty,
-                     isValuesVisibleProperty ) {
+                     areValuesVisibleProperty ) {
 
     var thisGrid = this;
 
@@ -145,7 +145,7 @@ define( function( require ) {
 
     // Show/ Hide the arrow
     // no need to unlink, present for the lifetime of the simulation
-    isValuesVisibleProperty.link( function( isVisible ) {
+    areValuesVisibleProperty.link( function( isVisible ) {
       arrowPath.visible = isVisible;
       text.visible = isVisible;
     } );

@@ -35,7 +35,7 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
-   * @param {Property.<boolean>} isValuesVisibleProperty
+   * @param {Property.<boolean>} areValuesVisibleProperty
    * @param {Tandem} tandem
    * @constructor
    */
@@ -43,7 +43,7 @@ define( function( require ) {
                                     modelViewTransform,
                                     availableModelBoundsProperty,
                                     isPlayAreaChargedProperty,
-                                    isValuesVisibleProperty,
+                                    areValuesVisibleProperty,
                                     enclosureBounds,
                                     tandem ) {
 
@@ -123,15 +123,15 @@ define( function( require ) {
       arrowNode.visible = isActive;
     } );
     // Show/hide labels
-    var isValuesVisibleListener = function( isVisible ) {
+    var areValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
     };
-    isValuesVisibleProperty.link( isValuesVisibleListener );
+    areValuesVisibleProperty.link( areValuesVisibleListener );
 
     // the direction label is visible if (1) 'values' is checked  and (2) there is at least one charge particle  on the board
-    var isDirectionLabelVisibleProperty = new DerivedProperty( [ isValuesVisibleProperty, isPlayAreaChargedProperty ],
-      function( isValuesVisible, isPlayAreaCharged ) {
-        return isValuesVisible && isPlayAreaCharged;
+    var isDirectionLabelVisibleProperty = new DerivedProperty( [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
+      function( areValuesVisible, isPlayAreaCharged ) {
+        return areValuesVisible && isPlayAreaCharged;
       } );
 
     // Show/hide labels
@@ -195,7 +195,7 @@ define( function( require ) {
     this.disposeElectricFieldSensor = function() {
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
-      isValuesVisibleProperty.unlink( isValuesVisibleListener );
+      areValuesVisibleProperty.unlink( areValuesVisibleListener );
       isDirectionLabelVisibleProperty.unlink( isDirectionLabelVisibleListener );
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
     };
