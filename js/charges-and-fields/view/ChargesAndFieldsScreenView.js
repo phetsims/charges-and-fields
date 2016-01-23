@@ -33,7 +33,6 @@ define( function( require ) {
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var Rectangle = require( 'DOT/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
@@ -181,16 +180,12 @@ define( function( require ) {
 
     // Create the toolboxPanel with the measuring tape and the electric potential sensor icons
     var toolboxPanel = new ChargesAndFieldsToolboxPanel(
-      model.electricPotentialSensor.positionProperty,
-      model.measuringTape.basePositionProperty, // TODO: refactor!
-      model.measuringTape.tipPositionProperty,
-      measuringTapeNode.isBaseUserControlledProperty,
-      model.electricPotentialSensor.isActiveProperty,
-      model.measuringTape.isActiveProperty,
+      model.measuringTape,
+      model.electricPotentialSensor,
+      measuringTapeNode,
+      electricPotentialSensorNode,
       modelViewTransform,
       this.availableModelBoundsProperty,
-      electricPotentialSensorNode,
-      measuringTapeNode,
       tandem.createTandem( 'toolboxPanel' )
     );
 

@@ -39,29 +39,21 @@ define( function( require ) {
 
   /**
    * Toolbox constructor
-   * @param {Property.<Vector2>} electricPotentialSensorPositionProperty
-   * @param {Property.<Vector2>} measuringTapeBasePositionProperty
-   * @param {Property.<Vector2>} measuringTapeTipPositionProperty
-   * @param {Property.<boolean>} measuringTapeUserControlledProperty
-   * @param {Property.<boolean>} isElectricPotentialSensorActiveProperty
-   * @param {Property.<boolean>} isMeasuringTapeVisibleProperty
+   * @param {MeasuringTape} measuringTape
+   * @param {ElectricPotentialSensor} electricPotentialSensor
+   * @param {ChargesAndFieldsMeasuringTapeNode} measuringTapeNode
+   * @param {ElectricPotentialSensorNode} electricPotentialSensorNode
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty
-   * @param {ElectricPotentialSensorNode} electricPotentialSensorNode
-   * @param {ChargesAndFieldsMeasuringTapeNode} measuringTapeNode
    * @param {Tandem} tandem
    * @constructor
    */
-  function ChargesAndFieldsToolboxPanel( electricPotentialSensorPositionProperty,
-                                         measuringTapeBasePositionProperty,
-                                         measuringTapeTipPositionProperty,
-                                         measuringTapeUserControlledProperty,
-                                         isElectricPotentialSensorActiveProperty,
-                                         isMeasuringTapeVisibleProperty,
+  function ChargesAndFieldsToolboxPanel( measuringTape,
+                                         electricPotentialSensor,
+                                         measuringTapeNode,
+                                         electricPotentialSensorNode,
                                          modelViewTransform,
                                          availableModelBoundsProperty,
-                                         electricPotentialSensorNode,
-                                         measuringTapeNode,
                                          tandem ) {
     var toolboxPanel = this;
 
@@ -89,7 +81,7 @@ define( function( require ) {
     Panel.call( this, panelContent, panelOptions );
 
     // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
-    var tipToBasePosition = measuringTapeTipPositionProperty.value.minus( measuringTapeBasePositionProperty.value );
+    var tipToBasePosition = measuringTape.tipPosition.minus( measuringTape.basePosition );
 
     var measuringTapeMovableDragHandler = {
       down: function( event ) {
@@ -98,11 +90,11 @@ define( function( require ) {
           return;
         }
 
-        isMeasuringTapeVisibleProperty.set( true );
+        measuringTape.isActive = true;
 
         var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point ).minus( measuringTapeNode.getLocalBaseCenter() );
-        measuringTapeBasePositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
-        measuringTapeTipPositionProperty.set( measuringTapeBasePositionProperty.value.plus( tipToBasePosition ) );
+        measuringTape.basePosition = modelViewTransform.viewToModelPosition( initialViewPosition );
+        measuringTape.tipPosition = measuringTape.basePosition.plus( tipToBasePosition );
 
         measuringTapeNode.startBaseDrag( event );
       }
@@ -116,11 +108,11 @@ define( function( require ) {
           return;
         }
 
-        isElectricPotentialSensorActiveProperty.set( true );
+        electricPotentialSensor.isActive = true;
 
         // initial position of the pointer in the screenView coordinates
         var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point ).plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
-        electricPotentialSensorPositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
+        electricPotentialSensor.position = modelViewTransform.viewToModelPosition( initialViewPosition );
 
         electricPotentialSensorNode.movableDragHandler.startDrag( event );
       }
@@ -138,13 +130,13 @@ define( function( require ) {
     } );
 
     // hide and show
-    isElectricPotentialSensorActiveProperty.link( function( visible ) {
+    electricPotentialSensor.isActiveProperty.link( function( visible ) {
       electricPotentialSensorIconNode.visible = !visible;
     } );
 
     // measuringTape visibility has the opposite visibility of the measuringTape Icon
-    isMeasuringTapeVisibleProperty.link( function( visible ) {
-      measuringTapeIconNode.visible = !visible;
+    measuringTape.isActiveProperty.link( function( active ) {
+      measuringTapeIconNode.visible = !active;
     } );
 
     // no need to dispose of this link since this is present for the lifetime of the sim
