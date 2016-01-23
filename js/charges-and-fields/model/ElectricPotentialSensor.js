@@ -23,7 +23,6 @@ define( function( require ) {
    * @param {Tandem} tandem
    */
   function ElectricPotentialSensor( computeElectricPotential, tandem ) {
-    var self = this;
 
     PropertySet.call( this, {
       // @public

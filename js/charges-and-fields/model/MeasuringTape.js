@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
+  var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -22,20 +22,25 @@ define( function( require ) {
    */
   function MeasuringTape( tandem ) {
 
-    ModelElement.call( this, tandem, {
+    PropertySet.call( this, {
+      // @public - Base (start of tape from the container) position
       basePosition: new Vector2( 0, 0 ),
+
+      // @public - Tip (end of measuring tape) position
       tipPosition: new Vector2( 0.2, 0 ),
+
+      // @public - Whether the measuring tape is out in the play area (false when in the toolbox)
       isActive: false
     }, {
-      basePosition: tandem.createTandem( 'basePositionProperty' ),
-      tipPosition: tandem.createTandem( 'tipPositionProperty' ),
-      isActive: tandem.createTandem( 'isActiveProperty' )
+      tandemSet: {
+        basePosition: tandem.createTandem( 'basePositionProperty' ),
+        tipPosition: tandem.createTandem( 'tipPositionProperty' ),
+        isActive: tandem.createTandem( 'isActiveProperty' )
+      }
     } );
-
-    tandem.addInstance( this );
   }
 
   chargesAndFields.register( 'MeasuringTape', MeasuringTape );
 
-  return inherit( ModelElement, MeasuringTape );
+  return inherit( PropertySet, MeasuringTape );
 } );
