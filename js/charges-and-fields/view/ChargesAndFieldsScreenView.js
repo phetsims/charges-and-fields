@@ -194,7 +194,7 @@ define( function( require ) {
       model.measuringTape.tipPositionProperty,
       measuringTapeNode.isBaseUserControlledProperty,
       model.electricPotentialSensor.isActiveProperty,
-      model.measuringTape.visibleProperty,
+      model.measuringTape.isActiveProperty,
       modelViewTransform,
       this.availableModelBoundsProperty,
       electricPotentialSensorNode,
@@ -293,7 +293,7 @@ define( function( require ) {
     // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the toolbox panel
     measuringTapeNode.isBaseUserControlledProperty.link( function( isUserControlled ) {
       if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( model.measuringTape.basePosition ) ) ) {
-        model.measuringTape.visible = false;
+        model.measuringTape.isActive = false;
       }
     } );
 

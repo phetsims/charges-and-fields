@@ -25,11 +25,11 @@ define( function( require ) {
     ModelElement.call( this, tandem, {
       basePosition: new Vector2( 0, 0 ),
       tipPosition: new Vector2( 0.2, 0 ),
-      visible: false
+      isActive: false
     }, {
       basePosition: tandem.createTandem( 'basePositionProperty' ),
       tipPosition: tandem.createTandem( 'tipPositionProperty' ),
-      visible: tandem.createTandem( 'visibleProperty' )
+      isActive: tandem.createTandem( 'isActiveProperty' )
     } );
 
     tandem.addInstance( this );

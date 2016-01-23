@@ -30,7 +30,7 @@ define( function( require ) {
     this.measuringTape = measuringTape;
     this.tandem = tandem;
 
-    MeasuringTape.call( this, new Property( { name: centimeterUnitString, multiplier: 100 } ), measuringTape.visibleProperty, {
+    MeasuringTape.call( this, new Property( { name: centimeterUnitString, multiplier: 100 } ), measuringTape.isActiveProperty, {
       tandem: tandem,
       dragBounds: availableModelBoundsProperty.value, // TODO: does this get updated?
       modelViewTransform: modelViewTransform,
