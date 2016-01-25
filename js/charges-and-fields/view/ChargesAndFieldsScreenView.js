@@ -33,6 +33,7 @@ define( function( require ) {
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Rectangle = require( 'DOT/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
@@ -200,9 +201,12 @@ define( function( require ) {
                              ElectricPotentialGridMobileWebGLNode.getNumberOfParticlesSupported() :
                              Number.POSITIVE_INFINITY;
 
+    var canAddMoreChargedParticlesProperty = new DerivedProperty( [ model.chargedParticles.lengthProperty ], function( length ) {
+      return length < numberChargesLimit;
+    } );
+
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargesAndSensorsPanel = new ChargesAndSensorsPanel(
-      model.addUserCreatedModelElementToObservableArray.bind( model ),
       function( modelElement, event ) {
         // Horrible horrible hacks
         draggableElementsLayer.children.forEach( function( potentialView ) {
@@ -211,15 +215,13 @@ define( function( require ) {
           }
         } );
       },
-      model.chargedParticles,
-      model.electricFieldSensors,
-      numberChargesLimit,
+      canAddMoreChargedParticlesProperty,
+      model.addPositiveCharge.bind( model ),
+      model.addNegativeCharge.bind( model ),
+      model.addElectricFieldSensor.bind( model ),
       model.chargesAndSensorsEnclosureBounds,
       modelViewTransform,
-      this.availableModelBoundsProperty,
-      tandem.createTandem( 'chargesAndSensorsPanel' ),
-      model.chargedParticleGroupTandem,
-      model.electricFieldSensorGroupTandem );
+      tandem.createTandem( 'chargesAndSensorsPanel' ) );
 
     // Handle the comings and goings of charged particles.
     var chargedParticleNodeGroupTandem = tandem.createGroupTandem( 'chargedParticleNode' );

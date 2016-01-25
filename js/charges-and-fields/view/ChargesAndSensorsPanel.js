@@ -12,6 +12,7 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Property = require( 'AXON/Property' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -29,33 +30,26 @@ define( function( require ) {
   /**
    * Enclosure that contains the charges and sensor
    *
-   * @param {Function} addUserCreatedModelElementToObservableArray
    * @param {Function} hookDragHandler - function(modelElement,event) Called when the element is dropped into the play
    *                                     area, hooks up the provided event to the modelElement's corresponding view's
    *                                     drag handler (starts the drag).
-   * @param {ObservableArray} chargedParticles - observable array in the model that contains all the charged particles
-   * @param {ObservableArray} electricFieldSensors - observable array in the model that contains all the electric field
-   *                                                 sensors
-   * @param {number} numberChargesLimit
+   * @param {Property.<boolean>} canAddMoreChargedParticlesProperty - Whether more charged particles can be added.
+   * @param {Function} addPositiveCharge - function() : {ChargedParticle} - Adds positive charge to model and returns it
+   * @param {Function} addNegativeCharge - function() : {ChargedParticle} - Adds negative charge to model and returns it
+   * @param {Function} addElectricFieldSensor - function() : {ElectricFieldSensor} - Adds EF sensor to model and returns it
    * @param {Bounds2} enclosureBounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds of the charges and sensors in view coordinates
    * @param {Tandem} tandem
-   * @param {Tandem} chargedParticleGroupTandem - Because we currently construct part of the model here. TODO!
-   * @param {Tandem} electricFieldSensorGroupTandem - Because we currently construct part of the model here. TODO!
    * @constructor
    */
-  function ChargesAndSensorsPanel( addUserCreatedModelElementToObservableArray,
-                                   hookDragHandler,
-                                   chargedParticles,
-                                   electricFieldSensors,
-                                   numberChargesLimit,
+  function ChargesAndSensorsPanel( hookDragHandler,
+                                   canAddMoreChargedParticlesProperty,
+                                   addPositiveCharge,
+                                   addNegativeCharge,
+                                   addElectricFieldSensor,
                                    enclosureBounds,
                                    modelViewTransform,
-                                   availableModelBoundsProperty,
-                                   tandem,
-                                   chargedParticleGroupTandem,
-                                   electricFieldSensorGroupTandem ) {
+                                   tandem ) {
 
     Node.call( this );
 
@@ -94,46 +88,38 @@ define( function( require ) {
 
     // Create the charges and sensor
     var positiveCharge = new UserCreatorNode(
-      addUserCreatedModelElementToObservableArray,
+      addPositiveCharge,
+      canAddMoreChargedParticlesProperty,
       hookDragHandler,
-      chargedParticles,
       enclosureBounds,
       modelViewTransform,
-      availableModelBoundsProperty,
       tandem.createTandem( 'positiveCharge' ),
-      chargedParticleGroupTandem,
       {
         element: 'positive',
-        observableArrayLengthLimit: numberChargesLimit,
         centerX: positiveChargeCenterX,
         centerY: positiveChargeCenterY
       } );
 
     var negativeCharge = new UserCreatorNode(
-      addUserCreatedModelElementToObservableArray,
+      addNegativeCharge,
+      canAddMoreChargedParticlesProperty,
       hookDragHandler,
-      chargedParticles,
       enclosureBounds,
       modelViewTransform,
-      availableModelBoundsProperty,
       tandem.createTandem( 'negativeCharge' ),
-      chargedParticleGroupTandem,
       {
         element: 'negative',
-        observableArrayLengthLimit: numberChargesLimit,
         centerX: negativeChargeCenterX,
         centerY: negativeChargeCenterY
       } );
 
     var electricFieldSensor = new UserCreatorNode(
-      addUserCreatedModelElementToObservableArray,
+      addElectricFieldSensor,
+      new Property( true ),
       hookDragHandler,
-      electricFieldSensors,
       enclosureBounds,
       modelViewTransform,
-      availableModelBoundsProperty,
       tandem.createTandem( 'electricFieldSensor' ),
-      electricFieldSensorGroupTandem,
       {
         element: 'electricFieldSensor',
         centerX: electricFieldSensorCenterX,

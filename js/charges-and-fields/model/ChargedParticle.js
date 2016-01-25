@@ -17,15 +17,12 @@ define( function( require ) {
 
   /**
    *
-   * @param {Vector2} position - initial position of the charged particle
    * @param {number} charge - (positive=+1 or negative=-1)
    * @constructor
    */
-  function ChargedParticle( position, charge, tandem ) {
+  function ChargedParticle( charge, tandem ) {
 
-    ModelElement.call( this, tandem, {
-      position: position
-    } );
+    ModelElement.call( this, tandem );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 

@@ -31,7 +31,7 @@ define( function( require ) {
 
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-   * @param {SensorElement} electricFieldSensor
+   * @param {ElectricFieldSensor} electricFieldSensor
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
@@ -49,7 +49,7 @@ define( function( require ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
-    this.modelElement = electricFieldSensor;
+    this.modelElement = electricFieldSensor; // TODO: what is using this? public/private?
     this.tandem = tandem;
 
     var electricFieldSensorNode = this;

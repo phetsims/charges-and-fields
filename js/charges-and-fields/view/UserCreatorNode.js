@@ -15,36 +15,29 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
   var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var SensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorElement' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   /**
-   *
-   * @param {Function} addModelElementToObservableArray - A function that add a modelElement to an Observable Array in the model
+   * @param {Function} createModelElement - function() : {ModelElement} - Returns fresh element.
+   * @param {Property.<boolean>} isEnabledProperty - Whether we can add more of the particular element.
    * @param {Function} hookDragHandler - function(modelElement,array) Called when the element is dropped into the play area, to add its normal listener.
-   * @param {ObservableArray} observableArray
    * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the moving view element
    * @param {Tandem} tandem
-   * @param {Tandem} modelGroupTandem - Because we currently construct part of the model here. TODO!
    * @param {Object} [options]
    * @constructor
    */
-  function UserCreatorNode( addModelElementToObservableArray,
+  function UserCreatorNode( createModelElement,
+                            isEnabledProperty,
                             hookDragHandler,
-                            observableArray,
                             enclosureBounds,
                             modelViewTransform,
-                            availableModelBoundsProperty,
                             tandem,
-                            modelGroupTandem,
                             options ) {
 
     var self = this;
@@ -56,8 +49,7 @@ define( function( require ) {
     } );
 
     options = _.extend( {
-      element: 'electricFieldSensor', // other valid inputs are 'positive' and 'negative'
-      observableArrayLengthLimit: Number.POSITIVE_INFINITY // Max number of model Elements that can be put in the observable array.
+      element: 'electricFieldSensor' // other valid inputs are 'positive' and 'negative'
     }, options );
 
     /**
@@ -80,29 +72,6 @@ define( function( require ) {
       return representationNode;
     }
 
-    /**
-     * Function that returns the model element associated to options.element
-     * @param {Vector2} initialModelPosition
-     * @returns {ModelElement}
-     */
-    function modelElementCreator() {
-      var modelElement;
-      var initialPosition = new Vector2(); // overwritten by drag handler
-
-      switch( options.element ) {
-        case 'positive':
-          modelElement = new ChargedParticle( initialPosition, 1, modelGroupTandem.createNextTandem() );
-          break;
-        case 'negative':
-          modelElement = new ChargedParticle( initialPosition, -1, modelGroupTandem.createNextTandem() );
-          break;
-        case 'electricFieldSensor':
-          modelElement = new SensorElement( initialPosition, modelGroupTandem.createNextTandem() ); // TODO: instrument!
-          break;
-      }
-      return modelElement;
-    }
-
     // Create and add a static view node
     this.representationNode = representationCreatorNode();
     this.addChild( this.representationNode );
@@ -110,10 +79,7 @@ define( function( require ) {
     // let's make this node very easy to pick
     this.touchArea = this.localBounds.dilated( 10 ); // large enough to be easy to pick but small enough that the touch area doesn't spill out of the enclosure
 
-    // If the observableArray count exceeds the max, make this node invisible (which also makes it unusable).
-    observableArray.lengthProperty.link( function( number ) {
-      self.visible = (number < options.observableArrayLengthLimit);
-    } );
+    isEnabledProperty.linkAttribute( this, 'visible' );
 
     // When pressed, creates a model element and triggers startDrag() on the corresponding view
     this.addInputListener( {
@@ -127,12 +93,9 @@ define( function( require ) {
         var initialViewPosition = event.currentTarget.globalToParentPoint( self.representationNode.localToGlobalPoint( Vector2.ZERO ) );
 
         // Create the new model element.
-        var modelElement = modelElementCreator();
+        var modelElement = createModelElement();
         modelElement.initialPosition = modelViewTransform.viewToModelPosition( initialViewPosition );
         modelElement.isActive = false;
-
-        // Add it to the model
-        addModelElementToObservableArray( modelElement, observableArray );
 
         // Hook up the initial drag to the corresponding view element
         hookDragHandler( modelElement, event );

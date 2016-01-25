@@ -9,15 +9,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
+  var ElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensor' );
   var ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
+  var ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
+  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
+  var SensorGrid = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGrid' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
-  var SensorGrid = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGrid' );
-  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
+  var Bounds2 = require( 'DOT/Bounds2' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -89,12 +91,11 @@ define( function( require ) {
     // @public
     this.activeChargedParticles = new ObservableArray(); // {ObservableArray.<ChargedParticle>}
 
-    // Observable array of all draggable electric field sensors
-    // @public
-    this.electricFieldSensors = new ObservableArray(); // {ObservableArray.<SensorElement>}
+    // @public - Observable array of all draggable electric field sensors
+    this.electricFieldSensors = new ObservableArray(); // {ObservableArray.<ElectricFieldSensor>}
     var electricFieldSensors = this.electricFieldSensors;
 
-    // electric potential sensor
+    // @public - electric potential sensor
     this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
                                                                 tandem.createTandem( 'electricPotentialSensor' ) );
 
@@ -333,9 +334,59 @@ define( function( require ) {
         this.electricFieldSensors.clear(); // clear all the electric field sensors
         this.electricPotentialLinesArray.clear(); // clear the electricPotential 'lines'
         this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
+        this.measuringTape.reset();
         this.updateElectricFieldSensorGrid(); // will reset the grid to zero
         this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
         this.isResetting = false; // done with the resetting process
+      },
+
+      /**
+       * Adds an element to a particular array (ChargedParticle/ElectricFieldSensor to
+       * chargedParticles/electricFieldSensors), and sets it up for removal when returned to the panel.
+       * @private
+       *
+       * @param {ChargedParticle | ElectricFieldSensor} element
+       * @param {ObservableArray.<ChargedParticle> | ObservableArray.<ElectricFieldSensor>} observableArray
+       */
+      addModelElement: function( element, observableArray ) {
+        observableArray.push( element );
+        element.once( 'returnedToOrigin', function() {
+          observableArray.remove( element );
+        } );
+        return element; // for chaining
+      },
+
+      /**
+       * Adds a positive charge to the model, and returns it.
+       * @public
+       *
+       * @returns {ChargedParticle}
+       */
+      addPositiveCharge: function() {
+        return this.addModelElement( new ChargedParticle( 1, this.chargedParticleGroupTandem.createNextTandem() ),
+                                     this.chargedParticles );
+      },
+
+      /**
+       * Adds a negative charge to the model, and returns it.
+       * @public
+       *
+       * @returns {ChargedParticle}
+       */
+      addNegativeCharge: function() {
+        return this.addModelElement( new ChargedParticle( -1, this.chargedParticleGroupTandem.createNextTandem() ),
+                                     this.chargedParticles );
+      },
+
+      /**
+       * Adds an electric field sensor to the model, and returns it.
+       * @public
+       *
+       * @returns {ElectricFieldSensor}
+       */
+      addElectricFieldSensor: function() {
+        return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), this.electricFieldSensorGroupTandem.createNextTandem() ),
+                                     this.electricFieldSensors );
       },
 
       /**
@@ -467,21 +518,6 @@ define( function( require ) {
         } );
         // send a signal that the electric field grid has just been updated
         this.trigger( 'electricFieldGridUpdated' );
-      },
-
-      /**
-       * Function for adding an instance of a modelElement to this model when the user creates them, generally by clicking on some
-       * some sort of creator node. The function add the type to an observable Array
-       * @public
-       * @param {Type} modelElement - the particular types that are of interest are ChargedParticle, SensorElement, ModelElement
-       * @param {ObservableArray} observableArray - e.g. this.chargedParticles, this.electricFieldSensors
-       */
-      addUserCreatedModelElementToObservableArray: function( modelElement, observableArray ) {
-        observableArray.push( modelElement );
-        modelElement.on( 'returnedToOrigin', function() {
-          // the observable array can removed the model element when the model element has returned to its origin
-          observableArray.remove( modelElement );
-        } );
       },
 
       /**

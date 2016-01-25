@@ -45,7 +45,7 @@ define( function( require ) {
 
   /**
    *
-   * @param {SensorElement} electricPotentialSensor - model of the electric potential sensor
+   * @param {ElectricPotentialSensor} electricPotentialSensor - model of the electric potential sensor
    * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
    * @param {Function} clearElectricPotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
