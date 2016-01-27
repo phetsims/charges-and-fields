@@ -17,6 +17,11 @@
     "requirejsNamespace": "CHARGES_AND_FIELDS",
     "preload": [
       "../sherpa/lib/Tween-r12.js"
-    ]
+    ],
+    "phet-io": {
+      "preload": [
+        "../together/js/api/charges-and-fields-api.js"
+      ]
+    }
   }
 }
