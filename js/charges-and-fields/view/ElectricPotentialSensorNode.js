@@ -237,6 +237,13 @@ define( function( require ) {
       }
     } );
 
+    // TODO: cleanup, see https://github.com/phetsims/charges-and-fields/issues/73 for concerns
+    this.movableDragHandler.tryToSnag = function( event ) {
+      if ( !_.contains( event.trail.nodes, clearButton ) && !_.contains( event.trail.nodes, plotElectricPotentialLineButton ) ) {
+        MovableDragHandler.prototype.tryToSnag.call( this, event );
+      }
+    };
+
     // When dragging, move the electric potential sensor
     self.addInputListener( this.movableDragHandler );
 
