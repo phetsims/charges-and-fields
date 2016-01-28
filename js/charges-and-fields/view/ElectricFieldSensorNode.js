@@ -94,8 +94,6 @@ define( function( require ) {
     arrowNode.centerY = 0;
     fieldStrengthLabel.bottom = this.top; // 'this' is the ElectricFieldSensorRepresentationNode, i.e. the circle
     directionLabel.bottom = fieldStrengthLabel.top;
-    fieldStrengthLabel.right = this.left - 20;
-    directionLabel.right = fieldStrengthLabel.right;
 
     // when the electric field changes update the arrow and the labels
     var electricFieldListener = function( electricField ) {
@@ -109,13 +107,25 @@ define( function( require ) {
       // so the text must be updated with angle whereas arrow node must be updated with -angle
 
       // Update length and direction of the arrow
-      arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
+      if ( Number.isFinite( arrowLength ) ) {
+        arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
+        arrowNode.visible = electricFieldSensor.isActive;
 
-      // Update the strings in the labels
-      var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
-      fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
-      var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
-      directionLabel.text = StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString );
+        // Update the strings in the labels
+        var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
+        fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
+        var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
+        directionLabel.text = StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString );
+      }
+      else {
+        arrowNode.visible = false;
+
+        fieldStrengthLabel.text = '-';
+        directionLabel.text = '-';
+      }
+
+      fieldStrengthLabel.centerX = 0;
+      directionLabel.centerX = 0;
     };
     electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
@@ -195,6 +205,8 @@ define( function( require ) {
           electricFieldSensorNode.cursor = null;
           electricFieldSensorNode.removeInputListener( electricFieldSensorNode.movableDragHandler );
         }
+
+        isDragListenerAttached = isInteractive;
       }
     } );
 
