@@ -97,6 +97,7 @@ define( function( require ) {
 
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
+      tandem: tandem.createTandem( 'clearButton' ),
       baseColor: '#f2f2f2',
       iconWidth: 23,
       listener: function() {
@@ -106,6 +107,7 @@ define( function( require ) {
 
     // Create the button that allows to plot the ElectricPotential Lines
     var plotElectricPotentialLineButton = new PencilButton( {
+      tandem: tandem.createTandem( 'plotElectricPotentialLineButton' ),
       baseColor: '#f2f2f2',
       listener: function() {
         addElectricPotentialLine();
