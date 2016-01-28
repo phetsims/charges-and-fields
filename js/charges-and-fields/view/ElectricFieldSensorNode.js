@@ -181,8 +181,22 @@ define( function( require ) {
         }
       } );
 
-    // When dragging, move the electric Field Sensor
-    this.addInputListener( this.movableDragHandler );
+    // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
+    var isDragListenerAttached = false;
+    electricFieldSensor.isInteractiveProperty.link( function() {
+      var isInteractive = electricFieldSensor.isInteractive;
+
+      if ( isDragListenerAttached !== isInteractive ) {
+        if ( isInteractive ) {
+          electricFieldSensorNode.cursor = 'pointer';
+          electricFieldSensorNode.addInputListener( electricFieldSensorNode.movableDragHandler );
+        }
+        else {
+          electricFieldSensorNode.cursor = null;
+          electricFieldSensorNode.removeInputListener( electricFieldSensorNode.movableDragHandler );
+        }
+      }
+    } );
 
     var availableModelBoundsPropertyListener = function( bounds ) {
       electricFieldSensorNode.movableDragHandler.setDragBounds( bounds );

@@ -23,14 +23,13 @@ define( function( require ) {
   /**
    * Constructor for the ElectricFieldSensorRepresentationNode which renders the sensor as a scenery node.
    * @constructor
+   *
+   * @param {Object} [options] - Passed to Node
    */
-  function ElectricFieldSensorRepresentationNode() {
+  function ElectricFieldSensorRepresentationNode( options ) {
 
     // Call the super constructor
-    Node.call( this, {
-      // Show a cursor hand over the charge
-      cursor: 'pointer'
-    } );
+    Node.call( this, options );
 
     // Create the centered circle
     var circle = new Circle( CIRCLE_RADIUS, {

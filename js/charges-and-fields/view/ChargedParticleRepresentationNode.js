@@ -23,15 +23,14 @@ define( function( require ) {
 
   /**
    * Constructor for the scenery node of the charge
-   * @param {number} charge
    * @constructor
+   *
+   * @param {number} charge
+   * @param {Object} [options] - Passed to Node
    */
-  function ChargedParticleRepresentationNode( charge ) {
+  function ChargedParticleRepresentationNode( charge, options ) {
 
-    Node.call( this, {
-      // Show a cursor hand over the charge
-      cursor: 'pointer'
-    } );
+    Node.call( this, options );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 

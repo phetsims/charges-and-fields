@@ -85,8 +85,24 @@ define( function( require ) {
 
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
 
-    // When dragging, move the charge
-    this.addInputListener( this.movableDragHandler );
+    // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
+    var isDragListenerAttached = false;
+    chargedParticle.isInteractiveProperty.link( function() {
+      var isInteractive = chargedParticle.isInteractive;
+
+      if ( isDragListenerAttached !== isInteractive ) {
+        if ( isInteractive ) {
+          chargedParticleNode.cursor = 'pointer';
+          chargedParticleNode.addInputListener( chargedParticleNode.movableDragHandler );
+        }
+        else {
+          chargedParticleNode.cursor = null;
+          chargedParticleNode.removeInputListener( chargedParticleNode.movableDragHandler );
+        }
+
+        isDragListenerAttached = isInteractive;
+      }
+    } );
 
     this.disposeChargedParticleNode = function() {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );

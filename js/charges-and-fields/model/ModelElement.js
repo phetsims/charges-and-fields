@@ -36,7 +36,11 @@ define( function( require ) {
 
       // @public
       // Flag that indicates if the model element is active or dormant
-      isActive: false
+      isActive: false,
+
+      // @public
+      // If false, the user will not be able to interact with this charge at all.
+      isInteractive: true
 
     }, options ), {
       tandemSet: _.extend( {
@@ -52,6 +56,9 @@ define( function( require ) {
 
     // @public
     this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
+
+    // @public
+    this.tandem = tandem;
   }
 
   chargesAndFields.register( 'ModelElement', ModelElement );

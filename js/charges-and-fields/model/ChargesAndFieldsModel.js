@@ -54,14 +54,23 @@ define( function( require ) {
       isElectricPotentialVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
       areValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
       isGridVisible: false, // control the visibility of the simple grid with minor and major axes
-      isPlayAreaCharged: false // is there at least one active charged particle on the board
+      isPlayAreaCharged: false, // is there at least one active charged particle on the board
+
+      allowNewPositiveCharges: true, // whether adding positive charges is allowed (and displayed) in general
+      allowNewNegativeCharges: true, // whether adding negative charges is allowed (and displayed) in general
+      allowNewElectricFieldSensors: true, // whether adding electric field sensors is allowed (and displayed) in general
+
+      chargesAndSensorsEnclosureBounds: new Bounds2( -1.25, -2.30, 1.25, -1.70 ) // TODO: should not be initialized? meters
     }, {
       tandemSet: {
         isElectricFieldVisible: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
         isElectricFieldDirectionOnly: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' ),
         isElectricPotentialVisible: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
         areValuesVisible: tandem.createTandem( 'areValuesVisibleProperty' ),
-        isGridVisible: tandem.createTandem( 'isGridVisibleProperty' )
+        isGridVisible: tandem.createTandem( 'isGridVisibleProperty' ),
+        allowNewPositiveCharges: tandem.createTandem( 'allowNewPositiveChargesProperty' ),
+        allowNewNegativeCharges: tandem.createTandem( 'allowNewNegativeChargesProperty' ),
+        allowNewElectricFieldSensors: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' )
       }
     } );
 
@@ -76,10 +85,6 @@ define( function( require ) {
 
     // @public read-only
     this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, this.bounds.minY, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
-
-    // @public read-only
-    // all distances are in meter
-    this.chargesAndSensorsEnclosureBounds = new Bounds2( -1.25, -2.30, 1.25, -1.70 );
 
     // Observable array of all draggable electric charges
     // @public

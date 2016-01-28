@@ -11,12 +11,15 @@ define( function( require ) {
   // modules
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
+  var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var UserCreatorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/UserCreatorNode' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var Panel = require( 'SUN/Panel' );
+  var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
@@ -24,158 +27,161 @@ define( function( require ) {
   var plusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
   var sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
 
-  // constants
-  var FONT = ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT;
+  var HORIZONTAL_SPACING = 60;
+  var VERTICAL_SPACING = 25;
+  var Y_MARGIN = 10;
 
   /**
    * Enclosure that contains the charges and sensor
    *
+   * @param {ChargesAndFieldsModel} model
+   * @param {ChargesAndFieldsScreenView} screenView
    * @param {Function} hookDragHandler - function(modelElement,event) Called when the element is dropped into the play
    *                                     area, hooks up the provided event to the modelElement's corresponding view's
    *                                     drag handler (starts the drag).
    * @param {Property.<boolean>} canAddMoreChargedParticlesProperty - Whether more charged particles can be added.
-   * @param {Function} addPositiveCharge - function() : {ChargedParticle} - Adds positive charge to model and returns it
-   * @param {Function} addNegativeCharge - function() : {ChargedParticle} - Adds negative charge to model and returns it
-   * @param {Function} addElectricFieldSensor - function() : {ElectricFieldSensor} - Adds EF sensor to model and returns it
-   * @param {Bounds2} enclosureBounds - model bounds of the outer enclosure
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Tandem} tandem
    * @constructor
    */
-  function ChargesAndSensorsPanel( hookDragHandler,
+  function ChargesAndSensorsPanel( model,
+                                   screenView,
+                                   hookDragHandler,
                                    canAddMoreChargedParticlesProperty,
-                                   addPositiveCharge,
-                                   addNegativeCharge,
-                                   addElectricFieldSensor,
-                                   enclosureBounds,
                                    modelViewTransform,
                                    tandem ) {
+    var self = this;
 
-    Node.call( this );
+    // @private {Array.<Node>}
+    this.draggableItems = [];
 
-    // width of the strings
-    var minusTextWidth = (new Text( minusOneNanoCString, { font: FONT } )).width;
-    var plusTextWidth = (new Text( plusOneNanoCString, { font: FONT } )).width;
-    var sensorTextWidth = (new Text( sensorsString, { font: FONT } )).width;
+    /**
+     * @param {Tandem} itemTandem
+     * @param {stirng} label
+     * @param {Function} createModelElement - Adds one of these items to the model, and returns the model object.
+     * @param {Node} previewNode
+     * @param {Property.<boolean>} isVisibleProperty
+     */
+    function createDraggableItem( itemTandem, label, createModelElement, previewNode, isVisibleProperty ) {
+      var labelText = new Text( label, {
+        font: ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT,
+        fill: ChargesAndFieldsColors.enclosureTextProperty,
+        centerX: 0
+      } );
 
-    // maximum width of the three strings
-    var maxTextWidth = Math.max( minusTextWidth, plusTextWidth, sensorTextWidth );
+      var node = new Node( {
+        children: [
+          previewNode,
+          labelText
+        ],
+        cursor: 'pointer'
+      } );
 
-    // the width of each string should occupy less than 1/3 of width of the enclosure
-    // translation of the strings could possibly violate this condition
-    var minimumEnclosureModelWidth = modelViewTransform.viewToModelDeltaX( 3 * maxTextWidth );
+      // layout
+      labelText.top = 0;
+      previewNode.centerY = -VERTICAL_SPACING;
 
-    // if it is not the case, then increase the model Bounds of the enclosure
-    if ( enclosureBounds.width < minimumEnclosureModelWidth ) {
-      var centerX = enclosureBounds.centerX;
-      enclosureBounds.minX = centerX - minimumEnclosureModelWidth / 2 - 0.4;
-      enclosureBounds.maxX = centerX + minimumEnclosureModelWidth / 2 + 0.4;
+      // Hook up the tandem
+      itemTandem.addInstance( node );
+
+      // When pressed, creates a model element and triggers startDrag() on the corresponding view
+      node.addInputListener( {
+        down: function( event ) {
+          // Ignore non-left-mouse-button
+          if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
+            return;
+          }
+
+          // Representation node location, so that when being "disposed" it will animate back towards the the right place.
+          // TODO: have it look up where to animate to WHEN it needs to animate?
+          var initialViewPosition = previewNode.getUniqueTrailTo( screenView ).getAncestorMatrix().timesVector2( Vector2.ZERO );
+
+          // Create the new model element.
+          var modelElement = createModelElement();
+          modelElement.initialPosition = modelViewTransform.viewToModelPosition( initialViewPosition );
+          modelElement.isActive = false;
+
+          // Hook up the initial drag to the corresponding view element
+          hookDragHandler( modelElement, event );
+        }
+      } );
+
+      node.mouseArea = node.localBounds;
+      node.touchArea = node.localBounds.dilatedXY( HORIZONTAL_SPACING / 2, Y_MARGIN );
+
+      isVisibleProperty.linkAttribute( node, 'visible' );
+
+      self.draggableItems.push( node );
+
+      return node;
     }
 
-    // bounds of the enclosure in screenView coordinates
-    var viewBounds = modelViewTransform.modelToViewBounds( enclosureBounds );
-
-    // Create the background enclosure
-    var rectangle = Rectangle.roundedBounds( viewBounds, 5, 5, { lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH } );
-
-    // Convenience variables to position the charges and sensor
-    var positiveChargeCenterX = viewBounds.centerX - viewBounds.width / 3;
-    var positiveChargeCenterY = viewBounds.centerY - viewBounds.height / 5;
-    var negativeChargeCenterX = viewBounds.centerX;
-    var negativeChargeCenterY = positiveChargeCenterY;
-    var electricFieldSensorCenterX = viewBounds.centerX + viewBounds.width / 3;
-    var electricFieldSensorCenterY = positiveChargeCenterY;
-
-    // Create the charges and sensor
-    var positiveCharge = new UserCreatorNode(
-      addPositiveCharge,
-      canAddMoreChargedParticlesProperty,
-      hookDragHandler,
-      enclosureBounds,
-      modelViewTransform,
-      tandem.createTandem( 'positiveCharge' ),
-      {
-        element: 'positive',
-        centerX: positiveChargeCenterX,
-        centerY: positiveChargeCenterY
-      } );
-
-    var negativeCharge = new UserCreatorNode(
-      addNegativeCharge,
-      canAddMoreChargedParticlesProperty,
-      hookDragHandler,
-      enclosureBounds,
-      modelViewTransform,
-      tandem.createTandem( 'negativeCharge' ),
-      {
-        element: 'negative',
-        centerX: negativeChargeCenterX,
-        centerY: negativeChargeCenterY
-      } );
-
-    var electricFieldSensor = new UserCreatorNode(
-      addElectricFieldSensor,
-      new Property( true ),
-      hookDragHandler,
-      enclosureBounds,
-      modelViewTransform,
-      tandem.createTandem( 'electricFieldSensor' ),
-      {
-        element: 'electricFieldSensor',
-        centerX: electricFieldSensorCenterX,
-        centerY: electricFieldSensorCenterY
-      } );
-
-    // vertical Position for the text label
-    var textCenterY = viewBounds.centerY + viewBounds.height / 4;
-
-    // Create the three text labels
-    var positiveChargeText = new Text( plusOneNanoCString, {
-      font: FONT,
-      centerX: positiveChargeCenterX,
-      centerY: textCenterY
-    } );
-    var negativeChargeText = new Text( minusOneNanoCString, {
-      font: FONT,
-      centerX: negativeChargeCenterX,
-      centerY: textCenterY
-    } );
-    var electricFieldSensorText = new Text( sensorsString, {
-      font: FONT,
-      centerX: electricFieldSensorCenterX,
-      centerY: textCenterY
+    // {Property.<boolean>}
+    var positiveVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewPositiveChargesProperty ], function( canAdd, allowNew ) {
+      return canAdd && allowNew;
     } );
 
-    // Add the nodes
-    this.addChild( rectangle );
-    this.addChild( positiveChargeText );
-    this.addChild( negativeChargeText );
-    this.addChild( electricFieldSensorText );
-    this.addChild( positiveCharge );
-    this.addChild( negativeCharge );
-    this.addChild( electricFieldSensor );
-
-    // update the colors on change of color scheme (projector vs default)
-    // no need to unlink since the chargeEnclosure is present for the lifetime of the simulation
-    ChargesAndFieldsColors.link( 'enclosureText', function( color ) {
-      positiveChargeText.fill = color;
-      negativeChargeText.fill = color;
-      electricFieldSensorText.fill = color;
+    // {Property.<boolean>}
+    var negativeVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewNegativeChargesProperty ], function( canAdd, allowNew ) {
+      return canAdd && allowNew;
     } );
 
-    ChargesAndFieldsColors.link( 'enclosureBorder', function( color ) {
-      rectangle.stroke = color;
+    // {Property.<boolean>}
+    var electricFieldSensorVisibleProperty = model.allowNewElectricFieldSensorsProperty;
+
+    this.hboxContent = new HBox( {
+      align: 'bottom',
+      spacing: HORIZONTAL_SPACING,
+      children: [
+        createDraggableItem( tandem.createTandem( 'positiveCharge' ),
+                             plusOneNanoCString,
+                             model.addPositiveCharge.bind( model ),
+                             new ChargedParticleRepresentationNode( 1 ),
+                             positiveVisibleProperty ),
+
+        createDraggableItem( tandem.createTandem( 'negativeCharge' ),
+                             minusOneNanoCString,
+                             model.addNegativeCharge.bind( model ),
+                             new ChargedParticleRepresentationNode( -1 ),
+                             negativeVisibleProperty ),
+
+        createDraggableItem( tandem.createTandem( 'electricFieldSensor' ),
+                             sensorsString,
+                             model.addElectricFieldSensor.bind( model ),
+                             new ElectricFieldSensorRepresentationNode(),
+                             electricFieldSensorVisibleProperty )
+      ]
     } );
 
-    ChargesAndFieldsColors.link( 'enclosureFill', function( color ) {
-      rectangle.fill = color;
+    Panel.call( this, this.hboxContent, {
+      lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
+      cornerRadius: 5,
+      stroke: ChargesAndFieldsColors.enclosureBorderProperty,
+      fill: ChargesAndFieldsColors.enclosureFillProperty,
+      xMargin: HORIZONTAL_SPACING / 2,
+      yMargin: Y_MARGIN
     } );
+
+    this.draggableItems.forEach( function( draggableItem ) {
+      draggableItem.on( 'visibility', self.updateChildrenWithVisibility.bind( self ) );
+    } );
+    this.updateChildrenWithVisibility();
 
     tandem.addInstance( this );
   }
 
   chargesAndFields.register( 'ChargesAndSensorsPanel', ChargesAndSensorsPanel );
 
-  return inherit( Node, ChargesAndSensorsPanel );
+  return inherit( Panel, ChargesAndSensorsPanel, {
+    /**
+     * Ensures visible items are children, and invisible items are removed.
+     * @private
+     */
+    updateChildrenWithVisibility: function() {
+      this.hboxContent.children = this.draggableItems.filter( function( draggableItem ) {
+        return draggableItem.visible;
+      } );
+    }
+  } );
 
 } );

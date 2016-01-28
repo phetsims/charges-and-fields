@@ -207,6 +207,7 @@ define( function( require ) {
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargesAndSensorsPanel = new ChargesAndSensorsPanel(
+      model, this,
       function( modelElement, event ) {
         // Horrible horrible hacks
         draggableElementsLayer.children.forEach( function( potentialView ) {
@@ -215,13 +216,26 @@ define( function( require ) {
           }
         } );
       },
-      canAddMoreChargedParticlesProperty,
-      model.addPositiveCharge.bind( model ),
-      model.addNegativeCharge.bind( model ),
-      model.addElectricFieldSensor.bind( model ),
-      model.chargesAndSensorsEnclosureBounds,
-      modelViewTransform,
-      tandem.createTandem( 'chargesAndSensorsPanel' ) );
+      canAddMoreChargedParticlesProperty, modelViewTransform, tandem.createTandem( 'chargesAndSensorsPanel' ) );
+
+    function updateSensorPanelLayout() {
+      chargesAndSensorsPanel.bottom = screenView.layoutBounds.bottom - 15;
+      chargesAndSensorsPanel.centerX = screenView.layoutBounds.centerX;
+
+      // TODO: do we want additional padding?
+      model.chargesAndSensorsEnclosureBounds.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
+    }
+    chargesAndSensorsPanel.on( 'localBounds', updateSensorPanelLayout );
+    updateSensorPanelLayout();
+
+    // Only show the ChargesAndSensorsPanel when at least one of its elements is visible
+    new DerivedProperty( [
+      model.allowNewPositiveChargesProperty,
+      model.allowNewNegativeChargesProperty,
+      model.allowNewElectricFieldSensorsProperty
+    ], function( positive, negative, electricFieldSensors ) {
+      return positive || negative || electricFieldSensors;
+    } ).linkAttribute( chargesAndSensorsPanel, 'visible' );
 
     // Handle the comings and goings of charged particles.
     var chargedParticleNodeGroupTandem = tandem.createGroupTandem( 'chargedParticleNode' );
