@@ -12,10 +12,11 @@ define( function( require ) {
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var CheckBox = require( 'SUN/CheckBox' );
+  var Panel = require( 'SUN/Panel' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
@@ -30,61 +31,35 @@ define( function( require ) {
   /**
    * @constructor
    *
-   * @param {Property.<boolean>} isElectricFieldVisibleProperty
-   * @param {Property.<boolean>} isElectricFieldDirectionOnlyProperty
-   * @param {Property.<boolean>} isElectricPotentialVisibleProperty
-   * @param {Property.<boolean>} areValuesVisibleProperty
-   * @param {Property.<boolean>} isGridVisibleProperty
+   * @param {ChargesAndFieldsModel} model
    * @param {Tandem} tandem
    */
-  function ChargesAndFieldsControlPanel( isElectricFieldVisibleProperty,
-                                         isElectricFieldDirectionOnlyProperty,
-                                         isElectricPotentialVisibleProperty,
-                                         areValuesVisibleProperty,
-                                         isGridVisibleProperty,
-                                         tandem ) {
+  function ChargesAndFieldsControlPanel( model, tandem ) {
 
-    var controlPanel = this;
+    // @private
+    this.model = model;
 
-    // various options for text, checkbox and panel
-    var textOptions = {
-      font: ChargesAndFieldsConstants.CHECK_BOX_FONT
-    };
+    function createCheckBox( tandemId, string, property ) {
+      var text = new Text( string, {
+        font: ChargesAndFieldsConstants.CHECK_BOX_FONT,
+        fill: ChargesAndFieldsColors.controlPanelTextProperty
+      } );
 
-    var checkBoxOptions = {
-      boxWidth: 25,
-      spacing: 7
-    };
-
-    var panelOptions = {
-      lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
-      xMargin: 12,
-      yMargin: 10
-    };
-
-    // create text nodes for the checkboxes
-    var electricFieldText = new Text( electricFieldString, textOptions );
-    var directionOnlyText = new Text( directionOnlyString, textOptions );
-    var voltageText = new Text( voltageString, textOptions );
-    var valuesText = new Text( gridString, textOptions );
-    var gridText = new Text( valuesString, textOptions );
+      return new CheckBox( text, property, {
+        tandem: tandem.createTandem( tandemId ),
+        boxWidth: 25,
+        spacing: 7,
+        checkBoxColor: ChargesAndFieldsColors.checkBoxProperty,
+        checkBoxColorBackground: ChargesAndFieldsColors.checkBoxBackgroundProperty
+      } );
+    }
 
     // create checkboxes
-    var electricFieldCheckBox = new CheckBox( electricFieldText, isElectricFieldVisibleProperty, _.extend( {
-      tandem: tandem.createTandem( 'electricFieldCheckBox' )
-    }, checkBoxOptions ) );
-    var directionOnlyCheckBox = new CheckBox( directionOnlyText, isElectricFieldDirectionOnlyProperty, _.extend( {
-      tandem: tandem.createTandem( 'directionOnlyCheckBox' )
-    }, checkBoxOptions ) );
-    var voltageCheckBox = new CheckBox( voltageText, isElectricPotentialVisibleProperty, _.extend( {
-      tandem: tandem.createTandem( 'voltageCheckBox' )
-    }, checkBoxOptions ) );
-    var valuesCheckBox = new CheckBox( gridText, areValuesVisibleProperty, _.extend( {
-      tandem: tandem.createTandem( 'valuesCheckBox' )
-    }, checkBoxOptions ) );
-    var gridCheckBox = new CheckBox( valuesText, isGridVisibleProperty, _.extend( {
-      tandem: tandem.createTandem( 'gridCheckBox' )
-    }, checkBoxOptions ) );
+    var electricFieldCheckBox = createCheckBox( 'electricFieldCheckBox', electricFieldString, model.isElectricFieldVisibleProperty );
+    var directionOnlyCheckBox = createCheckBox( 'directionOnlyCheckBox', directionOnlyString, model.isElectricFieldDirectionOnlyProperty );
+    var voltageCheckBox = createCheckBox( 'voltageCheckBox', voltageString, model.isElectricPotentialVisibleProperty );
+    var valuesCheckBox = createCheckBox( 'valuesCheckBox', valuesString, model.areValuesVisibleProperty );
+    var gridCheckBox = createCheckBox( 'gridCheckBox', gridString, model.isGridVisibleProperty );
 
     // the checkbox 'direction only' needs to be indented with respect to the other checkboxes
     var directionOnlyGroup = new Node();
@@ -93,70 +68,71 @@ define( function( require ) {
     directionOnlyGroup.addChild( hStrut );
     directionOnlyGroup.addChild( directionOnlyCheckBox );
 
-    var checkBoxGroup = new VBox( {
-      spacing: 12, children: [
-        electricFieldCheckBox,
-        directionOnlyGroup, // contains the directionOnlyCheckBox
-        voltageCheckBox,
-        valuesCheckBox,
-        gridCheckBox
-      ], align: 'left'
-    } );
+    electricFieldCheckBox.hideTogglingProperty = model.hideTogglingElectricFieldVisibilityProperty;
+    directionOnlyGroup.hideTogglingProperty = new DerivedProperty( [
+      model.hideTogglingElectricFieldVisibilityProperty,
+      model.hideTogglingElectricFieldDirectionOnlyProperty ],
+      function( hideEF, hideDirectionOnly ) { return hideEF || hideDirectionOnly; } ); // NOTE: set on group
+    voltageCheckBox.hideTogglingProperty = model.hideTogglingElectricPotentialVisibilityProperty;
+    valuesCheckBox.hideTogglingProperty = model.hideTogglingValuesVisibilityProperty;
+    gridCheckBox.hideTogglingProperty = model.hideTogglingGridVisibilityProperty;
 
-    // add the checkbox group to the panel
-    Panel.call( this, checkBoxGroup, panelOptions );
-
-    //---------------
-    //  Apply the projector/default color scheme to the components of the control panel
-    //--------------
-
-    ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
-      controlPanel.background.fill = color;
-    } );
-
-    ChargesAndFieldsColors.controlPanelBorderProperty.link( function( color ) {
-      controlPanel.stroke = color;
-    } );
-
-    // update the text fill of all the check boxes
-    ChargesAndFieldsColors.controlPanelTextProperty.link( function( color ) {
-      electricFieldText.fill = color;
-      directionOnlyText.fill = color;
-      voltageText.fill = color;
-      valuesText.fill = color;
-      gridText.fill = color;
-    } );
-
-    isElectricFieldVisibleProperty.link( function( enabled ) {
-      directionOnlyCheckBox.enabled = enabled;
-    } );
-
-    // convenience variable, includes all the checkBoxes
-    var checkBoxArray = [
+    // @private
+    this.toggleNodes = [
       electricFieldCheckBox,
-      directionOnlyCheckBox,
+      directionOnlyGroup,
       voltageCheckBox,
       valuesCheckBox,
       gridCheckBox
     ];
 
-    ChargesAndFieldsColors.checkBoxProperty.link( function( color ) {
-      checkBoxArray.forEach( function( checkBox ) {
-        checkBox.checkBoxColor = color;
-      } );
+    // @private
+    this.checkBoxGroup = new VBox( {
+      spacing: 12,
+      children: this.toggleNodes,
+      align: 'left'
     } );
 
-    ChargesAndFieldsColors.checkBoxBackgroundProperty.link( function( color ) {
-      checkBoxArray.forEach( function( checkBox ) {
-        checkBox.checkBoxColorBackground = color;
-      } );
+    // add the checkbox group to the panel
+    Panel.call( this, this.checkBoxGroup, {
+      lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
+      xMargin: 12,
+      yMargin: 10,
+      fill: ChargesAndFieldsColors.controlPanelFillProperty,
+      stroke: ChargesAndFieldsColors.controlPanelBorderProperty
     } );
+
+    model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckBox, 'enabled' );
+
+    // Ensure that we remove children that should be hidden
+    model.multilink( [
+      'hideTogglingElectricFieldVisibility',
+      'hideTogglingElectricFieldDirectionOnly',
+      'hideTogglingElectricPotentialVisibility',
+      'hideTogglingValuesVisibility',
+      'hideTogglingGridVisibility'
+    ], this.updateHiddenChildren.bind( this ) );
 
     tandem.addInstance( this );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsControlPanel', ChargesAndFieldsControlPanel );
 
-  return inherit( Panel, ChargesAndFieldsControlPanel );
+  return inherit( Panel, ChargesAndFieldsControlPanel, {
+    /**
+     * Removes children that should be hidden
+     * @private
+     */
+    updateHiddenChildren: function() {
+      this.checkBoxGroup.children = this.toggleNodes.filter( function( toggleNode ) {
+        return !toggleNode.hideTogglingProperty.value;
+      } );
+
+      this.visible = this.model.isElectricFieldVisible ||
+                     this.model.isElectricPotentialVisible ||
+                     this.model.areValuesVisible ||
+                     this.model.isGridVisible;
+    }
+  } );
 
 } );

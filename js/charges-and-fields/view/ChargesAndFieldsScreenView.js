@@ -151,13 +151,7 @@ define( function( require ) {
       model.areValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
-    var controlPanel = new ChargesAndFieldsControlPanel(
-      model.isElectricFieldVisibleProperty,
-      model.isElectricFieldDirectionOnlyProperty,
-      model.isElectricPotentialVisibleProperty,
-      model.areValuesVisibleProperty,
-      model.isGridVisibleProperty,
-      tandem.createTandem( 'controlPanel' ) );
+    var controlPanel = new ChargesAndFieldsControlPanel( model, tandem.createTandem( 'controlPanel' ) );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
@@ -300,28 +294,33 @@ define( function( require ) {
       }
     } );
 
+    // dynamic parts of the control layout
+    function updateControlLayout() {
+      // right-align control panels
+      var right = modelViewTransform.modelToViewX( screenView.availableModelBoundsProperty.value.right ) - 30;
+      controlPanel.right = right;
+      resetAllButton.right = right;
+      toolboxPanel.right = right;
+
+      toolboxPanel.top = controlPanel.bottom + 10;
+    }
+
     // link the available model bounds
     this.availableModelBoundsProperty.link( function( bounds ) {
 
       // the measuring Tape is subject to dragBounds (specified in model coordinates)
       measuringTapeNode.dragBounds = bounds;
 
-      // the control panel, toolbox panel and resetAllButtons are set to the right of the bounds
-      var right = modelViewTransform.modelToViewX( bounds.maxX );
-      controlPanel.right = right - 30;
-      resetAllButton.right = controlPanel.right;
-      toolboxPanel.right = right - 30;
+      updateControlLayout();
     } );
 
-    // layout the objects
-    controlPanel.right = this.layoutBounds.maxX - 30;
+    controlPanel.on( 'localBounds', updateControlLayout );
+
+    // static parts of the control layout
     controlPanel.top = 30;
     gridNode.centerX = this.layoutBounds.centerX;
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
-    resetAllButton.right = controlPanel.right;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
-    toolboxPanel.right = controlPanel.right;
-    toolboxPanel.top = controlPanel.bottom + 10;
 
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
     this.addChild( gridNode );

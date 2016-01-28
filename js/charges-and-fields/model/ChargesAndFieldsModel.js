@@ -60,6 +60,12 @@ define( function( require ) {
       allowNewNegativeCharges: true, // whether adding negative charges is allowed (and displayed) in general
       allowNewElectricFieldSensors: true, // whether adding electric field sensors is allowed (and displayed) in general
 
+      hideTogglingElectricFieldVisibility: false,
+      hideTogglingElectricFieldDirectionOnly: false,
+      hideTogglingElectricPotentialVisibility: false,
+      hideTogglingValuesVisibility: false,
+      hideTogglingGridVisibility: false,
+
       chargesAndSensorsEnclosureBounds: new Bounds2( -1.25, -2.30, 1.25, -1.70 ) // TODO: should not be initialized? meters
     }, {
       tandemSet: {
@@ -68,9 +74,17 @@ define( function( require ) {
         isElectricPotentialVisible: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
         areValuesVisible: tandem.createTandem( 'areValuesVisibleProperty' ),
         isGridVisible: tandem.createTandem( 'isGridVisibleProperty' ),
+
         allowNewPositiveCharges: tandem.createTandem( 'allowNewPositiveChargesProperty' ),
         allowNewNegativeCharges: tandem.createTandem( 'allowNewNegativeChargesProperty' ),
-        allowNewElectricFieldSensors: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' )
+        allowNewElectricFieldSensors: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' ),
+
+        // TODO: improved way to do this without separate properties? How to handle layout?
+        hideTogglingElectricFieldVisibility: tandem.createTandem( 'hideTogglingElectricFieldVisibilityProperty' ),
+        hideTogglingElectricFieldDirectionOnly: tandem.createTandem( 'hideTogglingElectricFieldDirectionOnlyProperty' ),
+        hideTogglingElectricPotentialVisibility: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' ),
+        hideTogglingValuesVisibility: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' ),
+        hideTogglingGridVisibility: tandem.createTandem( 'hideTogglingGridVisibilityProperty' )
       }
     } );
 
