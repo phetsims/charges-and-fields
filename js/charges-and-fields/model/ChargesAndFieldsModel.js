@@ -334,6 +334,8 @@ define( function( require ) {
         }
       } );
     } );
+
+    tandem.addInstance( this );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
