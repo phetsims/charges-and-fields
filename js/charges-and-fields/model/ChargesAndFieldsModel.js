@@ -116,7 +116,7 @@ define( function( require ) {
 
     // @public - electric potential sensor
     this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
-                                                                tandem.createTandem( 'electricPotentialSensor' ) );
+      tandem.createTandem( 'electricPotentialSensor' ) );
 
     this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
@@ -334,6 +334,8 @@ define( function( require ) {
         }
       } );
     } );
+
+    tandem.addInstance( this );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
@@ -381,9 +383,8 @@ define( function( require ) {
        *
        * @returns {ChargedParticle}
        */
-      addPositiveCharge: function() {
-        return this.addModelElement( new ChargedParticle( 1, this.chargedParticleGroupTandem.createNextTandem() ),
-                                     this.chargedParticles );
+      addPositiveCharge: function( tandem ) {
+        return this.addModelElement( new ChargedParticle( 1, tandem ), this.chargedParticles );
       },
 
       /**
@@ -392,9 +393,8 @@ define( function( require ) {
        *
        * @returns {ChargedParticle}
        */
-      addNegativeCharge: function() {
-        return this.addModelElement( new ChargedParticle( -1, this.chargedParticleGroupTandem.createNextTandem() ),
-                                     this.chargedParticles );
+      addNegativeCharge: function( tandem ) {
+        return this.addModelElement( new ChargedParticle( -1, tandem ), this.chargedParticles );
       },
 
       /**
@@ -405,7 +405,7 @@ define( function( require ) {
        */
       addElectricFieldSensor: function() {
         return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), this.electricFieldSensorGroupTandem.createNextTandem() ),
-                                     this.electricFieldSensors );
+          this.electricFieldSensors );
       },
 
       /**
