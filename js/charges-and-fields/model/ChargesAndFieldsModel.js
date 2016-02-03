@@ -403,9 +403,8 @@ define( function( require ) {
        *
        * @returns {ElectricFieldSensor}
        */
-      addElectricFieldSensor: function() {
-        return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), this.electricFieldSensorGroupTandem.createNextTandem() ),
-          this.electricFieldSensors );
+      addElectricFieldSensor: function( tandem ) {
+        return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), tandem ), this.electricFieldSensors );
       },
 
       /**
@@ -558,12 +557,14 @@ define( function( require ) {
         // var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
         // var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
         // var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
+        // @formatter:off
         return {
           x: ((position.x - newChargePosition.x) / ( newDistancePowerCube ) -
               (position.x - oldChargePosition.x) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT ),
           y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
               (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT )
         };
+        // @formatter:on
       },
 
       /**

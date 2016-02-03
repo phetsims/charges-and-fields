@@ -134,26 +134,29 @@ define( function( require ) {
       spacing: HORIZONTAL_SPACING,
       children: [
         createDraggableItem( tandem.createTandem( 'positiveCharge' ),
-                             plusOneNanoCString,
+          plusOneNanoCString,
           function() {
             return model.addPositiveCharge( model.chargedParticleGroupTandem.createNextTandem() );
           },
-                             new ChargedParticleRepresentationNode( 1 ),
-                             positiveVisibleProperty ),
+          new ChargedParticleRepresentationNode( 1 ),
+          positiveVisibleProperty ),
 
         createDraggableItem( tandem.createTandem( 'negativeCharge' ),
-                             minusOneNanoCString,
+          minusOneNanoCString,
           function() {
             return model.addNegativeCharge( model.chargedParticleGroupTandem.createNextTandem() );
           },
-                             new ChargedParticleRepresentationNode( -1 ),
-                             negativeVisibleProperty ),
+          new ChargedParticleRepresentationNode( -1 ),
+          negativeVisibleProperty ),
 
         createDraggableItem( tandem.createTandem( 'electricFieldSensor' ),
-                             sensorsString,
-                             model.addElectricFieldSensor.bind( model ),
-                             new ElectricFieldSensorRepresentationNode(),
-                             electricFieldSensorVisibleProperty )
+          sensorsString,
+          function() {
+            return model.addElectricFieldSensor( model.electricFieldSensorGroupTandem.createNextTandem() );
+          },
+
+          new ElectricFieldSensorRepresentationNode(),
+          electricFieldSensorVisibleProperty )
       ]
     } );
 
