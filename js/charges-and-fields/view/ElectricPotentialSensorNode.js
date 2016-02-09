@@ -114,6 +114,15 @@ define( function( require ) {
       }
     } );
 
+    // See see https://github.com/phetsims/charges-and-fields/issues/73
+    var doNotStartDragListener = {
+      down: function( event ) {
+        event.handle();
+      }
+    };
+    clearButton.addInputListener( doNotStartDragListener );
+    plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
+
     // Create the voltage readout
     var voltageReadout = new Text( '', {
       font: ChargesAndFieldsConstants.DEFAULT_FONT
@@ -238,13 +247,6 @@ define( function( require ) {
         self.isUserControlled = false;
       }
     } );
-
-    // TODO: cleanup, see https://github.com/phetsims/charges-and-fields/issues/73 for concerns
-    this.movableDragHandler.tryToSnag = function( event ) {
-      if ( !_.contains( event.trail.nodes, clearButton ) && !_.contains( event.trail.nodes, plotElectricPotentialLineButton ) ) {
-        MovableDragHandler.prototype.tryToSnag.call( this, event );
-      }
-    };
 
     // When dragging, move the electric potential sensor
     self.addInputListener( this.movableDragHandler );
