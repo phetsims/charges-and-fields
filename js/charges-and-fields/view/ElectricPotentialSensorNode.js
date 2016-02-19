@@ -28,6 +28,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
@@ -124,8 +125,9 @@ define( function( require ) {
     plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
 
     // Create the voltage readout
-    var voltageReadout = new Text( '', {
-      font: ChargesAndFieldsConstants.DEFAULT_FONT
+    var voltageReadout = new TandemText( '', {
+      font: ChargesAndFieldsConstants.DEFAULT_FONT,
+      tandem: tandem.createTandem( 'voltageReadout' )
     } );
 
     /**
