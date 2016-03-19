@@ -515,8 +515,8 @@ define( function( require ) {
       this.clearShaderProgram = null;
 
       // Remove add/remove listeners
-      this.chargedParticles.addItemAddedListener( this.particleAddedListener );
-      this.chargedParticles.addItemRemovedListener( this.particleRemovedListener );
+      this.chargedParticles.removeItemAddedListener( this.particleAddedListener );
+      this.chargedParticles.removeItemRemovedListener( this.particleRemovedListener );
 
       // Remove position listeners
       while ( this.positionListeners.length ) {
