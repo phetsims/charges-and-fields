@@ -151,10 +151,7 @@ define( function( require ) {
       // If we're not visible, clear everything and exit. Our layerSplit above guarantees this won't clear other
       // node's renderings.
       if ( !this.node.isVisibleProperty.get() ) {
-        var backgroundColor = ChargesAndFieldsColors.background;
-        gl.clearColor( backgroundColor.r / 255, backgroundColor.g / 255, backgroundColor.b / 255, 1 );
-        gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
-        return;
+        return WebGLNode.PAINTED_NOTHING;
       }
 
       displayShaderProgram.use();
@@ -194,6 +191,8 @@ define( function( require ) {
       gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
 
       displayShaderProgram.unuse();
+
+      return WebGLNode.PAINTED_SOMETHING;
     },
 
     dispose: function() {
