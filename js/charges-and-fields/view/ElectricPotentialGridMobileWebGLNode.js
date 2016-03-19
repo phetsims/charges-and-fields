@@ -47,6 +47,7 @@ define( function( require ) {
       particle.positionProperty.link( invalidateSelfListener );
     } ); // particle added
     chargedParticles.addItemRemovedListener( function( particle ) {
+      invalidateSelfListener();
       particle.positionProperty.unlink( invalidateSelfListener );
     } ); // particle removed
   }
