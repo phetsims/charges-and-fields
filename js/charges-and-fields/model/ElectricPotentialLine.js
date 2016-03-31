@@ -48,46 +48,14 @@ define( function( require ) {
     this.position = position; // {Vector2} @public read-only static
     this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
 
-    this.isLinePresent = this.getIsLinePresent(); // {boolean} @public read-only static
-
-    if ( this.isLinePresent ) {
-      this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
-      this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
-      this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
-    }
-
+    this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
+    this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
+    this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
   }
 
   chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
 
   return inherit( Object, ElectricPotentialLine, {
-
-    /**
-     * Method that determines if an equipotential line is present based on
-     * (1) are there charges on the board?, (2) is the initial point of the search far away from all the charges?
-     * If both answers are yes, the function returns true;
-     *
-     * @public
-     * @returns {boolean}
-     */
-    getIsLinePresent: function() {
-      var isLinePresent; // {boolean}
-      if ( !this.isPlayAreaChargedProperty.value ) {
-        // if there are no charges, don't bother to find the electricPotential line
-        isLinePresent = false;
-      }
-      else {
-        var closestChargeDistance = this.getClosestChargedParticlePosition( this.position ).distance( this.position );
-        var closestAllowedDistance = 0.03; // in model coordinates, should be less than the radius (in the view) of a charged particle
-
-        // if the initial point for the electricPotential line search is too close to a charged particle, then
-        // the equipotential line will not be visible
-        // also see https://github.com/phetsims/charges-and-fields/issues/5
-        isLinePresent = (closestChargeDistance > closestAllowedDistance);
-
-      }
-      return isLinePresent;
-    },
 
     /**
      * getNextPositionAlongEquipotential gives the next position (within a distance deltaDistance) with the same electric Potential
@@ -316,26 +284,6 @@ define( function( require ) {
     },
 
     /**
-     * Function that determines the location of the closest charge to a given position.
-     * @private
-     * @param {Vector2} position
-     * @returns {Vector2}
-     */
-    getClosestChargedParticlePosition: function( position ) {
-      var closestChargedParticlePosition; // {Vector2}
-      var closestDistance = Number.POSITIVE_INFINITY;
-      assert && assert( this.chargedParticles.length > 0, ' the chargedParticles array must contain at least one element' );
-      this.chargedParticles.forEach( function( chargedParticle ) {
-        var distance = chargedParticle.position.distance( position );
-        if ( closestDistance > distance ) {
-          closestChargedParticlePosition = chargedParticle.position;
-          closestDistance = distance;
-        }
-      } );
-      return closestChargedParticlePosition;
-    },
-
-    /**
      * Function that prunes points from a positionArray. The goal of this method is to
      * speed up the laying out the line by passing to scenery the minimal number of points
      * in the position array while being visually equivalent.
@@ -440,7 +388,6 @@ define( function( require ) {
      * @returns {Shape}
      */
     getShape: function() {
-      assert && assert( this.isLinePresent, 'the positionArray cannot be empty' );
       var shape = new Shape();
       var prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
       return this.positionArrayToStraightLine( shape, prunedPositionArray, { isClosedLineSegments: this.isLineClosed } );

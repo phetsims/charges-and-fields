@@ -632,28 +632,34 @@ define( function( require ) {
        * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
        */
       addElectricPotentialLine: function( position ) {
-
-        var electricPotentialLinePosition = {};
-        if ( position ) {
-          electricPotentialLinePosition = position;
+        // Do not try to add an equipotential line if there are no charges.
+        if ( !this.isPlayAreaCharged ) {
+          return;
         }
-        else {
-          // use the location of the electric Potential Sensor as default position
-          electricPotentialLinePosition = this.electricPotentialSensor.position;
+
+        // use the location of the electric Potential Sensor as default position
+        if ( !position ) {
+          position = this.electricPotentialSensor.position;
+        }
+
+        // If we are too close to a charged particle, also bail out.
+        var isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), function( chargedParticle ) {
+          // in model coordinates, should be less than the radius (in the view) of a charged particle
+          return chargedParticle.position.distance( position ) < 0.03;
+        } ) );
+        if ( isTooCloseToParticle ) {
+          return;
         }
 
         var electricPotentialLine = new ElectricPotentialLine(
-          electricPotentialLinePosition,
+          position,
           this.enlargedBounds,
           this.activeChargedParticles,
           this.getElectricPotential.bind( this ),
           this.getElectricField.bind( this ),
           this.isPlayAreaChargedProperty );
 
-        // make sure the positionArray is not null
-        if ( electricPotentialLine.isLinePresent ) {
-          this.electricPotentialLinesArray.push( electricPotentialLine );
-        }
+        this.electricPotentialLinesArray.push( electricPotentialLine );
       },
 
       /**
