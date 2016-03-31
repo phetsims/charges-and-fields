@@ -15,7 +15,7 @@ define( function( require ) {
   var ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
   var ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
-  var SensorGrid = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/SensorGrid' );
+  var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -98,7 +98,7 @@ define( function( require ) {
     this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
 
     // @public read-only
-    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, this.bounds.minY, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
+    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, this.bounds.minY, 1.5 * WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
     // Observable array of all draggable electric charges
     // @public
@@ -120,19 +120,14 @@ define( function( require ) {
 
     this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
-    // electric Field Sensor Grid
-    // @public read-only
-    this.electricFieldSensorGrid = new SensorGrid( this.bounds, this.enlargedBounds, {
-      spacing: ELECTRIC_FIELD_SENSOR_SPACING,
-      onOrigin: true // the origin (0,0) is also the location of a sensor
-    } ); //{Array.<StaticSensorElement>}
+    // @public {Array.<StaticSensorElement} read-only
+    // electric Field Sensor Grid, the origin (0,0) is also the location of a sensor
+    this.electricFieldSensorGrid = ChargesAndFieldsModel.createSensorGrid( this.bounds, this.enlargedBounds, ELECTRIC_FIELD_SENSOR_SPACING, true );
 
+    // @public {Array.<StaticSensorElement} read-only
     // electric potential Sensor Grid, a.k.a in physics as the electric potential 'field'
-    // @public read-only
-    this.electricPotentialSensorGrid = new SensorGrid( this.bounds, this.enlargedBounds, {
-      spacing: ELECTRIC_POTENTIAL_SENSOR_SPACING,
-      onOrigin: false // the origin is equidistant from the four nearest neighbor sensors.
-    } ); // {Array.<StaticSensorElement>}
+    // the origin is equidistant from the four nearest neighbor sensors.
+    this.electricPotentialSensorGrid = ChargesAndFieldsModel.createSensorGrid( this.bounds, this.enlargedBounds, ELECTRIC_POTENTIAL_SENSOR_SPACING, false );
 
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
@@ -683,7 +678,87 @@ define( function( require ) {
     clearElectricPotentialLines: function() {
       this.electricPotentialLines.clear();
     }
+  }, {
 
+    /**
+     * Constructs a grid of StaticSensorElements.
+     * @private
+     *
+     * TODO: cleanup. We now don't have the enlargedBounds going below, and there's some simplifications that can be
+     * made.
+     *
+     * @param {Bounds2} bounds
+     * @param {Bounds2} enlargedBounds
+     * @param {number} spacing
+     * @param {boolean} onOrigin
+     * @constructor
+     */
+    createSensorGrid: function( bounds, enlargedBounds, spacing, onOrigin ) {
+      /*
+       The diagram below represents the bounds used in the model.
+       The bounds defined by 'bounds' is inscribed in the lower middle portion. The origin (0,0) of the model
+       is located as the center of 'bounds'. This bounds has a height of HEIGHT and width of WIDTH.
+       The bounds defined by 'enlargedBounds' is represented by the largest bounds.
+
+       In the view the viewport will always include 'bounds' and may or may not include the optional (OPT) regions
+       depending on the aspect ratio. The viewport will never have access to the fallow regions.
+
+       The sensorGridFactory generates an array of equally spaced sensors on the region defined by the
+       cross. The four fallow regions are not seeded with sensors.
+
+       ********---------------********
+       *       |             |       *
+       *       |             |       *
+       * fallow|     OPT     |fallow *
+       *       |     UP      |       *
+       *       |             |       *
+       |-------|------------ |-------|
+       |  OPT  |             |  OPT  |
+       |  LEFT |             | RIGHT |
+       |       |    (0,0)    |       |
+       |       |      bounds |       |
+       |       |             |       |
+       |-------|-------------|-------|
+       *       |             |       *
+       *       |             |       *
+       * fallow|    fallow   |fallow *
+       *       |             |       *
+       ********---------------********
+
+       */
+
+      var result = [];
+
+      // bounds that includes OPT UP, bounds, and OPT DOWN
+      var verticalBeamBounds = new Bounds2( bounds.minX, enlargedBounds.minY, bounds.maxX, enlargedBounds.maxY );
+
+      // bounds that includes OPT LEFT, bounds, and OPT RIGHT
+      var horizontalBeamBounds = new Bounds2( enlargedBounds.minX, bounds.minY, enlargedBounds.maxX, bounds.maxY );
+
+      var offset = onOrigin ? 0 : 0.5;
+
+      // the following variables are integers or half-integers
+      var minI = Math.ceil( enlargedBounds.minX / spacing ) - offset;
+      var maxI = Math.floor( enlargedBounds.maxX / spacing ) + offset;
+      var minJ = Math.ceil( enlargedBounds.minY / spacing ) - offset;
+      var maxJ = Math.floor( enlargedBounds.maxY / spacing ) + offset;
+
+      var vector;
+      var i;
+      var j;
+
+      for ( i = minI + 1; i < maxI; i++ ) {
+        for ( j = minJ + 1; j < maxJ; j++ ) {
+          vector = new Vector2( i * spacing, j * spacing );
+          // include the sensor element if its location is within the verticalBeam or horizontalBeam bounds;
+          if ( verticalBeamBounds.containsPoint( vector ) || horizontalBeamBounds.containsPoint( vector ) ) {
+            result.push( new StaticSensorElement( vector ) );
+          }
+        }
+      }
+
+      return result;
+    }
   } );
 } );
 
