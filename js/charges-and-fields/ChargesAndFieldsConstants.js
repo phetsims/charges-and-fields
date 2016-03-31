@@ -38,9 +38,6 @@ define( function( require ) {
     ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the strength and angle of the electric field sensors
     CHECK_BOX_FONT: new PhetFont( { size: 16 } ), // font for the control panel on the upper right hand side
 
-    MAX_ELECTRIC_FIELD_MAGNITUDE: 5, // electricField at which color will saturate to maxColor (in Volts/meter)
-    ELECTRIC_FIELD_GRID_ARROW_LENGTH: 40, // in scenery coordinates
-    ELECTRIC_FIELD_GRID_CIRCLE_RADIUS: 2 // radius of small disk on top of each electric field grid arrows ( indicates the pivot point of the electric field vector)
-
+    MAX_ELECTRIC_FIELD_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
   } );
 } );
