@@ -144,18 +144,19 @@ define( function( require ) {
       /*
        * General Idea of this algorithm
        *
-       * The electricPotential line is found using two searches. Starting from an initial point, we find the electric field at
-       * this position and define the point to the left of the electric field as the counterclockwise point, whereas the point that is
-       * 90 degree right of the electric field is the clockwise point. The points are stored in a counterclockwise and clockwise array.
-       * The search of the clockwise and counterclockwise points done concurrently. The search stops if (1) the number of
-       * searching steps exceeds a large number and (2) either the clockwise or counterClockwise point is very far away from the origin.
-       * A third condition to bailout of the search is that the clockwise and counterClockwise position are very close to one another
-       * in which case we have a closed electricPotential line. Note that if the conditions (1) and (2) are fulfilled the electricPotential line
-       * is not going to be a closed line but this is so far away from the screenview that the end user will simply see the line going
-       * beyond the screen.
+       * The electricPotential line is found using two searches. Starting from an initial point, we find the electric
+       * field at this position and define the point to the left of the electric field as the counterclockwise point,
+       * whereas the point that is 90 degree right of the electric field is the clockwise point. The points are stored
+       * in a counterclockwise and clockwise array. The search of the clockwise and counterclockwise points done
+       * concurrently. The search stops if (1) the number of searching steps exceeds a large number and (2) either the
+       * clockwise or counterClockwise point is very far away from the origin. A third condition to bailout of the
+       * search is that the clockwise and counterClockwise position are very close to one another in which case we have
+       * a closed electricPotential line. Note that if the conditions (1) and (2) are fulfilled the electricPotential
+       * line is not going to be a closed line but this is so far away from the screenview that the end user will simply
+       * see the line going beyond the screen.
        *
-       * After the search is done, the function returns an array of points ordered in a counterclockwise direction, i.e. after
-       * joining all the points, the directed line would be made of points that have an electric field
+       * After the search is done, the function returns an array of points ordered in a counterclockwise direction,
+       * i.e. after joining all the points, the directed line would be made of points that have an electric field
        * pointing clockwise (yes  clockwise) to the direction of the line.
        */
       var stepCounter = 0; // {number} integer

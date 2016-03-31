@@ -341,351 +341,349 @@ define( function( require ) {
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
 
   return inherit( PropertySet, ChargesAndFieldsModel, {
-      /**
-       * Reset function
-       * @public
-       */
-      reset: function() {
-        // we want to avoid the cost of constantly re-updating the grids when emptying the chargedParticles array
-        // so we set the flag isResetting to true.
-        this.isResetting = true;
-        PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
-        this.chargedParticles.clear(); // clear all the charges
-        this.activeChargedParticles.clear(); // clear all the active charges
-        this.electricFieldSensors.clear(); // clear all the electric field sensors
-        this.electricPotentialLines.clear(); // clear the electricPotential 'lines'
-        this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
-        this.measuringTape.reset();
-        this.updateElectricFieldSensorGrid(); // will reset the grid to zero
-        this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
-        this.isResetting = false; // done with the resetting process
-      },
+    /**
+     * Reset function
+     * @public
+     */
+    reset: function() {
+      // we want to avoid the cost of constantly re-updating the grids when emptying the chargedParticles array
+      // so we set the flag isResetting to true.
+      this.isResetting = true;
+      PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
+      this.chargedParticles.clear(); // clear all the charges
+      this.activeChargedParticles.clear(); // clear all the active charges
+      this.electricFieldSensors.clear(); // clear all the electric field sensors
+      this.electricPotentialLines.clear(); // clear the electricPotential 'lines'
+      this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
+      this.measuringTape.reset();
+      this.updateElectricFieldSensorGrid(); // will reset the grid to zero
+      this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
+      this.isResetting = false; // done with the resetting process
+    },
 
-      /**
-       * Adds an element to a particular array (ChargedParticle/ElectricFieldSensor to
-       * chargedParticles/electricFieldSensors), and sets it up for removal when returned to the panel.
-       * @private
-       *
-       * @param {ChargedParticle | ElectricFieldSensor} element
-       * @param {ObservableArray.<ChargedParticle> | ObservableArray.<ElectricFieldSensor>} observableArray
-       */
-      addModelElement: function( element, observableArray ) {
-        observableArray.push( element );
-        element.once( 'returnedToOrigin', function() {
-          observableArray.remove( element );
-        } );
-        return element; // for chaining
-      },
+    /**
+     * Adds an element to a particular array (ChargedParticle/ElectricFieldSensor to
+     * chargedParticles/electricFieldSensors), and sets it up for removal when returned to the panel.
+     * @private
+     *
+     * @param {ChargedParticle | ElectricFieldSensor} element
+     * @param {ObservableArray.<ChargedParticle> | ObservableArray.<ElectricFieldSensor>} observableArray
+     */
+    addModelElement: function( element, observableArray ) {
+      observableArray.push( element );
+      element.once( 'returnedToOrigin', function() {
+        observableArray.remove( element );
+      } );
+      return element; // for chaining
+    },
 
-      /**
-       * Adds a positive charge to the model, and returns it.
-       * @public
-       *
-       * @returns {ChargedParticle}
-       */
-      addPositiveCharge: function( tandem ) {
-        return this.addModelElement( new ChargedParticle( 1, tandem ), this.chargedParticles );
-      },
+    /**
+     * Adds a positive charge to the model, and returns it.
+     * @public
+     *
+     * @returns {ChargedParticle}
+     */
+    addPositiveCharge: function( tandem ) {
+      return this.addModelElement( new ChargedParticle( 1, tandem ), this.chargedParticles );
+    },
 
-      /**
-       * Adds a negative charge to the model, and returns it.
-       * @public
-       *
-       * @returns {ChargedParticle}
-       */
-      addNegativeCharge: function( tandem ) {
-        return this.addModelElement( new ChargedParticle( -1, tandem ), this.chargedParticles );
-      },
+    /**
+     * Adds a negative charge to the model, and returns it.
+     * @public
+     *
+     * @returns {ChargedParticle}
+     */
+    addNegativeCharge: function( tandem ) {
+      return this.addModelElement( new ChargedParticle( -1, tandem ), this.chargedParticles );
+    },
 
-      /**
-       * Adds an electric field sensor to the model, and returns it.
-       * @public
-       *
-       * @returns {ElectricFieldSensor}
-       */
-      addElectricFieldSensor: function( tandem ) {
-        return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), tandem ), this.electricFieldSensors );
-      },
+    /**
+     * Adds an electric field sensor to the model, and returns it.
+     * @public
+     *
+     * @returns {ElectricFieldSensor}
+     */
+    addElectricFieldSensor: function( tandem ) {
+      return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), tandem ), this.electricFieldSensors );
+    },
 
-      /**
-       * Function that determines if there is at least one active and "uncompensated" charge
-       * on the board. If this is not the case, it implies that the E-field is zero everywhere
-       * (see https://github.com/phetsims/charges-and-fields/issues/46)
-       * @private
-       */
-      updateIsPlayAreaCharged: function() {
-        var sumElectricCharge = 0; // {number} keep track of the electric charge
-        var sumActiveChargedParticle = 0; // {number} keep track of the numbers of active charges on the board
+    /**
+     * Function that determines if there is at least one active and "uncompensated" charge
+     * on the board. If this is not the case, it implies that the E-field is zero everywhere
+     * (see https://github.com/phetsims/charges-and-fields/issues/46)
+     * @private
+     */
+    updateIsPlayAreaCharged: function() {
+      var sumElectricCharge = 0; // {number} keep track of the electric charge
+      var sumActiveChargedParticle = 0; // {number} keep track of the numbers of active charges on the board
 
-        this.activeChargedParticles.forEach( function( chargedParticle ) {
-          sumActiveChargedParticle++;
-          sumElectricCharge += chargedParticle.charge;
-        } );
+      this.activeChargedParticles.forEach( function( chargedParticle ) {
+        sumActiveChargedParticle++;
+        sumElectricCharge += chargedParticle.charge;
+      } );
 
-        if ( sumElectricCharge !== 0 ) {
-          this.isPlayAreaCharged = true; // by Gauss's law there must be an electric field
-        }
-        // then the sum of the charge is necessarily zero, however the electric field may not be zero
-        else if ( sumActiveChargedParticle === 0 ) {
-          // there is not net charge on the board, hence no electric field
+      if ( sumElectricCharge !== 0 ) {
+        this.isPlayAreaCharged = true; // by Gauss's law there must be an electric field
+      }
+      // then the sum of the charge is necessarily zero, however the electric field may not be zero
+      else if ( sumActiveChargedParticle === 0 ) {
+        // there is not net charge on the board, hence no electric field
+        this.isPlayAreaCharged = false;
+      }
+      else if ( sumActiveChargedParticle === 2 ) {
+        // one charge is necessarily positive and the other one negative
+        if ( (this.activeChargedParticles.get( 1 ).position).equals( this.activeChargedParticles.get( 0 ).position ) ) {
+          // the charges occupy the same position and are therefore compensated
           this.isPlayAreaCharged = false;
         }
-        else if ( sumActiveChargedParticle === 2 ) {
-          // one charge is necessarily positive and the other one negative
-          if ( (this.activeChargedParticles.get( 1 ).position).equals( this.activeChargedParticles.get( 0 ).position ) ) {
-            // the charges occupy the same position and are therefore compensated
-            this.isPlayAreaCharged = false;
-          }
-          else {
-            this.isPlayAreaCharged = true;
-          }
-        }
-        else if ( sumActiveChargedParticle === 4 ) {
-          var positiveChargePositionArray = [];
-          var negativeChargePositionArray = [];
-          this.activeChargedParticles.forEach( function( chargedParticle ) {
-            if ( chargedParticle.charge === 1 ) {
-              positiveChargePositionArray.push( chargedParticle.position );
-            }
-            else {
-              negativeChargePositionArray.push( chargedParticle.position );
-            }
-          } );
-
-          if (
-            (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
-             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] )) ||
-            (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
-             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) ) {
-            this.isPlayAreaCharged = false;
-          }
-          else {
-            this.isPlayAreaCharged = true;
-          }
-        }
-        // for more than six charges
         else {
-          // there are cases with six charges (and above) that can be compensated
-          // however it is quite expensive to make this type of check as well as
-          // incredibly unlikely to be the case in the first place.
           this.isPlayAreaCharged = true;
         }
-      },
-      /**
-       * Update the four types of sensors
-       * @private
-       */
-      updateAllSensors: function() {
-        this.electricPotentialSensor.update();
+      }
+      else if ( sumActiveChargedParticle === 4 ) {
+        var positiveChargePositionArray = [];
+        var negativeChargePositionArray = [];
+        this.activeChargedParticles.forEach( function( chargedParticle ) {
+          if ( chargedParticle.charge === 1 ) {
+            positiveChargePositionArray.push( chargedParticle.position );
+          }
+          else {
+            negativeChargePositionArray.push( chargedParticle.position );
+          }
+        } );
+
+        if (
+          (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
+           negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] )) ||
+          (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
+           negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) ) {
+          this.isPlayAreaCharged = false;
+        }
+        else {
+          this.isPlayAreaCharged = true;
+        }
+      }
+      // for more than six charges
+      else {
+        // there are cases with six charges (and above) that can be compensated
+        // however it is quite expensive to make this type of check as well as
+        // incredibly unlikely to be the case in the first place.
+        this.isPlayAreaCharged = true;
+      }
+    },
+    /**
+     * Update the four types of sensors
+     * @private
+     */
+    updateAllSensors: function() {
+      this.electricPotentialSensor.update();
+      this.updateElectricPotentialSensorGrid();
+      this.updateElectricFieldSensors();
+      this.updateElectricFieldSensorGrid();
+    },
+
+    /**
+     * Update all the visible sensors
+     * @private
+     */
+    updateAllVisibleSensors: function() {
+      if ( this.isElectricPotentialVisible === true ) {
         this.updateElectricPotentialSensorGrid();
-        this.updateElectricFieldSensors();
+      }
+      if ( this.isElectricFieldVisible === true ) {
         this.updateElectricFieldSensorGrid();
-      },
+      }
+      // the following sensors may not be visible or active but
+      // it is very inexpensive to update them ( updating them avoid putting extra logic to handle
+      // the transition visible/invisible)
+      this.electricPotentialSensor.update();
+      this.updateElectricFieldSensors();
+    },
 
-      /**
-       * Update all the visible sensors
-       * @private
-       */
-      updateAllVisibleSensors: function() {
-        if ( this.isElectricPotentialVisible === true ) {
-          this.updateElectricPotentialSensorGrid();
+    /**
+     * Update the Electric Field Sensors
+     * @private
+     */
+    updateElectricFieldSensors: function() {
+      var thisModel = this;
+      this.electricFieldSensors.forEach( function( sensorElement ) {
+        sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+      } );
+    },
+
+    /**
+     * Update the Electric Potential Grid Sensors
+     * @private
+     */
+    updateElectricPotentialSensorGrid: function() {
+      var thisModel = this;
+      this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
+        sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
+
+      } );
+      // send a signal that the electric potential grid has just been updated
+      this.trigger( 'electricPotentialGridUpdated' );
+    },
+
+    /**
+     * Update the Electric Field Grid Sensors
+     * @private
+     */
+    updateElectricFieldSensorGrid: function() {
+      var thisModel = this;
+      this.electricFieldSensorGrid.forEach( function( sensorElement ) {
+        sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+      } );
+      // send a signal that the electric field grid has just been updated
+      this.trigger( 'electricFieldGridUpdated' );
+    },
+
+    /**
+     * Return the change in the electric field at position Position due to the motion of a
+     * charged particle from oldChargePosition to  newChargePosition.
+     * @private
+     * @param {Vector2} position
+     * @param {Vector2} newChargePosition
+     * @param {Vector2} oldChargePosition
+     * @param {number} particleCharge - allowed values are +1 or -1
+     * @returns {{x:number,y:number}}
+     */
+    getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
+      var newDistancePowerCube = Math.pow( newChargePosition.distanceSquared( position ), 1.5 );
+      var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
+
+      // For performance reason, we don't want to generate more vector allocations
+      // Here is the original code
+      // var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
+      // var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
+      // var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
+      // @formatter:off
+      return {
+        x: ((position.x - newChargePosition.x) / ( newDistancePowerCube ) -
+            (position.x - oldChargePosition.x) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT ),
+        y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
+            (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT )
+      };
+      // @formatter:on
+    },
+
+    /**
+     * Return the change in the electric potential at location 'position' due to the motion of a
+     * charged particle from oldChargePosition to newChargePosition.
+     * @private
+     * @param {Vector2} position
+     * @param {Vector2} newChargePosition
+     * @param {Vector2} oldChargePosition
+     * @param {number} particleCharge
+     * @returns {number} electricPotentialChange
+     */
+    getElectricPotentialChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
+      var newDistance = newChargePosition.distance( position );
+      var oldDistance = oldChargePosition.distance( position );
+      return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
+    },
+
+    /**
+     * Return the electric field ( a vector) at a location 'position'
+     * @private
+     * @param {Vector2} position
+     * @returns {Vector2} electricField
+     */
+    getElectricField: function( position ) {
+      var electricField = new Vector2( 0, 0 );
+      this.chargedParticles.forEach( function( chargedParticle ) {
+        if ( chargedParticle.isActive ) {
+          var distanceSquared = chargedParticle.position.distanceSquared( position );
+          var distancePowerCube = Math.pow( distanceSquared, 1.5 );
+          // For performance reason, we don't want to generate more vector allocations
+          var electricFieldContribution = {
+            x: (position.x - chargedParticle.position.x) * (chargedParticle.charge) / distancePowerCube,
+            y: (position.y - chargedParticle.position.y) * (chargedParticle.charge) / distancePowerCube
+          };
+          electricField.add( electricFieldContribution );
         }
-        if ( this.isElectricFieldVisible === true ) {
-          this.updateElectricFieldSensorGrid();
+      } );
+      electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
+      return electricField;
+    },
+
+    /**
+     * Return the electric potential at a location 'position' due to the configuration of charges on the board.
+     * @public read-Only
+     * @param {Vector2} position
+     * @returns {number} electricPotential
+     */
+    getElectricPotential: function( position ) {
+      var electricPotential = 0;
+      this.chargedParticles.forEach( function( chargedParticle ) {
+        if ( chargedParticle.isActive ) {
+          var distance = chargedParticle.position.distance( position );
+          electricPotential += (chargedParticle.charge) / distance;
         }
-        // the following sensors may not be visible or active but
-        // it is very inexpensive to update them ( updating them avoid putting extra logic to handle
-        // the transition visible/invisible)
-        this.electricPotentialSensor.update();
-        this.updateElectricFieldSensors();
-      },
+      } );
+      electricPotential *= K_CONSTANT; // prefactor depends on units
+      return electricPotential;
+    },
 
-      /**
-       * Update the Electric Field Sensors
-       * @private
-       */
-      updateElectricFieldSensors: function() {
-        var thisModel = this;
-        this.electricFieldSensors.forEach( function( sensorElement ) {
-          sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-        } );
-      },
-
-      /**
-       * Update the Electric Potential Grid Sensors
-       * @private
-       */
-      updateElectricPotentialSensorGrid: function() {
-        var thisModel = this;
-        this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-          sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-
-        } );
-        // send a signal that the electric potential grid has just been updated
-        this.trigger( 'electricPotentialGridUpdated' );
-      },
-
-      /**
-       * Update the Electric Field Grid Sensors
-       * @private
-       */
-      updateElectricFieldSensorGrid: function() {
-        var thisModel = this;
-        this.electricFieldSensorGrid.forEach( function( sensorElement ) {
-          sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-        } );
-        // send a signal that the electric field grid has just been updated
-        this.trigger( 'electricFieldGridUpdated' );
-      },
-
-      /**
-       * Return the change in the electric field at position Position due to the motion of a
-       * charged particle from oldChargePosition to  newChargePosition.
-       * @private
-       * @param {Vector2} position
-       * @param {Vector2} newChargePosition
-       * @param {Vector2} oldChargePosition
-       * @param {number} particleCharge - allowed values are +1 or -1
-       * @returns {{x:number,y:number}}
-       */
-      getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
-        var newDistancePowerCube = Math.pow( newChargePosition.distanceSquared( position ), 1.5 );
-        var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
-
-        // For performance reason, we don't want to generate more vector allocations
-        // Here is the original code
-        // var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
-        // var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
-        // var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
-        // @formatter:off
-        return {
-          x: ((position.x - newChargePosition.x) / ( newDistancePowerCube ) -
-              (position.x - oldChargePosition.x) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT ),
-          y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
-              (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT )
-        };
-        // @formatter:on
-      },
-
-      /**
-       * Return the change in the electric potential at location 'position' due to the motion of a
-       * charged particle from oldChargePosition to newChargePosition.
-       * @private
-       * @param {Vector2} position
-       * @param {Vector2} newChargePosition
-       * @param {Vector2} oldChargePosition
-       * @param {number} particleCharge
-       * @returns {number} electricPotentialChange
-       */
-      getElectricPotentialChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
-        var newDistance = newChargePosition.distance( position );
-        var oldDistance = oldChargePosition.distance( position );
-        return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
-      },
-
-      /**
-       * Return the electric field ( a vector) at a location 'position'
-       * @private
-       * @param {Vector2} position
-       * @returns {Vector2} electricField
-       */
-      getElectricField: function( position ) {
-        var electricField = new Vector2( 0, 0 );
-        this.chargedParticles.forEach( function( chargedParticle ) {
-          if ( chargedParticle.isActive ) {
-            var distanceSquared = chargedParticle.position.distanceSquared( position );
-            var distancePowerCube = Math.pow( distanceSquared, 1.5 );
-            // For performance reason, we don't want to generate more vector allocations
-            var electricFieldContribution = {
-              x: (position.x - chargedParticle.position.x) * (chargedParticle.charge) / distancePowerCube,
-              y: (position.y - chargedParticle.position.y) * (chargedParticle.charge) / distancePowerCube
-            };
-            electricField.add( electricFieldContribution );
-          }
-        } );
-        electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
-        return electricField;
-      },
-
-      /**
-       * Return the electric potential at a location 'position' due to the configuration of charges on the board.
-       * @public read-Only
-       * @param {Vector2} position
-       * @returns {number} electricPotential
-       */
-      getElectricPotential: function( position ) {
-        var electricPotential = 0;
-        this.chargedParticles.forEach( function( chargedParticle ) {
-          if ( chargedParticle.isActive ) {
-            var distance = chargedParticle.position.distance( position );
-            electricPotential += (chargedParticle.charge) / distance;
-          }
-        } );
-        electricPotential *= K_CONSTANT; // prefactor depends on units
-        return electricPotential;
-      },
-
-      /**
-       * Push an electricPotentialLine to an observable array
-       * The drawing of the electricPotential line is handled in the view (electricPotentialLineNode)
-       * @public
-       * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
-       */
-      addElectricPotentialLine: function( position ) {
-        // Do not try to add an equipotential line if there are no charges.
-        if ( !this.isPlayAreaCharged ) {
-          return;
-        }
-
-        // use the location of the electric Potential Sensor as default position
-        if ( !position ) {
-          position = this.electricPotentialSensor.position;
-        }
-
-        // If we are too close to a charged particle, also bail out.
-        var isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), function( chargedParticle ) {
-          // in model coordinates, should be less than the radius (in the view) of a charged particle
-          return chargedParticle.position.distance( position ) < 0.03;
-        } ) );
-        if ( isTooCloseToParticle ) {
-          return;
-        }
-
-        var electricPotentialLine = new ElectricPotentialLine(
-          position,
-          this.enlargedBounds,
-          this.activeChargedParticles,
-          this.getElectricPotential.bind( this ),
-          this.getElectricField.bind( this ),
-          this.isPlayAreaChargedProperty );
-
-        this.electricPotentialLines.push( electricPotentialLine );
-      },
-
-      /**
-       * Push many electric Potential Lines to an observable array
-       * The drawing of the electric Potential Lines is handled in the view.
-       * @param {number} numberOfLines
-       * USED IN DEBUGGING MODE
-       */
-      addManyElectricPotentialLines: function( numberOfLines ) {
-        var i;
-        for ( i = 0; i < numberOfLines; i++ ) {
-          var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
-          this.addElectricPotentialLine( position );
-        }
-      },
-
-      /**
-       * Function that clears the Equipotential Lines Observable Array
-       * @public
-       */
-      clearElectricPotentialLines: function() {
-        this.electricPotentialLines.clear();
+    /**
+     * Push an electricPotentialLine to an observable array
+     * The drawing of the electricPotential line is handled in the view (electricPotentialLineNode)
+     * @public
+     * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
+     */
+    addElectricPotentialLine: function( position ) {
+      // Do not try to add an equipotential line if there are no charges.
+      if ( !this.isPlayAreaCharged ) {
+        return;
       }
 
+      // use the location of the electric Potential Sensor as default position
+      if ( !position ) {
+        position = this.electricPotentialSensor.position;
+      }
+
+      // If we are too close to a charged particle, also bail out.
+      var isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), function( chargedParticle ) {
+        // in model coordinates, should be less than the radius (in the view) of a charged particle
+        return chargedParticle.position.distance( position ) < 0.03;
+      } ) );
+      if ( isTooCloseToParticle ) {
+        return;
+      }
+
+      var electricPotentialLine = new ElectricPotentialLine(
+        position,
+        this.enlargedBounds,
+        this.activeChargedParticles,
+        this.getElectricPotential.bind( this ),
+        this.getElectricField.bind( this ),
+        this.isPlayAreaChargedProperty );
+
+      this.electricPotentialLines.push( electricPotentialLine );
+    },
+
+    /**
+     * Push many electric Potential Lines to an observable array
+     * The drawing of the electric Potential Lines is handled in the view.
+     * @param {number} numberOfLines
+     * USED IN DEBUGGING MODE
+     */
+    addManyElectricPotentialLines: function( numberOfLines ) {
+      var i;
+      for ( i = 0; i < numberOfLines; i++ ) {
+        var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
+        this.addElectricPotentialLine( position );
+      }
+    },
+
+    /**
+     * Function that clears the Equipotential Lines Observable Array
+     * @public
+     */
+    clearElectricPotentialLines: function() {
+      this.electricPotentialLines.clear();
     }
-  )
-    ;
+
+  } );
 } );
 
