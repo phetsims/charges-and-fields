@@ -181,12 +181,12 @@ define( function( require ) {
   /**
    * Scenery node that is responsible for displaying the electric potential lines
    *
-   * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLinesArray - array of models of electricPotentialLine
+   * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLines - array of models of electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
    * @constructor
    */
-  function ElectricPotentialLinesNode( electricPotentialLinesArray, modelViewTransform, areValuesVisibleProperty ) {
+  function ElectricPotentialLinesNode( electricPotentialLines, modelViewTransform, areValuesVisibleProperty ) {
 
     // call the super constructor
     Node.call( this );
@@ -206,7 +206,7 @@ define( function( require ) {
     this.addChild( labelsNode );
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-    electricPotentialLinesArray.addItemAddedListener( function( electricPotentialLine ) {
+    electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
 
       var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
@@ -240,7 +240,7 @@ define( function( require ) {
         circlesNode.addChild( text );
       }
 
-      electricPotentialLinesArray.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
+      electricPotentialLines.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
         if ( removedElectricPotentialLine === electricPotentialLine ) {
 
           pathsNode.removeChild( electricPotentialLinePath );
@@ -253,7 +253,7 @@ define( function( require ) {
           electricPotentialLinePath.dispose();
           voltageLabel.dispose();
 
-          electricPotentialLinesArray.removeItemRemovedListener( removalListener );
+          electricPotentialLines.removeItemRemovedListener( removalListener );
         }
       } ); // end of addItemRemovedListener
 

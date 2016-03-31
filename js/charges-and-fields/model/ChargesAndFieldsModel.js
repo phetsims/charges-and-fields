@@ -136,7 +136,7 @@ define( function( require ) {
 
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
-    this.electricPotentialLinesArray = new ObservableArray(); // {ObservableArray.<ElectricPotentialLine>}
+    this.electricPotentialLines = new ObservableArray(); // {ObservableArray.<ElectricPotentialLine>}
 
     //----------------------------------------------------------------------------------------
     //
@@ -187,7 +187,7 @@ define( function( require ) {
 
       var isActiveListener = function( isActive ) {
 
-        // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLinesArray
+        // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLines
         thisModel.clearElectricPotentialLines();
 
         if ( isActive ) {
@@ -353,7 +353,7 @@ define( function( require ) {
         this.chargedParticles.clear(); // clear all the charges
         this.activeChargedParticles.clear(); // clear all the active charges
         this.electricFieldSensors.clear(); // clear all the electric field sensors
-        this.electricPotentialLinesArray.clear(); // clear the electricPotential 'lines'
+        this.electricPotentialLines.clear(); // clear the electricPotential 'lines'
         this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
         this.measuringTape.reset();
         this.updateElectricFieldSensorGrid(); // will reset the grid to zero
@@ -659,7 +659,7 @@ define( function( require ) {
           this.getElectricField.bind( this ),
           this.isPlayAreaChargedProperty );
 
-        this.electricPotentialLinesArray.push( electricPotentialLine );
+        this.electricPotentialLines.push( electricPotentialLine );
       },
 
       /**
@@ -681,7 +681,7 @@ define( function( require ) {
        * @public
        */
       clearElectricPotentialLines: function() {
-        this.electricPotentialLinesArray.clear();
+        this.electricPotentialLines.clear();
       }
 
     }

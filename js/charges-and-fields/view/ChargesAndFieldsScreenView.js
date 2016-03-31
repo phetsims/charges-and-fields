@@ -129,7 +129,7 @@ define( function( require ) {
 
     // Create the scenery node responsible for drawing the electricPotential lines
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
-      model.electricPotentialLinesArray,
+      model.electricPotentialLines,
       modelViewTransform,
       model.areValuesVisibleProperty );
 
