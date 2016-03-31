@@ -281,7 +281,7 @@ define( function( require ) {
     // return the electric Potential sensor to the toolboxPanel if it is not user Controlled and the
     // location of the sensor is inside the toolboxPanel panel
     electricPotentialSensorNode.isUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
+      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 5 ) ) ) {
         model.electricPotentialSensor.isActive = false;
       }
     } );
@@ -289,7 +289,8 @@ define( function( require ) {
     // listens to the isUserControlled property of the measuring tape
     // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the toolbox panel
     measuringTapeNode.isBaseUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( model.measuringTape.basePosition ) ) ) {
+      var tapeBaseBounds = measuringTapeNode.localToParentBounds( measuringTapeNode.getLocalBaseBounds() );
+      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( tapeBaseBounds.eroded( 5 ) ) ) {
         model.measuringTape.isActive = false;
       }
     } );
