@@ -58,22 +58,6 @@ define( function( require ) {
   return inherit( Object, ElectricPotentialLine, {
 
     /**
-     * getNextPositionAlongEquipotential gives the next position (within a distance deltaDistance) with the same electric Potential
-     * as the initial position.  If delta epsilon is positive, it gives as the next position, a point that is pointing (approximately) 90 degrees
-     * to the left of the electric field (counterclockwise) whereas if deltaDistance is negative the next position is 90 degrees to the right of the
-     * electric Field.
-     *
-     * The algorithm works best for small epsilon.
-     * @private
-     * @param {Vector2} position
-     * @param {number} deltaDistance - a distance
-     * @returns {Vector2} next point along the electricPotential line
-     */
-    getNextPositionAlongEquipotential: function( position, deltaDistance ) {
-      return this.getNextPositionAlongEquipotentialWithElectricPotential( position, this.electricPotential, deltaDistance );
-    },
-
-    /**
      * Given an (initial) position, find a position with the targeted electric potential within a distance 'deltaDistance'
      * This finds the next position with a precision of  ('deltaDistance')^2. There are other algorithms
      * that are more precise however, this is globally quite precise since it keeps track of the targeted electric potential
@@ -115,31 +99,6 @@ define( function( require ) {
       else {
         return midwayPosition.add( deltaPosition ); // {Vector2} finalPosition
       }
-    },
-
-    /**
-     * Given an (initial) position, find a position with the targeted electric potential within a distance deltaDistance
-     * This uses a standard midpoint algorithm
-     * This is guaranteed to be within a distance deltaDistance of the initial position.
-     * Although it is locally more precise than getNextPositionAlongEquipotentialWithElectricPotential (by a very small margin though),
-     * this algorithm is not stable and the equipotential will start to drift over many steps.
-     *
-     * http://en.wikipedia.org/wiki/Midpoint_method
-     * @private
-     * @param {Vector2} position
-     * @param {number} deltaDistance - a distance in meters, can be positive or negative
-     * @returns {Vector2} finalPosition
-     */
-    getNextPositionAlongEquipotentialWithMidPoint: function( position, deltaDistance ) {
-      var initialElectricField = this.getElectricField( position ); // {Vector2}
-      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
-      var initialEquipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var midwayPosition = ( initialEquipotentialNormalizedVector.multiplyScalar( deltaDistance / 2 ) ).add( position ); // {Vector2}
-      var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
-      assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
-      var midwayEquipotentialNormalizedVector = midwayElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var deltaPosition = midwayEquipotentialNormalizedVector.multiplyScalar( deltaDistance ); // {Vector2}
-      return deltaPosition.add( position ); // {Vector2} finalPosition
     },
 
     /**
