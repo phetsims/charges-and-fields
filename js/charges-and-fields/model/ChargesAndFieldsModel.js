@@ -643,10 +643,9 @@ define( function( require ) {
      * @param {Bounds2} bounds
      * @param {Bounds2} enlargedBounds
      * @param {number} spacing
-     * @param {boolean} onOrigin
      * @constructor
      */
-    createSensorGrid: function( bounds, enlargedBounds, spacing, onOrigin ) {
+    createSensorGrid: function( bounds, enlargedBounds, spacing ) {
       /*
        The diagram below represents the bounds used in the model.
        The bounds defined by 'bounds' is inscribed in the lower middle portion. The origin (0,0) of the model
@@ -688,13 +687,11 @@ define( function( require ) {
       // bounds that includes OPT LEFT, bounds, and OPT RIGHT
       var horizontalBeamBounds = new Bounds2( enlargedBounds.minX, bounds.minY, enlargedBounds.maxX, bounds.maxY );
 
-      var offset = onOrigin ? 0 : 0.5;
-
       // the following variables are integers or half-integers
-      var minI = Math.ceil( enlargedBounds.minX / spacing ) - offset;
-      var maxI = Math.floor( enlargedBounds.maxX / spacing ) + offset;
-      var minJ = Math.ceil( enlargedBounds.minY / spacing ) - offset;
-      var maxJ = Math.floor( enlargedBounds.maxY / spacing ) + offset;
+      var minI = Math.ceil( enlargedBounds.minX / spacing );
+      var maxI = Math.floor( enlargedBounds.maxX / spacing );
+      var minJ = Math.ceil( enlargedBounds.minY / spacing );
+      var maxJ = Math.floor( enlargedBounds.maxY / spacing );
 
       var vector;
       var i;
