@@ -21,7 +21,7 @@ define( function( require ) {
   var ElectricFieldGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridCanvasNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
-  var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
+  var ElectricPotentialGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridCanvasNode' );
   var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
   var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
   var ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
@@ -105,12 +105,10 @@ define( function( require ) {
       );
     }
     else {
-      electricPotentialGridNode = new ElectricPotentialGridNode(
-        model.electricPotentialSensorGrid,
-        model.on.bind( model ),
-        this.getElectricPotentialColor.bind( this ),
+      electricPotentialGridNode = new ElectricPotentialGridCanvasNode(
+        model.activeChargedParticles,
         modelViewTransform,
-        this.availableModelBoundsProperty,
+        model.enlargedBounds,
         model.isElectricPotentialVisibleProperty
       );
     }

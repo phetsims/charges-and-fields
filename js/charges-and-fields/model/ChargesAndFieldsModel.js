@@ -98,7 +98,7 @@ define( function( require ) {
     this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
 
     // @public read-only
-    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, this.bounds.minY, 1.5 * WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the enlarged view)
+    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
     // Observable array of all draggable electric charges
     // @public
@@ -254,7 +254,7 @@ define( function( require ) {
                 sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
               } );
               // send a signal that the electric potential grid has been updated,
-              thisModel.trigger( 'electricPotentialGridUpdated' );
+              thisModel.trigger( 'electricPotentialGridUpdated' ); // TODO: can we remove this trigger?
             }
           } // end of else statement
         } // end of if (isActive) statement
@@ -517,7 +517,7 @@ define( function( require ) {
 
       } );
       // send a signal that the electric potential grid has just been updated
-      this.trigger( 'electricPotentialGridUpdated' );
+      this.trigger( 'electricPotentialGridUpdated' ); // TODO: can we remove this trigger?
     },
 
     /**

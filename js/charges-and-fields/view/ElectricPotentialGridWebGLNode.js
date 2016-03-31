@@ -36,6 +36,7 @@ define( function( require ) {
 
   // modules
   var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
@@ -117,17 +118,8 @@ define( function( require ) {
   function ElectricPotentialPainter( gl, node ) {
     this.gl = gl;
     this.node = node;
-    this.chargedParticles = node.chargedParticles;
 
-    // functions to be called back when particle positions change, tagged with listener.particle = particle
-    this.positionListeners = [];
-
-    this.particleAddedListener = this.onParticleAdded.bind( this );
-    this.particleRemovedListener = this.onParticleRemoved.bind( this );
-
-    // Listen to the charged particles individually
-    this.chargedParticles.addItemAddedListener( this.particleAddedListener );
-    this.chargedParticles.addItemRemovedListener( this.particleRemovedListener );
+    this.chargeTracker = new ChargeTracker( node.chargedParticles );
 
     // we will need this extension
     gl.getExtension( 'OES_texture_float' );
@@ -140,13 +132,6 @@ define( function( require ) {
     this.previousTexture = gl.createTexture();
     this.sizeTexture( this.currentTexture );
     this.sizeTexture( this.previousTexture );
-
-    // Queued changes of type { charge: {number}, oldPosition: {Vector2}, newPosition: {Vector2} } that will
-    // accumulate. oldPosition === null means "add it", newPosition === null means "remove it". We'll apply these
-    // graphical deltas at the next rendering.
-    this.queue = [];
-
-    this.addAllParticles();
 
     // shader meant to clear a texture (renders solid black everywhere)
     this.clearShaderProgram = new ShaderProgram( gl, [
@@ -256,95 +241,6 @@ define( function( require ) {
   }
 
   inherit( Object, ElectricPotentialPainter, {
-    // Add notes to the queue to color all particles (without adding listeners)
-    addAllParticles: function() {
-      this.queue = [];
-      for ( var i = 0; i < this.chargedParticles.length; i++ ) {
-        this.addParticle( this.chargedParticles.get( i ) );
-      }
-    },
-
-    // Add a note to the queue to color this particle (without adding listeners)
-    addParticle: function( particle ) {
-      this.queue.push( {
-        charge: particle.charge,
-        oldPosition: null,
-        newPosition: particle.position.copy()
-      } );
-    },
-
-    onParticleAdded: function( particle ) {
-      this.addParticle( particle );
-
-      // add the position listener (need a reference to the particle with the listener, so we can't use the same one)
-      var positionListener = this.onParticleMoved.bind( this, particle );
-      positionListener.particle = particle;
-      this.positionListeners.push( positionListener );
-      particle.positionProperty.lazyLink( positionListener );
-    },
-
-    onParticleMoved: function( particle, newPosition, oldPosition ) {
-      // Check to see if we can update an add/move for the same particle to a new position instead of creating
-      // multiple queue entries for a single particle. This will help collapse multiple moves of the same particle in
-      // one frame.
-      var modified = false;
-      for ( var i = 0; i < this.queue.length; i++ ) {
-        var item = this.queue[ i ];
-        if ( item.newPosition && item.newPosition.equals( oldPosition ) && item.charge === particle.charge ) {
-          item.newPosition = newPosition;
-          // console.log( 'update ' + particle.charge + ' ' + newPosition.toString() );
-          modified = true;
-          break;
-        }
-      }
-
-      if ( !modified ) {
-        this.queue.push( {
-          charge: particle.charge,
-          oldPosition: oldPosition.copy(),
-          newPosition: newPosition.copy()
-        } );
-        // console.log( 'move ' + particle.charge + ' ' + oldPosition.toString() + ' to ' + newPosition.toString() );
-      }
-    },
-
-    onParticleRemoved: function( particle ) {
-      // See if we can update an already-in-queue item with a null location.
-      var modified = false;
-      for ( var i = 0; i < this.queue.length; i++ ) {
-        var item = this.queue[ i ];
-        if ( item.newPosition && item.newPosition.equals( particle.position ) && item.charge === particle.charge ) {
-          item.newPosition = null;
-          // console.log( 'update ' + particle.charge + ' null' );
-          // remove the item from the list if we would add-remove it
-          if ( item.oldPosition === null && item.newPosition === null ) {
-            this.queue.splice( i, 1 );
-            // console.log( 'remove ' + particle.charge + ' ' + particle.position.toString() );
-          }
-          modified = true;
-          break;
-        }
-      }
-
-      if ( !modified ) {
-        this.queue.push( {
-          charge: particle.charge,
-          oldPosition: particle.position.copy(),
-          newPosition: null
-        } );
-        // console.log( 'remove ' + particle.charge + ' ' + particle.position.toString() );
-      }
-
-      // remove the position listener
-      for ( var k = 0; k < this.positionListeners.length; k++ ) {
-        if ( this.positionListeners[ k ].particle === particle ) {
-          particle.positionProperty.unlink( this.positionListeners[ k ] );
-          this.positionListeners.splice( k, 1 );
-          break;
-        }
-      }
-    },
-
     // resizes a texture to be able to cover the canvas area, and sets drawable properties for the size
     sizeTexture: function( texture ) {
       var gl = this.gl;
@@ -380,7 +276,7 @@ define( function( require ) {
       if ( this.canvasWidth !== gl.canvas.width || this.canvasHeight !== gl.canvas.height ) {
         this.sizeTexture( this.currentTexture );
         this.sizeTexture( this.previousTexture );
-        this.addAllParticles();
+        this.chargeTracker.rebuild();
 
         // clears the buffer to be used
         clearShaderProgram.use();
@@ -412,8 +308,8 @@ define( function( require ) {
       gl.uniformMatrix3fv( computeShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverseEntries );
 
       // do a draw call for each particle change
-      for ( var i = 0; i < this.queue.length; i++ ) {
-        var item = this.queue[ i ];
+      for ( var i = 0; i < this.chargeTracker.queue.length; i++ ) {
+        var item = this.chargeTracker.queue[ i ];
 
         // make future rendering output into currentTexture
         gl.bindFramebuffer( gl.FRAMEBUFFER, this.framebuffer );
@@ -493,7 +389,7 @@ define( function( require ) {
 
       displayShaderProgram.unuse();
 
-      this.queue = [];
+      this.chargeTracker.clear();
 
       return WebGLNode.PAINTED_SOMETHING;
     },
@@ -514,15 +410,7 @@ define( function( require ) {
       this.displayShaderProgram = null;
       this.clearShaderProgram = null;
 
-      // Remove add/remove listeners
-      this.chargedParticles.removeItemAddedListener( this.particleAddedListener );
-      this.chargedParticles.removeItemRemovedListener( this.particleRemovedListener );
-
-      // Remove position listeners
-      while ( this.positionListeners.length ) {
-        var positionListener = this.positionListeners.pop();
-        positionListener.particle.positionProperty.unlink( positionListener );
-      }
+      this.chargeTracker.dispose();
     }
   } );
 
