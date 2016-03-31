@@ -70,7 +70,7 @@ define( function( require ) {
      * @returns {Vector2} next point along the electricPotential line
      */
     getNextPositionAlongEquipotential: function( position, deltaDistance ) {
-      return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, this.electricPotential, deltaDistance );
+      return this.getNextPositionAlongEquipotentialWithElectricPotential( position, this.electricPotential, deltaDistance );
     },
 
     /**
