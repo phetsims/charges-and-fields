@@ -34,15 +34,16 @@ define( function( require ) {
 
   /**
    * Function that generates a voltage label for the electricPotential line
-   * @param {number} electricPotential
-   * @param {Vector2} position
-   * @param {Array.<Vector2>} positionArray
+   * @param {ElectricPotentialLine} electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function VoltageLabel( electricPotential, position, positionArray, modelViewTransform ) {
+  function VoltageLabel( electricPotentialLine, modelViewTransform ) {
 
     Node.call( this, { cursor: 'pointer' } );
+
+    var electricPotential = electricPotentialLine.electricPotential;
+    var position = electricPotentialLine.position;
 
     var self = this;
     var locationProperty = new Property( position );
@@ -92,7 +93,7 @@ define( function( require ) {
     var locationFunction = function( cursorLocation ) {
       var smallestDistanceSquared = Number.POSITIVE_INFINITY;
       var closestLocation; // {Vector2}
-      positionArray.forEach( function( position ) {
+      electricPotentialLine.positionArray.forEach( function( position ) {
         var distanceSquared = position.distanceSquared( cursorLocation );
         if ( distanceSquared < smallestDistanceSquared ) {
           smallestDistanceSquared = distanceSquared;
@@ -210,11 +211,7 @@ define( function( require ) {
       var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
 
-      var voltageLabel = new VoltageLabel(
-        electricPotentialLine.electricPotential,
-        electricPotentialLine.position,
-        electricPotentialLine.positionArray,
-        modelViewTransform );
+      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
