@@ -61,7 +61,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isVisibleProperty
    * @constructor
    */
-  function ElectricPotentialGridWebGLNode( chargedParticles,
+  function ElectricPotentialWebGLNode( chargedParticles,
                                            modelViewTransform,
                                            isVisibleProperty ) {
     this.chargedParticles = chargedParticles;
@@ -85,9 +85,9 @@ define( function( require ) {
     } ); // particle removed
   }
 
-  chargesAndFields.register( 'ElectricPotentialGridWebGLNode', ElectricPotentialGridWebGLNode );
+  chargesAndFields.register( 'ElectricPotentialWebGLNode', ElectricPotentialWebGLNode );
 
-  inherit( WebGLNode, ElectricPotentialGridWebGLNode, {}, {
+  inherit( WebGLNode, ElectricPotentialWebGLNode, {}, {
     /**
      * Detection for support, because iOS Safari 8 doesn't support rendering to a float texture, AND doesn't support
      * classic detection via an extension (OES_texture_float works).
@@ -414,5 +414,5 @@ define( function( require ) {
     }
   } );
 
-  return ElectricPotentialGridWebGLNode;
+  return ElectricPotentialWebGLNode;
 } );

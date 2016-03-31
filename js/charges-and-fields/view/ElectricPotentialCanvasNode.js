@@ -28,7 +28,7 @@ define( function( require ) {
    * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
    * @param {Property.<boolean>} isVisibleProperty
    */
-  function ElectricPotentialGridCanvasNode( chargedParticles,
+  function ElectricPotentialCanvasNode( chargedParticles,
                                             modelViewTransform,
                                             modelBounds,
                                             isVisibleProperty ) {
@@ -85,9 +85,9 @@ define( function( require ) {
     assert && assert( this.imageData.height === numVertical );
   }
 
-  chargesAndFields.register( 'ElectricPotentialGridCanvasNode', ElectricPotentialGridCanvasNode );
+  chargesAndFields.register( 'ElectricPotentialCanvasNode', ElectricPotentialCanvasNode );
 
-  return inherit( CanvasNode, ElectricPotentialGridCanvasNode, {
+  return inherit( CanvasNode, ElectricPotentialCanvasNode, {
 
     updateElectricPotentials: function() {
       var kConstant = 9;

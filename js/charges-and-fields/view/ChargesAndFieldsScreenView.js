@@ -21,9 +21,9 @@ define( function( require ) {
   var ElectricFieldGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridCanvasNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
-  var ElectricPotentialGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridCanvasNode' );
-  var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
-  var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
+  var ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
+  var ElectricPotentialWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialWebGLNode' );
+  var ElectricPotentialMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialMobileWebGLNode' );
   var ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
   var ChargesAndFieldsMeasuringTapeNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsMeasuringTapeNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
@@ -85,27 +85,27 @@ define( function( require ) {
     // The unlimited-particle implementation will work only with OES_texture_float where writing to
     // float textures is supported.
     var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
-                     ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
+                     ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
 
     var electricPotentialGridNode;
 
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( allowWebGL ) {
-      electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
+      electricPotentialGridNode = new ElectricPotentialWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
         model.isElectricPotentialVisibleProperty
       );
     }
     else if ( allowMobileWebGL ) {
-      electricPotentialGridNode = new ElectricPotentialGridMobileWebGLNode(
+      electricPotentialGridNode = new ElectricPotentialMobileWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
         model.isElectricPotentialVisibleProperty
       );
     }
     else {
-      electricPotentialGridNode = new ElectricPotentialGridCanvasNode(
+      electricPotentialGridNode = new ElectricPotentialCanvasNode(
         model.activeChargedParticles,
         modelViewTransform,
         model.enlargedBounds,
@@ -190,7 +190,7 @@ define( function( require ) {
     var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
 
     var numberChargesLimit = ( isNumberChargesLimited ) ?
-                             ElectricPotentialGridMobileWebGLNode.getNumberOfParticlesSupported() :
+                             ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
                              Number.POSITIVE_INFINITY;
 
     var canAddMoreChargedParticlesProperty = new DerivedProperty( [ model.chargedParticles.lengthProperty ], function( length ) {

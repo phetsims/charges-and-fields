@@ -27,7 +27,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isVisibleProperty
    * @constructor
    */
-  function ElectricPotentialGridMobileWebGLNode( chargedParticles,
+  function ElectricPotentialMobileWebGLNode( chargedParticles,
                                                  modelViewTransform,
                                                  isVisibleProperty ) {
     this.chargedParticles = chargedParticles;
@@ -52,9 +52,9 @@ define( function( require ) {
     } ); // particle removed
   }
 
-  chargesAndFields.register( 'ElectricPotentialGridMobileWebGLNode', ElectricPotentialGridMobileWebGLNode );
+  chargesAndFields.register( 'ElectricPotentialMobileWebGLNode', ElectricPotentialMobileWebGLNode );
 
-  inherit( WebGLNode, ElectricPotentialGridMobileWebGLNode, {}, {
+  inherit( WebGLNode, ElectricPotentialMobileWebGLNode, {}, {
     /**
      * Detection for how many particles we can support.
      * @public read-only
@@ -62,7 +62,7 @@ define( function( require ) {
     getNumberOfParticlesSupported: function() {
       var canvas = document.createElement( 'canvas' );
       var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
-      return ElectricPotentialGridMobileWebGLNode.particlesSupportedForContext( gl );
+      return ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
     },
     particlesSupportedForContext: function( gl ) {
       var otherVectorCount = 7; // colors, matrix and one extra to be safe
@@ -81,7 +81,7 @@ define( function( require ) {
     this.gl = gl;
     this.node = node;
 
-    this.maximumNumParticles = ElectricPotentialGridMobileWebGLNode.particlesSupportedForContext( gl );
+    this.maximumNumParticles = ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
 
     var particleIndices = _.range( this.maximumNumParticles );
 
@@ -205,5 +205,5 @@ define( function( require ) {
     }
   } );
 
-  return ElectricPotentialGridMobileWebGLNode;
+  return ElectricPotentialMobileWebGLNode;
 } );
