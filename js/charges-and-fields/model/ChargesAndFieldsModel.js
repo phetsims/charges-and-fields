@@ -28,7 +28,6 @@ define( function( require ) {
   var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
   var WIDTH = ChargesAndFieldsConstants.WIDTH;
   var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
-  var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -124,11 +123,6 @@ define( function( require ) {
     // electric Field Sensor Grid, the origin (0,0) is also the location of a sensor
     this.electricFieldSensorGrid = ChargesAndFieldsModel.createSensorGrid( this.bounds, this.enlargedBounds, ELECTRIC_FIELD_SENSOR_SPACING, true );
 
-    // @public {Array.<StaticSensorElement} read-only
-    // electric potential Sensor Grid, a.k.a in physics as the electric potential 'field'
-    // the origin is equidistant from the four nearest neighbor sensors.
-    this.electricPotentialSensorGrid = ChargesAndFieldsModel.createSensorGrid( this.bounds, this.enlargedBounds, ELECTRIC_POTENTIAL_SENSOR_SPACING, false );
-
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
     this.electricPotentialLines = new ObservableArray(); // {ObservableArray.<ElectricPotentialLine>}
@@ -148,17 +142,6 @@ define( function( require ) {
     this.isElectricFieldVisibleProperty.link( function( isVisible ) {
       if ( isVisible ) {
         thisModel.updateElectricFieldSensorGrid();
-      }
-    } );
-
-    //------------------------
-    // isElectricPotentialVisible Listener  (update all the grid of electric potential sensors a.k.a. the electric potential field)
-    //------------------------
-
-    // for performance reason, the electric potential is calculated and updated only if it is set to visible
-    this.isElectricPotentialVisibleProperty.link( function( isVisible ) {
-      if ( isVisible ) {
-        thisModel.updateElectricPotentialSensorGrid();
       }
     } );
 
@@ -244,17 +227,6 @@ define( function( require ) {
               } );
               // send a signal that the electric field grid has been updated,
               thisModel.trigger( 'electricFieldGridUpdated' );
-            }
-
-            // update the Electric Potential Grid Sensors but only if the electric potential grid is visible
-            if ( thisModel.isElectricPotentialVisible === true ) {
-              thisModel.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-
-                // calculating the change in the electric potential due to the change in position of one charge
-                sensorElement.electricPotential += thisModel.getElectricPotentialChange( sensorElement.position, position, oldPosition, charge );
-              } );
-              // send a signal that the electric potential grid has been updated,
-              thisModel.trigger( 'electricPotentialGridUpdated' ); // TODO: can we remove this trigger?
             }
           } // end of else statement
         } // end of if (isActive) statement
@@ -352,7 +324,6 @@ define( function( require ) {
       this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
       this.measuringTape.reset();
       this.updateElectricFieldSensorGrid(); // will reset the grid to zero
-      this.updateElectricPotentialSensorGrid(); // will reset the grid to zero.
       this.isResetting = false; // done with the resetting process
     },
 
@@ -472,7 +443,6 @@ define( function( require ) {
      */
     updateAllSensors: function() {
       this.electricPotentialSensor.update();
-      this.updateElectricPotentialSensorGrid();
       this.updateElectricFieldSensors();
       this.updateElectricFieldSensorGrid();
     },
@@ -482,9 +452,6 @@ define( function( require ) {
      * @private
      */
     updateAllVisibleSensors: function() {
-      if ( this.isElectricPotentialVisible === true ) {
-        this.updateElectricPotentialSensorGrid();
-      }
       if ( this.isElectricFieldVisible === true ) {
         this.updateElectricFieldSensorGrid();
       }
@@ -504,20 +471,6 @@ define( function( require ) {
       this.electricFieldSensors.forEach( function( sensorElement ) {
         sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
       } );
-    },
-
-    /**
-     * Update the Electric Potential Grid Sensors
-     * @private
-     */
-    updateElectricPotentialSensorGrid: function() {
-      var thisModel = this;
-      this.electricPotentialSensorGrid.forEach( function( sensorElement ) {
-        sensorElement.electricPotential = thisModel.getElectricPotential( sensorElement.position );
-
-      } );
-      // send a signal that the electric potential grid has just been updated
-      this.trigger( 'electricPotentialGridUpdated' ); // TODO: can we remove this trigger?
     },
 
     /**
