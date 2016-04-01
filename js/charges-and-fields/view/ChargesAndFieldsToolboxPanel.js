@@ -74,7 +74,9 @@ define( function( require ) {
     var panelOptions = {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
-      yMargin: 10
+      yMargin: 10,
+      fill: ChargesAndFieldsColors.controlPanelFillProperty,
+      stroke: ChargesAndFieldsColors.controlPanelBorderProperty
     };
 
     // add the panelContent
@@ -120,14 +122,6 @@ define( function( require ) {
 
     // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
     measuringTapeIconNode.addInputListener( measuringTapeMovableDragHandler );
-
-    ChargesAndFieldsColors.controlPanelFillProperty.link( function( color ) {
-      toolboxPanel.background.fill = color;
-    } );
-
-    ChargesAndFieldsColors.controlPanelBorderProperty.link( function( color ) {
-      toolboxPanel.stroke = color;
-    } );
 
     // hide and show
     electricPotentialSensor.isActiveProperty.link( function( visible ) {
