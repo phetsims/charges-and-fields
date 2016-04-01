@@ -56,6 +56,7 @@ define( function( require ) {
     var invalidateSelfListener = this.invalidatePaint.bind( this );
     ChargesAndFieldsColors.on( 'profileChanged', invalidateSelfListener ); // color change
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
+    isElectricFieldDirectionOnlyProperty.link( invalidateSelfListener ); // visibility change
     chargedParticles.addItemAddedListener( function( particle ) {
       particle.positionProperty.link( invalidateSelfListener );
     } ); // particle added
@@ -96,7 +97,7 @@ define( function( require ) {
   return inherit( CanvasNode, ElectricFieldCanvasNode, {
 
     updateElectricPotentials: function() {
-      var kConstant = 9;
+      var kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
       var numChanges = this.chargeTracker.queue.length;
 

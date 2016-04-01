@@ -96,7 +96,7 @@ define( function( require ) {
     },
 
     updateElectricPotentials: function() {
-      var kConstant = 9;
+      var kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
       var numChanges = this.chargeTracker.queue.length;
 

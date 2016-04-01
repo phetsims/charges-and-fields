@@ -15,7 +15,6 @@ define( function( require ) {
   var ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
   var ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
-  var StaticSensorElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/StaticSensorElement' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -27,7 +26,6 @@ define( function( require ) {
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
   var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
   var WIDTH = ChargesAndFieldsConstants.WIDTH;
-  var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
 
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -119,10 +117,6 @@ define( function( require ) {
 
     this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
-    // @public {Array.<StaticSensorElement} read-only
-    // electric Field Sensor Grid, the origin (0,0) is also the location of a sensor
-    this.electricFieldSensorGrid = ChargesAndFieldsModel.createSensorGrid( this.bounds, this.enlargedBounds, ELECTRIC_FIELD_SENSOR_SPACING, true );
-
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
     this.electricPotentialLines = new ObservableArray(); // {ObservableArray.<ElectricPotentialLine>}
@@ -132,18 +126,6 @@ define( function( require ) {
     // Hook up all the listeners the model
     //
     //----------------------------------------------------------------------------------------
-
-    //------------------------
-    // isElectricFieldVisible Listener (update all the electric field grid sensors a.k.a. grid of arrows)
-    //------------------------
-
-    // for performance reason, the electric field of the sensors on the grid is calculated and updated only if the
-    // visibility of the grid is set to true
-    this.isElectricFieldVisibleProperty.link( function( isVisible ) {
-      if ( isVisible ) {
-        thisModel.updateElectricFieldSensorGrid();
-      }
-    } );
 
     //------------------------
     // AddItem Added Listener on the charged Particles Observable Array
@@ -217,17 +199,6 @@ define( function( require ) {
               // electricField is a property that is being listened to. We want a new vector allocation when the electric field gets updated
               sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
             } );
-
-            // update the Electric Field Grid Sensors, but only if the electric Field grid is visible
-            if ( thisModel.isElectricFieldVisible === true ) {
-              thisModel.electricFieldSensorGrid.forEach( function( sensorElement ) {
-
-                // let's calculate the change in the electric field due to the change in position of one charge
-                sensorElement.electricField.add( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
-              } );
-              // send a signal that the electric field grid has been updated,
-              thisModel.trigger( 'electricFieldGridUpdated' );
-            }
           } // end of else statement
         } // end of if (isActive) statement
       };
@@ -323,7 +294,6 @@ define( function( require ) {
       this.electricPotentialLines.clear(); // clear the electricPotential 'lines'
       this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
       this.measuringTape.reset();
-      this.updateElectricFieldSensorGrid(); // will reset the grid to zero
       this.isResetting = false; // done with the resetting process
     },
 
@@ -444,7 +414,6 @@ define( function( require ) {
     updateAllSensors: function() {
       this.electricPotentialSensor.update();
       this.updateElectricFieldSensors();
-      this.updateElectricFieldSensorGrid();
     },
 
     /**
@@ -452,9 +421,6 @@ define( function( require ) {
      * @private
      */
     updateAllVisibleSensors: function() {
-      if ( this.isElectricFieldVisible === true ) {
-        this.updateElectricFieldSensorGrid();
-      }
       // the following sensors may not be visible or active but
       // it is very inexpensive to update them ( updating them avoid putting extra logic to handle
       // the transition visible/invisible)
@@ -471,19 +437,6 @@ define( function( require ) {
       this.electricFieldSensors.forEach( function( sensorElement ) {
         sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
       } );
-    },
-
-    /**
-     * Update the Electric Field Grid Sensors
-     * @private
-     */
-    updateElectricFieldSensorGrid: function() {
-      var thisModel = this;
-      this.electricFieldSensorGrid.forEach( function( sensorElement ) {
-        sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-      } );
-      // send a signal that the electric field grid has just been updated
-      this.trigger( 'electricFieldGridUpdated' );
     },
 
     /**
@@ -630,84 +583,6 @@ define( function( require ) {
      */
     clearElectricPotentialLines: function() {
       this.electricPotentialLines.clear();
-    }
-  }, {
-
-    /**
-     * Constructs a grid of StaticSensorElements.
-     * @private
-     *
-     * TODO: cleanup. We now don't have the enlargedBounds going below, and there's some simplifications that can be
-     * made.
-     *
-     * @param {Bounds2} bounds
-     * @param {Bounds2} enlargedBounds
-     * @param {number} spacing
-     * @constructor
-     */
-    createSensorGrid: function( bounds, enlargedBounds, spacing ) {
-      /*
-       The diagram below represents the bounds used in the model.
-       The bounds defined by 'bounds' is inscribed in the lower middle portion. The origin (0,0) of the model
-       is located as the center of 'bounds'. This bounds has a height of HEIGHT and width of WIDTH.
-       The bounds defined by 'enlargedBounds' is represented by the largest bounds.
-
-       In the view the viewport will always include 'bounds' and may or may not include the optional (OPT) regions
-       depending on the aspect ratio. The viewport will never have access to the fallow regions.
-
-       The sensorGridFactory generates an array of equally spaced sensors on the region defined by the
-       cross. The four fallow regions are not seeded with sensors.
-
-       ********---------------********
-       *       |             |       *
-       *       |             |       *
-       * fallow|     OPT     |fallow *
-       *       |     UP      |       *
-       *       |             |       *
-       |-------|------------ |-------|
-       |  OPT  |             |  OPT  |
-       |  LEFT |             | RIGHT |
-       |       |    (0,0)    |       |
-       |       |      bounds |       |
-       |       |             |       |
-       |-------|-------------|-------|
-       *       |             |       *
-       *       |             |       *
-       * fallow|    fallow   |fallow *
-       *       |             |       *
-       ********---------------********
-
-       */
-
-      var result = [];
-
-      // bounds that includes OPT UP, bounds, and OPT DOWN
-      var verticalBeamBounds = new Bounds2( bounds.minX, enlargedBounds.minY, bounds.maxX, enlargedBounds.maxY );
-
-      // bounds that includes OPT LEFT, bounds, and OPT RIGHT
-      var horizontalBeamBounds = new Bounds2( enlargedBounds.minX, bounds.minY, enlargedBounds.maxX, bounds.maxY );
-
-      // the following variables are integers or half-integers
-      var minI = Math.ceil( enlargedBounds.minX / spacing );
-      var maxI = Math.floor( enlargedBounds.maxX / spacing );
-      var minJ = Math.ceil( enlargedBounds.minY / spacing );
-      var maxJ = Math.floor( enlargedBounds.maxY / spacing );
-
-      var vector;
-      var i;
-      var j;
-
-      for ( i = minI + 1; i < maxI; i++ ) {
-        for ( j = minJ + 1; j < maxJ; j++ ) {
-          vector = new Vector2( i * spacing, j * spacing );
-          // include the sensor element if its location is within the verticalBeam or horizontalBeam bounds;
-          if ( verticalBeamBounds.containsPoint( vector ) || horizontalBeamBounds.containsPoint( vector ) ) {
-            result.push( new StaticSensorElement( vector ) );
-          }
-        }
-      }
-
-      return result;
     }
   } );
 } );
