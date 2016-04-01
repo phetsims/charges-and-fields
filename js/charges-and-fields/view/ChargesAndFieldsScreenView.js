@@ -18,7 +18,7 @@ define( function( require ) {
   var ChargesAndSensorsPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsPanel' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
-  var ElectricFieldGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridCanvasNode' );
+  var ElectricFieldCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldCanvasNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   var ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
@@ -114,15 +114,12 @@ define( function( require ) {
     }
 
     // Create a grid of electric field arrow sensors
-    var electricFieldGridNode = new ElectricFieldGridCanvasNode(
-        model.electricFieldSensorGrid,
-        model.on.bind( model ),
-        this.getElectricFieldMagnitudeColor.bind( this ),
-        modelViewTransform,
-        this.availableModelBoundsProperty,
-        model.isPlayAreaChargedProperty,
-        model.isElectricFieldDirectionOnlyProperty,
-        model.isElectricFieldVisibleProperty );
+    var electricFieldGridNode = new ElectricFieldCanvasNode(
+      model.activeChargedParticles,
+      modelViewTransform,
+      model.enlargedBounds,
+      model.isElectricFieldDirectionOnlyProperty,
+      model.isElectricFieldVisibleProperty );
 
 
     // Create the scenery node responsible for drawing the electricPotential lines
