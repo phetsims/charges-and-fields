@@ -105,7 +105,7 @@ define( function( require ) {
           context.save();
 
           // change the opacity of the arrow (as a function of the magnitude of the electric field) (unless isDirection is checked)
-          if(self.isElectricFieldDirectionOnlyProperty.value) {
+          if( self.isElectricFieldDirectionOnlyProperty.value ) {
             context.globalAlpha = 1;
           }
           else{
