@@ -163,7 +163,7 @@ define( function( require ) {
         thisModel.updateIsPlayAreaCharged();
 
         // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
-        thisModel.updateAllVisibleSensors();
+        thisModel.updateAllSensors();
       };
 
 
@@ -181,7 +181,7 @@ define( function( require ) {
 
           // if oldPosition doesn't exist then calculate the sensor properties from the charge configurations (from scratch)
           if ( oldPosition === null ) {
-            thisModel.updateAllVisibleSensors();
+            thisModel.updateAllSensors();
           }
           // if oldPosition exists calculate the sensor properties from the delta contribution
           // this should help performance if there are many charged particles on the board
@@ -228,7 +228,7 @@ define( function( require ) {
         thisModel.clearElectricPotentialLines();
 
         // Update all the visible sensors
-        thisModel.updateAllVisibleSensors();
+        thisModel.updateAllSensors();
 
       }
 
@@ -407,36 +407,16 @@ define( function( require ) {
         this.isPlayAreaCharged = true;
       }
     },
+
     /**
-     * Update the four types of sensors
+     * Update all sensors
      * @private
      */
     updateAllSensors: function() {
       this.electricPotentialSensor.update();
-      this.updateElectricFieldSensors();
-    },
-
-    /**
-     * Update all the visible sensors
-     * @private
-     */
-    updateAllVisibleSensors: function() {
-      // the following sensors may not be visible or active but
-      // it is very inexpensive to update them ( updating them avoid putting extra logic to handle
-      // the transition visible/invisible)
-      this.electricPotentialSensor.update();
-      this.updateElectricFieldSensors();
-    },
-
-    /**
-     * Update the Electric Field Sensors
-     * @private
-     */
-    updateElectricFieldSensors: function() {
-      var thisModel = this;
-      this.electricFieldSensors.forEach( function( sensorElement ) {
-        sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
-      } );
+      for ( var i = 0; i < this.electricFieldSensors.length; i++ ) {
+        this.electricFieldSensors.get( i ).update();
+      }
     },
 
     /**
