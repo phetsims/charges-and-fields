@@ -20,7 +20,7 @@ define( function( require ) {
   var arrowShape = new ElectricFieldArrowShape();
   var emitter = new Emitter();
 
-  var scale = 2;
+  var scale = 1.3;
   var padding = 2;
 
   // TODO: Add Bounds scale?
