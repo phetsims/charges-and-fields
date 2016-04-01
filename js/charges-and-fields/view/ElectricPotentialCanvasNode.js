@@ -29,9 +29,9 @@ define( function( require ) {
    * @param {Property.<boolean>} isVisibleProperty
    */
   function ElectricPotentialCanvasNode( chargedParticles,
-                                            modelViewTransform,
-                                            modelBounds,
-                                            isVisibleProperty ) {
+                                        modelViewTransform,
+                                        modelBounds,
+                                        isVisibleProperty ) {
 
     CanvasNode.call( this, {
       canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
@@ -45,7 +45,7 @@ define( function( require ) {
     this.isVisibleProperty = isVisibleProperty;
 
     // Invalidate paint on a bunch of changes
-    var invalidateSelfListener = this.invalidatePaint.bind( this );
+    var invalidateSelfListener = this.forceRepaint.bind( this );
     ChargesAndFieldsColors.on( 'profileChanged', invalidateSelfListener ); // color change
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
     chargedParticles.addItemAddedListener( function( particle ) {
@@ -79,6 +79,7 @@ define( function( require ) {
     this.directCanvas.width = numHorizontal;
     this.directCanvas.height = numVertical;
     this.directContext = this.directCanvas.getContext( '2d' );
+    this.directCanvasDirty = true; // Store a dirty flag, in case there weren't charge changes detected
 
     this.imageData = this.directContext.getImageData( 0, 0, numHorizontal, numVertical );
     assert && assert( this.imageData.width === numHorizontal );
@@ -88,6 +89,11 @@ define( function( require ) {
   chargesAndFields.register( 'ElectricPotentialCanvasNode', ElectricPotentialCanvasNode );
 
   return inherit( CanvasNode, ElectricPotentialCanvasNode, {
+
+    forceRepaint: function() {
+      this.invalidatePaint();
+      this.directCanvasDirty = true;
+    },
 
     updateElectricPotentials: function() {
       var kConstant = 9;
@@ -125,7 +131,7 @@ define( function( require ) {
       this.chargeTracker.clear();
 
       // Update our direct canvas if necessary
-      if ( numChanges ) {
+      if ( numChanges || this.directCanvasDirty ) {
         var zeroColor = ChargesAndFieldsColors.electricPotentialGridZero;
         var positiveColor = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;
         var negativeColor = ChargesAndFieldsColors.electricPotentialGridSaturationNegative;
@@ -152,6 +158,8 @@ define( function( require ) {
         }
 
         this.directContext.putImageData( this.imageData, 0, 0 );
+
+        this.directCanvasDirty = false;
       }
     },
 
