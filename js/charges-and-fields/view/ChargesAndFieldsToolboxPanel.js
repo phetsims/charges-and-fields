@@ -29,10 +29,11 @@ define( function( require ) {
 
   // images
   var electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
+  var electricPotentialPanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
   // constants
   var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
-  var SENSOR_HEIGHT = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' ).height;
+  var SENSOR_HEIGHT = electricPotentialPanelOutlineImage.height;
 
   // strings
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
