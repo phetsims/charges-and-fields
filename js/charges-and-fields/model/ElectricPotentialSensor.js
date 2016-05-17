@@ -26,10 +26,10 @@ define( function( require ) {
 
     PropertySet.call( this, {
       // @public
-      position: new Vector2(),
+      position: new Vector2(), // in meters
 
-      // @public - TODO: units?
-      electricPotential: 0,
+      // @public
+      electricPotential: 0,  // in Volts
 
       // @public - Whether the sensor is out in the play area (false when in the toolbox)
       isActive: false

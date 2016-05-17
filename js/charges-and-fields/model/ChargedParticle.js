@@ -27,7 +27,7 @@ define( function( require ) {
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
     // @public read-only
-    this.charge = charge;
+    this.charge = charge; // a charge of one corresponds to one nano Coulomb
 
     tandem.addInstance( this );
   }
