@@ -16,6 +16,9 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // If running as phet-io, load the API
+  require( 'ifphetio!PHET_IO/api/capacitor-lab-basics-api' );
+
   // strings
   var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
 
@@ -37,8 +40,7 @@ define( function( require ) {
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
     if ( useProjectorColors ) {
       ChargesAndFieldsColors.applyProfile( 'projector' );
-    }
-    else {
+    } else {
       ChargesAndFieldsColors.applyProfile( 'default' );
     }
   } );
@@ -48,3 +50,4 @@ define( function( require ) {
     sim.start();
   } );
 } );
+
