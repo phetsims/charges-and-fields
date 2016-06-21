@@ -29,7 +29,7 @@ define( function( require ) {
     tandem.createTandem( 'projectorColors' ).addInstance( ChargesAndFieldsGlobals.projectorColorsProperty );
 
     var projectorCheckBox = new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
-      ChargesAndFieldsGlobals.projectorColorsProperty );
+      ChargesAndFieldsGlobals.projectorColorsProperty, { tandem: tandem.createTandem( 'projectorCheckBox' ) } );
 
     LayoutBox.call( this, _.extend( {
       children: [ projectorCheckBox ],
@@ -42,3 +42,4 @@ define( function( require ) {
 
   return inherit( LayoutBox, GlobalOptionsNode );
 } );
+
