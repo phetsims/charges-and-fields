@@ -50,12 +50,12 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndFieldsToolboxPanel( measuringTape,
-                                         electricPotentialSensor,
-                                         measuringTapeNode,
-                                         electricPotentialSensorNode,
-                                         modelViewTransform,
-                                         availableModelBoundsProperty,
-                                         tandem ) {
+    electricPotentialSensor,
+    measuringTapeNode,
+    electricPotentialSensorNode,
+    modelViewTransform,
+    availableModelBoundsProperty,
+    tandem ) {
     var toolboxPanel = this;
 
     // Create the icon image for the electricPotential sensor
@@ -153,10 +153,9 @@ define( function( require ) {
     createElectricPotentialSensorIcon: function( tandem ) {
 
       var node = new Node( {
-          // Show a cursor hand over the sensor icon
-          cursor: 'pointer'
-        }
-      );
+        // Show a cursor hand over the sensor icon
+        cursor: 'pointer'
+      } );
 
       // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
       var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 2, centerX: 0, centerY: 0 } );
@@ -225,11 +224,11 @@ define( function( require ) {
       // first, create an actual measuring tape
 
       var unspooledMeterTape = 30; // in view coordinates
-      var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ),
-        {
-          tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ) ),
-          scale: 0.8 // make it a bit small
-        } );
+      var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
+        tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ) ),
+        scale: 0.8, // make it a bit small
+        tandem: tandem.createTandem( 'measuringTape' )
+      } );
       measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
 
       // second, create the measuringTape icon
@@ -240,9 +239,8 @@ define( function( require ) {
         measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
       }, measuringTape.width - unspooledMeterTape, measuringTape.height - 5, measuringTape.width, measuringTape.height );
 
-      tandem.createTandem( 'measuringTape' ).addInstance( measuringTape );
-
       return measuringTapeIcon;
     }
   } );
 } );
+
