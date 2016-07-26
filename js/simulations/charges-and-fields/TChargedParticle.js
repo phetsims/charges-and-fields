@@ -43,9 +43,11 @@ define( function( require ) {
         return model.addNegativeCharge( new phet.tandem.Tandem( id ) );
       }
     },
+
     fromStateObject: function( stateObject ) {
       return stateObject;
     },
+
     toStateObject: function( value ) {
       return {
         charge: value.charge,
