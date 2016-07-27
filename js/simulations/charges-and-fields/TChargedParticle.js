@@ -39,7 +39,8 @@ define( function( require ) {
       var model = phetio.getInstance( 'chargesAndFields.chargesAndFieldsScreen.model' );
       if ( value.charge === 1 ) {
         return model.addPositiveCharge( new phet.tandem.Tandem( id ) );
-      } else {
+      }
+      else {
         return model.addNegativeCharge( new phet.tandem.Tandem( id ) );
       }
     },
