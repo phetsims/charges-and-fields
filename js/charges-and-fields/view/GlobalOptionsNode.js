@@ -17,6 +17,9 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TProperty = require( 'ifphetio!PHET_IO/types/axon/TProperty' );
+
   // strings
   var optionsProjectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
@@ -26,7 +29,8 @@ define( function( require ) {
    */
   function GlobalOptionsNode( tandem ) {
 
-    tandem.createTandem( 'projectorColorsProperty' ).addInstance( ChargesAndFieldsGlobals.projectorColorsProperty );
+    tandem.createTandem( 'projectorColorsProperty' )
+      .addInstance( ChargesAndFieldsGlobals.projectorColorsProperty, TProperty( TBoolean ) );
 
     var projectorCheckBox = new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
       ChargesAndFieldsGlobals.projectorColorsProperty, { tandem: tandem.createTandem( 'projectorCheckBox' ) } );

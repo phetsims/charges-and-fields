@@ -22,6 +22,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
+
   // constants
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
   var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
@@ -82,6 +86,23 @@ define( function( require ) {
         hideTogglingElectricPotentialVisibility: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' ),
         hideTogglingValuesVisibility: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' ),
         hideTogglingGridVisibility: tandem.createTandem( 'hideTogglingGridVisibilityProperty' )
+      },
+      typeSet: {
+        isElectricFieldVisible: TBoolean,
+        isElectricFieldDirectionOnly: TBoolean,
+        isElectricPotentialVisible: TBoolean,
+        areValuesVisible: TBoolean,
+        isGridVisible: TBoolean,
+
+        allowNewPositiveCharges: TBoolean,
+        allowNewNegativeCharges: TBoolean,
+        allowNewElectricFieldSensors: TBoolean,
+
+        hideTogglingElectricFieldVisibility: TBoolean,
+        hideTogglingElectricFieldDirectionOnly: TBoolean,
+        hideTogglingElectricPotentialVisibility: TBoolean,
+        hideTogglingValuesVisibility: TBoolean,
+        hideTogglingGridVisibility: TBoolean
       }
     } );
 
@@ -99,7 +120,10 @@ define( function( require ) {
 
     // Observable array of all draggable electric charges
     // @public
-    this.chargedParticles = new ObservableArray( { tandem: tandem.createTandem( 'chargedParticles' ) } ); // {ObservableArray.<ChargedParticle>}
+    this.chargedParticles = new ObservableArray( {
+      tandem: tandem.createTandem( 'chargedParticles' ),
+      phetioValueType: TChargedParticle
+    } ); // {ObservableArray.<ChargedParticle>}
     var chargedParticles = this.chargedParticles;
 
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
@@ -154,8 +178,7 @@ define( function( require ) {
           // add particle to the activeChargedParticle observable array
           // use for the webGlNode
           thisModel.activeChargedParticles.push( addedChargedParticle );
-        }
-        else {
+        } else {
           // remove particle from the activeChargeParticle array
           thisModel.activeChargedParticles.remove( addedChargedParticle );
         }
@@ -365,37 +388,32 @@ define( function( require ) {
       else if ( sumActiveChargedParticle === 0 ) {
         // there is not net charge on the board, hence no electric field
         this.isPlayAreaCharged = false;
-      }
-      else if ( sumActiveChargedParticle === 2 ) {
+      } else if ( sumActiveChargedParticle === 2 ) {
         // one charge is necessarily positive and the other one negative
-        if ( (this.activeChargedParticles.get( 1 ).position).equals( this.activeChargedParticles.get( 0 ).position ) ) {
+        if ( ( this.activeChargedParticles.get( 1 ).position ).equals( this.activeChargedParticles.get( 0 ).position ) ) {
           // the charges occupy the same position and are therefore compensated
           this.isPlayAreaCharged = false;
-        }
-        else {
+        } else {
           this.isPlayAreaCharged = true;
         }
-      }
-      else if ( sumActiveChargedParticle === 4 ) {
+      } else if ( sumActiveChargedParticle === 4 ) {
         var positiveChargePositionArray = [];
         var negativeChargePositionArray = [];
         this.activeChargedParticles.forEach( function( chargedParticle ) {
           if ( chargedParticle.charge === 1 ) {
             positiveChargePositionArray.push( chargedParticle.position );
-          }
-          else {
+          } else {
             negativeChargePositionArray.push( chargedParticle.position );
           }
         } );
 
         if (
-          (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
-           negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] )) ||
-          (negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
-           negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] )) ) {
+          ( negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 0 ] ) &&
+            negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] ) ) ||
+          ( negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
+            negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] ) ) ) {
           this.isPlayAreaCharged = false;
-        }
-        else {
+        } else {
           this.isPlayAreaCharged = true;
         }
       }
@@ -440,10 +458,10 @@ define( function( require ) {
       // var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
       // @formatter:off
       return {
-        x: ((position.x - newChargePosition.x) / ( newDistancePowerCube ) -
-            (position.x - oldChargePosition.x) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT ),
-        y: ((position.y - newChargePosition.y) / ( newDistancePowerCube ) -
-            (position.y - oldChargePosition.y) / ( oldDistancePowerCube )) * ( particleCharge * K_CONSTANT )
+        x: ( ( position.x - newChargePosition.x ) / ( newDistancePowerCube ) -
+          ( position.x - oldChargePosition.x ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT ),
+        y: ( ( position.y - newChargePosition.y ) / ( newDistancePowerCube ) -
+          ( position.y - oldChargePosition.y ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT )
       };
       // @formatter:on
     },
@@ -461,7 +479,7 @@ define( function( require ) {
     getElectricPotentialChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
       var newDistance = newChargePosition.distance( position );
       var oldDistance = oldChargePosition.distance( position );
-      return particleCharge * K_CONSTANT * (1 / newDistance - 1 / oldDistance);
+      return particleCharge * K_CONSTANT * ( 1 / newDistance - 1 / oldDistance );
     },
 
     /**
@@ -478,8 +496,8 @@ define( function( require ) {
           var distancePowerCube = Math.pow( distanceSquared, 1.5 );
           // For performance reason, we don't want to generate more vector allocations
           var electricFieldContribution = {
-            x: (position.x - chargedParticle.position.x) * (chargedParticle.charge) / distancePowerCube,
-            y: (position.y - chargedParticle.position.y) * (chargedParticle.charge) / distancePowerCube
+            x: ( position.x - chargedParticle.position.x ) * ( chargedParticle.charge ) / distancePowerCube,
+            y: ( position.y - chargedParticle.position.y ) * ( chargedParticle.charge ) / distancePowerCube
           };
           electricField.add( electricFieldContribution );
         }
@@ -499,7 +517,7 @@ define( function( require ) {
       this.chargedParticles.forEach( function( chargedParticle ) {
         if ( chargedParticle.isActive ) {
           var distance = chargedParticle.position.distance( position );
-          electricPotential += (chargedParticle.charge) / distance;
+          electricPotential += ( chargedParticle.charge ) / distance;
         }
       } );
       electricPotential *= K_CONSTANT; // prefactor depends on units
@@ -552,7 +570,7 @@ define( function( require ) {
     addManyElectricPotentialLines: function( numberOfLines ) {
       var i;
       for ( i = 0; i < numberOfLines; i++ ) {
-        var position = new Vector2( WIDTH * (Math.random() - 0.5), HEIGHT * (Math.random() - 0.5) ); // a random position on the graph
+        var position = new Vector2( WIDTH * ( Math.random() - 0.5 ), HEIGHT * ( Math.random() - 0.5 ) ); // a random position on the graph
         this.addElectricPotentialLine( position );
       }
     },
