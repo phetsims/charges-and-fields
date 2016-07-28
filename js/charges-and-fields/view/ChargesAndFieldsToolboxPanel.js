@@ -227,9 +227,9 @@ define( function( require ) {
       var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
         tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ) ),
         scale: 0.8, // make it a bit small
+        hasValue: false, // let's hide the text label value (the length) for the icon
         tandem: tandem.createTandem( 'measuringTape' )
       } );
-      measuringTape.setTextVisibility( false ); // let's hide the text label value (the length) for the icon
 
       // second, create the measuringTape icon
       var measuringTapeIcon = new Node( { children: [ measuringTape ] } );
