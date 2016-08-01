@@ -87,7 +87,7 @@ define( function( require ) {
         hideTogglingValuesVisibility: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' ),
         hideTogglingGridVisibility: tandem.createTandem( 'hideTogglingGridVisibilityProperty' )
       },
-      typeSet: {
+      phetioValueTypeSet: {
         isElectricFieldVisible: TBoolean,
         isElectricFieldDirectionOnly: TBoolean,
         isElectricPotentialVisible: TBoolean,
