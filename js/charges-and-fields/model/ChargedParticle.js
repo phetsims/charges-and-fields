@@ -18,6 +18,7 @@ define( function( require ) {
   /**
    *
    * @param {number} charge - (positive=+1 or negative=-1)
+   * @param {Tandem} tandem
    * @constructor
    */
   function ChargedParticle( charge, tandem ) {
