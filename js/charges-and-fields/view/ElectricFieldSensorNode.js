@@ -56,6 +56,7 @@ define( function( require ) {
 
     // Expand the touch area
     this.touchArea = this.localBounds.dilated( 10 );
+    this.mouseArea = this.localBounds.dilated( 5 );
 
     // Create the E-field arrow, (set the arrow horizontally to start with)
     var arrowNode = new ArrowNode( 0, 0, 1, 0, {
