@@ -40,12 +40,12 @@ define( function( require ) {
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
-                                    modelViewTransform,
-                                    availableModelBoundsProperty,
-                                    isPlayAreaChargedProperty,
-                                    areValuesVisibleProperty,
-                                    enclosureBounds,
-                                    tandem ) {
+    modelViewTransform,
+    availableModelBoundsProperty,
+    isPlayAreaChargedProperty,
+    areValuesVisibleProperty,
+    enclosureBounds,
+    tandem ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
@@ -111,16 +111,18 @@ define( function( require ) {
       if ( Number.isFinite( arrowLength ) ) {
         arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
         arrowNode.visible = electricFieldSensor.isActive;
-        fieldStrengthLabel.visible = electricFieldSensor.isActive;
-        directionLabel.visible = electricFieldSensor.isActive;
+
+        if ( areValuesVisibleProperty.get() ) {
+          fieldStrengthLabel.visible = electricFieldSensor.isActive;
+          directionLabel.visible = electricFieldSensor.isActive;
+        }
 
         // Update the strings in the labels
         var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
         fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
         var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
         directionLabel.text = StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString );
-      }
-      else {
+      } else {
         arrowNode.visible = false;
 
         fieldStrengthLabel.text = '-';
@@ -134,8 +136,10 @@ define( function( require ) {
 
     electricFieldSensor.isActiveProperty.link( function( isActive ) {
       arrowNode.visible = isActive;
-      fieldStrengthLabel.visible = isActive;
-      directionLabel.visible = isActive;
+      if ( areValuesVisibleProperty.get() ) {
+        fieldStrengthLabel.visible = isActive;
+        directionLabel.visible = isActive;
+      }
     } );
     // Show/hide labels
     var areValuesVisibleListener = function( isVisible ) {
@@ -162,8 +166,7 @@ define( function( require ) {
     electricFieldSensor.positionProperty.link( positionListener );
 
     this.movableDragHandler = new MovableDragHandler(
-      electricFieldSensor.positionProperty,
-      {
+      electricFieldSensor.positionProperty, {
         tandem: tandem.createTandem( 'movableDragHandler' ),
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
@@ -205,8 +208,7 @@ define( function( require ) {
         if ( isInteractive ) {
           electricFieldSensorNode.cursor = 'pointer';
           electricFieldSensorNode.addInputListener( electricFieldSensorNode.movableDragHandler );
-        }
-        else {
+        } else {
           electricFieldSensorNode.cursor = null;
           electricFieldSensorNode.removeInputListener( electricFieldSensorNode.movableDragHandler );
         }
@@ -264,11 +266,9 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      }
-      else if ( exponent > 0 ) {
+      } else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      }
-      else {
+      } else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 
@@ -287,3 +287,4 @@ define( function( require ) {
     }
   } );
 } );
+
