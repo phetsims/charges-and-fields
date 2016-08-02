@@ -134,6 +134,8 @@ define( function( require ) {
 
     electricFieldSensor.isActiveProperty.link( function( isActive ) {
       arrowNode.visible = isActive;
+      fieldStrengthLabel.visible = isActive;
+      directionLabel.visible = isActive;
     } );
     // Show/hide labels
     var areValuesVisibleListener = function( isVisible ) {
