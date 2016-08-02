@@ -111,6 +111,8 @@ define( function( require ) {
       if ( Number.isFinite( arrowLength ) ) {
         arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
         arrowNode.visible = electricFieldSensor.isActive;
+        fieldStrengthLabel.visible = electricFieldSensor.isActive;
+        directionLabel.visible = electricFieldSensor.isActive;
 
         // Update the strings in the labels
         var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
