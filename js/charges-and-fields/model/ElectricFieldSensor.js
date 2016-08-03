@@ -50,7 +50,7 @@ define( function( require ) {
       assert && assert( eField.x !== Infinity && eField.x !== Infinity,
         'E-field is infinity: ' + eField );
 
-      assert && assert( !_.isNaN( eField.x && !_.isNaN( eField.y ) ),
+      assert && assert( !_.isNaN( eField.x ) && !_.isNaN( eField.y ),
         'E-field is NaN: ' + eField );
 
       this.electricField = this.computeElectricField( this.position );
