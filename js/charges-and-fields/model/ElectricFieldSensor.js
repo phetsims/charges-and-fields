@@ -45,7 +45,16 @@ define( function( require ) {
      * @public
      */
     update: function() {
+      var eField = this.computeElectricField( this.position );
+
+      assert && assert( eField.x !== Infinity && eField.x !== Infinity,
+        'E-field is infinity: ', eField );
+
+      assert && assert( !_.isNaN( eField.x && !_.isNaN( eField.y ) ),
+        'E-field is NaN: ', eField );
+
       this.electricField = this.computeElectricField( this.position );
     }
   } );
 } );
+

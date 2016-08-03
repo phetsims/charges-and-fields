@@ -30,6 +30,7 @@ define( function( require ) {
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
   var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
   var WIDTH = ChargesAndFieldsConstants.WIDTH;
+  var MIN_CUBED_DISTANCE = 1e-9;
 
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -219,8 +220,11 @@ define( function( require ) {
             // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
             thisModel.electricFieldSensors.forEach( function( sensorElement ) {
 
+              var eField = sensorElement.electricField;
+              var deltaE = thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge );
+
               // electricField is a property that is being listened to. We want a new vector allocation when the electric field gets updated
-              sensorElement.electricField = sensorElement.electricField.plus( thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge ) );
+              sensorElement.electricField = eField.plus( deltaE );
             } );
           } // end of else statement
         } // end of if (isActive) statement
@@ -451,7 +455,15 @@ define( function( require ) {
       var newDistancePowerCube = Math.pow( newChargePosition.distanceSquared( position ), 1.5 );
       var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
 
-      // For performance reason, we don't want to generate more vector allocations
+      // Avoid bugs stemming from large or infinite fields (such as #82, #84, #85)
+      if ( newDistancePowerCube < MIN_CUBED_DISTANCE ) {
+        newDistancePowerCube = MIN_CUBED_DISTANCE;
+      }
+      if ( oldDistancePowerCube < MIN_CUBED_DISTANCE ) {
+        oldDistancePowerCube = MIN_CUBED_DISTANCE;
+      }
+
+      // For performance reasons, we don't want to generate more vector allocations
       // Here is the original code
       // var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
       // var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
@@ -493,8 +505,11 @@ define( function( require ) {
       this.chargedParticles.forEach( function( chargedParticle ) {
         if ( chargedParticle.isActive ) {
           var distanceSquared = chargedParticle.position.distanceSquared( position );
-          var distancePowerCube = Math.pow( distanceSquared, 1.5 );
-          // For performance reason, we don't want to generate more vector allocations
+
+          // Avoid bugs stemming from large or infinite fields (#82, #84, #85)
+          var distancePowerCube = Math.max( Math.pow( distanceSquared, 1.5 ), MIN_CUBED_DISTANCE );
+
+          // For performance reasons, we don't want to generate more vector allocations
           var electricFieldContribution = {
             x: ( position.x - chargedParticle.position.x ) * ( chargedParticle.charge ) / distancePowerCube,
             y: ( position.y - chargedParticle.position.y ) * ( chargedParticle.charge ) / distancePowerCube

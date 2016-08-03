@@ -29,6 +29,9 @@ define( function( require ) {
   // constants
   var LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
 
+  // value chosen such that this limit is reached once the sensor is fully enclosed in a charge
+  var MAX_ARROW_LENGTH = 1e5;
+
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
    * @param {ElectricFieldSensor} electricFieldSensor
@@ -56,7 +59,6 @@ define( function( require ) {
 
     // Expand the touch area
     this.touchArea = this.localBounds.dilated( 10 );
-    this.mouseArea = this.localBounds.dilated( 5 );
 
     // Create the E-field arrow, (set the arrow horizontally to start with)
     var arrowNode = new ArrowNode( 0, 0, 1, 0, {
@@ -108,7 +110,8 @@ define( function( require ) {
       // so the text must be updated with angle whereas arrow node must be updated with -angle
 
       // Update length and direction of the arrow
-      if ( Number.isFinite( arrowLength ) ) {
+      // if ( Number.isFinite( arrowLength ) ) {
+      if ( arrowLength < MAX_ARROW_LENGTH ) {
         arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
         arrowNode.visible = electricFieldSensor.isActive;
 
