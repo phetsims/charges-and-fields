@@ -30,7 +30,9 @@ define( function( require ) {
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
   var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
   var WIDTH = ChargesAndFieldsConstants.WIDTH;
-  var MIN_CUBED_DISTANCE = 1e-9;
+
+  // To avoid bugs, do not try to compute E-field at length scales smaller than MIN_DISTANCE_SCALE
+  var MIN_DISTANCE_SCALE = 1e-9;
 
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -456,11 +458,11 @@ define( function( require ) {
       var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
 
       // Avoid bugs stemming from large or infinite fields (such as #82, #84, #85)
-      if ( newDistancePowerCube < MIN_CUBED_DISTANCE ) {
-        newDistancePowerCube = MIN_CUBED_DISTANCE;
+      if ( newDistancePowerCube < MIN_DISTANCE_SCALE ) {
+        newDistancePowerCube = MIN_DISTANCE_SCALE;
       }
-      if ( oldDistancePowerCube < MIN_CUBED_DISTANCE ) {
-        oldDistancePowerCube = MIN_CUBED_DISTANCE;
+      if ( oldDistancePowerCube < MIN_DISTANCE_SCALE ) {
+        oldDistancePowerCube = MIN_DISTANCE_SCALE;
       }
 
       // For performance reasons, we don't want to generate more vector allocations
@@ -507,7 +509,12 @@ define( function( require ) {
           var distanceSquared = chargedParticle.position.distanceSquared( position );
 
           // Avoid bugs stemming from large or infinite fields (#82, #84, #85)
-          var distancePowerCube = Math.max( Math.pow( distanceSquared, 1.5 ), MIN_CUBED_DISTANCE );
+          if ( distanceSquared < MIN_DISTANCE_SCALE ) {
+            electricField.add( new Vector2( 1e6, 1e6 ) );
+            return;
+          }
+
+          var distancePowerCube = Math.pow( distanceSquared, 1.5 );
 
           // For performance reasons, we don't want to generate more vector allocations
           var electricFieldContribution = {
