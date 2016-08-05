@@ -110,7 +110,6 @@ define( function( require ) {
       // so the text must be updated with angle whereas arrow node must be updated with -angle
 
       // Update length and direction of the arrow
-      // if ( Number.isFinite( arrowLength ) ) {
       if ( arrowLength < MAX_ARROW_LENGTH ) {
         arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
         arrowNode.visible = electricFieldSensor.isActive;
