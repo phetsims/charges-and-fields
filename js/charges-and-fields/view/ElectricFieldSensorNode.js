@@ -136,13 +136,15 @@ define( function( require ) {
     };
     electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
-    electricFieldSensor.isActiveProperty.link( function( isActive ) {
+    var isActiveListener = function( isActive ) {
       arrowNode.visible = isActive;
       if ( areValuesVisibleProperty.get() ) {
         fieldStrengthLabel.visible = isActive;
         directionLabel.visible = isActive;
       }
-    } );
+    };
+    electricFieldSensor.isActiveProperty.link( isActiveListener );
+
     // Show/hide labels
     var areValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
@@ -203,7 +205,7 @@ define( function( require ) {
 
     // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
     var isDragListenerAttached = false;
-    electricFieldSensor.isInteractiveProperty.link( function() {
+    var isInteractiveListener = function() {
       var isInteractive = electricFieldSensor.isInteractive;
 
       if ( isDragListenerAttached !== isInteractive ) {
@@ -217,7 +219,8 @@ define( function( require ) {
 
         isDragListenerAttached = isInteractive;
       }
-    } );
+    };
+    electricFieldSensor.isInteractiveProperty.link( isInteractiveListener );
 
     var availableModelBoundsPropertyListener = function( bounds ) {
       electricFieldSensorNode.movableDragHandler.setDragBounds( bounds );
@@ -228,11 +231,15 @@ define( function( require ) {
     this.availableModelBoundsProperty = availableModelBoundsProperty;
 
     this.disposeElectricFieldSensor = function() {
+      electricFieldSensor.isActiveProperty.unlink( isActiveListener );
+      electricFieldSensor.isInteractiveProperty.unlink( isInteractiveListener );
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
       areValuesVisibleProperty.unlink( areValuesVisibleListener );
       isDirectionLabelVisibleProperty.unlink( isDirectionLabelVisibleListener );
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorArrow', arrowColorFunction );
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorLabel', labelColorFunction );
     };
 
     /**
