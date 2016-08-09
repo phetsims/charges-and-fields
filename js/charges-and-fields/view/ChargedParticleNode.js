@@ -46,8 +46,7 @@ define( function( require ) {
     chargedParticle.positionProperty.link( positionListener );
 
     this.movableDragHandler = new MovableDragHandler(
-      chargedParticle.positionProperty,
-      {
+      chargedParticle.positionProperty, {
         tandem: tandem.createTandem( 'movableDragHandler' ),
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
@@ -87,26 +86,29 @@ define( function( require ) {
 
     // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
     var isDragListenerAttached = false;
-    chargedParticle.isInteractiveProperty.link( function() {
+
+    var isInteractiveListener = function() {
+
       var isInteractive = chargedParticle.isInteractive;
 
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {
           chargedParticleNode.cursor = 'pointer';
           chargedParticleNode.addInputListener( chargedParticleNode.movableDragHandler );
-        }
-        else {
+        } else {
           chargedParticleNode.cursor = null;
           chargedParticleNode.removeInputListener( chargedParticleNode.movableDragHandler );
         }
 
         isDragListenerAttached = isInteractive;
       }
-    } );
+    };
+    chargedParticle.isInteractiveProperty.link( isInteractiveListener );
 
     this.disposeChargedParticleNode = function() {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       chargedParticle.positionProperty.unlink( positionListener );
+      chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
     };
 
     tandem.addInstance( this );
@@ -122,3 +124,4 @@ define( function( require ) {
 
   } );
 } );
+
