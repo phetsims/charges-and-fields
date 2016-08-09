@@ -231,6 +231,7 @@ define( function( require ) {
     this.availableModelBoundsProperty = availableModelBoundsProperty;
 
     this.disposeElectricFieldSensor = function() {
+      arrowNode.dispose();
       electricFieldSensor.isActiveProperty.unlink( isActiveListener );
       electricFieldSensor.isInteractiveProperty.unlink( isInteractiveListener );
       electricFieldSensor.positionProperty.unlink( positionListener );
