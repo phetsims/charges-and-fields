@@ -88,8 +88,13 @@ define( function( require ) {
       return modelViewTransform.modelToViewPosition( position );
     } );
 
-     // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
+    // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
     this.electricField = this.positions.map( function() { return new Vector2(); } );
+
+    this.disposeElectricFieldCanvasNode = function() {
+      isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
+      isElectricFieldDirectionOnlyProperty.unlink( invalidateSelfListener ); // visibility change
+    };
   }
 
   chargesAndFields.register( 'ElectricFieldCanvasNode', ElectricFieldCanvasNode );
@@ -115,8 +120,8 @@ define( function( require ) {
             var oldDistanceSquared = position.distanceSquared( oldPosition );
             if ( oldDistanceSquared !== 0 ) {
               electricField.subtract( scratchVector.set( position )
-                                                   .subtract( oldPosition )
-                                                   .multiplyScalar( kConstant * charge / Math.pow( oldDistanceSquared, 1.5 ) ) );
+                .subtract( oldPosition )
+                .multiplyScalar( kConstant * charge / Math.pow( oldDistanceSquared, 1.5 ) ) );
             }
           }
 
@@ -124,8 +129,8 @@ define( function( require ) {
             var newDistanceSquared = position.distanceSquared( newPosition );
             if ( newDistanceSquared !== 0 ) {
               electricField.add( scratchVector.set( position )
-                                              .subtract( newPosition )
-                                              .multiplyScalar( kConstant * charge / Math.pow( newDistanceSquared, 1.5 ) ) );
+                .subtract( newPosition )
+                .multiplyScalar( kConstant * charge / Math.pow( newDistanceSquared, 1.5 ) ) );
             }
           }
         }
@@ -161,6 +166,11 @@ define( function( require ) {
 
         context.restore();
       }
+    },
+
+    dispose: function() {
+      this.disposeElectricFieldCanvasNode();
     }
   } );
 } );
+
