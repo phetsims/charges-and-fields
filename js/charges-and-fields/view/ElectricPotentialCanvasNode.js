@@ -84,6 +84,11 @@ define( function( require ) {
     this.imageData = this.directContext.getImageData( 0, 0, numHorizontal, numVertical );
     assert && assert( this.imageData.width === numHorizontal );
     assert && assert( this.imageData.height === numVertical );
+
+    this.disposeElectricPotentialCanvasNode = function() {
+      isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
+    };
+
   }
 
   chargesAndFields.register( 'ElectricPotentialCanvasNode', ElectricPotentialCanvasNode );
@@ -182,6 +187,11 @@ define( function( require ) {
       context.drawImage( this.directCanvas, 0, 0 );
 
       context.restore();
+    },
+
+    dispose: function() {
+      this.disposeElectricPotentialCanvasNode();
     }
+
   } );
 } );
