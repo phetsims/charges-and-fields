@@ -56,12 +56,12 @@ define( function( require ) {
    * @constructor
    */
   function ElectricPotentialSensorNode( electricPotentialSensor,
-                                        getElectricPotentialColor,
-                                        clearElectricPotentialLines,
-                                        addElectricPotentialLine,
-                                        modelViewTransform,
-                                        availableModelBoundsProperty,
-                                        tandem ) {
+    getElectricPotentialColor,
+    clearElectricPotentialLines,
+    addElectricPotentialLine,
+    modelViewTransform,
+    availableModelBoundsProperty,
+    tandem ) {
 
     var self = this;
 
@@ -178,32 +178,39 @@ define( function( require ) {
     voltageReadout.centerY = backgroundRectangle.centerY;
 
     // Link the stroke color for the default/projector mode
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function( color ) {
+    var setElectricPotentialSensorCircleStroke = function( color ) {
       circle.stroke = color;
-    } );
+    };
 
     // update the colors on the crosshair components when the color profile changes
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+    var setElectricPotentialSensorCrosshairStroke = function( color ) {
       crosshair.stroke = color;
       crosshairMount.fill = color;
       crosshairMount.stroke = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', function( color ) {
+    var setElectricPotentialPanelTitleText = function( color ) {
       electricPotentialPanelTitleText.fill = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', function( color ) {
+    var setElectricPotentialSensorTextPanelTextFill = function( color ) {
       voltageReadout.fill = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', function( color ) {
+    var setElectricPotentialSensorTextPanelBorder = function( color ) {
       backgroundRectangle.stroke = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', function( color ) {
+    var setElectricPotentialSensorTextPanelBackground = function( color ) {
       backgroundRectangle.fill = color;
-    } );
+    };
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
+    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
 
     // the color of the fill tracks the electric potential
     ChargesAndFieldsColors.on( 'profileChanged', function() {
@@ -223,19 +230,20 @@ define( function( require ) {
     bodyNode.top = crosshairMount.bottom;
 
     // Register for synchronization with model.
-    electricPotentialSensor.positionProperty.link( function( position ) {
+    var positionListener = function( position ) {
       self.translation = modelViewTransform.modelToViewPosition( position );
-    } );
+    };
+    electricPotentialSensor.positionProperty.link( positionListener );
 
     // Update the value of the electric potential on the panel and the fill color on the crosshair
-    electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
-
+    var potentialListener = function( electricPotential ) {
       // update the text of the voltage
       updateVoltageReadout( electricPotential );
 
       // the color fill inside the circle changes according to the value of the electric potential
       updateCircleFill( electricPotential );
-    } );
+    };
+    electricPotentialSensor.electricPotentialProperty.link( potentialListener );
 
     // Should be added as a listener by our parent when the time is right
     this.movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
@@ -304,21 +312,36 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      }
-      else if ( exponent > 0 ) {
+      } else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      }
-      else {
+      } else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 
       return Util.toFixed( number, decimalPlaces );
     }
 
+    this.disposeElectricPotentialSensor = function() {
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
+      ChargesAndFieldsColors.unlink( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
+
+      electricPotentialSensor.positionProperty.unlink( positionListener );
+      electricPotentialSensor.electricFieldProperty.unlink( potentialListener );
+    };
+
     tandem.addInstance( this );
   }
 
   chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );
 
-  return inherit( Node, ElectricPotentialSensorNode );
+  return inherit( Node, ElectricPotentialSensorNode, {
+    dispose: function() {
+      this.disposeElectricPotentialSensor();
+    }
+  } );
 } );
+
