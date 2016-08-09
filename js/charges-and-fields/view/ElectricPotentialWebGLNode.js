@@ -83,6 +83,10 @@ define( function( require ) {
       invalidateSelfListener();
       particle.positionProperty.unlink( invalidateSelfListener );
     } ); // particle removed
+
+    this.disposeElectricPotentialWebGLNode = function() {
+      isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
+    };
   }
 
   chargesAndFields.register( 'ElectricPotentialWebGLNode', ElectricPotentialWebGLNode );
@@ -106,6 +110,10 @@ define( function( require ) {
       gl.bindFramebuffer( gl.FRAMEBUFFER, framebuffer );
       gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0 );
       return gl.checkFramebufferStatus( gl.FRAMEBUFFER ) === gl.FRAMEBUFFER_COMPLETE;
+    },
+
+    dispose: function() {
+      this.disposeElectricPotentialWebGLNode();
     }
   } );
 
