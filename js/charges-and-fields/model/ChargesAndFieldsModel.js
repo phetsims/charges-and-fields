@@ -379,30 +379,38 @@ define( function( require ) {
      * @private
      */
     updateIsPlayAreaCharged: function() {
-      var sumElectricCharge = 0; // {number} keep track of the electric charge
-      var sumActiveChargedParticle = 0; // {number} keep track of the numbers of active charges on the board
+      var netElectricCharge = 0; // {number} Total electric charge on screen
+      var numberActiveChargedParticles = 0; // {number} Total active charged particles on screen
 
       this.activeChargedParticles.forEach( function( chargedParticle ) {
-        sumActiveChargedParticle++;
-        sumElectricCharge += chargedParticle.charge;
+        numberActiveChargedParticles++;
+        netElectricCharge += chargedParticle.charge;
       } );
 
-      if ( sumElectricCharge !== 0 ) {
-        this.isPlayAreaCharged = true; // by Gauss's law there must be an electric field
+      // If net charge is nonzero, there must be an electric field (by Gauss's law)
+      if ( netElectricCharge !== 0 ) {
+        this.isPlayAreaCharged = true;
       }
-      // then the sum of the charge is necessarily zero, however the electric field may not be zero
-      else if ( sumActiveChargedParticle === 0 ) {
-        // there is not net charge on the board, hence no electric field
+
+      // No charged particles on screen, hence no electric field
+      else if ( numberActiveChargedParticles === 0 ) {
         this.isPlayAreaCharged = false;
-      } else if ( sumActiveChargedParticle === 2 ) {
-        // one charge is necessarily positive and the other one negative
-        if ( ( this.activeChargedParticles.get( 1 ).position ).equals( this.activeChargedParticles.get( 0 ).position ) ) {
-          // the charges occupy the same position and are therefore compensated
-          this.isPlayAreaCharged = false;
-        } else {
-          this.isPlayAreaCharged = true;
-        }
-      } else if ( sumActiveChargedParticle === 4 ) {
+      }
+
+      // If this is a pair, it must be a +- pair. If charges are co-located, don't show field.
+      else if ( numberActiveChargedParticles === 2 ) {
+
+        // Boolean
+        var colocated = this.activeChargedParticles.get( 1 ).position
+          .minus( this.activeChargedParticles.get( 0 ).position )
+          .magnitude() < MIN_DISTANCE_SCALE;
+
+        this.isPlayAreaChargedProperty.set( colocated ? false : true );
+        this.isElectricFieldVisibleProperty.set( colocated ? false : true );
+      }
+
+      // Check for two compensating pairs
+      else if ( numberActiveChargedParticles === 4 ) {
         var positiveChargePositionArray = [];
         var negativeChargePositionArray = [];
         this.activeChargedParticles.forEach( function( chargedParticle ) {
@@ -422,6 +430,7 @@ define( function( require ) {
         } else {
           this.isPlayAreaCharged = true;
         }
+        this.isElectricFieldVisibleProperty.set( this.isPlayAreaChargedProperty.get() );
       }
       // for more than six charges
       else {
