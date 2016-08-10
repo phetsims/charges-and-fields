@@ -323,7 +323,11 @@ define( function( require ) {
       this.electricPotentialLines.clear(); // clear the electricPotential 'lines'
       this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
       this.measuringTape.reset();
+
       this.isResetting = false; // done with the resetting process
+
+      console.log( 'E field visible: ', this.isElectricFieldVisibleProperty.get() );
+      console.log( 'Area charged: ', this.isPlayAreaChargedProperty.get() );
     },
 
     /**
@@ -400,13 +404,16 @@ define( function( require ) {
       // If this is a pair, it must be a +- pair. If charges are co-located, don't show field.
       else if ( numberActiveChargedParticles === 2 ) {
 
-        // Boolean
+        // {boolean} indicator for a co-located pair
         var colocated = this.activeChargedParticles.get( 1 ).position
           .minus( this.activeChargedParticles.get( 0 ).position )
           .magnitude() < MIN_DISTANCE_SCALE;
 
         this.isPlayAreaChargedProperty.set( colocated ? false : true );
-        this.isElectricFieldVisibleProperty.set( colocated ? false : true );
+
+        if (colocated) {
+          this.electricField = Vector2.ZERO;
+        }
       }
 
       // Check for two compensating pairs
@@ -427,10 +434,10 @@ define( function( require ) {
           ( negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] ) ) ) {
           this.isPlayAreaCharged = false;
+          this.electricField = Vector2.ZERO;
         } else {
           this.isPlayAreaCharged = true;
         }
-        this.isElectricFieldVisibleProperty.set( this.isPlayAreaChargedProperty.get() );
       }
       // for more than six charges
       else {
@@ -513,6 +520,11 @@ define( function( require ) {
      */
     getElectricField: function( position ) {
       var electricField = new Vector2( 0, 0 );
+
+      if ( !this.isPlayAreaChargedProperty.get() ) {
+        return electricField;
+      }
+
       this.chargedParticles.forEach( function( chargedParticle ) {
         if ( chargedParticle.isActive ) {
           var distanceSquared = chargedParticle.position.distanceSquared( position );

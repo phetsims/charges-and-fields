@@ -22,6 +22,8 @@ define( function( require ) {
   // Spacing in the model coordinate frame.
   var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
 
+  var MIN_VISIBLE_ELECTRIC_FIELD_MAG = 1e-9; // V/m
+
   var scratchVector = new Vector2();
 
   /**
@@ -34,10 +36,10 @@ define( function( require ) {
    * @param {Property.<boolean>} isVisibleProperty
    */
   function ElectricFieldCanvasNode( chargedParticles,
-                                    modelViewTransform,
-                                    modelBounds,
-                                    isElectricFieldDirectionOnlyProperty,
-                                    isVisibleProperty ) {
+    modelViewTransform,
+    modelBounds,
+    isElectricFieldDirectionOnlyProperty,
+    isVisibleProperty ) {
 
     CanvasNode.call( this, {
       canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
@@ -89,7 +91,8 @@ define( function( require ) {
     } );
 
     // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
-    this.electricField = this.positions.map( function() { return new Vector2(); } );
+    this.electricField = this.positions.map( function() {
+      return new Vector2(); } );
 
     this.disposeElectricFieldCanvasNode = function() {
       isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
@@ -155,7 +158,10 @@ define( function( require ) {
         var electricField = this.electricField[ i ];
 
         context.save();
-        context.globalAlpha = isDirectionOnly ? 1 : Util.clamp( electricField.magnitude() / maxMagnitude, 0, 1 );
+        context.globalAlpha = Util.clamp( electricField.magnitude() / maxMagnitude, 0, 1 );
+        if ( isDirectionOnly && electricField.magnitude() > MIN_VISIBLE_ELECTRIC_FIELD_MAG ) {
+          context.globalAlpha = 1.0;
+        }
 
         // TODO: matrix operation should be simpler here, and we can hard-code it?
         context.translate( viewPosition.x, viewPosition.y );
