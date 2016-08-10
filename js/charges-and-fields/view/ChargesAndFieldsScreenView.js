@@ -137,6 +137,7 @@ define( function( require ) {
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
       this.availableModelBoundsProperty,
+      model.isPlayAreaChargedProperty,
       tandem.createTandem( 'electricPotentialSensorNode' ) );
 
     // Create a visual grid with major and minor lines on the view

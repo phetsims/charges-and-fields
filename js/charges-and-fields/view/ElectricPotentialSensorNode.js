@@ -52,6 +52,7 @@ define( function( require ) {
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
+   * @param {Property.<boolean>} isPlayAreaChargedProperty - tracks whether net charge in play area is nonzero
    * @param {Tandem} tandem
    * @constructor
    */
@@ -61,6 +62,7 @@ define( function( require ) {
     addElectricPotentialLine,
     modelViewTransform,
     availableModelBoundsProperty,
+    isPlayAreaChargedProperty,
     tandem ) {
 
     var self = this;
@@ -114,6 +116,11 @@ define( function( require ) {
         addElectricPotentialLine();
       }
     } );
+
+    var isPlayAreaChargedListener = function( charged ) {
+      plotElectricPotentialLineButton.enabled = charged;
+    };
+    isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
     // See see https://github.com/phetsims/charges-and-fields/issues/73
     var doNotStartDragListener = {
@@ -331,6 +338,7 @@ define( function( require ) {
 
       electricPotentialSensor.positionProperty.unlink( positionListener );
       electricPotentialSensor.electricFieldProperty.unlink( potentialListener );
+      isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
     };
 
     tandem.addInstance( this );
