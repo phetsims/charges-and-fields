@@ -14,10 +14,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TModelElement = require( 'PHET_IO/simulations/charges-and-fields/TModelElement' );
 
-  var TElectricFieldSensor = phetioInherit( TModelElement, 'TElectricFieldSensor', function( instance, phetioID ) {
+  var TElectricFieldSensor = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
     TModelElement.call( this, instance, phetioID );
-  }, {}, {
+  };
+
+  phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, {}, {
     create: function( id ) {
 
       // In Charges and Fields, the model creates the charges and adds them to lists.
