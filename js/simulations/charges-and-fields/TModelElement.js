@@ -14,10 +14,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
-  var TModelElement = phetioInherit( TObject, 'TModelElement', function( instance, phetioID ) {
+  var TModelElement = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ModelElement );
     TObject.call( this, instance, phetioID );
-  }, {}, {} );
+  };
+
+  phetioInherit( TObject, 'TModelElement', TModelElement, {}, {} );
 
   phetioNamespace.register( 'TModelElement', TModelElement );
 
