@@ -15,10 +15,12 @@ define( function( require ) {
   var TModelElement = require( 'PHET_IO/simulations/charges-and-fields/TModelElement' );
   var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
 
-  var TChargedParticle = phetioInherit( TModelElement, 'TChargedParticle', function( instance, phetioID ) {
+  var TChargedParticle = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
     TModelElement.call( this, instance, phetioID );
-  }, {
+  };
+
+  phetioInherit( TModelElement, 'TChargedParticle', TChargedParticle, {
     setValue: {
       implementation: function( value ) {
         this.instance.charge = value.charge;
