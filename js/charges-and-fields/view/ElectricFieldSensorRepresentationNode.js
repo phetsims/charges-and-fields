@@ -50,9 +50,18 @@ define( function( require ) {
     // add circle
     this.addChild( circle );
 
+    this.disposeEFSRN = function() {
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorCircleFill', circleFillColorFunction );
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
+    };
   }
 
   chargesAndFields.register( 'ElectricFieldSensorRepresentationNode', ElectricFieldSensorRepresentationNode );
 
-  return inherit( Node, ElectricFieldSensorRepresentationNode );
+  return inherit( Node, ElectricFieldSensorRepresentationNode, {
+    dispose: function() {
+      this.disposeEFSRN();
+    }
+  } );
 } );
+

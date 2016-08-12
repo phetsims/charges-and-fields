@@ -325,9 +325,6 @@ define( function( require ) {
       this.measuringTape.reset();
 
       this.isResetting = false; // done with the resetting process
-
-      console.log( 'E field visible: ', this.isElectricFieldVisibleProperty.get() );
-      console.log( 'Area charged: ', this.isPlayAreaChargedProperty.get() );
     },
 
     /**
