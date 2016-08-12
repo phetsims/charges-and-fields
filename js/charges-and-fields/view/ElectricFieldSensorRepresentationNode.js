@@ -60,6 +60,7 @@ define( function( require ) {
 
   return inherit( Node, ElectricFieldSensorRepresentationNode, {
     dispose: function() {
+      console.log('disposing');
       this.disposeEFSRN();
     }
   } );
