@@ -554,6 +554,11 @@ define( function( require ) {
      */
     getElectricPotential: function( position ) {
       var electricPotential = 0;
+
+      if ( !this.isPlayAreaChargedProperty.get() ) {
+        return electricPotential;
+      }
+
       this.chargedParticles.forEach( function( chargedParticle ) {
         if ( chargedParticle.isActive ) {
           var distance = chargedParticle.position.distance( position );
