@@ -29,7 +29,8 @@ define( function( require ) {
   // constants
   var LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
 
-  // value chosen such that this limit is reached once the sensor is fully enclosed in a charge
+  // Max value chosen such that this limit is reached once the sensor is fully enclosed in a charge
+  var MIN_ARROW_LENGTH = 1e-9;
   var MAX_ARROW_LENGTH = 1e5;
 
   /**
@@ -109,8 +110,13 @@ define( function( require ) {
       // since the vertical direction is reversed between the view and the model
       // so the text must be updated with angle whereas arrow node must be updated with -angle
 
-      // Update length and direction of the arrow
-      if ( arrowLength < MAX_ARROW_LENGTH ) {
+      // Update length and direction of the arrow.
+      // Check that the arrow length is above MIN_ARROW_LENGTH to avoid problems
+      // with scenery code attempting to normalize a zero-length vector.
+      // Check that the arrow length is less than MAX_ARROW_LENGTH to avoid
+      // text overruns and other problems with very large potentials/fields (this
+      // typically occurs when the sensor is placed too close to a charge center).
+      if ( arrowLength < MAX_ARROW_LENGTH && arrowLength > MIN_ARROW_LENGTH ) {
         arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
         arrowNode.visible = electricFieldSensor.isActive;
 
@@ -148,6 +154,7 @@ define( function( require ) {
     // Show/hide labels
     var areValuesVisibleListener = function( isVisible ) {
       fieldStrengthLabel.visible = isVisible;
+      directionLabel.visible = isVisible;
     };
     areValuesVisibleProperty.link( areValuesVisibleListener );
 
