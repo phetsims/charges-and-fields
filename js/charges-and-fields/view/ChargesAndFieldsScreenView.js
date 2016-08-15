@@ -298,7 +298,7 @@ define( function( require ) {
     // dynamic parts of the control layout
     function updateControlLayout() {
       // right-align control panels
-      var right = modelViewTransform.modelToViewX( screenView.availableModelBoundsProperty.value.right ) - 30;
+      var right = modelViewTransform.modelToViewX( screenView.availableModelBoundsProperty.value.right ) - 10;
       controlPanel.right = right;
       resetAllButton.right = right;
       toolboxPanel.right = right;
