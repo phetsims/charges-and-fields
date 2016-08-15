@@ -195,6 +195,7 @@ define( function( require ) {
 
       addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
+      // position and oldPosition refer to a charged particle
       var positionListener = function( position, oldPosition ) {
 
         thisModel.updateIsPlayAreaCharged();
@@ -219,15 +220,25 @@ define( function( require ) {
             thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange(
               thisModel.electricPotentialSensor.position, position, oldPosition, charge );
 
-            // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
-            thisModel.electricFieldSensors.forEach( function( sensorElement ) {
+            // The getElectricFieldChange function has a bug with distances near zero.
+            // see https://github.com/phetsims/charges-and-fields/issues/82#issuecomment-239898320
+            // Instead, use the less efficient, but less buggy approach here instead.
+            thisModel.updateAllSensors();
 
-              var eField = sensorElement.electricField;
-              var deltaE = thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge );
+            // // update electric field sensor
+            // thisModel.electricFieldSensors.forEach( function( sensorElement ) {
 
-              // electricField is a property that is being listened to. We want a new vector allocation when the electric field gets updated
-              sensorElement.electricField = eField.plus( deltaE );
-            } );
+            //   // electricField is a property that is being listened to.
+            //   // We want a new vector allocation when the electric field gets updated
+            //   // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
+            //   var eField = sensorElement.electricField;
+            //   if ( eField.magnitude() < ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
+            //     var deltaE = thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge );
+            //     sensorElement.electricField = eField.plus( deltaE );
+            //   } else {
+            //     sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+            //   }
+            // } );
           } // end of else statement
         } // end of if (isActive) statement
       };
@@ -274,6 +285,7 @@ define( function( require ) {
 
     this.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
 
+      // Listener for sensor position changes
       var positionListener = function( position ) {
         addedElectricFieldSensor.electricField = thisModel.getElectricField( position );
       };
@@ -408,7 +420,7 @@ define( function( require ) {
 
         this.isPlayAreaChargedProperty.set( colocated ? false : true );
 
-        if (colocated) {
+        if ( colocated ) {
           this.electricField = Vector2.ZERO;
         }
       }
@@ -460,9 +472,9 @@ define( function( require ) {
      * Return the change in the electric field at position Position due to the motion of a
      * charged particle from oldChargePosition to  newChargePosition.
      * @private
-     * @param {Vector2} position
-     * @param {Vector2} newChargePosition
-     * @param {Vector2} oldChargePosition
+     * @param {Vector2} position - sensor location
+     * @param {Vector2} newChargePosition - charged particle location
+     * @param {Vector2} oldChargePosition - previous charged particle location
      * @param {number} particleCharge - allowed values are +1 or -1
      * @returns {{x:number,y:number}}
      */
@@ -471,11 +483,8 @@ define( function( require ) {
       var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
 
       // Avoid bugs stemming from large or infinite fields (such as #82, #84, #85)
-      if ( newDistancePowerCube < MIN_DISTANCE_SCALE ) {
-        newDistancePowerCube = MIN_DISTANCE_SCALE;
-      }
-      if ( oldDistancePowerCube < MIN_DISTANCE_SCALE ) {
-        oldDistancePowerCube = MIN_DISTANCE_SCALE;
+      if ( newDistancePowerCube < MIN_DISTANCE_SCALE || oldDistancePowerCube < MIN_DISTANCE_SCALE ) {
+        return { x: 0, y: 0 };
       }
 
       // For performance reasons, we don't want to generate more vector allocations
@@ -510,9 +519,9 @@ define( function( require ) {
     },
 
     /**
-     * Return the electric field ( a vector) at a location 'position'
+     * Return the electric field (a vector) at a location 'position'
      * @private
-     * @param {Vector2} position
+     * @param {Vector2} position - location of sensor
      * @returns {Vector2} electricField
      */
     getElectricField: function( position ) {
@@ -526,9 +535,11 @@ define( function( require ) {
         if ( chargedParticle.isActive ) {
           var distanceSquared = chargedParticle.position.distanceSquared( position );
 
-          // Avoid bugs stemming from large or infinite fields (#82, #84, #85)
+          // Avoid bugs stemming from large or infinite fields (#82, #84, #85).
+          // Assign the E-field an angle of zero and a magnitude well above the maximum allowed value.
           if ( distanceSquared < MIN_DISTANCE_SCALE ) {
-            electricField.add( new Vector2( 1e6, 1e6 ) );
+            electricField.x = 10*ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE;
+            electricField.y = 0;
             return;
           }
 

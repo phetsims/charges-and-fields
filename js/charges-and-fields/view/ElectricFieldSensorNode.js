@@ -31,7 +31,6 @@ define( function( require ) {
 
   // Max value chosen such that this limit is reached once the sensor is fully enclosed in a charge
   var MIN_ARROW_LENGTH = 1e-9;
-  var MAX_ARROW_LENGTH = 1e5;
 
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
@@ -104,8 +103,6 @@ define( function( require ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
-      var arrowLength = 15 * magnitude; // arbitrary multiplicative factor for the view
-
       // note that the angleInView = -1 * angleInModel
       // since the vertical direction is reversed between the view and the model
       // so the text must be updated with angle whereas arrow node must be updated with -angle
@@ -114,10 +111,11 @@ define( function( require ) {
       // Check that the arrow length is less than MAX_ARROW_LENGTH to avoid
       // text overruns and other problems with very large potentials/fields (this
       // typically occurs when the sensor is placed too close to a charge center).
-      if ( arrowLength < MAX_ARROW_LENGTH ) {
+      if ( magnitude < ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
 
         // Check that the arrow length is above MIN_ARROW_LENGTH to avoid problems
         // with scenery code attempting to normalize a zero-length vector.
+        var arrowLength = 15 * magnitude; // arbitrary multiplicative factor for the view
         if ( arrowLength > MIN_ARROW_LENGTH ) {
           arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
           arrowNode.visible = electricFieldSensor.isActive;

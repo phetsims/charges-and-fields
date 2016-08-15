@@ -48,7 +48,7 @@ define( function( require ) {
   var MIN_ELECTRIC_POTENTIAL = -40; // electric potential at which color will saturate to minColor
 
   // True (final arg) clamps the linear interpolation function
-  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true );
+  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.EFIELD_COLOR_SAT_MAGNITUDE, 0, 1, true );
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );
 
@@ -423,7 +423,7 @@ define( function( require ) {
      * Function that returns a color that is proportional to the magnitude of the electric Field.
      * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
      * electric field value of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
-     * electric field value of MAX_ELECTRIC_FIELD_MAGNITUDE).
+     * electric field value of EFIELD_COLOR_SAT_MAGNITUDE).
      * @private
      * @param {number} electricFieldMagnitude - a non negative number
      * @param {Object} [options] - useful to set transparency

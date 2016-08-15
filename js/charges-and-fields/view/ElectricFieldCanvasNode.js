@@ -151,7 +151,7 @@ define( function( require ) {
       this.updateElectricPotentials();
 
       var isDirectionOnly = this.isElectricFieldDirectionOnlyProperty.value;
-      var maxMagnitude = ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE;
+      var maxMagnitude = ChargesAndFieldsConstants.EFIELD_COLOR_SAT_MAGNITUDE;
 
       for ( var i = 0; i < this.viewPositions.length; i++ ) {
         var viewPosition = this.viewPositions[ i ];

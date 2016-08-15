@@ -38,6 +38,7 @@ define( function( require ) {
     ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the strength and angle of the electric field sensors
     CHECK_BOX_FONT: new PhetFont( { size: 16 } ), // font for the control panel on the upper right hand side
 
-    MAX_ELECTRIC_FIELD_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
+    MAX_EFIELD_MAGNITUDE: 1e6, // V/m - maximum allowed electric field magnitude
+    EFIELD_COLOR_SAT_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
   } );
 } );
