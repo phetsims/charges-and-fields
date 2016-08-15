@@ -46,9 +46,12 @@ define( function( require ) {
   var linear = DotUtil.linear;
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
   var MIN_ELECTRIC_POTENTIAL = -40; // electric potential at which color will saturate to minColor
-  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
-  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true ); // clamp the linear interpolation function;
-  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true ); // clamp the linear interpolation function;
+
+  // True (final arg) clamps the linear interpolation function
+  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true );
+  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );
+  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );
+
   var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
 
   /**
@@ -86,7 +89,7 @@ define( function( require ) {
     // The unlimited-particle implementation will work only with OES_texture_float where writing to
     // float textures is supported.
     var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
-                     ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
+      ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
 
     var electricPotentialGridNode;
 
@@ -97,15 +100,13 @@ define( function( require ) {
         modelViewTransform,
         model.isElectricPotentialVisibleProperty
       );
-    }
-    else if ( allowMobileWebGL ) {
+    } else if ( allowMobileWebGL ) {
       electricPotentialGridNode = new ElectricPotentialMobileWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
         model.isElectricPotentialVisibleProperty
       );
-    }
-    else {
+    } else {
       electricPotentialGridNode = new ElectricPotentialCanvasNode(
         model.activeChargedParticles,
         modelViewTransform,
@@ -161,9 +162,9 @@ define( function( require ) {
 
     // Create a measuring tape (set to invisible initially)
     var measuringTapeNode = new ChargesAndFieldsMeasuringTapeNode( model.measuringTape,
-                                                                   modelViewTransform,
-                                                                   this.availableModelBoundsProperty,
-                                                                   tandem.createTandem( 'measuringTapeNode' ) );
+      modelViewTransform,
+      this.availableModelBoundsProperty,
+      tandem.createTandem( 'measuringTapeNode' ) );
 
     // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
@@ -186,15 +187,16 @@ define( function( require ) {
     var draggableElementsLayer = new Node( { layerSplit: true } );
 
     // webGL devices that do not have have full WebGL support can only have a finite number of charges on board
-    var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
+    var isNumberChargesLimited = allowMobileWebGL && !( allowWebGL );
 
     var numberChargesLimit = ( isNumberChargesLimited ) ?
-                             ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
-                             Number.POSITIVE_INFINITY;
+      ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
+      Number.POSITIVE_INFINITY;
 
-    var canAddMoreChargedParticlesProperty = new DerivedProperty( [ model.chargedParticles.lengthProperty ], function( length ) {
-      return length < numberChargesLimit;
-    } );
+    var canAddMoreChargedParticlesProperty = new DerivedProperty( [ model.chargedParticles.lengthProperty ],
+      function( length ) {
+        return length < numberChargesLimit;
+      } );
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     var chargesAndSensorsPanel = new ChargesAndSensorsPanel(
@@ -284,7 +286,8 @@ define( function( require ) {
     } );
 
     // listens to the isUserControlled property of the measuring tape
-    // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the toolbox panel
+    // return the measuring tape to the toolboxPanel if not user Controlled and
+    // its position is located within the toolbox panel
     measuringTapeNode.isBaseUserControlledProperty.link( function( isUserControlled ) {
       var tapeBaseBounds = measuringTapeNode.localToParentBounds( measuringTapeNode.getLocalBaseBounds() );
       if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( tapeBaseBounds.eroded( 5 ) ) ) {
@@ -336,16 +339,15 @@ define( function( require ) {
     // and set up initial charges on the play area
     if ( IS_DEBUG_MODE ) {
       this.addChild( new RectangularPushButton( {
-          listener: function() {
-            model.addManyElectricPotentialLines( 20 );
-          },
-          baseColor: 'rgb( 0, 222, 120 )',
-          minWidth: 20,
-          minHeight: 20,
-          centerX: resetAllButton.centerX,
-          centerY: resetAllButton.centerY - 40
-        }
-      ) );
+        listener: function() {
+          model.addManyElectricPotentialLines( 20 );
+        },
+        baseColor: 'rgb( 0, 222, 120 )',
+        minWidth: 20,
+        minHeight: 20,
+        centerX: resetAllButton.centerX,
+        centerY: resetAllButton.centerY - 40
+      } ) );
 
 
       var position1 = new Vector2( 0.1, 0.1 );
@@ -391,20 +393,26 @@ define( function( require ) {
       // for positive electric potential
       if ( electricPotential > 0 ) {
 
-        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
+        // clamped linear interpolation function, output lies between 0 and 1;
+        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridZero, // {Color} color that corresponds to the Electric Potential being zero
-          ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // {Color} color of Max Electric Potential
+          // {Color} color that corresponds to the Electric Potential being zero
+          ChargesAndFieldsColors.electricPotentialGridZero,
+          // {Color} color of Max Electric Potential
+          ChargesAndFieldsColors.electricPotentialGridSaturationPositive,
           distance, // {number} distance must be between 0 and 1
           options );
       }
       // for negative (or zero) electric potential
       else {
 
-        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
+        // clamped linear interpolation function, output lies between 0 and 1
+        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
-          ChargesAndFieldsColors.electricPotentialGridZero,// {Color} color that corresponds to the Electric Potential being zero zero
+          // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
+          ChargesAndFieldsColors.electricPotentialGridSaturationNegative,
+          // {Color} color that corresponds to the Electric Potential being zero zero
+          ChargesAndFieldsColors.electricPotentialGridZero,
           distance, // {number} distance must be between 0 and 1
           options );
       }
@@ -428,7 +436,7 @@ define( function( require ) {
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
       return this.interpolateRGBA(
-        ChargesAndFieldsColors.electricFieldGridZero,  // {Color} color that corresponds to zero electric Field
+        ChargesAndFieldsColors.electricFieldGridZero, // {Color} color that corresponds to zero electric Field
         ChargesAndFieldsColors.electricFieldGridSaturation, // {Color} color that corresponds to the largest electric field
         distance, // {number} distance must be between 0 and 1
         options );
@@ -481,12 +489,12 @@ define( function( require ) {
 
       // Move to bottom vertically
       if ( scale === width / this.layoutBounds.width ) {
-        offsetY = (height / scale - this.layoutBounds.height);
+        offsetY = ( height / scale - this.layoutBounds.height );
       }
 
       // center horizontally
       else if ( scale === height / this.layoutBounds.height ) {
-        offsetX = (width / scale - this.layoutBounds.width ) / 2;
+        offsetX = ( width / scale - this.layoutBounds.width ) / 2;
       }
       this.translate( offsetX, offsetY );
 
@@ -499,3 +507,4 @@ define( function( require ) {
 
   } );
 } );
+
