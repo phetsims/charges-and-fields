@@ -66,7 +66,8 @@ define( function( require ) {
       var labelText = new Text( label, {
         font: ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT,
         fill: ChargesAndFieldsColors.enclosureTextProperty,
-        centerX: 0
+        centerX: 0,
+        maxWidth: 200
       } );
 
       var node = new Node( {

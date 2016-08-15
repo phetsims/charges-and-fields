@@ -95,7 +95,8 @@ define( function( require ) {
 
         measuringTape.isActive = true;
 
-        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point ).minus( measuringTapeNode.getLocalBaseCenter() );
+        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point )
+          .minus( measuringTapeNode.getLocalBaseCenter() );
         measuringTape.basePosition = modelViewTransform.viewToModelPosition( initialViewPosition );
         measuringTape.tipPosition = measuringTape.basePosition.plus( tipToBasePosition );
 
@@ -114,7 +115,8 @@ define( function( require ) {
         electricPotentialSensor.isActive = true;
 
         // initial position of the pointer in the screenView coordinates
-        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point ).plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
+        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point )
+          .plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
         electricPotentialSensor.position = modelViewTransform.viewToModelPosition( initialViewPosition );
 
         electricPotentialSensorNode.movableDragHandler.startDrag( event );
@@ -174,7 +176,8 @@ define( function( require ) {
       var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
         font: ChargesAndFieldsConstants.DEFAULT_FONT,
         fill: 'black',
-        stroke: 'black'
+        stroke: 'black',
+        maxWidth: 200
       } );
       var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
       outlineImage.scale( 0.5 * 6 / 25 );

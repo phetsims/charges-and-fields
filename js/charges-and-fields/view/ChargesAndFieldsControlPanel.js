@@ -42,7 +42,8 @@ define( function( require ) {
     function createCheckBox( tandemId, string, property ) {
       var text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECK_BOX_FONT,
-        fill: ChargesAndFieldsColors.controlPanelTextProperty
+        fill: ChargesAndFieldsColors.controlPanelTextProperty,
+        maxWidth: 250
       } );
 
       return new CheckBox( text, property, {
