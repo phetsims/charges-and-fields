@@ -110,15 +110,18 @@ define( function( require ) {
       // since the vertical direction is reversed between the view and the model
       // so the text must be updated with angle whereas arrow node must be updated with -angle
 
-      // Update length and direction of the arrow.
-      // Check that the arrow length is above MIN_ARROW_LENGTH to avoid problems
-      // with scenery code attempting to normalize a zero-length vector.
+      // Update the sensor arrow and the electric field labels.
       // Check that the arrow length is less than MAX_ARROW_LENGTH to avoid
       // text overruns and other problems with very large potentials/fields (this
       // typically occurs when the sensor is placed too close to a charge center).
-      if ( arrowLength < MAX_ARROW_LENGTH && arrowLength > MIN_ARROW_LENGTH ) {
-        arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
-        arrowNode.visible = electricFieldSensor.isActive;
+      if ( arrowLength < MAX_ARROW_LENGTH ) {
+
+        // Check that the arrow length is above MIN_ARROW_LENGTH to avoid problems
+        // with scenery code attempting to normalize a zero-length vector.
+        if ( arrowLength > MIN_ARROW_LENGTH ) {
+          arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
+          arrowNode.visible = electricFieldSensor.isActive;
+        }
 
         if ( areValuesVisibleProperty.get() ) {
           fieldStrengthLabel.visible = electricFieldSensor.isActive;
@@ -128,8 +131,11 @@ define( function( require ) {
         // Update the strings in the labels
         var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
         fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
+
         var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
-        directionLabel.text = StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString );
+        directionLabel.text = isPlayAreaChargedProperty.get() ?
+          StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
+
       } else {
         arrowNode.visible = false;
 
