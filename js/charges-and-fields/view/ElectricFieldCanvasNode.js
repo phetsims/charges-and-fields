@@ -175,6 +175,7 @@ define( function( require ) {
     },
 
     dispose: function() {
+      console.log('disposing E Field Canvas Node');
       this.disposeElectricFieldCanvasNode();
     }
   } );

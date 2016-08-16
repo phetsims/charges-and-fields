@@ -24,6 +24,8 @@ define( function( require ) {
    */
   function ElectricFieldSensor( computeElectricField, tandem ) {
 
+    var self = this;
+
     ModelElement.call( this, tandem, {
       electricField: new Vector2() // @public -  electricField Vector in Newtons per Coulomb
     }, {
@@ -33,6 +35,10 @@ define( function( require ) {
     this.computeElectricField = computeElectricField;
 
     this.positionProperty.link( this.update.bind( this ) );
+
+    this.disposeElectricFieldSensor = function() {
+      self.unlinkAll();
+    };
 
     tandem.addInstance( this );
   }
@@ -54,6 +60,10 @@ define( function( require ) {
         'E-field is NaN: ' + eField );
 
       this.electricField = this.computeElectricField( this.position );
+    },
+
+    dispose: function() {
+      this.disposeElectricFieldSensor();
     }
   } );
 } );

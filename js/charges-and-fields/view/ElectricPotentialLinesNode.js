@@ -47,32 +47,31 @@ define( function( require ) {
 
     var self = this;
     var locationProperty = new Property( position );
-    this.addInputListener( new MovableDragHandler( locationProperty,
-      {
-        modelViewTransform: modelViewTransform,
-        startDrag: function( event ) {
-          // Move the label to the front of this layer when grabbed by the user.
-          self.moveToFront();
-        }
-      } ) );
+    this.addInputListener( new MovableDragHandler( locationProperty, {
+      modelViewTransform: modelViewTransform,
+      startDrag: function( event ) {
+        // Move the label to the front of this layer when grabbed by the user.
+        self.moveToFront();
+      }
+    } ) );
 
 
     // a smaller electric potential should have more precision
-    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed( electricPotential, 2 ) : Util.toFixed( electricPotential, 1 );
+    var electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
+      Util.toFixed( electricPotential, 2 ) :
+      Util.toFixed( electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
-    var voltageLabelText = new Text( voltageLabelString,
-      {
-        font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
-        center: modelViewTransform.modelToViewPosition( position )
-      } );
+    var voltageLabelText = new Text( voltageLabelString, {
+      font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
+      center: modelViewTransform.modelToViewPosition( position )
+    } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3,
-      {
-        center: modelViewTransform.modelToViewPosition( position )
-      } );
+    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
+      center: modelViewTransform.modelToViewPosition( position )
+    } );
 
     this.addChild( backgroundRectangle ); // must go first
     this.addChild( voltageLabelText );
@@ -107,9 +106,10 @@ define( function( require ) {
 
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = function() {
+      ChargesAndFieldsColors.unlink( 'voltageLabelBackground', rectangleColorFunction );
       ChargesAndFieldsColors.unlink( 'electricPotentialLine', textColorFunction );
       ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
-      locationProperty.unlink( locationFunction);
+      locationProperty.unlink( locationFunction );
     };
 
 
@@ -188,6 +188,8 @@ define( function( require ) {
    */
   function ElectricPotentialLinesNode( electricPotentialLines, modelViewTransform, areValuesVisibleProperty ) {
 
+    var self = this;
+
     // call the super constructor
     Node.call( this );
 
@@ -227,8 +229,7 @@ define( function( require ) {
 
         // no translatable strings, for debug only
         var text = new Text( 'model=' + electricPotentialLine.positionArray.length +
-                             '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length,
-          {
+          '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
             center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
             fill: 'green',
             font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
@@ -251,6 +252,7 @@ define( function( require ) {
 
           // dispose of the link for garbage collection
           electricPotentialLinePath.dispose();
+          self.disposeElectricPotentialLinesNode();
           voltageLabel.dispose();
 
           electricPotentialLines.removeItemRemovedListener( removalListener );
@@ -276,3 +278,4 @@ define( function( require ) {
     }
   } );
 } );
+

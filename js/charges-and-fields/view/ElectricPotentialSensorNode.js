@@ -348,6 +348,7 @@ define( function( require ) {
 
   return inherit( Node, ElectricPotentialSensorNode, {
     dispose: function() {
+      console.log('disposing electric potential sensor');
       this.disposeElectricPotentialSensor();
     }
   } );

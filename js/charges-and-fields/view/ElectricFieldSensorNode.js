@@ -303,6 +303,7 @@ define( function( require ) {
 
   return inherit( ElectricFieldSensorRepresentationNode, ElectricFieldSensorNode, {
     dispose: function() {
+      ElectricFieldSensorRepresentationNode.prototype.dispose.call( this );
       this.disposeElectricFieldSensor();
       this.tandem.removeInstance( this );
     }

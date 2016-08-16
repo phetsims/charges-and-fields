@@ -269,6 +269,7 @@ define( function( require ) {
       // Add the removal listener for if and when this electric field sensor is removed from the model.
       model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
+          removedElectricFieldSensor.dispose();
           electricFieldSensorNode.dispose();
           draggableElementsLayer.removeChild( electricFieldSensorNode );
           model.electricFieldSensors.removeItemRemovedListener( removalListener );
