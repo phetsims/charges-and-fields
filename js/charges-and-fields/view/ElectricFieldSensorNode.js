@@ -163,7 +163,7 @@ define( function( require ) {
     areValuesVisibleProperty.link( areValuesVisibleListener );
 
     // the direction label is visible if (1) 'values' is checked  and (2) there is at least one charge particle  on the board
-    var isDirectionLabelVisibleProperty = new DerivedProperty( [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
+    var isDirectionLabelVisibleDerivedProperty = new DerivedProperty( [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
       function( areValuesVisible, isPlayAreaCharged ) {
         return areValuesVisible && isPlayAreaCharged;
       } );
@@ -172,7 +172,7 @@ define( function( require ) {
     var isDirectionLabelVisibleListener = function( isVisible ) {
       directionLabel.visible = isVisible;
     };
-    isDirectionLabelVisibleProperty.link( isDirectionLabelVisibleListener );
+    isDirectionLabelVisibleDerivedProperty.link( isDirectionLabelVisibleListener );
 
     // Register for synchronization with model.
     var positionListener = function( position ) {
@@ -248,7 +248,8 @@ define( function( require ) {
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
       areValuesVisibleProperty.unlink( areValuesVisibleListener );
-      isDirectionLabelVisibleProperty.unlink( isDirectionLabelVisibleListener );
+      isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
+      isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       ChargesAndFieldsColors.unlink( 'electricFieldSensorArrow', arrowColorFunction );
       ChargesAndFieldsColors.unlink( 'electricFieldSensorLabel', labelColorFunction );
