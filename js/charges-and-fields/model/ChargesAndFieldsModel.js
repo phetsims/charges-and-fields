@@ -532,27 +532,25 @@ define( function( require ) {
         return electricField;
       }
 
-      this.chargedParticles.forEach( function( chargedParticle ) {
-        if ( chargedParticle.isActive ) {
-          var distanceSquared = chargedParticle.position.distanceSquared( position );
+      this.activeChargedParticles.forEach( function( chargedParticle ) {
+        var distanceSquared = chargedParticle.position.distanceSquared( position );
 
-          // Avoid bugs stemming from large or infinite fields (#82, #84, #85).
-          // Assign the E-field an angle of zero and a magnitude well above the maximum allowed value.
-          if ( distanceSquared < MIN_DISTANCE_SCALE ) {
-            electricField.x = 10*ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE;
-            electricField.y = 0;
-            return;
-          }
-
-          var distancePowerCube = Math.pow( distanceSquared, 1.5 );
-
-          // For performance reasons, we don't want to generate more vector allocations
-          var electricFieldContribution = {
-            x: ( position.x - chargedParticle.position.x ) * ( chargedParticle.charge ) / distancePowerCube,
-            y: ( position.y - chargedParticle.position.y ) * ( chargedParticle.charge ) / distancePowerCube
-          };
-          electricField.add( electricFieldContribution );
+        // Avoid bugs stemming from large or infinite fields (#82, #84, #85).
+        // Assign the E-field an angle of zero and a magnitude well above the maximum allowed value.
+        if ( distanceSquared < MIN_DISTANCE_SCALE ) {
+          electricField.x = 10 * ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE;
+          electricField.y = 0;
+          return;
         }
+
+        var distancePowerCube = Math.pow( distanceSquared, 1.5 );
+
+        // For performance reasons, we don't want to generate more vector allocations
+        var electricFieldContribution = {
+          x: ( position.x - chargedParticle.position.x ) * ( chargedParticle.charge ) / distancePowerCube,
+          y: ( position.y - chargedParticle.position.y ) * ( chargedParticle.charge ) / distancePowerCube
+        };
+        electricField.add( electricFieldContribution );
       } );
       electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
       return electricField;
@@ -571,11 +569,9 @@ define( function( require ) {
         return electricPotential;
       }
 
-      this.chargedParticles.forEach( function( chargedParticle ) {
-        if ( chargedParticle.isActive ) {
-          var distance = chargedParticle.position.distance( position );
-          electricPotential += ( chargedParticle.charge ) / distance;
-        }
+      this.activeChargedParticles.forEach( function( chargedParticle ) {
+        var distance = chargedParticle.position.distance( position );
+        electricPotential += ( chargedParticle.charge ) / distance;
       } );
       electricPotential *= K_CONSTANT; // prefactor depends on units
       return electricPotential;
