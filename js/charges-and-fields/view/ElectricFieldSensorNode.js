@@ -162,7 +162,15 @@ define( function( require ) {
     };
     areValuesVisibleProperty.link( areValuesVisibleListener );
 
-    // the direction label is visible if (1) 'values' is checked  and (2) there is at least one charge particle  on the board
+    // Show/hide field arrow
+    var isPlayAreaChargedListener = function( isPlayAreaCharged ) {
+      arrowNode.visible = isPlayAreaCharged;
+    };
+    isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
+
+    // The direction label is visible if:
+    // (1) 'values' is checked
+    // (2) the net play area charge is marked as nonzero
     var isDirectionLabelVisibleDerivedProperty = new DerivedProperty( [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
       function( areValuesVisible, isPlayAreaCharged ) {
         return areValuesVisible && isPlayAreaCharged;
@@ -248,6 +256,7 @@ define( function( require ) {
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
       areValuesVisibleProperty.unlink( areValuesVisibleListener );
+      isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
