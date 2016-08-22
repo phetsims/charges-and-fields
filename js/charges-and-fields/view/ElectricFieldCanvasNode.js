@@ -167,7 +167,6 @@ define( function( require ) {
           context.globalAlpha = 1.0;
         }
 
-        // TODO: matrix operation should be simpler here, and we can hard-code it?
         context.translate( viewPosition.x, viewPosition.y );
         context.rotate( -electricField.angle() );
         context.scale( 1 / ElectricFieldArrowCanvas.scale, 1 / ElectricFieldArrowCanvas.scale );
