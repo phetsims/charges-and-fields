@@ -32,7 +32,7 @@ define( function( require ) {
 
     MeasuringTape.call( this, new Property( { name: centimeterUnitString, multiplier: 100 } ), measuringTape.isActiveProperty, {
       tandem: tandem,
-      dragBounds: availableModelBoundsProperty.value, // TODO: does this get updated?
+      dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       basePositionProperty: measuringTape.basePositionProperty,
       tipPositionProperty: measuringTape.tipPositionProperty,
