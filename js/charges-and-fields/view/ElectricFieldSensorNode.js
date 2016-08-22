@@ -52,8 +52,6 @@ define( function( require ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
-    this.tandem = tandem;
-
     var electricFieldSensorNode = this;
 
     // Expand the touch area
@@ -266,6 +264,7 @@ define( function( require ) {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       ChargesAndFieldsColors.unlink( 'electricFieldSensorArrow', arrowColorFunction );
       ChargesAndFieldsColors.unlink( 'electricFieldSensorLabel', labelColorFunction );
+      tandem.removeInstance( electricFieldSensorNode );
     };
 
     /**
@@ -319,7 +318,6 @@ define( function( require ) {
     dispose: function() {
       ElectricFieldSensorRepresentationNode.prototype.dispose.call( this );
       this.disposeElectricFieldSensor();
-      this.tandem.removeInstance( this );
     }
   } );
 } );

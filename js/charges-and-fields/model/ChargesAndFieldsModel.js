@@ -42,9 +42,6 @@ define( function( require ) {
    */
   function ChargesAndFieldsModel( tandem ) {
 
-    // @public - Because we need to export our tandem for now. TODO!
-    this.tandem = tandem;
-
     this.chargedParticleGroupTandem = tandem.createGroupTandem( 'chargedParticle' );
     this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
 

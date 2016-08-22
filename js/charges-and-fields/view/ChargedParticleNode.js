@@ -32,7 +32,6 @@ define( function( require ) {
     var chargedParticleNode = this;
 
     this.modelElement = chargedParticle;
-    this.tandem = tandem;
 
     ChargedParticleRepresentationNode.call( this, chargedParticle.charge );
 
@@ -109,6 +108,7 @@ define( function( require ) {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       chargedParticle.positionProperty.unlink( positionListener );
       chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
+      tandem.removeInstance( chargedParticleNode );
     };
 
     tandem.addInstance( this );
@@ -119,7 +119,6 @@ define( function( require ) {
   return inherit( ChargedParticleRepresentationNode, ChargedParticleNode, {
     dispose: function() {
       this.disposeChargedParticleNode();
-      this.tandem.removeInstance( this );
     }
 
   } );

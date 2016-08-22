@@ -27,8 +27,8 @@ define( function( require ) {
    */
   function ChargesAndFieldsMeasuringTapeNode( measuringTape, modelViewTransform, availableModelBoundsProperty, tandem ) {
 
+    var thisNode = this;
     this.measuringTape = measuringTape;
-    this.tandem = tandem;
 
     MeasuringTape.call( this, new Property( { name: centimeterUnitString, multiplier: 100 } ), measuringTape.isActiveProperty, {
       tandem: tandem,
@@ -38,13 +38,17 @@ define( function( require ) {
       tipPositionProperty: measuringTape.tipPositionProperty,
       isTipDragBounded: true
     } );
+
+    this.disposeMeasuringTapeNode = function() {
+      tandem.removeInstance( thisNode );
+    };
   }
 
   chargesAndFields.register( 'ChargesAndFieldsMeasuringTapeNode', ChargesAndFieldsMeasuringTapeNode );
 
   return inherit( MeasuringTape, ChargesAndFieldsMeasuringTapeNode, {
     dispose: function() {
-      this.tandem.removeInstance( this );
+      this.disposeMeasuringTapeNode();
     }
   } );
 } );

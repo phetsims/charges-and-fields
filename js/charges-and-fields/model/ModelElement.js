@@ -56,9 +56,6 @@ define( function( require ) {
 
     // @public
     this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
-
-    // @public
-    this.tandem = tandem;
   }
 
   chargesAndFields.register( 'ModelElement', ModelElement );
