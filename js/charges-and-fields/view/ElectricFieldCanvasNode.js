@@ -54,14 +54,18 @@ define( function( require ) {
     this.isVisibleProperty = isVisibleProperty;
 
     // Invalidate paint on a bunch of changes
-    // TODO: cleanup listener duplication for "something changed" emitter?
     var invalidateSelfListener = this.invalidatePaint.bind( this );
+
     ChargesAndFieldsColors.on( 'profileChanged', invalidateSelfListener ); // color change
+
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
+
     isElectricFieldDirectionOnlyProperty.link( invalidateSelfListener ); // visibility change
+
     chargedParticles.addItemAddedListener( function( particle ) {
       particle.positionProperty.link( invalidateSelfListener );
     } ); // particle added
+
     chargedParticles.addItemRemovedListener( function( particle ) {
       invalidateSelfListener();
       particle.positionProperty.unlink( invalidateSelfListener );
@@ -92,7 +96,8 @@ define( function( require ) {
 
     // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
     this.electricField = this.positions.map( function() {
-      return new Vector2(); } );
+      return new Vector2();
+    } );
 
     this.disposeElectricFieldCanvasNode = function() {
       isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
