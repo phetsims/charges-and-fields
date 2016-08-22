@@ -108,7 +108,7 @@ define( function( require ) {
       // so the text must be updated with angle whereas arrow node must be updated with -angle
 
       // Update the sensor arrow and the electric field labels.
-      // Check that the arrow length is less than MAX_ARROW_LENGTH to avoid
+      // Make sure the E-field magnitude is not too large to avoid
       // text overruns and other problems with very large potentials/fields (this
       // typically occurs when the sensor is placed too close to a charge center).
       if ( magnitude < ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
@@ -218,6 +218,11 @@ define( function( require ) {
 
           if ( !enclosureBounds.containsPoint( electricFieldSensor.position ) ) {
             electricFieldSensor.isActive = true;
+          }
+
+          // Avoid corner-case issue #89. Treat excessively large E-field magnitude as an indicator that r ~ 0
+          if ( electricFieldSensor.electricField.magnitude() > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
+            arrowNode.visible = false;
           }
         }
       } );
