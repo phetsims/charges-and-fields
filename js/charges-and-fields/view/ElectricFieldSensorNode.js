@@ -52,7 +52,6 @@ define( function( require ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
-    this.modelElement = electricFieldSensor; // TODO: what is using this? public/private?
     this.tandem = tandem;
 
     var electricFieldSensorNode = this;
