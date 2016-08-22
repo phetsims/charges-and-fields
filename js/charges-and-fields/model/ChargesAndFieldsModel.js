@@ -70,7 +70,7 @@ define( function( require ) {
       hideTogglingValuesVisibility: false,
       hideTogglingGridVisibility: false,
 
-      chargesAndSensorsEnclosureBounds: new Bounds2( -1.25, -2.30, 1.25, -1.70 ) // TODO: should not be initialized? meters
+      chargesAndSensorsEnclosureBounds: new Bounds2( -1.25, -2.30, 1.25, -1.70 ) // meters
     }, {
       tandemSet: {
         isElectricFieldVisible: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
