@@ -73,8 +73,7 @@ define( function( require ) {
       cursor: 'pointer'
     } );
 
-    // TODO: private/public? Can't rename yet
-    this.modelElement = electricPotentialSensor;
+    this.modelElement = electricPotentialSensor; // @public
 
     // @public
     Property.addProperty( this, 'isUserControlled', false );
