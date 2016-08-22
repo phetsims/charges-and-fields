@@ -83,7 +83,6 @@ define( function( require ) {
         allowNewNegativeCharges: tandem.createTandem( 'allowNewNegativeChargesProperty' ),
         allowNewElectricFieldSensors: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' ),
 
-        // TODO: improved way to do this without separate properties? How to handle layout?
         hideTogglingElectricFieldVisibility: tandem.createTandem( 'hideTogglingElectricFieldVisibilityProperty' ),
         hideTogglingElectricFieldDirectionOnly: tandem.createTandem( 'hideTogglingElectricFieldDirectionOnlyProperty' ),
         hideTogglingElectricPotentialVisibility: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' ),
