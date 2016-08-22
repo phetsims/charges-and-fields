@@ -73,8 +73,7 @@ define( function( require ) {
 
     isVisibleProperty.linkAttribute( this, 'visible' );
 
-    // TODO: rename modelPositions? (and in other views?)
-    this.positions = []; // {Array.<Vector2>}
+    this.modelPositions = []; // {Array.<Vector2>}
     var width = modelBounds.width;
     var height = modelBounds.height;
     var numHorizontal = Math.ceil( width / ELECTRIC_FIELD_SENSOR_SPACING );
@@ -85,17 +84,17 @@ define( function( require ) {
       for ( var col = 0; col < numHorizontal; col++ ) {
         var x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
 
-        this.positions.push( new Vector2( x, y ) );
+        this.modelPositions.push( new Vector2( x, y ) );
       }
     }
 
     // {Array.<Vector2>}
-    this.viewPositions = this.positions.map( function( position ) {
+    this.viewPositions = this.modelPositions.map( function( position ) {
       return modelViewTransform.modelToViewPosition( position );
     } );
 
     // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
-    this.electricField = this.positions.map( function() {
+    this.electricField = this.modelPositions.map( function() {
       return new Vector2();
     } );
 
@@ -120,8 +119,8 @@ define( function( require ) {
         var newPosition = item.newPosition;
         var charge = item.charge;
 
-        for ( var j = 0; j < this.positions.length; j++ ) {
-          var position = this.positions[ j ];
+        for ( var j = 0; j < this.modelPositions.length; j++ ) {
+          var position = this.modelPositions[ j ];
           var electricField = this.electricField[ j ];
 
           if ( oldPosition ) {

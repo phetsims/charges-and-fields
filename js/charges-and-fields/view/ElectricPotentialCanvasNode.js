@@ -58,7 +58,7 @@ define( function( require ) {
 
     isVisibleProperty.linkAttribute( this, 'visible' );
 
-    this.positions = []; // {Array.<Vector2>}
+    this.modelPositions = []; // {Array.<Vector2>}
     var width = modelBounds.width;
     var height = modelBounds.height;
     var numHorizontal = Math.ceil( width / ELECTRIC_POTENTIAL_SENSOR_SPACING );
@@ -69,11 +69,11 @@ define( function( require ) {
       for ( var col = 0; col < numHorizontal; col++ ) {
         var x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
 
-        this.positions.push( new Vector2( x, y ) );
+        this.modelPositions.push( new Vector2( x, y ) );
       }
     }
 
-    this.electricPotentials = new Float64Array( this.positions.length );
+    this.electricPotentials = new Float64Array( this.modelPositions.length );
 
     this.directCanvas = document.createElement( 'canvas' );
     this.directCanvas.width = numHorizontal;
@@ -111,8 +111,8 @@ define( function( require ) {
         var newPosition = item.newPosition;
         var charge = item.charge;
 
-        for ( var j = 0; j < this.positions.length; j++ ) {
-          var position = this.positions[ j ];
+        for ( var j = 0; j < this.modelPositions.length; j++ ) {
+          var position = this.modelPositions[ j ];
           var electricPotential = this.electricPotentials[ j ];
 
           if ( oldPosition ) {
