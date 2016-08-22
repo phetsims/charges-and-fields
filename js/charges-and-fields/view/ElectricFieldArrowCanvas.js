@@ -23,7 +23,6 @@ define( function( require ) {
   var scale = 1.3;
   var padding = 2;
 
-  // TODO: Add Bounds scale?
   var scaledPaddedBounds = new Bounds2( arrowShape.bounds.minX * scale,
                                         arrowShape.bounds.minY * scale,
                                         arrowShape.bounds.maxX * scale,
