@@ -215,7 +215,6 @@ define( function( require ) {
       chargesAndSensorsPanel.bottom = screenView.layoutBounds.bottom - 15;
       chargesAndSensorsPanel.centerX = screenView.layoutBounds.centerX;
 
-      // TODO: do we want additional padding?
       model.chargesAndSensorsEnclosureBounds.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
     }
     chargesAndSensorsPanel.on( 'localBounds', updateSensorPanelLayout );
