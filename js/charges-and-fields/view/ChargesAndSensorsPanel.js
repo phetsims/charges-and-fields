@@ -94,7 +94,6 @@ define( function( require ) {
           }
 
           // Representation node location, so that when being "disposed" it will animate back towards the the right place.
-          // TODO: have it look up where to animate to WHEN it needs to animate?
           var initialViewPosition = previewNode.getUniqueTrailTo( screenView ).getAncestorMatrix().timesVector2( Vector2.ZERO );
 
           // Create the new model element.
