@@ -619,7 +619,10 @@ define( function( require ) {
     addManyElectricPotentialLines: function( numberOfLines ) {
       var i;
       for ( i = 0; i < numberOfLines; i++ ) {
-        var position = new Vector2( WIDTH * ( Math.random() - 0.5 ), HEIGHT * ( Math.random() - 0.5 ) ); // a random position on the graph
+        var position = new Vector2(
+          WIDTH * ( phet.joist.random() - 0.5 ),
+          HEIGHT * ( phet.joist.random() - 0.5 ) ); // a random position on the graph
+
         this.addElectricPotentialLine( position );
       }
     },
