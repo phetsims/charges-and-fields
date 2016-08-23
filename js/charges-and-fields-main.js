@@ -29,9 +29,9 @@ define( function( require ) {
 
       // all credits fields are optional
       leadDesign: 'Amy Rouinfar, Michael Dubson',
-      softwareDevelopment: 'Martin Veillette, Jonathan Olson, Michael Dubson',
+      softwareDevelopment: 'Martin Veillette, Jonathan Olson, Michael Dubson, Andrew Adare',
       team: 'Ariel Paul, Kathy Perkins',
-      qualityAssurance: 'Steele Dalton, Elise Morgan, Oliver Orejola, Bryan Yoelin'
+      qualityAssurance: 'Steele Dalton, Elise Morgan, Oliver Orejola, Bryan Yoelin, Amanda Davis'
     },
     optionsNode: new GlobalOptionsNode( tandem.createTandem( 'options' ) )
   };
