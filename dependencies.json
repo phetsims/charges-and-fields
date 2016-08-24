@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.0-dev.19 Tue Aug 23 2016 14:28:21 GMT-0600 (MDT)",
+  "comment": "# charges-and-fields 1.0.0-dev.20 Wed Aug 24 2016 11:26:57 GMT-0600 (MDT)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "master"
@@ -13,15 +13,15 @@
     "branch": "master"
   },
   "charges-and-fields": {
-    "sha": "df4442b26188ae94181273fbd00e255b1e567f8e",
+    "sha": "3c108adb18374780a27901790db305d965f1935e",
     "branch": "master"
   },
   "chipper": {
-    "sha": "136b1d30c9cb95165fd05dbcef0e6dfc1704c576",
+    "sha": "89c4a1038a90e3efc84872d4608d10442fb44831",
     "branch": "master"
   },
   "dot": {
-    "sha": "6e8a26f2976e70a018b205206d20049b35972cc3",
+    "sha": "3f60cfcc03fb523fab5e01ec64eaeb74d3bf331e",
     "branch": "master"
   },
   "joist": {
@@ -29,7 +29,7 @@
     "branch": "master"
   },
   "kite": {
-    "sha": "88f0c3a051a24f71a6465641badeccab1246820a",
+    "sha": "3b656b9a455ced42b9af90a15a25446b248490ab",
     "branch": "master"
   },
   "phet-core": {
@@ -45,7 +45,7 @@
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "a1361fa4fc50dd34ce2503d153424f6c40ef7b4b",
+    "sha": "d50f228284aea36df09232ea0d5ab950e3c47f94",
     "branch": "master"
   },
   "sherpa": {
@@ -53,7 +53,7 @@
     "branch": "master"
   },
   "sun": {
-    "sha": "093126ce1d9a3df45ca58b97d404f0b50c9f413d",
+    "sha": "4b852127a48779eb6d459b858f5b9598bc57f2c0",
     "branch": "master"
   },
   "tandem": {
