@@ -54,6 +54,8 @@ define( function( require ) {
 
     var electricFieldSensorNode = this;
 
+    this.modelElement = electricFieldSensor; // @public
+
     // Expand the touch area
     this.touchArea = this.localBounds.dilated( 10 );
 
