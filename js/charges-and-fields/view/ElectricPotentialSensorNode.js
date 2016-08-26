@@ -132,6 +132,7 @@ define( function( require ) {
 
     // Create the voltage readout
     var voltageReadout = new TandemText( '', {
+      maxWidth: 65,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       tandem: tandem.createTandem( 'voltageReadout' )
     } );
@@ -158,7 +159,11 @@ define( function( require ) {
 
     // Create the background rectangle behind the voltage Reading
     var backgroundAdjustment = 0;
-    var backgroundRectangle = new Rectangle( backgroundAdjustment, 0, buttonsBox.width - backgroundAdjustment * 2, voltageReadout.height * 1.5, 5, 5 );
+    var backgroundRectangle = new Rectangle(
+      backgroundAdjustment,
+      0,
+      buttonsBox.width - backgroundAdjustment * 2,
+      voltageReadout.height * 1.5, 5, 5 );
 
     // Create the body of the sensor
     var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
@@ -285,10 +290,20 @@ define( function( require ) {
     }
 
     /**
-     * Decimal adjustment of a number is a function that round a number and returns a string.
-     * For numbers between -10 and 10, the return strings has a fixed number of decimal places (determined by maxDecimalPlaces)
-     * whereas for numbers larger than ten, (or smaller than -10)  the number returned has with a fixed number of significant figures that
-     * is at least equal to the number of decimal places (or larger). See example below
+     * Returns a formatted string representing a number, rounded if necessary.
+     * For -10 <= `number` <= 10, the returned string has a fixed number of decimal places
+     * (determined by maxDecimalPlaces). For abs(number) > 10, the returned string is given a
+     * number of significant figures at least equal to the number of decimal places.
+     *
+     * Example for maxDecimalPlaces = 3:
+     * 9999.11 -> 9999  numbers larger than 10^maxDecimalPlaces are rounded to integers
+     * 999.111 -> 999.1
+     * 99.1111 -> 99.11
+     * 9.11111 -> 9.111 numbers smaller than 10 have maxDecimalPlaces decimal places
+     * 1.11111 -> 1.111
+     * 0.11111 -> 0.111
+     * 0.00111 -> 0.001
+     * 0.00011 -> 0.000
      *
      * @param {number} number
      * @param {Object} [options]
@@ -298,16 +313,6 @@ define( function( require ) {
       options = _.extend( {
         maxDecimalPlaces: 3
       }, options );
-
-      // e.g. for  maxDecimalPlaces: 3
-      // 9999.11 -> 9999  (numbers larger than 10^maxDecimalPlaces) are rounded to unity
-      // 999.111 -> 999.1
-      // 99.1111 -> 99.11
-      // 9.11111 -> 9.111 (numbers smaller than 10 have maxDecimalPlaces decimal places)
-      // 1.11111 -> 1.111
-      // 0.11111 -> 0.111
-      // 0.00111 -> 0.001
-      // 0.00011 -> 0.000
 
       // let's find the exponent as in
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
