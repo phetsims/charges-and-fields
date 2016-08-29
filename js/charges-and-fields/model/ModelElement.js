@@ -14,18 +14,21 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   /**
-   *
-   * @param {Vector2} position - initial position of the model element
    * @constructor
+   *
+   * @param {Tandem} tandem
+   * @param {Object} [options] - PropertySet properties to be initialized
+   * @param {Object} [tandemSetOptions]
    */
-  function ModelElement( position ) {
+  function ModelElement( tandem, options, tandemSetOptions ) {
 
-    PropertySet.call( this, {
+    PropertySet.call( this, _.extend( {
 
       // @public
-      position: position,
+      position: new Vector2(),
 
       // @public
       // Flag that indicates if this model element is controlled by the user
@@ -33,8 +36,18 @@ define( function( require ) {
 
       // @public
       // Flag that indicates if the model element is active or dormant
-      isActive: false
+      isActive: false,
 
+      // @public
+      // If false, the user will not be able to interact with this charge at all.
+      isInteractive: true
+
+    }, options ), {
+      tandemSet: _.extend( {
+        position: tandem.createTandem( 'positionProperty' ),
+        isUserControlled: tandem.createTandem( 'isUserControlledProperty' ),
+        isActive: tandem.createTandem( 'isActiveProperty' )
+      }, tandemSetOptions )
     } );
 
     // @public read-only
@@ -42,8 +55,10 @@ define( function( require ) {
     this.isAnimated = false;
 
     // @public
-    this.destinationPosition = null; // {Vector2} the final destination when animated
+    this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
   }
+
+  chargesAndFields.register( 'ModelElement', ModelElement );
 
   return inherit( PropertySet, ModelElement, {
 
@@ -55,7 +70,7 @@ define( function( require ) {
       var self = this;
 
       // distance from current position to the destination position
-      var distanceToDestination = this.position.distance( this.destinationPosition );
+      var distanceToDestination = this.position.distance( this.initialPosition );
 
       // time to perform the animation in milliseconds, time is proportional to distance
       var animationTime = (distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY) * 1000; // in milliseconds
@@ -68,8 +83,8 @@ define( function( require ) {
 
       var animationTween = new TWEEN.Tween( position ).
         to( {
-          x: this.destinationPosition.x,
-          y: this.destinationPosition.y
+          x: this.initialPosition.x,
+          y: this.initialPosition.y
         }, animationTime ).
         easing( TWEEN.Easing.Cubic.InOut ).
         onStart( function() {

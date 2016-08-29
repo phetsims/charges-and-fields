@@ -20,6 +20,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants related to text
   var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
@@ -39,13 +40,13 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} boundsProperty - bounds in model coordinates
    * @param {Property.<boolean>} isGridVisibleProperty
-   * @param {Property.<boolean>} isValuesVisibleProperty
+   * @param {Property.<boolean>} areValuesVisibleProperty
    * @constructor
    */
   function GridNode( modelViewTransform,
                      boundsProperty,
                      isGridVisibleProperty,
-                     isValuesVisibleProperty ) {
+                     areValuesVisibleProperty ) {
 
     var thisGrid = this;
 
@@ -96,19 +97,31 @@ define( function( require ) {
     }
 
     var majorGridLinesPath = new Path( modelViewTransform.modelToViewShape( majorGridLinesShape ), {
-      lineWidth: MAJOR_GRIDLINE_LINEWIDTH, lineCap: 'butt', lineJoin: 'bevel'
+      lineWidth: MAJOR_GRIDLINE_LINEWIDTH,
+      lineCap: 'butt',
+      lineJoin: 'bevel',
+      stroke: ChargesAndFieldsColors.gridStrokeProperty
     } );
 
     var minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
-      lineWidth: MINOR_GRIDLINE_LINEWIDTH, lineCap: 'butt', lineJoin: 'bevel'
+      lineWidth: MINOR_GRIDLINE_LINEWIDTH,
+      lineCap: 'butt',
+      lineJoin: 'bevel',
+      stroke: ChargesAndFieldsColors.gridStrokeProperty
     } );
 
     // Create the one-meter double headed arrow representation
     var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
-    var arrowPath = new Path( arrowShape );
+    var arrowPath = new Path( arrowShape, {
+      fill: ChargesAndFieldsColors.gridLengthScaleArrowFillProperty,
+      stroke: ChargesAndFieldsColors.gridLengthScaleArrowStrokeProperty
+    } );
 
     // Create and add the text (legend) accompanying the double headed arrow
-    var text = new Text( oneMeterString, { font: FONT } );
+    var text = new Text( oneMeterString, {
+      fill: ChargesAndFieldsColors.gridTextFillProperty,
+      font: FONT
+    } );
 
     // add all the nodes
     gridLinesParent.addChild( minorGridLinesPath );
@@ -123,28 +136,9 @@ define( function( require ) {
     text.centerX = arrowPath.centerX;
     text.top = arrowPath.bottom;
 
-    // Create links to the projector/default color scheme
-    // no need to unlink, present for the lifetime of the simulation
-    ChargesAndFieldsColors.gridStrokeProperty.link( function( color ) {
-      minorGridLinesPath.stroke = color;
-      majorGridLinesPath.stroke = color;
-    } );
-
-    ChargesAndFieldsColors.gridLengthScaleArrowStrokeProperty.link( function( color ) {
-      arrowPath.stroke = color;
-    } );
-
-    ChargesAndFieldsColors.gridLengthScaleArrowFillProperty.link( function( color ) {
-      arrowPath.fill = color;
-    } );
-
-    ChargesAndFieldsColors.gridTextFillProperty.link( function( color ) {
-      text.fill = color;
-    } );
-
     // Show/ Hide the arrow
     // no need to unlink, present for the lifetime of the simulation
-    isValuesVisibleProperty.link( function( isVisible ) {
+    areValuesVisibleProperty.link( function( isVisible ) {
       arrowPath.visible = isVisible;
       text.visible = isVisible;
     } );
@@ -156,6 +150,8 @@ define( function( require ) {
     } );
 
   }
+
+  chargesAndFields.register( 'GridNode', GridNode );
 
   return inherit( Node, GridNode );
 } );

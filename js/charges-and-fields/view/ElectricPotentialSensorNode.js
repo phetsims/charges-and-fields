@@ -28,7 +28,10 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
+  var Property = require( 'AXON/Property' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
@@ -43,30 +46,37 @@ define( function( require ) {
 
   /**
    *
-   * @param {SensorElement} electricPotentialSensor - model of the electric potential sensor
+   * @param {ElectricPotentialSensor} electricPotentialSensor - model of the electric potential sensor
    * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
    * @param {Function} clearElectricPotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
-   * @param {Property.<boolean>} isElectricPotentialSensorVisibleProperty - control the visibility of this node
+   * @param {Property.<boolean>} isPlayAreaChargedProperty - tracks whether net charge in play area is nonzero
+   * @param {Tandem} tandem
    * @constructor
    */
   function ElectricPotentialSensorNode( electricPotentialSensor,
-                                        getElectricPotentialColor,
-                                        clearElectricPotentialLines,
-                                        addElectricPotentialLine,
-                                        modelViewTransform,
-                                        availableModelBoundsProperty,
-                                        isElectricPotentialSensorVisibleProperty ) {
+    getElectricPotentialColor,
+    clearElectricPotentialLines,
+    addElectricPotentialLine,
+    modelViewTransform,
+    availableModelBoundsProperty,
+    isPlayAreaChargedProperty,
+    tandem ) {
 
-    var electricPotentialSensorNode = this;
+    var self = this;
 
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the sensor
       cursor: 'pointer'
     } );
+
+    this.modelElement = electricPotentialSensor; // @public
+
+    // @public
+    Property.addProperty( this, 'isUserControlled', false );
 
     // Create the centered circle around the crosshair. The origin of this node is the center of the circle
     var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
@@ -83,11 +93,13 @@ define( function( require ) {
 
     // Create the text node above the readout
     var electricPotentialPanelTitleText = new Text( equipotentialString, {
+      maxWidth: 85,
       font: ChargesAndFieldsConstants.DEFAULT_FONT
     } );
 
     // Create the button that allows the board to be cleared of all lines.
     var clearButton = new EraserButton( {
+      tandem: tandem.createTandem( 'clearButton' ),
       baseColor: '#f2f2f2',
       iconWidth: 23,
       listener: function() {
@@ -97,15 +109,32 @@ define( function( require ) {
 
     // Create the button that allows to plot the ElectricPotential Lines
     var plotElectricPotentialLineButton = new PencilButton( {
+      tandem: tandem.createTandem( 'plotElectricPotentialLineButton' ),
       baseColor: '#f2f2f2',
       listener: function() {
         addElectricPotentialLine();
       }
     } );
 
+    var isPlayAreaChargedListener = function( charged ) {
+      plotElectricPotentialLineButton.enabled = charged;
+    };
+    isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
+
+    // See see https://github.com/phetsims/charges-and-fields/issues/73
+    var doNotStartDragListener = {
+      down: function( event ) {
+        event.handle();
+      }
+    };
+    clearButton.addInputListener( doNotStartDragListener );
+    plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
+
     // Create the voltage readout
-    var voltageReadout = new Text( '', {
-      font: ChargesAndFieldsConstants.DEFAULT_FONT
+    var voltageReadout = new TandemText( '', {
+      maxWidth: 65,
+      font: ChargesAndFieldsConstants.DEFAULT_FONT,
+      tandem: tandem.createTandem( 'voltageReadout' )
     } );
 
     /**
@@ -122,20 +151,26 @@ define( function( require ) {
     // The clear and plot buttons
     var buttonsBox = new LayoutBox( {
       orientation: 'horizontal',
-      spacing: 20,
+      spacing: 10,
       children: [ clearButton, plotElectricPotentialLineButton ],
-      pickable: true
+      pickable: true,
+      scale: 0.8
     } );
 
     // Create the background rectangle behind the voltage Reading
-    var backgroundRectangle = new Rectangle( 0, 0, buttonsBox.width, voltageReadout.height * 1.5, 5, 5 );
+    var backgroundAdjustment = 0;
+    var backgroundRectangle = new Rectangle(
+      backgroundAdjustment,
+      0,
+      buttonsBox.width - backgroundAdjustment * 2,
+      voltageReadout.height * 1.5, 5, 5 );
 
     // Create the body of the sensor
     var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
 
     // Organize the content of the control panel
     var bodyContent = new LayoutBox( {
-      spacing: 10,
+      spacing: 7,
       children: [ electricPotentialPanelTitleText, backgroundRectangle, buttonsBox ],
       pickable: true
     } );
@@ -147,39 +182,46 @@ define( function( require ) {
     bodyNode.addChild( voltageReadout ); // must be last
 
     // layout the elements of bodyNode
-    outlineImage.scale( 1.2 * bodyContent.width / outlineImage.width );
+    outlineImage.scale( 1.55 * 73.6 / outlineImage.width );
     outlineImage.centerX = bodyContent.centerX;
     outlineImage.top = bodyContent.top - 15;
     voltageReadout.centerX = bodyContent.centerX;
     voltageReadout.centerY = backgroundRectangle.centerY;
 
     // Link the stroke color for the default/projector mode
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', function( color ) {
+    var setElectricPotentialSensorCircleStroke = function( color ) {
       circle.stroke = color;
-    } );
+    };
 
     // update the colors on the crosshair components when the color profile changes
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+    var setElectricPotentialSensorCrosshairStroke = function( color ) {
       crosshair.stroke = color;
       crosshairMount.fill = color;
       crosshairMount.stroke = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', function( color ) {
+    var setElectricPotentialPanelTitleText = function( color ) {
       electricPotentialPanelTitleText.fill = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', function( color ) {
+    var setElectricPotentialSensorTextPanelTextFill = function( color ) {
       voltageReadout.fill = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', function( color ) {
+    var setElectricPotentialSensorTextPanelBorder = function( color ) {
       backgroundRectangle.stroke = color;
-    } );
+    };
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', function( color ) {
+    var setElectricPotentialSensorTextPanelBackground = function( color ) {
       backgroundRectangle.fill = color;
-    } );
+    };
+
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
+    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
+    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
 
     // the color of the fill tracks the electric potential
     ChargesAndFieldsColors.on( 'profileChanged', function() {
@@ -199,42 +241,45 @@ define( function( require ) {
     bodyNode.top = crosshairMount.bottom;
 
     // Register for synchronization with model.
-    electricPotentialSensor.positionProperty.link( function( position ) {
-      electricPotentialSensorNode.translation = modelViewTransform.modelToViewPosition( position );
-    } );
+    var positionListener = function( position ) {
+      self.translation = modelViewTransform.modelToViewPosition( position );
+    };
+    electricPotentialSensor.positionProperty.link( positionListener );
 
     // Update the value of the electric potential on the panel and the fill color on the crosshair
-    electricPotentialSensor.electricPotentialProperty.link( function( electricPotential ) {
-
+    var potentialListener = function( electricPotential ) {
       // update the text of the voltage
       updateVoltageReadout( electricPotential );
 
       // the color fill inside the circle changes according to the value of the electric potential
       updateCircleFill( electricPotential );
-    } );
+    };
+    electricPotentialSensor.electricPotentialProperty.link( potentialListener );
 
-    var movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
+    // Should be added as a listener by our parent when the time is right
+    this.movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
+      tandem: tandem.createTandem( 'movableDragHandler' ),
       dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
-        electricPotentialSensor.isUserControlledProperty.set( true );
+        self.isUserControlled = true;
       },
       endDrag: function( event ) {
-        electricPotentialSensor.isUserControlledProperty.set( false );
+        self.isUserControlled = false;
       }
     } );
 
     // When dragging, move the electric potential sensor
-    electricPotentialSensorNode.addInputListener( movableDragHandler );
+    self.addInputListener( this.movableDragHandler );
 
     //no need to unlink, the sensor is present for the lifetime of the simulation.
     availableModelBoundsProperty.link( function( bounds ) {
-      movableDragHandler.setDragBounds( bounds );
+      self.movableDragHandler.setDragBounds( bounds );
     } );
 
     // Show/Hide this node
     // no need to unlink, stays for the lifetime of the simulation
-    isElectricPotentialSensorVisibleProperty.linkAttribute( this, 'visible' );
+    electricPotentialSensor.isActiveProperty.linkAttribute( this, 'visible' );
 
     /**
      * The color fill inside the circle changes according to the value of the electric potential*
@@ -245,10 +290,20 @@ define( function( require ) {
     }
 
     /**
-     * Decimal adjustment of a number is a function that round a number and returns a string.
-     * For numbers between -10 and 10, the return strings has a fixed number of decimal places (determined by maxDecimalPlaces)
-     * whereas for numbers larger than ten, (or smaller than -10)  the number returned has with a fixed number of significant figures that
-     * is at least equal to the number of decimal places (or larger). See example below
+     * Returns a formatted string representing a number, rounded if necessary.
+     * For -10 <= `number` <= 10, the returned string has a fixed number of decimal places
+     * (determined by maxDecimalPlaces). For abs(number) > 10, the returned string is given a
+     * number of significant figures at least equal to the number of decimal places.
+     *
+     * Example for maxDecimalPlaces = 3:
+     * 9999.11 -> 9999  numbers larger than 10^maxDecimalPlaces are rounded to integers
+     * 999.111 -> 999.1
+     * 99.1111 -> 99.11
+     * 9.11111 -> 9.111 numbers smaller than 10 have maxDecimalPlaces decimal places
+     * 1.11111 -> 1.111
+     * 0.11111 -> 0.111
+     * 0.00111 -> 0.001
+     * 0.00011 -> 0.000
      *
      * @param {number} number
      * @param {Object} [options]
@@ -259,16 +314,6 @@ define( function( require ) {
         maxDecimalPlaces: 3
       }, options );
 
-      // e.g. for  maxDecimalPlaces: 3
-      // 9999.11 -> 9999  (numbers larger than 10^maxDecimalPlaces) are rounded to unity
-      // 999.111 -> 999.1
-      // 99.1111 -> 99.11
-      // 9.11111 -> 9.111 (numbers smaller than 10 have maxDecimalPlaces decimal places)
-      // 1.11111 -> 1.111
-      // 0.11111 -> 0.111
-      // 0.00111 -> 0.001
-      // 0.00011 -> 0.000
-
       // let's find the exponent as in
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
       var absolute = Math.abs( number );
@@ -278,18 +323,37 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      }
-      else if ( exponent > 0 ) {
+      } else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      }
-      else {
+      } else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 
       return Util.toFixed( number, decimalPlaces );
     }
 
+    this.disposeElectricPotentialSensor = function() {
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
+      ChargesAndFieldsColors.unlink( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
+      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
+
+      electricPotentialSensor.positionProperty.unlink( positionListener );
+      electricPotentialSensor.electricFieldProperty.unlink( potentialListener );
+      isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
+    };
+
+    tandem.addInstance( this );
   }
 
-  return inherit( Node, ElectricPotentialSensorNode );
+  chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );
+
+  return inherit( Node, ElectricPotentialSensorNode, {
+    dispose: function() {
+      this.disposeElectricPotentialSensor();
+    }
+  } );
 } );
+

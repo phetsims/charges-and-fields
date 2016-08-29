@@ -8,8 +8,9 @@ define( function( require ) {
   'use strict';
 
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
-  return {
+  return chargesAndFields.register( 'ChargesAndFieldsConstants', {
 
     K_CONSTANT: 9, // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
 
@@ -37,9 +38,7 @@ define( function( require ) {
     ELECTRIC_FIELD_SENSOR_LABEL_FONT: new PhetFont( { size: 14 } ), // font for the strength and angle of the electric field sensors
     CHECK_BOX_FONT: new PhetFont( { size: 16 } ), // font for the control panel on the upper right hand side
 
-    MAX_ELECTRIC_FIELD_MAGNITUDE: 5, // electricField at which color will saturate to maxColor (in Volts/meter)
-    ELECTRIC_FIELD_GRID_ARROW_LENGTH: 40, // in scenery coordinates
-    ELECTRIC_FIELD_GRID_CIRCLE_RADIUS: 2 // radius of small disk on top of each electric field grid arrows ( indicates the pivot point of the electric field vector)
-
-  };
+    MAX_EFIELD_MAGNITUDE: 1e6, // V/m - maximum allowed electric field magnitude
+    EFIELD_COLOR_SAT_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
+  } );
 } );

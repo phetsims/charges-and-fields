@@ -14,33 +14,39 @@ define( function( require ) {
   var GlobalOptionsNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GlobalOptionsNode' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
+  var Tandem = require( 'TANDEM/Tandem' );
+
+  // If running as phet-io, load the API
+  require( 'ifphetio!PHET_IO/simulations/charges-and-fields/charges-and-fields-api' );
 
   // strings
   var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
+
+  var tandem = Tandem.createRootTandem();
 
   var simOptions = {
     credits: {
 
       // all credits fields are optional
-      leadDesign: 'Amy Rouinfar, Michael Dubson',
-      softwareDevelopment: 'Martin Veillette, Jonathan Olson, Michael Dubson',
+      leadDesign: 'Michael Dubson, Amy Rouinfar',
+      softwareDevelopment: 'Andrew Adare, Michael Dubson, Jonathan Olson, Martin Veillette',
       team: 'Ariel Paul, Kathy Perkins',
-      qualityAssurance: 'Steele Dalton, Elise Morgan, Oliver Orejola, Bryan Yoelin'
+      qualityAssurance: 'Steele Dalton, Amanda Davis, Elise Morgan, Oliver Orejola, Bryan Yoelin'
     },
-    optionsNode: new GlobalOptionsNode()
+    optionsNode: new GlobalOptionsNode( tandem.createTandem( 'options' ) )
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
     if ( useProjectorColors ) {
       ChargesAndFieldsColors.applyProfile( 'projector' );
-    }
-    else {
+    } else {
       ChargesAndFieldsColors.applyProfile( 'default' );
     }
   } );
 
   SimLauncher.launch( function() {
-    var sim = new Sim( chargesAndFieldsTitleString, [ new ChargesAndFieldsScreen() ], simOptions );
+    var sim = new Sim( chargesAndFieldsTitleString, [ new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) ) ], simOptions );
     sim.start();
   } );
 } );
+

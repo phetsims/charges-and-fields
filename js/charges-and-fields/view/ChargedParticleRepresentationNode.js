@@ -16,21 +16,21 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
   /**
    * Constructor for the scenery node of the charge
-   * @param {number} charge
    * @constructor
+   *
+   * @param {number} charge
+   * @param {Object} [options] - Passed to Node
    */
-  function ChargedParticleRepresentationNode( charge ) {
+  function ChargedParticleRepresentationNode( charge, options ) {
 
-    Node.call( this, {
-      // Show a cursor hand over the charge
-      cursor: 'pointer'
-    } );
+    Node.call( this, options );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
@@ -70,6 +70,8 @@ define( function( require ) {
       this.addChild( new Path( minusShape, pathOptions ) );
     }
   }
+
+  chargesAndFields.register( 'ChargedParticleRepresentationNode', ChargedParticleRepresentationNode );
 
   return inherit( Node, ChargedParticleRepresentationNode );
 } );

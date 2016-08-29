@@ -13,6 +13,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var extend = require( 'PHET_CORE/extend' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var BLACK = new Color( 0, 0, 0 );
@@ -215,6 +216,8 @@ define( function( require ) {
       ChargesAndFieldsColors[ data.name ] = new Color( data.value );
     }
   } );
+
+  chargesAndFields.register( 'ChargesAndFieldsColors', ChargesAndFieldsColors );
 
   return ChargesAndFieldsColors;
 } );

@@ -15,6 +15,7 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS;
@@ -22,14 +23,13 @@ define( function( require ) {
   /**
    * Constructor for the ElectricFieldSensorRepresentationNode which renders the sensor as a scenery node.
    * @constructor
+   *
+   * @param {Object} [options] - Passed to Node
    */
-  function ElectricFieldSensorRepresentationNode() {
+  function ElectricFieldSensorRepresentationNode( options ) {
 
     // Call the super constructor
-    Node.call( this, {
-      // Show a cursor hand over the charge
-      cursor: 'pointer'
-    } );
+    Node.call( this, options );
 
     // Create the centered circle
     var circle = new Circle( CIRCLE_RADIUS, {
@@ -50,7 +50,18 @@ define( function( require ) {
     // add circle
     this.addChild( circle );
 
+    this.disposeEFSRN = function() {
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorCircleFill', circleFillColorFunction );
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
+    };
   }
 
-  return inherit( Node, ElectricFieldSensorRepresentationNode );
+  chargesAndFields.register( 'ElectricFieldSensorRepresentationNode', ElectricFieldSensorRepresentationNode );
+
+  return inherit( Node, ElectricFieldSensorRepresentationNode, {
+    dispose: function() {
+      this.disposeEFSRN();
+    }
+  } );
 } );
+

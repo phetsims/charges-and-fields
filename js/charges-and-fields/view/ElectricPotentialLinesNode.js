@@ -23,6 +23,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -33,44 +34,44 @@ define( function( require ) {
 
   /**
    * Function that generates a voltage label for the electricPotential line
-   * @param {number} electricPotential
-   * @param {Vector2} position
-   * @param {Array.<Vector2>} positionArray
+   * @param {ElectricPotentialLine} electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function VoltageLabel( electricPotential, position, positionArray, modelViewTransform ) {
+  function VoltageLabel( electricPotentialLine, modelViewTransform ) {
 
     Node.call( this, { cursor: 'pointer' } );
 
+    var electricPotential = electricPotentialLine.electricPotential;
+    var position = electricPotentialLine.position;
+
     var self = this;
     var locationProperty = new Property( position );
-    this.addInputListener( new MovableDragHandler( locationProperty,
-      {
-        modelViewTransform: modelViewTransform,
-        startDrag: function( event ) {
-          // Move the label to the front of this layer when grabbed by the user.
-          self.moveToFront();
-        }
-      } ) );
+    this.addInputListener( new MovableDragHandler( locationProperty, {
+      modelViewTransform: modelViewTransform,
+      startDrag: function( event ) {
+        // Move the label to the front of this layer when grabbed by the user.
+        self.moveToFront();
+      }
+    } ) );
 
 
     // a smaller electric potential should have more precision
-    var electricPotentialValueString = (Math.abs( electricPotential ) < 1) ? Util.toFixed( electricPotential, 2 ) : Util.toFixed( electricPotential, 1 );
+    var electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
+      Util.toFixed( electricPotential, 2 ) :
+      Util.toFixed( electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
-    var voltageLabelText = new Text( voltageLabelString,
-      {
-        font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
-        center: modelViewTransform.modelToViewPosition( position )
-      } );
+    var voltageLabelText = new Text( voltageLabelString, {
+      font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
+      center: modelViewTransform.modelToViewPosition( position )
+    } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3,
-      {
-        center: modelViewTransform.modelToViewPosition( position )
-      } );
+    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
+      center: modelViewTransform.modelToViewPosition( position )
+    } );
 
     this.addChild( backgroundRectangle ); // must go first
     this.addChild( voltageLabelText );
@@ -91,7 +92,7 @@ define( function( require ) {
     var locationFunction = function( cursorLocation ) {
       var smallestDistanceSquared = Number.POSITIVE_INFINITY;
       var closestLocation; // {Vector2}
-      positionArray.forEach( function( position ) {
+      electricPotentialLine.positionArray.forEach( function( position ) {
         var distanceSquared = position.distanceSquared( cursorLocation );
         if ( distanceSquared < smallestDistanceSquared ) {
           smallestDistanceSquared = distanceSquared;
@@ -105,9 +106,10 @@ define( function( require ) {
 
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = function() {
+      ChargesAndFieldsColors.unlink( 'voltageLabelBackground', rectangleColorFunction );
       ChargesAndFieldsColors.unlink( 'electricPotentialLine', textColorFunction );
       ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
-      locationProperty.unlink( locationFunction);
+      locationProperty.unlink( locationFunction );
     };
 
 
@@ -179,12 +181,14 @@ define( function( require ) {
   /**
    * Scenery node that is responsible for displaying the electric potential lines
    *
-   * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLinesArray - array of models of electricPotentialLine
+   * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLines - array of models of electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isValuesVisibleProperty - control the visibility of the voltage labels
+   * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
    * @constructor
    */
-  function ElectricPotentialLinesNode( electricPotentialLinesArray, modelViewTransform, isValuesVisibleProperty ) {
+  function ElectricPotentialLinesNode( electricPotentialLines, modelViewTransform, areValuesVisibleProperty ) {
+
+    var self = this;
 
     // call the super constructor
     Node.call( this );
@@ -204,16 +208,12 @@ define( function( require ) {
     this.addChild( labelsNode );
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-    electricPotentialLinesArray.addItemAddedListener( function( electricPotentialLine ) {
+    electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
 
       var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
 
-      var voltageLabel = new VoltageLabel(
-        electricPotentialLine.electricPotential,
-        electricPotentialLine.position,
-        electricPotentialLine.positionArray,
-        modelViewTransform );
+      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
@@ -229,8 +229,7 @@ define( function( require ) {
 
         // no translatable strings, for debug only
         var text = new Text( 'model=' + electricPotentialLine.positionArray.length +
-                             '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length,
-          {
+          '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
             center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
             fill: 'green',
             font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
@@ -242,7 +241,7 @@ define( function( require ) {
         circlesNode.addChild( text );
       }
 
-      electricPotentialLinesArray.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
+      electricPotentialLines.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
         if ( removedElectricPotentialLine === electricPotentialLine ) {
 
           pathsNode.removeChild( electricPotentialLinePath );
@@ -253,18 +252,30 @@ define( function( require ) {
 
           // dispose of the link for garbage collection
           electricPotentialLinePath.dispose();
+          self.disposeElectricPotentialLinesNode();
           voltageLabel.dispose();
 
-          electricPotentialLinesArray.removeItemRemovedListener( removalListener );
+          electricPotentialLines.removeItemRemovedListener( removalListener );
         }
       } ); // end of addItemRemovedListener
 
     } ); // end of addItemAddedListener
 
+    this.disposeElectricPotentialLinesNode = function() {
+      areValuesVisibleProperty.unlinkAttribute( labelsNode, 'visible' );
+    };
+
     // Control the visibility of the value (voltage) labels
     // no need to unlink present for the lifetime of the sim
-    isValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
+    areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
   }
 
-  return inherit( Node, ElectricPotentialLinesNode );
+  chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );
+
+  return inherit( Node, ElectricPotentialLinesNode, {
+    dispose: function() {
+      this.disposeElectricPotentialLinesNode();
+    }
+  } );
 } );
+

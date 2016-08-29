@@ -13,23 +13,27 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   /**
    *
-   * @param {Vector2} position - initial position of the charged particle
    * @param {number} charge - (positive=+1 or negative=-1)
+   * @param {Tandem} tandem
    * @constructor
    */
-  function ChargedParticle( position, charge ) {
+  function ChargedParticle( charge, tandem ) {
 
-    ModelElement.call( this, position );
+    ModelElement.call( this, tandem );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
     // @public read-only
-    this.charge = charge;
+    this.charge = charge; // a charge of one corresponds to one nano Coulomb
 
+    tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'ChargedParticle', ChargedParticle );
 
   return inherit( ModelElement, ChargedParticle );
 } );

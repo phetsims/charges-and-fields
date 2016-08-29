@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   // see getEquipotentialPositionArray to find how these are used
@@ -47,60 +48,14 @@ define( function( require ) {
     this.position = position; // {Vector2} @public read-only static
     this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
 
-    this.isLinePresent = this.getIsLinePresent(); // {boolean} @public read-only static
-
-    if ( this.isLinePresent ) {
-      this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
-      this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
-      this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
-    }
-
+    this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
+    this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
+    this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
   }
 
+  chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
+
   return inherit( Object, ElectricPotentialLine, {
-
-    /**
-     * Method that determines if an equipotential line is present based on
-     * (1) are there charges on the board?, (2) is the initial point of the search far away from all the charges?
-     * If both answers are yes, the function returns true;
-     *
-     * @public
-     * @returns {boolean}
-     */
-    getIsLinePresent: function() {
-      var isLinePresent; // {boolean}
-      if ( !this.isPlayAreaChargedProperty.value ) {
-        // if there are no charges, don't bother to find the electricPotential line
-        isLinePresent = false;
-      }
-      else {
-        var closestChargeDistance = this.getClosestChargedParticlePosition( this.position ).distance( this.position );
-        var closestAllowedDistance = 0.03; // in model coordinates, should be less than the radius (in the view) of a charged particle
-
-        // if the initial point for the electricPotential line search is too close to a charged particle, then
-        // the equipotential line will not be visible
-        // also see https://github.com/phetsims/charges-and-fields/issues/5
-        isLinePresent = (closestChargeDistance > closestAllowedDistance);
-
-      }
-      return isLinePresent;
-    },
-
-    /**
-     * getNextPositionAlongEquipotential gives the next position (within a distance deltaDistance) with the same electric Potential
-     * as the initial position.  If delta epsilon is positive, it gives as the next position, a point that is pointing (approximately) 90 degrees
-     * to the left of the electric field (counterclockwise) whereas if deltaDistance is negative the next position is 90 degrees to the right of the
-     * electric Field.
-     *
-     * The algorithm works best for small epsilon.
-     * @private
-     * @param {Vector2} position
-     * @param {number} deltaDistance - a distance
-     * @returns {Vector2} next point along the electricPotential line
-     */
-    getNextPositionAlongEquipotential: function( position, deltaDistance ) {
-      return this.getNextPositionAlongEquipotentialWithElectricPotential.call( this, position, this.electricPotential, deltaDistance );
-    },
 
     /**
      * Given an (initial) position, find a position with the targeted electric potential within a distance 'deltaDistance'
@@ -147,31 +102,6 @@ define( function( require ) {
     },
 
     /**
-     * Given an (initial) position, find a position with the targeted electric potential within a distance deltaDistance
-     * This uses a standard midpoint algorithm
-     * This is guaranteed to be within a distance deltaDistance of the initial position.
-     * Although it is locally more precise than getNextPositionAlongEquipotentialWithElectricPotential (by a very small margin though),
-     * this algorithm is not stable and the equipotential will start to drift over many steps.
-     *
-     * http://en.wikipedia.org/wiki/Midpoint_method
-     * @private
-     * @param {Vector2} position
-     * @param {number} deltaDistance - a distance in meters, can be positive or negative
-     * @returns {Vector2} finalPosition
-     */
-    getNextPositionAlongEquipotentialWithMidPoint: function( position, deltaDistance ) {
-      var initialElectricField = this.getElectricField( position ); // {Vector2}
-      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
-      var initialEquipotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var midwayPosition = ( initialEquipotentialNormalizedVector.multiplyScalar( deltaDistance / 2 ) ).add( position ); // {Vector2}
-      var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
-      assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
-      var midwayEquipotentialNormalizedVector = midwayElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var deltaPosition = midwayEquipotentialNormalizedVector.multiplyScalar( deltaDistance ); // {Vector2}
-      return deltaPosition.add( position ); // {Vector2} finalPosition
-    },
-
-    /**
      * Given an (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance
      * of the initial position. This is locally precise to (deltaDistance)^4 and guaranteed to be within a distance deltaDistance
      * from the starting point.
@@ -214,18 +144,19 @@ define( function( require ) {
       /*
        * General Idea of this algorithm
        *
-       * The electricPotential line is found using two searches. Starting from an initial point, we find the electric field at
-       * this position and define the point to the left of the electric field as the counterclockwise point, whereas the point that is
-       * 90 degree right of the electric field is the clockwise point. The points are stored in a counterclockwise and clockwise array.
-       * The search of the clockwise and counterclockwise points done concurrently. The search stops if (1) the number of
-       * searching steps exceeds a large number and (2) either the clockwise or counterClockwise point is very far away from the origin.
-       * A third condition to bailout of the search is that the clockwise and counterClockwise position are very close to one another
-       * in which case we have a closed electricPotential line. Note that if the conditions (1) and (2) are fulfilled the electricPotential line
-       * is not going to be a closed line but this is so far away from the screenview that the end user will simply see the line going
-       * beyond the screen.
+       * The electricPotential line is found using two searches. Starting from an initial point, we find the electric
+       * field at this position and define the point to the left of the electric field as the counterclockwise point,
+       * whereas the point that is 90 degree right of the electric field is the clockwise point. The points are stored
+       * in a counterclockwise and clockwise array. The search of the clockwise and counterclockwise points done
+       * concurrently. The search stops if (1) the number of searching steps exceeds a large number and (2) either the
+       * clockwise or counterClockwise point is very far away from the origin. A third condition to bailout of the
+       * search is that the clockwise and counterClockwise position are very close to one another in which case we have
+       * a closed electricPotential line. Note that if the conditions (1) and (2) are fulfilled the electricPotential
+       * line is not going to be a closed line but this is so far away from the screenview that the end user will simply
+       * see the line going beyond the screen.
        *
-       * After the search is done, the function returns an array of points ordered in a counterclockwise direction, i.e. after
-       * joining all the points, the directed line would be made of points that have an electric field
+       * After the search is done, the function returns an array of points ordered in a counterclockwise direction,
+       * i.e. after joining all the points, the directed line would be made of points that have an electric field
        * pointing clockwise (yes  clockwise) to the direction of the line.
        */
       var stepCounter = 0; // {number} integer
@@ -310,26 +241,6 @@ define( function( require ) {
 
       // let's return the entire array, i.e. the reversed clockwise array, the initial position, and the counterclockwise array
       return reversedArray.concat( position, counterClockwisePositionArray );
-    },
-
-    /**
-     * Function that determines the location of the closest charge to a given position.
-     * @private
-     * @param {Vector2} position
-     * @returns {Vector2}
-     */
-    getClosestChargedParticlePosition: function( position ) {
-      var closestChargedParticlePosition; // {Vector2}
-      var closestDistance = Number.POSITIVE_INFINITY;
-      assert && assert( this.chargedParticles.length > 0, ' the chargedParticles array must contain at least one element' );
-      this.chargedParticles.forEach( function( chargedParticle ) {
-        var distance = chargedParticle.position.distance( position );
-        if ( closestDistance > distance ) {
-          closestChargedParticlePosition = chargedParticle.position;
-          closestDistance = distance;
-        }
-      } );
-      return closestChargedParticlePosition;
     },
 
     /**
@@ -437,7 +348,6 @@ define( function( require ) {
      * @returns {Shape}
      */
     getShape: function() {
-      assert && assert( this.isLinePresent, 'the positionArray cannot be empty' );
       var shape = new Shape();
       var prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
       return this.positionArrayToStraightLine( shape, prunedPositionArray, { isClosedLineSegments: this.isLineClosed } );

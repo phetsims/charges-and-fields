@@ -12,6 +12,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // images
   var pencilImage = require( 'mipmap!CHARGES_AND_FIELDS/pencil.png,level=5' );
@@ -33,6 +34,8 @@ define( function( require ) {
 
     RectangularPushButton.call( this, options );
   }
+
+  chargesAndFields.register( 'PencilButton', PencilButton );
 
   return inherit( RectangularPushButton, PencilButton );
 } );

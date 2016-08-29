@@ -13,6 +13,7 @@ define( function( require ) {
   var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
@@ -22,11 +23,15 @@ define( function( require ) {
    * @param {ChargedParticle} chargedParticle - the model of the charged particle
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
+   * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
+   * @param {Tandem} tandem
    * @constructor
    */
-  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty ) {
+  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty, enclosureBounds, tandem ) {
 
     var chargedParticleNode = this;
+
+    this.modelElement = chargedParticle;
 
     ChargedParticleRepresentationNode.call( this, chargedParticle.charge );
 
@@ -39,9 +44,9 @@ define( function( require ) {
     };
     chargedParticle.positionProperty.link( positionListener );
 
-    var movableDragHandler = new MovableDragHandler(
-      chargedParticle.positionProperty,
-      {
+    this.movableDragHandler = new MovableDragHandler(
+      chargedParticle.positionProperty, {
+        tandem: tandem.createTandem( 'movableDragHandler' ),
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
@@ -53,31 +58,63 @@ define( function( require ) {
             chargedParticleNode.moveToFront();
             var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
 
+            if ( event.pointer.isTouch ) {
+              globalPoint.addXY( 0, -2 * CIRCLE_RADIUS );
+            }
+
             // move this node upward so that the cursor touches the bottom of the chargedParticle
-            chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -CIRCLE_RADIUS ) );
+            chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint );
           }
         },
 
         endDrag: function( event ) {
-          chargedParticle.isUserControlledProperty.set( false );
+          chargedParticle.isUserControlled = false;
+
+          if ( !enclosureBounds.containsPoint( chargedParticle.position ) ) {
+            chargedParticle.isActive = true;
+          }
         }
       } );
 
     // readjust the dragBounds of the movable drag handler when the screen is resized
     var availableModelBoundsPropertyListener = function( bounds ) {
-      movableDragHandler.setDragBounds( bounds );
+      chargedParticleNode.movableDragHandler.setDragBounds( bounds );
     };
 
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
 
-    // When dragging, move the charge
-    chargedParticleNode.addInputListener( movableDragHandler );
+    // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
+    var isDragListenerAttached = false;
+
+    var isInteractiveListener = function() {
+
+      var isInteractive = chargedParticle.isInteractive;
+
+      if ( isDragListenerAttached !== isInteractive ) {
+        if ( isInteractive ) {
+          chargedParticleNode.cursor = 'pointer';
+          chargedParticleNode.addInputListener( chargedParticleNode.movableDragHandler );
+        } else {
+          chargedParticleNode.cursor = null;
+          chargedParticleNode.removeInputListener( chargedParticleNode.movableDragHandler );
+        }
+
+        isDragListenerAttached = isInteractive;
+      }
+    };
+    chargedParticle.isInteractiveProperty.link( isInteractiveListener );
 
     this.disposeChargedParticleNode = function() {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       chargedParticle.positionProperty.unlink( positionListener );
+      chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
+      tandem.removeInstance( chargedParticleNode );
     };
+
+    tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );
 
   return inherit( ChargedParticleRepresentationNode, ChargedParticleNode, {
     dispose: function() {
@@ -86,3 +123,4 @@ define( function( require ) {
 
   } );
 } );
+

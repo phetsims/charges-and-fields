@@ -19,6 +19,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -28,24 +29,32 @@ define( function( require ) {
   // constants
   var LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
 
+  // Max value chosen such that this limit is reached once the sensor is fully enclosed in a charge
+  var MIN_ARROW_LENGTH = 1e-9;
+
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-   * @param {SensorElement} electricFieldSensor
+   * @param {ElectricFieldSensor} electricFieldSensor
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
-   * @param {Property.<boolean>} isValuesVisibleProperty
+   * @param {Property.<boolean>} areValuesVisibleProperty
+   * @param {Tandem} tandem
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
-                                    modelViewTransform,
-                                    availableModelBoundsProperty,
-                                    isPlayAreaChargedProperty,
-                                    isValuesVisibleProperty ) {
+    modelViewTransform,
+    availableModelBoundsProperty,
+    isPlayAreaChargedProperty,
+    areValuesVisibleProperty,
+    enclosureBounds,
+    tandem ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
     var electricFieldSensorNode = this;
+
+    this.modelElement = electricFieldSensor; // @public
 
     // Expand the touch area
     this.touchArea = this.localBounds.dilated( 10 );
@@ -87,51 +96,90 @@ define( function( require ) {
     arrowNode.centerY = 0;
     fieldStrengthLabel.bottom = this.top; // 'this' is the ElectricFieldSensorRepresentationNode, i.e. the circle
     directionLabel.bottom = fieldStrengthLabel.top;
-    fieldStrengthLabel.right = this.left - 20;
-    directionLabel.right = fieldStrengthLabel.right;
 
     // when the electric field changes update the arrow and the labels
     var electricFieldListener = function( electricField ) {
       var magnitude = electricField.magnitude();
       var angle = electricField.angle(); // angle from the model, in radians
 
-      var arrowLength = 15 * magnitude; // arbitrary multiplicative factor for the view
-
       // note that the angleInView = -1 * angleInModel
       // since the vertical direction is reversed between the view and the model
       // so the text must be updated with angle whereas arrow node must be updated with -angle
 
-      // Update length and direction of the arrow
-      arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
+      // Update the sensor arrow and the electric field labels.
+      // Make sure the E-field magnitude is not too large to avoid
+      // text overruns and other problems with very large potentials/fields (this
+      // typically occurs when the sensor is placed too close to a charge center).
+      if ( magnitude < ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
 
-      // Update the strings in the labels
-      var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
-      fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
-      var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
-      directionLabel.text = StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString );
+        // Check that the arrow length is above MIN_ARROW_LENGTH to avoid problems
+        // with scenery code attempting to normalize a zero-length vector.
+        var arrowLength = 15 * magnitude; // arbitrary multiplicative factor for the view
+        if ( arrowLength > MIN_ARROW_LENGTH ) {
+          arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
+          arrowNode.visible = electricFieldSensor.isActive;
+        }
+
+        if ( areValuesVisibleProperty.get() ) {
+          fieldStrengthLabel.visible = electricFieldSensor.isActive;
+          directionLabel.visible = electricFieldSensor.isActive;
+        }
+
+        // Update the strings in the labels
+        var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
+        fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
+
+        var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
+        directionLabel.text = isPlayAreaChargedProperty.get() ?
+          StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
+
+      } else {
+        arrowNode.visible = false;
+
+        fieldStrengthLabel.text = '-';
+        directionLabel.text = '-';
+      }
+
+      fieldStrengthLabel.centerX = 0;
+      directionLabel.centerX = 0;
     };
     electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
-    electricFieldSensor.isActiveProperty.link( function( isActive ) {
+    var isActiveListener = function( isActive ) {
       arrowNode.visible = isActive;
-    } );
-    // Show/hide labels
-    var isValuesVisibleListener = function( isVisible ) {
-      fieldStrengthLabel.visible = isVisible;
+      if ( areValuesVisibleProperty.get() ) {
+        fieldStrengthLabel.visible = isActive;
+        directionLabel.visible = isActive;
+      }
     };
-    isValuesVisibleProperty.link( isValuesVisibleListener );
+    electricFieldSensor.isActiveProperty.link( isActiveListener );
 
-    // the direction label is visible if (1) 'values' is checked  and (2) there is at least one charge particle  on the board
-    var isDirectionLabelVisibleProperty = new DerivedProperty( [ isValuesVisibleProperty, isPlayAreaChargedProperty ],
-      function( isValuesVisible, isPlayAreaCharged ) {
-        return isValuesVisible && isPlayAreaCharged;
+    // Show/hide labels
+    var areValuesVisibleListener = function( isVisible ) {
+      fieldStrengthLabel.visible = isVisible;
+      directionLabel.visible = isVisible;
+    };
+    areValuesVisibleProperty.link( areValuesVisibleListener );
+
+    // Show/hide field arrow
+    var isPlayAreaChargedListener = function( isPlayAreaCharged ) {
+      arrowNode.visible = isPlayAreaCharged;
+    };
+    isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
+
+    // The direction label is visible if:
+    // (1) 'values' is checked
+    // (2) the net play area charge is marked as nonzero
+    var isDirectionLabelVisibleDerivedProperty = new DerivedProperty( [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
+      function( areValuesVisible, isPlayAreaCharged ) {
+        return areValuesVisible && isPlayAreaCharged;
       } );
 
     // Show/hide labels
     var isDirectionLabelVisibleListener = function( isVisible ) {
       directionLabel.visible = isVisible;
     };
-    isDirectionLabelVisibleProperty.link( isDirectionLabelVisibleListener );
+    isDirectionLabelVisibleDerivedProperty.link( isDirectionLabelVisibleListener );
 
     // Register for synchronization with model.
     var positionListener = function( position ) {
@@ -139,9 +187,9 @@ define( function( require ) {
     };
     electricFieldSensor.positionProperty.link( positionListener );
 
-    var movableDragHandler = new MovableDragHandler(
-      electricFieldSensor.positionProperty,
-      {
+    this.movableDragHandler = new MovableDragHandler(
+      electricFieldSensor.positionProperty, {
+        tandem: tandem.createTandem( 'movableDragHandler' ),
         dragBounds: availableModelBoundsProperty.value,
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
@@ -154,22 +202,51 @@ define( function( require ) {
 
             var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
 
+            if ( event.pointer.isTouch ) {
+              globalPoint.addXY( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS );
+            }
+
             // move this node upward so that the cursor touches the bottom of the chargedParticle
-            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint.addXY( 0, -ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) );
+            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint );
 
           }
         },
 
         endDrag: function( event ) {
           electricFieldSensor.isUserControlledProperty.set( false );
+
+          if ( !enclosureBounds.containsPoint( electricFieldSensor.position ) ) {
+            electricFieldSensor.isActive = true;
+          }
+
+          // Avoid corner-case issue #89. Treat excessively large E-field magnitude as an indicator that r ~ 0
+          if ( electricFieldSensor.electricField.magnitude() > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
+            arrowNode.visible = false;
+          }
         }
       } );
 
-    // When dragging, move the electric Field Sensor
-    electricFieldSensorNode.addInputListener( movableDragHandler );
+    // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
+    var isDragListenerAttached = false;
+    var isInteractiveListener = function() {
+      var isInteractive = electricFieldSensor.isInteractive;
+
+      if ( isDragListenerAttached !== isInteractive ) {
+        if ( isInteractive ) {
+          electricFieldSensorNode.cursor = 'pointer';
+          electricFieldSensorNode.addInputListener( electricFieldSensorNode.movableDragHandler );
+        } else {
+          electricFieldSensorNode.cursor = null;
+          electricFieldSensorNode.removeInputListener( electricFieldSensorNode.movableDragHandler );
+        }
+
+        isDragListenerAttached = isInteractive;
+      }
+    };
+    electricFieldSensor.isInteractiveProperty.link( isInteractiveListener );
 
     var availableModelBoundsPropertyListener = function( bounds ) {
-      movableDragHandler.setDragBounds( bounds );
+      electricFieldSensorNode.movableDragHandler.setDragBounds( bounds );
     };
 
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
@@ -177,11 +254,19 @@ define( function( require ) {
     this.availableModelBoundsProperty = availableModelBoundsProperty;
 
     this.disposeElectricFieldSensor = function() {
+      arrowNode.dispose();
+      electricFieldSensor.isActiveProperty.unlink( isActiveListener );
+      electricFieldSensor.isInteractiveProperty.unlink( isInteractiveListener );
       electricFieldSensor.positionProperty.unlink( positionListener );
       electricFieldSensor.electricFieldProperty.unlink( electricFieldListener );
-      isValuesVisibleProperty.unlink( isValuesVisibleListener );
-      isDirectionLabelVisibleProperty.unlink( isDirectionLabelVisibleListener );
+      areValuesVisibleProperty.unlink( areValuesVisibleListener );
+      isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
+      isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
+      isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorArrow', arrowColorFunction );
+      ChargesAndFieldsColors.unlink( 'electricFieldSensorLabel', labelColorFunction );
+      tandem.removeInstance( electricFieldSensorNode );
     };
 
     /**
@@ -217,21 +302,25 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      }
-      else if ( exponent > 0 ) {
+      } else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      }
-      else {
+      } else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 
       return Util.toFixed( number, decimalPlaces );
     }
+
+    tandem.addInstance( this );
   }
+
+  chargesAndFields.register( 'ElectricFieldSensorNode', ElectricFieldSensorNode );
 
   return inherit( ElectricFieldSensorRepresentationNode, ElectricFieldSensorNode, {
     dispose: function() {
+      ElectricFieldSensorRepresentationNode.prototype.dispose.call( this );
       this.disposeElectricFieldSensor();
     }
   } );
 } );
+

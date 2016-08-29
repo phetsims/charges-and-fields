@@ -15,64 +15,55 @@ define( function( require ) {
   var ChargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsControlPanel' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsToolboxPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolboxPanel' );
-  var ChargesAndSensorsEnclosureNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsEnclosureNode' );
+  var ChargesAndSensorsPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsPanel' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
-  var ElectricFieldGridCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldGridCanvasNode' );
+  var ElectricFieldCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldCanvasNode' );
   var ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   var ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
-  var ElectricPotentialGridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridNode' );
-  var ElectricPotentialGridWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridWebGLNode' );
-  var ElectricPotentialGridMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialGridMobileWebGLNode' );
+  var ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
+  var ElectricPotentialWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialWebGLNode' );
+  var ElectricPotentialMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialMobileWebGLNode' );
   var ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
+  var ChargesAndFieldsMeasuringTapeNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsMeasuringTapeNode' );
   var GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
-  var linear = require( 'DOT/Util' ).linear;
-  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
+  var DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Rectangle = require( 'DOT/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
-
-  // strings
-  var centimeterUnitString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // constants
+  var linear = DotUtil.linear;
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
   var MIN_ELECTRIC_POTENTIAL = -40; // electric potential at which color will saturate to minColor
-  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.MAX_ELECTRIC_FIELD_MAGNITUDE, 0, 1, true ); // true clamps the linear interpolation function;
-  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true ); // clamp the linear interpolation function;
-  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true ); // clamp the linear interpolation function;
+
+  // True (final arg) clamps the linear interpolation function
+  var ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.EFIELD_COLOR_SAT_MAGNITUDE, 0, 1, true );
+  var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );
+  var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );
+
   var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
 
   /**
+   * @constructor
    *
    * @param {ChargesAndFieldsModel} model - main model of the simulation
-   * @constructor
+   * @param {Tandem} tandem
    */
-  function ChargesAndFieldsScreenView( model ) {
+  function ChargesAndFieldsScreenView( model, tandem ) {
 
     var screenView = this;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
-
-    // Create many properties for checkboxes and Measuring Tape
-    var viewPropertySet = new PropertySet( {
-      isDirectionOnlyElectricFieldGridVisible: false, // controls the color shading in the fill of
-      isValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
-      isElectricPotentialSensorVisible: false, // control the visibility of the electricPotential sensor
-      isGridVisible: false, // control the visibility of the simple grid with minor and major axes
-      isMeasuringTapeVisible: false, // control the visibility of the measuring tape
-      measuringTapeUnits: { name: centimeterUnitString, multiplier: 100 }, // needed for the measuring tape scenery node
-      measuringTapeBasePosition: new Vector2( 0, 0 ),
-      measuringTapeTipPosition: new Vector2( 1, 0 )
-    } );
 
     // Create a property that registers the model bounds based on the screen size
     // Note that unlike the viewPropertySet above, the availableModelBounds should not be reset when
@@ -98,53 +89,46 @@ define( function( require ) {
     // The unlimited-particle implementation will work only with OES_texture_float where writing to
     // float textures is supported.
     var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
-                     ElectricPotentialGridWebGLNode.supportsRenderingToFloatTexture();
+      ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
 
     var electricPotentialGridNode;
 
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     if ( allowWebGL ) {
-      electricPotentialGridNode = new ElectricPotentialGridWebGLNode(
+      electricPotentialGridNode = new ElectricPotentialWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
-        model.isElectricPotentialGridVisibleProperty
+        model.isElectricPotentialVisibleProperty
       );
-    }
-    else if ( allowMobileWebGL ) {
-      electricPotentialGridNode = new ElectricPotentialGridMobileWebGLNode(
+    } else if ( allowMobileWebGL ) {
+      electricPotentialGridNode = new ElectricPotentialMobileWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
-        model.isElectricPotentialGridVisibleProperty
+        model.isElectricPotentialVisibleProperty
       );
-    }
-    else {
-      electricPotentialGridNode = new ElectricPotentialGridNode(
-        model.electricPotentialSensorGrid,
-        model.on.bind( model ),
-        this.getElectricPotentialColor.bind( this ),
+    } else {
+      electricPotentialGridNode = new ElectricPotentialCanvasNode(
+        model.activeChargedParticles,
         modelViewTransform,
-        this.availableModelBoundsProperty,
-        model.isElectricPotentialGridVisibleProperty
+        model.enlargedBounds,
+        model.isElectricPotentialVisibleProperty
       );
     }
 
     // Create a grid of electric field arrow sensors
-    var electricFieldGridNode = new ElectricFieldGridCanvasNode(
-        model.electricFieldSensorGrid,
-        model.on.bind( model ),
-        this.getElectricFieldMagnitudeColor.bind( this ),
-        modelViewTransform,
-        this.availableModelBoundsProperty,
-        model.isPlayAreaChargedProperty,
-        viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
-        model.isElectricFieldGridVisibleProperty );
+    var electricFieldGridNode = new ElectricFieldCanvasNode(
+      model.activeChargedParticles,
+      modelViewTransform,
+      model.enlargedBounds,
+      model.isElectricFieldDirectionOnlyProperty,
+      model.isElectricFieldVisibleProperty );
 
 
     // Create the scenery node responsible for drawing the electricPotential lines
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
-      model.electricPotentialLinesArray,
+      model.electricPotentialLines,
       modelViewTransform,
-      viewPropertySet.isValuesVisibleProperty );
+      model.areValuesVisibleProperty );
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
@@ -154,61 +138,48 @@ define( function( require ) {
       model.addElectricPotentialLine.bind( model ),
       modelViewTransform,
       this.availableModelBoundsProperty,
-      viewPropertySet.isElectricPotentialSensorVisibleProperty );
+      model.isPlayAreaChargedProperty,
+      tandem.createTandem( 'electricPotentialSensorNode' ) );
 
     // Create a visual grid with major and minor lines on the view
     var gridNode = new GridNode(
       modelViewTransform,
       new Property( model.enlargedBounds ),
-      viewPropertySet.isGridVisibleProperty,
-      viewPropertySet.isValuesVisibleProperty );
+      model.isGridVisibleProperty,
+      model.areValuesVisibleProperty );
 
     // Create the electric control panel on the upper right hand side
-    var controlPanel = new ChargesAndFieldsControlPanel(
-      model.isElectricFieldGridVisibleProperty,
-      viewPropertySet.isDirectionOnlyElectricFieldGridVisibleProperty,
-      model.isElectricPotentialGridVisibleProperty,
-      viewPropertySet.isValuesVisibleProperty,
-      viewPropertySet.isGridVisibleProperty );
+    var controlPanel = new ChargesAndFieldsControlPanel( model, tandem.createTandem( 'controlPanel' ) );
 
     // Create the Reset All Button in the bottom right, which resets the model
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         // do not reset the availableDragBoundsProperty
         model.reset();
-        viewPropertySet.reset();
-      }
+      },
+      tandem: tandem.createTandem( 'resetAllButton' )
     } );
 
-    // Create the options for a draggable but (subject to some dragBound) Measuring Tape
-    var tapeOptions = {
-      dragBounds: this.availableModelBoundsProperty.value,
-      modelViewTransform: modelViewTransform,
-      basePositionProperty: viewPropertySet.measuringTapeBasePositionProperty,
-      tipPositionProperty: viewPropertySet.measuringTapeTipPositionProperty,
-      isTipDragBounded: true
-    };
-
     // Create a measuring tape (set to invisible initially)
-    var measuringTape = new MeasuringTape( viewPropertySet.measuringTapeUnitsProperty, viewPropertySet.isMeasuringTapeVisibleProperty,
-      tapeOptions );
+    var measuringTapeNode = new ChargesAndFieldsMeasuringTapeNode( model.measuringTape,
+      modelViewTransform,
+      this.availableModelBoundsProperty,
+      tandem.createTandem( 'measuringTapeNode' ) );
 
     // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
     ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
-      measuringTape.textColor = color;
+      measuringTapeNode.textColor = color;
     } );
 
     // Create the toolboxPanel with the measuring tape and the electric potential sensor icons
     var toolboxPanel = new ChargesAndFieldsToolboxPanel(
-      model.electricPotentialSensor.positionProperty,
-      model.electricPotentialSensor.isUserControlledProperty,
-      viewPropertySet.measuringTapeBasePositionProperty,
-      viewPropertySet.measuringTapeTipPositionProperty,
-      measuringTape.isBaseUserControlledProperty,
-      viewPropertySet.isElectricPotentialSensorVisibleProperty,
-      viewPropertySet.isMeasuringTapeVisibleProperty,
+      model.measuringTape,
+      model.electricPotentialSensor,
+      measuringTapeNode,
+      electricPotentialSensorNode,
       modelViewTransform,
-      this.availableModelBoundsProperty
+      this.availableModelBoundsProperty,
+      tandem.createTandem( 'toolboxPanel' )
     );
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
@@ -216,29 +187,58 @@ define( function( require ) {
     var draggableElementsLayer = new Node( { layerSplit: true } );
 
     // webGL devices that do not have have full WebGL support can only have a finite number of charges on board
-    var isNumberChargesLimited = allowMobileWebGL && !(allowWebGL);
+    var isNumberChargesLimited = allowMobileWebGL && !( allowWebGL );
 
     var numberChargesLimit = ( isNumberChargesLimited ) ?
-                             ElectricPotentialGridMobileWebGLNode.getNumberOfParticlesSupported() :
-                             Number.POSITIVE_INFINITY;
+      ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
+      Number.POSITIVE_INFINITY;
+
+    var canAddMoreChargedParticlesProperty = new DerivedProperty( [ model.chargedParticles.lengthProperty ],
+      function( length ) {
+        return length < numberChargesLimit;
+      } );
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
-    var chargesAndSensorsEnclosureNode = new ChargesAndSensorsEnclosureNode(
-      model.addUserCreatedModelElementToObservableArray.bind( model ),
-      model.chargedParticles,
-      model.electricFieldSensors,
-      numberChargesLimit,
-      model.chargesAndSensorsEnclosureBounds,
-      modelViewTransform,
-      this.availableModelBoundsProperty );
+    var chargesAndSensorsPanel = new ChargesAndSensorsPanel(
+      model, this,
+      function( modelElement, event ) {
+        // Horrible horrible hacks
+        draggableElementsLayer.children.forEach( function( potentialView ) {
+          if ( potentialView.modelElement === modelElement ) {
+            potentialView.movableDragHandler.startDrag( event );
+          }
+        } );
+      },
+      canAddMoreChargedParticlesProperty, modelViewTransform, tandem.createTandem( 'chargesAndSensorsPanel' ) );
+
+    function updateSensorPanelLayout() {
+      chargesAndSensorsPanel.bottom = screenView.layoutBounds.bottom - 15;
+      chargesAndSensorsPanel.centerX = screenView.layoutBounds.centerX;
+
+      model.chargesAndSensorsEnclosureBounds.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
+    }
+    chargesAndSensorsPanel.on( 'localBounds', updateSensorPanelLayout );
+    updateSensorPanelLayout();
+
+    // Only show the ChargesAndSensorsPanel when at least one of its elements is visible
+    new DerivedProperty( [
+      model.allowNewPositiveChargesProperty,
+      model.allowNewNegativeChargesProperty,
+      model.allowNewElectricFieldSensorsProperty
+    ], function( positive, negative, electricFieldSensors ) {
+      return positive || negative || electricFieldSensors;
+    } ).linkAttribute( chargesAndSensorsPanel, 'visible' );
 
     // Handle the comings and goings of charged particles.
+    var chargedParticleNodeGroupTandem = tandem.createGroupTandem( 'chargedParticleNode' );
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
       // Create and add the view representation for this chargedParticle.
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
         modelViewTransform,
-        screenView.availableModelBoundsProperty );
+        screenView.availableModelBoundsProperty,
+        model.chargesAndSensorsEnclosureBounds,
+        chargedParticleNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( chargedParticleNode );
 
       // Add the removal listener for if and when this chargedParticle is removed from the model.
@@ -252,6 +252,7 @@ define( function( require ) {
     } );
 
     // Handle the comings and goings of charged electric field sensors.
+    var electricFieldSensorNodeGroupTandem = tandem.createGroupTandem( 'electricFieldSensorNode' );
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
@@ -259,12 +260,15 @@ define( function( require ) {
         modelViewTransform,
         screenView.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,
-        viewPropertySet.isValuesVisibleProperty );
+        model.areValuesVisibleProperty,
+        model.chargesAndSensorsEnclosureBounds,
+        electricFieldSensorNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this electric field sensor is removed from the model.
       model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
+          removedElectricFieldSensor.dispose();
           electricFieldSensorNode.dispose();
           draggableElementsLayer.removeChild( electricFieldSensorNode );
           model.electricFieldSensors.removeItemRemovedListener( removalListener );
@@ -275,77 +279,83 @@ define( function( require ) {
     // listens to the isUserControlled property of the electric potential sensor
     // return the electric Potential sensor to the toolboxPanel if it is not user Controlled and the
     // location of the sensor is inside the toolboxPanel panel
-    model.electricPotentialSensor.isUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 40 ) ) ) {
-        viewPropertySet.isElectricPotentialSensorVisibleProperty.set( false );
+    electricPotentialSensorNode.isUserControlledProperty.link( function( isUserControlled ) {
+      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 5 ) ) ) {
+        model.electricPotentialSensor.isActive = false;
       }
     } );
 
     // listens to the isUserControlled property of the measuring tape
-    // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the toolbox panel
-    measuringTape.isBaseUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolboxPanel.bounds.containsPoint( modelViewTransform.modelToViewPosition( viewPropertySet.measuringTapeBasePositionProperty.value ) ) ) {
-        viewPropertySet.isMeasuringTapeVisibleProperty.set( false );
+    // return the measuring tape to the toolboxPanel if not user Controlled and
+    // its position is located within the toolbox panel
+    measuringTapeNode.isBaseUserControlledProperty.link( function( isUserControlled ) {
+      var tapeBaseBounds = measuringTapeNode.localToParentBounds( measuringTapeNode.getLocalBaseBounds() );
+      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( tapeBaseBounds.eroded( 5 ) ) ) {
+        model.measuringTape.isActive = false;
       }
     } );
+
+    // dynamic parts of the control layout
+    function updateControlLayout() {
+      // right-align control panels
+      var right = modelViewTransform.modelToViewX( screenView.availableModelBoundsProperty.value.right ) - 10;
+      controlPanel.right = right;
+      resetAllButton.right = right;
+      toolboxPanel.right = right;
+
+      toolboxPanel.top = controlPanel.bottom + 10;
+    }
 
     // link the available model bounds
     this.availableModelBoundsProperty.link( function( bounds ) {
 
       // the measuring Tape is subject to dragBounds (specified in model coordinates)
-      measuringTape.dragBounds = bounds;
+      measuringTapeNode.dragBounds = bounds;
 
-      // the control panel, toolbox panel and resetAllButtons are set to the right of the bounds
-      var right = modelViewTransform.modelToViewX( bounds.maxX );
-      controlPanel.right = right - 30;
-      resetAllButton.right = controlPanel.right;
-      toolboxPanel.right = right - 30;
+      updateControlLayout();
     } );
 
-    // layout the objects
-    controlPanel.right = this.layoutBounds.maxX - 30;
+    controlPanel.on( 'localBounds', updateControlLayout );
+
+    // static parts of the control layout
     controlPanel.top = 30;
     gridNode.centerX = this.layoutBounds.centerX;
     gridNode.top = modelViewTransform.modelToViewY( model.enlargedBounds.maxY );
-    resetAllButton.right = controlPanel.right;
     resetAllButton.bottom = this.layoutBounds.maxY - 20;
-    toolboxPanel.right = controlPanel.right;
-    toolboxPanel.top = controlPanel.bottom + 10;
 
     this.addChild( electricPotentialGridNode ); // it is the bottom of the z-order
-    this.addChild( gridNode ); //
+    this.addChild( gridNode );
     this.addChild( electricFieldGridNode );
     this.addChild( electricPotentialLinesNode );
     this.addChild( toolboxPanel );
     this.addChild( controlPanel );
     this.addChild( resetAllButton );
-    this.addChild( chargesAndSensorsEnclosureNode );
+    this.addChild( chargesAndSensorsPanel );
     this.addChild( draggableElementsLayer );
     this.addChild( electricPotentialSensorNode );
-    this.addChild( measuringTape );
+    this.addChild( measuringTapeNode );
 
     // if in debug mode, add a button that allows to add (many at a time) electric potential lines
     // and set up initial charges on the play area
     if ( IS_DEBUG_MODE ) {
       this.addChild( new RectangularPushButton( {
-          listener: function() {
-            model.addManyElectricPotentialLines( 20 );
-          },
-          baseColor: 'rgb( 0, 222, 120 )',
-          minWidth: 20,
-          minHeight: 20,
-          centerX: resetAllButton.centerX,
-          centerY: resetAllButton.centerY - 40
-        }
-      ) );
+        listener: function() {
+          model.addManyElectricPotentialLines( 20 );
+        },
+        baseColor: 'rgb( 0, 222, 120 )',
+        minWidth: 20,
+        minHeight: 20,
+        centerX: resetAllButton.centerX,
+        centerY: resetAllButton.centerY - 40
+      } ) );
 
 
       var position1 = new Vector2( 0.1, 0.1 );
       var position2 = new Vector2( 1.2, 1.2 );
       var charge1 = new ChargedParticle( position1, 1 );
       var charge2 = new ChargedParticle( position2, -1 );
-      charge1.destinationPosition = new Vector2( 0, -1.5 );
-      charge2.destinationPosition = new Vector2( 0, -1.5 );
+      charge1.initialPosition = new Vector2( 0, -1.5 );
+      charge2.initialPosition = new Vector2( 0, -1.5 );
       charge1.isActiveProperty.set( true );
       charge2.isActiveProperty.set( true );
 
@@ -360,6 +370,8 @@ define( function( require ) {
 
 
   }
+
+  chargesAndFields.register( 'ChargesAndFieldsScreenView', ChargesAndFieldsScreenView );
 
   return inherit( ScreenView, ChargesAndFieldsScreenView, {
 
@@ -381,20 +393,26 @@ define( function( require ) {
       // for positive electric potential
       if ( electricPotential > 0 ) {
 
-        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
+        // clamped linear interpolation function, output lies between 0 and 1;
+        distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridZero, // {Color} color that corresponds to the Electric Potential being zero
-          ChargesAndFieldsColors.electricPotentialGridSaturationPositive, // {Color} color of Max Electric Potential
+          // {Color} color that corresponds to the Electric Potential being zero
+          ChargesAndFieldsColors.electricPotentialGridZero,
+          // {Color} color of Max Electric Potential
+          ChargesAndFieldsColors.electricPotentialGridSaturationPositive,
           distance, // {number} distance must be between 0 and 1
           options );
       }
       // for negative (or zero) electric potential
       else {
 
-        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential ); // clamped linear interpolation function, output lies between 0 and 1;
+        // clamped linear interpolation function, output lies between 0 and 1
+        distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
-          ChargesAndFieldsColors.electricPotentialGridSaturationNegative, // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
-          ChargesAndFieldsColors.electricPotentialGridZero,// {Color} color that corresponds to the Electric Potential being zero zero
+          // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
+          ChargesAndFieldsColors.electricPotentialGridSaturationNegative,
+          // {Color} color that corresponds to the Electric Potential being zero zero
+          ChargesAndFieldsColors.electricPotentialGridZero,
           distance, // {number} distance must be between 0 and 1
           options );
       }
@@ -405,7 +423,7 @@ define( function( require ) {
      * Function that returns a color that is proportional to the magnitude of the electric Field.
      * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
      * electric field value of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
-     * electric field value of MAX_ELECTRIC_FIELD_MAGNITUDE).
+     * electric field value of EFIELD_COLOR_SAT_MAGNITUDE).
      * @private
      * @param {number} electricFieldMagnitude - a non negative number
      * @param {Object} [options] - useful to set transparency
@@ -418,7 +436,7 @@ define( function( require ) {
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
       return this.interpolateRGBA(
-        ChargesAndFieldsColors.electricFieldGridZero,  // {Color} color that corresponds to zero electric Field
+        ChargesAndFieldsColors.electricFieldGridZero, // {Color} color that corresponds to zero electric Field
         ChargesAndFieldsColors.electricFieldGridSaturation, // {Color} color that corresponds to the largest electric field
         distance, // {number} distance must be between 0 and 1
         options );
@@ -471,12 +489,12 @@ define( function( require ) {
 
       // Move to bottom vertically
       if ( scale === width / this.layoutBounds.width ) {
-        offsetY = (height / scale - this.layoutBounds.height);
+        offsetY = ( height / scale - this.layoutBounds.height );
       }
 
       // center horizontally
       else if ( scale === height / this.layoutBounds.height ) {
-        offsetX = (width / scale - this.layoutBounds.width ) / 2;
+        offsetX = ( width / scale - this.layoutBounds.width ) / 2;
       }
       this.translate( offsetX, offsetY );
 
@@ -489,3 +507,4 @@ define( function( require ) {
 
   } );
 } );
+

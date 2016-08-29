@@ -12,14 +12,17 @@ define( function( require ) {
   var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
   var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
 
   /**
    * @constructor
+   *
+   * @param {Tandem} tandem
    */
-  function ChargesAndFieldsScreen() {
+  function ChargesAndFieldsScreen( tandem ) {
 
     var screen = this;
 
@@ -28,12 +31,14 @@ define( function( require ) {
 
     Screen.call( this, chargesAndFieldsTitleString, icon,
       function() {
-        return new ChargesAndFieldsModel();
+        return new ChargesAndFieldsModel( tandem.createTandem( 'model' ) );
       },
       function( model ) {
-        return new ChargesAndFieldsScreenView( model );
+        return new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) );
       },
-      { backgroundColor: ChargesAndFieldsColors.background.toCSS() }
+      {
+        backgroundColor: ChargesAndFieldsColors.background.toCSS(), tandem: tandem
+      }
     );
 
     ChargesAndFieldsColors.link( 'background', function( color ) {
@@ -41,6 +46,8 @@ define( function( require ) {
     } );
 
   }
+
+  chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
 
   return inherit( Screen, ChargesAndFieldsScreen );
 } );
