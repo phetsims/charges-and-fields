@@ -14,9 +14,6 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
-  // strings
-  var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
-
   /**
    * @constructor
    *
@@ -26,20 +23,19 @@ define( function( require ) {
 
     var screen = this;
 
-    // If this is a single-screen sim, then no icon is necessary.
-    var icon = null;
+    var options = {
+      backgroundColor: ChargesAndFieldsColors.background.toCSS(),
+      tandem: tandem
+    };
 
-    Screen.call( this, chargesAndFieldsTitleString, icon,
+    Screen.call( this,
       function() {
         return new ChargesAndFieldsModel( tandem.createTandem( 'model' ) );
       },
       function( model ) {
         return new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) );
       },
-      {
-        backgroundColor: ChargesAndFieldsColors.background.toCSS(), tandem: tandem
-      }
-    );
+      options );
 
     ChargesAndFieldsColors.link( 'background', function( color ) {
       screen.backgroundColor = color;
