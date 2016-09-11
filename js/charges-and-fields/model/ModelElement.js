@@ -81,24 +81,19 @@ define( function( require ) {
         y: this.position.y
       };
 
-      var animationTween = new TWEEN.Tween( position ).
-        to( {
-          x: this.initialPosition.x,
-          y: this.initialPosition.y
-        }, animationTime ).
-        easing( TWEEN.Easing.Cubic.InOut ).
-        onStart( function() {
-          self.isAnimated = true;
-        } ).
-        onUpdate( function() {
-          self.position = new Vector2( position.x, position.y );
-        } ).
-        onComplete( function() {
-          self.isAnimated = false; // done with the animation
-          self.trigger( 'returnedToOrigin' ); // model element can be removed from its observable array
-        } );
+      var animationTween = new TWEEN.Tween( position ).to( {
+        x: this.initialPosition.x,
+        y: this.initialPosition.y
+      }, animationTime ).easing( TWEEN.Easing.Cubic.InOut ).onStart( function() {
+        self.isAnimated = true;
+      } ).onUpdate( function() {
+        self.position = new Vector2( position.x, position.y );
+      } ).onComplete( function() {
+        self.isAnimated = false; // done with the animation
+        self.trigger( 'returnedToOrigin' ); // model element can be removed from its observable array
+      } );
 
-      animationTween.start();
+      animationTween.start( phet.joist.elapsedTime );
     }
   } );
 } );
