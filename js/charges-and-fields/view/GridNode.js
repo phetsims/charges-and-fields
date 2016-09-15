@@ -48,7 +48,7 @@ define( function( require ) {
                      isGridVisibleProperty,
                      areValuesVisibleProperty ) {
 
-    var thisGrid = this;
+    var self = this;
 
     Node.call( this );
 
@@ -146,7 +146,7 @@ define( function( require ) {
     // Show/ Hide the grid
     // no need to unlink, present for the lifetime of the simulation
     isGridVisibleProperty.link( function( isVisible ) {
-      thisGrid.visible = isVisible;
+      self.visible = isVisible;
     } );
 
   }

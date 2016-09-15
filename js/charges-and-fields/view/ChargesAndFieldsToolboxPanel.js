@@ -56,7 +56,7 @@ define( function( require ) {
     modelViewTransform,
     availableModelBoundsProperty,
     tandem ) {
-    var toolboxPanel = this;
+    var self = this;
 
     // Create the icon image for the electricPotential sensor
     var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon( tandem ); // {Node}
@@ -95,7 +95,7 @@ define( function( require ) {
 
         measuringTape.isActive = true;
 
-        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point )
+        var initialViewPosition = self.globalToParentPoint( event.pointer.point )
           .minus( measuringTapeNode.getLocalBaseCenter() );
         measuringTape.basePosition = modelViewTransform.viewToModelPosition( initialViewPosition );
         measuringTape.tipPosition = measuringTape.basePosition.plus( tipToBasePosition );
@@ -115,7 +115,7 @@ define( function( require ) {
         electricPotentialSensor.isActive = true;
 
         // initial position of the pointer in the screenView coordinates
-        var initialViewPosition = toolboxPanel.globalToParentPoint( event.pointer.point )
+        var initialViewPosition = self.globalToParentPoint( event.pointer.point )
           .plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
         electricPotentialSensor.position = modelViewTransform.viewToModelPosition( initialViewPosition );
 

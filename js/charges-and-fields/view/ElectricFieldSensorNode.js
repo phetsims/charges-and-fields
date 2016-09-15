@@ -52,7 +52,7 @@ define( function( require ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
-    var electricFieldSensorNode = this;
+    var self = this;
 
     this.modelElement = electricFieldSensor; // @public
 
@@ -183,7 +183,7 @@ define( function( require ) {
 
     // Register for synchronization with model.
     var positionListener = function( position ) {
-      electricFieldSensorNode.translation = modelViewTransform.modelToViewPosition( position );
+      self.translation = modelViewTransform.modelToViewPosition( position );
     };
     electricFieldSensor.positionProperty.link( positionListener );
 
@@ -198,9 +198,9 @@ define( function( require ) {
           {
             electricFieldSensor.isUserControlledProperty.set( true );
             // Move the sensor to the front of this layer when grabbed by the user.
-            electricFieldSensorNode.moveToFront();
+            self.moveToFront();
 
-            var globalPoint = electricFieldSensorNode.globalToParentPoint( event.pointer.point );
+            var globalPoint = self.globalToParentPoint( event.pointer.point );
 
             if ( event.pointer.isTouch ) {
               globalPoint.addXY( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS );
@@ -233,11 +233,11 @@ define( function( require ) {
 
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {
-          electricFieldSensorNode.cursor = 'pointer';
-          electricFieldSensorNode.addInputListener( electricFieldSensorNode.movableDragHandler );
+          self.cursor = 'pointer';
+          self.addInputListener( self.movableDragHandler );
         } else {
-          electricFieldSensorNode.cursor = null;
-          electricFieldSensorNode.removeInputListener( electricFieldSensorNode.movableDragHandler );
+          self.cursor = null;
+          self.removeInputListener( self.movableDragHandler );
         }
 
         isDragListenerAttached = isInteractive;
@@ -246,7 +246,7 @@ define( function( require ) {
     electricFieldSensor.isInteractiveProperty.link( isInteractiveListener );
 
     var availableModelBoundsPropertyListener = function( bounds ) {
-      electricFieldSensorNode.movableDragHandler.setDragBounds( bounds );
+      self.movableDragHandler.setDragBounds( bounds );
     };
 
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
@@ -266,7 +266,7 @@ define( function( require ) {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       ChargesAndFieldsColors.unlink( 'electricFieldSensorArrow', arrowColorFunction );
       ChargesAndFieldsColors.unlink( 'electricFieldSensorLabel', labelColorFunction );
-      tandem.removeInstance( electricFieldSensorNode );
+      tandem.removeInstance( self );
     };
 
     /**

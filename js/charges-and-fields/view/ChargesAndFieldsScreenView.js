@@ -62,7 +62,7 @@ define( function( require ) {
    */
   function ChargesAndFieldsScreenView( model, tandem ) {
 
-    var screenView = this;
+    var self = this;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
     // Create a property that registers the model bounds based on the screen size
@@ -212,8 +212,8 @@ define( function( require ) {
       canAddMoreChargedParticlesProperty, modelViewTransform, tandem.createTandem( 'chargesAndSensorsPanel' ) );
 
     function updateSensorPanelLayout() {
-      chargesAndSensorsPanel.bottom = screenView.layoutBounds.bottom - 15;
-      chargesAndSensorsPanel.centerX = screenView.layoutBounds.centerX;
+      chargesAndSensorsPanel.bottom = self.layoutBounds.bottom - 15;
+      chargesAndSensorsPanel.centerX = self.layoutBounds.centerX;
 
       model.chargesAndSensorsEnclosureBounds.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
     }
@@ -236,7 +236,7 @@ define( function( require ) {
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
         modelViewTransform,
-        screenView.availableModelBoundsProperty,
+        self.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBounds,
         chargedParticleNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( chargedParticleNode );
@@ -258,7 +258,7 @@ define( function( require ) {
       var electricFieldSensorNode = new ElectricFieldSensorNode(
         addedElectricFieldSensor,
         modelViewTransform,
-        screenView.availableModelBoundsProperty,
+        self.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,
         model.areValuesVisibleProperty,
         model.chargesAndSensorsEnclosureBounds,
@@ -298,7 +298,7 @@ define( function( require ) {
     // dynamic parts of the control layout
     function updateControlLayout() {
       // right-align control panels
-      var right = modelViewTransform.modelToViewX( screenView.availableModelBoundsProperty.value.right ) - 10;
+      var right = modelViewTransform.modelToViewX( self.availableModelBoundsProperty.value.right ) - 10;
       controlPanel.right = right;
       resetAllButton.right = right;
       toolboxPanel.right = right;

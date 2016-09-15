@@ -21,7 +21,7 @@ define( function( require ) {
    */
   function ChargesAndFieldsScreen( tandem ) {
 
-    var screen = this;
+    var self = this;
 
     var options = {
       backgroundColor: ChargesAndFieldsColors.background.toCSS(),
@@ -38,7 +38,7 @@ define( function( require ) {
       options );
 
     ChargesAndFieldsColors.link( 'background', function( color ) {
-      screen.backgroundColor = color;
+      self.backgroundColor = color;
     } );
 
   }

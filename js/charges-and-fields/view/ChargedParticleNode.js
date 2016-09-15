@@ -29,7 +29,7 @@ define( function( require ) {
    */
   function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty, enclosureBounds, tandem ) {
 
-    var chargedParticleNode = this;
+    var self = this;
 
     this.modelElement = chargedParticle;
 
@@ -40,7 +40,7 @@ define( function( require ) {
 
     // Register for synchronization with model.
     var positionListener = function( position ) {
-      chargedParticleNode.translation = modelViewTransform.modelToViewPosition( position );
+      self.translation = modelViewTransform.modelToViewPosition( position );
     };
     chargedParticle.positionProperty.link( positionListener );
 
@@ -55,8 +55,8 @@ define( function( require ) {
             chargedParticle.isUserControlledProperty.set( true );
 
             // Move the chargedParticle to the front of this layer when grabbed by the user.
-            chargedParticleNode.moveToFront();
-            var globalPoint = chargedParticleNode.globalToParentPoint( event.pointer.point );
+            self.moveToFront();
+            var globalPoint = self.globalToParentPoint( event.pointer.point );
 
             if ( event.pointer.isTouch ) {
               globalPoint.addXY( 0, -2 * CIRCLE_RADIUS );
@@ -78,7 +78,7 @@ define( function( require ) {
 
     // readjust the dragBounds of the movable drag handler when the screen is resized
     var availableModelBoundsPropertyListener = function( bounds ) {
-      chargedParticleNode.movableDragHandler.setDragBounds( bounds );
+      self.movableDragHandler.setDragBounds( bounds );
     };
 
     availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
@@ -92,11 +92,11 @@ define( function( require ) {
 
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {
-          chargedParticleNode.cursor = 'pointer';
-          chargedParticleNode.addInputListener( chargedParticleNode.movableDragHandler );
+          self.cursor = 'pointer';
+          self.addInputListener( self.movableDragHandler );
         } else {
-          chargedParticleNode.cursor = null;
-          chargedParticleNode.removeInputListener( chargedParticleNode.movableDragHandler );
+          self.cursor = null;
+          self.removeInputListener( self.movableDragHandler );
         }
 
         isDragListenerAttached = isInteractive;
@@ -108,7 +108,7 @@ define( function( require ) {
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       chargedParticle.positionProperty.unlink( positionListener );
       chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
-      tandem.removeInstance( chargedParticleNode );
+      tandem.removeInstance( self );
     };
 
     tandem.addInstance( this );
@@ -123,4 +123,3 @@ define( function( require ) {
 
   } );
 } );
-

@@ -27,7 +27,7 @@ define( function( require ) {
    */
   function ChargesAndFieldsMeasuringTapeNode( measuringTape, modelViewTransform, availableModelBoundsProperty, tandem ) {
 
-    var thisNode = this;
+    var self = this;
     this.measuringTape = measuringTape;
 
     MeasuringTape.call( this, new Property( { name: centimeterUnitString, multiplier: 100 } ), measuringTape.isActiveProperty, {
@@ -40,7 +40,7 @@ define( function( require ) {
     } );
 
     this.disposeMeasuringTapeNode = function() {
-      tandem.removeInstance( thisNode );
+      tandem.removeInstance( self );
     };
   }
 

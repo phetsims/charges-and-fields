@@ -45,11 +45,11 @@ define( function( require ) {
     this.chargedParticleGroupTandem = tandem.createGroupTandem( 'chargedParticle' );
     this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
 
-    var thisModel = this;
+    var self = this;
 
     // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
-    PropertySet.call( thisModel, {
+    PropertySet.call( self, {
       isElectricFieldVisible: true, // control the visibility of a grid of arrows representing the local electric field
       isElectricFieldDirectionOnly: false, // controls the color shading in the fill of the electric field arrows
       isElectricPotentialVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
@@ -160,7 +160,7 @@ define( function( require ) {
       var userControlledListener = function( isUserControlled ) {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( addedChargedParticle.position ) ) {
+        if ( !isUserControlled && self.chargesAndSensorsEnclosureBounds.containsPoint( addedChargedParticle.position ) ) {
           addedChargedParticle.isActive = false; // charge is no longer active, (effectively) equivalent to set its model charge to zero
           addedChargedParticle.animate(); // animate the charge to its destination position
         }
@@ -171,21 +171,21 @@ define( function( require ) {
       var isActiveListener = function( isActive ) {
 
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLines
-        thisModel.clearElectricPotentialLines();
+        self.clearElectricPotentialLines();
 
         if ( isActive ) {
           // add particle to the activeChargedParticle observable array
           // use for the webGlNode
-          thisModel.activeChargedParticles.push( addedChargedParticle );
+          self.activeChargedParticles.push( addedChargedParticle );
         } else {
           // remove particle from the activeChargeParticle array
-          thisModel.activeChargedParticles.remove( addedChargedParticle );
+          self.activeChargedParticles.remove( addedChargedParticle );
         }
         // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
-        thisModel.updateIsPlayAreaCharged();
+        self.updateIsPlayAreaCharged();
 
         // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
-        thisModel.updateAllSensors();
+        self.updateAllSensors();
       };
 
 
@@ -194,17 +194,17 @@ define( function( require ) {
       // position and oldPosition refer to a charged particle
       var positionListener = function( position, oldPosition ) {
 
-        thisModel.updateIsPlayAreaCharged();
+        self.updateIsPlayAreaCharged();
 
         // verify that the charge isActive before doing any charge-dependent updates to the model
         if ( addedChargedParticle.isActive ) {
 
           // remove electricPotential lines and electric field lines when the position of a charged particle changes and the charge isActive
-          thisModel.clearElectricPotentialLines();
+          self.clearElectricPotentialLines();
 
           // if oldPosition doesn't exist then calculate the sensor properties from the charge configurations (from scratch)
           if ( oldPosition === null ) {
-            thisModel.updateAllSensors();
+            self.updateAllSensors();
           }
           // if oldPosition exists calculate the sensor properties from the delta contribution
           // this should help performance if there are many charged particles on the board
@@ -213,26 +213,26 @@ define( function( require ) {
             var charge = addedChargedParticle.charge;
 
             // update the Electric Potential Sensor by calculating the change in the electric potential
-            thisModel.electricPotentialSensor.electricPotential += thisModel.getElectricPotentialChange(
-              thisModel.electricPotentialSensor.position, position, oldPosition, charge );
+            self.electricPotentialSensor.electricPotential += self.getElectricPotentialChange(
+              self.electricPotentialSensor.position, position, oldPosition, charge );
 
             // The getElectricFieldChange function has a bug with distances near zero.
             // see https://github.com/phetsims/charges-and-fields/issues/82#issuecomment-239898320
             // Instead, use the less efficient, but less buggy approach here instead.
-            thisModel.updateAllSensors();
+            self.updateAllSensors();
 
             // // update electric field sensor
-            // thisModel.electricFieldSensors.forEach( function( sensorElement ) {
+            // self.electricFieldSensors.forEach( function( sensorElement ) {
 
             //   // electricField is a property that is being listened to.
             //   // We want a new vector allocation when the electric field gets updated
             //   // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
             //   var eField = sensorElement.electricField;
             //   if ( eField.magnitude() < ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
-            //     var deltaE = thisModel.getElectricFieldChange( sensorElement.position, position, oldPosition, charge );
+            //     var deltaE = self.getElectricFieldChange( sensorElement.position, position, oldPosition, charge );
             //     sensorElement.electricField = eField.plus( deltaE );
             //   } else {
-            //     sensorElement.electricField = thisModel.getElectricField( sensorElement.position );
+            //     sensorElement.electricField = self.getElectricField( sensorElement.position );
             //   }
             // } );
           } // end of else statement
@@ -258,21 +258,21 @@ define( function( require ) {
 
     this.chargedParticles.addItemRemovedListener( function( removedChargeParticle ) {
       // check that the particle was active before updating charge dependent model components
-      if ( removedChargeParticle.isActive && !thisModel.isResetting ) {
+      if ( removedChargeParticle.isActive && !self.isResetting ) {
 
         // Remove electricPotential lines and electric field lines
-        thisModel.clearElectricPotentialLines();
+        self.clearElectricPotentialLines();
 
         // Update all the visible sensors
-        thisModel.updateAllSensors();
+        self.updateAllSensors();
 
       }
 
       // remove particle from the activeChargedParticles array
-      thisModel.activeChargedParticles.remove( removedChargeParticle );
+      self.activeChargedParticles.remove( removedChargeParticle );
 
       // update the property isPlayAreaCharged to see if is there at least one active charge on the board
-      thisModel.updateIsPlayAreaCharged();
+      self.updateIsPlayAreaCharged();
     } );
 
     //------------------------
@@ -283,7 +283,7 @@ define( function( require ) {
 
       // Listener for sensor position changes
       var positionListener = function( position ) {
-        addedElectricFieldSensor.electricField = thisModel.getElectricField( position );
+        addedElectricFieldSensor.electricField = self.getElectricField( position );
       };
 
       // update the Electric Field Sensors upon a change of its own position
@@ -292,7 +292,7 @@ define( function( require ) {
       var userControlledListener = function( isUserControlled ) {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && thisModel.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.position ) ) {
+        if ( !isUserControlled && self.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.position ) ) {
           addedElectricFieldSensor.isActive = false;
           addedElectricFieldSensor.animate();
         }
