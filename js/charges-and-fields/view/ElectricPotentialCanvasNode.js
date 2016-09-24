@@ -73,7 +73,7 @@ define( function( require ) {
       }
     }
 
-    this.electricPotentials = new Float64Array( this.modelPositions.length );
+    this.electricPotentials = new Float64Array( this.modelPositions.length ); // eslint-disable-line no-undef
 
     this.directCanvas = document.createElement( 'canvas' );
     this.directCanvas.width = numHorizontal;
