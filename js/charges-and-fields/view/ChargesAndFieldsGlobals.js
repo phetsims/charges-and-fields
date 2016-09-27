@@ -19,6 +19,9 @@ define( function( require ) {
   chargesAndFields.register( 'ChargesAndFieldsGlobals', ChargesAndFieldsGlobals );
 
   return _.extend( ChargesAndFieldsGlobals, {
-    disallowWebGL: phet.chipper.getQueryParameter( 'webgl' ) === 'false'
+    disallowWebGL: phet.chipper.getQueryParameter( 'webgl' ) === 'false',
+    forceCanvas: !!phet.chipper.getQueryParameter( 'forceCanvas' ),
+    forceMobileWebGL: !!phet.chipper.getQueryParameter( 'forceMobileWebGL' ),
+    forceWebGL: !!phet.chipper.getQueryParameter( 'forceWebGL' )
   } );
 } );

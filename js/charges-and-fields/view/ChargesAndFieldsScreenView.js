@@ -91,28 +91,45 @@ define( function( require ) {
     var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
       ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
 
+    var mode = allowWebGL ? 'webgl' : ( allowMobileWebGL ? 'mobile-webgl' : 'canvas' );
+    if ( ChargesAndFieldsGlobals.forceCanvas ) {
+      mode = 'canvas';
+    }
+    if ( ChargesAndFieldsGlobals.forceMobileWebGL ) {
+      mode = 'mobile-webgl';
+    }
+    if ( ChargesAndFieldsGlobals.forceWebGL ) {
+      mode = 'webgl';
+    }
+
     var electricPotentialGridNode;
 
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
-    if ( allowWebGL ) {
-      electricPotentialGridNode = new ElectricPotentialWebGLNode(
-        model.activeChargedParticles,
-        modelViewTransform,
-        model.isElectricPotentialVisibleProperty
-      );
-    } else if ( allowMobileWebGL ) {
-      electricPotentialGridNode = new ElectricPotentialMobileWebGLNode(
-        model.activeChargedParticles,
-        modelViewTransform,
-        model.isElectricPotentialVisibleProperty
-      );
-    } else {
-      electricPotentialGridNode = new ElectricPotentialCanvasNode(
-        model.activeChargedParticles,
-        modelViewTransform,
-        model.enlargedBounds,
-        model.isElectricPotentialVisibleProperty
-      );
+    switch ( mode ) {
+      case 'webgl':
+        electricPotentialGridNode = new ElectricPotentialWebGLNode(
+          model.activeChargedParticles,
+          modelViewTransform,
+          model.isElectricPotentialVisibleProperty
+        );
+        break;
+      case 'mobile-webgl':
+        electricPotentialGridNode = new ElectricPotentialMobileWebGLNode(
+          model.activeChargedParticles,
+          modelViewTransform,
+          model.isElectricPotentialVisibleProperty
+        );
+        break;
+      case 'canvas':
+        electricPotentialGridNode = new ElectricPotentialCanvasNode(
+          model.activeChargedParticles,
+          modelViewTransform,
+          model.enlargedBounds,
+          model.isElectricPotentialVisibleProperty
+        );
+        break;
+      default:
+        throw new Error( 'unknown mode: ' + mode );
     }
 
     // Create a grid of electric field arrow sensors
