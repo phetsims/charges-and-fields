@@ -240,7 +240,7 @@ define( function( require ) {
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {
         measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
-      }, measuringTape.width - unspooledMeterTape, measuringTape.height - 5, measuringTape.width, measuringTape.height );
+      }, measuringTape.width - unspooledMeterTape, measuringTape.height - 5, Math.ceil( measuringTape.width ), Math.ceil( measuringTape.height ) );
 
       return measuringTapeIcon;
     }
