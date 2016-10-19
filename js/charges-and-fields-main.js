@@ -16,9 +16,6 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // If running as phet-io, load the API
-  require( 'ifphetio!PHET_IO/simulations/charges-and-fields/charges-and-fields-api' );
-
   // strings
   var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
 
@@ -45,7 +42,9 @@ define( function( require ) {
   } );
 
   SimLauncher.launch( function() {
-    var sim = new Sim( chargesAndFieldsTitleString, [ new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) ) ], simOptions );
+    var sim = new Sim( chargesAndFieldsTitleString, [
+      new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) )
+    ], simOptions );
     sim.start();
   } );
 } );
