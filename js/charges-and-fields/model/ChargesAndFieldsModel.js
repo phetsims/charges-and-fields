@@ -213,8 +213,14 @@ define( function( require ) {
             var charge = addedChargedParticle.charge;
 
             // update the Electric Potential Sensor by calculating the change in the electric potential
-            self.electricPotentialSensor.electricPotential += self.getElectricPotentialChange(
-              self.electricPotentialSensor.position, position, oldPosition, charge );
+            var V = self.electricPotentialSensor.electricPotentialProperty.get();
+            var dV = self.getElectricPotentialChange(
+              self.electricPotentialSensor.positionProperty.get(),
+              position,
+              oldPosition,
+              charge
+            );
+            self.electricPotentialSensor.electricPotentialProperty.set( V + dV );
 
             // The getElectricFieldChange function has a bug with distances near zero.
             // see https://github.com/phetsims/charges-and-fields/issues/82#issuecomment-239898320
@@ -292,7 +298,8 @@ define( function( require ) {
       var userControlledListener = function( isUserControlled ) {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && self.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.position ) ) {
+        if ( !isUserControlled &&
+            self.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
           addedElectricFieldSensor.isActive = false;
           addedElectricFieldSensor.animate();
         }
@@ -587,7 +594,7 @@ define( function( require ) {
 
       // use the location of the electric Potential Sensor as default position
       if ( !position ) {
-        position = this.electricPotentialSensor.position;
+        position = this.electricPotentialSensor.positionProperty.get();
       }
 
       // If we are too close to a charged particle, also bail out.

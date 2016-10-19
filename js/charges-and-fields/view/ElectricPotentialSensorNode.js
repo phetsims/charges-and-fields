@@ -146,7 +146,7 @@ define( function( require ) {
     }
 
     // update text of the voltage readout according to the current value of the electric potential
-    updateVoltageReadout( electricPotentialSensor.electricPotential );
+    updateVoltageReadout( electricPotentialSensor.electricPotentialProperty.get() );
 
     // The clear and plot buttons
     var buttonsBox = new LayoutBox( {
@@ -225,7 +225,7 @@ define( function( require ) {
 
     // the color of the fill tracks the electric potential
     ChargesAndFieldsColors.on( 'profileChanged', function() {
-      updateCircleFill( electricPotentialSensor.electricPotential );
+      updateCircleFill( electricPotentialSensor.electricPotentialProperty.get() );
     } );
 
     // Add the various components to this node

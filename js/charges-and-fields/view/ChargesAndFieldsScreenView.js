@@ -281,7 +281,7 @@ define( function( require ) {
     // location of the sensor is inside the toolboxPanel panel
     electricPotentialSensorNode.isUserControlledProperty.link( function( isUserControlled ) {
       if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 5 ) ) ) {
-        model.electricPotentialSensor.isActive = false;
+        model.electricPotentialSensor.isActiveProperty.set( false );
       }
     } );
 

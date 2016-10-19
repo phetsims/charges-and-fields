@@ -112,12 +112,12 @@ define( function( require ) {
           return;
         }
 
-        electricPotentialSensor.isActive = true;
+        electricPotentialSensor.isActiveProperty.set( true );
 
         // initial position of the pointer in the screenView coordinates
         var initialViewPosition = self.globalToParentPoint( event.pointer.point )
           .plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
-        electricPotentialSensor.position = modelViewTransform.viewToModelPosition( initialViewPosition );
+        electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
         electricPotentialSensorNode.movableDragHandler.startDrag( event );
       }
