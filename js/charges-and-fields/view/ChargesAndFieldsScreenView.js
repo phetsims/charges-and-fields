@@ -291,7 +291,7 @@ define( function( require ) {
     measuringTapeNode.isBaseUserControlledProperty.link( function( isUserControlled ) {
       var tapeBaseBounds = measuringTapeNode.localToParentBounds( measuringTapeNode.getLocalBaseBounds() );
       if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( tapeBaseBounds.eroded( 5 ) ) ) {
-        model.measuringTape.isActive = false;
+        model.measuringTape.isActiveProperty.set( false );
       }
     } );
 

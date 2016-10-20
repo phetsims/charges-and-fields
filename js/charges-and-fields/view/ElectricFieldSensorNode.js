@@ -216,7 +216,7 @@ define( function( require ) {
           electricFieldSensor.isUserControlledProperty.set( false );
 
           if ( !enclosureBounds.containsPoint( electricFieldSensor.position ) ) {
-            electricFieldSensor.isActive = true;
+            electricFieldSensor.isActiveProperty.set( true );
           }
 
           // Avoid corner-case issue #89. Treat excessively large E-field magnitude as an indicator that r ~ 0

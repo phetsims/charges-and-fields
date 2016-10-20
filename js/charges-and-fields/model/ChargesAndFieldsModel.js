@@ -161,7 +161,7 @@ define( function( require ) {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled && self.chargesAndSensorsEnclosureBounds.containsPoint( addedChargedParticle.position ) ) {
-          addedChargedParticle.isActive = false; // charge is no longer active, (effectively) equivalent to set its model charge to zero
+          addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
           addedChargedParticle.animate(); // animate the charge to its destination position
         }
       };
@@ -197,7 +197,7 @@ define( function( require ) {
         self.updateIsPlayAreaCharged();
 
         // verify that the charge isActive before doing any charge-dependent updates to the model
-        if ( addedChargedParticle.isActive ) {
+        if ( addedChargedParticle.isActiveProperty.get() ) {
 
           // remove electricPotential lines and electric field lines when the position of a charged particle changes and the charge isActive
           self.clearElectricPotentialLines();
@@ -264,7 +264,7 @@ define( function( require ) {
 
     this.chargedParticles.addItemRemovedListener( function( removedChargeParticle ) {
       // check that the particle was active before updating charge dependent model components
-      if ( removedChargeParticle.isActive && !self.isResetting ) {
+      if ( removedChargeParticle.isActiveProperty.get() && !self.isResetting ) {
 
         // Remove electricPotential lines and electric field lines
         self.clearElectricPotentialLines();
@@ -300,7 +300,7 @@ define( function( require ) {
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
             self.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
-          addedElectricFieldSensor.isActive = false;
+          addedElectricFieldSensor.isActiveProperty.set( false );
           addedElectricFieldSensor.animate();
         }
       };

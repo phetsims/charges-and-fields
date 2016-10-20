@@ -99,7 +99,7 @@ define( function( require ) {
           // Create the new model element.
           var modelElement = createModelElement();
           modelElement.initialPosition = modelViewTransform.viewToModelPosition( initialViewPosition );
-          modelElement.isActive = false;
+          modelElement.isActiveProperty.set( false );
 
           // Hook up the initial drag to the corresponding view element
           hookDragHandler( modelElement, event );

@@ -71,7 +71,7 @@ define( function( require ) {
           chargedParticle.isUserControlled = false;
 
           if ( !enclosureBounds.containsPoint( chargedParticle.position ) ) {
-            chargedParticle.isActive = true;
+            chargedParticle.isActiveProperty.set( true );
           }
         }
       } );

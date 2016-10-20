@@ -11,9 +11,13 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**
    * @constructor
@@ -22,25 +26,35 @@ define( function( require ) {
    */
   function MeasuringTape( tandem ) {
 
-    PropertySet.call( this, {
-      // @public - Base (start of tape from the container) position
-      basePosition: new Vector2( 0, 0 ),
-
-      // @public - Tip (end of measuring tape) position
-      tipPosition: new Vector2( 0.2, 0 ),
-
-      // @public - Whether the measuring tape is out in the play area (false when in the toolbox)
-      isActive: false
-    }, {
-      tandemSet: {
-        basePosition: tandem.createTandem( 'basePositionProperty' ),
-        tipPosition: tandem.createTandem( 'tipPositionProperty' ),
-        isActive: tandem.createTandem( 'isActiveProperty' )
-      }
+    // @public - Base (start of tape from the container) position
+    this.basePositionProperty = new Property( Vector2.ZERO, {
+      tandem: tandem.createTandem( 'basePositionProperty' ),
+      phetioValueType: TVector2
     } );
+
+    // @public - Tip (end of measuring tape) position
+    this.tipPositionProperty = new Property( new Vector2( 0.2, 0 ), {
+      tandem: tandem.createTandem( 'tipPositionProperty' ),
+      phetioValueType: TVector2
+    } );
+
+    // @public - Whether the measuring tape is out in the play area (false when in the toolbox)
+    this.isActiveProperty = new Property( false, {
+      tandem: tandem.createTandem( 'isActiveProperty' ),
+      phetioValueType: TBoolean
+    } );
+
   }
 
   chargesAndFields.register( 'MeasuringTape', MeasuringTape );
 
-  return inherit( PropertySet, MeasuringTape );
+  return inherit( Object, MeasuringTape, {
+
+    reset: function() {
+      this.basePositionProperty.reset();
+      this.tipPositionProperty.reset();
+      this.isActiveProperty.reset();
+    }
+
+  } );
 } );

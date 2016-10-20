@@ -84,7 +84,7 @@ define( function( require ) {
     Panel.call( this, panelContent, panelOptions );
 
     // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
-    var tipToBasePosition = measuringTape.tipPosition.minus( measuringTape.basePosition );
+    var tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
     var measuringTapeMovableDragHandler = {
       down: function( event ) {
@@ -93,12 +93,12 @@ define( function( require ) {
           return;
         }
 
-        measuringTape.isActive = true;
+        measuringTape.isActiveProperty.set( true );
 
         var initialViewPosition = self.globalToParentPoint( event.pointer.point )
           .minus( measuringTapeNode.getLocalBaseCenter() );
-        measuringTape.basePosition = modelViewTransform.viewToModelPosition( initialViewPosition );
-        measuringTape.tipPosition = measuringTape.basePosition.plus( tipToBasePosition );
+        measuringTape.basePositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
+        measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.get().plus( tipToBasePosition ) );
 
         measuringTapeNode.startBaseDrag( event );
       }
