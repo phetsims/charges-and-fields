@@ -15,6 +15,9 @@ define( function( require ) {
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
+
   /**
    *
    * @param {number} charge - (positive=+1 or negative=-1)
@@ -30,7 +33,7 @@ define( function( require ) {
     // @public read-only
     this.charge = charge; // a charge of one corresponds to one nano Coulomb
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TChargedParticle );
   }
 
   chargesAndFields.register( 'ChargedParticle', ChargedParticle );

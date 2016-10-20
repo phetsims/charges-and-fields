@@ -33,6 +33,9 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   // constants
   var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
 
@@ -345,7 +348,7 @@ define( function( require ) {
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
     };
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TNode );
   }
 
   chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );

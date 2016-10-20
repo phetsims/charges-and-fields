@@ -22,6 +22,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
+
   // strings
   var minusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
   var plusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
@@ -83,7 +87,7 @@ define( function( require ) {
       previewNode.centerY = -VERTICAL_SPACING;
 
       // Hook up the tandem
-      itemTandem.addInstance( node );
+      itemTandem.addInstance( node, TNode );
 
       // When pressed, creates a model element and triggers startDrag() on the corresponding view
       node.addInputListener( {
@@ -174,7 +178,7 @@ define( function( require ) {
     } );
     this.updateChildrenWithVisibility();
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TPanel );
   }
 
   chargesAndFields.register( 'ChargesAndSensorsPanel', ChargesAndSensorsPanel );

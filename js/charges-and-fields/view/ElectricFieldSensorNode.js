@@ -21,6 +21,9 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var eFieldUnitString = require( 'string!CHARGES_AND_FIELDS/eFieldUnit' );
@@ -311,7 +314,7 @@ define( function( require ) {
       return Util.toFixed( number, decimalPlaces );
     }
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TNode );
   }
 
   chargesAndFields.register( 'ElectricFieldSensorNode', ElectricFieldSensorNode );

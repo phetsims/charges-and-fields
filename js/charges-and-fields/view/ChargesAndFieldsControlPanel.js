@@ -21,6 +21,9 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
+
   // strings
   var electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
   var directionOnlyString = require( 'string!CHARGES_AND_FIELDS/directionOnly' );
@@ -114,7 +117,7 @@ define( function( require ) {
       'hideTogglingGridVisibility'
     ], this.updateHiddenChildren.bind( this ) );
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TPanel );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsControlPanel', ChargesAndFieldsControlPanel );

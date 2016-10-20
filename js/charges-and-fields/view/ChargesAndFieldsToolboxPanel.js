@@ -27,6 +27,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
+
   // images
   var electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
   var electricPotentialPanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
@@ -141,7 +145,7 @@ define( function( require ) {
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TPanel );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsToolboxPanel', ChargesAndFieldsToolboxPanel );
@@ -212,7 +216,7 @@ define( function( require ) {
       node.addChild( backgroundRectangle );
       node.addChild( voltageReading );
 
-      tandem.createTandem( 'electricPotentialSensor' ).addInstance( node );
+      tandem.createTandem( 'electricPotentialSensor' ).addInstance( node, TNode );
 
       return node;
     },

@@ -15,6 +15,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TModelElement = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TModelElement' );
+
   /**
    * @constructor
    *
@@ -40,7 +43,7 @@ define( function( require ) {
       self.unlinkAll();
     };
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TModelElement );
   }
 
   chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );

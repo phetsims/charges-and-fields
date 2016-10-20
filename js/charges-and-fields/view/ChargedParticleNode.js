@@ -15,6 +15,9 @@ define( function( require ) {
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
@@ -111,7 +114,7 @@ define( function( require ) {
       tandem.removeInstance( self );
     };
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TNode );
   }
 
   chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );

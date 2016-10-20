@@ -24,6 +24,7 @@ define( function( require ) {
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TChargesAndFieldsModel = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargesAndFieldsModel' );
   var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
 
   // constants
@@ -318,7 +319,7 @@ define( function( require ) {
       } );
     } );
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TChargesAndFieldsModel );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
