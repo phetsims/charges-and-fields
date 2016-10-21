@@ -16,39 +16,53 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
+
   /**
    * @constructor
    *
    * @param {Tandem} tandem
    * @param {Object} [options] - PropertySet properties to be initialized
-   * @param {Object} [tandemSetOptions]
    */
-  function ModelElement( tandem, options, tandemSetOptions ) {
+  function ModelElement( tandem, options ) {
 
-    PropertySet.call( this, _.extend( {
+    var properties = _.extend( {
 
       // @public
-      position: new Vector2(),
+      position: {
+        value: new Vector2(),
+        tandem: tandem.createTandem( 'positionProperty' ),
+        phetioValueType: TVector2
+      },
 
       // @public
       // Flag that indicates if this model element is controlled by the user
-      isUserControlled: false,
+      isUserControlled: {
+        value: false,
+        tandem: tandem.createTandem( 'isUserControlledProperty' ),
+        phetioValueType: TBoolean
+      },
 
       // @public
       // Flag that indicates if the model element is active or dormant
-      isActive: false,
+      isActive: {
+        value: false,
+        tandem: tandem.createTandem( 'isActiveProperty' ),
+        phetioValueType: TBoolean
+      },
 
       // @public
       // If false, the user will not be able to interact with this charge at all.
-      isInteractive: true
+      isInteractive: {
+        value: true,
+        tandem: tandem.createTandem( 'isInteractiveProperty' ),
+        phetioValueType: TBoolean
+      }
+    }, options );
 
-    }, options ), {
-      tandemSet: _.extend( {
-        position: tandem.createTandem( 'positionProperty' ),
-        isUserControlled: tandem.createTandem( 'isUserControlledProperty' ),
-        isActive: tandem.createTandem( 'isActiveProperty' )
-      }, tandemSetOptions )
-    } );
+    PropertySet.call( this, null, null, properties );
 
     // @public read-only
     // Flag that indicates whether this element is animated from one location to another

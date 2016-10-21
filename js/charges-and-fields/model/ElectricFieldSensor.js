@@ -17,6 +17,7 @@ define( function( require ) {
 
   // phet-io modules
   var TModelElement = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TModelElement' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**
    * @constructor
@@ -30,9 +31,11 @@ define( function( require ) {
     var self = this;
 
     ModelElement.call( this, tandem, {
-      electricField: new Vector2() // @public -  electricField Vector in Newtons per Coulomb
-    }, {
-      electricField: tandem.createTandem( 'electricFieldProperty' )
+      electricField: {
+        value: new Vector2(), // @public -  electricField Vector in Newtons per Coulomb
+        tandem: tandem.createTandem( 'electricFieldProperty' ),
+        phetioValueType: TVector2
+      }
     } );
 
     this.computeElectricField = computeElectricField;
