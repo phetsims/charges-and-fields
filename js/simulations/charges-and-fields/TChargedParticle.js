@@ -13,7 +13,9 @@ define( function( require ) {
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TModelElement = require( 'PHET_IO/simulations/charges-and-fields/TModelElement' );
+  var TNumber = require( 'PHET_IO/types/TNumber' );
   var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
+  var TVoid = require( 'PHET_IO/types/TVoid' );
 
   var TChargedParticle = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
@@ -21,11 +23,14 @@ define( function( require ) {
   };
 
   phetioInherit( TModelElement, 'TChargedParticle', TChargedParticle, {
-    setValue: {
+    setCharge: {
+      returnType: TVoid,
+      parameterTypes: [ TNumber() ],
       implementation: function( value ) {
         this.instance.charge = value.charge;
         this.instance.initialPosition = TVector2.fromStateObject( value.initialPosition );
-      }
+      },
+      documentation: 'Set charge (in units of e)'
     }
   }, {
 
