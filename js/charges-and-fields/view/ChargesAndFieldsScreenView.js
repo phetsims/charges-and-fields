@@ -128,7 +128,8 @@ define( function( require ) {
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
       model.electricPotentialLines,
       modelViewTransform,
-      model.areValuesVisibleProperty );
+      model.areValuesVisibleProperty,
+      tandem.createTandem( 'electricPotentialLinesNode' ) );
 
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(

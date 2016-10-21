@@ -36,9 +36,10 @@ define( function( require ) {
    * Function that generates a voltage label for the electricPotential line
    * @param {ElectricPotentialLine} electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
+   * @param {Tandem} tandem
    * @constructor
    */
-  function VoltageLabel( electricPotentialLine, modelViewTransform ) {
+  function VoltageLabel( electricPotentialLine, modelViewTransform, tandem ) {
 
     Node.call( this, { cursor: 'pointer' } );
 
@@ -48,6 +49,7 @@ define( function( require ) {
     var self = this;
     var locationProperty = new Property( position );
     this.addInputListener( new MovableDragHandler( locationProperty, {
+      tandem: tandem.createTandem( 'inputListener' ),
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
         // Move the label to the front of this layer when grabbed by the user.
@@ -184,9 +186,10 @@ define( function( require ) {
    * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLines - array of models of electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
+   * @param {Tandem} tandem
    * @constructor
    */
-  function ElectricPotentialLinesNode( electricPotentialLines, modelViewTransform, areValuesVisibleProperty ) {
+  function ElectricPotentialLinesNode( electricPotentialLines, modelViewTransform, areValuesVisibleProperty, tandem ) {
 
     var self = this;
 
@@ -213,7 +216,7 @@ define( function( require ) {
       var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
 
-      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform );
+      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel' ) );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
