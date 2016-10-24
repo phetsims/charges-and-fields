@@ -24,6 +24,7 @@ define( function( require ) {
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TBounds2 = require( 'ifphetio!PHET_IO/types/dot/TBounds2' );
   var TChargesAndFieldsModel = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargesAndFieldsModel' );
   var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
 
@@ -50,61 +51,109 @@ define( function( require ) {
 
     // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
-    PropertySet.call( self, {
-      isElectricFieldVisible: true, // control the visibility of a grid of arrows representing the local electric field
-      isElectricFieldDirectionOnly: false, // controls the color shading in the fill of the electric field arrows
-      isElectricPotentialVisible: false, // control the visibility of the electric potential field, a.k.a. rectangular grid
-      areValuesVisible: false, // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
-      isGridVisible: false, // control the visibility of the simple grid with minor and major axes
-      isPlayAreaCharged: false, // is there at least one active charged particle on the board
+    var properties = {
 
-      allowNewPositiveCharges: true, // whether adding positive charges is allowed (and displayed) in general
-      allowNewNegativeCharges: true, // whether adding negative charges is allowed (and displayed) in general
-      allowNewElectricFieldSensors: true, // whether adding electric field sensors is allowed (and displayed) in general
-
-      hideTogglingElectricFieldVisibility: false,
-      hideTogglingElectricFieldDirectionOnly: false,
-      hideTogglingElectricPotentialVisibility: false,
-      hideTogglingValuesVisibility: false,
-      hideTogglingGridVisibility: false,
-
-      chargesAndSensorsEnclosureBounds: new Bounds2( -1.25, -2.30, 1.25, -1.70 ) // meters
-    }, {
-      tandemSet: {
-        isElectricFieldVisible: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
-        isElectricFieldDirectionOnly: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' ),
-        isElectricPotentialVisible: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
-        areValuesVisible: tandem.createTandem( 'areValuesVisibleProperty' ),
-        isGridVisible: tandem.createTandem( 'isGridVisibleProperty' ),
-
-        allowNewPositiveCharges: tandem.createTandem( 'allowNewPositiveChargesProperty' ),
-        allowNewNegativeCharges: tandem.createTandem( 'allowNewNegativeChargesProperty' ),
-        allowNewElectricFieldSensors: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' ),
-
-        hideTogglingElectricFieldVisibility: tandem.createTandem( 'hideTogglingElectricFieldVisibilityProperty' ),
-        hideTogglingElectricFieldDirectionOnly: tandem.createTandem( 'hideTogglingElectricFieldDirectionOnlyProperty' ),
-        hideTogglingElectricPotentialVisibility: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' ),
-        hideTogglingValuesVisibility: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' ),
-        hideTogglingGridVisibility: tandem.createTandem( 'hideTogglingGridVisibilityProperty' )
+      // control the visibility of a grid of arrows representing the local electric field
+      isElectricFieldVisible: {
+        value: true,
+        tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
+        phetioValueType: TBoolean
       },
-      phetioValueTypeSet: {
-        isElectricFieldVisible: TBoolean,
-        isElectricFieldDirectionOnly: TBoolean,
-        isElectricPotentialVisible: TBoolean,
-        areValuesVisible: TBoolean,
-        isGridVisible: TBoolean,
 
-        allowNewPositiveCharges: TBoolean,
-        allowNewNegativeCharges: TBoolean,
-        allowNewElectricFieldSensors: TBoolean,
+      // controls the color shading in the fill of the electric field arrows
+      isElectricFieldDirectionOnly: {
+        value: false,
+        tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' ),
+        phetioValueType: TBoolean
+      },
 
-        hideTogglingElectricFieldVisibility: TBoolean,
-        hideTogglingElectricFieldDirectionOnly: TBoolean,
-        hideTogglingElectricPotentialVisibility: TBoolean,
-        hideTogglingValuesVisibility: TBoolean,
-        hideTogglingGridVisibility: TBoolean
+      // control the visibility of the electric potential field, a.k.a. rectangular grid
+      isElectricPotentialVisible: {
+        value: false,
+        tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+      areValuesVisible: {
+        value: false,
+        tandem: tandem.createTandem( 'areValuesVisibleProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      // control the visibility of the simple grid with minor and major axes
+      isGridVisible: {
+        value: false,
+        tandem: tandem.createTandem( 'isGridVisibleProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      // is there at least one active charged particle on the board
+      isPlayAreaCharged: {
+        value: false,
+        tandem: tandem.createTandem( 'isPlayAreaChargedProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      // whether adding positive charges is allowed (and displayed) in general
+      allowNewPositiveCharges: {
+        value: true,
+        tandem: tandem.createTandem( 'allowNewPositiveChargesProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      // whether adding negative charges is allowed (and displayed) in general
+      allowNewNegativeCharges: {
+        value: true,
+        tandem: tandem.createTandem( 'allowNewNegativeChargesProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      // whether adding electric field sensors is allowed (and displayed) in general
+      allowNewElectricFieldSensors: {
+        value: true,
+        tandem: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      hideTogglingElectricFieldVisibility: {
+        value: false,
+        tandem: tandem.createTandem( 'hideTogglingElectricFieldVisibilityProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      hideTogglingElectricFieldDirectionOnly: {
+        value: false,
+        tandem: tandem.createTandem( 'hideTogglingElectricFieldDirectionOnlyProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      hideTogglingElectricPotentialVisibility: {
+        value: false,
+        tandem: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      hideTogglingValuesVisibility: {
+        value: false,
+        tandem: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      hideTogglingGridVisibility: {
+        value: false,
+        tandem: tandem.createTandem( 'hideTogglingGridVisibilityProperty' ),
+        phetioValueType: TBoolean
+      },
+
+      chargesAndSensorsEnclosureBounds: {
+        value: new Bounds2( -1.25, -2.30, 1.25, -1.70 ), // meters
+        tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
+        phetioValueType: TBounds2
       }
-    } );
+    };
+
+    PropertySet.call( this, null, null, properties );
 
     //----------------------------------------------------------------------------------------
     // Initialize variables
