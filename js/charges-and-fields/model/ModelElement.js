@@ -62,7 +62,7 @@ define( function( require ) {
       }
     }, options );
 
-    PropertySet.call( this, null, null, properties );
+    PropertySet.call( this, null, properties );
 
     // @public read-only
     // Flag that indicates whether this element is animated from one location to another
