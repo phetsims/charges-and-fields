@@ -44,7 +44,7 @@ define( function( require ) {
 
       // In Charges and Fields, the model creates the charges and adds them to lists.
       var model = phetio.getInstance( 'chargesAndFields.chargesAndFieldsScreen.model' );
-      if ( value.charge === 1 ) {
+      if ( value.charge > 0 ) {
         return model.addPositiveCharge( new phet.tandem.Tandem( id ) );
       }
       else {
