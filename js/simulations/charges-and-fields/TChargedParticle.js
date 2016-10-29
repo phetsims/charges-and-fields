@@ -16,6 +16,7 @@ define( function( require ) {
   var TNumber = require( 'PHET_IO/types/TNumber' );
   var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
+  var TObject = require( 'PHET_IO/types/TObject' );
 
   var TChargedParticle = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
@@ -31,6 +32,14 @@ define( function( require ) {
         this.instance.initialPosition = TVector2.fromStateObject( value.initialPosition );
       },
       documentation: 'Set charge (in units of e)'
+    },
+
+    setValue: {
+      returnType: TVoid,
+      parameterTypes: [ TObject ],
+      implementation: function() {
+      },
+      documentation: 'Called by setState in the state wrapper.'
     }
   }, {
 
