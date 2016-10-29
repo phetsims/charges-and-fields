@@ -227,7 +227,8 @@ define( function( require ) {
           // add particle to the activeChargedParticle observable array
           // use for the webGlNode
           self.activeChargedParticles.push( addedChargedParticle );
-        } else {
+        }
+        else {
           // remove particle from the activeChargeParticle array
           self.activeChargedParticles.remove( addedChargedParticle );
         }
@@ -349,7 +350,7 @@ define( function( require ) {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
-            self.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
+             self.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
           addedElectricFieldSensor.isActiveProperty.set( false );
           addedElectricFieldSensor.animate();
         }
@@ -469,8 +470,8 @@ define( function( require ) {
 
         // {boolean} indicator for a co-located pair
         var colocated = this.activeChargedParticles.get( 1 ).position
-          .minus( this.activeChargedParticles.get( 0 ).position )
-          .magnitude() < MIN_DISTANCE_SCALE;
+                          .minus( this.activeChargedParticles.get( 0 ).position )
+                          .magnitude() < MIN_DISTANCE_SCALE;
 
         this.isPlayAreaChargedProperty.set( colocated ? false : true );
 
@@ -486,7 +487,8 @@ define( function( require ) {
         this.activeChargedParticles.forEach( function( chargedParticle ) {
           if ( chargedParticle.charge === 1 ) {
             positiveChargePositionArray.push( chargedParticle.position );
-          } else {
+          }
+          else {
             negativeChargePositionArray.push( chargedParticle.position );
           }
         } );
@@ -498,7 +500,8 @@ define( function( require ) {
             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] ) ) ) {
           this.isPlayAreaCharged = false;
           this.electricField = Vector2.ZERO;
-        } else {
+        }
+        else {
           this.isPlayAreaCharged = true;
         }
       }
@@ -690,6 +693,15 @@ define( function( require ) {
      */
     clearElectricPotentialLines: function() {
       this.electricPotentialLines.clear();
+    },
+
+    createPhetioInstance: function( phetioID, state ) {
+      if ( state.charge > 0 ) {
+        return this.addPositiveCharge( new phet.tandem.Tandem( phetioID ) );
+      }
+      else {
+        return this.addNegativeCharge( new phet.tandem.Tandem( phetioID ) );
+      }
     }
   } );
 } );
