@@ -552,9 +552,9 @@ define( function( require ) {
       // @formatter:off
       return {
         x: ( ( position.x - newChargePosition.x ) / ( newDistancePowerCube ) -
-          ( position.x - oldChargePosition.x ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT ),
+             ( position.x - oldChargePosition.x ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT ),
         y: ( ( position.y - newChargePosition.y ) / ( newDistancePowerCube ) -
-          ( position.y - oldChargePosition.y ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT )
+             ( position.y - oldChargePosition.y ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT )
       };
       // @formatter:on
     },
