@@ -34,10 +34,19 @@ define( function( require ) {
     this.charge = charge; // a charge of one corresponds to one nano Coulomb
 
     tandem.addInstance( this, TChargedParticle );
+
+    this.disposeChargedParticle = function() {
+      tandem.removeInstance( this );
+    };
   }
 
   chargesAndFields.register( 'ChargedParticle', ChargedParticle );
 
-  return inherit( ModelElement, ChargedParticle );
+  return inherit( ModelElement, ChargedParticle, {
+    dispose: function() {
+      ModelElement.prototype.dispose.call( this );
+      this.disposeChargedParticle();
+    }
+  } );
 } );
 

@@ -305,6 +305,7 @@ define( function( require ) {
           addedChargedParticle.isActiveProperty.unlink( isActiveListener );
           addedChargedParticle.positionProperty.unlink( positionListener );
           chargedParticles.removeItemRemovedListener( removalListener );
+          removedChargeParticle.dispose();
         }
       } );
     } );
@@ -694,7 +695,9 @@ define( function( require ) {
     clearElectricPotentialLines: function() {
       this.electricPotentialLines.clear();
     },
-
+    clearPhetioInstances: function() {
+      this.chargedParticles.clear();
+    },
     createPhetioInstance: function( phetioID, state ) {
       if ( state.charge > 0 ) {
         return this.addPositiveCharge( new phet.tandem.Tandem( phetioID ) );

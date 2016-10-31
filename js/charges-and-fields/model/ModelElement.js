@@ -15,6 +15,7 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var Emitter = require( 'AXON/Emitter' );
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
@@ -70,11 +71,18 @@ define( function( require ) {
 
     // @public
     this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
+
+    this.disposeEmitter = new Emitter();
   }
 
   chargesAndFields.register( 'ModelElement', ModelElement );
 
   return inherit( PropertySet, ModelElement, {
+
+    dispose: function() {
+      this.disposeEmitter.emit();
+      PropertySet.prototype.dispose.call( this );
+    },
 
     /**
      * Function that animates the position of the chargeParticle toward its origin Position.

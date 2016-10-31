@@ -242,13 +242,10 @@ define( function( require ) {
         chargedParticleNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( chargedParticleNode );
 
-      // Add the removal listener for if and when this chargedParticle is removed from the model.
-      model.chargedParticles.addItemRemovedListener( function removalListener( removedChargedParticle ) {
-        if ( removedChargedParticle === addedChargedParticle ) {
-          chargedParticleNode.dispose();
-          draggableElementsLayer.removeChild( chargedParticleNode );
-          model.chargedParticles.removeItemRemovedListener( removalListener );
-        }
+      addedChargedParticle.disposeEmitter.addListener( function callback() {
+        addedChargedParticle.disposeEmitter.removeListener( callback );
+        chargedParticleNode.dispose();
+        draggableElementsLayer.removeChild( chargedParticleNode );
       } );
     } );
 
