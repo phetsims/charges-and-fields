@@ -681,8 +681,8 @@ define( function( require ) {
       var i;
       for ( i = 0; i < numberOfLines; i++ ) {
         var position = new Vector2(
-          WIDTH * ( phet.joist.random() - 0.5 ),
-          HEIGHT * ( phet.joist.random() - 0.5 ) ); // a random position on the graph
+          WIDTH * ( phet.joist.random.nextDouble() - 0.5 ),
+          HEIGHT * ( phet.joist.random.nextDouble() - 0.5 ) ); // a random position on the graph
 
         this.addElectricPotentialLine( position );
       }
