@@ -701,16 +701,27 @@ define( function( require ) {
 
     /**
      * Create a dynamic particle as specified by the phetioID and state.
-     * @param {string} phetioID
+     * @param {Tandem} tandem
      * @param {Object} state
      * @returns {ChargedParticle}
      */
-    createPhetioInstance: function( phetioID, state ) {
-      if ( state.charge > 0 ) {
-        return this.addPositiveCharge( new phet.tandem.Tandem( phetioID ) );
+    createPhetioInstance: function( tandem, state ) {
+      if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) { // TODO: if ( tandem.tailStartsWith( 'chargedParticle' )) {
+        if ( state.charge > 0 ) {
+          return this.addPositiveCharge( tandem );
+        }
+        else if ( state.charge < 0 ) {
+          return this.addNegativeCharge( tandem );
+        }
+        else {
+          throw new Error( 'This sim does not support charges with no charge' );
+        }
+      }
+      else if ( tandem.tail.indexOf( 'electricFieldSensor' ) === 0 ) {
+        return this.addElectricFieldSensor( tandem );
       }
       else {
-        return this.addNegativeCharge( new phet.tandem.Tandem( phetioID ) );
+        throw new Error( 'child type not found: ' + tandem.id );
       }
     }
   } );
