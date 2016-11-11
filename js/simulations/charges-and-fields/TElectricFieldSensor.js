@@ -23,15 +23,7 @@ define( function( require ) {
     TModelElement.call( this, instance, phetioID );
   };
 
-  phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, {
-    setValue: {
-      returnType: TVoid,
-      parameterTypes: [ TObject ],
-      implementation: function() {
-      },
-      documentation: 'Called by setState in the state wrapper.'
-    }
-  }, {
+  phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, { }, {
     create: function( id ) {
 
       // In Charges and Fields, the model creates the charges and adds them to lists.
@@ -50,6 +42,8 @@ define( function( require ) {
       };
     },
 
+    setValue: function(instance, value) {
+      }
   } );
 
   phetioNamespace.register( 'TElectricFieldSensor', TElectricFieldSensor );
