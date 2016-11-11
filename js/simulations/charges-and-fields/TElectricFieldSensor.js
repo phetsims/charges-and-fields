@@ -14,9 +14,6 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TModelElement = require( 'PHET_IO/simulations/charges-and-fields/TModelElement' );
   var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
-  var TVoid = require( 'PHET_IO/types/TVoid' );
-  var TObject = require( 'PHET_IO/types/TObject' );
-
 
   var TElectricFieldSensor = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
