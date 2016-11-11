@@ -698,6 +698,13 @@ define( function( require ) {
     clearPhetioInstances: function() {
       this.chargedParticles.clear();
     },
+
+    /**
+     * Create a dynamic particle as specified by the phetioID and state.
+     * @param {string} phetioID
+     * @param {Object} state
+     * @returns {ChargedParticle}
+     */
     createPhetioInstance: function( phetioID, state ) {
       if ( state.charge > 0 ) {
         return this.addPositiveCharge( new phet.tandem.Tandem( phetioID ) );
