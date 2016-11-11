@@ -20,7 +20,39 @@ define( function( require ) {
     TObject.call( this, instance, phetioID );
   };
 
-  phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {} );
+  phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {
+
+    clearPhetioInstances: function() {
+      this.instance.chargedParticles.clear();
+      this.instance.electricFieldSensors.clear();
+    },
+
+    /**
+     * Create a dynamic particle as specified by the phetioID and state.
+     * @param {Tandem} tandem
+     * @param {Object} state
+     * @returns {ChargedParticle}
+     */
+    createPhetioInstance: function( tandem, state ) {
+      if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) { // TODO: if ( tandem.tailStartsWith( 'chargedParticle' )) {
+        if ( state.charge > 0 ) {
+          return this.instance.addPositiveCharge( tandem );
+        }
+        else if ( state.charge < 0 ) {
+          return this.instance.addNegativeCharge( tandem );
+        }
+        else {
+          throw new Error( 'This sim does not support charges with no charge' );
+        }
+      }
+      else if ( tandem.tail.indexOf( 'electricFieldSensor' ) === 0 ) {
+        return this.instance.addElectricFieldSensor( tandem );
+      }
+      else {
+        throw new Error( 'child type not found: ' + tandem.id );
+      }
+    }
+  }, {} );
 
   phetioNamespace.register( 'TChargesAndFieldsModel', TChargesAndFieldsModel );
 
