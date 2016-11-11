@@ -29,7 +29,6 @@ define( function( require ) {
       parameterTypes: [ TNumber() ],
       implementation: function( value ) {
         this.instance.charge = value.charge;
-        this.instance.initialPosition = TVector2.fromStateObject( value.initialPosition );
       },
       documentation: 'Set charge (in units of e)'
     },
@@ -37,7 +36,9 @@ define( function( require ) {
     setValue: {
       returnType: TVoid,
       parameterTypes: [ TObject ],
-      implementation: function() {
+      implementation: function( value ) {
+        this.instance.charge = value.charge;
+        this.instance.initialPosition = TVector2.fromStateObject( value.initialPosition );
       },
       documentation: 'Called by setState in the state wrapper.'
     }
