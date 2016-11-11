@@ -43,25 +43,7 @@ define( function( require ) {
       documentation: 'Called by setState in the state wrapper.'
     }
   }, {
-
-    /**
-     * When the state is loaded back, create a ChargedParticle.
-     * @param {string} id - the full phetioID to be registered with a tandem
-     * @param {Object} value - the value that would be used with setValue, which can be used to customize the object creation.
-     * @returns {ChargedParticle}
-     */
-    create: function( id, value ) {
-
-      // In Charges and Fields, the model creates the charges and adds them to lists.
-      var model = phetio.getInstance( 'chargesAndFields.chargesAndFieldsScreen.model' );
-      if ( value.charge > 0 ) {
-        return model.addPositiveCharge( new phet.tandem.Tandem( id ) );
-      }
-      else {
-        return model.addNegativeCharge( new phet.tandem.Tandem( id ) );
-      }
-    },
-
+    
     fromStateObject: function( stateObject ) {
       return stateObject;
     },
