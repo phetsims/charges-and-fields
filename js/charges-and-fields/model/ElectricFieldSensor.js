@@ -43,7 +43,7 @@ define( function( require ) {
     this.positionProperty.link( this.update.bind( this ) );
 
     this.disposeElectricFieldSensor = function() {
-      self.unlinkAll();
+      tandem.removeInstance( self );
     };
 
     tandem.addInstance( this, TElectricFieldSensor );
@@ -69,8 +69,9 @@ define( function( require ) {
     },
 
     dispose: function() {
+      this.unlinkAll(); // TODO: Unlink properly?  Or should we use unlinkAll everywhere if it is more convenient?
+      ModelElement.prototype.dispose.call( this );
       this.disposeElectricFieldSensor();
     }
   } );
 } );
-
