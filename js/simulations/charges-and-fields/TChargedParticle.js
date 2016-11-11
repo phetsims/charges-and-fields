@@ -31,19 +31,10 @@ define( function( require ) {
         this.instance.charge = value.charge;
       },
       documentation: 'Set charge (in units of e)'
-    },
-
-    setValue: {
-      returnType: TVoid,
-      parameterTypes: [ TObject ],
-      implementation: function( value ) {
-        this.instance.charge = value.charge;
-        this.instance.initialPosition = TVector2.fromStateObject( value.initialPosition );
-      },
-      documentation: 'Called by setState in the state wrapper.'
     }
+
   }, {
-    
+
     fromStateObject: function( stateObject ) {
       return stateObject;
     },
@@ -53,6 +44,11 @@ define( function( require ) {
         charge: value.charge,
         initialPosition: value.initialPosition ? TVector2.toStateObject( value.initialPosition ) : null
       };
+    },
+
+    setValue: function( instance, value ) {
+      instance.charge = value.charge;
+      instance.initialPosition = TVector2.fromStateObject( value.initialPosition );
     }
   } );
 
