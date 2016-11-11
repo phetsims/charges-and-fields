@@ -697,6 +697,7 @@ define( function( require ) {
     },
     clearPhetioInstances: function() {
       this.chargedParticles.clear();
+      this.electricFieldSensors.clear();
     },
 
     /**

@@ -16,7 +16,7 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // phet-io modules
-  var TModelElement = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TModelElement' );
+  var TElectricFieldSensor = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TElectricFieldSensor' );
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**
@@ -46,7 +46,7 @@ define( function( require ) {
       self.unlinkAll();
     };
 
-    tandem.addInstance( this, TModelElement );
+    tandem.addInstance( this, TElectricFieldSensor );
   }
 
   chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );
