@@ -13,19 +13,43 @@ define( function( require ) {
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TModelElement = require( 'PHET_IO/simulations/charges-and-fields/TModelElement' );
+  var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
+  var TVoid = require( 'PHET_IO/types/TVoid' );
+  var TObject = require( 'PHET_IO/types/TObject' );
+
 
   var TElectricFieldSensor = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
     TModelElement.call( this, instance, phetioID );
   };
 
-  phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, {}, {
+  phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, {
+    setValue: {
+      returnType: TVoid,
+      parameterTypes: [ TObject ],
+      implementation: function() {
+      },
+      documentation: 'Called by setState in the state wrapper.'
+    }
+  }, {
     create: function( id ) {
 
       // In Charges and Fields, the model creates the charges and adds them to lists.
       var model = phetio.getInstance( 'chargesAndFields.chargesAndFieldsScreen.model' );
       return model.addElectricFieldSensor( new phet.tandem.Tandem( id ) );
-    }
+    },
+
+    fromStateObject: function( stateObject ) {
+      return stateObject;
+    },
+
+    toStateObject: function( value ) {
+      return {
+        computeElectricField: value.computeElectricField,
+        initialPosition: value.initialPosition ? TVector2.toStateObject( value.initialPosition ) : null
+      };
+    },
+
   } );
 
   phetioNamespace.register( 'TElectricFieldSensor', TElectricFieldSensor );
