@@ -34,7 +34,7 @@ define( function( require ) {
        * @returns {ChargedParticle}
        */
       addChildInstance: function( instance, tandem, stateObject ) {
-        if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) { // TODO: if ( tandem.tailStartsWith( 'chargedParticle' )) {
+        if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) {
           if ( stateObject.charge > 0 ) {
             return instance.addPositiveCharge( tandem );
           }
