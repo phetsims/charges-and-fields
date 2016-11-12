@@ -28,16 +28,17 @@ define( function( require ) {
 
       /**
        * Create a dynamic particle as specified by the phetioID and state.
+       * @param {Object} instance
        * @param {Tandem} tandem
-       * @param {Object} state
+       * @param {Object} stateObject
        * @returns {ChargedParticle}
        */
-      addChildInstance: function( instance, tandem, state ) {
+      addChildInstance: function( instance, tandem, stateObject ) {
         if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) { // TODO: if ( tandem.tailStartsWith( 'chargedParticle' )) {
-          if ( state.charge > 0 ) {
+          if ( stateObject.charge > 0 ) {
             return instance.addPositiveCharge( tandem );
           }
-          else if ( state.charge < 0 ) {
+          else if ( stateObject.charge < 0 ) {
             return instance.addNegativeCharge( tandem );
           }
           else {
