@@ -21,7 +21,7 @@ define( function( require ) {
   };
 
   phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
-      clearPhetioInstances: function( instance ) {
+    clearChildren: function( instance ) {
         instance.chargedParticles.clear();
         instance.electricFieldSensors.clear();
       },
@@ -32,7 +32,7 @@ define( function( require ) {
        * @param {Object} state
        * @returns {ChargedParticle}
        */
-      createPhetioInstance: function( instance, tandem, state ) {
+      addChildInstance: function( instance, tandem, state ) {
         if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) { // TODO: if ( tandem.tailStartsWith( 'chargedParticle' )) {
           if ( state.charge > 0 ) {
             return instance.addPositiveCharge( tandem );
