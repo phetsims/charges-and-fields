@@ -256,7 +256,7 @@ define( function( require ) {
 
     this.availableModelBoundsProperty = availableModelBoundsProperty;
 
-    this.disposeElectricFieldSensor = function() {
+    this.disposeElectricFieldSensorNode = function() {
       arrowNode.dispose();
       electricFieldSensor.isActiveProperty.unlink( isActiveListener );
       electricFieldSensor.isInteractiveProperty.unlink( isInteractiveListener );
@@ -322,7 +322,7 @@ define( function( require ) {
   return inherit( ElectricFieldSensorRepresentationNode, ElectricFieldSensorNode, {
     dispose: function() {
       ElectricFieldSensorRepresentationNode.prototype.dispose.call( this );
-      this.disposeElectricFieldSensor();
+      this.disposeElectricFieldSensorNode();
     }
   } );
 } );

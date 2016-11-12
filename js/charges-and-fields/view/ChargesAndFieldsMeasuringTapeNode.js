@@ -39,7 +39,7 @@ define( function( require ) {
       isTipDragBounded: true
     } );
 
-    this.disposeMeasuringTapeNode = function() {
+    this.disposeChargesAndFieldsMeasuringTapeNode = function() {
       tandem.removeInstance( self );
     };
   }
@@ -48,7 +48,7 @@ define( function( require ) {
 
   return inherit( MeasuringTape, ChargesAndFieldsMeasuringTapeNode, {
     dispose: function() {
-      this.disposeMeasuringTapeNode();
+      this.disposeChargesAndFieldsMeasuringTapeNode();
     }
   } );
 } );

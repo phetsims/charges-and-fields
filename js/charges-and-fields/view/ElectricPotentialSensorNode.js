@@ -335,7 +335,7 @@ define( function( require ) {
       return Util.toFixed( number, decimalPlaces );
     }
 
-    this.disposeElectricPotentialSensor = function() {
+    this.disposeElectricPotentailSensorNode = function() {
       ChargesAndFieldsColors.unlink( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
       ChargesAndFieldsColors.unlink( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
       ChargesAndFieldsColors.unlink( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
@@ -355,7 +355,7 @@ define( function( require ) {
 
   return inherit( Node, ElectricPotentialSensorNode, {
     dispose: function() {
-      this.disposeElectricPotentialSensor();
+      this.disposeElectricPotentailSensorNode();
     }
   } );
 } );
