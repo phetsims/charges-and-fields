@@ -21,7 +21,7 @@ define( function( require ) {
   };
 
   phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
-    clearChildren: function( instance ) {
+    clearChildInstances: function( instance ) {
         instance.chargedParticles.clear();
         instance.electricFieldSensors.clear();
       },
