@@ -21,15 +21,12 @@ define( function( require ) {
   };
 
   phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, {}, {
-    create: function( id ) {
-
-      // In Charges and Fields, the model creates the charges and adds them to lists.
-      var model = phetio.getInstance( 'chargesAndFields.chargesAndFieldsScreen.model' );
-      return model.addElectricFieldSensor( new phet.tandem.Tandem( id ) );
-    },
 
     fromStateObject: function( stateObject ) {
-      return stateObject;
+      return {
+        computeElectricField: stateObject.computeElectricField,
+        initialPosition: stateObject.initialPosition ? TVector2.fromStateObject( stateObject.initialPosition ) : null
+      };
     },
 
     toStateObject: function( value ) {
