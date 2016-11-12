@@ -35,7 +35,10 @@ define( function( require ) {
   }, {
 
     fromStateObject: function( stateObject ) {
-      return stateObject;
+      return {
+        charge: stateObject.charge,
+        initialPosition: stateObject.initialPosition ? TVector2.fromStateObject( stateObject.initialPosition ) : null
+      };
     },
 
     toStateObject: function( value ) {
