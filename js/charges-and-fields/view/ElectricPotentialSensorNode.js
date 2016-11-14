@@ -59,7 +59,8 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function ElectricPotentialSensorNode( electricPotentialSensor,
+  function ElectricPotentialSensorNode(
+    electricPotentialSensor,
     getElectricPotentialColor,
     clearElectricPotentialLines,
     addElectricPotentialLine,
@@ -82,14 +83,21 @@ define( function( require ) {
     Property.addProperty( this, 'isUserControlled', false );
 
     // Create the centered circle around the crosshair. The origin of this node is the center of the circle
-    var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 3, centerX: 0, centerY: 0 } );
+    var circle = new Circle( CIRCLE_RADIUS, {
+      lineWidth: 3,
+      centerX: 0,
+      centerY: 0
+    } );
 
     // Create the crosshair
     var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
       .lineTo( CIRCLE_RADIUS, 0 )
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
-    var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
+    var crosshair = new Path( crosshairShape, {
+      centerX: 0,
+      centerY: 0
+    } );
 
     // Create the base of the crosshair
     var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
@@ -219,12 +227,12 @@ define( function( require ) {
       backgroundRectangle.fill = color;
     };
 
-    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
-    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
-    ChargesAndFieldsColorProfile.link( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
-    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
-    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
-    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
+    ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty.link( setElectricPotentialSensorCircleStroke );
+    ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty.link( setElectricPotentialSensorCrosshairStroke );
+    ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty.link( setElectricPotentialPanelTitleText );
+    ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty.link( setElectricPotentialSensorTextPanelTextFill );
+    ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty.link( setElectricPotentialSensorTextPanelBorder );
+    ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty.link( setElectricPotentialSensorTextPanelBackground );
 
     // the color of the fill tracks the electric potential
     ChargesAndFieldsColorProfile.on( 'profileChanged', function() {
@@ -289,7 +297,9 @@ define( function( require ) {
      * @param {number} electricPotential
      */
     function updateCircleFill( electricPotential ) {
-      circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
+      circle.fill = getElectricPotentialColor( electricPotential, {
+        transparency: 0.5
+      } );
     }
 
     /**
@@ -326,9 +336,11 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      } else if ( exponent > 0 ) {
+      }
+      else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      } else {
+      }
+      else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 
@@ -336,12 +348,12 @@ define( function( require ) {
     }
 
     this.disposeElectricPotentailSensorNode = function() {
-      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
-      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
-      ChargesAndFieldsColorProfile.unlink( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
-      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
-      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
-      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
+      ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty.unlink( setElectricPotentialSensorCircleStroke );
+      ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty.unlink( setElectricPotentialSensorCrosshairStroke );
+      ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty.unlink( setElectricPotentialPanelTitleText );
+      ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty.unlink( setElectricPotentialSensorTextPanelTextFill );
+      ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty.unlink( setElectricPotentialSensorTextPanelBorder );
+      ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty.unlink( setElectricPotentialSensorTextPanelBackground );
 
       electricPotentialSensor.positionProperty.unlink( positionListener );
       electricPotentialSensor.electricFieldProperty.unlink( potentialListener );
@@ -359,4 +371,3 @@ define( function( require ) {
     }
   } );
 } );
-

@@ -40,19 +40,21 @@ define( function( require ) {
     var circleFillColorFunction = function( color ) {
       circle.fill = color;
     };
-    ChargesAndFieldsColorProfile.link( 'electricFieldSensorCircleFill', circleFillColorFunction );
+
+    ChargesAndFieldsColorProfile.electricFieldSensorCircleFillProperty.link( circleFillColorFunction );
 
     var circleStrokeColorFunction = function( color ) {
       circle.stroke = color;
     };
-    ChargesAndFieldsColorProfile.link( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
+
+    ChargesAndFieldsColorProfile.electricFieldSensorCircleStrokeProperty.link( circleStrokeColorFunction );
 
     // add circle
     this.addChild( circle );
 
     this.disposeElectricFieldSensorRepresentationNode = function() {
-      ChargesAndFieldsColorProfile.unlink( 'electricFieldSensorCircleFill', circleFillColorFunction );
-      ChargesAndFieldsColorProfile.unlink( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
+      ChargesAndFieldsColorProfile.electricFieldSensorCircleFillProperty.unlink( circleFillColorFunction );
+      ChargesAndFieldsColorProfile.electricFieldSensorCircleStrokeProperty.unlink( circleStrokeColorFunction );
     };
   }
 
