@@ -194,7 +194,7 @@ define( function( require ) {
       } );
 
       // update the colors on the crosshair components when the color profile changes
-      ChargesAndFieldsColorProfile.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+      ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty.link( function( color ) {
         circle.stroke = color;
         crosshair.stroke = color;
         crosshairMount.fill = color;

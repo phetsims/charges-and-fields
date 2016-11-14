@@ -37,7 +37,7 @@ define( function( require ) {
       },
       options );
 
-    ChargesAndFieldsColorProfile.link( 'background', function( color ) {
+    ChargesAndFieldsColorProfile.backgroundProperty.link( function( color ) {
       self.backgroundColorProperty.value = color;
     } );
 
