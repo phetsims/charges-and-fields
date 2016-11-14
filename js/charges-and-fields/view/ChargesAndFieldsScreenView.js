@@ -80,11 +80,8 @@ define( function( require ) {
     this.modelViewTransform = modelViewTransform;
     this.model = model;
 
-    // Check to see if WebGL was prevented by a query parameter
-    var disallowWebGL = ChargesAndFieldsGlobals.disallowWebGL;
-
     // The mobile WebGL implementation will work with basic WebGL support
-    var allowMobileWebGL = Util.checkWebGLSupport() && !disallowWebGL;
+    var allowMobileWebGL = Util.checkWebGLSupport() && phet.chipper.queryParameters.webgl;
 
     // The unlimited-particle implementation will work only with OES_texture_float where writing to
     // float textures is supported.
