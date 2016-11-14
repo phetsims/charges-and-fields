@@ -67,28 +67,18 @@ define( function( require ) {
     var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
     var voltageLabelText = new Text( voltageLabelString, {
       font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
-      center: modelViewTransform.modelToViewPosition( position )
+      center: modelViewTransform.modelToViewPosition( position ),
+      fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty
     } );
 
     // Create a background rectangle for the voltage label
     var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
-      center: modelViewTransform.modelToViewPosition( position )
+      center: modelViewTransform.modelToViewPosition( position ),
+      fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty
     } );
 
     this.addChild( backgroundRectangle ); // must go first
     this.addChild( voltageLabelText );
-
-    // Link the fill color of the background to the default/projector mode
-    var rectangleColorFunction = function( color ) {
-      backgroundRectangle.fill = color;
-    };
-    ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty.link( rectangleColorFunction );
-
-    // Link the fill color of the text for the default/projector mode
-    var textColorFunction = function( color ) {
-      voltageLabelText.fill = color;
-    };
-    ChargesAndFieldsColorProfile.electricPotentialLineProperty.link( textColorFunction ); // text has the same color as the equipotential line
 
     // finds the closest location on positionArray to the position of the cursor
     var locationFunction = function( cursorLocation ) {
@@ -108,9 +98,6 @@ define( function( require ) {
 
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = function() {
-      ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty.unlink( rectangleColorFunction );
-      ChargesAndFieldsColorProfile.electricPotentialLineProperty.unlink( textColorFunction );
-      ChargesAndFieldsColorProfile.backgroundProperty.unlink( rectangleColorFunction );
       locationProperty.unlink( locationFunction );
     };
 
@@ -130,28 +117,12 @@ define( function( require ) {
    * @constructor
    */
   function ElectricPotentialLinePath( electricPotentialLineShape, modelViewTransform ) {
-
-    var self = this;
-
-    Path.call( this, modelViewTransform.modelToViewShape( electricPotentialLineShape ) );
-
-    // Link the stroke color for the default/projector mode
-    var pathColorFunction = function( color ) {
-      self.stroke = color;
-    };
-    ChargesAndFieldsColorProfile.electricPotentialLineProperty.link( pathColorFunction );
-
-    // create a dispose function to unlink the color functions
-    this.disposeElectricPotentialLinePath = function() {
-      ChargesAndFieldsColorProfile.electricPotentialLineProperty.unlink( pathColorFunction );
-    };
+    Path.call( this, modelViewTransform.modelToViewShape( electricPotentialLineShape ), {
+      stroke: ChargesAndFieldsColorProfile.electricPotentialLineProperty
+    } );
   }
 
-  inherit( Path, ElectricPotentialLinePath, {
-    dispose: function() {
-      this.disposeElectricPotentialLinePath();
-    }
-  } );
+  inherit( Path, ElectricPotentialLinePath );
 
   /**
    * Function that generates an array of Circles with their centers determined by the position array

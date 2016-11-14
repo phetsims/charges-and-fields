@@ -59,8 +59,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function ElectricPotentialSensorNode(
-    electricPotentialSensor,
+  function ElectricPotentialSensorNode( electricPotentialSensor,
     getElectricPotentialColor,
     clearElectricPotentialLines,
     addElectricPotentialLine,
@@ -86,7 +85,8 @@ define( function( require ) {
     var circle = new Circle( CIRCLE_RADIUS, {
       lineWidth: 3,
       centerX: 0,
-      centerY: 0
+      centerY: 0,
+      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty
     } );
 
     // Create the crosshair
@@ -96,16 +96,22 @@ define( function( require ) {
       .lineTo( 0, CIRCLE_RADIUS );
     var crosshair = new Path( crosshairShape, {
       centerX: 0,
-      centerY: 0
+      centerY: 0,
+      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
     } );
 
     // Create the base of the crosshair
-    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
+    // TODO: why are the fill and stroke set to the same thing?
+    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
+      fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+    } );
 
     // Create the text node above the readout
     var electricPotentialPanelTitleText = new Text( equipotentialString, {
       maxWidth: 85,
-      font: ChargesAndFieldsConstants.DEFAULT_FONT
+      font: ChargesAndFieldsConstants.DEFAULT_FONT,
+      fill: ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty
     } );
 
     // Create the button that allows the board to be cleared of all lines.
@@ -145,7 +151,8 @@ define( function( require ) {
     var voltageReadout = new TandemText( '', {
       maxWidth: 65,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      tandem: tandem.createTandem( 'voltageReadout' )
+      tandem: tandem.createTandem( 'voltageReadout' ),
+      fill: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty
     } );
 
     /**
@@ -174,7 +181,10 @@ define( function( require ) {
       backgroundAdjustment,
       0,
       buttonsBox.width - backgroundAdjustment * 2,
-      voltageReadout.height * 1.5, 5, 5 );
+      voltageReadout.height * 1.5, 5, 5, {
+        fill: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty,
+        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty
+      } );
 
     // Create the body of the sensor
     var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
@@ -198,41 +208,6 @@ define( function( require ) {
     outlineImage.top = bodyContent.top - 15;
     voltageReadout.centerX = bodyContent.centerX;
     voltageReadout.centerY = backgroundRectangle.centerY;
-
-    // Link the stroke color for the default/projector mode
-    var setElectricPotentialSensorCircleStroke = function( color ) {
-      circle.stroke = color;
-    };
-
-    // update the colors on the crosshair components when the color profile changes
-    var setElectricPotentialSensorCrosshairStroke = function( color ) {
-      crosshair.stroke = color;
-      crosshairMount.fill = color;
-      crosshairMount.stroke = color;
-    };
-
-    var setElectricPotentialPanelTitleText = function( color ) {
-      electricPotentialPanelTitleText.fill = color;
-    };
-
-    var setElectricPotentialSensorTextPanelTextFill = function( color ) {
-      voltageReadout.fill = color;
-    };
-
-    var setElectricPotentialSensorTextPanelBorder = function( color ) {
-      backgroundRectangle.stroke = color;
-    };
-
-    var setElectricPotentialSensorTextPanelBackground = function( color ) {
-      backgroundRectangle.fill = color;
-    };
-
-    ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty.link( setElectricPotentialSensorCircleStroke );
-    ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty.link( setElectricPotentialSensorCrosshairStroke );
-    ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty.link( setElectricPotentialPanelTitleText );
-    ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty.link( setElectricPotentialSensorTextPanelTextFill );
-    ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty.link( setElectricPotentialSensorTextPanelBorder );
-    ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty.link( setElectricPotentialSensorTextPanelBackground );
 
     // the color of the fill tracks the electric potential
     function updateCircleFillWithPotential() {
@@ -300,9 +275,7 @@ define( function( require ) {
      * @param {number} electricPotential
      */
     function updateCircleFill( electricPotential ) {
-      circle.fill = getElectricPotentialColor( electricPotential, {
-        transparency: 0.5
-      } );
+      circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
     }
 
     /**
@@ -339,11 +312,9 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      }
-      else if ( exponent > 0 ) {
+      } else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      }
-      else {
+      } else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 
@@ -351,13 +322,6 @@ define( function( require ) {
     }
 
     this.disposeElectricPotentailSensorNode = function() {
-      ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty.unlink( setElectricPotentialSensorCircleStroke );
-      ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty.unlink( setElectricPotentialSensorCrosshairStroke );
-      ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty.unlink( setElectricPotentialPanelTitleText );
-      ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty.unlink( setElectricPotentialSensorTextPanelTextFill );
-      ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty.unlink( setElectricPotentialSensorTextPanelBorder );
-      ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty.unlink( setElectricPotentialSensorTextPanelBackground );
-
       electricPotentialSensor.positionProperty.unlink( positionListener );
       electricPotentialSensor.electricFieldProperty.unlink( potentialListener );
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
@@ -374,3 +338,4 @@ define( function( require ) {
     }
   } );
 } );
+

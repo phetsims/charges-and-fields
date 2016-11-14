@@ -63,31 +63,21 @@ define( function( require ) {
     this.touchArea = this.localBounds.dilated( 10 );
 
     // Create the E-field arrow, (set the arrow horizontally to start with)
+    // TODO: why is the fill and stroke set to the same value?
     var arrowNode = new ArrowNode( 0, 0, 1, 0, {
-      pickable: false
+      pickable: false,
+      stroke: ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty,
+      fill: ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty
     } );
-
-    // hook up colors for default/projector mode
-    var arrowColorFunction = function( color ) {
-      arrowNode.stroke = color;
-      arrowNode.fill = color;
-    };
-    ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty.link( arrowColorFunction );
 
     // Create two numerical readouts for the strength and direction of the electric field.
     var textOptions = {
       font: LABEL_FONT,
-      pickable: false
+      pickable: false,
+      fill: ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty
     };
     var fieldStrengthLabel = new Text( '', textOptions );
     var directionLabel = new Text( '', textOptions );
-
-    // Hook up colors for default/projector mode
-    var labelColorFunction = function( color ) {
-      fieldStrengthLabel.fill = color;
-      directionLabel.fill = color;
-    };
-    ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty.link( labelColorFunction );
 
     this.addChild( arrowNode );
     this.addChild( fieldStrengthLabel );
@@ -267,8 +257,6 @@ define( function( require ) {
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
-      ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty.unlink( arrowColorFunction );
-      ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty.unlink( labelColorFunction );
       tandem.removeInstance( self );
     };
 

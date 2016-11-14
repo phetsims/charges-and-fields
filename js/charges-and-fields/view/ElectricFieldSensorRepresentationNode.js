@@ -34,34 +34,17 @@ define( function( require ) {
     // Create the centered circle
     var circle = new Circle( CIRCLE_RADIUS, {
       centerX: 0,
-      centerY: 0
+      centerY: 0,
+      fill: ChargesAndFieldsColorProfile.electricFieldSensorCircleFillProperty,
+      stroke: ChargesAndFieldsColorProfile.electricFieldSensorCircleStrokeProperty
     } );
-
-    var circleFillColorFunction = function( color ) {
-      circle.fill = color;
-    };
-    ChargesAndFieldsColorProfile.electricFieldSensorCircleFillProperty.link( circleFillColorFunction );
-
-    var circleStrokeColorFunction = function( color ) {
-      circle.stroke = color;
-    };
-    ChargesAndFieldsColorProfile.electricFieldSensorCircleStrokeProperty.link( circleStrokeColorFunction );
 
     // add circle
     this.addChild( circle );
-
-    this.disposeElectricFieldSensorRepresentationNode = function() {
-      ChargesAndFieldsColorProfile.electricFieldSensorCircleFillProperty.unlink( circleFillColorFunction );
-      ChargesAndFieldsColorProfile.electricFieldSensorCircleStrokeProperty.unlink( circleStrokeColorFunction );
-    };
   }
 
   chargesAndFields.register( 'ElectricFieldSensorRepresentationNode', ElectricFieldSensorRepresentationNode );
 
-  return inherit( Node, ElectricFieldSensorRepresentationNode, {
-    dispose: function() {
-      this.disposeElectricFieldSensorRepresentationNode();
-    }
-  } );
+  return inherit( Node, ElectricFieldSensorRepresentationNode );
 } );
 

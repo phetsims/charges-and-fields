@@ -164,9 +164,7 @@ define( function( require ) {
       tandem.createTandem( 'measuringTapeNode' ) );
 
     // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
-    ChargesAndFieldsColorProfile.measuringTapeTextProperty.link( function( color ) {
-      measuringTapeNode.textColor = color;
-    } );
+    ChargesAndFieldsColorProfile.measuringTapeTextProperty.linkAttribute( measuringTapeNode, 'textColor' );
 
     // Create the toolboxPanel with the measuring tape and the electric potential sensor icons
     var toolboxPanel = new ChargesAndFieldsToolboxPanel(

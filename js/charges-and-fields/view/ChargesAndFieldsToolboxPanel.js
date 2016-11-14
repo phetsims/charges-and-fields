@@ -165,17 +165,30 @@ define( function( require ) {
       } );
 
       // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
-      var circle = new Circle( CIRCLE_RADIUS, { lineWidth: 2, centerX: 0, centerY: 0 } );
+      var circle = new Circle( CIRCLE_RADIUS, {
+        lineWidth: 2,
+        centerX: 0,
+        centerY: 0,
+        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+      } );
 
       // Create the crosshair
       var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
         .lineTo( CIRCLE_RADIUS, 0 )
         .moveTo( 0, -CIRCLE_RADIUS )
         .lineTo( 0, CIRCLE_RADIUS );
-      var crosshair = new Path( crosshairShape, { centerX: 0, centerY: 0 } );
+      var crosshair = new Path( crosshairShape, {
+        centerX: 0,
+        centerY: 0,
+        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+      } );
 
       // Create the base of the crosshair
-      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS );
+      // TODO: why is the fill the same as the stroke?
+      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
+        fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+      } );
 
       // Create the voltage Reading reading
       var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
@@ -191,14 +204,6 @@ define( function( require ) {
       var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
         fill: 'white',
         stroke: 'black'
-      } );
-
-      // update the colors on the crosshair components when the color profile changes
-      ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty.link( function( color ) {
-        circle.stroke = color;
-        crosshair.stroke = color;
-        crosshairMount.fill = color;
-        crosshairMount.stroke = color;
       } );
 
       crosshairMount.centerX = circle.centerX;

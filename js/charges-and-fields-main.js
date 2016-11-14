@@ -34,11 +34,7 @@ define( function( require ) {
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
-    if ( useProjectorColors ) {
-      ChargesAndFieldsColorProfile.profileNameProperty.set( 'projector' );
-    } else {
-      ChargesAndFieldsColorProfile.profileNameProperty.set( 'default' );
-    }
+    ChargesAndFieldsColorProfile.profileNameProperty.set( useProjectorColors ? 'projector' : 'default' );
   } );
 
   SimLauncher.launch( function() {
