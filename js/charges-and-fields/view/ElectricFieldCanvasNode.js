@@ -56,7 +56,7 @@ define( function( require ) {
     // Invalidate paint on a bunch of changes
     var invalidateSelfListener = this.invalidatePaint.bind( this );
 
-    ChargesAndFieldsColorProfile.on( 'profileChanged', invalidateSelfListener ); // color change
+    ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( invalidateSelfListener ); // color change
 
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 

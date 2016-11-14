@@ -39,7 +39,9 @@ define( function( require ) {
 
     // Invalidate paint on a bunch of changes
     var invalidateSelfListener = this.invalidatePaint.bind( this );
-    ChargesAndFieldsColorProfile.on( 'profileChanged', invalidateSelfListener ); // color change
+    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
+    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
+    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
     chargedParticles.addItemAddedListener( function( particle ) {
       particle.positionProperty.link( invalidateSelfListener );

@@ -40,13 +40,11 @@ define( function( require ) {
     var circleFillColorFunction = function( color ) {
       circle.fill = color;
     };
-
     ChargesAndFieldsColorProfile.electricFieldSensorCircleFillProperty.link( circleFillColorFunction );
 
     var circleStrokeColorFunction = function( color ) {
       circle.stroke = color;
     };
-
     ChargesAndFieldsColorProfile.electricFieldSensorCircleStrokeProperty.link( circleStrokeColorFunction );
 
     // add circle

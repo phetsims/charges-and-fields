@@ -235,9 +235,12 @@ define( function( require ) {
     ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty.link( setElectricPotentialSensorTextPanelBackground );
 
     // the color of the fill tracks the electric potential
-    ChargesAndFieldsColorProfile.on( 'profileChanged', function() {
+    function updateCircleFillWithPotential() {
       updateCircleFill( electricPotentialSensor.electricPotentialProperty.get() );
-    } );
+    }
+    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( updateCircleFillWithPotential );
+    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( updateCircleFillWithPotential );
+    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( updateCircleFillWithPotential );
 
     // Add the various components to this node
     this.addChild( crosshairMount );

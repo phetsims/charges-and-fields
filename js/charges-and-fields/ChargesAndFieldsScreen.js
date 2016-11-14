@@ -24,7 +24,7 @@ define( function( require ) {
     var self = this;
 
     var options = {
-      backgroundColor: ChargesAndFieldsColorProfile.background.toCSS(),
+      backgroundColor: ChargesAndFieldsColorProfile.backgroundProperty.value.toCSS(),
       tandem: tandem
     };
 

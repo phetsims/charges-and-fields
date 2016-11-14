@@ -41,9 +41,7 @@ define( function( require ) {
    */
   function VoltageLabel( electricPotentialLine, modelViewTransform, tandem ) {
 
-    Node.call( this, {
-      cursor: 'pointer'
-    } );
+    Node.call( this, { cursor: 'pointer' } );
 
     var electricPotential = electricPotentialLine.electricPotential;
     var position = electricPotentialLine.position;
@@ -84,14 +82,12 @@ define( function( require ) {
     var rectangleColorFunction = function( color ) {
       backgroundRectangle.fill = color;
     };
-
     ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty.link( rectangleColorFunction );
 
     // Link the fill color of the text for the default/projector mode
     var textColorFunction = function( color ) {
       voltageLabelText.fill = color;
     };
-
     ChargesAndFieldsColorProfile.electricPotentialLineProperty.link( textColorFunction ); // text has the same color as the equipotential line
 
     // finds the closest location on positionArray to the position of the cursor
@@ -232,9 +228,7 @@ define( function( require ) {
         } );
 
         // create all the circles corresponding to the positions used to create the shape of the electric potential line
-        var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, {
-          fill: 'orange'
-        } );
+        var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
 
         // no translatable strings, for debug only
         var text = new Text( 'model=' + electricPotentialLine.positionArray.length +
@@ -287,3 +281,4 @@ define( function( require ) {
     }
   } );
 } );
+

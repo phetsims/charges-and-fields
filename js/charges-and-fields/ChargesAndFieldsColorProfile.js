@@ -154,7 +154,7 @@ define( function( require ) {
       default: BLUE,
       projector: BLUE
     }
-  } );
+  }, [ 'default', 'projector' ] );
 
   chargesAndFields.register( 'ChargesAndFieldsColorProfile', ChargesAndFieldsColorProfile );
 

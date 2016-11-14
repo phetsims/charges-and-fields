@@ -72,7 +72,6 @@ define( function( require ) {
       arrowNode.stroke = color;
       arrowNode.fill = color;
     };
-
     ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty.link( arrowColorFunction );
 
     // Create two numerical readouts for the strength and direction of the electric field.
@@ -88,7 +87,6 @@ define( function( require ) {
       fieldStrengthLabel.fill = color;
       directionLabel.fill = color;
     };
-
     ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty.link( labelColorFunction );
 
     this.addChild( arrowNode );
@@ -131,17 +129,14 @@ define( function( require ) {
         }
 
         // Update the strings in the labels
-        var fieldMagnitudeString = decimalAdjust( magnitude, {
-          maxDecimalPlaces: 2
-        } );
+        var fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
         fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
 
         var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
         directionLabel.text = isPlayAreaChargedProperty.get() ?
           StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
 
-      }
-      else {
+      } else {
         arrowNode.visible = false;
 
         fieldStrengthLabel.text = '-';
@@ -243,8 +238,7 @@ define( function( require ) {
         if ( isInteractive ) {
           self.cursor = 'pointer';
           self.addInputListener( self.movableDragHandler );
-        }
-        else {
+        } else {
           self.cursor = null;
           self.removeInputListener( self.movableDragHandler );
         }
@@ -273,9 +267,8 @@ define( function( require ) {
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
-      ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty.link( arrowColorFunction );
-      ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty.link( labelColorFunction );
-
+      ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty.unlink( arrowColorFunction );
+      ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty.unlink( labelColorFunction );
       tandem.removeInstance( self );
     };
 
@@ -312,11 +305,9 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      }
-      else if ( exponent > 0 ) {
+      } else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      }
-      else {
+      } else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 
@@ -335,3 +326,4 @@ define( function( require ) {
     }
   } );
 } );
+

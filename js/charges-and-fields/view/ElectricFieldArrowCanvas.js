@@ -59,9 +59,7 @@ define( function( require ) {
 
   // Draw immediately, and update on any color profile changes
   draw();
-  ChargesAndFieldsColorProfile.on( 'profileChanged', function() {
-    draw();
-  } );
+  ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( draw );
 
   return chargesAndFields.register( 'ElectricFieldArrowCanvas', {
     // @public {number} - Scale that was applied to the ArrowShape. Presumably un-scale by this amount.
