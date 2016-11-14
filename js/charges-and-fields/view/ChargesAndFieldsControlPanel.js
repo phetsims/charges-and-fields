@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var CheckBox = require( 'SUN/CheckBox' );
   var Panel = require( 'SUN/Panel' );
@@ -45,7 +45,7 @@ define( function( require ) {
     function createCheckBox( tandemId, string, property ) {
       var text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECK_BOX_FONT,
-        fill: ChargesAndFieldsColors.controlPanelTextProperty,
+        fill: ChargesAndFieldsColorProfile.controlPanelTextProperty,
         maxWidth: 250
       } );
 
@@ -53,8 +53,8 @@ define( function( require ) {
         tandem: tandem.createTandem( tandemId ),
         boxWidth: 25,
         spacing: 7,
-        checkBoxColor: ChargesAndFieldsColors.checkBoxProperty,
-        checkBoxColorBackground: ChargesAndFieldsColors.checkBoxBackgroundProperty
+        checkBoxColor: ChargesAndFieldsColorProfile.checkBoxProperty,
+        checkBoxColorBackground: ChargesAndFieldsColorProfile.checkBoxBackgroundProperty
       } );
     }
 
@@ -102,8 +102,8 @@ define( function( require ) {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10,
-      fill: ChargesAndFieldsColors.controlPanelFillProperty,
-      stroke: ChargesAndFieldsColors.controlPanelBorderProperty
+      fill: ChargesAndFieldsColorProfile.controlPanelFillProperty,
+      stroke: ChargesAndFieldsColorProfile.controlPanelBorderProperty
     } );
 
     model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckBox, 'enabled' );

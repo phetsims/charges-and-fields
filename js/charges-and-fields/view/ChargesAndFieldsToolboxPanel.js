@@ -10,7 +10,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -25,7 +26,6 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -53,7 +53,8 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function ChargesAndFieldsToolboxPanel( measuringTape,
+  function ChargesAndFieldsToolboxPanel(
+    measuringTape,
     electricPotentialSensor,
     measuringTapeNode,
     electricPotentialSensorNode,
@@ -80,8 +81,8 @@ define( function( require ) {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10,
-      fill: ChargesAndFieldsColors.controlPanelFillProperty,
-      stroke: ChargesAndFieldsColors.controlPanelBorderProperty
+      fill: ChargesAndFieldsColorProfile.controlPanelFillProperty,
+      stroke: ChargesAndFieldsColorProfile.controlPanelBorderProperty
     };
 
     // add the panelContent
@@ -193,7 +194,7 @@ define( function( require ) {
       } );
 
       // update the colors on the crosshair components when the color profile changes
-      ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
+      ChargesAndFieldsColorProfile.link( 'electricPotentialSensorCrosshairStroke', function( color ) {
         circle.stroke = color;
         crosshair.stroke = color;
         crosshairMount.fill = color;

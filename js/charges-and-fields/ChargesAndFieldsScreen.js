@@ -8,7 +8,7 @@ define( function( require ) {
 
   // modules
   var ChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModel' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
@@ -24,7 +24,7 @@ define( function( require ) {
     var self = this;
 
     var options = {
-      backgroundColor: ChargesAndFieldsColors.background.toCSS(),
+      backgroundColor: ChargesAndFieldsColorProfile.background.toCSS(),
       tandem: tandem
     };
 
@@ -37,7 +37,7 @@ define( function( require ) {
       },
       options );
 
-    ChargesAndFieldsColors.link( 'background', function( color ) {
+    ChargesAndFieldsColorProfile.link( 'background', function( color ) {
       self.backgroundColorProperty.value = color;
     } );
 

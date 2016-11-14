@@ -35,7 +35,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Matrix3 = require( 'DOT/Matrix3' );
@@ -74,7 +74,7 @@ define( function( require ) {
 
     // Invalidate paint on a bunch of changes
     var invalidateSelfListener = this.invalidatePaint.bind( this );
-    ChargesAndFieldsColors.on( 'profileChanged', invalidateSelfListener ); // color change
+    ChargesAndFieldsColorProfile.on( 'profileChanged', invalidateSelfListener ); // color change
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
     chargedParticles.addItemAddedListener( function( particle ) {
       particle.positionProperty.link( invalidateSelfListener );
@@ -372,9 +372,9 @@ define( function( require ) {
       displayShaderProgram.use();
 
       // tell the shader our colors / scale
-      var zeroColor = ChargesAndFieldsColors.electricPotentialGridZero;
-      var positiveColor = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;
-      var negativeColor = ChargesAndFieldsColors.electricPotentialGridSaturationNegative;
+      var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value;
+      var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.value;
+      var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.value;
       gl.uniform3f( displayShaderProgram.uniformLocations.uZeroColor, zeroColor.red / 255, zeroColor.green / 255, zeroColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uPositiveColor, positiveColor.red / 255, positiveColor.green / 255, positiveColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uNegativeColor, negativeColor.red / 255, negativeColor.green / 255, negativeColor.blue / 255 );

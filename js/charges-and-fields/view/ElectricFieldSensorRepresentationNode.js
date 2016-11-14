@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -40,19 +40,19 @@ define( function( require ) {
     var circleFillColorFunction = function( color ) {
       circle.fill = color;
     };
-    ChargesAndFieldsColors.link( 'electricFieldSensorCircleFill', circleFillColorFunction );
+    ChargesAndFieldsColorProfile.link( 'electricFieldSensorCircleFill', circleFillColorFunction );
 
     var circleStrokeColorFunction = function( color ) {
       circle.stroke = color;
     };
-    ChargesAndFieldsColors.link( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
+    ChargesAndFieldsColorProfile.link( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
 
     // add circle
     this.addChild( circle );
 
     this.disposeElectricFieldSensorRepresentationNode = function() {
-      ChargesAndFieldsColors.unlink( 'electricFieldSensorCircleFill', circleFillColorFunction );
-      ChargesAndFieldsColors.unlink( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'electricFieldSensorCircleFill', circleFillColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'electricFieldSensorCircleStroke', circleStrokeColorFunction );
     };
   }
 

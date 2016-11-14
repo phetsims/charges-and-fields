@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
@@ -72,7 +72,7 @@ define( function( require ) {
       arrowNode.stroke = color;
       arrowNode.fill = color;
     };
-    ChargesAndFieldsColors.link( 'electricFieldSensorArrow', arrowColorFunction );
+    ChargesAndFieldsColorProfile.link( 'electricFieldSensorArrow', arrowColorFunction );
 
     // Create two numerical readouts for the strength and direction of the electric field.
     var textOptions = {
@@ -87,7 +87,7 @@ define( function( require ) {
       fieldStrengthLabel.fill = color;
       directionLabel.fill = color;
     };
-    ChargesAndFieldsColors.link( 'electricFieldSensorLabel', labelColorFunction );
+    ChargesAndFieldsColorProfile.link( 'electricFieldSensorLabel', labelColorFunction );
 
     this.addChild( arrowNode );
     this.addChild( fieldStrengthLabel );
@@ -267,8 +267,8 @@ define( function( require ) {
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
-      ChargesAndFieldsColors.unlink( 'electricFieldSensorArrow', arrowColorFunction );
-      ChargesAndFieldsColors.unlink( 'electricFieldSensorLabel', labelColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'electricFieldSensorArrow', arrowColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'electricFieldSensorLabel', labelColorFunction );
       tandem.removeInstance( self );
     };
 

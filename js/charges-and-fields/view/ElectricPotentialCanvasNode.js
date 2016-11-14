@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var Vector2 = require( 'DOT/Vector2' );
   var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -46,7 +46,7 @@ define( function( require ) {
 
     // Invalidate paint on a bunch of changes
     var invalidateSelfListener = this.forceRepaint.bind( this );
-    ChargesAndFieldsColors.on( 'profileChanged', invalidateSelfListener ); // color change
+    ChargesAndFieldsColorProfile.on( 'profileChanged', invalidateSelfListener ); // color change
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
     chargedParticles.addItemAddedListener( function( particle ) {
       particle.positionProperty.link( invalidateSelfListener );
@@ -137,9 +137,9 @@ define( function( require ) {
 
       // Update our direct canvas if necessary
       if ( numChanges || this.directCanvasDirty ) {
-        var zeroColor = ChargesAndFieldsColors.electricPotentialGridZero;
-        var positiveColor = ChargesAndFieldsColors.electricPotentialGridSaturationPositive;
-        var negativeColor = ChargesAndFieldsColors.electricPotentialGridSaturationNegative;
+        var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value;
+        var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.value;
+        var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.value;
         var data = this.imageData.data;
 
         for ( var k = 0; k < this.electricPotentials.length; k++ ) {

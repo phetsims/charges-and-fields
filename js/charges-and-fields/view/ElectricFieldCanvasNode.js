@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var Vector2 = require( 'DOT/Vector2' );
   var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ElectricFieldArrowCanvas = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowCanvas' );
   var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
@@ -56,7 +56,7 @@ define( function( require ) {
     // Invalidate paint on a bunch of changes
     var invalidateSelfListener = this.invalidatePaint.bind( this );
 
-    ChargesAndFieldsColors.on( 'profileChanged', invalidateSelfListener ); // color change
+    ChargesAndFieldsColorProfile.on( 'profileChanged', invalidateSelfListener ); // color change
 
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 

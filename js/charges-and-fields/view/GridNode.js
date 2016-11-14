@@ -13,7 +13,7 @@ define( function( require ) {
   // modules
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -100,26 +100,26 @@ define( function( require ) {
       lineWidth: MAJOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColors.gridStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty
     } );
 
     var minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColors.gridStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty
     } );
 
     // Create the one-meter double headed arrow representation
     var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
     var arrowPath = new Path( arrowShape, {
-      fill: ChargesAndFieldsColors.gridLengthScaleArrowFillProperty,
-      stroke: ChargesAndFieldsColors.gridLengthScaleArrowStrokeProperty
+      fill: ChargesAndFieldsColorProfile.gridLengthScaleArrowFillProperty,
+      stroke: ChargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty
     } );
 
     // Create and add the text (legend) accompanying the double headed arrow
     var text = new Text( oneMeterString, {
-      fill: ChargesAndFieldsColors.gridTextFillProperty,
+      fill: ChargesAndFieldsColorProfile.gridTextFillProperty,
       font: FONT
     } );
 

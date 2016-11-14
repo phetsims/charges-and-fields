@@ -13,7 +13,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
@@ -31,7 +32,6 @@ define( function( require ) {
   var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -219,15 +219,15 @@ define( function( require ) {
       backgroundRectangle.fill = color;
     };
 
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
-    ChargesAndFieldsColors.link( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
-    ChargesAndFieldsColors.link( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
-    ChargesAndFieldsColors.link( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
+    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
+    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
+    ChargesAndFieldsColorProfile.link( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
+    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
+    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
+    ChargesAndFieldsColorProfile.link( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
 
     // the color of the fill tracks the electric potential
-    ChargesAndFieldsColors.on( 'profileChanged', function() {
+    ChargesAndFieldsColorProfile.on( 'profileChanged', function() {
       updateCircleFill( electricPotentialSensor.electricPotentialProperty.get() );
     } );
 
@@ -336,12 +336,12 @@ define( function( require ) {
     }
 
     this.disposeElectricPotentailSensorNode = function() {
-      ChargesAndFieldsColors.unlink( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
-      ChargesAndFieldsColors.unlink( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
-      ChargesAndFieldsColors.unlink( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
-      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
-      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
-      ChargesAndFieldsColors.unlink( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorCircleStroke', setElectricPotentialSensorCircleStroke );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorCrosshairStroke', setElectricPotentialSensorCrosshairStroke );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialPanelTitleText', setElectricPotentialPanelTitleText );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorTextPanelTextFill', setElectricPotentialSensorTextPanelTextFill );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorTextPanelBorder', setElectricPotentialSensorTextPanelBorder );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialSensorTextPanelBackground', setElectricPotentialSensorTextPanelBackground );
 
       electricPotentialSensor.positionProperty.unlink( positionListener );
       electricPotentialSensor.electricFieldProperty.unlink( potentialListener );

@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var ElectricFieldArrowShape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowShape' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var Emitter = require( 'AXON/Emitter' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
@@ -49,7 +49,7 @@ define( function( require ) {
 
     context.beginPath();
     arrowShape.writeToContext( context );
-    context.fillStyle = ChargesAndFieldsColors.electricFieldGridSaturation.toCSS();
+    context.fillStyle = ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.value.toCSS();
     context.fill();
 
     context.restore();
@@ -59,7 +59,7 @@ define( function( require ) {
 
   // Draw immediately, and update on any color profile changes
   draw();
-  ChargesAndFieldsColors.on( 'profileChanged', function() {
+  ChargesAndFieldsColorProfile.on( 'profileChanged', function() {
     draw();
   } );
 

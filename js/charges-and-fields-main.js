@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsScreen = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsScreen' );
   var GlobalOptionsNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GlobalOptionsNode' );
@@ -35,9 +35,9 @@ define( function( require ) {
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
     if ( useProjectorColors ) {
-      ChargesAndFieldsColors.applyProfile( 'projector' );
+      ChargesAndFieldsColorProfile.profileNameProperty.set( 'projector' );
     } else {
-      ChargesAndFieldsColors.applyProfile( 'default' );
+      ChargesAndFieldsColorProfile.profileNameProperty.set( 'default' );
     }
   } );
 

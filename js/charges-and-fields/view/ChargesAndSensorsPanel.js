@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
   var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
@@ -69,7 +69,7 @@ define( function( require ) {
     function createDraggableItem( itemTandem, label, createModelElement, previewNode, isVisibleProperty ) {
       var labelText = new Text( label, {
         font: ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT,
-        fill: ChargesAndFieldsColors.enclosureTextProperty,
+        fill: ChargesAndFieldsColorProfile.enclosureTextProperty,
         centerX: 0,
         maxWidth: 200
       } );
@@ -167,8 +167,8 @@ define( function( require ) {
     Panel.call( this, this.hboxContent, {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       cornerRadius: 5,
-      stroke: ChargesAndFieldsColors.enclosureBorderProperty,
-      fill: ChargesAndFieldsColors.enclosureFillProperty,
+      stroke: ChargesAndFieldsColorProfile.enclosureBorderProperty,
+      fill: ChargesAndFieldsColorProfile.enclosureFillProperty,
       xMargin: HORIZONTAL_SPACING / 2,
       yMargin: Y_MARGIN
     } );

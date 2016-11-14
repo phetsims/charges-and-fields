@@ -11,7 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -82,13 +82,13 @@ define( function( require ) {
     var rectangleColorFunction = function( color ) {
       backgroundRectangle.fill = color;
     };
-    ChargesAndFieldsColors.link( 'voltageLabelBackground', rectangleColorFunction );
+    ChargesAndFieldsColorProfile.link( 'voltageLabelBackground', rectangleColorFunction );
 
     // Link the fill color of the text for the default/projector mode
     var textColorFunction = function( color ) {
       voltageLabelText.fill = color;
     };
-    ChargesAndFieldsColors.link( 'electricPotentialLine', textColorFunction ); // text has the same color as the equipotential line
+    ChargesAndFieldsColorProfile.link( 'electricPotentialLine', textColorFunction ); // text has the same color as the equipotential line
 
     // finds the closest location on positionArray to the position of the cursor
     var locationFunction = function( cursorLocation ) {
@@ -108,9 +108,9 @@ define( function( require ) {
 
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = function() {
-      ChargesAndFieldsColors.unlink( 'voltageLabelBackground', rectangleColorFunction );
-      ChargesAndFieldsColors.unlink( 'electricPotentialLine', textColorFunction );
-      ChargesAndFieldsColors.unlink( 'background', rectangleColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'voltageLabelBackground', rectangleColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialLine', textColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'background', rectangleColorFunction );
       locationProperty.unlink( locationFunction );
     };
 
@@ -139,11 +139,11 @@ define( function( require ) {
     var pathColorFunction = function( color ) {
       self.stroke = color;
     };
-    ChargesAndFieldsColors.link( 'electricPotentialLine', pathColorFunction );
+    ChargesAndFieldsColorProfile.link( 'electricPotentialLine', pathColorFunction );
 
     // create a dispose function to unlink the color functions
     this.disposeElectricPotentialLinePath = function() {
-      ChargesAndFieldsColors.unlink( 'electricPotentialLine', pathColorFunction );
+      ChargesAndFieldsColorProfile.unlink( 'electricPotentialLine', pathColorFunction );
     };
   }
 

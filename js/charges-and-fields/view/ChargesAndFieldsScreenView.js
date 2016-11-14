@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
-  var ChargesAndFieldsColors = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColors' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsControlPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsControlPanel' );
   var ChargesAndFieldsToolboxPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolboxPanel' );
@@ -164,7 +164,7 @@ define( function( require ) {
       tandem.createTandem( 'measuringTapeNode' ) );
 
     // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
-    ChargesAndFieldsColors.link( 'measuringTapeText', function( color ) {
+    ChargesAndFieldsColorProfile.link( 'measuringTapeText', function( color ) {
       measuringTapeNode.textColor = color;
     } );
 
@@ -391,9 +391,9 @@ define( function( require ) {
         distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
           // {Color} color that corresponds to the Electric Potential being zero
-          ChargesAndFieldsColors.electricPotentialGridZero,
+          ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value,
           // {Color} color of Max Electric Potential
-          ChargesAndFieldsColors.electricPotentialGridSaturationPositive,
+          ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.value,
           distance, // {number} distance must be between 0 and 1
           options );
       }
@@ -404,9 +404,9 @@ define( function( require ) {
         distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
           // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
-          ChargesAndFieldsColors.electricPotentialGridSaturationNegative,
+          ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.value,
           // {Color} color that corresponds to the Electric Potential being zero zero
-          ChargesAndFieldsColors.electricPotentialGridZero,
+          ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value,
           distance, // {number} distance must be between 0 and 1
           options );
       }
@@ -415,8 +415,8 @@ define( function( require ) {
 
     /**
      * Function that returns a color that is proportional to the magnitude of the electric Field.
-     * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
-     * electric field value of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
+     * The color interpolates between ChargesAndFieldsColorProfile.electricFieldGridZero (for an
+     * electric field value of zero) and ChargesAndFieldsColorProfile.electricFieldGridSaturation (which corresponds to an
      * electric field value of EFIELD_COLOR_SAT_MAGNITUDE).
      * @private
      * @param {number} electricFieldMagnitude - a non negative number
@@ -430,8 +430,8 @@ define( function( require ) {
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
       return this.interpolateRGBA(
-        ChargesAndFieldsColors.electricFieldGridZero, // {Color} color that corresponds to zero electric Field
-        ChargesAndFieldsColors.electricFieldGridSaturation, // {Color} color that corresponds to the largest electric field
+        ChargesAndFieldsColorProfile.electricFieldGridZeroProperty.value, // {Color} color that corresponds to zero electric Field
+        ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.value, // {Color} color that corresponds to the largest electric field
         distance, // {number} distance must be between 0 and 1
         options );
     },
