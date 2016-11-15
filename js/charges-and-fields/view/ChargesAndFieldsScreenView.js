@@ -41,6 +41,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TBounds2 = require( 'ifphetio!PHET_IO/types/dot/TBounds2' );
+
   // constants
   var linear = DotUtil.linear;
   var MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
@@ -67,7 +70,11 @@ define( function( require ) {
     // Create a property that registers the model bounds based on the screen size
     // Note that unlike the viewPropertySet above, the availableModelBounds should not be reset when
     // the resetAllButton is pressed, hence the reason it is not part of the previous propertySet
-    this.availableModelBoundsProperty = new Property( model.enlargedBounds );
+    this.availableModelBoundsProperty = new Property( model.enlargedBounds, {
+      tandem: tandem.createTandem( 'availableModelBoundsProperty' ),
+      phetioValueType: TBounds2,
+      documentation: 'registers the model bounds based on the screen size'
+    } );
 
     // The origin of the model is set to the middle of the dev bounds. There are 8 meters across the width of the dev bounds.
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
