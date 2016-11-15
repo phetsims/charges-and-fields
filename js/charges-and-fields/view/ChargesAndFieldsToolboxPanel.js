@@ -30,6 +30,7 @@ define( function( require ) {
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
   var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   // images
   var electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
@@ -238,7 +239,11 @@ define( function( require ) {
 
       var unspooledMeterTape = 30; // in view coordinates
       var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
-        tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ) ),
+        tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ), {
+          tandem: tandem.createTandem( 'tipPositionProperty' ),
+          phetioValueType: TVector2,
+          documentation: 'Tip position of measuring tape'
+        } ),
         scale: 0.8, // make it a bit small
         hasValue: false, // let's hide the text label value (the length) for the icon
         tandem: tandem.createTandem( 'measuringTape' )
