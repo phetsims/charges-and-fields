@@ -61,7 +61,7 @@ define( function( require ) {
      * @public
      */
     update: function() {
-      this.electricPotential = this.computeElectricPotential( this.positionProperty.get() );
+      this.electricPotentialProperty.set( this.computeElectricPotential( this.positionProperty.get() ) );
     },
 
     reset: function() {
