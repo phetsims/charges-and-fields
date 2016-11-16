@@ -14,7 +14,6 @@ define( function( require ) {
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
@@ -22,9 +21,10 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  var TandemImage = require( 'TANDEM/scenery/nodes/TandemImage' );
+  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
+  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
@@ -186,25 +186,30 @@ define( function( require ) {
 
       // Create the base of the crosshair
       // TODO: why is the fill the same as the stroke?
-      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
+      var crosshairMount = new TandemRectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, 5, 5, {
         fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
-        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+        tandem: tandem.createTandem( 'crosshairMount' )
       } );
 
       // Create the voltage Reading reading
-      var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
+      var voltageReading = new TandemText( '0.0' + ' ' + voltageUnitString, {
         font: ChargesAndFieldsConstants.DEFAULT_FONT,
         fill: 'black',
         stroke: 'black',
-        maxWidth: 200
+        maxWidth: 200,
+        tandem: tandem.createTandem( 'voltageReading' )
       } );
-      var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
+      var outlineImage = new TandemImage( electricPotentialLinePanelOutlineImage, {
+        tandem: tandem.createTandem( 'outlineImage' )
+      } );
       outlineImage.scale( 0.5 * 6 / 25 );
 
       // Create the background rectangle behind the voltage Reading
-      var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
+      var backgroundRectangle = new TandemRectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
         fill: 'white',
-        stroke: 'black'
+        stroke: 'black',
+        tandem: tandem.createTandem( 'backgroundRectangle' )
       } );
 
       crosshairMount.centerX = circle.centerX;
@@ -254,7 +259,10 @@ define( function( require ) {
 
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {
-        measuringTapeIcon.children = [ new Image( image, { cursor: 'pointer' } ) ];
+        measuringTapeIcon.children = [ new TandemImage( image, {
+          cursor: 'pointer',
+          tandem: tandem.createTandem( 'measuringTapeIconImage' )
+        } ) ];
       }, measuringTape.width - unspooledMeterTape, measuringTape.height - 5, Math.ceil( measuringTape.width ), Math.ceil( measuringTape.height ) );
 
       return measuringTapeIcon;
