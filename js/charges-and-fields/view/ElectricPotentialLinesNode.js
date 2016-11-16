@@ -19,9 +19,9 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
+  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -65,16 +65,18 @@ define( function( require ) {
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
-    var voltageLabelText = new Text( voltageLabelString, {
+    var voltageLabelText = new TandemText( voltageLabelString, {
       font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
       center: modelViewTransform.modelToViewPosition( position ),
-      fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty
+      fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty,
+      tandem: tandem.createTandem( 'voltageLabel' )
     } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
+    var backgroundRectangle = new TandemRectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
       center: modelViewTransform.modelToViewPosition( position ),
-      fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty
+      fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
+      tandem: tandem.createTandem( 'backgroundRectangle' )
     } );
 
     this.addChild( backgroundRectangle ); // must go first
@@ -202,11 +204,12 @@ define( function( require ) {
         var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
 
         // no translatable strings, for debug only
-        var text = new Text( 'model=' + electricPotentialLine.positionArray.length +
+        var text = new TandemText( 'model=' + electricPotentialLine.positionArray.length +
           '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
             center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
             fill: 'green',
-            font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
+            font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
+            tandem: tandem.createTandem( 'debugText', { enabled: false } )
           } );
 
         // add the circles and text
