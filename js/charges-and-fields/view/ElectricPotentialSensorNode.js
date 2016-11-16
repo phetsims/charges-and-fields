@@ -321,7 +321,7 @@ define( function( require ) {
       return Util.toFixed( number, decimalPlaces );
     }
 
-    this.disposeElectricPotentailSensorNode = function() {
+    this.disposeElectricPotentialSensorNode = function() {
       electricPotentialSensor.positionProperty.unlink( positionListener );
       electricPotentialSensor.electricFieldProperty.unlink( potentialListener );
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
@@ -334,7 +334,7 @@ define( function( require ) {
 
   return inherit( Node, ElectricPotentialSensorNode, {
     dispose: function() {
-      this.disposeElectricPotentailSensorNode();
+      this.disposeElectricPotentialSensorNode();
     }
   } );
 } );
