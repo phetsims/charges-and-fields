@@ -25,6 +25,9 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
+
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
@@ -41,15 +44,22 @@ define( function( require ) {
    */
   function VoltageLabel( electricPotentialLine, modelViewTransform, tandem ) {
 
+    // TODO: The instrumented items in voltageLabel are created must be given unique phetioID values.
+    // Leaving disabled for now.
+
     Node.call( this, { cursor: 'pointer' } );
 
     var electricPotential = electricPotentialLine.electricPotential;
     var position = electricPotentialLine.position;
 
     var self = this;
-    var locationProperty = new Property( position );
+    var locationProperty = new Property( position, {
+      tandem: tandem.createTandem( 'locationProperty', { enabled: false } ),
+      phetioValueType: TVector2
+    } );
+
     this.addInputListener( new MovableDragHandler( locationProperty, {
-      tandem: tandem.createTandem( 'inputListener' ),
+      tandem: tandem.createTandem( 'inputListener', { enabled: false } ),
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
         // Move the label to the front of this layer when grabbed by the user.
@@ -69,14 +79,14 @@ define( function( require ) {
       font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty,
-      tandem: tandem.createTandem( 'voltageLabel' )
+      tandem: tandem.createTandem( 'voltageLabelText', { enabled: false } )
     } );
 
     // Create a background rectangle for the voltage label
     var backgroundRectangle = new TandemRectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
-      tandem: tandem.createTandem( 'backgroundRectangle' )
+      tandem: tandem.createTandem( 'backgroundRectangle', { enabled: false } )
     } );
 
     this.addChild( backgroundRectangle ); // must go first
