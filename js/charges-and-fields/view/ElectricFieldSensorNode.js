@@ -67,7 +67,8 @@ define( function( require ) {
     var arrowNode = new ArrowNode( 0, 0, 1, 0, {
       pickable: false,
       stroke: ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty,
-      fill: ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty
+      fill: ChargesAndFieldsColorProfile.electricFieldSensorArrowProperty,
+      tandem: tandem.createTandem( 'arrowNode' )
     } );
 
     // Create two numerical readouts for the strength and direction of the electric field.
