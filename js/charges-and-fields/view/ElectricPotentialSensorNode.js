@@ -18,17 +18,16 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  var TandemImage = require( 'TANDEM/scenery/nodes/TandemImage' );
+  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
   var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
@@ -86,7 +85,8 @@ define( function( require ) {
       lineWidth: 3,
       centerX: 0,
       centerY: 0,
-      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty,
+      tandem: tandem.createTandem( 'circle' )
     } );
 
     // Create the crosshair
@@ -97,21 +97,24 @@ define( function( require ) {
     var crosshair = new Path( crosshairShape, {
       centerX: 0,
       centerY: 0,
-      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+      tandem: tandem.createTandem( 'crosshair' )
     } );
 
     // Create the base of the crosshair
     // TODO: why are the fill and stroke set to the same thing?
-    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
+    var crosshairMount = new TandemRectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
       fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
-      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+      tandem: tandem.createTandem( 'crosshairMount' )
     } );
 
     // Create the text node above the readout
-    var electricPotentialPanelTitleText = new Text( equipotentialString, {
+    var electricPotentialPanelTitleText = new TandemText( equipotentialString, {
       maxWidth: 85,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      fill: ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty
+      fill: ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty,
+      tandem: tandem.createTandem( 'electricPotentialPanelTitleText' )
     } );
 
     // Create the button that allows the board to be cleared of all lines.
@@ -177,17 +180,20 @@ define( function( require ) {
 
     // Create the background rectangle behind the voltage Reading
     var backgroundAdjustment = 0;
-    var backgroundRectangle = new Rectangle(
+    var backgroundRectangle = new TandemRectangle(
       backgroundAdjustment,
       0,
       buttonsBox.width - backgroundAdjustment * 2,
       voltageReadout.height * 1.5, 5, 5, {
         fill: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty,
-        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty
+        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty,
+        tandem: tandem.createTandem( 'backgroundRectangle' )
       } );
 
     // Create the body of the sensor
-    var outlineImage = new Image( electricPotentialLinePanelOutlineImage );
+    var outlineImage = new TandemImage( electricPotentialLinePanelOutlineImage, {
+      tandem: tandem.createTandem( 'outlineImage' )
+    } );
 
     // Organize the content of the control panel
     var bodyContent = new LayoutBox( {
