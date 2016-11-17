@@ -18,7 +18,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -41,12 +41,14 @@ define( function( require ) {
    * @param {Property.<Bounds2>} boundsProperty - bounds in model coordinates
    * @param {Property.<boolean>} isGridVisibleProperty
    * @param {Property.<boolean>} areValuesVisibleProperty
+   * @param {Tandem} tandem
    * @constructor
    */
   function GridNode( modelViewTransform,
                      boundsProperty,
                      isGridVisibleProperty,
-                     areValuesVisibleProperty ) {
+                     areValuesVisibleProperty,
+                     tandem ) {
 
     var self = this;
 
@@ -100,27 +102,31 @@ define( function( require ) {
       lineWidth: MAJOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
+      tandem: tandem.createTandem( 'majorGridLinesPath' )
     } );
 
     var minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
+      tandem: tandem.createTandem( 'minorGridLinesPath' )
     } );
 
     // Create the one-meter double headed arrow representation
     var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
     var arrowPath = new Path( arrowShape, {
       fill: ChargesAndFieldsColorProfile.gridLengthScaleArrowFillProperty,
-      stroke: ChargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty
+      stroke: ChargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty,
+      tandem: tandem.createTandem( 'arrowPath' )
     } );
 
     // Create and add the text (legend) accompanying the double headed arrow
-    var text = new Text( oneMeterString, {
+    var legendText = new TandemText( oneMeterString, {
       fill: ChargesAndFieldsColorProfile.gridTextFillProperty,
-      font: FONT
+      font: FONT,
+      tandem: tandem.createTandem( 'legendText' )
     } );
 
     // add all the nodes
@@ -128,19 +134,19 @@ define( function( require ) {
     gridLinesParent.addChild( majorGridLinesPath );
     this.addChild( gridLinesParent );
     this.addChild( arrowPath );
-    this.addChild( text );
+    this.addChild( legendText );
 
     // layout
     arrowPath.top = modelViewTransform.modelToViewY( ARROW_POSITION.y ); // empirically determined such that the electric field arrows do not overlap with it
     arrowPath.left = modelViewTransform.modelToViewX( ARROW_POSITION.x ); // should be set to an integer value such that it spans two majorGridLines
-    text.centerX = arrowPath.centerX;
-    text.top = arrowPath.bottom;
+    legendText.centerX = arrowPath.centerX;
+    legendText.top = arrowPath.bottom;
 
     // Show/ Hide the arrow
     // no need to unlink, present for the lifetime of the simulation
     areValuesVisibleProperty.link( function( isVisible ) {
       arrowPath.visible = isVisible;
-      text.visible = isVisible;
+      legendText.visible = isVisible;
     } );
 
     // Show/ Hide the grid

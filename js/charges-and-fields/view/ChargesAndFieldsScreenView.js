@@ -150,7 +150,8 @@ define( function( require ) {
       modelViewTransform,
       new Property( model.enlargedBounds ),
       model.isGridVisibleProperty,
-      model.areValuesVisibleProperty );
+      model.areValuesVisibleProperty,
+      tandem.createTandem( 'gridNode' ) );
 
     // Create the electric control panel on the upper right hand side
     var controlPanel = new ChargesAndFieldsControlPanel( model, tandem.createTandem( 'controlPanel' ) );
