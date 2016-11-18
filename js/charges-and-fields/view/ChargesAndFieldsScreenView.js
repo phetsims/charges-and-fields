@@ -187,7 +187,7 @@ define( function( require ) {
 
     // Create the layer where the charged Particles and electric Field Sensors will be placed.
     // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
-    var draggableElementsLayer = new Node( { layerSplit: true } );
+    var draggableElementsLayer = new Node( { layerSplit: true, preventFit: true } );
 
     // webGL devices that do not have have full WebGL support can only have a finite number of charges on board
     var isNumberChargesLimited = allowMobileWebGL && !( allowWebGL );
