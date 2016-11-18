@@ -71,7 +71,7 @@ define( function( require ) {
         },
 
         endDrag: function( event ) {
-          chargedParticle.isUserControlled = false;
+          chargedParticle.isUserControlledProperty.set( false );
 
           if ( !enclosureBounds.containsPoint( chargedParticle.position ) ) {
             chargedParticle.isActiveProperty.set( true );

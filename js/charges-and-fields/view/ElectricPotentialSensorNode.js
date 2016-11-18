@@ -78,7 +78,7 @@ define( function( require ) {
     this.modelElement = electricPotentialSensor; // @public
 
     // @public
-    Property.addProperty( this, 'isUserControlled', false );
+    this.isUserControlledProperty = new Property( false );
 
     // Create the centered circle around the crosshair. The origin of this node is the center of the circle
     var circle = new Circle( CIRCLE_RADIUS, {
@@ -257,10 +257,10 @@ define( function( require ) {
       dragBounds: availableModelBoundsProperty.value,
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
-        self.isUserControlled = true;
+        self.isUserControlledProperty.set( true );
       },
       endDrag: function( event ) {
-        self.isUserControlled = false;
+        self.isUserControlledProperty.set( false );
       }
     } );
 
