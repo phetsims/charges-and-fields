@@ -20,11 +20,8 @@ define( function( require ) {
    * @param {Tandem} tandem
    */
   function ChargesAndFieldsScreen( tandem ) {
-
-    var self = this;
-
     var options = {
-      backgroundColor: ChargesAndFieldsColorProfile.backgroundProperty.value.toCSS(),
+      backgroundColorProperty: ChargesAndFieldsColorProfile.backgroundProperty,
       tandem: tandem
     };
 
@@ -36,11 +33,6 @@ define( function( require ) {
         return new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) );
       },
       options );
-
-    ChargesAndFieldsColorProfile.backgroundProperty.link( function( color ) {
-      self.backgroundColorProperty.value = color;
-    } );
-
   }
 
   chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
