@@ -73,7 +73,7 @@ define( function( require ) {
     this.availableModelBoundsProperty = new Property( model.enlargedBounds, {
       tandem: tandem.createTandem( 'availableModelBoundsProperty' ),
       phetioValueType: TBounds2,
-      documentation: 'registers the model bounds based on the screen size'
+      phetioInstanceDocumentation: 'registers the model bounds based on the screen size'
     } );
 
     // The origin of the model is set to the middle of the dev bounds. There are 8 meters across the width of the dev bounds.
