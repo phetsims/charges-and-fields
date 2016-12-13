@@ -27,6 +27,7 @@ define( function( require ) {
   var TBounds2 = require( 'ifphetio!PHET_IO/types/dot/TBounds2' );
   var TChargesAndFieldsModel = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargesAndFieldsModel' );
   var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
   // constants
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
@@ -178,10 +179,14 @@ define( function( require ) {
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
     // This is the relevant array to calculate the electric field, and electric potential
     // @public
-    this.activeChargedParticles = new ObservableArray(); // {ObservableArray.<ChargedParticle>}
+    this.activeChargedParticles = new ObservableArray( {
+      phetioValueType: TChargedParticle
+    } ); // {ObservableArray.<ChargedParticle>}
 
     // @public - Observable array of all draggable electric field sensors
-    this.electricFieldSensors = new ObservableArray(); // {ObservableArray.<ElectricFieldSensor>}
+    this.electricFieldSensors = new ObservableArray( {
+      phetioValueType: TChargedParticle
+    } ); // {ObservableArray.<ElectricFieldSensor>}
     var electricFieldSensors = this.electricFieldSensors;
 
     // @public - electric potential sensor
@@ -192,7 +197,9 @@ define( function( require ) {
 
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
-    this.electricPotentialLines = new ObservableArray(); // {ObservableArray.<ElectricPotentialLine>}
+    this.electricPotentialLines = new ObservableArray( {
+      phetioValueType: TObject
+    } ); // {ObservableArray.<ElectricPotentialLine>}
 
     //----------------------------------------------------------------------------------------
     //
