@@ -13,6 +13,7 @@ define( function( require ) {
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
+  var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
 
   // Instrumented to help restore charged particles.
   var TChargesAndFieldsModel = function( instance, phetioID ) {
@@ -24,6 +25,7 @@ define( function( require ) {
     clearChildInstances: function( instance ) {
         instance.chargedParticles.clear();
         instance.electricFieldSensors.clear();
+      instance.electricPotentialLines.clear();
       },
 
       /**
@@ -47,6 +49,9 @@ define( function( require ) {
         }
         else if ( tandem.tail.indexOf( 'electricFieldSensor' ) === 0 ) {
           return instance.addElectricFieldSensor( tandem );
+        }
+        else if ( tandem.tail.indexOf( 'electricPotentialLines' ) === 0 ) {
+          return instance.addElectricPotentialLine( TVector2.fromStateObject( stateObject.position ) );
         }
         else {
           throw new Error( 'child type not found: ' + tandem.id );
