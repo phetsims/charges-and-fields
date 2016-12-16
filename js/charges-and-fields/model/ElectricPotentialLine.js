@@ -15,6 +15,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
+  // phet-io modules
+  var TElectricPotentialLine = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TElectricPotentialLine' );
+
   // constants
   // see getEquipotentialPositionArray to find how these are used
   var MAX_STEPS = 5000; // {number} integer, the maximum number of steps in the search for a closed path
@@ -37,7 +40,8 @@ define( function( require ) {
                                   chargedParticles,
                                   getElectricPotential,
                                   getElectricField,
-                                  isPlayAreaChargedProperty ) {
+                                  isPlayAreaChargedProperty,
+                                  tandem ) {
 
     this.getElectricPotential = getElectricPotential; // @private static
     this.getElectricField = getElectricField; // @private static
@@ -51,6 +55,8 @@ define( function( require ) {
     this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
     this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
     this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
+
+    tandem.addInstance( this, TElectricPotentialLine );
   }
 
   chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
@@ -121,10 +127,10 @@ define( function( require ) {
       var k3Vector = this.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
       var k4Vector = this.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
       var deltaDisplacement =
-      {
-        x: deltaDistance * (k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x) / 6,
-        y: deltaDistance * (k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y) / 6
-      };
+        {
+          x: deltaDistance * (k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x) / 6,
+          y: deltaDistance * (k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y) / 6
+        };
       return position.plus( deltaDisplacement ); // {Vector2} finalPosition
     },
 
@@ -222,7 +228,7 @@ define( function( require ) {
 
         // is at least one current head inside the bounds?
         this.isEquipotentialLineTerminatingInsideBounds =
-        ( this.bounds.containsPoint( currentClockwisePosition ) || this.bounds.containsPoint( currentCounterClockwisePosition ) );
+          ( this.bounds.containsPoint( currentClockwisePosition ) || this.bounds.containsPoint( currentCounterClockwisePosition ) );
 
       } // end of while()
 

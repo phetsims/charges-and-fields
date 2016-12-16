@@ -27,7 +27,7 @@ define( function( require ) {
   var TBounds2 = require( 'ifphetio!PHET_IO/types/dot/TBounds2' );
   var TChargesAndFieldsModel = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargesAndFieldsModel' );
   var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var TElectricPotentialLine = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TElectricPotentialLine' );
 
   // constants
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
@@ -198,7 +198,8 @@ define( function( require ) {
     // observable array that contains the model of electricPotential line, each element is an electricPotential line
     // @public read-only
     this.electricPotentialLines = new ObservableArray( {
-      phetioValueType: TObject
+      tandem: tandem.createTandem( 'electricPotentialLines' ),
+      phetioValueType: TElectricPotentialLine
     } ); // {ObservableArray.<ElectricPotentialLine>}
 
     //----------------------------------------------------------------------------------------
@@ -376,6 +377,7 @@ define( function( require ) {
         }
       } );
     } );
+    this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
 
     tandem.addInstance( this, TChargesAndFieldsModel );
   }
@@ -673,7 +675,9 @@ define( function( require ) {
         this.activeChargedParticles,
         this.getElectricPotential.bind( this ),
         this.getElectricField.bind( this ),
-        this.isPlayAreaChargedProperty );
+        this.isPlayAreaChargedProperty,
+        this.electricPotentialLineTandemGroup.createNextTandem()
+      );
 
       this.electricPotentialLines.push( electricPotentialLine );
     },
