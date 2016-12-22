@@ -97,7 +97,8 @@ define( function( require ) {
         if ( isInteractive ) {
           self.cursor = 'pointer';
           self.addInputListener( self.movableDragHandler );
-        } else {
+        }
+        else {
           self.cursor = null;
           self.removeInputListener( self.movableDragHandler );
         }

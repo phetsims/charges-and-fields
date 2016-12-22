@@ -36,10 +36,10 @@ define( function( require ) {
    * @param {Property.<boolean>} isVisibleProperty
    */
   function ElectricFieldCanvasNode( chargedParticles,
-    modelViewTransform,
-    modelBounds,
-    isElectricFieldDirectionOnlyProperty,
-    isVisibleProperty ) {
+                                    modelViewTransform,
+                                    modelBounds,
+                                    isElectricFieldDirectionOnlyProperty,
+                                    isVisibleProperty ) {
 
     CanvasNode.call( this, {
       canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )

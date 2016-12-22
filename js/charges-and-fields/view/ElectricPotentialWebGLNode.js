@@ -62,8 +62,8 @@ define( function( require ) {
    * @constructor
    */
   function ElectricPotentialWebGLNode( chargedParticles,
-                                           modelViewTransform,
-                                           isVisibleProperty ) {
+                                       modelViewTransform,
+                                       isVisibleProperty ) {
     this.chargedParticles = chargedParticles;
     this.modelViewTransform = modelViewTransform;
     this.isVisibleProperty = isVisibleProperty;

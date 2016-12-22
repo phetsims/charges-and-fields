@@ -46,12 +46,12 @@ define( function( require ) {
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
-    modelViewTransform,
-    availableModelBoundsProperty,
-    isPlayAreaChargedProperty,
-    areValuesVisibleProperty,
-    enclosureBounds,
-    tandem ) {
+                                    modelViewTransform,
+                                    availableModelBoundsProperty,
+                                    isPlayAreaChargedProperty,
+                                    areValuesVisibleProperty,
+                                    enclosureBounds,
+                                    tandem ) {
 
     ElectricFieldSensorRepresentationNode.call( this );
 
@@ -130,9 +130,10 @@ define( function( require ) {
 
         var angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
         directionLabel.text = isPlayAreaChargedProperty.get() ?
-          StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
+                              StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
 
-      } else {
+      }
+      else {
         arrowNode.visible = false;
 
         fieldStrengthLabel.text = '-';
@@ -234,7 +235,8 @@ define( function( require ) {
         if ( isInteractive ) {
           self.cursor = 'pointer';
           self.addInputListener( self.movableDragHandler );
-        } else {
+        }
+        else {
           self.cursor = null;
           self.removeInputListener( self.movableDragHandler );
         }
@@ -299,9 +301,11 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      } else if ( exponent > 0 ) {
+      }
+      else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      } else {
+      }
+      else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 

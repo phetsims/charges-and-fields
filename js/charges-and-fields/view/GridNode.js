@@ -30,7 +30,7 @@ define( function( require ) {
   var MAJOR_GRIDLINE_LINEWIDTH = 2;
   var MINOR_GRIDLINE_LINEWIDTH = 1;
   var ARROW_LENGTH = 1; // in model coordinates
-  var ARROW_POSITION = new Vector2( 2,-2.20 ); // top left position in model coordinates
+  var ARROW_POSITION = new Vector2( 2, -2.20 ); // top left position in model coordinates
 
   // strings
   var oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );

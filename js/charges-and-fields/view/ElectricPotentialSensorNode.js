@@ -59,13 +59,13 @@ define( function( require ) {
    * @constructor
    */
   function ElectricPotentialSensorNode( electricPotentialSensor,
-    getElectricPotentialColor,
-    clearElectricPotentialLines,
-    addElectricPotentialLine,
-    modelViewTransform,
-    availableModelBoundsProperty,
-    isPlayAreaChargedProperty,
-    tandem ) {
+                                        getElectricPotentialColor,
+                                        clearElectricPotentialLines,
+                                        addElectricPotentialLine,
+                                        modelViewTransform,
+                                        availableModelBoundsProperty,
+                                        isPlayAreaChargedProperty,
+                                        tandem ) {
 
     var self = this;
 
@@ -219,6 +219,7 @@ define( function( require ) {
     function updateCircleFillWithPotential() {
       updateCircleFill( electricPotentialSensor.electricPotentialProperty.get() );
     }
+
     ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( updateCircleFillWithPotential );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( updateCircleFillWithPotential );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( updateCircleFillWithPotential );
@@ -318,9 +319,11 @@ define( function( require ) {
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;
-      } else if ( exponent > 0 ) {
+      }
+      else if ( exponent > 0 ) {
         decimalPlaces = options.maxDecimalPlaces - exponent;
-      } else {
+      }
+      else {
         decimalPlaces = options.maxDecimalPlaces;
       }
 

@@ -92,7 +92,7 @@ define( function( require ) {
     // The unlimited-particle implementation will work only with OES_texture_float where writing to
     // float textures is supported.
     var allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
-      ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
+                     ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
 
     var electricPotentialGridNode;
 
@@ -103,13 +103,15 @@ define( function( require ) {
         modelViewTransform,
         model.isElectricPotentialVisibleProperty
       );
-    } else if ( allowMobileWebGL ) {
+    }
+    else if ( allowMobileWebGL ) {
       electricPotentialGridNode = new ElectricPotentialMobileWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
         model.isElectricPotentialVisibleProperty
       );
-    } else {
+    }
+    else {
       electricPotentialGridNode = new ElectricPotentialCanvasNode(
         model.activeChargedParticles,
         modelViewTransform,
@@ -193,8 +195,8 @@ define( function( require ) {
     var isNumberChargesLimited = allowMobileWebGL && !( allowWebGL );
 
     var numberChargesLimit = ( isNumberChargesLimited ) ?
-      ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
-      Number.POSITIVE_INFINITY;
+                             ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
+                             Number.POSITIVE_INFINITY;
 
     var canAddMoreChargedParticlesProperty = new DerivedProperty( [ model.chargedParticles.lengthProperty ],
       function( length ) {
@@ -220,6 +222,7 @@ define( function( require ) {
 
       model.chargesAndSensorsEnclosureBounds.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
     }
+
     chargesAndSensorsPanel.on( 'localBounds', updateSensorPanelLayout );
     updateSensorPanelLayout();
 

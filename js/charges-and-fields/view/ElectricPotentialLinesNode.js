@@ -70,8 +70,8 @@ define( function( require ) {
 
     // a smaller electric potential should have more precision
     var electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
-      Util.toFixed( electricPotential, 2 ) :
-      Util.toFixed( electricPotential, 1 );
+                                       Util.toFixed( electricPotential, 2 ) :
+                                       Util.toFixed( electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
@@ -215,12 +215,12 @@ define( function( require ) {
 
         // no translatable strings, for debug only
         var text = new TandemText( 'model=' + electricPotentialLine.positionArray.length +
-          '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
-            center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
-            fill: 'green',
-            font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
-            tandem: tandem.createTandem( 'debugText', { enabled: false } )
-          } );
+                                   '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
+          center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
+          fill: 'green',
+          font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
+          tandem: tandem.createTandem( 'debugText', { enabled: false } )
+        } );
 
         // add the circles and text
         circlesNode.addChild( electricPotentialModelCircles );

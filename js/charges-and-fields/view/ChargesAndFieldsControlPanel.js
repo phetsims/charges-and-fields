@@ -74,8 +74,8 @@ define( function( require ) {
 
     electricFieldCheckBox.hideTogglingProperty = model.hideTogglingElectricFieldVisibilityProperty;
     directionOnlyGroup.hideTogglingProperty = new DerivedProperty( [
-      model.hideTogglingElectricFieldVisibilityProperty,
-      model.hideTogglingElectricFieldDirectionOnlyProperty ],
+        model.hideTogglingElectricFieldVisibilityProperty,
+        model.hideTogglingElectricFieldDirectionOnlyProperty ],
       function( hideEF, hideDirectionOnly ) { return hideEF || hideDirectionOnly; } ); // NOTE: set on group
     voltageCheckBox.hideTogglingProperty = model.hideTogglingElectricPotentialVisibilityProperty;
     valuesCheckBox.hideTogglingProperty = model.hideTogglingValuesVisibilityProperty;

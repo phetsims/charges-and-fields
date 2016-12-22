@@ -54,14 +54,13 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function ChargesAndFieldsToolboxPanel(
-    measuringTape,
-    electricPotentialSensor,
-    measuringTapeNode,
-    electricPotentialSensorNode,
-    modelViewTransform,
-    availableModelBoundsProperty,
-    tandem ) {
+  function ChargesAndFieldsToolboxPanel( measuringTape,
+                                         electricPotentialSensor,
+                                         measuringTapeNode,
+                                         electricPotentialSensorNode,
+                                         modelViewTransform,
+                                         availableModelBoundsProperty,
+                                         tandem ) {
     var self = this;
 
     // Create the icon image for the electricPotential sensor

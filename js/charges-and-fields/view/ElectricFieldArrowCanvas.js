@@ -24,9 +24,9 @@ define( function( require ) {
   var padding = 2;
 
   var scaledPaddedBounds = new Bounds2( arrowShape.bounds.minX * scale,
-                                        arrowShape.bounds.minY * scale,
-                                        arrowShape.bounds.maxX * scale,
-                                        arrowShape.bounds.maxY * scale ).dilated( padding ).roundedOut();
+    arrowShape.bounds.minY * scale,
+    arrowShape.bounds.maxX * scale,
+    arrowShape.bounds.maxY * scale ).dilated( padding ).roundedOut();
 
   var canvas = document.createElement( 'canvas' );
   canvas.width = scaledPaddedBounds.width;
