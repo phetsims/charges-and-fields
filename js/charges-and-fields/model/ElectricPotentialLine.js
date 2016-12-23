@@ -56,12 +56,19 @@ define( function( require ) {
     this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
     this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
 
+    this.disposeElectricPotentialLine = function() {
+      tandem.removeInstance( this );
+    };
     tandem.addInstance( this, TElectricPotentialLine );
   }
 
   chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
 
   return inherit( Object, ElectricPotentialLine, {
+
+    dispose: function() {
+      this.disposeElectricPotentialLine();
+    },
 
     /**
      * Given an (initial) position, find a position with the targeted electric potential within a distance 'deltaDistance'

@@ -377,6 +377,10 @@ define( function( require ) {
         }
       } );
     } );
+
+    this.electricPotentialLines.addItemRemovedListener( function( electricPotentialLine ) {
+      electricPotentialLine.dispose();
+    } );
     this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
 
     tandem.addInstance( this, TChargesAndFieldsModel );
