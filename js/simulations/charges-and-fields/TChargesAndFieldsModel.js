@@ -22,6 +22,11 @@ define( function( require ) {
   };
 
   phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
+
+    /**
+     * Clear the children from the model so it can be deserialized.
+     * @param instance
+     */
     clearChildInstances: function( instance ) {
         instance.chargedParticles.clear();
         instance.electricFieldSensors.clear();
