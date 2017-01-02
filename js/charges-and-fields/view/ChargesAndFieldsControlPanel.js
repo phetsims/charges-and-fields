@@ -103,7 +103,8 @@ define( function( require ) {
       xMargin: 12,
       yMargin: 10,
       fill: ChargesAndFieldsColorProfile.controlPanelFillProperty,
-      stroke: ChargesAndFieldsColorProfile.controlPanelBorderProperty
+      stroke: ChargesAndFieldsColorProfile.controlPanelBorderProperty,
+      tandem: tandem
     } );
 
     model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckBox, 'enabled' );

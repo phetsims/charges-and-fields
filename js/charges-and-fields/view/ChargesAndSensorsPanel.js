@@ -170,7 +170,8 @@ define( function( require ) {
       stroke: ChargesAndFieldsColorProfile.enclosureBorderProperty,
       fill: ChargesAndFieldsColorProfile.enclosureFillProperty,
       xMargin: HORIZONTAL_SPACING / 2,
-      yMargin: Y_MARGIN
+      yMargin: Y_MARGIN,
+      tandem: tandem
     } );
 
     this.draggableItems.forEach( function( draggableItem ) {
