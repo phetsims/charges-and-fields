@@ -34,9 +34,6 @@ define( function( require ) {
         computeElectricField: value.computeElectricField,
         initialPosition: value.initialPosition ? TVector2.toStateObject( value.initialPosition ) : null
       };
-    },
-
-    setValue: function( instance, value ) {
     }
   } );
 
