@@ -27,7 +27,7 @@ define( function( require ) {
     options = _.extend( {
       iconWidth: 26,
       iconHeight: 20,
-      tandem: Tandem.createDefaultTandem( 'pencilButton' )
+      tandem: Tandem.tandemRequired()
     }, options );
 
     // pencil icon
