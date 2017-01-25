@@ -50,7 +50,7 @@ define( function( require ) {
 
     setValue: function( instance, value ) {
       instance.charge = value.charge;
-      instance.initialPosition = TVector2.fromStateObject( value.initialPosition );
+      instance.initialPosition = value.initialPosition;
     }
   } );
 
