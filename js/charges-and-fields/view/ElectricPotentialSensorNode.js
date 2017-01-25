@@ -128,8 +128,7 @@ define( function( require ) {
     } );
 
     // Create the button that allows to plot the ElectricPotential Lines
-    var plotElectricPotentialLineButton = new PencilButton( {
-      tandem: tandem.createTandem( 'plotElectricPotentialLineButton' ),
+    var plotElectricPotentialLineButton = new PencilButton( tandem.createTandem( 'plotElectricPotentialLineButton' ), {
       baseColor: '#f2f2f2',
       listener: function() {
         addElectricPotentialLine();
