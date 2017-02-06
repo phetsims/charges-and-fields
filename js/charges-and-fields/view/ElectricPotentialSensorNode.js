@@ -26,7 +26,7 @@ define( function( require ) {
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
   var Shape = require( 'KITE/Shape' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var TandemImage = require( 'TANDEM/scenery/nodes/TandemImage' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
   var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
@@ -190,7 +190,7 @@ define( function( require ) {
       } );
 
     // Create the body of the sensor
-    var outlineImage = new TandemImage( electricPotentialLinePanelOutlineImage, {
+    var outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
       tandem: tandem.createTandem( 'outlineImage' )
     } );
 

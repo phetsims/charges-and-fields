@@ -22,7 +22,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
-  var TandemImage = require( 'TANDEM/scenery/nodes/TandemImage' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
   var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -200,7 +200,7 @@ define( function( require ) {
         maxWidth: 200,
         tandem: tandem.createTandem( 'voltageReading' )
       } );
-      var outlineImage = new TandemImage( electricPotentialLinePanelOutlineImage, {
+      var outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
         tandem: tandem.createTandem( 'outlineImage' )
       } );
       outlineImage.scale( 0.5 * 6 / 25 );
@@ -259,7 +259,7 @@ define( function( require ) {
 
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {
-        measuringTapeIcon.children = [ new TandemImage( image, {
+        measuringTapeIcon.children = [ new Image( image, {
           cursor: 'pointer',
           tandem: tandem.createTandem( 'measuringTapeIconImage' )
         } ) ];

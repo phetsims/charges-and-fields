@@ -12,7 +12,7 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var TandemImage = require( 'TANDEM/scenery/nodes/TandemImage' );
+  var Image = require( 'SCENERY/nodes/Image' );
 
   // images
   var pencilImage = require( 'mipmap!CHARGES_AND_FIELDS/pencil.png,level=5' );
@@ -31,7 +31,7 @@ define( function( require ) {
     }, options );
 
     // pencil icon
-    options.content = new TandemImage( pencilImage, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
+    options.content = new Image( pencilImage, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
     RectangularPushButton.call( this, options );
