@@ -27,7 +27,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
@@ -103,7 +103,7 @@ define( function( require ) {
 
     // Create the base of the crosshair
     // TODO: why are the fill and stroke set to the same thing?
-    var crosshairMount = new TandemRectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
+    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
       fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
       stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
       tandem: tandem.createTandem( 'crosshairMount' )
@@ -179,7 +179,7 @@ define( function( require ) {
 
     // Create the background rectangle behind the voltage Reading
     var backgroundAdjustment = 0;
-    var backgroundRectangle = new TandemRectangle(
+    var backgroundRectangle = new Rectangle(
       backgroundAdjustment,
       0,
       buttonsBox.width - backgroundAdjustment * 2,

@@ -23,7 +23,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -186,7 +186,7 @@ define( function( require ) {
 
       // Create the base of the crosshair
       // TODO: why is the fill the same as the stroke?
-      var crosshairMount = new TandemRectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, 5, 5, {
+      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, 5, 5, {
         fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
         stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
         tandem: tandem.createTandem( 'crosshairMount' )
@@ -206,7 +206,7 @@ define( function( require ) {
       outlineImage.scale( 0.5 * 6 / 25 );
 
       // Create the background rectangle behind the voltage Reading
-      var backgroundRectangle = new TandemRectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
+      var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
         fill: 'white',
         stroke: 'black',
         tandem: tandem.createTandem( 'backgroundRectangle' )

@@ -20,7 +20,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
@@ -83,7 +83,7 @@ define( function( require ) {
     } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new TandemRectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
+    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
       tandem: tandem.createTandem( 'backgroundRectangle', { enabled: false } )
