@@ -18,7 +18,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
-  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -123,7 +123,7 @@ define( function( require ) {
     } );
 
     // Create and add the text (legend) accompanying the double headed arrow
-    var legendText = new TandemText( oneMeterString, {
+    var legendText = new Text( oneMeterString, {
       fill: ChargesAndFieldsColorProfile.gridTextFillProperty,
       font: FONT,
       tandem: tandem.createTandem( 'legendText' )

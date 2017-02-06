@@ -21,7 +21,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -75,7 +75,7 @@ define( function( require ) {
 
     // Create the voltage label for the electricPotential line
     var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
-    var voltageLabelText = new TandemText( voltageLabelString, {
+    var voltageLabelText = new Text( voltageLabelString, {
       font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty,
@@ -214,8 +214,8 @@ define( function( require ) {
         var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
 
         // no translatable strings, for debug only
-        var text = new TandemText( 'model=' + electricPotentialLine.positionArray.length +
-                                   '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
+        var text = new Text( 'model=' + electricPotentialLine.positionArray.length +
+                             '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
           center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
           fill: 'green',
           font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,

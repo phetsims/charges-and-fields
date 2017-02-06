@@ -28,7 +28,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
 
@@ -110,7 +110,7 @@ define( function( require ) {
     } );
 
     // Create the text node above the readout
-    var electricPotentialPanelTitleText = new TandemText( equipotentialString, {
+    var electricPotentialPanelTitleText = new Text( equipotentialString, {
       maxWidth: 85,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       fill: ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty,
@@ -150,7 +150,7 @@ define( function( require ) {
     plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
 
     // Create the voltage readout
-    var voltageReadout = new TandemText( '', {
+    var voltageReadout = new Text( '', {
       maxWidth: 65,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       tandem: tandem.createTandem( 'voltageReadout' ),

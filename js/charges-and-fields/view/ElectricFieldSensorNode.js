@@ -17,7 +17,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -72,13 +72,13 @@ define( function( require ) {
     } );
 
     // Create two numerical readouts for the strength and direction of the electric field.
-    var fieldStrengthLabel = new TandemText( '', {
+    var fieldStrengthLabel = new Text( '', {
       font: LABEL_FONT,
       pickable: false,
       fill: ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty,
       tandem: tandem.createTandem( 'fieldStrengthLabel' )
     } );
-    var directionLabel = new TandemText( '', {
+    var directionLabel = new Text( '', {
       font: LABEL_FONT,
       pickable: false,
       fill: ChargesAndFieldsColorProfile.electricFieldSensorLabelProperty,

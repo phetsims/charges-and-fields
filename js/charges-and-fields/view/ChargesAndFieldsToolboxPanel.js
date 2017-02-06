@@ -24,7 +24,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
@@ -193,7 +193,7 @@ define( function( require ) {
       } );
 
       // Create the voltage Reading reading
-      var voltageReading = new TandemText( '0.0' + ' ' + voltageUnitString, {
+      var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
         font: ChargesAndFieldsConstants.DEFAULT_FONT,
         fill: 'black',
         stroke: 'black',
