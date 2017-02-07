@@ -29,7 +29,6 @@ define( function( require ) {
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
-  var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   // images
@@ -146,8 +145,6 @@ define( function( require ) {
     availableModelBoundsProperty.link( function( bounds ) {
       measuringTapeMovableDragHandler.dragBounds = bounds;
     } );
-
-    tandem.addInstance( this, TPanel );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsToolboxPanel', ChargesAndFieldsToolboxPanel );

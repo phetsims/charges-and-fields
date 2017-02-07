@@ -24,7 +24,6 @@ define( function( require ) {
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
-  var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
 
   // strings
   var minusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
@@ -178,8 +177,6 @@ define( function( require ) {
       draggableItem.on( 'visibility', self.updateChildrenWithVisibility.bind( self ) );
     } );
     this.updateChildrenWithVisibility();
-
-    tandem.addInstance( this, TPanel );
   }
 
   chargesAndFields.register( 'ChargesAndSensorsPanel', ChargesAndSensorsPanel );
