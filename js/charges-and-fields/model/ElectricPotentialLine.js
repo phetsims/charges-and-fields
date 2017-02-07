@@ -43,6 +43,8 @@ define( function( require ) {
                                   isPlayAreaChargedProperty,
                                   tandem ) {
 
+    var self = this;
+
     this.getElectricPotential = getElectricPotential; // @private static
     this.getElectricField = getElectricField; // @private static
     this.chargedParticles = chargedParticles; // @private static
@@ -57,7 +59,7 @@ define( function( require ) {
     this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
 
     this.disposeElectricPotentialLine = function() {
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
     };
     tandem.addInstance( this, TElectricPotentialLine );
   }
