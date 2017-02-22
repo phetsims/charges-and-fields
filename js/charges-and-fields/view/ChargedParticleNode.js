@@ -123,6 +123,7 @@ define( function( require ) {
   return inherit( ChargedParticleRepresentationNode, ChargedParticleNode, {
     dispose: function() {
       this.disposeChargedParticleNode();
+      ChargedParticleRepresentationNode.prototype.dispose.call( this );
     }
 
   } );

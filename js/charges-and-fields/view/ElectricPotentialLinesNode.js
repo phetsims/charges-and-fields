@@ -119,6 +119,7 @@ define( function( require ) {
   inherit( Node, VoltageLabel, {
     dispose: function() {
       this.disposeVoltageLabel();
+      Node.prototype.dispose.call( this );
     }
   } );
 
