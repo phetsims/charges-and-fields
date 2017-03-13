@@ -16,9 +16,10 @@ define( function( require ) {
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
   var Text = require( 'SCENERY/nodes/Text' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var TProperty = require( 'AXON/TProperty' );
 
+  // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-  var TProperty = require( 'ifphetio!PHET_IO/types/axon/TProperty' );
 
   // strings
   var optionsProjectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
