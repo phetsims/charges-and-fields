@@ -13,7 +13,7 @@ define( function( require ) {
   var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
-  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
+  var TVector2 = require( 'DOT/TVector2' );
 
   // Instrumented to help restore charged particles.
   var TChargesAndFieldsModel = function( instance, phetioID ) {

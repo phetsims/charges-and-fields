@@ -14,10 +14,10 @@ define( function( require ) {
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var TVector2 = require( 'DOT/TVector2' );
 
   // phet-io modules
   var TElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricFieldSensor' );
-  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**
    * @constructor

@@ -14,8 +14,8 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
-  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
+  var TVector2 = require( 'DOT/TVector2' );
 
   var TChargedParticle = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );

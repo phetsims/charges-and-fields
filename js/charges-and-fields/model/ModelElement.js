@@ -16,10 +16,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var Emitter = require( 'AXON/Emitter' );
+  var TVector2 = require( 'DOT/TVector2' );
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**
    * @constructor

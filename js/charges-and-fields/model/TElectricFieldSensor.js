@@ -13,7 +13,7 @@ define( function( require ) {
   var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
-  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
+  var TVector2 = require( 'DOT/TVector2' );
 
   var TElectricFieldSensor = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );

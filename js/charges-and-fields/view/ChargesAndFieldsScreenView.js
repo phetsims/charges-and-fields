@@ -40,9 +40,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-
-  // phet-io modules
-  var TBounds2 = require( 'ifphetio!PHET_IO/types/dot/TBounds2' );
+  var TBounds2 = require( 'DOT/TBounds2' );
 
   // constants
   var linear = DotUtil.linear;
