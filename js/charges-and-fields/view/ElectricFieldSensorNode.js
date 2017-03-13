@@ -20,9 +20,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-
-  // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );

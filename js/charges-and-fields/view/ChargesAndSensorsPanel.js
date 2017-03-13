@@ -21,9 +21,7 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-
-  // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // strings
   var minusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );

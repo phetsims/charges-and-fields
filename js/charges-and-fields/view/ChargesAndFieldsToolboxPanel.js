@@ -27,9 +27,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
   var TVector2 = require( 'DOT/TVector2' );
-
-  // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // images
   var electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );

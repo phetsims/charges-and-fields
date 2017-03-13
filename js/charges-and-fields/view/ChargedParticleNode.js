@@ -14,9 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-
-  // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle

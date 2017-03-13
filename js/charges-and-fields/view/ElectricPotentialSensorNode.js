@@ -31,9 +31,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
-
-  // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // constants
   var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
