@@ -16,7 +16,7 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // phet-io modules
-  var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
+  var TChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargedParticle' );
 
   /**
    *

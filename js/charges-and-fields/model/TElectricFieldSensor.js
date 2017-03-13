@@ -9,11 +9,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TModelElement = require( 'PHET_IO/simulations/charges-and-fields/TModelElement' );
-  var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
+  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   var TElectricFieldSensor = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
@@ -37,7 +37,7 @@ define( function( require ) {
     }
   } );
 
-  phetioNamespace.register( 'TElectricFieldSensor', TElectricFieldSensor );
+  chargesAndFields.register( 'TElectricFieldSensor', TElectricFieldSensor );
 
   return TElectricFieldSensor;
 } );

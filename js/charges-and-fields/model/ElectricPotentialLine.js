@@ -16,7 +16,7 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // phet-io modules
-  var TElectricPotentialLine = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TElectricPotentialLine' );
+  var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
 
   // constants
   // see getEquipotentialPositionArray to find how these are used

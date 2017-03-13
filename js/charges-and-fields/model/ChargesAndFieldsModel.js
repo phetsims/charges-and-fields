@@ -25,9 +25,9 @@ define( function( require ) {
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TBounds2 = require( 'ifphetio!PHET_IO/types/dot/TBounds2' );
-  var TChargesAndFieldsModel = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargesAndFieldsModel' );
-  var TChargedParticle = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TChargedParticle' );
-  var TElectricPotentialLine = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TElectricPotentialLine' );
+  var TChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargesAndFieldsModel' );
+  var TChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargedParticle' );
+  var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
 
   // constants
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;

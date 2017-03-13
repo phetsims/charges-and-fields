@@ -9,11 +9,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TObject = require( 'PHET_IO/types/TObject' );
-  var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
+  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   // Instrumented to help restore charged particles.
   var TChargesAndFieldsModel = function( instance, phetioID ) {
@@ -65,7 +65,7 @@ define( function( require ) {
     }
   );
 
-  phetioNamespace.register( 'TChargesAndFieldsModel', TChargesAndFieldsModel );
+  chargesAndFields.register( 'TChargesAndFieldsModel', TChargesAndFieldsModel );
 
   return TChargesAndFieldsModel;
 } );

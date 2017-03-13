@@ -16,7 +16,7 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // phet-io modules
-  var TElectricFieldSensor = require( 'ifphetio!PHET_IO/simulations/charges-and-fields/TElectricFieldSensor' );
+  var TElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricFieldSensor' );
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**

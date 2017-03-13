@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TModelElement = require( 'PHET_IO/simulations/charges-and-fields/TModelElement' );
-  var TNumber = require( 'PHET_IO/types/TNumber' );
-  var TVector2 = require( 'PHET_IO/types/dot/TVector2' );
-  var TVoid = require( 'PHET_IO/types/TVoid' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
+  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
+  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
+  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
 
   var TChargedParticle = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
@@ -54,7 +54,7 @@ define( function( require ) {
     }
   } );
 
-  phetioNamespace.register( 'TChargedParticle', TChargedParticle );
+  chargesAndFields.register( 'TChargedParticle', TChargedParticle );
 
   return TChargedParticle;
 } );

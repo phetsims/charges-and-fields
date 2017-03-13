@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TObject = require( 'PHET_IO/types/TObject' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
+  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
   var TModelElement = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ModelElement );
@@ -21,7 +21,7 @@ define( function( require ) {
 
   phetioInherit( TObject, 'TModelElement', TModelElement, {}, {} );
 
-  phetioNamespace.register( 'TModelElement', TModelElement );
+  chargesAndFields.register( 'TModelElement', TModelElement );
 
   return TModelElement;
 } );
