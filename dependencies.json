@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.2 Fri Apr 07 2017 17:01:39 GMT-0600 (MDT)",
+  "comment": "# charges-and-fields 1.0.2 Thu Apr 13 2017 12:43:13 GMT-0600 (MDT)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "HEAD"
@@ -9,16 +9,16 @@
     "branch": "HEAD"
   },
   "brand": {
-    "sha": "f0b1f7da85f87b9626562bea7fe69197fa81f05f",
-    "branch": "HEAD"
+    "sha": "b087e453b5efa394da9f1d1a3c22ca06283498d7",
+    "branch": "charges-and-fields-1.0"
   },
   "charges-and-fields": {
-    "sha": "2d81955604507c9bc94200c2e2362dde28e8b7a5",
+    "sha": "e0edf3e8b626d976602114f0f480b4750ad6a00e",
     "branch": "1.0"
   },
   "chipper": {
     "sha": "89c4a1038a90e3efc84872d4608d10442fb44831",
-    "branch": "HEAD"
+    "branch": "charges-and-fields-1.0"
   },
   "dot": {
     "sha": "3f60cfcc03fb523fab5e01ec64eaeb74d3bf331e",
@@ -37,8 +37,8 @@
     "branch": "HEAD"
   },
   "phetcommon": {
-    "sha": "e77d2353abefa38498cc971d856620f3679fb3ba",
-    "branch": "HEAD"
+    "sha": "204af3451d75bcdc3c4fe627bfc35b0602efda66",
+    "branch": "charges-and-fields-1.0"
   },
   "scenery": {
     "sha": "0886016599db5ee89866b50f1eecde5671dca2a3",
