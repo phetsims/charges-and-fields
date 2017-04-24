@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
-  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -33,6 +33,7 @@ define( function( require ) {
     }
 
   }, {
+    documentation: 'A Charged Particle',
 
     fromStateObject: function( stateObject ) {
       return {

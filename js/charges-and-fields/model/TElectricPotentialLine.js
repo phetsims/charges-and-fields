@@ -21,7 +21,7 @@ define( function( require ) {
   };
 
   phetioInherit( TModelElement, 'TElectricPotentialLine', TElectricPotentialLine, {}, {
-
+    documentation: 'The vector that shows the charge strength and direction.',
     fromStateObject: function( stateObject ) {
       return {};
     },

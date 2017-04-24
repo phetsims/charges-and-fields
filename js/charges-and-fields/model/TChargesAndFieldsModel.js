@@ -22,6 +22,7 @@ define( function( require ) {
   };
 
   phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
+    documentation: 'The model for the whole sim',
 
     /**
      * Clear the children from the model so it can be deserialized.

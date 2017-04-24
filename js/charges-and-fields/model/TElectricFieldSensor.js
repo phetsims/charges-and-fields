@@ -21,6 +21,7 @@ define( function( require ) {
   };
 
   phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, {}, {
+    documentation: 'The sensor that detects the charge direction and strength.',
 
     fromStateObject: function( stateObject ) {
       return {
