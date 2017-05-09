@@ -58,7 +58,7 @@ define( function( require ) {
 
     /**
      * @param {Tandem} itemTandem
-     * @param {stirng} label
+     * @param {string} label
      * @param {Function} createModelElement - Adds one of these items to the model, and returns the model object.
      * @param {Node} previewNode
      * @param {Property.<boolean>} isVisibleProperty
