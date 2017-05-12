@@ -217,8 +217,7 @@ define( function( require ) {
                              '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
           center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
           fill: 'green',
-          font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
-          tandem: tandem.createTandem( 'debugText', { enabled: false } )
+          font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
         } );
 
         // add the circles and text
