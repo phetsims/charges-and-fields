@@ -91,10 +91,9 @@ define( function( require ) {
 
     var measuringTapeMovableDragHandler = {
       down: function( event ) {
-        // Ignore non-left-mouse-button
-        if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
-          return;
-        }
+
+        // Don't try to start drags with a right mouse button or an attached pointer.
+        if ( !event.canStartPress() ) { return; }
 
         measuringTape.isActiveProperty.set( true );
 
@@ -110,10 +109,9 @@ define( function( require ) {
     // When pressed, creates a model element and triggers startDrag() on the corresponding view
     electricPotentialSensorIconNode.addInputListener( {
       down: function( event ) {
-        // Ignore non-left-mouse-button
-        if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
-          return;
-        }
+
+        // Don't try to start drags with a right mouse button or an attached pointer.
+        if ( !event.canStartPress() ) { return; }
 
         electricPotentialSensor.isActiveProperty.set( true );
 
