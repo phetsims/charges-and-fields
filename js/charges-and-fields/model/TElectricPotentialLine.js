@@ -15,10 +15,16 @@ define( function( require ) {
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
   var TVector2 = require( 'DOT/TVector2' );
 
-  var TElectricPotentialLine = function( instance, phetioID ) {
+  /**
+   *
+   * @param instance
+   * @param phetioID
+   * @constructor
+   */
+  function TElectricPotentialLine( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ElectricPotentialLine );
     TObject.call( this, instance, phetioID );
-  };
+  }
 
   phetioInherit( TModelElement, 'TElectricPotentialLine', TElectricPotentialLine, {}, {
     documentation: 'The vector that shows the charge strength and direction.',

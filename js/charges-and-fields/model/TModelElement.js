@@ -14,10 +14,16 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
-  var TModelElement = function( instance, phetioID ) {
+  /**
+   *
+   * @param instance
+   * @param phetioID
+   * @constructor
+   */
+  function TModelElement( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ModelElement );
     TObject.call( this, instance, phetioID );
-  };
+  }
 
   phetioInherit( TObject, 'TModelElement', TModelElement, {}, {} );
 

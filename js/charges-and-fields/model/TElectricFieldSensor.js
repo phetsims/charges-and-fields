@@ -15,10 +15,16 @@ define( function( require ) {
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
   var TVector2 = require( 'DOT/TVector2' );
 
-  var TElectricFieldSensor = function( instance, phetioID ) {
+  /**
+   *
+   * @param instance
+   * @param phetioID
+   * @constructor
+   */
+  function TElectricFieldSensor( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
     TModelElement.call( this, instance, phetioID );
-  };
+  }
 
   phetioInherit( TModelElement, 'TElectricFieldSensor', TElectricFieldSensor, {}, {
     documentation: 'The sensor that detects the charge direction and strength.',

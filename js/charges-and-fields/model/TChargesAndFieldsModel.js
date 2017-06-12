@@ -15,11 +15,16 @@ define( function( require ) {
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
   var TVector2 = require( 'DOT/TVector2' );
 
-  // Instrumented to help restore charged particles.
-  var TChargesAndFieldsModel = function( instance, phetioID ) {
+  /**
+   * Instrumented to help restore charged particles.
+   * @param instance
+   * @param phetioID
+   * @constructor
+   */
+  function TChargesAndFieldsModel( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ChargesAndFieldsModel );
     TObject.call( this, instance, phetioID );
-  };
+  }
 
   phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
     documentation: 'The model for the whole sim',

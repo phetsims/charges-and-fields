@@ -17,10 +17,16 @@ define( function( require ) {
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
   var TVector2 = require( 'DOT/TVector2' );
 
-  var TChargedParticle = function( instance, phetioID ) {
+  /**
+   *
+   * @param instance
+   * @param phetioID
+   * @constructor
+   */
+  function TChargedParticle( instance, phetioID ) {
     assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
     TModelElement.call( this, instance, phetioID );
-  };
+  }
 
   phetioInherit( TModelElement, 'TChargedParticle', TChargedParticle, {
     setCharge: {
