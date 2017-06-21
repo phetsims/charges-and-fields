@@ -247,8 +247,8 @@ define( function( require ) {
 
       addedChargedParticle.disposeEmitter.addListener( function callback() {
         addedChargedParticle.disposeEmitter.removeListener( callback );
-        chargedParticleNode.dispose();
         draggableElementsLayer.removeChild( chargedParticleNode );
+        chargedParticleNode.dispose();
       } );
     } );
 
