@@ -139,9 +139,9 @@ define( function( require ) {
 
       // Update our direct canvas if necessary
       if ( numChanges || this.directCanvasDirty ) {
-        var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value;
-        var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.value;
-        var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.value;
+        var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
+        var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
+        var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
         var data = this.imageData.data;
 
         for ( var k = 0; k < this.electricPotentials.length; k++ ) {

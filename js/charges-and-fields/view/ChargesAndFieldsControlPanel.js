@@ -13,6 +13,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var CheckBox = require( 'SUN/CheckBox' );
   var Panel = require( 'SUN/Panel' );
+  var Property = require( 'AXON/Property' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -107,12 +108,12 @@ define( function( require ) {
     model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckBox, 'enabled' );
 
     // Ensure that we remove children that should be hidden
-    model.multilink( [
-      'hideTogglingElectricFieldVisibility',
-      'hideTogglingElectricFieldDirectionOnly',
-      'hideTogglingElectricPotentialVisibility',
-      'hideTogglingValuesVisibility',
-      'hideTogglingGridVisibility'
+    Property.multilink( [
+      model.hideTogglingElectricFieldVisibilityProperty,
+      model.hideTogglingElectricFieldDirectionOnlyProperty,
+      model.hideTogglingElectricPotentialVisibilityProperty,
+      model.hideTogglingValuesVisibilityProperty,
+      model.hideTogglingGridVisibilityProperty
     ], this.updateHiddenChildren.bind( this ) );
   }
 
@@ -125,13 +126,13 @@ define( function( require ) {
      */
     updateHiddenChildren: function() {
       this.checkBoxGroup.children = this.toggleNodes.filter( function( toggleNode ) {
-        return !toggleNode.hideTogglingProperty.value;
+        return !toggleNode.hideTogglingProperty.get();
       } );
 
-      this.visible = this.model.isElectricFieldVisible ||
-                     this.model.isElectricPotentialVisible ||
-                     this.model.areValuesVisible ||
-                     this.model.isGridVisible;
+      this.visible = this.model.isElectricFieldVisibleProperty.get() ||
+                     this.model.isElectricPotentialVisibleProperty.get() ||
+                     this.model.areValuesVisibleProperty.get() ||
+                     this.model.isGridVisibleProperty.get();
     }
   } );
 

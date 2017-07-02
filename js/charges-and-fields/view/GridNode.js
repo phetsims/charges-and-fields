@@ -65,10 +65,10 @@ define( function( require ) {
     var deltaY = majorDeltaY / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
 
     // the following variables are integers
-    var minI = Math.ceil( boundsProperty.value.minX / deltaX );
-    var maxI = Math.floor( boundsProperty.value.maxX / deltaX );
-    var minJ = Math.ceil( boundsProperty.value.minY / deltaY );
-    var maxJ = Math.floor( boundsProperty.value.maxY / deltaY );
+    var minI = Math.ceil( boundsProperty.get().minX / deltaX );
+    var maxI = Math.floor( boundsProperty.get().maxX / deltaX );
+    var minJ = Math.ceil( boundsProperty.get().minY / deltaY );
+    var maxJ = Math.floor( boundsProperty.get().maxY / deltaY );
 
     var i; // {number} an integer
     var j; // {number} an integer

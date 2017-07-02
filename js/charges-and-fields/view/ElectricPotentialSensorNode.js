@@ -252,7 +252,7 @@ define( function( require ) {
     // Should be added as a listener by our parent when the time is right
     this.movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
       tandem: tandem.createTandem( 'movableDragHandler' ),
-      dragBounds: availableModelBoundsProperty.value,
+      dragBounds: availableModelBoundsProperty.get(),
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
         self.isUserControlledProperty.set( true );

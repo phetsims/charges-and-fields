@@ -154,7 +154,7 @@ define( function( require ) {
     paintCanvas: function( context ) {
       this.updateElectricPotentials();
 
-      var isDirectionOnly = this.isElectricFieldDirectionOnlyProperty.value;
+      var isDirectionOnly = this.isElectricFieldDirectionOnlyProperty.get();
       var maxMagnitude = ChargesAndFieldsConstants.EFIELD_COLOR_SAT_MAGNITUDE;
 
       for ( var i = 0; i < this.viewPositions.length; i++ ) {

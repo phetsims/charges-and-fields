@@ -48,7 +48,7 @@ define( function( require ) {
     this.movableDragHandler = new MovableDragHandler(
       chargedParticle.positionProperty, {
         tandem: tandem.createTandem( 'movableDragHandler' ),
-        dragBounds: availableModelBoundsProperty.value,
+        dragBounds: availableModelBoundsProperty.get(),
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
           if ( !chargedParticle.isAnimated ) // you can't drag an animated particle

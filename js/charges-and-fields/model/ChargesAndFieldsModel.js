@@ -17,14 +17,14 @@ define( function( require ) {
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var TBounds2 = require( 'DOT/TBounds2' );
-  
+
   // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargesAndFieldsModel' );
   var TChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargedParticle' );
   var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
@@ -52,109 +52,83 @@ define( function( require ) {
 
     // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
-    var properties = {
 
-      // control the visibility of a grid of arrows representing the local electric field
-      isElectricFieldVisible: {
-        value: true,
-        tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} control the visibility of a grid of arrows representing the local electric field
+    this.isElectricFieldVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' )
+    } );
 
-      // controls the color shading in the fill of the electric field arrows
-      isElectricFieldDirectionOnly: {
-        value: false,
-        tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} controls the color shading in the fill of the electric field arrows
+    this.isElectricFieldDirectionOnlyProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' )
+    } );
 
-      // control the visibility of the electric potential field, a.k.a. rectangular grid
-      isElectricPotentialVisible: {
-        value: false,
-        tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} control the visibility of the electric potential field, a.k.a. rectangular grid
+    this.isElectricPotentialVisibleProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' )
+    } );
 
-      // control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
-      areValuesVisible: {
-        value: false,
-        tandem: tandem.createTandem( 'areValuesVisibleProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+    this.areValuesVisibleProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'areValuesVisibleProperty' )
+    } );
 
-      // control the visibility of the simple grid with minor and major axes
-      isGridVisible: {
-        value: false,
-        tandem: tandem.createTandem( 'isGridVisibleProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} control the visibility of the simple grid with minor and major axes
+    this.isGridVisibleProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isGridVisibleProperty' )
+    } );
 
-      // is there at least one active charged particle on the board
-      isPlayAreaCharged: {
-        value: false,
-        tandem: tandem.createTandem( 'isPlayAreaChargedProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} is there at least one active charged particle on the board
+    this.isPlayAreaChargedProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isPlayAreaChargedProperty' )
+    } );
 
-      // whether adding positive charges is allowed (and displayed) in general
-      allowNewPositiveCharges: {
-        value: true,
-        tandem: tandem.createTandem( 'allowNewPositiveChargesProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} whether adding positive charges is allowed (and displayed) in general
+    this.allowNewPositiveChargesProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'allowNewPositiveChargesProperty' )
+    } );
 
-      // whether adding negative charges is allowed (and displayed) in general
-      allowNewNegativeCharges: {
-        value: true,
-        tandem: tandem.createTandem( 'allowNewNegativeChargesProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} whether adding negative charges is allowed (and displayed) in general
+    this.allowNewNegativeChargesProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'allowNewNegativeChargesProperty' )
+    } );
 
-      // whether adding electric field sensors is allowed (and displayed) in general
-      allowNewElectricFieldSensors: {
-        value: true,
-        tandem: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>} whether adding electric field sensors is allowed (and displayed) in general
+    this.allowNewElectricFieldSensorsProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' )
+    } );
 
-      hideTogglingElectricFieldVisibility: {
-        value: false,
-        tandem: tandem.createTandem( 'hideTogglingElectricFieldVisibilityProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>}
+    this.hideTogglingElectricFieldVisibilityProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'hideTogglingElectricFieldVisibilityProperty' )
+    } );
 
-      hideTogglingElectricFieldDirectionOnly: {
-        value: false,
-        tandem: tandem.createTandem( 'hideTogglingElectricFieldDirectionOnlyProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>}
+    this.hideTogglingElectricFieldDirectionOnlyProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'hideTogglingElectricFieldDirectionOnlyProperty' )
+    } );
 
-      hideTogglingElectricPotentialVisibility: {
-        value: false,
-        tandem: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>}
+    this.hideTogglingElectricPotentialVisibilityProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' )
+    } );
 
-      hideTogglingValuesVisibility: {
-        value: false,
-        tandem: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>}
+    this.hideTogglingValuesVisibilityProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' )
+    } );
 
-      hideTogglingGridVisibility: {
-        value: false,
-        tandem: tandem.createTandem( 'hideTogglingGridVisibilityProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>}
+    this.hideTogglingGridVisibilityProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'hideTogglingGridVisibilityProperty' )
+    } );
 
-      chargesAndSensorsEnclosureBounds: {
-        value: new Bounds2( -1.25, -2.30, 1.25, -1.70 ), // meters
+    // @public {Property.<Bounds2>} in meters
+    this.chargesAndSensorsEnclosureBoundsProperty = new Property(
+      new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
         tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
         phetioValueType: TBounds2
-      }
-    };
-
-    PropertySet.call( this, null, properties );
+      } );
 
     //----------------------------------------------------------------------------------------
     // Initialize variables
@@ -218,7 +192,7 @@ define( function( require ) {
       var userControlledListener = function( isUserControlled ) {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && self.chargesAndSensorsEnclosureBounds.containsPoint( addedChargedParticle.position ) ) {
+        if ( !isUserControlled && self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.position ) ) {
           addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
           addedChargedParticle.animate(); // animate the charge to its destination position
         }
@@ -246,7 +220,6 @@ define( function( require ) {
         // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
         self.updateAllSensors();
       };
-
 
       addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
@@ -359,7 +332,7 @@ define( function( require ) {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
-             self.chargesAndSensorsEnclosureBounds.containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
+             self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
           addedElectricFieldSensor.isActiveProperty.set( false );
           addedElectricFieldSensor.animate();
         }
@@ -388,7 +361,7 @@ define( function( require ) {
 
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
 
-  return inherit( PropertySet, ChargesAndFieldsModel, {
+  return inherit( Object, ChargesAndFieldsModel, {
     /**
      * Reset function
      * @public
@@ -397,7 +370,23 @@ define( function( require ) {
       // we want to avoid the cost of constantly re-updating the grids when emptying the chargedParticles array
       // so we set the flag isResetting to true.
       this.isResetting = true;
-      PropertySet.prototype.reset.call( this ); // reset the visibility of (some) check boxes
+
+      this.isElectricFieldVisibleProperty.reset();
+      this.isElectricFieldDirectionOnlyProperty.reset();
+      this.isElectricPotentialVisibleProperty.reset();
+      this.areValuesVisibleProperty.reset();
+      this.isGridVisibleProperty.reset();
+      this.isPlayAreaChargedProperty.reset();
+      this.allowNewPositiveChargesProperty.reset();
+      this.allowNewNegativeChargesProperty.reset();
+      this.allowNewElectricFieldSensorsProperty.reset();
+      this.hideTogglingElectricFieldVisibilityProperty.reset();
+      this.hideTogglingElectricFieldDirectionOnlyProperty.reset();
+      this.hideTogglingElectricPotentialVisibilityProperty.reset();
+      this.hideTogglingValuesVisibilityProperty.reset();
+      this.hideTogglingGridVisibilityProperty.reset();
+      this.chargesAndSensorsEnclosureBoundsProperty.reset();
+
       this.chargedParticles.clear(); // clear all the charges
       this.activeChargedParticles.clear(); // clear all the active charges
       this.electricFieldSensors.clear(); // clear all the electric field sensors
@@ -471,12 +460,12 @@ define( function( require ) {
 
       // If net charge is nonzero, there must be an electric field (by Gauss's law)
       if ( netElectricCharge !== 0 ) {
-        this.isPlayAreaCharged = true;
+        this.isPlayAreaChargedProperty.set( true );
       }
 
       // No charged particles on screen, hence no electric field
       else if ( numberActiveChargedParticles === 0 ) {
-        this.isPlayAreaCharged = false;
+        this.isPlayAreaChargedProperty.set( false );
       }
 
       // If this is a pair, it must be a +- pair. If charges are co-located, don't show field.
@@ -512,11 +501,11 @@ define( function( require ) {
             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 1 ] ) ) ||
           ( negativeChargePositionArray[ 0 ].equals( positiveChargePositionArray[ 1 ] ) &&
             negativeChargePositionArray[ 1 ].equals( positiveChargePositionArray[ 0 ] ) ) ) {
-          this.isPlayAreaCharged = false;
+          this.isPlayAreaChargedProperty.set( false );
           this.electricField = Vector2.ZERO;
         }
         else {
-          this.isPlayAreaCharged = true;
+          this.isPlayAreaChargedProperty.set( true );
         }
       }
       // for more than six charges
@@ -524,7 +513,7 @@ define( function( require ) {
         // there are cases with six charges (and above) that can be compensated
         // however it is quite expensive to make this type of check as well as
         // incredibly unlikely to be the case in the first place.
-        this.isPlayAreaCharged = true;
+        this.isPlayAreaChargedProperty.set( true );
       }
     },
 
@@ -655,7 +644,7 @@ define( function( require ) {
      */
     addElectricPotentialLine: function( position ) {
       // Do not try to add an equipotential line if there are no charges.
-      if ( !this.isPlayAreaCharged ) {
+      if ( !this.isPlayAreaChargedProperty.get() ) {
         return;
       }
 

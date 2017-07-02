@@ -126,7 +126,6 @@ define( function( require ) {
       model.isElectricFieldDirectionOnlyProperty,
       model.isElectricFieldVisibleProperty );
 
-
     // Create the scenery node responsible for drawing the electricPotential lines
     var electricPotentialLinesNode = new ElectricPotentialLinesNode(
       model.electricPotentialLines,
@@ -218,7 +217,7 @@ define( function( require ) {
       chargesAndSensorsPanel.bottom = self.layoutBounds.bottom - 15;
       chargesAndSensorsPanel.centerX = self.layoutBounds.centerX;
 
-      model.chargesAndSensorsEnclosureBounds.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
+      model.chargesAndSensorsEnclosureBoundsProperty.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
     }
 
     chargesAndSensorsPanel.on( 'localBounds', updateSensorPanelLayout );
@@ -241,7 +240,7 @@ define( function( require ) {
         addedChargedParticle,
         modelViewTransform,
         self.availableModelBoundsProperty,
-        model.chargesAndSensorsEnclosureBounds,
+        model.chargesAndSensorsEnclosureBoundsProperty.get(),
         chargedParticleNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( chargedParticleNode );
 
@@ -262,7 +261,7 @@ define( function( require ) {
         self.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,
         model.areValuesVisibleProperty,
-        model.chargesAndSensorsEnclosureBounds,
+        model.chargesAndSensorsEnclosureBoundsProperty.get(),
         electricFieldSensorNodeGroupTandem.createNextTandem() );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
@@ -299,7 +298,7 @@ define( function( require ) {
     // dynamic parts of the control layout
     function updateControlLayout() {
       // right-align control panels
-      var right = modelViewTransform.modelToViewX( self.availableModelBoundsProperty.value.right ) - 10;
+      var right = modelViewTransform.modelToViewX( self.availableModelBoundsProperty.get().right ) - 10;
       controlPanel.right = right;
       resetAllButton.right = right;
       toolboxPanel.right = right;
@@ -350,7 +349,6 @@ define( function( require ) {
         centerY: resetAllButton.centerY - 40
       } ) );
 
-
       var position1 = new Vector2( 0.1, 0.1 );
       var position2 = new Vector2( 1.2, 1.2 );
       var charge1 = new ChargedParticle( position1, 1 );
@@ -366,9 +364,8 @@ define( function( require ) {
       model.activeChargedParticles.push( charge1 );
       model.activeChargedParticles.push( charge2 );
 
-      model.isPlayAreaCharged = true; // set isPlayAreaCharged to true since there are charges
+      model.isPlayAreaChargedProperty.set( true ); // set isPlayAreaCharged to true since there are charges
     }
-
 
   }
 
@@ -398,9 +395,9 @@ define( function( require ) {
         distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
           // {Color} color that corresponds to the Electric Potential being zero
-          ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value,
+          ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get(),
           // {Color} color of Max Electric Potential
-          ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.value,
+          ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get(),
           distance, // {number} distance must be between 0 and 1
           options );
       }
@@ -411,9 +408,9 @@ define( function( require ) {
         distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential );
         finalColor = this.interpolateRGBA(
           // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
-          ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.value,
+          ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get(),
           // {Color} color that corresponds to the Electric Potential being zero zero
-          ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value,
+          ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get(),
           distance, // {number} distance must be between 0 and 1
           options );
       }
@@ -437,8 +434,8 @@ define( function( require ) {
       var distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
       return this.interpolateRGBA(
-        ChargesAndFieldsColorProfile.electricFieldGridZeroProperty.value, // {Color} color that corresponds to zero electric Field
-        ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.value, // {Color} color that corresponds to the largest electric field
+        ChargesAndFieldsColorProfile.electricFieldGridZeroProperty.get(), // {Color} color that corresponds to zero electric Field
+        ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.get(), // {Color} color that corresponds to the largest electric field
         distance, // {number} distance must be between 0 and 1
         options );
     },

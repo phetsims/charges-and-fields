@@ -164,9 +164,9 @@ define( function( require ) {
       gl.uniformMatrix3fv( displayShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverseEntries );
 
       // tell the shader our colors / scale
-      var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.value;
-      var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.value;
-      var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.value;
+      var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
+      var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
+      var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
       gl.uniform3f( displayShaderProgram.uniformLocations.uZeroColor, zeroColor.red / 255, zeroColor.green / 255, zeroColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uPositiveColor, positiveColor.red / 255, positiveColor.green / 255, positiveColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uNegativeColor, negativeColor.red / 255, negativeColor.green / 255, negativeColor.blue / 255 );

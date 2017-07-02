@@ -49,7 +49,7 @@ define( function( require ) {
 
     context.beginPath();
     arrowShape.writeToContext( context );
-    context.fillStyle = ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.value.toCSS();
+    context.fillStyle = ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.get().toCSS();
     context.fill();
 
     context.restore();

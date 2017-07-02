@@ -35,7 +35,7 @@ define( function( require ) {
       multiplier: 100
     } ), measuringTape.isActiveProperty, {
       tandem: tandem,
-      dragBounds: availableModelBoundsProperty.value,
+      dragBounds: availableModelBoundsProperty.get(),
       modelViewTransform: modelViewTransform,
       basePositionProperty: measuringTape.basePositionProperty,
       tipPositionProperty: measuringTape.tipPositionProperty,

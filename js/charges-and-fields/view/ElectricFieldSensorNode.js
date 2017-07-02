@@ -114,12 +114,12 @@ define( function( require ) {
         var arrowLength = 15 * magnitude; // arbitrary multiplicative factor for the view
         if ( arrowLength > MIN_ARROW_LENGTH ) {
           arrowNode.setTailAndTip( 0, 0, arrowLength * Math.cos( -angle ), arrowLength * Math.sin( -angle ) );
-          arrowNode.visible = electricFieldSensor.isActive;
+          arrowNode.visible = electricFieldSensor.isActiveProperty.get();
         }
 
         if ( areValuesVisibleProperty.get() ) {
-          fieldStrengthLabel.visible = electricFieldSensor.isActive;
-          directionLabel.visible = electricFieldSensor.isActive;
+          fieldStrengthLabel.visible = electricFieldSensor.isActiveProperty.get();
+          directionLabel.visible = electricFieldSensor.isActiveProperty.get();
         }
 
         // Update the strings in the labels
@@ -188,7 +188,7 @@ define( function( require ) {
     this.movableDragHandler = new MovableDragHandler(
       electricFieldSensor.positionProperty, {
         tandem: tandem.createTandem( 'movableDragHandler' ),
-        dragBounds: availableModelBoundsProperty.value,
+        dragBounds: availableModelBoundsProperty.get(),
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
 
@@ -227,7 +227,7 @@ define( function( require ) {
     // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
     var isDragListenerAttached = false;
     var isInteractiveListener = function() {
-      var isInteractive = electricFieldSensor.isInteractive;
+      var isInteractive = electricFieldSensor.isInteractiveProperty.get();
 
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {
