@@ -171,7 +171,7 @@ define( function( require ) {
       var modified = false;
       for ( var i = 0; i < this.queue.length; i++ ) {
         var item = this.queue[ i ];
-        if ( item.newPosition && item.newPosition.equals( particle.position ) && item.charge === particle.charge ) {
+        if ( item.newPosition && item.newPosition.equals( particle.positionProperty.get() ) && item.charge === particle.charge ) {
           item.newPosition = null;
           // console.log( 'update ' + particle.charge + ' null' );
           // remove the item from the list if we would add-remove it

@@ -205,7 +205,7 @@ define( function( require ) {
             }
 
             // move this node upward so that the cursor touches the bottom of the chargedParticle
-            electricFieldSensor.position = modelViewTransform.viewToModelPosition( globalPoint );
+            electricFieldSensor.positionProperty.set( modelViewTransform.viewToModelPosition( globalPoint ) );
 
           }
         },
@@ -213,7 +213,7 @@ define( function( require ) {
         endDrag: function( event ) {
           electricFieldSensor.isUserControlledProperty.set( false );
 
-          if ( !enclosureBounds.containsPoint( electricFieldSensor.position ) ) {
+          if ( !enclosureBounds.containsPoint( electricFieldSensor.positionProperty.get() ) ) {
             electricFieldSensor.isActiveProperty.set( true );
           }
 

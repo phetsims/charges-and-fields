@@ -192,7 +192,7 @@ define( function( require ) {
       var userControlledListener = function( isUserControlled ) {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.position ) ) {
+        if ( !isUserControlled && self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
           addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
           addedChargedParticle.animate(); // animate the charge to its destination position
         }
@@ -472,8 +472,8 @@ define( function( require ) {
       else if ( numberActiveChargedParticles === 2 ) {
 
         // {boolean} indicator for a co-located pair
-        var colocated = this.activeChargedParticles.get( 1 ).position
-                          .minus( this.activeChargedParticles.get( 0 ).position )
+        var colocated = this.activeChargedParticles.get( 1 ).positionProperty.get()
+                          .minus( this.activeChargedParticles.get( 0 ).positionProperty.get() )
                           .magnitude() < MIN_DISTANCE_SCALE;
 
         this.isPlayAreaChargedProperty.set( colocated ? false : true );
@@ -489,10 +489,10 @@ define( function( require ) {
         var negativeChargePositionArray = [];
         this.activeChargedParticles.forEach( function( chargedParticle ) {
           if ( chargedParticle.charge === 1 ) {
-            positiveChargePositionArray.push( chargedParticle.position );
+            positiveChargePositionArray.push( chargedParticle.positionProperty.get() );
           }
           else {
-            negativeChargePositionArray.push( chargedParticle.position );
+            negativeChargePositionArray.push( chargedParticle.positionProperty.get() );
           }
         } );
 

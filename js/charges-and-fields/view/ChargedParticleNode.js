@@ -64,14 +64,14 @@ define( function( require ) {
             }
 
             // move this node upward so that the cursor touches the bottom of the chargedParticle
-            chargedParticle.position = modelViewTransform.viewToModelPosition( globalPoint );
+            chargedParticle.positionProperty.set( modelViewTransform.viewToModelPosition( globalPoint ) );
           }
         },
 
         endDrag: function( event ) {
           chargedParticle.isUserControlledProperty.set( false );
 
-          if ( !enclosureBounds.containsPoint( chargedParticle.position ) ) {
+          if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {
             chargedParticle.isActiveProperty.set( true );
           }
         }

@@ -57,7 +57,7 @@ define( function( require ) {
      * @public
      */
     update: function() {
-      var eField = this.computeElectricField( this.position );
+      var eField = this.computeElectricField( this.positionProperty.get() );
 
       assert && assert( eField.x !== Infinity && eField.y !== Infinity,
         'E-field is infinity: ' + eField );
@@ -65,7 +65,7 @@ define( function( require ) {
       assert && assert( !_.isNaN( eField.x ) && !_.isNaN( eField.y ),
         'E-field is NaN: ' + eField );
 
-      this.electricField = this.computeElectricField( this.position );
+      this.electricFieldProperty.set( this.computeElectricField( this.positionProperty.get() ) );
     },
 
     dispose: function() {
