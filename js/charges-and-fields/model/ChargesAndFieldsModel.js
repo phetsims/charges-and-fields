@@ -407,7 +407,7 @@ define( function( require ) {
      */
     addModelElement: function( element, observableArray ) {
       observableArray.push( element );
-      element.once( 'returnedToOrigin', function() {
+      element.returnedToOriginEmitter.addListener( function() {
         observableArray.remove( element );
       } );
       return element; // for chaining
@@ -592,7 +592,7 @@ define( function( require ) {
       }
 
       this.activeChargedParticles.forEach( function( chargedParticle ) {
-        var distanceSquared = chargedParticle.position.distanceSquared( position );
+        var distanceSquared = chargedParticle.positionProperty.get().distanceSquared( position );
 
         // Avoid bugs stemming from large or infinite fields (#82, #84, #85).
         // Assign the E-field an angle of zero and a magnitude well above the maximum allowed value.
@@ -606,8 +606,8 @@ define( function( require ) {
 
         // For performance reasons, we don't want to generate more vector allocations
         var electricFieldContribution = {
-          x: ( position.x - chargedParticle.position.x ) * ( chargedParticle.charge ) / distancePowerCube,
-          y: ( position.y - chargedParticle.position.y ) * ( chargedParticle.charge ) / distancePowerCube
+          x: ( position.x - chargedParticle.positionProperty.get().x ) * ( chargedParticle.charge ) / distancePowerCube,
+          y: ( position.y - chargedParticle.positionProperty.get().y ) * ( chargedParticle.charge ) / distancePowerCube
         };
         electricField.add( electricFieldContribution );
       } );
@@ -629,7 +629,7 @@ define( function( require ) {
       }
 
       this.activeChargedParticles.forEach( function( chargedParticle ) {
-        var distance = chargedParticle.position.distance( position );
+        var distance = chargedParticle.positionProperty.get().distance( position );
         electricPotential += ( chargedParticle.charge ) / distance;
       } );
       electricPotential *= K_CONSTANT; // prefactor depends on units
@@ -656,7 +656,7 @@ define( function( require ) {
       // If we are too close to a charged particle, also bail out.
       var isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), function( chargedParticle ) {
         // in model coordinates, should be less than the radius (in the view) of a charged particle
-        return chargedParticle.position.distance( position ) < 0.03;
+        return chargedParticle.positionProperty.get().distance( position ) < 0.03;
       } ) );
       if ( isTooCloseToParticle ) {
         return;

@@ -12,58 +12,43 @@ define( function( require ) {
   // modules
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var Emitter = require( 'AXON/Emitter' );
   var TVector2 = require( 'DOT/TVector2' );
 
-  // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-
   /**
    * @constructor
    *
    * @param {Tandem} tandem
-   * @param {Object} [options] - PropertySet properties to be initialized
    */
-  function ModelElement( tandem, options ) {
+  function ModelElement( tandem ) {
 
-    var properties = _.extend( {
+    // @public {Property.<Vector2>}
+    this.positionProperty = new Property( new Vector2(), {
+      tandem: tandem.createTandem( 'positionProperty' ),
+      phetioValueType: TVector2
+    } );
 
-      // @public
-      position: {
-        value: new Vector2(),
-        tandem: tandem.createTandem( 'positionProperty' ),
-        phetioValueType: TVector2
-      },
+    // @public {Property.<boolean>}
+    // Flag that indicates if this model element is controlled by the user
+    this.isUserControlledProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isUserControlledProperty' )
+    } );
 
-      // @public
-      // Flag that indicates if this model element is controlled by the user
-      isUserControlled: {
-        value: false,
-        tandem: tandem.createTandem( 'isUserControlledProperty' ),
-        phetioValueType: TBoolean
-      },
+    // @public {Property.<boolean>}
+    // Flag that indicates if the model element is active or dormant
+    this.isActiveProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isActiveProperty' )
+    } );
 
-      // @public
-      // Flag that indicates if the model element is active or dormant
-      isActive: {
-        value: false,
-        tandem: tandem.createTandem( 'isActiveProperty' ),
-        phetioValueType: TBoolean
-      },
-
-      // @public
-      // If false, the user will not be able to interact with this charge at all.
-      isInteractive: {
-        value: true,
-        tandem: tandem.createTandem( 'isInteractiveProperty' ),
-        phetioValueType: TBoolean
-      }
-    }, options );
-
-    PropertySet.call( this, null, properties );
+    // @public {Property.<boolean>}
+    // If false, the user will not be able to interact with this charge at all.
+    this.isInteractiveProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isInteractiveProperty' )
+    } );
 
     // @public read-only
     // Flag that indicates whether this element is animated from one location to another
@@ -73,15 +58,21 @@ define( function( require ) {
     this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
 
     this.disposeEmitter = new Emitter();
+
+    // @public
+    this.returnedToOriginEmitter = new Emitter();
   }
 
   chargesAndFields.register( 'ModelElement', ModelElement );
 
-  return inherit( PropertySet, ModelElement, {
+  return inherit( Object, ModelElement, {
 
     dispose: function() {
       this.disposeEmitter.emit();
-      PropertySet.prototype.dispose.call( this );
+      this.isInteractiveProperty.dispose();
+      this.isUserControlledProperty.dispose();
+      this.isActiveProperty.dispose();
+      this.positionProperty.dispose();
     },
 
     /**
@@ -112,7 +103,7 @@ define( function( require ) {
         self.positionProperty.set( new Vector2( position.x, position.y ) );
       } ).onComplete( function() {
         self.isAnimated = false; // done with the animation
-        self.trigger( 'returnedToOrigin' ); // model element can be removed from its observable array
+        self.returnedToOriginEmitter.emit(); // model element can be removed from its observable array
       } );
 
       animationTween.start( phet.joist.elapsedTime );

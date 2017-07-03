@@ -66,8 +66,7 @@ define( function( require ) {
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
 
     // Create a property that registers the model bounds based on the screen size
-    // Note that unlike the viewPropertySet above, the availableModelBounds should not be reset when
-    // the resetAllButton is pressed, hence the reason it is not part of the previous propertySet
+    // the availableModelBounds should not be reset when the resetAllButton is pressed,
     this.availableModelBoundsProperty = new Property( model.enlargedBounds, {
       tandem: tandem.createTandem( 'availableModelBoundsProperty' ),
       phetioValueType: TBounds2,

@@ -177,7 +177,7 @@ define( function( require ) {
         var uniformLocation = displayShaderProgram.uniformLocations[ 'charge' + i ];
 
         if ( particle ) {
-          gl.uniform3f( uniformLocation, particle.position.x, particle.position.y, particle.charge );
+          gl.uniform3f( uniformLocation, particle.positionProperty.get().x, particle.positionProperty.get().y, particle.charge );
         }
         else {
           gl.uniform3f( uniformLocation, -7.52432, 0, 0 ); // zero charge, magic constant

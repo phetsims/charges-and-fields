@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Property = require( 'AXON/Property' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var TVector2 = require( 'DOT/TVector2' );
 
@@ -30,13 +31,13 @@ define( function( require ) {
 
     var self = this;
 
-    ModelElement.call( this, tandem, {
-      electricField: {
-        value: new Vector2(), // @public -  electricField Vector in Newtons per Coulomb
-        tandem: tandem.createTandem( 'electricFieldProperty' ),
-        phetioValueType: TVector2
-      }
+    // @public {Property.<Vector2>} electricField Vector in Newtons per Coulomb
+    this.electricFieldProperty = new Property( new Vector2(), {
+      tandem: tandem.createTandem( 'electricFieldProperty' ),
+      phetioValueType: TVector2
     } );
+
+    ModelElement.call( this, tandem );
 
     this.computeElectricField = computeElectricField;
 
@@ -68,10 +69,13 @@ define( function( require ) {
       this.electricFieldProperty.set( this.computeElectricField( this.positionProperty.get() ) );
     },
 
+    /**
+     * @public
+     */
     dispose: function() {
-      this.unlinkAll(); // TODO: Unlink properly?  Or should we use unlinkAll everywhere if it is more convenient?
-      ModelElement.prototype.dispose.call( this );
       this.disposeElectricFieldSensor();
+      this.electricFieldProperty.dispose();
+      ModelElement.prototype.dispose.call( this );
     }
   } );
 } );

@@ -106,7 +106,7 @@ define( function( require ) {
       this.queue.push( {
         charge: particle.charge,
         oldPosition: null,
-        newPosition: particle.position.copy()
+        newPosition: particle.positionProperty.get().copy()
       } );
     },
 
@@ -187,7 +187,7 @@ define( function( require ) {
       if ( !modified ) {
         this.queue.push( {
           charge: particle.charge,
-          oldPosition: particle.position.copy(),
+          oldPosition: particle.positionProperty.get().copy(),
           newPosition: null
         } );
         // console.log( 'remove ' + particle.charge + ' ' + particle.position.toString() );

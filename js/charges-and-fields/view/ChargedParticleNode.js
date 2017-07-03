@@ -89,7 +89,7 @@ define( function( require ) {
 
     var isInteractiveListener = function() {
 
-      var isInteractive = chargedParticle.isInteractive;
+      var isInteractive = chargedParticle.isInteractiveProperty.get();
 
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {
