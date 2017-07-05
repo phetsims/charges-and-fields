@@ -9,12 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
-  var ChargesAndFieldsGlobals = new PropertySet( {
-    projectorColors: ( phet.chipper.queryParameters.colorProfile === 'projector' )
-  } );
+  var ChargesAndFieldsGlobals = {
+    projectorColorsProperty: new Property( phet.chipper.queryParameters.colorProfile === 'projector' )
+  };
 
   chargesAndFields.register( 'ChargesAndFieldsGlobals', ChargesAndFieldsGlobals );
 
