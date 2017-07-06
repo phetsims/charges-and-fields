@@ -31,7 +31,6 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // constants
   var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
@@ -333,8 +332,10 @@ define( function( require ) {
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
     };
 
-    tandem.addInstance( this, TNode );
-  }
+    // tandem support
+    this.mutate( {
+      tandem: tandem
+    } );  }
 
   chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );
 

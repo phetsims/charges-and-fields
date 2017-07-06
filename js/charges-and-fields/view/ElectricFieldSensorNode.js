@@ -20,7 +20,6 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -263,7 +262,6 @@ define( function( require ) {
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
-      tandem.removeInstance( self );
     };
 
     /**
@@ -310,7 +308,10 @@ define( function( require ) {
       return Util.toFixed( number, decimalPlaces );
     }
 
-    tandem.addInstance( this, TNode );
+    // tandem support
+    this.mutate( {
+      tandem: tandem
+    } );
   }
 
   chargesAndFields.register( 'ElectricFieldSensorNode', ElectricFieldSensorNode );
