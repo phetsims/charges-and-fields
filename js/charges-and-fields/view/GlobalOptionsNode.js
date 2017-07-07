@@ -16,10 +16,6 @@ define( function( require ) {
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
   var Text = require( 'SCENERY/nodes/Text' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var TProperty = require( 'AXON/TProperty' );
-
-  // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
 
   // strings
   var optionsProjectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
@@ -30,11 +26,14 @@ define( function( require ) {
    */
   function GlobalOptionsNode( tandem ) {
 
-    tandem.createTandem( 'projectorColorsProperty' )
-      .addInstance( ChargesAndFieldsGlobals.projectorColorsProperty, TProperty( TBoolean ) );
+    var checkBoxText = new Text( optionsProjectorColorsString, {
+      font: OptionsDialog.DEFAULT_FONT,
+      tandem: tandem.createTandem( 'projectorCheckBoxString' )
+    } );
 
-    var projectorCheckBox = new CheckBox( new Text( optionsProjectorColorsString, { font: OptionsDialog.DEFAULT_FONT } ),
-      ChargesAndFieldsGlobals.projectorColorsProperty, { tandem: tandem.createTandem( 'projectorCheckBox' ) } );
+    var projectorCheckBox = new CheckBox( checkBoxText, ChargesAndFieldsGlobals.projectorColorsProperty, {
+      tandem: tandem.createTandem( 'projectorCheckBox' )
+    } );
 
     LayoutBox.call( this, _.extend( {
       children: [ projectorCheckBox ],
