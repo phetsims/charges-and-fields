@@ -268,8 +268,8 @@ define( function( require ) {
       model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
           removedElectricFieldSensor.dispose();
-          electricFieldSensorNode.dispose();
           draggableElementsLayer.removeChild( electricFieldSensorNode );
+          electricFieldSensorNode.dispose();
           model.electricFieldSensors.removeItemRemovedListener( removalListener );
         }
       } );
