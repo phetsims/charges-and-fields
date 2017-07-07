@@ -154,17 +154,6 @@ define( function( require ) {
       fill: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty
     } );
 
-    /**
-     * The voltage readout is updated according to the value of the electric potential
-     * @param {number} electricPotential
-     */
-    function updateVoltageReadout( electricPotential ) {
-      voltageReadout.text = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
-    }
-
-    // update text of the voltage readout according to the current value of the electric potential
-    updateVoltageReadout( electricPotentialSensor.electricPotentialProperty.get() );
-
     // The clear and plot buttons
     var buttonsBox = new LayoutBox( {
       orientation: 'horizontal',
@@ -197,6 +186,18 @@ define( function( require ) {
       children: [ electricPotentialPanelTitleText, backgroundRectangle, buttonsBox ],
       pickable: true
     } );
+
+    /**
+     * The voltage readout is updated according to the value of the electric potential
+     * @param {number} electricPotential
+     */
+    function updateVoltageReadout( electricPotential ) {
+      voltageReadout.text = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
+      voltageReadout.centerX = bodyContent.centerX;
+    }
+
+    // update text of the voltage readout according to the current value of the electric potential
+    updateVoltageReadout( electricPotentialSensor.electricPotentialProperty.get() );
 
     // Add the nodes to the body
     var bodyNode = new Node();
@@ -335,7 +336,8 @@ define( function( require ) {
     // tandem support
     this.mutate( {
       tandem: tandem
-    } );  }
+    } );
+  }
 
   chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );
 
