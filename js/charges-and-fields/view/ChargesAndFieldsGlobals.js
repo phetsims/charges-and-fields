@@ -18,7 +18,7 @@ define( function( require ) {
 
   var ChargesAndFieldsGlobals = {
     projectorColorsProperty: new Property( phet.chipper.queryParameters.colorProfile === 'projector', {
-      tandem: Tandem.createStaticTandem( 'globals.projectorColorsProperty' ),
+      tandem: Tandem.createStaticTandem( 'projectorColorsProperty' ),
       phetioValueType: TBoolean
     } )
   };

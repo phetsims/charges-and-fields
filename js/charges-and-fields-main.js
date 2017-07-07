@@ -30,7 +30,7 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
     },
-    optionsNode: new GlobalOptionsNode( tandem.createTandem( 'options' ) )
+    optionsNode: new GlobalOptionsNode( Tandem.createStaticTandem( 'options' ) )
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {

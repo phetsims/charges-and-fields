@@ -21,11 +21,12 @@ define( function( require ) {
   var optionsProjectorColorsString = require( 'string!CHARGES_AND_FIELDS/options.projectorColors' );
 
   /**
-   *
+   * @param {Tandem} tandem
    * @constructor
    */
   function GlobalOptionsNode( tandem ) {
 
+    // Static tandems are needed here because it is called before the sim is launched
     var checkBoxText = new Text( optionsProjectorColorsString, {
       font: OptionsDialog.DEFAULT_FONT,
       tandem: tandem.createTandem( 'projectorCheckBoxString' )
@@ -38,7 +39,8 @@ define( function( require ) {
     LayoutBox.call( this, _.extend( {
       children: [ projectorCheckBox ],
       spacing: OptionsDialog.DEFAULT_SPACING,
-      align: 'left'
+      align: 'left',
+      tandem: tandem
     } ) );
   }
 
