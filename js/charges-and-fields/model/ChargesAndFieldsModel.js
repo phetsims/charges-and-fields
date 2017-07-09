@@ -234,46 +234,9 @@ define( function( require ) {
           // remove electricPotential lines and electric field lines when the position of a charged particle changes and the charge isActive
           self.clearElectricPotentialLines();
 
-          // if oldPosition doesn't exist then calculate the sensor properties from the charge configurations (from scratch)
-          if ( oldPosition === null ) {
-            self.updateAllSensors();
-          }
-          // if oldPosition exists calculate the sensor properties from the delta contribution
-          // this should help performance if there are many charged particles on the board
-          else {
-            // convenience variable
-            var charge = addedChargedParticle.charge;
+          // update the electricPotential and electricField sensors
+          self.updateAllSensors();
 
-            // update the Electric Potential Sensor by calculating the change in the electric potential
-            var V = self.electricPotentialSensor.electricPotentialProperty.get();
-            var dV = self.getElectricPotentialChange(
-              self.electricPotentialSensor.positionProperty.get(),
-              position,
-              oldPosition,
-              charge
-            );
-            self.electricPotentialSensor.electricPotentialProperty.set( V + dV );
-
-            // The getElectricFieldChange function has a bug with distances near zero.
-            // see https://github.com/phetsims/charges-and-fields/issues/82#issuecomment-239898320
-            // Instead, use the less efficient, but less buggy approach here instead.
-            self.updateAllSensors();
-
-            // // update electric field sensor
-            // self.electricFieldSensors.forEach( function( sensorElement ) {
-
-            //   // electricField is a property that is being listened to.
-            //   // We want a new vector allocation when the electric field gets updated
-            //   // update the Electric Field Sensors  by calculating the change in the electric field due to the motion of the chargeParticle
-            //   var eField = sensorElement.electricField;
-            //   if ( eField.magnitude() < ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
-            //     var deltaE = self.getElectricFieldChange( sensorElement.position, position, oldPosition, charge );
-            //     sensorElement.electricField = eField.plus( deltaE );
-            //   } else {
-            //     sensorElement.electricField = self.getElectricField( sensorElement.position );
-            //   }
-            // } );
-          } // end of else statement
         } // end of if (isActive) statement
       };
 
@@ -529,56 +492,6 @@ define( function( require ) {
     },
 
     /**
-     * Return the change in the electric field at position Position due to the motion of a
-     * charged particle from oldChargePosition to  newChargePosition.
-     * @private
-     * @param {Vector2} position - sensor location
-     * @param {Vector2} newChargePosition - charged particle location
-     * @param {Vector2} oldChargePosition - previous charged particle location
-     * @param {number} particleCharge - allowed values are +1 or -1
-     * @returns {{x:number,y:number}}
-     */
-    getElectricFieldChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
-      var newDistancePowerCube = Math.pow( newChargePosition.distanceSquared( position ), 1.5 );
-      var oldDistancePowerCube = Math.pow( oldChargePosition.distanceSquared( position ), 1.5 );
-
-      // Avoid bugs stemming from large or infinite fields (such as #82, #84, #85)
-      if ( newDistancePowerCube < MIN_DISTANCE_SCALE || oldDistancePowerCube < MIN_DISTANCE_SCALE ) {
-        return { x: 0, y: 0 };
-      }
-
-      // For performance reasons, we don't want to generate more vector allocations
-      // Here is the original code
-      // var newFieldVector = ( position.minus( newChargePosition )).divideScalar( newDistancePowerCube );
-      // var oldFieldVector = ( position.minus( oldChargePosition )).divideScalar( oldDistancePowerCube );
-      // var electricFieldChange = (newFieldVector.subtract( oldFieldVector )).multiplyScalar( particleCharge * K_CONSTANT );
-      // @formatter:off
-      return {
-        x: ( ( position.x - newChargePosition.x ) / ( newDistancePowerCube ) -
-             ( position.x - oldChargePosition.x ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT ),
-        y: ( ( position.y - newChargePosition.y ) / ( newDistancePowerCube ) -
-             ( position.y - oldChargePosition.y ) / ( oldDistancePowerCube ) ) * ( particleCharge * K_CONSTANT )
-      };
-      // @formatter:on
-    },
-
-    /**
-     * Return the change in the electric potential at location 'position' due to the motion of a
-     * charged particle from oldChargePosition to newChargePosition.
-     * @private
-     * @param {Vector2} position
-     * @param {Vector2} newChargePosition
-     * @param {Vector2} oldChargePosition
-     * @param {number} particleCharge
-     * @returns {number} electricPotentialChange
-     */
-    getElectricPotentialChange: function( position, newChargePosition, oldChargePosition, particleCharge ) {
-      var newDistance = newChargePosition.distance( position );
-      var oldDistance = oldChargePosition.distance( position );
-      return particleCharge * K_CONSTANT * ( 1 / newDistance - 1 / oldDistance );
-    },
-
-    /**
      * Return the electric field (a vector) at a location 'position'
      * @private
      * @param {Vector2} position - location of sensor
@@ -628,12 +541,42 @@ define( function( require ) {
         return electricPotential;
       }
 
+      var netChargeOnSite = this.getCharge( position ); // the net charge at position
+
+      if ( netChargeOnSite > 0 ) {
+        return Number.POSITIVE_INFINITY;
+      }
+      else if ( netChargeOnSite < 0 ) {
+        return Number.NEGATIVE_INFINITY;
+      }
+      else {
+        this.activeChargedParticles.forEach( function( chargedParticle ) {
+          var distance = chargedParticle.positionProperty.get().distance( position );
+
+          if ( distance > 0 ) {
+            electricPotential += ( chargedParticle.charge ) / distance;
+          }
+        } );
+
+        electricPotential *= K_CONSTANT; // prefactor depends on units
+        return electricPotential;
+      }
+    },
+
+    /**
+     * get local charge at this position
+     * @private
+     * @param {Vector2} position
+     * @returns {number}
+     */
+    getCharge: function( position ) {
+      var charge = 0;
       this.activeChargedParticles.forEach( function( chargedParticle ) {
-        var distance = chargedParticle.positionProperty.get().distance( position );
-        electricPotential += ( chargedParticle.charge ) / distance;
+        if ( chargedParticle.positionProperty.value.equals( position ) ) {
+          charge += chargedParticle.charge;
+        }
       } );
-      electricPotential *= K_CONSTANT; // prefactor depends on units
-      return electricPotential;
+      return charge;
     },
 
     /**
