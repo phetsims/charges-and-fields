@@ -72,7 +72,7 @@ define( function( require ) {
       cursor: 'pointer'
     } );
 
-    this.modelElement = electricPotentialSensor; // @public
+    this.modelElement = electricPotentialSensor; // @public (read-only)
 
     // @public
     this.isUserControlledProperty = new Property( false );
@@ -329,7 +329,7 @@ define( function( require ) {
 
     this.disposeElectricPotentialSensorNode = function() {
       electricPotentialSensor.positionProperty.unlink( positionListener );
-      electricPotentialSensor.electricFieldProperty.unlink( potentialListener );
+      electricPotentialSensor.electricPotentialProperty.unlink( potentialListener );
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
     };
 
