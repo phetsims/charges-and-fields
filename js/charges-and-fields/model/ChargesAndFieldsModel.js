@@ -231,7 +231,7 @@ define( function( require ) {
         // verify that the charge isActive before doing any charge-dependent updates to the model
         if ( addedChargedParticle.isActiveProperty.get() ) {
 
-          // remove electricPotential lines and electric field lines when the position of a charged particle changes and the charge isActive
+          // remove electricPotential lines when the position of a charged particle changes and the charge isActive
           self.clearElectricPotentialLines();
 
           // update the electricPotential and electricField sensors
@@ -262,7 +262,7 @@ define( function( require ) {
       // check that the particle was active before updating charge dependent model components
       if ( removedChargeParticle.isActiveProperty.get() && !self.isResetting ) {
 
-        // Remove electricPotential lines and electric field lines
+        // Remove electricPotential lines
         self.clearElectricPotentialLines();
 
         // Update all the visible sensors

@@ -52,7 +52,7 @@ define( function( require ) {
   var ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );
   var ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );
 
-  var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric field lines
+  var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric potential lines
 
   /**
    * @constructor
