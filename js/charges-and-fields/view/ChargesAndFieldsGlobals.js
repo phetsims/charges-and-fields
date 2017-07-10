@@ -11,14 +11,14 @@ define( function( require ) {
   // modules
   var Property = require( 'AXON/Property' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
 
   var ChargesAndFieldsGlobals = {
     projectorColorsProperty: new Property( phet.chipper.queryParameters.colorProfile === 'projector', {
-      tandem: Tandem.createStaticTandem( 'projectorColorsProperty' ),
+      tandem: ChargesAndFieldsConstants.GLOBALS_TANDEM.createTandem( 'projectorColorsProperty' ),
       phetioValueType: TBoolean
     } )
   };

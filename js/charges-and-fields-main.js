@@ -10,6 +10,7 @@ define( function( require ) {
   // modules
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
+  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var ChargesAndFieldsScreen = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsScreen' );
   var GlobalOptionsNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GlobalOptionsNode' );
   var Sim = require( 'JOIST/Sim' );
@@ -30,7 +31,7 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
     },
-    optionsNode: new GlobalOptionsNode( Tandem.createStaticTandem( 'options' ) )
+    optionsNode: new GlobalOptionsNode( ChargesAndFieldsConstants.GLOBALS_TANDEM.createTandem( 'options' ) )
   };
 
   ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {

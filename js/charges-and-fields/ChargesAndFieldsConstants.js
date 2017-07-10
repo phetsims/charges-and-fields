@@ -9,6 +9,7 @@ define( function( require ) {
 
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   return chargesAndFields.register( 'ChargesAndFieldsConstants', {
 
@@ -39,6 +40,8 @@ define( function( require ) {
     CHECK_BOX_FONT: new PhetFont( { size: 16 } ), // font for the control panel on the upper right hand side
 
     MAX_EFIELD_MAGNITUDE: 1e6, // V/m - maximum allowed electric field magnitude
-    EFIELD_COLOR_SAT_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
+    EFIELD_COLOR_SAT_MAGNITUDE: 5, // electricField at which color will saturate to maxColor (in Volts/meter)
+
+    GLOBALS_TANDEM: Tandem.createStaticTandem( 'globals') // A static tandem that all globals can be created under.
   } );
 } );
