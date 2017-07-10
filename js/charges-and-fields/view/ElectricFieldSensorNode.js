@@ -262,6 +262,9 @@ define( function( require ) {
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
+      this.movableDragHandler.dispose();
+      fieldStrengthLabel.dispose();
+      directionLabel.dispose();
     };
 
     /**
