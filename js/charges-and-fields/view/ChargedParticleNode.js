@@ -106,6 +106,7 @@ define( function( require ) {
     chargedParticle.isInteractiveProperty.link( isInteractiveListener );
 
     this.disposeChargedParticleNode = function() {
+      this.movableDragHandler.dispose();
       availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       chargedParticle.positionProperty.unlink( positionListener );
       chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
