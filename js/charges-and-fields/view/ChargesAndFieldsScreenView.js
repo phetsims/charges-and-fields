@@ -132,9 +132,13 @@ define( function( require ) {
       model.areValuesVisibleProperty,
       tandem.createTandem( 'electricPotentialLinesNode' ) );
 
+    // function({Property.<Vector2>}) to be called at the end of drag event
+    var snapToGridLines = model.snapToGridLines.bind( model );
+
     // Create the draggable electric potential sensor node with a electric potential readout
     var electricPotentialSensorNode = new ElectricPotentialSensorNode(
       model.electricPotentialSensor,
+      snapToGridLines,
       this.getElectricPotentialColor.bind( this ),
       model.clearElectricPotentialLines.bind( model ),
       model.addElectricPotentialLine.bind( model ),
@@ -165,6 +169,7 @@ define( function( require ) {
 
     // Create a measuring tape (set to invisible initially)
     var measuringTapeNode = new ChargesAndFieldsMeasuringTapeNode( model.measuringTape,
+      snapToGridLines,
       modelViewTransform,
       this.availableModelBoundsProperty,
       tandem.createTandem( 'measuringTapeNode' ) );
@@ -237,6 +242,7 @@ define( function( require ) {
       // Create and add the view representation for this chargedParticle.
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
+        snapToGridLines,
         modelViewTransform,
         self.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
@@ -256,6 +262,7 @@ define( function( require ) {
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
         addedElectricFieldSensor,
+        snapToGridLines,
         modelViewTransform,
         self.availableModelBoundsProperty,
         model.isPlayAreaChargedProperty,

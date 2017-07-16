@@ -34,7 +34,7 @@ define( function( require ) {
   var context = canvas.getContext( '2d' );
 
   // Offset based on where the center is from the upper-left. Will usually be negative so it can be applied.
-  // When drawing in thise code, we'll want to negate it.
+  // When drawing in this code, we'll want to negate it.
   var xOffset = scaledPaddedBounds.minX;
   var yOffset = scaledPaddedBounds.minY;
 

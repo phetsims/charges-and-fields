@@ -21,6 +21,7 @@ define( function( require ) {
     HEIGHT: 5, // in meters
 
     GRID_MAJOR_SPACING: 0.5, // in meters
+    MINOR_GRIDLINES_PER_MAJOR_GRIDLINE: 5,
     ELECTRIC_FIELD_SENSOR_SPACING: 0.5, // in meters
     ELECTRIC_POTENTIAL_SENSOR_SPACING: 0.1, // in meters (for canvas fall back grid)
 

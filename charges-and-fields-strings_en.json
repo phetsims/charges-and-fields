@@ -35,6 +35,9 @@
   "angleUnit": {
     "value": "deg"
   },
+  "snapToGrid": {
+    "value": "Snap To Grid"
+  },
   "voltageUnit": {
     "value": "V"
   },

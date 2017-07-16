@@ -26,7 +26,7 @@ define( function( require ) {
   var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
 
   // constants
-  var MINOR_GRIDLINES_PER_MAJOR_GRIDLINE = 5;
+  var MINOR_GRIDLINES_PER_MAJOR_GRIDLINE = ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
   var MAJOR_GRIDLINE_LINEWIDTH = 2;
   var MINOR_GRIDLINE_LINEWIDTH = 1;
   var ARROW_LENGTH = 1; // in model coordinates

@@ -21,13 +21,19 @@ define( function( require ) {
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
    * @param {ChargedParticle} chargedParticle - the model of the charged particle
+   * @param {function} snapToGridLines - function( {Property.<Vector2>})
    * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
    * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
    * @param {Tandem} tandem
    * @constructor
    */
-  function ChargedParticleNode( chargedParticle, modelViewTransform, availableModelBoundsProperty, enclosureBounds, tandem ) {
+  function ChargedParticleNode( chargedParticle,
+                                snapToGridLines,
+                                modelViewTransform,
+                                availableModelBoundsProperty,
+                                enclosureBounds,
+                                tandem ) {
 
     var self = this;
 
@@ -68,6 +74,9 @@ define( function( require ) {
         },
 
         endDrag: function( event ) {
+
+          snapToGridLines( chargedParticle.positionProperty );
+
           chargedParticle.isUserControlledProperty.set( false );
 
           if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {

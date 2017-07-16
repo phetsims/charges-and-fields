@@ -30,6 +30,7 @@ define( function( require ) {
   var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
 
   // constants
+  var GRID_MINOR_SPACING = ChargesAndFieldsConstants.GRID_MAJOR_SPACING / ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
   var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
   var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
   var WIDTH = ChargesAndFieldsConstants.WIDTH;
@@ -78,6 +79,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'isGridVisibleProperty' )
     } );
 
+    // @public {Property.<boolean>} should we snap the position of model elements to the grid (minor or major)
+    this.snapToGridProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'snapToGrid' )
+    } );
+
     // @public {Property.<boolean>} is there at least one active charged particle on the board
     this.isPlayAreaChargedProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isPlayAreaChargedProperty' )
@@ -121,6 +127,11 @@ define( function( require ) {
     // @public {Property.<boolean>}
     this.hideTogglingGridVisibilityProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'hideTogglingGridVisibilityProperty' )
+    } );
+
+    // @public {Property.<boolean>}
+    this.hideTogglingSnapToGridProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'hideTogglingSnapToGridProperty' )
     } );
 
     // @public {Property.<Bounds2>} in meters
@@ -181,6 +192,12 @@ define( function( require ) {
     // Hook up all the listeners the model
     //
     //----------------------------------------------------------------------------------------
+
+    this.snapToGridProperty.link( function( snapToGrid ) {
+      if ( snapToGrid ) {
+        self.snapAllElements();
+      }
+    } );
 
     //------------------------
     // AddItem Added Listener on the charged Particles Observable Array
@@ -641,6 +658,37 @@ define( function( require ) {
      */
     clearElectricPotentialLines: function() {
       this.electricPotentialLines.clear();
+    },
+
+    /**
+     * snap the position to the minor gridlines
+     * @param {Property.<Vector2>} positionProperty
+     * @public
+     */
+    snapToGridLines: function( positionProperty ) {
+      if ( this.snapToGridProperty.value && this.isGridVisibleProperty.value ) {
+        positionProperty.set( positionProperty.get()
+          .dividedScalar( GRID_MINOR_SPACING )
+          .roundedSymmetric()
+          .timesScalar( GRID_MINOR_SPACING ) );
+      }
+    },
+
+    snapAllElements: function() {
+      var self = this;
+
+      this.activeChargedParticles.forEach( function( chargedParticles ) {
+        self.snapToGridLines( chargedParticles.positionProperty );
+      } );
+
+      this.electricFieldSensors.forEach( function( electricFieldSensor ) {
+        self.snapToGridLines( electricFieldSensor.positionProperty );
+      } );
+
+      self.snapToGridLines( this.electricPotentialSensor.positionProperty );
+      self.snapToGridLines( this.measuringTape.basePositionProperty );
+      self.snapToGridLines( this.measuringTape.tipPositionProperty );
+
     }
   } );
 } );

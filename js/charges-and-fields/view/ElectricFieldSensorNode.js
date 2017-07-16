@@ -35,6 +35,7 @@ define( function( require ) {
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
    * @param {ElectricFieldSensor} electricFieldSensor
+   * @param {function} snapToGridLines - function( {Property.<Vector2>})
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
    * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
@@ -43,6 +44,7 @@ define( function( require ) {
    * @constructor
    */
   function ElectricFieldSensorNode( electricFieldSensor,
+                                    snapToGridLines,
                                     modelViewTransform,
                                     availableModelBoundsProperty,
                                     isPlayAreaChargedProperty,
@@ -210,6 +212,9 @@ define( function( require ) {
         },
 
         endDrag: function( event ) {
+
+          snapToGridLines( electricFieldSensor.positionProperty );
+
           electricFieldSensor.isUserControlledProperty.set( false );
 
           if ( !enclosureBounds.containsPoint( electricFieldSensor.positionProperty.get() ) ) {

@@ -21,11 +21,16 @@ define( function( require ) {
    * @constructor
    *
    * @param {MeasuringTape} measuringTape
+   * @param {function} snapToGridLines - function({Property.<Vector2>})
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
    * @param {Tandem} tandem
    */
-  function ChargesAndFieldsMeasuringTapeNode( measuringTape, modelViewTransform, availableModelBoundsProperty, tandem ) {
+  function ChargesAndFieldsMeasuringTapeNode( measuringTape,
+                                              snapToGridLines,
+                                              modelViewTransform,
+                                              availableModelBoundsProperty,
+                                              tandem ) {
 
     var self = this;
     this.measuringTape = measuringTape;
@@ -40,6 +45,15 @@ define( function( require ) {
       basePositionProperty: measuringTape.basePositionProperty,
       tipPositionProperty: measuringTape.tipPositionProperty,
       isTipDragBounded: true
+    } );
+
+    this.getIsTipUserControlledProperty().link( function() {
+      snapToGridLines( measuringTape.tipPositionProperty );
+    } );
+
+    this.getIsBaseUserControlledProperty().link( function() {
+      snapToGridLines( measuringTape.basePositionProperty );
+      snapToGridLines( measuringTape.tipPositionProperty );
     } );
 
     this.disposeChargesAndFieldsMeasuringTapeNode = function() {

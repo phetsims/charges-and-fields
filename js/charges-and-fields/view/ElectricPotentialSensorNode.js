@@ -46,6 +46,7 @@ define( function( require ) {
   /**
    *
    * @param {ElectricPotentialSensor} electricPotentialSensor - model of the electric potential sensor
+   * @param {Function} snapToGridLines - A Function that snap the position to the minor gridlines.
    * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
    * @param {Function} clearElectricPotentialLines - A function for deleting all electric potential lines in the model
    * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
@@ -56,6 +57,7 @@ define( function( require ) {
    * @constructor
    */
   function ElectricPotentialSensorNode( electricPotentialSensor,
+                                        snapToGridLines,
                                         getElectricPotentialColor,
                                         clearElectricPotentialLines,
                                         addElectricPotentialLine,
@@ -258,6 +260,9 @@ define( function( require ) {
         self.isUserControlledProperty.set( true );
       },
       endDrag: function( event ) {
+
+        snapToGridLines( electricPotentialSensor.positionProperty );
+
         self.isUserControlledProperty.set( false );
       }
     } );

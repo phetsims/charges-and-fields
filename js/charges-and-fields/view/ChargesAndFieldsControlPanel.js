@@ -28,6 +28,7 @@ define( function( require ) {
   var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
   var gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
   var valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
+  var snapToGridString = require( 'string!CHARGES_AND_FIELDS/snapToGrid' );
 
   /**
    * @constructor
@@ -40,6 +41,13 @@ define( function( require ) {
     // @private
     this.model = model;
 
+    /**
+     * checkbox factory
+     * @param tandemId
+     * @param {string} string
+     * @param {Property.<boolean>} property
+     * @returns {CheckBox}
+     */
     function createCheckBox( tandemId, string, property ) {
       var text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECK_BOX_FONT,
@@ -56,19 +64,31 @@ define( function( require ) {
       } );
     }
 
+    /**
+     * indent the checkbox
+     * @param {CheckBox} checkBox
+     * @returns {Node}
+     */
+    function createIndentedNode( checkBox ) {
+      var node = new Node();
+      var hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
+      checkBox.left = hStrut.right;
+      node.setChildren( [ hStrut, checkBox ] );
+      return node;
+    }
+
     // create checkboxes
     var electricFieldCheckBox = createCheckBox( 'electricFieldCheckBox', electricFieldString, model.isElectricFieldVisibleProperty );
     var directionOnlyCheckBox = createCheckBox( 'directionOnlyCheckBox', directionOnlyString, model.isElectricFieldDirectionOnlyProperty );
     var voltageCheckBox = createCheckBox( 'voltageCheckBox', voltageString, model.isElectricPotentialVisibleProperty );
     var valuesCheckBox = createCheckBox( 'valuesCheckBox', valuesString, model.areValuesVisibleProperty );
     var gridCheckBox = createCheckBox( 'gridCheckBox', gridString, model.isGridVisibleProperty );
+    var snapToGridCheckBox = createCheckBox( 'snapToGridCheckBox', snapToGridString, model.snapToGridProperty );
 
-    // the checkbox 'direction only' needs to be indented with respect to the other checkboxes
-    var directionOnlyGroup = new Node();
-    var hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
-    directionOnlyCheckBox.left = hStrut.right;
-    directionOnlyGroup.addChild( hStrut );
-    directionOnlyGroup.addChild( directionOnlyCheckBox );
+    // some of the checkboxes need to be indented with respect to the other checkboxes
+    var directionOnlyGroup = createIndentedNode( directionOnlyCheckBox );
+    var snapToGridGroup = createIndentedNode( snapToGridCheckBox );
+
 
     electricFieldCheckBox.hideTogglingProperty = model.hideTogglingElectricFieldVisibilityProperty;
     directionOnlyGroup.hideTogglingProperty = new DerivedProperty( [
@@ -79,13 +99,19 @@ define( function( require ) {
     valuesCheckBox.hideTogglingProperty = model.hideTogglingValuesVisibilityProperty;
     gridCheckBox.hideTogglingProperty = model.hideTogglingGridVisibilityProperty;
 
+    snapToGridGroup.hideTogglingProperty = new DerivedProperty( [
+        model.hideTogglingGridVisibilityProperty,
+        model.hideTogglingSnapToGridProperty ],
+      function( hideGrid, hideSnap ) { return hideGrid || hideSnap; } ); // NOTE: set on group
+
     // @private
     this.toggleNodes = [
       electricFieldCheckBox,
       directionOnlyGroup,
       voltageCheckBox,
       valuesCheckBox,
-      gridCheckBox
+      gridCheckBox,
+      snapToGridGroup
     ];
 
     // @private
@@ -107,13 +133,16 @@ define( function( require ) {
 
     model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckBox, 'enabled' );
 
+    model.isGridVisibleProperty.linkAttribute( snapToGridCheckBox, 'enabled' );
+
     // Ensure that we remove children that should be hidden
     Property.multilink( [
       model.hideTogglingElectricFieldVisibilityProperty,
       model.hideTogglingElectricFieldDirectionOnlyProperty,
       model.hideTogglingElectricPotentialVisibilityProperty,
       model.hideTogglingValuesVisibilityProperty,
-      model.hideTogglingGridVisibilityProperty
+      model.hideTogglingGridVisibilityProperty,
+      model.hideTogglingSnapToGridProperty
     ], this.updateHiddenChildren.bind( this ) );
   }
 
