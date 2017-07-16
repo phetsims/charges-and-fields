@@ -12,7 +12,7 @@
     "value": "Electric Field"
   },
   "directionOnly": {
-    "value": "Direction only"
+    "value": "Direction Only"
   },
   "voltage": {
     "value": "Voltage"
@@ -36,7 +36,7 @@
     "value": "deg"
   },
   "snapToGrid": {
-    "value": "Snap To Grid"
+    "value": "Snap to Grid"
   },
   "voltageUnit": {
     "value": "V"
