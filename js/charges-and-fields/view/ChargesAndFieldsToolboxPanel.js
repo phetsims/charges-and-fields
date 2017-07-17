@@ -16,7 +16,7 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
+  var MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -236,7 +236,7 @@ define( function( require ) {
       // first, create an actual measuring tape
 
       var unspooledMeterTape = 30; // in view coordinates
-      var measuringTape = new MeasuringTape( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
+      var measuringTape = new MeasuringTapeNode( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
         tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ), {
           tandem: tandem.createTandem( 'tipPositionProperty' ),
           phetioValueType: TVector2,

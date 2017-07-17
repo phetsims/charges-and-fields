@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var MeasuringTape = require( 'SCENERY_PHET/MeasuringTape' );
+  var MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
   var Property = require( 'AXON/Property' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
@@ -35,7 +35,7 @@ define( function( require ) {
     var self = this;
     this.measuringTape = measuringTape;
 
-    MeasuringTape.call( this, new Property( {
+    MeasuringTapeNode.call( this, new Property( {
       name: centimeterUnitString,
       multiplier: 100
     } ), measuringTape.isActiveProperty, {
@@ -63,7 +63,7 @@ define( function( require ) {
 
   chargesAndFields.register( 'ChargesAndFieldsMeasuringTapeNode', ChargesAndFieldsMeasuringTapeNode );
 
-  return inherit( MeasuringTape, ChargesAndFieldsMeasuringTapeNode, {
+  return inherit( MeasuringTapeNode, ChargesAndFieldsMeasuringTapeNode, {
     dispose: function() {
       this.disposeChargesAndFieldsMeasuringTapeNode();
     }
