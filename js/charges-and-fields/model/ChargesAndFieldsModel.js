@@ -81,7 +81,7 @@ define( function( require ) {
 
     // @public {Property.<boolean>} should we snap the position of model elements to the grid (minor or major)
     this.snapToGridProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'snapToGrid' )
+      tandem: tandem.createTandem( 'snapToGridProperty' )
     } );
 
     // @public {Property.<boolean>} is there at least one active charged particle on the board
