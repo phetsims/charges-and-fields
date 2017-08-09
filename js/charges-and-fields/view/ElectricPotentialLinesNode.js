@@ -45,7 +45,7 @@ define( function( require ) {
     // TODO: The instrumented items in voltageLabel are created must be given unique phetioID values.
     // Leaving disabled for now.
 
-    Node.call( this, { cursor: 'pointer' } );
+    Node.call( this, { cursor: 'pointer', tandem: tandem } );
 
     var electricPotential = electricPotentialLine.electricPotential;
     var position = electricPotentialLine.position;
@@ -57,14 +57,14 @@ define( function( require ) {
     } );
 
     this.addInputListener( new MovableDragHandler( locationProperty, {
-      tandem: tandem.createTandem( 'inputListener', { enabled: false } ),
+      tandem: tandem.createTandem( 'inputListener' ),
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
+
         // Move the label to the front of this layer when grabbed by the user.
         self.moveToFront();
       }
     } ) );
-
 
     // a smaller electric potential should have more precision
     var electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
@@ -176,7 +176,7 @@ define( function( require ) {
     var self = this;
 
     // call the super constructor
-    Node.call( this );
+    Node.call( this, { tandem: tandem } );
 
     // Create and add the parent node for all the lines (paths)
     var pathsNode = new Node();
@@ -192,13 +192,15 @@ define( function( require ) {
     var labelsNode = new Node();
     this.addChild( labelsNode );
 
+    var voltageLabelsGroupTandem = tandem.createGroupTandem( 'voltageLabels' );
+
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
     electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
 
       var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
 
-      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel' ) );
+      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, voltageLabelsGroupTandem.createNextTandem( 'voltageLabel' ) );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
