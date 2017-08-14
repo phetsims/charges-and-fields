@@ -51,6 +51,10 @@ define( function( require ) {
 
     var self = this;
 
+    // @public (read-write) {function} - supplied by the view to indicate when the charges and sensors panel is visible
+    // used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
+    this.isChargesAndSensorsPanelDisplayed = null;
+
     // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
 
@@ -179,7 +183,11 @@ define( function( require ) {
       var userControlledListener = function( isUserControlled ) {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled && self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
+        if ( !isUserControlled &&
+
+             // only drop in if the toolbox is showing (may be hidden by phet-io)
+             self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
+             self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
           addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
           addedChargedParticle.animate(); // animate the charge to its destination position
         }
@@ -282,6 +290,9 @@ define( function( require ) {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
+
+             // only drop in if the toolbox is showing (may be hidden by phet-io)
+             self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
              self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
           addedElectricFieldSensor.isActiveProperty.set( false );
           addedElectricFieldSensor.animate();

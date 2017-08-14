@@ -227,6 +227,11 @@ define( function( require ) {
       },
       canAddMoreChargedParticlesProperty, modelViewTransform, tandem.createTandem( 'chargesAndSensorsPanel' ) );
 
+    model.isChargesAndSensorsPanelDisplayed = function() {
+      var trail = chargesAndSensorsPanel.getUniqueTrail();
+      return trail.isVisible() && trail.rootNode() === phet.joist.display.rootNode;
+    };
+
     function updateSensorPanelLayout() {
       chargesAndSensorsPanel.bottom = self.layoutBounds.bottom - 15;
       chargesAndSensorsPanel.centerX = self.layoutBounds.centerX;
