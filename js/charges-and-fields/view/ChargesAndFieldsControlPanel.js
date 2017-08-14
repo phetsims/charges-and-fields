@@ -13,8 +13,6 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var CheckBox = require( 'SUN/CheckBox' );
   var Panel = require( 'SUN/Panel' );
-  var Property = require( 'AXON/Property' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
