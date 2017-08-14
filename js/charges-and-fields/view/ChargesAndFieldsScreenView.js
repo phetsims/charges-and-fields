@@ -55,6 +55,16 @@ define( function( require ) {
   var IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric potential lines
 
   /**
+   * Determine whether a node is visible in the display, it must be a child and visible.
+   * @param {Node} node
+   * @returns {boolean}
+   */
+  var isDisplayed = function( node ) {
+    var trail = node.getUniqueTrail();
+    return trail.isVisible() && trail.rootNode() === phet.joist.display.rootNode;
+  };
+
+  /**
    * @constructor
    *
    * @param {ChargesAndFieldsModel} model - main model of the simulation
@@ -286,29 +296,31 @@ define( function( require ) {
     // return the electric Potential sensor to the toolboxPanel if it is not user Controlled and the
     // location of the sensor is inside the toolboxPanel panel
     electricPotentialSensorNode.isUserControlledProperty.link( function( isUserControlled ) {
-      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 5 ) ) ) {
+      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 5 ) ) && isDisplayed( toolboxPanel ) ) {
         model.electricPotentialSensor.isActiveProperty.set( false );
       }
     } );
 
     // listens to the isUserControlled property of the measuring tape
-    // return the measuring tape to the toolboxPanel if not user Controlled and
-    // its position is located within the toolbox panel
-    measuringTapeNode.isBaseUserControlledProperty.link( function( isUserControlled ) {
+    // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the
+    // toolbox panel
+    measuringTapeNode.isBaseUserControlledProperty.link( function( isBaseUserControlled ) {
       var tapeBaseBounds = measuringTapeNode.localToParentBounds( measuringTapeNode.getLocalBaseBounds() );
-      if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( tapeBaseBounds.eroded( 5 ) ) ) {
+      if ( !isBaseUserControlled && toolboxPanel.bounds.intersectsBounds( tapeBaseBounds.eroded( 5 ) ) && isDisplayed( toolboxPanel ) ) {
         model.measuringTape.isActiveProperty.set( false );
       }
     } );
 
     // dynamic parts of the control layout
     function updateControlLayout() {
+
       // right-align control panels
       var right = modelViewTransform.modelToViewX( self.availableModelBoundsProperty.get().right ) - 10;
       controlPanel.right = right;
       resetAllButton.right = right;
       toolboxPanel.right = right;
 
+      // toolbox panel below the control panel
       toolboxPanel.top = controlPanel.bottom + 10;
     }
 
