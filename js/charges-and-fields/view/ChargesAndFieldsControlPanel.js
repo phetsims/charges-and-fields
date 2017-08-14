@@ -89,21 +89,6 @@ define( function( require ) {
     var directionOnlyGroup = createIndentedNode( directionOnlyCheckBox );
     var snapToGridGroup = createIndentedNode( snapToGridCheckBox );
 
-
-    electricFieldCheckBox.hideTogglingProperty = model.hideTogglingElectricFieldVisibilityProperty;
-    directionOnlyGroup.hideTogglingProperty = new DerivedProperty( [
-        model.hideTogglingElectricFieldVisibilityProperty,
-        model.hideTogglingElectricFieldDirectionOnlyProperty ],
-      function( hideEF, hideDirectionOnly ) { return hideEF || hideDirectionOnly; } ); // NOTE: set on group
-    voltageCheckBox.hideTogglingProperty = model.hideTogglingElectricPotentialVisibilityProperty;
-    valuesCheckBox.hideTogglingProperty = model.hideTogglingValuesVisibilityProperty;
-    gridCheckBox.hideTogglingProperty = model.hideTogglingGridVisibilityProperty;
-
-    snapToGridGroup.hideTogglingProperty = new DerivedProperty( [
-        model.hideTogglingGridVisibilityProperty,
-        model.hideTogglingSnapToGridProperty ],
-      function( hideGrid, hideSnap ) { return hideGrid || hideSnap; } ); // NOTE: set on group
-
     // @private
     this.toggleNodes = [
       electricFieldCheckBox,
@@ -134,35 +119,9 @@ define( function( require ) {
     model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckBox, 'enabled' );
 
     model.isGridVisibleProperty.linkAttribute( snapToGridCheckBox, 'enabled' );
-
-    // Ensure that we remove children that should be hidden
-    Property.multilink( [
-      model.hideTogglingElectricFieldVisibilityProperty,
-      model.hideTogglingElectricFieldDirectionOnlyProperty,
-      model.hideTogglingElectricPotentialVisibilityProperty,
-      model.hideTogglingValuesVisibilityProperty,
-      model.hideTogglingGridVisibilityProperty,
-      model.hideTogglingSnapToGridProperty
-    ], this.updateHiddenChildren.bind( this ) );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsControlPanel', ChargesAndFieldsControlPanel );
 
-  return inherit( Panel, ChargesAndFieldsControlPanel, {
-    /**
-     * Removes children that should be hidden
-     * @private
-     */
-    updateHiddenChildren: function() {
-      this.checkBoxGroup.children = this.toggleNodes.filter( function( toggleNode ) {
-        return !toggleNode.hideTogglingProperty.get();
-      } );
-
-      this.visible = this.model.isElectricFieldVisibleProperty.get() ||
-                     this.model.isElectricPotentialVisibleProperty.get() ||
-                     this.model.areValuesVisibleProperty.get() ||
-                     this.model.isGridVisibleProperty.get();
-    }
-  } );
-
+  return inherit( Panel, ChargesAndFieldsControlPanel );
 } );

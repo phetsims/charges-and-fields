@@ -104,36 +104,6 @@ define( function( require ) {
       tandem: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' )
     } );
 
-    // @public {Property.<boolean>}
-    this.hideTogglingElectricFieldVisibilityProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'hideTogglingElectricFieldVisibilityProperty' )
-    } );
-
-    // @public {Property.<boolean>}
-    this.hideTogglingElectricFieldDirectionOnlyProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'hideTogglingElectricFieldDirectionOnlyProperty' )
-    } );
-
-    // @public {Property.<boolean>}
-    this.hideTogglingElectricPotentialVisibilityProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'hideTogglingElectricPotentialVisibilityProperty' )
-    } );
-
-    // @public {Property.<boolean>}
-    this.hideTogglingValuesVisibilityProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'hideTogglingValuesVisibilityProperty' )
-    } );
-
-    // @public {Property.<boolean>}
-    this.hideTogglingGridVisibilityProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'hideTogglingGridVisibilityProperty' )
-    } );
-
-    // @public {Property.<boolean>}
-    this.hideTogglingSnapToGridProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'hideTogglingSnapToGridProperty' )
-    } );
-
     // @public {Property.<Bounds2>} in meters
     this.chargesAndSensorsEnclosureBoundsProperty = new Property(
       new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
@@ -360,11 +330,6 @@ define( function( require ) {
       this.allowNewPositiveChargesProperty.reset();
       this.allowNewNegativeChargesProperty.reset();
       this.allowNewElectricFieldSensorsProperty.reset();
-      this.hideTogglingElectricFieldVisibilityProperty.reset();
-      this.hideTogglingElectricFieldDirectionOnlyProperty.reset();
-      this.hideTogglingElectricPotentialVisibilityProperty.reset();
-      this.hideTogglingValuesVisibilityProperty.reset();
-      this.hideTogglingGridVisibilityProperty.reset();
       this.chargesAndSensorsEnclosureBoundsProperty.reset();
 
       this.chargedParticles.clear(); // clear all the charges
