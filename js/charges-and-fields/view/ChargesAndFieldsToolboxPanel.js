@@ -35,7 +35,6 @@ define( function( require ) {
 
   // constants
   var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
-  var SENSOR_HEIGHT = electricPotentialPanelOutlineImage.height;
 
   // strings
   var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
@@ -116,8 +115,7 @@ define( function( require ) {
         electricPotentialSensor.isActiveProperty.set( true );
 
         // initial position of the pointer in the screenView coordinates
-        var initialViewPosition = self.globalToParentPoint( event.pointer.point )
-          .plus( new Vector2( 0, -SENSOR_HEIGHT * 6 / 25 ) );
+        var initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
         electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
         electricPotentialSensorNode.movableDragHandler.startDrag( event );
