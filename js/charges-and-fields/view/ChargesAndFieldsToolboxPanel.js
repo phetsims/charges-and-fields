@@ -177,7 +177,7 @@ define( function( require ) {
 
       // Create the base of the crosshair
       // TODO: why is the fill the same as the stroke?
-      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, 5, 5, {
+      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
         fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
         stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
         tandem: tandem.createTandem( 'crosshairMount' )
