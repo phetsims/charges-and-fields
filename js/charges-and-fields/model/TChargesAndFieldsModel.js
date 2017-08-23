@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
-  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
   var TVector2 = require( 'DOT/TVector2' );
@@ -62,7 +62,7 @@ define( function( require ) {
           return instance.addElectricFieldSensor( tandem );
         }
         else if ( tandem.tail.indexOf( 'electricPotentialLines' ) === 0 ) {
-          return instance.addElectricPotentialLine( TVector2.fromStateObject( stateObject.position ) );
+          return instance.addElectricPotentialLine( TVector2.fromStateObject( stateObject.position ), tandem );
         }
         else {
           throw new Error( 'child type not found: ' + tandem.id );

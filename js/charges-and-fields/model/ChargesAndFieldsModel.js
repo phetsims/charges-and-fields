@@ -577,8 +577,9 @@ define( function( require ) {
      * The drawing of the electricPotential line is handled in the view (electricPotentialLineNode)
      * @public
      * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
+     * @param {Tandem} [tandem] - tandem to use (if undefined a new tandem from the group will be used), necessary to recreate state from a saved PhET-iO state
      */
-    addElectricPotentialLine: function( position ) {
+    addElectricPotentialLine: function( position, tandem ) {
       // Do not try to add an equipotential line if there are no charges.
       if ( !this.isPlayAreaChargedProperty.get() ) {
         return;
@@ -605,10 +606,12 @@ define( function( require ) {
         this.getElectricPotential.bind( this ),
         this.getElectricField.bind( this ),
         this.isPlayAreaChargedProperty,
-        this.electricPotentialLineTandemGroup.createNextTandem()
+        tandem || this.electricPotentialLineTandemGroup.createNextTandem()
       );
 
       this.electricPotentialLines.push( electricPotentialLine );
+
+      return electricPotentialLine; // for chaining and for PhET-iO restore state
     },
 
     /**
