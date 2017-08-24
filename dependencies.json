@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.1.0-phetiodev.1 Tue Aug 22 2017 10:07:23 GMT-0600 (MDT)",
+  "comment": "# charges-and-fields 1.1.0-phetiodev.3 Thu Aug 24 2017 15:47:25 GMT-0600 (MDT)",
   "assert": {
     "sha": "928741cfc8fe804334d5b35292140314511f8678",
     "branch": "master"
@@ -13,11 +13,11 @@
     "branch": "master"
   },
   "charges-and-fields": {
-    "sha": "a07d0d4a077a3c08de6ac2b9d36195b97a6aae98",
+    "sha": "f2ea716af93ba9fd4b5aed3c68496ea67096fa91",
     "branch": "master"
   },
   "chipper": {
-    "sha": "157b6f57f3ce706a3a842e7240dfb9fa2eb3f7b9",
+    "sha": "c6ebc753b034d44354757e97ae7b2ee818c02dfa",
     "branch": "master"
   },
   "dot": {
@@ -37,7 +37,7 @@
     "branch": "master"
   },
   "phet-io": {
-    "sha": "7b2622785bca3115cc421ed21d3147b821cf617e",
+    "sha": "67e450f36945cdd1c1552183cad2ab0c2782a628",
     "branch": "master"
   },
   "phet-io-website": {
@@ -53,11 +53,11 @@
     "branch": "master"
   },
   "phet-io-wrapper-sonification": {
-    "sha": "b41b1360aa6a69814c9ba0b9af30bac8d87202d0",
+    "sha": "f66ea6d1a8a82ffdd697e3484691decb1d47341a",
     "branch": "master"
   },
   "phet-io-wrappers": {
-    "sha": "4e236cbece9fc39e03ac276c78c75edbf4e8cc1c",
+    "sha": "60ead81c71e3113eddfaffd8448460defde1bbc9",
     "branch": "master"
   },
   "phetcommon": {
@@ -73,11 +73,11 @@
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "ae0e06ea09c29d5d25294886c805bd7b315942f5",
+    "sha": "7a4b4d3aa62cfe169e2e3a2791568ebc02c0e64c",
     "branch": "master"
   },
   "sherpa": {
-    "sha": "dba01386dd884865c2111c0b5c63f31a4cdfbefb",
+    "sha": "8a5d6d7f7fe731babf3d0c54b357c82740ba4b8e",
     "branch": "master"
   },
   "sun": {
@@ -85,7 +85,7 @@
     "branch": "master"
   },
   "tandem": {
-    "sha": "e6a58f1e657fa6ce5b80d34aa6a05e2adc214380",
+    "sha": "37243b99c58d4195f7f9302b72bda8456dff307a",
     "branch": "master"
   }
 }
