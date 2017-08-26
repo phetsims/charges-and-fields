@@ -29,7 +29,8 @@ define( function( require ) {
     // @public {Property.<Vector2>}
     this.positionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'positionProperty' ),
-      phetioValueType: TVector2
+      phetioValueType: TVector2,
+      useDeepEquality: true // see https://github.com/phetsims/charges-and-fields/issues/132
     } );
 
     // @public {Property.<boolean>}
