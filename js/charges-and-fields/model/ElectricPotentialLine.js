@@ -62,6 +62,9 @@ define( function( require ) {
       tandem.removeInstance( self );
     };
     tandem.addInstance( this, TElectricPotentialLine );
+
+    // @public (read-only) - used to identify tandems for the corresponding views
+    this.tandem = tandem;
   }
 
   chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );

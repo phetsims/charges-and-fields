@@ -42,9 +42,6 @@ define( function( require ) {
    */
   function VoltageLabel( electricPotentialLine, modelViewTransform, tandem ) {
 
-    // TODO: The instrumented items in voltageLabel are created must be given unique phetioID values.
-    // Leaving disabled for now.
-
     Node.call( this, { cursor: 'pointer', tandem: tandem } );
 
     var electricPotential = electricPotentialLine.electricPotential;
@@ -52,11 +49,12 @@ define( function( require ) {
 
     var self = this;
     var locationProperty = new Property( position, {
-      tandem: tandem.createTandem( 'locationProperty', { enabled: false } ),
-      phetioValueType: TVector2
+      tandem: tandem.createTandem( 'locationProperty' ),
+      phetioValueType: TVector2,
+      useDeepEquality: true
     } );
 
-    this.addInputListener( new MovableDragHandler( locationProperty, {
+    var movableDragHandler = new MovableDragHandler( locationProperty, {
       tandem: tandem.createTandem( 'inputListener' ),
       modelViewTransform: modelViewTransform,
       startDrag: function( event ) {
@@ -64,7 +62,8 @@ define( function( require ) {
         // Move the label to the front of this layer when grabbed by the user.
         self.moveToFront();
       }
-    } ) );
+    } );
+    this.addInputListener( movableDragHandler );
 
     // a smaller electric potential should have more precision
     var electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
@@ -77,14 +76,14 @@ define( function( require ) {
       font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty,
-      tandem: tandem.createTandem( 'voltageLabelText', { enabled: false } )
+      tandem: tandem.createTandem( 'voltageLabelText' )
     } );
 
     // Create a background rectangle for the voltage label
     var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
-      tandem: tandem.createTandem( 'backgroundRectangle', { enabled: false } )
+      tandem: tandem.createTandem( 'backgroundRectangle' )
     } );
 
     this.addChild( backgroundRectangle ); // must go first
@@ -109,9 +108,11 @@ define( function( require ) {
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = function() {
       locationProperty.unlink( locationFunction );
+      locationProperty.dispose();
+      movableDragHandler.dispose();
+      voltageLabelText.dispose();
+      backgroundRectangle.dispose();
     };
-
-
   }
 
   inherit( Node, VoltageLabel, {
@@ -192,15 +193,13 @@ define( function( require ) {
     var labelsNode = new Node();
     this.addChild( labelsNode );
 
-    var voltageLabelsGroupTandem = tandem.createGroupTandem( 'voltageLabels' );
-
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
     electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
 
       var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
 
-      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, voltageLabelsGroupTandem.createNextTandem( 'voltageLabel' ) );
+      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel_' + electricPotentialLine.tandem.tail ) );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
