@@ -7,8 +7,8 @@
 define( function( require ) {
   'use strict';
 
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Tandem = require( 'TANDEM/Tandem' );
 
   return chargesAndFields.register( 'ChargesAndFieldsConstants', {

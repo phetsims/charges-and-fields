@@ -10,11 +10,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ElectricFieldArrowShape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowShape' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var Emitter = require( 'AXON/Emitter' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  var ElectricFieldArrowShape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowShape' );
+  var Emitter = require( 'AXON/Emitter' );
 
   // Our shape that we'll use to draw (origin is where it will rotate)
   var arrowShape = new ElectricFieldArrowShape();

@@ -10,9 +10,9 @@ define( function( require ) {
 
   // modules
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var Image = require( 'SCENERY/nodes/Image' );
 
   // images
   var pencilImage = require( 'mipmap!CHARGES_AND_FIELDS/pencil.png,level=5' );

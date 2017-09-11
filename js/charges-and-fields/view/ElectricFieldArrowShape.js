@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
   var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @constructor

@@ -22,8 +22,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @constructor

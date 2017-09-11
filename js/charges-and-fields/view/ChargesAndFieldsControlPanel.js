@@ -9,24 +9,24 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var CheckBox = require( 'SUN/CheckBox' );
-  var Panel = require( 'SUN/Panel' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // strings
-  var electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
   var directionOnlyString = require( 'string!CHARGES_AND_FIELDS/directionOnly' );
-  var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
+  var electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
   var gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
-  var valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
   var snapToGridString = require( 'string!CHARGES_AND_FIELDS/snapToGrid' );
+  var valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
+  var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
 
   /**
    * @constructor

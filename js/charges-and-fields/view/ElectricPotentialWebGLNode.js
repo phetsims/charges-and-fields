@@ -35,6 +35,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -42,7 +43,6 @@ define( function( require ) {
   var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
   var Util = require( 'SCENERY/util/Util' );
   var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
 
   // integer constants for our shader
   var TYPE_ADD = 0;
