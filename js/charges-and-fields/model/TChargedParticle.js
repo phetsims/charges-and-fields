@@ -31,7 +31,7 @@ define( function( require ) {
   phetioInherit( TModelElement, 'TChargedParticle', TChargedParticle, {
     setCharge: {
       returnType: TVoid,
-      parameterTypes: [ TNumber() ],
+      parameterTypes: [ TNumber ],
       implementation: function( value ) {
         this.instance.charge = value.charge;
       },

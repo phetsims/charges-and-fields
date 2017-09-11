@@ -10,15 +10,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
-  var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var TVector2 = require( 'DOT/TVector2' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
 
   /**
    * @constructor
@@ -36,9 +36,9 @@ define( function( require ) {
     } );
 
     // @public
-    this.electricPotentialProperty = new Property( 0, {
+    this.electricPotentialProperty = new NumberProperty( 0, {
       tandem: tandem.createTandem( 'electricPotentialProperty' ),
-      phetioValueType: TNumber( { units: 'volts' } ),
+      units: 'volts',
       phetioInstanceDocumentation: 'electricPotentialProperty is updated by the model and should not be set by the user'
     } );
 
