@@ -73,7 +73,10 @@ define( function( require ) {
   function ChargesAndFieldsScreenView( model, tandem ) {
 
     var self = this;
-    ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 1024, 618 ) } );
+    ScreenView.call( this, {
+      layoutBounds: new Bounds2( 0, 0, 1024, 618 ),
+      tandem: tandem
+    } );
 
     // Create a property that registers the model bounds based on the screen size
     // the availableModelBounds should not be reset when the resetAllButton is pressed,
