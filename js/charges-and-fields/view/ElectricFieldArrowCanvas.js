@@ -52,6 +52,10 @@ define( function( require ) {
     context.fillStyle = ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.get().toCSS();
     context.fill();
 
+    context.lineWidth = 0.5;
+    context.strokeStyle = ChargesAndFieldsColorProfile.electricFieldGridSaturationStrokeProperty.get().toCSS();
+    context.stroke();
+
     context.restore();
 
     emitter.emit();
@@ -60,6 +64,7 @@ define( function( require ) {
   // Draw immediately, and update on any color profile changes
   draw();
   ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( draw );
+  ChargesAndFieldsColorProfile.electricFieldGridSaturationStrokeProperty.link( draw );
 
   return chargesAndFields.register( 'ElectricFieldArrowCanvas', {
     // @public {number} - Scale that was applied to the ArrowShape. Presumably un-scale by this amount.

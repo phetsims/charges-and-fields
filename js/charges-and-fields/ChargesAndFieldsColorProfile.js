@@ -138,6 +138,10 @@ define( function( require ) {
       default: WHITE,
       projector: RED
     },
+    electricFieldGridSaturationStroke: {
+      default: BLACK,
+      projector: BLACK
+    },
     electricFieldGridZero: {
       default: BLACK,
       projector: WHITE
