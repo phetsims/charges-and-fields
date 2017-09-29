@@ -238,7 +238,7 @@ define( function( require ) {
 
           // dispose of the link for garbage collection
           electricPotentialLinePath.dispose();
-          self.disposeElectricPotentialLinesNode();
+          self.dispose();
           voltageLabel.dispose();
 
           electricPotentialLines.removeItemRemovedListener( removalListener );
@@ -247,13 +247,13 @@ define( function( require ) {
 
     } ); // end of addItemAddedListener
 
-    this.disposeElectricPotentialLinesNode = function() {
-      areValuesVisibleProperty.unlinkAttribute( labelsNode, 'visible' );
-    };
-
     // Control the visibility of the value (voltage) labels
     // no need to unlink present for the lifetime of the sim
-    areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
+    var areValuesVisibleListener = areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
+
+    this.disposeElectricPotentialLinesNode = function() {
+      areValuesVisibleProperty.unlinkAttribute( areValuesVisibleListener );
+    };
   }
 
   chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );
@@ -261,6 +261,7 @@ define( function( require ) {
   return inherit( Node, ElectricPotentialLinesNode, {
     dispose: function() {
       this.disposeElectricPotentialLinesNode();
+      Node.prototype.dispose.call( this );
     }
   } );
 } );
