@@ -307,7 +307,6 @@ define( function( require ) {
           addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
           addedElectricFieldSensor.positionProperty.unlink( positionListener );
           electricFieldSensors.removeItemRemovedListener( removalListener );
-          removedElectricFieldSensor.dispose();
         }
       } );
     } );
