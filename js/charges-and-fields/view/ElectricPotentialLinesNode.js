@@ -174,8 +174,6 @@ define( function( require ) {
    */
   function ElectricPotentialLinesNode( electricPotentialLines, modelViewTransform, areValuesVisibleProperty, tandem ) {
 
-    var self = this;
-
     // call the super constructor
     Node.call( this, { tandem: tandem } );
 
@@ -229,7 +227,6 @@ define( function( require ) {
 
       electricPotentialLines.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
         if ( removedElectricPotentialLine === electricPotentialLine ) {
-
           pathsNode.removeChild( electricPotentialLinePath );
           labelsNode.removeChild( voltageLabel );
           if ( IS_DEBUG ) {
@@ -238,7 +235,6 @@ define( function( require ) {
 
           // dispose of the link for garbage collection
           electricPotentialLinePath.dispose();
-          self.dispose();
           voltageLabel.dispose();
 
           electricPotentialLines.removeItemRemovedListener( removalListener );
@@ -249,20 +245,11 @@ define( function( require ) {
 
     // Control the visibility of the value (voltage) labels
     // no need to unlink present for the lifetime of the sim
-    var areValuesVisibleListener = areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
-
-    this.disposeElectricPotentialLinesNode = function() {
-      areValuesVisibleProperty.unlinkAttribute( areValuesVisibleListener );
-    };
+    areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
   }
 
   chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );
 
-  return inherit( Node, ElectricPotentialLinesNode, {
-    dispose: function() {
-      this.disposeElectricPotentialLinesNode();
-      Node.prototype.dispose.call( this );
-    }
-  } );
+  return inherit( Node, ElectricPotentialLinesNode );
 } );
 
