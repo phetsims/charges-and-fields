@@ -44,7 +44,8 @@ define( function( require ) {
       modelViewTransform: modelViewTransform,
       basePositionProperty: measuringTape.basePositionProperty,
       tipPositionProperty: measuringTape.tipPositionProperty,
-      isTipDragBounded: true
+      isTipDragBounded: true,
+      textBackgroundColor: 'rgba( 0, 0, 0, 0.65 )'
     } );
 
     this.getIsTipUserControlledProperty().link( function() {
