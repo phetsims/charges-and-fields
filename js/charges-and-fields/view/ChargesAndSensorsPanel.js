@@ -20,7 +20,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -83,9 +82,6 @@ define( function( require ) {
       labelText.top = 0;
       previewNode.centerY = -VERTICAL_SPACING;
 
-      // Hook up the tandem
-      itemTandem.addInstance( node, TNode );
-
       // When pressed, creates a model element and triggers startDrag() on the corresponding view
       node.addInputListener( {
         down: function( event ) {
@@ -112,6 +108,11 @@ define( function( require ) {
       isVisibleProperty.linkAttribute( node, 'visible' );
 
       self.draggableItems.push( node );
+
+      // Hook up the tandem
+      node.mutate( {
+        tandem: itemTandem
+      } );
 
       return node;
     }

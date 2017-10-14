@@ -25,7 +25,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
   var TVector2 = require( 'DOT/TVector2' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -219,7 +218,9 @@ define( function( require ) {
       node.addChild( backgroundRectangle );
       node.addChild( voltageReading );
 
-      tandem.createTandem( 'electricPotentialSensor' ).addInstance( node, TNode );
+      node.mutate( {
+        tandem: tandem.createTandem( 'electricPotentialSensor' )
+      } );
 
       return node;
     },
