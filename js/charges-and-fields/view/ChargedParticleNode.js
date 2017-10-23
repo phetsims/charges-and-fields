@@ -56,7 +56,7 @@ define( function( require ) {
         dragBounds: availableModelBoundsProperty.get(),
         modelViewTransform: modelViewTransform,
         startDrag: function( event ) {
-          if ( !chargedParticle.isAnimated ) // you can't drag an animated particle
+          if ( !chargedParticle.animationTween ) // you can't drag an animated particle
           {
             chargedParticle.isUserControlledProperty.set( true );
 

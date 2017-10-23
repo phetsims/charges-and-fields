@@ -51,9 +51,9 @@ define( function( require ) {
       tandem: tandem.createTandem( 'isInteractiveProperty' )
     } );
 
-    // @public read-only
-    // Flag that indicates whether this element is animated from one location to another
-    this.isAnimated = false;
+    // @public (read-only) {Tween|null} - Tween that is animating the particle back to its home in the toolbox, or null
+    // if not animating.  Public access is only for checking existence, not for manipulating or reading the tween attributes
+    this.animationTween = null;
 
     // @public
     this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
@@ -74,6 +74,9 @@ define( function( require ) {
       this.isUserControlledProperty.dispose();
       this.isActiveProperty.dispose();
       this.positionProperty.dispose();
+
+      // Cancel animation (if any) so it doesn't try to update a disposed ModelElement
+      this.animationTween && this.animationTween.stop();
     },
 
     /**
@@ -81,6 +84,8 @@ define( function( require ) {
      * @public
      */
     animate: function() {
+
+      assert && assert( this.animationTween === null, 'cannot start animating while already animating' );
       var self = this;
 
       // distance from current position to the destination position
@@ -95,19 +100,17 @@ define( function( require ) {
         y: this.positionProperty.get().y
       };
 
-      var animationTween = new TWEEN.Tween( position ).to( {
+      this.animationTween = new TWEEN.Tween( position ).to( {
         x: this.initialPosition.x,
         y: this.initialPosition.y
-      }, animationTime ).easing( TWEEN.Easing.Cubic.InOut ).onStart( function() {
-        self.isAnimated = true;
-      } ).onUpdate( function() {
+      }, animationTime ).easing( TWEEN.Easing.Cubic.InOut ).onUpdate( function() {
         self.positionProperty.set( new Vector2( position.x, position.y ) );
       } ).onComplete( function() {
-        self.isAnimated = false; // done with the animation
+        self.animationTween = null; // done with the animation
         self.returnedToOriginEmitter.emit(); // model element can be removed from its observable array
       } );
 
-      animationTween.start( phet.joist.elapsedTime );
+      this.animationTween.start( phet.joist.elapsedTime );
     }
   } );
 } );
