@@ -13,7 +13,8 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var DragListener = require( 'SCENERY/listeners/DragListener' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
@@ -50,47 +51,34 @@ define( function( require ) {
     };
     chargedParticle.positionProperty.link( positionListener );
 
-    this.movableDragHandler = new MovableDragHandler(
-      chargedParticle.positionProperty, {
-        tandem: tandem.createTandem( 'movableDragHandler' ),
-        dragBounds: availableModelBoundsProperty.get(),
-        modelViewTransform: modelViewTransform,
-        startDrag: function( event ) {
-          if ( !chargedParticle.animationTween ) // you can't drag an animated particle
-          {
-            chargedParticle.isUserControlledProperty.set( true );
+    this.movableDragHandler = new DragListener( {
+      applyOffset: false,
+      targetNode: this,
+      locationProperty: chargedParticle.positionProperty,
+      tandem: tandem.createTandem( 'movableDragHandler' ),
+      dragBounds: availableModelBoundsProperty.get(),
+      transform: modelViewTransform,
+      canStartPress: function() { return !chargedParticle.animationTween; },
+      isUserControlledProperty: chargedParticle.isUserControlledProperty,
+      offsetLocation: function( point, listener ) {
+        return listener.pointer.isTouch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
+      },
+      start: function( event, listener ) {
+        // Move the chargedParticle to the front of this layer when grabbed by the user.
+        self.moveToFront();
+      },
+      end: function( event, listener ) {
+        snapToGridLines( chargedParticle.positionProperty );
 
-            // Move the chargedParticle to the front of this layer when grabbed by the user.
-            self.moveToFront();
-            var globalPoint = self.globalToParentPoint( event.pointer.point );
-
-            if ( event.pointer.isTouch ) {
-              globalPoint.addXY( 0, -2 * CIRCLE_RADIUS );
-            }
-
-            // move this node upward so that the cursor touches the bottom of the chargedParticle
-            chargedParticle.positionProperty.set( modelViewTransform.viewToModelPosition( globalPoint ) );
-          }
-        },
-
-        endDrag: function( event ) {
-
-          snapToGridLines( chargedParticle.positionProperty );
-
-          chargedParticle.isUserControlledProperty.set( false );
-
-          if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {
-            chargedParticle.isActiveProperty.set( true );
-          }
+        if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {
+          chargedParticle.isActiveProperty.set( true );
         }
-      } );
+      }
+    } );
 
     // readjust the dragBounds of the movable drag handler when the screen is resized
-    var availableModelBoundsPropertyListener = function( bounds ) {
-      self.movableDragHandler.setDragBounds( bounds );
-    };
-
-    availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
+    var dragBoundsListener = self.movableDragHandler.setDragBounds.bind( self.movableDragHandler );
+    availableModelBoundsProperty.link( dragBoundsListener );
 
     // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
     var isDragListenerAttached = false;
@@ -115,7 +103,7 @@ define( function( require ) {
     chargedParticle.isInteractiveProperty.link( isInteractiveListener );
 
     this.disposeChargedParticleNode = function() {
-      availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
+      availableModelBoundsProperty.unlink( dragBoundsListener );
       chargedParticle.positionProperty.unlink( positionListener );
       chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
       this.movableDragHandler.dispose();
