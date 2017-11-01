@@ -82,7 +82,7 @@ define( function( require ) {
       labelText.top = 0;
       previewNode.centerY = -VERTICAL_SPACING;
 
-      // When pressed, creates a model element and triggers startDrag() on the corresponding view
+      // When pressed, creates a model element and triggers press() on the corresponding view
       node.addInputListener( {
         down: function( event ) {
 

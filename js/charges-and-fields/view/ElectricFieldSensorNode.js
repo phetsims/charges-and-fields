@@ -14,12 +14,13 @@ define( function( require ) {
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var DragListener = require( 'SCENERY/listeners/DragListener' );
   var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // strings
   var angleUnitString = require( 'string!CHARGES_AND_FIELDS/angleUnit' );
@@ -186,47 +187,36 @@ define( function( require ) {
     };
     electricFieldSensor.positionProperty.link( positionListener );
 
-    this.movableDragHandler = new MovableDragHandler(
-      electricFieldSensor.positionProperty, {
-        tandem: tandem.createTandem( 'movableDragHandler' ),
-        dragBounds: availableModelBoundsProperty.get(),
-        modelViewTransform: modelViewTransform,
-        startDrag: function( event ) {
+    this.movableDragHandler = new DragListener( {
+      applyOffset: false,
+      targetNode: this,
+      locationProperty: electricFieldSensor.positionProperty,
+      tandem: tandem.createTandem( 'dragListener' ),
+      dragBounds: availableModelBoundsProperty.value,
+      transform: modelViewTransform,
+      canStartPress: function() { return !electricFieldSensor.animationTween; },
+      isUserControlledProperty: electricFieldSensor.isUserControlledProperty,
+      offsetLocation: function( point, listener ) {
+        return listener.pointer.isTouch ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
+      },
+      start: function( event, listener ) {
+        // Move the sensor to the front of this layer when grabbed by the user.
+        self.moveToFront();
+      },
 
-          if ( !electricFieldSensor.animationTween ) // don't drag nodes that are animated
-          {
-            electricFieldSensor.isUserControlledProperty.set( true );
-            // Move the sensor to the front of this layer when grabbed by the user.
-            self.moveToFront();
+      end: function( event, listener ) {
+        snapToGridLines( electricFieldSensor.positionProperty );
 
-            var globalPoint = self.globalToParentPoint( event.pointer.point );
-
-            if ( event.pointer.isTouch ) {
-              globalPoint.addXY( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS );
-            }
-
-            // move this node upward so that the cursor touches the bottom of the chargedParticle
-            electricFieldSensor.positionProperty.set( modelViewTransform.viewToModelPosition( globalPoint ) );
-
-          }
-        },
-
-        endDrag: function( event ) {
-
-          snapToGridLines( electricFieldSensor.positionProperty );
-
-          electricFieldSensor.isUserControlledProperty.set( false );
-
-          if ( !enclosureBounds.containsPoint( electricFieldSensor.positionProperty.get() ) ) {
-            electricFieldSensor.isActiveProperty.set( true );
-          }
-
-          // Avoid corner-case issue #89. Treat excessively large E-field magnitude as an indicator that r ~ 0
-          if ( electricFieldSensor.electricField.magnitude() > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
-            arrowNode.visible = false;
-          }
+        if ( !enclosureBounds.containsPoint( electricFieldSensor.positionProperty.get() ) ) {
+          electricFieldSensor.isActiveProperty.set( true );
         }
-      } );
+
+        // Avoid corner-case issue #89. Treat excessively large E-field magnitude as an indicator that r ~ 0
+        if ( electricFieldSensor.electricField.magnitude() > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
+          arrowNode.visible = false;
+        }
+      }
+    } );
 
     // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
     var isDragListenerAttached = false;

@@ -55,7 +55,7 @@ define( function( require ) {
       applyOffset: false,
       targetNode: this,
       locationProperty: chargedParticle.positionProperty,
-      tandem: tandem.createTandem( 'movableDragHandler' ),
+      tandem: tandem.createTandem( 'dragListener' ),
       dragBounds: availableModelBoundsProperty.get(),
       transform: modelViewTransform,
       canStartPress: function() { return !chargedParticle.animationTween; },

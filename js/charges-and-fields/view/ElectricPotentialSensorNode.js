@@ -17,11 +17,11 @@ define( function( require ) {
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var DragListener = require( 'SCENERY/listeners/DragListener' );
   var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
@@ -252,18 +252,15 @@ define( function( require ) {
     electricPotentialSensor.electricPotentialProperty.link( potentialListener );
 
     // Should be added as a listener by our parent when the time is right
-    this.movableDragHandler = new MovableDragHandler( electricPotentialSensor.positionProperty, {
-      tandem: tandem.createTandem( 'movableDragHandler' ),
+    this.movableDragHandler = new DragListener( {
+      targetNode: this,
+      locationProperty: electricPotentialSensor.positionProperty,
+      tandem: tandem.createTandem( 'dragListener' ),
       dragBounds: availableModelBoundsProperty.get(),
-      modelViewTransform: modelViewTransform,
-      startDrag: function( event ) {
-        self.isUserControlledProperty.set( true );
-      },
-      endDrag: function( event ) {
-
+      transform: modelViewTransform,
+      isUserControlledProperty: this.isUserControlledProperty,
+      end: function( event, listener ) {
         snapToGridLines( electricPotentialSensor.positionProperty );
-
-        self.isUserControlledProperty.set( false );
       }
     } );
 

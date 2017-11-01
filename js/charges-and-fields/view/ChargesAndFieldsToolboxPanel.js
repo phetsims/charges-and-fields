@@ -104,7 +104,7 @@ define( function( require ) {
       }
     };
 
-    // When pressed, creates a model element and triggers startDrag() on the corresponding view
+    // When pressed, creates a model element and triggers press() on the corresponding view
     electricPotentialSensorIconNode.addInputListener( {
       down: function( event ) {
 
@@ -117,7 +117,7 @@ define( function( require ) {
         var initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
         electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
-        electricPotentialSensorNode.movableDragHandler.startDrag( event );
+        electricPotentialSensorNode.movableDragHandler.press( event );
       }
     } );
 

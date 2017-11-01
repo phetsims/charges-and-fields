@@ -15,8 +15,8 @@ define( function( require ) {
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var DragListener = require( 'SCENERY/listeners/DragListener' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
@@ -54,11 +54,12 @@ define( function( require ) {
       useDeepEquality: true
     } );
 
-    var movableDragHandler = new MovableDragHandler( locationProperty, {
-      tandem: tandem.createTandem( 'inputListener' ),
-      modelViewTransform: modelViewTransform,
-      startDrag: function( event ) {
-
+    var movableDragHandler = new DragListener( {
+      applyOffset: false,
+      locationProperty: locationProperty,
+      tandem: tandem.createTandem( 'dragListener' ),
+      transform: modelViewTransform,
+      start: function( event ) {
         // Move the label to the front of this layer when grabbed by the user.
         self.moveToFront();
       }
