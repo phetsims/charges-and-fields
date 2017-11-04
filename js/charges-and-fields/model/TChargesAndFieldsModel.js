@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function TChargesAndFieldsModel( instance, phetioID ) {
-    assertInstanceOf( instance, phet.chargesAndFields.ChargesAndFieldsModel );
+    assert && assertInstanceOf( instance, phet.chargesAndFields.ChargesAndFieldsModel );
     TObject.call( this, instance, phetioID );
   }
 

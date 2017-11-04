@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function TElectricFieldSensor( instance, phetioID ) {
-    assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
+    assert && assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
     TModelElement.call( this, instance, phetioID );
   }
 

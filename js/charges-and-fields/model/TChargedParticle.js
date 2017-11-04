@@ -24,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function TChargedParticle( instance, phetioID ) {
-    assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
+    assert && assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
     TModelElement.call( this, instance, phetioID );
   }
 

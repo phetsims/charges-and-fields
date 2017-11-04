@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function TElectricPotentialLine( instance, phetioID ) {
-    assertInstanceOf( instance, phet.chargesAndFields.ElectricPotentialLine );
+    assert && assertInstanceOf( instance, phet.chargesAndFields.ElectricPotentialLine );
     TObject.call( this, instance, phetioID );
   }
 

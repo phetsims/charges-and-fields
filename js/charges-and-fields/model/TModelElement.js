@@ -21,7 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function TModelElement( instance, phetioID ) {
-    assertInstanceOf( instance, phet.chargesAndFields.ModelElement );
+    assert && assertInstanceOf( instance, phet.chargesAndFields.ModelElement );
     TObject.call( this, instance, phetioID );
   }
 
