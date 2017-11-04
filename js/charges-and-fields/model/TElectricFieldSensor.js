@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
