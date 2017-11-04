@@ -255,7 +255,6 @@ define( function( require ) {
     } ).linkAttribute( chargesAndSensorsPanel, 'visible' );
 
     // Handle the comings and goings of charged particles.
-    var chargedParticleNodeGroupTandem = tandem.createGroupTandem( 'chargedParticleNode' );
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
       // Create and add the view representation for this chargedParticle.
       var chargedParticleNode = new ChargedParticleNode(
@@ -264,7 +263,8 @@ define( function( require ) {
         modelViewTransform,
         self.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        chargedParticleNodeGroupTandem.createNextTandem() );
+        tandem.createTandem( addedChargedParticle.chargedParticleTandem.tail )
+      );
       draggableElementsLayer.addChild( chargedParticleNode );
 
       addedChargedParticle.disposeEmitter.addListener( function callback() {

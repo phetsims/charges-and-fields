@@ -40,6 +40,9 @@ define( function( require ) {
     this.disposeChargedParticle = function() {
       tandem.removeInstance( self );
     };
+
+    // @public
+    this.chargedParticleTandem = tandem;
   }
 
   chargesAndFields.register( 'ChargedParticle', ChargedParticle );
