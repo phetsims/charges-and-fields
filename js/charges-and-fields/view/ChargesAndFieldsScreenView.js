@@ -275,8 +275,8 @@ define( function( require ) {
     } );
 
     // Handle the comings and goings of charged electric field sensors.
-    var electricFieldSensorNodeGroupTandem = tandem.createGroupTandem( 'electricFieldSensorNode' );
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
+
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
         addedElectricFieldSensor,
@@ -286,7 +286,8 @@ define( function( require ) {
         model.isPlayAreaChargedProperty,
         model.areValuesVisibleProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        electricFieldSensorNodeGroupTandem.createNextTandem() );
+        tandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.tail )
+      );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this electric field sensor is removed from the model.

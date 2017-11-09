@@ -26,6 +26,7 @@ define( function( require ) {
 
   // phet-io modules
   var TChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargedParticle' );
+  var TElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricFieldSensor' );
   var TChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargesAndFieldsModel' );
   var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
 
@@ -144,7 +145,7 @@ define( function( require ) {
 
     // @public - Observable array of all draggable electric field sensors
     this.electricFieldSensors = new ObservableArray( {
-      phetioValueType: TChargedParticle
+      phetioValueType: TElectricFieldSensor
     } ); // {ObservableArray.<ElectricFieldSensor>}
     var electricFieldSensors = this.electricFieldSensors;
 

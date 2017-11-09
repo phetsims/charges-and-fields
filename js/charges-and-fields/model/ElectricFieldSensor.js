@@ -41,6 +41,9 @@ define( function( require ) {
 
     this.computeElectricField = computeElectricField;
 
+    // @public (phet-io)
+    this.electricFieldSensorTandem = tandem;
+
     this.positionProperty.link( this.update.bind( this ) );
 
     this.disposeElectricFieldSensor = function() {
