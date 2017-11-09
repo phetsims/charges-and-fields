@@ -33,6 +33,7 @@ define( function( require ) {
    * @param {Function} getElectricPotential - function that returns a number
    * @param {Function} getElectricField - function that returns a vector
    * @param {Property.<boolean>} isPlayAreaChargedProperty
+   * @param {Tandem} tandem
    * @constructor
    */
   function ElectricPotentialLine( position,
@@ -64,7 +65,7 @@ define( function( require ) {
     tandem.addInstance( this, TElectricPotentialLine );
 
     // @public (read-only) - used to identify tandems for the corresponding views
-    this.tandem = tandem;
+    this.electricPotentialLineTandem = tandem;
   }
 
   chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );

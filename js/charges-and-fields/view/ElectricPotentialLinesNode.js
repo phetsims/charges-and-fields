@@ -198,7 +198,7 @@ define( function( require ) {
       var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
 
-      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel_' + electricPotentialLine.tandem.tail ) );
+      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel_' + electricPotentialLine.electricPotentialLineTandem.tail ) );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
