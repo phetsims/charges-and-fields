@@ -47,7 +47,10 @@ define( function( require ) {
    */
   function ChargesAndFieldsModel( tandem ) {
 
+    // @public
     this.chargedParticleGroupTandem = tandem.createGroupTandem( 'chargedParticle' );
+
+    // @public
     this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
 
     var self = this;
