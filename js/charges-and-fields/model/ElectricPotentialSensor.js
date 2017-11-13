@@ -39,7 +39,7 @@ define( function( require ) {
     this.electricPotentialProperty = new NumberProperty( 0, {
       tandem: tandem.createTandem( 'electricPotentialProperty' ),
       units: 'volts',
-      phetioInstanceDocumentation: 'electricPotentialProperty is updated by the model and should not be set by the user'
+      phetioReadOnly: true
     } );
 
     // @public - Whether the sensor is out in the play area (false when in the toolbox)
