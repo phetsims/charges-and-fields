@@ -23,7 +23,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var TBounds2 = require( 'DOT/TBounds2' );
   var TObservableArray = require( 'AXON/TObservableArray' );
-  var TProperty = require( 'AXON/TProperty' );
+  var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
@@ -118,7 +118,7 @@ define( function( require ) {
     this.chargesAndSensorsEnclosureBoundsProperty = new Property(
       new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
         tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
-        phetioType: TProperty( TBounds2 )
+        phetioType: PropertyIO( TBounds2 )
       } );
 
     //----------------------------------------------------------------------------------------
@@ -145,12 +145,12 @@ define( function( require ) {
     // This is the relevant array to calculate the electric field, and electric potential
     // @public
     this.activeChargedParticles = new ObservableArray( {
-      phetioType: TProperty( TChargedParticle )
+      phetioType: PropertyIO( TChargedParticle )
     } ); // {ObservableArray.<ChargedParticle>}
 
     // @public - Observable array of all draggable electric field sensors
     this.electricFieldSensors = new ObservableArray( {
-      phetioType: TProperty( TElectricFieldSensor )
+      phetioType: PropertyIO( TElectricFieldSensor )
     } ); // {ObservableArray.<ElectricFieldSensor>}
     var electricFieldSensors = this.electricFieldSensors;
 

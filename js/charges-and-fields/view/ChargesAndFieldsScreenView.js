@@ -39,7 +39,7 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var TBounds2 = require( 'DOT/TBounds2' );
-  var TProperty = require( 'AXON/TProperty' );
+  var PropertyIO = require( 'AXON/PropertyIO' );
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -83,7 +83,7 @@ define( function( require ) {
     // the availableModelBounds should not be reset when the resetAllButton is pressed,
     this.availableModelBoundsProperty = new Property( model.enlargedBounds, {
       tandem: tandem.createTandem( 'availableModelBoundsProperty' ),
-      phetioType: TProperty( TBounds2 ),
+      phetioType: PropertyIO( TBounds2 ),
       phetioInstanceDocumentation: 'registers the model bounds based on the screen size'
     } );
 
