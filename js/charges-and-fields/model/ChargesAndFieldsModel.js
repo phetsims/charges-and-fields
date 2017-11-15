@@ -22,12 +22,14 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Property = require( 'AXON/Property' );
   var TBounds2 = require( 'DOT/TBounds2' );
+  var TObservableArray = require( 'AXON/TObservableArray' );
+  var TProperty = require( 'AXON/TProperty' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
   var TChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargedParticle' );
-  var TElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricFieldSensor' );
   var TChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargesAndFieldsModel' );
+  var TElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricFieldSensor' );
   var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
 
   // constants
@@ -116,7 +118,7 @@ define( function( require ) {
     this.chargesAndSensorsEnclosureBoundsProperty = new Property(
       new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
         tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
-        phetioValueType: TBounds2
+        phetioType: TProperty( TBounds2 )
       } );
 
     //----------------------------------------------------------------------------------------
@@ -135,7 +137,7 @@ define( function( require ) {
     // @public
     this.chargedParticles = new ObservableArray( {
       tandem: tandem.createTandem( 'chargedParticles' ),
-      phetioValueType: TChargedParticle
+      phetioType: TObservableArray( TChargedParticle )
     } ); // {ObservableArray.<ChargedParticle>}
     var chargedParticles = this.chargedParticles;
 
@@ -143,12 +145,12 @@ define( function( require ) {
     // This is the relevant array to calculate the electric field, and electric potential
     // @public
     this.activeChargedParticles = new ObservableArray( {
-      phetioValueType: TChargedParticle
+      phetioType: TProperty( TChargedParticle )
     } ); // {ObservableArray.<ChargedParticle>}
 
     // @public - Observable array of all draggable electric field sensors
     this.electricFieldSensors = new ObservableArray( {
-      phetioValueType: TElectricFieldSensor
+      phetioType: TProperty( TElectricFieldSensor )
     } ); // {ObservableArray.<ElectricFieldSensor>}
     var electricFieldSensors = this.electricFieldSensors;
 
@@ -162,7 +164,7 @@ define( function( require ) {
     // @public read-only
     this.electricPotentialLines = new ObservableArray( {
       tandem: tandem.createTandem( 'electricPotentialLines' ),
-      phetioValueType: TElectricPotentialLine
+      phetioType: TObservableArray( TElectricPotentialLine )
     } ); // {ObservableArray.<ElectricPotentialLine>}
 
     //----------------------------------------------------------------------------------------
@@ -317,7 +319,7 @@ define( function( require ) {
 
     this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
 
-    tandem.addInstance( this, TChargesAndFieldsModel );
+    tandem.addInstance( this, { phetioType: TChargesAndFieldsModel } );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );

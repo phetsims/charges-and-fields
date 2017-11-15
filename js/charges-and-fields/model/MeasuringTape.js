@@ -13,6 +13,7 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
+  var TProperty = require( 'AXON/TProperty' );
   var TVector2 = require( 'DOT/TVector2' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -29,19 +30,19 @@ define( function( require ) {
     // @public - Base (start of tape from the container) position
     this.basePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'basePositionProperty' ),
-      phetioValueType: TVector2
+      phetioType: TProperty( TVector2 )
     } );
 
     // @public - Tip (end of measuring tape) position
     this.tipPositionProperty = new Property( new Vector2( 0.2, 0 ), {
       tandem: tandem.createTandem( 'tipPositionProperty' ),
-      phetioValueType: TVector2
+      phetioType: TProperty( TVector2 )
     } );
 
     // @public - Whether the measuring tape is out in the play area (false when in the toolbox)
     this.isActiveProperty = new Property( false, {
       tandem: tandem.createTandem( 'isActiveProperty' ),
-      phetioValueType: TBoolean
+      phetioType: TProperty( TBoolean )
     } );
 
   }

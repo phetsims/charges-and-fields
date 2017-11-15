@@ -35,7 +35,7 @@ define( function( require ) {
     // @public read-only
     this.charge = charge; // a charge of one corresponds to one nano Coulomb
 
-    tandem.addInstance( this, TChargedParticle );
+    tandem.addInstance( this, { phetioType: TChargedParticle } );
 
     this.disposeChargedParticle = function() {
       tandem.removeInstance( self );

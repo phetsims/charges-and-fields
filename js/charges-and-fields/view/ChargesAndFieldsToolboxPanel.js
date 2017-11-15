@@ -25,6 +25,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var TProperty = require( 'AXON/TProperty' );
   var TVector2 = require( 'DOT/TVector2' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -238,7 +239,7 @@ define( function( require ) {
       var measuringTape = new MeasuringTapeNode( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
         tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ), {
           tandem: tandem.createTandem( 'tipPositionProperty' ),
-          phetioValueType: TVector2,
+          phetioType: TProperty( TVector2 ),
           phetioInstanceDocumentation: 'Tip position of measuring tape'
         } ),
         scale: 0.8, // make it a bit small

@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
+  var TProperty = require( 'AXON/TProperty' );
   var TVector2 = require( 'DOT/TVector2' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -32,7 +33,7 @@ define( function( require ) {
     // @public
     this.positionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'positionProperty' ),
-      phetioValueType: TVector2
+      phetioType: TProperty( TVector2 )
     } );
 
     // @public
@@ -45,7 +46,7 @@ define( function( require ) {
     // @public - Whether the sensor is out in the play area (false when in the toolbox)
     this.isActiveProperty = new Property( false, {
       tandem: tandem.createTandem( 'isActiveProperty' ),
-      phetioValueType: TBoolean
+      phetioType: TProperty( TBoolean )
     } );
 
     this.computeElectricPotential = computeElectricPotential;

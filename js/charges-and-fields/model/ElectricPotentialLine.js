@@ -62,7 +62,7 @@ define( function( require ) {
     this.disposeElectricPotentialLine = function() {
       tandem.removeInstance( self );
     };
-    tandem.addInstance( this, TElectricPotentialLine );
+    tandem.addInstance( this, { phetioType: TElectricPotentialLine } );
 
     // @public (read-only) - used to identify tandems for the corresponding views
     this.electricPotentialLineTandem = tandem;
