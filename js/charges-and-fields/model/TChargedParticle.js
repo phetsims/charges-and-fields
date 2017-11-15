@@ -14,7 +14,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
   var NumberIO = require( 'ifphetio!PHET_IO/types/NumberIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
@@ -44,14 +44,14 @@ define( function( require ) {
     fromStateObject: function( stateObject ) {
       return {
         charge: stateObject.charge,
-        initialPosition: stateObject.initialPosition ? TVector2.fromStateObject( stateObject.initialPosition ) : null
+        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
       };
     },
 
     toStateObject: function( value ) {
       return {
         charge: value.charge,
-        initialPosition: value.initialPosition ? TVector2.toStateObject( value.initialPosition ) : null
+        initialPosition: value.initialPosition ? Vector2IO.toStateObject( value.initialPosition ) : null
       };
     },
 

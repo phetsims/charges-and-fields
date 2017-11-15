@@ -24,7 +24,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
   var Util = require( 'DOT/Util' );
 
   // strings
@@ -51,7 +51,7 @@ define( function( require ) {
     var self = this;
     var locationProperty = new Property( position, {
       tandem: tandem.createTandem( 'locationProperty' ),
-      phetioType: PropertyIO( TVector2 ),
+      phetioType: PropertyIO( Vector2IO ),
       useDeepEquality: true
     } );
 

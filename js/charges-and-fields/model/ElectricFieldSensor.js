@@ -15,7 +15,7 @@ define( function( require ) {
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
@@ -35,7 +35,7 @@ define( function( require ) {
     // @public {Property.<Vector2>} electricField Vector in Newtons per Coulomb
     this.electricFieldProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'electricFieldProperty' ),
-      phetioType: PropertyIO( TVector2 )
+      phetioType: PropertyIO( Vector2IO )
     } );
 
     ModelElement.call( this, tandem );

@@ -14,7 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
@@ -30,13 +30,13 @@ define( function( require ) {
     // @public - Base (start of tape from the container) position
     this.basePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'basePositionProperty' ),
-      phetioType: PropertyIO( TVector2 )
+      phetioType: PropertyIO( Vector2IO )
     } );
 
     // @public - Tip (end of measuring tape) position
     this.tipPositionProperty = new Property( new Vector2( 0.2, 0 ), {
       tandem: tandem.createTandem( 'tipPositionProperty' ),
-      phetioType: PropertyIO( TVector2 )
+      phetioType: PropertyIO( Vector2IO )
     } );
 
     // @public - Whether the measuring tape is out in the play area (false when in the toolbox)

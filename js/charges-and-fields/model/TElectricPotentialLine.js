@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
 
   /**
    *
@@ -33,7 +33,7 @@ define( function( require ) {
     },
 
     toStateObject: function( value ) {
-      return { position: TVector2.toStateObject( value.position ) };
+      return { position: Vector2IO.toStateObject( value.position ) };
     }
   } );
 
