@@ -15,7 +15,7 @@ define( function( require ) {
   var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
   var NumberIO = require( 'ifphetio!PHET_IO/types/NumberIO' );
   var TVector2 = require( 'DOT/TVector2' );
-  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
+  var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
    *
@@ -30,7 +30,7 @@ define( function( require ) {
 
   phetioInherit( TModelElement, 'TChargedParticle', TChargedParticle, {
     setCharge: {
-      returnType: TVoid,
+      returnType: VoidIO,
       parameterTypes: [ NumberIO ],
       implementation: function( value ) {
         this.instance.charge = value.charge;

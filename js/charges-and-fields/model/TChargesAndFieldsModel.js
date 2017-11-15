@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
   var TVector2 = require( 'DOT/TVector2' );
 
   /**
@@ -23,10 +23,10 @@ define( function( require ) {
    */
   function TChargesAndFieldsModel( instance, phetioID ) {
     assert && assertInstanceOf( instance, phet.chargesAndFields.ChargesAndFieldsModel );
-    TObject.call( this, instance, phetioID );
+    ObjectIO.call( this, instance, phetioID );
   }
 
-  phetioInherit( TObject, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
+  phetioInherit( ObjectIO, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
     documentation: 'The model for the whole sim',
 
     /**
