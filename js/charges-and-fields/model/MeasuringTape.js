@@ -18,7 +18,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
 
   /**
    * @constructor
@@ -42,7 +42,7 @@ define( function( require ) {
     // @public - Whether the measuring tape is out in the play area (false when in the toolbox)
     this.isActiveProperty = new Property( false, {
       tandem: tandem.createTandem( 'isActiveProperty' ),
-      phetioType: PropertyIO( TBoolean )
+      phetioType: PropertyIO( BooleanIO )
     } );
 
   }

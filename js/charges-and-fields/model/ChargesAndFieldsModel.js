@@ -22,7 +22,7 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Property = require( 'AXON/Property' );
   var TBounds2 = require( 'DOT/TBounds2' );
-  var TObservableArray = require( 'AXON/TObservableArray' );
+  var ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -137,7 +137,7 @@ define( function( require ) {
     // @public
     this.chargedParticles = new ObservableArray( {
       tandem: tandem.createTandem( 'chargedParticles' ),
-      phetioType: TObservableArray( TChargedParticle )
+      phetioType: ObservableArrayIO( TChargedParticle )
     } ); // {ObservableArray.<ChargedParticle>}
     var chargedParticles = this.chargedParticles;
 
@@ -164,7 +164,7 @@ define( function( require ) {
     // @public read-only
     this.electricPotentialLines = new ObservableArray( {
       tandem: tandem.createTandem( 'electricPotentialLines' ),
-      phetioType: TObservableArray( TElectricPotentialLine )
+      phetioType: ObservableArrayIO( TElectricPotentialLine )
     } ); // {ObservableArray.<ElectricPotentialLine>}
 
     //----------------------------------------------------------------------------------------
