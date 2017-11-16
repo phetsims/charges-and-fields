@@ -21,7 +21,7 @@ define( function( require ) {
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Property = require( 'AXON/Property' );
-  var TBounds2 = require( 'DOT/TBounds2' );
+  var Bounds2IO = require( 'DOT/Bounds2IO' );
   var ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -118,7 +118,7 @@ define( function( require ) {
     this.chargesAndSensorsEnclosureBoundsProperty = new Property(
       new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
         tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
-        phetioType: PropertyIO( TBounds2 )
+        phetioType: PropertyIO( Bounds2IO )
       } );
 
     //----------------------------------------------------------------------------------------
