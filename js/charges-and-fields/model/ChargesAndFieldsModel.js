@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Bounds2 = require( 'DOT/Bounds2' );
+  var Bounds2IO = require( 'DOT/Bounds2IO' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
@@ -20,9 +21,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var Property = require( 'AXON/Property' );
-  var Bounds2IO = require( 'DOT/Bounds2IO' );
   var ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
+  var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
 

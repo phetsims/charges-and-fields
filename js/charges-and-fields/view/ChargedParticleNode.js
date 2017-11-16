@@ -12,8 +12,8 @@ define( function( require ) {
   var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var DragListener = require( 'SCENERY/listeners/DragListener' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
