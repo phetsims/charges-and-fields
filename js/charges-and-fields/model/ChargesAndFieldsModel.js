@@ -27,10 +27,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
-  var TChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargedParticle' );
-  var TChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargesAndFieldsModel' );
-  var TElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricFieldSensor' );
-  var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
+  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
+  var ChargesAndFieldsModelIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModelIO' );
+  var ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
+  var ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
 
   // constants
   var GRID_MINOR_SPACING = ChargesAndFieldsConstants.GRID_MAJOR_SPACING / ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
@@ -137,7 +137,7 @@ define( function( require ) {
     // @public
     this.chargedParticles = new ObservableArray( {
       tandem: tandem.createTandem( 'chargedParticles' ),
-      phetioType: ObservableArrayIO( TChargedParticle )
+      phetioType: ObservableArrayIO( ChargedParticleIO )
     } ); // {ObservableArray.<ChargedParticle>}
     var chargedParticles = this.chargedParticles;
 
@@ -145,12 +145,12 @@ define( function( require ) {
     // This is the relevant array to calculate the electric field, and electric potential
     // @public
     this.activeChargedParticles = new ObservableArray( {
-      phetioType: PropertyIO( TChargedParticle )
+      phetioType: PropertyIO( ChargedParticleIO )
     } ); // {ObservableArray.<ChargedParticle>}
 
     // @public - Observable array of all draggable electric field sensors
     this.electricFieldSensors = new ObservableArray( {
-      phetioType: PropertyIO( TElectricFieldSensor )
+      phetioType: PropertyIO( ElectricFieldSensorIO )
     } ); // {ObservableArray.<ElectricFieldSensor>}
     var electricFieldSensors = this.electricFieldSensors;
 
@@ -164,7 +164,7 @@ define( function( require ) {
     // @public read-only
     this.electricPotentialLines = new ObservableArray( {
       tandem: tandem.createTandem( 'electricPotentialLines' ),
-      phetioType: ObservableArrayIO( TElectricPotentialLine )
+      phetioType: ObservableArrayIO( ElectricPotentialLineIO )
     } ); // {ObservableArray.<ElectricPotentialLine>}
 
     //----------------------------------------------------------------------------------------
@@ -319,7 +319,7 @@ define( function( require ) {
 
     this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
 
-    tandem.addInstance( this, { phetioType: TChargesAndFieldsModel } );
+    tandem.addInstance( this, { phetioType: ChargesAndFieldsModelIO } );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );

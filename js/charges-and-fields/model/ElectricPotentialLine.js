@@ -16,7 +16,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
-  var TElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricPotentialLine' );
+  var ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
 
   // constants
   // see getEquipotentialPositionArray to find how these are used
@@ -62,7 +62,7 @@ define( function( require ) {
     this.disposeElectricPotentialLine = function() {
       tandem.removeInstance( self );
     };
-    tandem.addInstance( this, { phetioType: TElectricPotentialLine } );
+    tandem.addInstance( this, { phetioType: ElectricPotentialLineIO } );
 
     // @public (read-only) - used to identify tandems for the corresponding views
     this.electricPotentialLineTandem = tandem;

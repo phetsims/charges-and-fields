@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TModelElement' );
+  var ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   var NumberIO = require( 'ifphetio!PHET_IO/types/NumberIO' );
   var Vector2IO = require( 'DOT/Vector2IO' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
@@ -23,12 +23,12 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TChargedParticle( instance, phetioID ) {
+  function ChargedParticleIO( instance, phetioID ) {
     assert && assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
-    TModelElement.call( this, instance, phetioID );
+    ModelElementIO.call( this, instance, phetioID );
   }
 
-  phetioInherit( TModelElement, 'TChargedParticle', TChargedParticle, {
+  phetioInherit( ModelElementIO, 'ChargedParticleIO', ChargedParticleIO, {
     setCharge: {
       returnType: VoidIO,
       parameterTypes: [ NumberIO ],
@@ -61,8 +61,8 @@ define( function( require ) {
     }
   } );
 
-  chargesAndFields.register( 'TChargedParticle', TChargedParticle );
+  chargesAndFields.register( 'ChargedParticleIO', ChargedParticleIO );
 
-  return TChargedParticle;
+  return ChargedParticleIO;
 } );
 

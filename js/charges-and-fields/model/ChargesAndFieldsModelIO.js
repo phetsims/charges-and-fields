@@ -21,12 +21,12 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TChargesAndFieldsModel( instance, phetioID ) {
+  function ChargesAndFieldsModelIO( instance, phetioID ) {
     assert && assertInstanceOf( instance, phet.chargesAndFields.ChargesAndFieldsModel );
     ObjectIO.call( this, instance, phetioID );
   }
 
-  phetioInherit( ObjectIO, 'TChargesAndFieldsModel', TChargesAndFieldsModel, {}, {
+  phetioInherit( ObjectIO, 'ChargesAndFieldsModelIO', ChargesAndFieldsModelIO, {}, {
     documentation: 'The model for the whole sim',
 
     /**
@@ -71,8 +71,8 @@ define( function( require ) {
     }
   );
 
-  chargesAndFields.register( 'TChargesAndFieldsModel', TChargesAndFieldsModel );
+  chargesAndFields.register( 'ChargesAndFieldsModelIO', ChargesAndFieldsModelIO );
 
-  return TChargesAndFieldsModel;
+  return ChargesAndFieldsModelIO;
 } );
 

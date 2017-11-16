@@ -16,7 +16,7 @@ define( function( require ) {
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
 
   // phet-io modules
-  var TChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TChargedParticle' );
+  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
 
   /**
    *
@@ -35,7 +35,7 @@ define( function( require ) {
     // @public read-only
     this.charge = charge; // a charge of one corresponds to one nano Coulomb
 
-    tandem.addInstance( this, { phetioType: TChargedParticle } );
+    tandem.addInstance( this, { phetioType: ChargedParticleIO } );
 
     this.disposeChargedParticle = function() {
       tandem.removeInstance( self );

@@ -20,15 +20,15 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TModelElement( instance, phetioID ) {
+  function ModelElementIO( instance, phetioID ) {
     assert && assertInstanceOf( instance, phet.chargesAndFields.ModelElement );
     ObjectIO.call( this, instance, phetioID );
   }
 
-  phetioInherit( ObjectIO, 'TModelElement', TModelElement, {}, {} );
+  phetioInherit( ObjectIO, 'ModelElementIO', ModelElementIO, {}, {} );
 
-  chargesAndFields.register( 'TModelElement', TModelElement );
+  chargesAndFields.register( 'ModelElementIO', ModelElementIO );
 
-  return TModelElement;
+  return ModelElementIO;
 } );
 

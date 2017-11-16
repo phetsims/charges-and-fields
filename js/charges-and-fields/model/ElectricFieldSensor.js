@@ -19,7 +19,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
-  var TElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/TElectricFieldSensor' );
+  var ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
 
   /**
    * @constructor
@@ -51,7 +51,7 @@ define( function( require ) {
       tandem.removeInstance( self );
     };
 
-    tandem.addInstance( this, { phetioType: TElectricFieldSensor } );
+    tandem.addInstance( this, { phetioType: ElectricFieldSensorIO } );
   }
 
   chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );
