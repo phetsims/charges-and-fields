@@ -32,7 +32,6 @@ define( function( require ) {
                                               availableModelBoundsProperty,
                                               tandem ) {
 
-    var self = this;
     this.measuringTape = measuringTape;
 
     MeasuringTapeNode.call( this, new Property( {
