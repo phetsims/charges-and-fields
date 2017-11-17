@@ -17,13 +17,13 @@ define( function( require ) {
 
   /**
    * Instrumented to help restore charged particles.
-   * @param instance
+   * @param chargesAndFieldsModel
    * @param phetioID
    * @constructor
    */
-  function ChargesAndFieldsModelIO( instance, phetioID ) {
-    assert && assertInstanceOf( instance, phet.chargesAndFields.ChargesAndFieldsModel );
-    ObjectIO.call( this, instance, phetioID );
+  function ChargesAndFieldsModelIO( chargesAndFieldsModel, phetioID ) {
+    assert && assertInstanceOf( chargesAndFieldsModel, phet.chargesAndFields.ChargesAndFieldsModel );
+    ObjectIO.call( this, chargesAndFieldsModel, phetioID );
   }
 
   phetioInherit( ObjectIO, 'ChargesAndFieldsModelIO', ChargesAndFieldsModelIO, {}, {
@@ -31,38 +31,40 @@ define( function( require ) {
 
     /**
      * Clear the children from the model so it can be deserialized.
-     * @param instance
+     * @param chargesAndFieldsModel
      */
-    clearChildInstances: function( instance ) {
-        instance.chargedParticles.clear();
-        instance.electricFieldSensors.clear();
-      instance.electricPotentialLines.clear();
+    clearChildInstances: function( chargesAndFieldsModel ) {
+      assert && assertInstanceOf( chargesAndFieldsModel, phet.chargesAndFields.ChargesAndFieldsModel );
+      chargesAndFieldsModel.chargedParticles.clear();
+      chargesAndFieldsModel.electricFieldSensors.clear();
+      chargesAndFieldsModel.electricPotentialLines.clear();
       },
 
       /**
        * Create a dynamic particle as specified by the phetioID and state.
-       * @param {Object} instance
+       * @param {Object} chargesAndFieldsModel
        * @param {Tandem} tandem
        * @param {Object} stateObject
        * @returns {ChargedParticle}
        */
-      addChildInstance: function( instance, tandem, stateObject ) {
+      addChildInstance: function( chargesAndFieldsModel, tandem, stateObject ) {
+        assert && assertInstanceOf( chargesAndFieldsModel, phet.chargesAndFields.ChargesAndFieldsModel );
         if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) {
           if ( stateObject.charge > 0 ) {
-            return instance.addPositiveCharge( tandem );
+            return chargesAndFieldsModel.addPositiveCharge( tandem );
           }
           else if ( stateObject.charge < 0 ) {
-            return instance.addNegativeCharge( tandem );
+            return chargesAndFieldsModel.addNegativeCharge( tandem );
           }
           else {
             throw new Error( 'This sim does not support charges with no charge' );
           }
         }
         else if ( tandem.tail.indexOf( 'electricFieldSensor' ) === 0 ) {
-          return instance.addElectricFieldSensor( tandem );
+          return chargesAndFieldsModel.addElectricFieldSensor( tandem );
         }
         else if ( tandem.tail.indexOf( 'electricPotentialLines' ) === 0 ) {
-          return instance.addElectricPotentialLine( Vector2IO.fromStateObject( stateObject.position ), tandem );
+          return chargesAndFieldsModel.addElectricPotentialLine( Vector2IO.fromStateObject( stateObject.position ), tandem );
         }
         else {
           throw new Error( 'child type not found: ' + tandem.id );

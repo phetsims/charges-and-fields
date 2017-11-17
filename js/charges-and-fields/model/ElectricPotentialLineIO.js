@@ -17,13 +17,13 @@ define( function( require ) {
 
   /**
    *
-   * @param instance
+   * @param electricPotentialLine
    * @param phetioID
    * @constructor
    */
-  function ElectricPotentialLineIO( instance, phetioID ) {
-    assert && assertInstanceOf( instance, phet.chargesAndFields.ElectricPotentialLine );
-    ObjectIO.call( this, instance, phetioID );
+  function ElectricPotentialLineIO( electricPotentialLine, phetioID ) {
+    assert && assertInstanceOf( electricPotentialLine, phet.chargesAndFields.ElectricPotentialLine );
+    ObjectIO.call( this, electricPotentialLine, phetioID );
   }
 
   phetioInherit( ModelElementIO, 'ElectricPotentialLineIO', ElectricPotentialLineIO, {}, {
@@ -32,8 +32,9 @@ define( function( require ) {
       return {};
     },
 
-    toStateObject: function( value ) {
-      return { position: Vector2IO.toStateObject( value.position ) };
+    toStateObject: function( electricPotentialLine ) {
+      assert && assertInstanceOf( electricPotentialLine, phet.chargesAndFields.ElectricPotentialLine );
+      return { position: Vector2IO.toStateObject( electricPotentialLine.position ) };
     }
   } );
 

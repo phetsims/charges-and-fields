@@ -19,13 +19,13 @@ define( function( require ) {
 
   /**
    *
-   * @param instance
+   * @param chargedParticle
    * @param phetioID
    * @constructor
    */
-  function ChargedParticleIO( instance, phetioID ) {
-    assert && assertInstanceOf( instance, phet.chargesAndFields.ChargedParticle );
-    ModelElementIO.call( this, instance, phetioID );
+  function ChargedParticleIO( chargedParticle, phetioID ) {
+    assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
+    ModelElementIO.call( this, chargedParticle, phetioID );
   }
 
   phetioInherit( ModelElementIO, 'ChargedParticleIO', ChargedParticleIO, {
@@ -48,16 +48,18 @@ define( function( require ) {
       };
     },
 
-    toStateObject: function( value ) {
+    toStateObject: function( chargedParticle ) {
+      assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
       return {
-        charge: value.charge,
-        initialPosition: value.initialPosition ? Vector2IO.toStateObject( value.initialPosition ) : null
+        charge: chargedParticle.charge,
+        initialPosition: chargedParticle.initialPosition ? Vector2IO.toStateObject( chargedParticle.initialPosition ) : null
       };
     },
 
-    setValue: function( instance, value ) {
-      instance.charge = value.charge;
-      instance.initialPosition = value.initialPosition;
+    setValue: function( chargedParticle, value ) {
+      assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
+      chargedParticle.charge = value.charge;
+      chargedParticle.initialPosition = value.initialPosition;
     }
   } );
 

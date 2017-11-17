@@ -16,13 +16,13 @@ define( function( require ) {
 
   /**
    *
-   * @param instance
+   * @param modelElement
    * @param phetioID
    * @constructor
    */
-  function ModelElementIO( instance, phetioID ) {
-    assert && assertInstanceOf( instance, phet.chargesAndFields.ModelElement );
-    ObjectIO.call( this, instance, phetioID );
+  function ModelElementIO( modelElement, phetioID ) {
+    assert && assertInstanceOf( modelElement, phet.chargesAndFields.ModelElement );
+    ObjectIO.call( this, modelElement, phetioID );
   }
 
   phetioInherit( ObjectIO, 'ModelElementIO', ModelElementIO, {}, {} );

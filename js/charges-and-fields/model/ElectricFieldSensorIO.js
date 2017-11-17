@@ -10,20 +10,20 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var Vector2IO = require( 'DOT/Vector2IO' );
 
   /**
    *
-   * @param instance
+   * @param electricFieldSensor
    * @param phetioID
    * @constructor
    */
-  function ElectricFieldSensorIO( instance, phetioID ) {
-    assert && assertInstanceOf( instance, phet.chargesAndFields.ElectricFieldSensor );
-    ModelElementIO.call( this, instance, phetioID );
+  function ElectricFieldSensorIO( electricFieldSensor, phetioID ) {
+    assert && assertInstanceOf( electricFieldSensor, phet.chargesAndFields.ElectricFieldSensor );
+    ModelElementIO.call( this, electricFieldSensor, phetioID );
   }
 
   phetioInherit( ModelElementIO, 'ElectricFieldSensorIO', ElectricFieldSensorIO, {}, {
@@ -36,10 +36,11 @@ define( function( require ) {
       };
     },
 
-    toStateObject: function( value ) {
+    toStateObject: function( electricFieldSensor ) {
+      assert && assertInstanceOf( electricFieldSensor, phet.chargesAndFields.ElectricFieldSensor );
       return {
-        computeElectricField: value.computeElectricField,
-        initialPosition: value.initialPosition ? Vector2IO.toStateObject( value.initialPosition ) : null
+        computeElectricField: electricFieldSensor.computeElectricField,
+        initialPosition: electricFieldSensor.initialPosition ? Vector2IO.toStateObject( electricFieldSensor.initialPosition ) : null
       };
     }
   } );
