@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.3 Fri Apr 14 2017 17:17:34 GMT-0600 (MDT)",
+  "comment": "# charges-and-fields 1.0.3 Fri Nov 17 2017 11:33:12 GMT-0700 (MST)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "HEAD"
@@ -13,20 +13,20 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "494c4f352a1e1b11dadeec5322b5aefaffb403c0",
+    "sha": "d3764149bfcd2369634a32e270269dbc0a93a0aa",
     "branch": "1.0"
   },
   "chipper": {
-    "sha": "89c4a1038a90e3efc84872d4608d10442fb44831",
-    "branch": "HEAD"
+    "sha": "67d7c41cb8c12cc7457f854ebca5646396d63c64",
+    "branch": "charges-and-fields-1.0"
   },
   "dot": {
     "sha": "3f60cfcc03fb523fab5e01ec64eaeb74d3bf331e",
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "f6b04a79b5ef02262ce9e9418e23ef8af93722e1",
-    "branch": "HEAD"
+    "sha": "29481984b0ec3a6a53b696ecf25fdd6e8c86beeb",
+    "branch": "charges-and-fields-1.0"
   },
   "kite": {
     "sha": "3b656b9a455ced42b9af90a15a25446b248490ab",
