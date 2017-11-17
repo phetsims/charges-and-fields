@@ -316,8 +316,8 @@ define( function( require ) {
 
   return inherit( ElectricFieldSensorRepresentationNode, ElectricFieldSensorNode, {
     dispose: function() {
-      ElectricFieldSensorRepresentationNode.prototype.dispose.call( this );
       this.disposeElectricFieldSensorNode();
+      ElectricFieldSensorRepresentationNode.prototype.dispose.call( this );
     }
   } );
 } );
