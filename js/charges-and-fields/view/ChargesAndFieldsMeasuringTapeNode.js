@@ -56,17 +56,9 @@ define( function( require ) {
       snapToGridLines( measuringTape.basePositionProperty );
       snapToGridLines( measuringTape.tipPositionProperty );
     } );
-
-    this.disposeChargesAndFieldsMeasuringTapeNode = function() {
-      tandem.removeInstance( self );
-    };
   }
 
   chargesAndFields.register( 'ChargesAndFieldsMeasuringTapeNode', ChargesAndFieldsMeasuringTapeNode );
 
-  return inherit( MeasuringTapeNode, ChargesAndFieldsMeasuringTapeNode, {
-    dispose: function() {
-      this.disposeChargesAndFieldsMeasuringTapeNode();
-    }
-  } );
+  return inherit( MeasuringTapeNode, ChargesAndFieldsMeasuringTapeNode );
 } );

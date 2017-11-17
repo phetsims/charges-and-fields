@@ -47,11 +47,11 @@ define( function( require ) {
 
     this.positionProperty.link( this.update.bind( this ) );
 
+    tandem.addInstance( this, { phetioType: ElectricFieldSensorIO } );
+
     this.disposeElectricFieldSensor = function() {
       tandem.removeInstance( self );
     };
-
-    tandem.addInstance( this, { phetioType: ElectricFieldSensorIO } );
   }
 
   chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );

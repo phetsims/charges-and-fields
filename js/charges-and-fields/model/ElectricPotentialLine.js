@@ -59,13 +59,14 @@ define( function( require ) {
     this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
     this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
 
+    // @public (read-only) - used to identify tandems for the corresponding views
+    this.electricPotentialLineTandem = tandem;
+
+    tandem.addInstance( this, { phetioType: ElectricPotentialLineIO } );
+
     this.disposeElectricPotentialLine = function() {
       tandem.removeInstance( self );
     };
-    tandem.addInstance( this, { phetioType: ElectricPotentialLineIO } );
-
-    // @public (read-only) - used to identify tandems for the corresponding views
-    this.electricPotentialLineTandem = tandem;
   }
 
   chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
