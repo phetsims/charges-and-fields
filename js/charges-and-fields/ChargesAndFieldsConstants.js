@@ -43,6 +43,6 @@ define( function( require ) {
     MAX_EFIELD_MAGNITUDE: 1e6, // V/m - maximum allowed electric field magnitude
     EFIELD_COLOR_SAT_MAGNITUDE: 5, // electricField at which color will saturate to maxColor (in Volts/meter)
 
-    GLOBALS_TANDEM: Tandem.createStaticTandem( 'globals') // A static tandem that all globals can be created under.
+    GLOBALS_TANDEM: Tandem.rootTandem.createTandem( 'globals' ) // A static tandem that all globals can be created under.
   } );
 } );

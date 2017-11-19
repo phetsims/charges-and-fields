@@ -20,7 +20,7 @@ define( function( require ) {
   // strings
   var chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
 
-  var tandem = Tandem.createRootTandem();
+  var tandem = Tandem.rootTandem;
 
   var simOptions = {
     credits: {
