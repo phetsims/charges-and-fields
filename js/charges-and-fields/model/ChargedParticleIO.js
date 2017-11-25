@@ -18,9 +18,8 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   *
-   * @param chargedParticle
-   * @param phetioID
+   * @param {ChargedParticle} chargedParticle
+   * @param {string} phetioID
    * @constructor
    */
   function ChargedParticleIO( chargedParticle, phetioID ) {

@@ -17,8 +17,8 @@ define( function( require ) {
 
   /**
    * Instrumented to help restore charged particles.
-   * @param chargesAndFieldsModel
-   * @param phetioID
+   * @param {ChargesAndFieldsModel} chargesAndFieldsModel
+   * @param {string} phetioID
    * @constructor
    */
   function ChargesAndFieldsModelIO( chargesAndFieldsModel, phetioID ) {
