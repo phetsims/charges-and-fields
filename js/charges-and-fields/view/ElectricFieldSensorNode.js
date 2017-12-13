@@ -53,7 +53,7 @@ define( function( require ) {
                                     enclosureBounds,
                                     tandem ) {
 
-    ElectricFieldSensorRepresentationNode.call( this );
+    ElectricFieldSensorRepresentationNode.call( this, { tandem: tandem } );
 
     var self = this;
 
@@ -305,11 +305,6 @@ define( function( require ) {
 
       return Util.toFixed( number, decimalPlaces );
     }
-
-    // tandem support
-    this.mutate( {
-      tandem: tandem
-    } );
   }
 
   chargesAndFields.register( 'ElectricFieldSensorNode', ElectricFieldSensorNode );

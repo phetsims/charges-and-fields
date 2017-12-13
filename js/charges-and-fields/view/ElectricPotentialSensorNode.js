@@ -71,7 +71,8 @@ define( function( require ) {
     // Call the super constructor
     Node.call( this, {
       // Show a cursor hand over the sensor
-      cursor: 'pointer'
+      cursor: 'pointer',
+      tandem: tandem
     } );
 
     this.modelElement = electricPotentialSensor; // @public (read-only)
@@ -334,11 +335,6 @@ define( function( require ) {
       electricPotentialSensor.electricPotentialProperty.unlink( potentialListener );
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
     };
-
-    // tandem support
-    this.mutate( {
-      tandem: tandem
-    } );
   }
 
   chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );

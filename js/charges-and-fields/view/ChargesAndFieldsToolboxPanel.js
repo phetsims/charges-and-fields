@@ -153,7 +153,8 @@ define( function( require ) {
 
       var node = new Node( {
         // Show a cursor hand over the sensor icon
-        cursor: 'pointer'
+        cursor: 'pointer',
+        tandem: tandem.createTandem( 'electricPotentialSensor' )
       } );
 
       // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
@@ -218,10 +219,6 @@ define( function( require ) {
       node.addChild( outlineImage );
       node.addChild( backgroundRectangle );
       node.addChild( voltageReading );
-
-      node.mutate( {
-        tandem: tandem.createTandem( 'electricPotentialSensor' )
-      } );
 
       return node;
     },

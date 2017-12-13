@@ -75,7 +75,8 @@ define( function( require ) {
           previewNode,
           labelText
         ],
-        cursor: 'pointer'
+        cursor: 'pointer',
+        tandem: itemTandem
       } );
 
       // layout
@@ -108,11 +109,6 @@ define( function( require ) {
       isVisibleProperty.linkAttribute( node, 'visible' );
 
       self.draggableItems.push( node );
-
-      // Hook up the tandem
-      node.mutate( {
-        tandem: itemTandem
-      } );
 
       return node;
     }

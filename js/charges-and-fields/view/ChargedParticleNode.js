@@ -40,7 +40,7 @@ define( function( require ) {
 
     this.modelElement = chargedParticle;
 
-    ChargedParticleRepresentationNode.call( this, chargedParticle.charge );
+    ChargedParticleRepresentationNode.call( this, chargedParticle.charge, { tandem: tandem } );
 
     // Set up the mouse areas for this node so that this can still be grabbed when invisible.
     this.touchArea = this.localBounds.dilated( 10 );
@@ -108,11 +108,6 @@ define( function( require ) {
       chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
       this.movableDragHandler.dispose();
     };
-
-    // tandem support
-    this.mutate( {
-      tandem: tandem
-    } );
   }
 
   chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );
