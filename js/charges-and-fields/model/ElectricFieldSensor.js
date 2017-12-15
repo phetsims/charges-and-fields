@@ -36,7 +36,7 @@ define( function( require ) {
       phetioType: PropertyIO( Vector2IO )
     } );
 
-    ModelElement.call( this, { tandem: tandem } );
+    ModelElement.call( this, { tandem: tandem, phetioType: ElectricFieldSensorIO } );
 
     this.computeElectricField = computeElectricField;
 
