@@ -30,15 +30,13 @@ define( function( require ) {
    */
   function ElectricFieldSensor( computeElectricField, tandem ) {
 
-    var self = this;
-
     // @public {Property.<Vector2>} electricField Vector in Newtons per Coulomb
     this.electricFieldProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'electricFieldProperty' ),
       phetioType: PropertyIO( Vector2IO )
     } );
 
-    ModelElement.call( this, tandem );
+    ModelElement.call( this, { tandem: tandem } );
 
     this.computeElectricField = computeElectricField;
 
@@ -46,12 +44,6 @@ define( function( require ) {
     this.electricFieldSensorTandem = tandem;
 
     this.positionProperty.link( this.update.bind( this ) );
-
-    tandem.addInstance( this, { phetioType: ElectricFieldSensorIO } );
-
-    this.disposeElectricFieldSensor = function() {
-      tandem.removeInstance( self );
-    };
   }
 
   chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );
@@ -77,7 +69,6 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.disposeElectricFieldSensor();
       this.electricFieldProperty.dispose();
       ModelElement.prototype.dispose.call( this );
     }

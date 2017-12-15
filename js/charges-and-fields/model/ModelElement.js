@@ -26,6 +26,7 @@ define( function( require ) {
    * @constructor
    */
   function ModelElement( options ) {
+
     var tandem = options.tandem;// required
 
     // @public {Property.<Vector2>}
