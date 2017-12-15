@@ -378,7 +378,7 @@ define( function( require ) {
      * @returns {ChargedParticle}
      */
     addPositiveCharge: function( tandem ) {
-      return this.addModelElement( new ChargedParticle( 1, tandem ), this.chargedParticles );
+      return this.addModelElement( new ChargedParticle( 1, { tandem: tandem } ), this.chargedParticles );
     },
 
     /**
@@ -388,7 +388,7 @@ define( function( require ) {
      * @returns {ChargedParticle}
      */
     addNegativeCharge: function( tandem ) {
-      return this.addModelElement( new ChargedParticle( -1, tandem ), this.chargedParticles );
+      return this.addModelElement( new ChargedParticle( -1, { tandem: tandem } ), this.chargedParticles );
     },
 
     /**

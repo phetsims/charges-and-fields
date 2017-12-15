@@ -14,44 +14,29 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
   var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
 
   /**
-   *
    * @param {number} charge - (positive=+1 or negative=-1)
-   * @param {Tandem} tandem
+   * @param {Object} options - required actually to supply tandem
    * @constructor
    */
-  function ChargedParticle( charge, tandem ) {
+  function ChargedParticle( charge, options ) {
 
-    ModelElement.call( this, tandem );
+    options = _.extend( { tandem: Tandem.required, phetioType: ChargedParticleIO }, options );
+
+    ModelElement.call( this, options );
 
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
-    var self = this;
-
     // @public read-only
     this.charge = charge; // a charge of one corresponds to one nano Coulomb
-
-    tandem.addInstance( this, { phetioType: ChargedParticleIO } );
-
-    this.disposeChargedParticle = function() {
-      tandem.removeInstance( self );
-    };
-
-    // @public
-    this.chargedParticleTandem = tandem;
   }
 
   chargesAndFields.register( 'ChargedParticle', ChargedParticle );
 
-  return inherit( ModelElement, ChargedParticle, {
-    dispose: function() {
-      ModelElement.prototype.dispose.call( this );
-      this.disposeChargedParticle();
-    }
-  } );
+  return inherit( ModelElement, ChargedParticle );
 } );
-

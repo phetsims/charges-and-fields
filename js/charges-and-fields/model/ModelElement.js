@@ -15,17 +15,18 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
   var Vector2IO = require( 'DOT/Vector2IO' );
 
   /**
+   * @param {Object} options
    * @constructor
-   *
-   * @param {Tandem} tandem
    */
-  function ModelElement( tandem ) {
+  function ModelElement( options ) {
+    var tandem = options.tandem;// required
 
     // @public {Property.<Vector2>}
     this.positionProperty = new Property( new Vector2(), {
@@ -63,11 +64,13 @@ define( function( require ) {
 
     // @public
     this.returnedToOriginEmitter = new Emitter();
+
+    PhetioObject.call( this, options );
   }
 
   chargesAndFields.register( 'ModelElement', ModelElement );
 
-  return inherit( Object, ModelElement, {
+  return inherit( PhetioObject, ModelElement, {
 
     dispose: function() {
       this.disposeEmitter.emit();
@@ -78,6 +81,7 @@ define( function( require ) {
 
       // Cancel animation (if any) so it doesn't try to update a disposed ModelElement
       this.animationTween && this.animationTween.stop();
+      PhetioObject.prototype.dispose.call( this );
     },
 
     /**
@@ -93,7 +97,7 @@ define( function( require ) {
       var distanceToDestination = this.positionProperty.get().distance( this.initialPosition );
 
       // time to perform the animation in milliseconds, time is proportional to distance
-      var animationTime = (distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY) * 1000; // in milliseconds
+      var animationTime = ( distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY ) * 1000; // in milliseconds
 
       // convenience variable for the Tween animation
       var position = {

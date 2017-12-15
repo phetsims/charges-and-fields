@@ -264,7 +264,7 @@ define( function( require ) {
         modelViewTransform,
         self.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        tandem.createTandem( addedChargedParticle.chargedParticleTandem.tail )
+        tandem.createTandem( addedChargedParticle.phetioObjectTandem.tail )
       );
       draggableElementsLayer.addChild( chargedParticleNode );
 
@@ -376,10 +376,8 @@ define( function( require ) {
         centerY: resetAllButton.centerY - 40
       } ) );
 
-      var position1 = new Vector2( 0.1, 0.1 );
-      var position2 = new Vector2( 1.2, 1.2 );
-      var charge1 = new ChargedParticle( position1, 1 );
-      var charge2 = new ChargedParticle( position2, -1 );
+      var charge1 = new ChargedParticle( 1 );
+      var charge2 = new ChargedParticle( -1 );
       charge1.initialPosition = new Vector2( 0, -1.5 );
       charge2.initialPosition = new Vector2( 0, -1.5 );
       charge1.isActiveProperty.set( true );
