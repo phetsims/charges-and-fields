@@ -22,6 +22,7 @@ define( function( require ) {
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -268,7 +269,6 @@ define( function( require ) {
 
         // Update all the visible sensors
         self.updateAllSensors();
-
       }
 
       // remove particle from the activeChargedParticles array
@@ -319,12 +319,15 @@ define( function( require ) {
 
     this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
 
-    tandem.addInstance( this, { phetioType: ChargesAndFieldsModelIO } );
+    PhetioObject.call( this, {
+      phetioType: ChargesAndFieldsModelIO,
+      tandem: tandem
+    } );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
 
-  return inherit( Object, ChargesAndFieldsModel, {
+  return inherit( PhetioObject, ChargesAndFieldsModel, {
     /**
      * Reset function
      * @public
