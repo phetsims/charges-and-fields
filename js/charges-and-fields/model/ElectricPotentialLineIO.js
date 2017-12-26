@@ -17,8 +17,8 @@ define( function( require ) {
 
   /**
    *
-   * @param electricPotentialLine
-   * @param phetioID
+   * @param {ElectricPotentialLine} electricPotentialLine
+   * @param {string} phetioID
    * @constructor
    */
   function ElectricPotentialLineIO( electricPotentialLine, phetioID ) {

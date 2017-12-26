@@ -16,8 +16,8 @@ define( function( require ) {
 
   /**
    *
-   * @param modelElement
-   * @param phetioID
+   * @param {ModelElement} modelElement
+   * @param {string} phetioID
    * @constructor
    */
   function ModelElementIO( modelElement, phetioID ) {

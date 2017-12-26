@@ -17,8 +17,8 @@ define( function( require ) {
 
   /**
    *
-   * @param electricFieldSensor
-   * @param phetioID
+   * @param {ElectricFieldSensor} electricFieldSensor
+   * @param {string} phetioID
    * @constructor
    */
   function ElectricFieldSensorIO( electricFieldSensor, phetioID ) {
