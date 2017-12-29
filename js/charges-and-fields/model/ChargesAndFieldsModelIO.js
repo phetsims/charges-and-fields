@@ -67,7 +67,7 @@ define( function( require ) {
           return chargesAndFieldsModel.addElectricPotentialLine( Vector2IO.fromStateObject( stateObject.position ), tandem );
         }
         else {
-          throw new Error( 'child type not found: ' + tandem.id );
+          throw new Error( 'child type not found: ' + tandem.phetioID );
         }
       }
     }
