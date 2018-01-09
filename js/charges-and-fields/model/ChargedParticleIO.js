@@ -56,10 +56,10 @@ define( function( require ) {
       };
     },
 
-    setValue: function( chargedParticle, value ) {
+    setValue: function( chargedParticle, fromStateObject ) {
       assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
-      chargedParticle.charge = value.charge;
-      chargedParticle.initialPosition = value.initialPosition;
+      chargedParticle.charge = fromStateObject.charge;
+      chargedParticle.initialPosition = fromStateObject.initialPosition;
     }
   } );
 
