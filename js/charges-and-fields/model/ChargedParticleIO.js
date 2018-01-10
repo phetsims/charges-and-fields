@@ -41,18 +41,18 @@ define( function( require ) {
   }, {
     documentation: 'A Charged Particle',
 
-    fromStateObject: function( stateObject ) {
-      return {
-        charge: stateObject.charge,
-        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
-      };
-    },
-
     toStateObject: function( chargedParticle ) {
       assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
       return {
         charge: chargedParticle.charge,
         initialPosition: chargedParticle.initialPosition ? Vector2IO.toStateObject( chargedParticle.initialPosition ) : null
+      };
+    },
+
+    fromStateObject: function( stateObject ) {
+      return {
+        charge: stateObject.charge,
+        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
       };
     },
 

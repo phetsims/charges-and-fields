@@ -30,18 +30,18 @@ define( function( require ) {
   phetioInherit( ModelElementIO, 'ElectricFieldSensorIO', ElectricFieldSensorIO, {}, {
     documentation: 'The sensor that detects the charge direction and strength.',
 
-    fromStateObject: function( stateObject ) {
-      return {
-        computeElectricField: stateObject.computeElectricField,
-        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
-      };
-    },
-
     toStateObject: function( electricFieldSensor ) {
       assert && assertInstanceOf( electricFieldSensor, phet.chargesAndFields.ElectricFieldSensor );
       return {
         computeElectricField: electricFieldSensor.computeElectricField,
         initialPosition: electricFieldSensor.initialPosition ? Vector2IO.toStateObject( electricFieldSensor.initialPosition ) : null
+      };
+    },
+
+    fromStateObject: function( stateObject ) {
+      return {
+        computeElectricField: stateObject.computeElectricField,
+        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
       };
     }
   } );

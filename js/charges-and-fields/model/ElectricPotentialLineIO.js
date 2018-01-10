@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
+  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
@@ -29,13 +29,13 @@ define( function( require ) {
 
   phetioInherit( ModelElementIO, 'ElectricPotentialLineIO', ElectricPotentialLineIO, {}, {
     documentation: 'The vector that shows the charge strength and direction.',
-    fromStateObject: function( stateObject ) {
-      return {};
-    },
 
     toStateObject: function( electricPotentialLine ) {
       assert && assertInstanceOf( electricPotentialLine, phet.chargesAndFields.ElectricPotentialLine );
       return { position: Vector2IO.toStateObject( electricPotentialLine.position ) };
+    },
+    fromStateObject: function( stateObject ) {
+      return {};
     }
   } );
 
