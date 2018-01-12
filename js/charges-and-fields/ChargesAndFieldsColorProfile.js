@@ -54,11 +54,11 @@ define( function( require ) {
       default: new Color( 210, 210, 210 ),
       projector: new Color( 192, 192, 192 )
     },
-    checkBox: {
+    checkbox: {
       default: new Color( 230, 230, 230 ),
       projector: BLACK
     },
-    checkBoxBackground: {
+    checkboxBackground: {
       default: new Color( 30, 30, 30 ),
       projector: WHITE
     },

@@ -12,7 +12,7 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -44,68 +44,68 @@ define( function( require ) {
      * @param tandemId
      * @param {string} string
      * @param {Property.<boolean>} property
-     * @returns {CheckBox}
+     * @returns {Checkbox}
      */
-    function createCheckBox( tandemId, string, property ) {
+    function createCheckbox( tandemId, string, property ) {
       var text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECK_BOX_FONT,
         fill: ChargesAndFieldsColorProfile.controlPanelTextProperty,
         maxWidth: 250
       } );
 
-      return new CheckBox( text, property, {
+      return new Checkbox( text, property, {
         tandem: tandem.createTandem( tandemId ),
         boxWidth: 25,
         spacing: 7,
-        checkBoxColor: ChargesAndFieldsColorProfile.checkBoxProperty,
-        checkBoxColorBackground: ChargesAndFieldsColorProfile.checkBoxBackgroundProperty
+        checkboxColor: ChargesAndFieldsColorProfile.checkboxProperty,
+        checkboxColorBackground: ChargesAndFieldsColorProfile.checkboxBackgroundProperty
       } );
     }
 
     /**
      * indent the checkbox
-     * @param {CheckBox} checkBox
+     * @param {Checkbox} checkbox
      * @returns {Node}
      */
-    function createIndentedNode( checkBox ) {
+    function createIndentedNode( checkbox ) {
       var node = new Node();
       var hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
-      checkBox.left = hStrut.right;
-      node.setChildren( [ hStrut, checkBox ] );
+      checkbox.left = hStrut.right;
+      node.setChildren( [ hStrut, checkbox ] );
       return node;
     }
 
     // create checkboxes
-    var electricFieldCheckBox = createCheckBox( 'electricFieldCheckBox', electricFieldString, model.isElectricFieldVisibleProperty );
-    var directionOnlyCheckBox = createCheckBox( 'directionOnlyCheckBox', directionOnlyString, model.isElectricFieldDirectionOnlyProperty );
-    var voltageCheckBox = createCheckBox( 'voltageCheckBox', voltageString, model.isElectricPotentialVisibleProperty );
-    var valuesCheckBox = createCheckBox( 'valuesCheckBox', valuesString, model.areValuesVisibleProperty );
-    var gridCheckBox = createCheckBox( 'gridCheckBox', gridString, model.isGridVisibleProperty );
-    var snapToGridCheckBox = createCheckBox( 'snapToGridCheckBox', snapToGridString, model.snapToGridProperty );
+    var electricFieldCheckbox = createCheckbox( 'electricFieldCheckbox', electricFieldString, model.isElectricFieldVisibleProperty );
+    var directionOnlyCheckbox = createCheckbox( 'directionOnlyCheckbox', directionOnlyString, model.isElectricFieldDirectionOnlyProperty );
+    var voltageCheckbox = createCheckbox( 'voltageCheckbox', voltageString, model.isElectricPotentialVisibleProperty );
+    var valuesCheckbox = createCheckbox( 'valuesCheckbox', valuesString, model.areValuesVisibleProperty );
+    var gridCheckbox = createCheckbox( 'gridCheckbox', gridString, model.isGridVisibleProperty );
+    var snapToGridCheckbox = createCheckbox( 'snapToGridCheckbox', snapToGridString, model.snapToGridProperty );
 
     // some of the checkboxes need to be indented with respect to the other checkboxes
-    var directionOnlyGroup = createIndentedNode( directionOnlyCheckBox );
-    var snapToGridGroup = createIndentedNode( snapToGridCheckBox );
+    var directionOnlyGroup = createIndentedNode( directionOnlyCheckbox );
+    var snapToGridGroup = createIndentedNode( snapToGridCheckbox );
 
     // @private
     this.toggleNodes = [
-      electricFieldCheckBox,
+      electricFieldCheckbox,
       directionOnlyGroup,
-      voltageCheckBox,
-      valuesCheckBox,
-      gridCheckBox,
+      voltageCheckbox,
+      valuesCheckbox,
+      gridCheckbox,
       snapToGridGroup
     ];
 
     // @private
-    this.checkBoxGroup = new VBox( {
+    this.checkboxGroup = new VBox( {
       spacing: 12,
       children: this.toggleNodes,
       align: 'left'
     } );
 
     // add the checkbox group to the panel
-    Panel.call( this, this.checkBoxGroup, {
+    Panel.call( this, this.checkboxGroup, {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10,
@@ -114,9 +114,9 @@ define( function( require ) {
       tandem: tandem
     } );
 
-    model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckBox, 'enabled' );
+    model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckbox, 'enabled' );
 
-    model.isGridVisibleProperty.linkAttribute( snapToGridCheckBox, 'enabled' );
+    model.isGridVisibleProperty.linkAttribute( snapToGridCheckbox, 'enabled' );
   }
 
   chargesAndFields.register( 'ChargesAndFieldsControlPanel', ChargesAndFieldsControlPanel );

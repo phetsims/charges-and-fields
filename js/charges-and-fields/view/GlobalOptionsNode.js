@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
@@ -27,17 +27,17 @@ define( function( require ) {
   function GlobalOptionsNode( tandem ) {
 
     // Static tandems are needed here because it is called before the sim is launched
-    var checkBoxText = new Text( optionsProjectorColorsString, {
+    var checkboxText = new Text( optionsProjectorColorsString, {
       font: OptionsDialog.DEFAULT_FONT,
-      tandem: tandem.createTandem( 'projectorCheckBoxString' )
+      tandem: tandem.createTandem( 'projectorCheckboxString' )
     } );
 
-    var projectorCheckBox = new CheckBox( checkBoxText, ChargesAndFieldsGlobals.projectorColorsProperty, {
-      tandem: tandem.createTandem( 'projectorCheckBox' )
+    var projectorCheckbox = new Checkbox( checkboxText, ChargesAndFieldsGlobals.projectorColorsProperty, {
+      tandem: tandem.createTandem( 'projectorCheckbox' )
     } );
 
     LayoutBox.call( this, _.extend( {
-      children: [ projectorCheckBox ],
+      children: [ projectorCheckbox ],
       spacing: OptionsDialog.DEFAULT_SPACING,
       align: 'left',
       tandem: tandem
