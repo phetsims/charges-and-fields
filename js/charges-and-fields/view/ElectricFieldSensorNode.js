@@ -19,6 +19,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Touch = require( 'SCENERY/input/Touch' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -197,7 +198,7 @@ define( function( require ) {
       canStartPress: function() { return !electricFieldSensor.animationTween; },
       isUserControlledProperty: electricFieldSensor.isUserControlledProperty,
       offsetLocation: function( point, listener ) {
-        return listener.pointer.isTouch ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
+        return listener.pointer instanceof Touch ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
       },
       start: function( event, listener ) {
         // Move the sensor to the front of this layer when grabbed by the user.

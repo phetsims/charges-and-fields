@@ -14,6 +14,7 @@ define( function( require ) {
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   var DragListener = require( 'SCENERY/listeners/DragListener' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Touch = require( 'SCENERY/input/Touch' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -61,7 +62,7 @@ define( function( require ) {
       canStartPress: function() { return !chargedParticle.animationTween; },
       isUserControlledProperty: chargedParticle.isUserControlledProperty,
       offsetLocation: function( point, listener ) {
-        return listener.pointer.isTouch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
+        return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
       },
       start: function( event, listener ) {
         // Move the chargedParticle to the front of this layer when grabbed by the user.
