@@ -321,7 +321,8 @@ define( function( require ) {
 
     PhetioObject.call( this, {
       phetioType: ChargesAndFieldsModelIO,
-      tandem: tandem
+      tandem: tandem,
+      phetioState: false
     } );
   }
 
