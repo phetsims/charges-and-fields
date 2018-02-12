@@ -264,7 +264,7 @@ define( function( require ) {
         modelViewTransform,
         self.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        tandem.createTandem( addedChargedParticle.phetioObjectTandem.tail )
+        tandem.createTandem( addedChargedParticle.tandem.tail )
       );
       draggableElementsLayer.addChild( chargedParticleNode );
 
