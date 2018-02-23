@@ -225,7 +225,7 @@ define( function( require ) {
         // Horrible horrible hacks
         draggableElementsLayer.children.forEach( function( potentialView ) {
           if ( potentialView.modelElement === modelElement ) {
-            potentialView.movableDragHandler.press( event );
+            potentialView.movableDragHandler.press( event, potentialView );
           }
         } );
       },

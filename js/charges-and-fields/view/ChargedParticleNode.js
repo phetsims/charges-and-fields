@@ -54,7 +54,6 @@ define( function( require ) {
 
     this.movableDragHandler = new DragListener( {
       applyOffset: false,
-      targetNode: this,
       locationProperty: chargedParticle.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
       dragBounds: availableModelBoundsProperty.get(),

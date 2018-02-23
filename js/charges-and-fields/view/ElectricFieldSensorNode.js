@@ -190,7 +190,6 @@ define( function( require ) {
 
     this.movableDragHandler = new DragListener( {
       applyOffset: false,
-      targetNode: this,
       locationProperty: electricFieldSensor.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
       dragBounds: availableModelBoundsProperty.value,

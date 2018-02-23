@@ -254,7 +254,6 @@ define( function( require ) {
 
     // Should be added as a listener by our parent when the time is right
     this.movableDragHandler = new DragListener( {
-      targetNode: this,
       locationProperty: electricPotentialSensor.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
       dragBounds: availableModelBoundsProperty.get(),
