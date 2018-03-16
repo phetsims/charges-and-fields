@@ -118,7 +118,7 @@ define( function( require ) {
         var initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
         electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
-        electricPotentialSensorNode.movableDragHandler.press( event );
+        electricPotentialSensorNode.movableDragHandler.press( event, electricPotentialSensorNode );
       }
     } );
 
