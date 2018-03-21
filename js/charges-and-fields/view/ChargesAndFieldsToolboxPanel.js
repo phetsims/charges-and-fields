@@ -237,7 +237,7 @@ define( function( require ) {
         tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ), {
           tandem: tandem.createTandem( 'tipPositionProperty' ),
           phetioType: PropertyIO( Vector2IO ),
-          phetioInstanceDocumentation: 'Tip position of measuring tape'
+          phetioInstanceDocumentation: 'Tip position of measuring tape.'
         } ),
         scale: 0.8, // make it a bit small
         hasValue: false, // let's hide the text label value (the length) for the icon
