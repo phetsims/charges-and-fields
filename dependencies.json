@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.4 Mon Apr 23 2018 15:19:24 GMT-0600 (MDT)",
+  "comment": "# charges-and-fields 1.0.5-rc.1 Mon Apr 23 2018 17:12:01 GMT-0600 (MDT)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "68506d08b2a06c096375c4634662b6702d4e889e",
+    "sha": "03533eb48fbaee558696c579117ffbcad2d11b87",
     "branch": "1.0"
   },
   "chipper": {
@@ -42,7 +42,7 @@
   },
   "scenery": {
     "sha": "67d8c5d2e07202c2c1c77788865bd4fe66e791df",
-    "branch": "charges-and-fields-1.0"
+    "branch": "HEAD"
   },
   "scenery-phet": {
     "sha": "d50f228284aea36df09232ea0d5ab950e3c47f94",
