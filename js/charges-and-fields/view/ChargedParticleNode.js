@@ -56,7 +56,7 @@ define( function( require ) {
       applyOffset: false,
       locationProperty: chargedParticle.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
-      dragBounds: availableModelBoundsProperty.get(),
+      dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
       canStartPress: function() { return !chargedParticle.animationTween; },
       isUserControlledProperty: chargedParticle.isUserControlledProperty,
@@ -75,10 +75,6 @@ define( function( require ) {
         }
       }
     } );
-
-    // readjust the dragBounds of the movable drag handler when the screen is resized
-    var dragBoundsListener = self.movableDragHandler.setDragBounds.bind( self.movableDragHandler );
-    availableModelBoundsProperty.link( dragBoundsListener );
 
     // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
     var isDragListenerAttached = false;
@@ -103,7 +99,6 @@ define( function( require ) {
     chargedParticle.isInteractiveProperty.link( isInteractiveListener );
 
     this.disposeChargedParticleNode = function() {
-      availableModelBoundsProperty.unlink( dragBoundsListener );
       chargedParticle.positionProperty.unlink( positionListener );
       chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
       this.movableDragHandler.dispose();

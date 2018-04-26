@@ -192,7 +192,7 @@ define( function( require ) {
       applyOffset: false,
       locationProperty: electricFieldSensor.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
-      dragBounds: availableModelBoundsProperty.value,
+      dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
       canStartPress: function() { return !electricFieldSensor.animationTween; },
       isUserControlledProperty: electricFieldSensor.isUserControlledProperty,
@@ -238,12 +238,6 @@ define( function( require ) {
     };
     electricFieldSensor.isInteractiveProperty.link( isInteractiveListener );
 
-    var availableModelBoundsPropertyListener = function( bounds ) {
-      self.movableDragHandler.setDragBounds( bounds );
-    };
-
-    availableModelBoundsProperty.link( availableModelBoundsPropertyListener );
-
     this.availableModelBoundsProperty = availableModelBoundsProperty;
 
     this.disposeElectricFieldSensorNode = function() {
@@ -256,7 +250,6 @@ define( function( require ) {
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
-      availableModelBoundsProperty.unlink( availableModelBoundsPropertyListener );
       this.movableDragHandler.dispose();
       fieldStrengthLabel.dispose();
       directionLabel.dispose();

@@ -256,7 +256,7 @@ define( function( require ) {
     this.movableDragHandler = new DragListener( {
       locationProperty: electricPotentialSensor.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
-      dragBounds: availableModelBoundsProperty.get(),
+      dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
       isUserControlledProperty: this.isUserControlledProperty,
       end: function( event, listener ) {
@@ -266,11 +266,6 @@ define( function( require ) {
 
     // When dragging, move the electric potential sensor
     self.addInputListener( this.movableDragHandler );
-
-    //no need to unlink, the sensor is present for the lifetime of the simulation.
-    availableModelBoundsProperty.link( function( bounds ) {
-      self.movableDragHandler.setDragBounds( bounds );
-    } );
 
     // Show/Hide this node
     // no need to unlink, stays for the lifetime of the simulation
