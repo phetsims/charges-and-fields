@@ -10,6 +10,7 @@
     "grunt": "~1.0.0"
   },
   "phet": {
+    "colorProfile": true,
     "requirejsNamespace": "CHARGES_AND_FIELDS",
     "preload": [
       "../sherpa/lib/Tween-r12.js"
