@@ -16,7 +16,7 @@ define( function( require ) {
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io modules
+  // ifphetio
   var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
 
   /**

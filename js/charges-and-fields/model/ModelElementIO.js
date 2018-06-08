@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
 
-  // phet-io modules
+  // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
