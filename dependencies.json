@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.1-phetiorc.1 Tue Jun 05 2018 10:47:41 GMT-0600 (MDT)",
+  "comment": "# charges-and-fields 1.0.1-phetio Fri Jul 13 2018 15:52:56 GMT-0600 (MDT)",
   "assert": {
     "sha": "845be6b591cb746b0b05b7023208aef2e49a8855",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "383639999dfe678269edbbacf91c4cf62bf3520c",
+    "sha": "dfcb49445cbffe87e2d61aa73ddfadd6fc2fb348",
     "branch": "1.0-phetio"
   },
   "chipper": {
