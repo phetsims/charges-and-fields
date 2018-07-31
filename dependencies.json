@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.7-phetiorc.1 Thu Jul 26 2018 16:47:00 GMT-0600 (MDT)",
+  "comment": "# charges-and-fields 1.0.7-phetiorc.2 Mon Jul 30 2018 20:32:54 GMT-0600 (MDT)",
   "assert": {
     "sha": "845be6b591cb746b0b05b7023208aef2e49a8855",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "8eaab4629a7fe1a86dd5eb119e4ea34b4ff502e3",
+    "sha": "0146085edf12a90ed797d963236c11f234995aef",
     "branch": "1.0-phetio"
   },
   "chipper": {
@@ -54,7 +54,7 @@
   },
   "scenery": {
     "sha": "c577a680d7302a6a1ddb2c94de1672cbe1bf016a",
-    "branch": "charges-and-fields-1.0-phetio"
+    "branch": "HEAD"
   },
   "scenery-phet": {
     "sha": "edf3e62563f7a4b824559b4bf4b0bc6151354ad0",
