@@ -90,7 +90,7 @@ define( function( require ) {
           // Don't try to start drags with a right mouse button or an attached pointer.
           if ( !event.canStartPress() ) { return; }
 
-          // Representation node location, so that when being "disposed" it will animate back towards the the right place.
+          // Representation node location, so that when being "disposed" it will animate back towards the right place.
           var initialViewPosition = previewNode.getUniqueTrailTo( screenView ).getAncestorMatrix().timesVector2( Vector2.ZERO );
 
           // Create the new model element.
