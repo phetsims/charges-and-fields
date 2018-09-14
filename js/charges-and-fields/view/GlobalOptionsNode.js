@@ -23,7 +23,9 @@ define( function( require ) {
   function GlobalOptionsNode( tandem ) {
 
     var projectorCheckbox = new ProjectorModeCheckbox( {
-      projectorModeEnabledProperty: ChargesAndFieldsGlobals.projectorColorsProperty
+      projectorModeEnabledProperty: ChargesAndFieldsGlobals.projectorColorsProperty,
+      tandem: tandem.createTandem( 'projectorCheckbox' ),
+      phetioInstanceDocumentation: 'The checkbox that toggles if projector mode is enabled.'
     } );
 
     LayoutBox.call( this, _.extend( {
