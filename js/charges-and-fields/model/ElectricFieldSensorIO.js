@@ -32,6 +32,11 @@ define( function( require ) {
   phetioInherit( ModelElementIO, 'ElectricFieldSensorIO', ElectricFieldSensorIO, {}, {
     documentation: 'The sensor that detects the charge direction and strength.',
 
+    /**
+     * @param {ElectricFieldSensor} electricFieldSensor
+     * @returns {Object}
+     * @override
+     */
     toStateObject: function( electricFieldSensor ) {
       assert && assertInstanceOf( electricFieldSensor, phet.chargesAndFields.ElectricFieldSensor );
       return {
@@ -40,6 +45,11 @@ define( function( require ) {
       };
     },
 
+    /**
+     * @param {Object} stateObject
+     * @returns {Object}
+     * @override
+     */
     fromStateObject: function( stateObject ) {
       return {
         computeElectricField: stateObject.computeElectricField,
