@@ -32,10 +32,21 @@ define( function( require ) {
   phetioInherit( ModelElementIO, 'ElectricPotentialLineIO', ElectricPotentialLineIO, {}, {
     documentation: 'The vector that shows the charge strength and direction.',
 
+    /**
+     * @param {ElectricPotentialLine} electricPotentialLine
+     * @returns {Object}
+     * @override
+     */
     toStateObject: function( electricPotentialLine ) {
       assert && assertInstanceOf( electricPotentialLine, phet.chargesAndFields.ElectricPotentialLine );
       return { position: Vector2IO.toStateObject( electricPotentialLine.position ) };
     },
+
+    /**
+     * @param {Object} stateObject
+     * @returns {Object}
+     * @override
+     */
     fromStateObject: function( stateObject ) {
       return {};
     }
