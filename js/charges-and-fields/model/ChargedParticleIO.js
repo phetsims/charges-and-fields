@@ -44,6 +44,11 @@ define( function( require ) {
   }, {
     documentation: 'A Charged Particle',
 
+    /**
+     * @param {ChargedParticle} chargedParticle
+     * @returns {Object}
+     * @override
+     */
     toStateObject: function( chargedParticle ) {
       assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
       return {
@@ -52,6 +57,11 @@ define( function( require ) {
       };
     },
 
+    /**
+     * @param {Object} stateObject
+     * @returns {Object}
+     * @override
+     */
     fromStateObject: function( stateObject ) {
       return {
         charge: stateObject.charge,
