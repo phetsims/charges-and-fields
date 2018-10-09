@@ -264,7 +264,7 @@ define( function( require ) {
     } );
     this.movableDragHandler.isUserControlledProperty.link( function( controlled ) {
       self.isUserControlledProperty.value = controlled;
-    } ):
+    } );
 
     // When dragging, move the electric potential sensor
     self.addInputListener( this.movableDragHandler );
