@@ -258,11 +258,13 @@ define( function( require ) {
       tandem: tandem.createTandem( 'dragListener' ),
       dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
-      isUserControlledProperty: this.isUserControlledProperty,
       end: function( event, listener ) {
         snapToGridLines( electricPotentialSensor.positionProperty );
       }
     } );
+    this.movableDragHandler.isUserControlledProperty.link( function( controlled ) {
+      self.isUserControlledProperty.value = controlled;
+    } ):
 
     // When dragging, move the electric potential sensor
     self.addInputListener( this.movableDragHandler );

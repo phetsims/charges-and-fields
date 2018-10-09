@@ -59,7 +59,6 @@ define( function( require ) {
       dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
       canStartPress: function() { return !chargedParticle.animationTween; },
-      isUserControlledProperty: chargedParticle.isUserControlledProperty,
       offsetLocation: function( point, listener ) {
         return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
       },
@@ -74,6 +73,9 @@ define( function( require ) {
           chargedParticle.isActiveProperty.set( true );
         }
       }
+    } );
+    this.movableDragHandler.isUserControlledProperty.link( function( controlled ) {
+      chargedParticle.isUserControlledProperty.value = controlled;
     } );
 
     // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.

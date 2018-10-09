@@ -195,7 +195,6 @@ define( function( require ) {
       dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
       canStartPress: function() { return !electricFieldSensor.animationTween; },
-      isUserControlledProperty: electricFieldSensor.isUserControlledProperty,
       offsetLocation: function( point, listener ) {
         return listener.pointer instanceof Touch ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
       },
@@ -216,6 +215,9 @@ define( function( require ) {
           arrowNode.visible = false;
         }
       }
+    } );
+    this.movableDragHandler.isUserControlledProperty.link( function( controlled ) {
+      electricFieldSensor.isUserControlledProperty.value = controlled;
     } );
 
     // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
