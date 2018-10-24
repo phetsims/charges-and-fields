@@ -12,12 +12,10 @@ define( function( require ) {
 
   // modules
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // ifphetio
-  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
 
   /**
    * @param {number} charge - (positive=+1 or negative=-1)

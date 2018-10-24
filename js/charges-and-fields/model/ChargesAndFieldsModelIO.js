@@ -11,11 +11,11 @@ define( function( require ) {
 
   // modules
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var Vector2IO = require( 'DOT/Vector2IO' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 
   /**

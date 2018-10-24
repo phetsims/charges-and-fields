@@ -26,8 +26,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
-
-  // ifphetio
   var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   var ChargesAndFieldsModelIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModelIO' );
   var ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
