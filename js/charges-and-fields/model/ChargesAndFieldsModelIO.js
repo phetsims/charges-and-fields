@@ -12,8 +12,8 @@ define( function( require ) {
   // modules
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );

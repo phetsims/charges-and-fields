@@ -13,10 +13,14 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var Bounds2IO = require( 'DOT/Bounds2IO' );
   var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
+  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var ChargesAndFieldsModelIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModelIO' );
   var ElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensor' );
+  var ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
   var ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
+  var ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
   var ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
   var inherit = require( 'PHET_CORE/inherit' );
   var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
@@ -26,10 +30,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
-  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
-  var ChargesAndFieldsModelIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModelIO' );
-  var ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
-  var ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
 
   // constants
   var GRID_MINOR_SPACING = ChargesAndFieldsConstants.GRID_MAJOR_SPACING / ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;

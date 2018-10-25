@@ -13,9 +13,9 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   var NumberIO = require( 'TANDEM/types/NumberIO' );
+  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Vector2IO = require( 'DOT/Vector2IO' );
   var VoidIO = require( 'TANDEM/types/VoidIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
