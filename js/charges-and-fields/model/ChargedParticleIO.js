@@ -15,10 +15,10 @@ define( function( require ) {
   var NumberIO = require( 'TANDEM/types/NumberIO' );
   var Vector2IO = require( 'DOT/Vector2IO' );
   var VoidIO = require( 'TANDEM/types/VoidIO' );
+  var phetioInherit = require( 'TANDEM/phetioInherit' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 
   /**
    * @param {ChargedParticle} chargedParticle
