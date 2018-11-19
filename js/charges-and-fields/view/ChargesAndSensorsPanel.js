@@ -1,4 +1,4 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2015-2018, University of Colorado Boulder
 
 /**
  * Scenery Node that contains an enclosure for a positive, a negative electric charge and an electric sensor.
