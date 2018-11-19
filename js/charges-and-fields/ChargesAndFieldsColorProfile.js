@@ -21,7 +21,7 @@ define( function( require ) {
   var RED = new Color( 255, 0, 0 );
   var BLUE = new Color( 0, 0, 255 );
 
-  var ChargesAndFieldsColorProfile = new ColorProfile( {
+  var ChargesAndFieldsColorProfile = new ColorProfile( [ 'default', 'projector' ], {
     background: {
       default: BLACK,
       projector: WHITE
@@ -158,7 +158,7 @@ define( function( require ) {
       default: BLUE,
       projector: BLUE
     }
-  }, [ 'default', 'projector' ] );
+  } );
 
   chargesAndFields.register( 'ChargesAndFieldsColorProfile', ChargesAndFieldsColorProfile );
 
