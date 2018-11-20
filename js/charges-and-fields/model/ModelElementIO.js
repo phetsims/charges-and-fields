@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var chargesAndFields = require ('CHARGES_AND_FIELDS/chargesAndFields');
-  var ModelElement = require( 'CHARGES_AND_FIELDS/model/ModelElement' );
+  var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
 
