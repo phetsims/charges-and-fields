@@ -311,11 +311,9 @@ define( function( require ) {
       gl.uniform2f( computeShaderProgram.uniformLocations.uTextureSize, this.textureWidth, this.textureHeight );
 
       var matrixInverse = scratchInverseMatrix;
-      var matrixInverseEntries = scratchFloatArray;
       var projectionMatrixInverse = scratchProjectionMatrix.set( projectionMatrix ).invert();
       matrixInverse.set( this.node.modelViewTransform.getInverse() ).multiplyMatrix( modelViewMatrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
-      matrixInverseEntries.set( matrixInverse.entries );
-      gl.uniformMatrix3fv( computeShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverseEntries );
+      gl.uniformMatrix3fv( computeShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverse.copyToArray( scratchFloatArray ) );
 
       // do a draw call for each particle change
       for ( var i = 0; i < this.chargeTracker.queue.length; i++ ) {

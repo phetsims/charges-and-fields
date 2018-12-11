@@ -19,6 +19,7 @@ define( function( require ) {
 
   // higher values support more particles, but may compromise performance
   var MAX_PARTICLES_LIMIT = 32;
+  var scratchFloatArray = new Float32Array( 9 );
 
   /**
    *
@@ -160,8 +161,7 @@ define( function( require ) {
       // TODO: reduce allocations
       var projectionMatrixInverse = new Matrix3().set( projectionMatrix ).invert();
       var matrixInverse = this.node.modelViewTransform.getInverse().timesMatrix( modelViewMatrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
-      var matrixInverseEntries = new Float32Array( matrixInverse.entries );
-      gl.uniformMatrix3fv( displayShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverseEntries );
+      gl.uniformMatrix3fv( displayShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverse.copyToArray( scratchFloatArray ) );
 
       // tell the shader our colors / scale
       var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
