@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
@@ -42,9 +42,8 @@ define( function( require ) {
     } );
 
     // @public - Whether the sensor is out in the play area (false when in the toolbox)
-    this.isActiveProperty = new Property( false, {
-      tandem: tandem.createTandem( 'isActiveProperty' ),
-      phetioType: PropertyIO( BooleanIO )
+    this.isActiveProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isActiveProperty' )
     } );
 
     this.computeElectricPotential = computeElectricPotential;
