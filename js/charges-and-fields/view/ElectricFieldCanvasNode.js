@@ -168,7 +168,7 @@ define( function( require ) {
         }
 
         context.translate( viewPosition.x, viewPosition.y );
-        context.rotate( -electricField.angle() );
+        context.rotate( -electricField.angle );
         context.scale( 1 / ElectricFieldArrowCanvas.scale, 1 / ElectricFieldArrowCanvas.scale );
         context.translate( ElectricFieldArrowCanvas.xOffset, ElectricFieldArrowCanvas.yOffset );
         context.drawImage( ElectricFieldArrowCanvas.canvas, 0, 0 );

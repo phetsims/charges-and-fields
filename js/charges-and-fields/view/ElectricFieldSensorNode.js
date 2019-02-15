@@ -100,7 +100,7 @@ define( function( require ) {
     // when the electric field changes update the arrow and the labels
     var electricFieldListener = function( electricField ) {
       var magnitude = electricField.magnitude();
-      var angle = electricField.angle(); // angle from the model, in radians
+      var angle = electricField.angle; // angle from the model, in radians
 
       // note that the angleInView = -1 * angleInModel
       // since the vertical direction is reversed between the view and the model
