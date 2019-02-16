@@ -24,7 +24,7 @@ define( function( require ) {
 
   var MIN_VISIBLE_ELECTRIC_FIELD_MAG = 1e-9; // V/m
 
-  var scratchVector = new Vector2();
+  var scratchVector = new Vector2( 0, 0 );
 
   /**
    * @constructor
@@ -95,7 +95,7 @@ define( function( require ) {
 
     // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
     this.electricField = this.modelPositions.map( function() {
-      return new Vector2();
+      return new Vector2( 0, 0 );
     } );
 
     this.disposeElectricFieldCanvasNode = function() {

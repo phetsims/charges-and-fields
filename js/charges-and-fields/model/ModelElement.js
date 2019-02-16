@@ -30,7 +30,7 @@ define( function( require ) {
     var tandem = options.tandem;// required
 
     // @public {Property.<Vector2>}
-    this.positionProperty = new Property( new Vector2(), {
+    this.positionProperty = new Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' ),
       phetioType: PropertyIO( Vector2IO ),
       useDeepEquality: true // see https://github.com/phetsims/charges-and-fields/issues/132

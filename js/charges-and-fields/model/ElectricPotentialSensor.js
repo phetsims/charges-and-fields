@@ -29,7 +29,7 @@ define( function( require ) {
   function ElectricPotentialSensor( computeElectricPotential, tandem ) {
 
     // @public
-    this.positionProperty = new Property( new Vector2(), {
+    this.positionProperty = new Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' ),
       phetioType: PropertyIO( Vector2IO )
     } );
