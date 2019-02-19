@@ -162,8 +162,8 @@ define( function( require ) {
         var electricField = this.electricField[ i ];
 
         context.save();
-        context.globalAlpha = Util.clamp( electricField.magnitude() / maxMagnitude, 0, 1 );
-        if ( isDirectionOnly && electricField.magnitude() > MIN_VISIBLE_ELECTRIC_FIELD_MAG ) {
+        context.globalAlpha = Util.clamp( electricField.magnitude / maxMagnitude, 0, 1 );
+        if ( isDirectionOnly && electricField.magnitude > MIN_VISIBLE_ELECTRIC_FIELD_MAG ) {
           context.globalAlpha = 1.0;
         }
 

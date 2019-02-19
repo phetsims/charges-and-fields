@@ -99,7 +99,7 @@ define( function( require ) {
 
     // when the electric field changes update the arrow and the labels
     var electricFieldListener = function( electricField ) {
-      var magnitude = electricField.magnitude();
+      var magnitude = electricField.magnitude;
       var angle = electricField.angle; // angle from the model, in radians
 
       // note that the angleInView = -1 * angleInModel
@@ -211,7 +211,7 @@ define( function( require ) {
         }
 
         // Avoid corner-case issue #89. Treat excessively large E-field magnitude as an indicator that r ~ 0
-        if ( electricFieldSensor.electricField.magnitude() > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
+        if ( electricFieldSensor.electricField.magnitude > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
           arrowNode.visible = false;
         }
       }

@@ -93,18 +93,18 @@ define( function( require ) {
        * the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
        */
       var initialElectricField = this.getElectricField( position ); // {Vector2}
-      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
+      assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var electricPotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
       var midwayPosition = ( electricPotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
       var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
-      assert && assert( midwayElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
+      assert && assert( midwayElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
-      assert && assert( deltaPosition.magnitude() < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
+      assert && assert( deltaPosition.magnitude < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
 
       // if 'the second order correction is larger than the first'
-      if ( deltaPosition.magnitude() > Math.abs( deltaDistance ) ) {
+      if ( deltaPosition.magnitude > Math.abs( deltaDistance ) ) {
         // use a fail safe method
         return this.getNextPositionAlongEquipotentialWithRK4( position, deltaDistance );
       }
@@ -127,7 +127,7 @@ define( function( require ) {
      */
     getNextPositionAlongEquipotentialWithRK4: function( position, deltaDistance ) {
       var initialElectricField = this.getElectricField( position ); // {Vector2}
-      assert && assert( initialElectricField.magnitude() !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
+      assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       var k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
       var k2Vector = this.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
       var k3Vector = this.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential

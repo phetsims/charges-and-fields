@@ -434,7 +434,7 @@ define( function( require ) {
         // {boolean} indicator for a co-located pair
         var colocated = this.activeChargedParticles.get( 1 ).positionProperty.get()
                           .minus( this.activeChargedParticles.get( 0 ).positionProperty.get() )
-                          .magnitude() < MIN_DISTANCE_SCALE;
+                          .magnitude < MIN_DISTANCE_SCALE;
 
         this.isPlayAreaChargedProperty.set( colocated ? false : true );
 
