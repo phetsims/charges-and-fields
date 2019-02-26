@@ -16,9 +16,7 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Vector2IO = require( 'DOT/Vector2IO' );
   var VoidIO = require( 'TANDEM/types/VoidIO' );
-
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var validate = require( 'AXON/validate' );
 
   /**
    * @param {ChargedParticle} chargedParticle
@@ -26,7 +24,6 @@ define( function( require ) {
    * @constructor
    */
   function ChargedParticleIO( chargedParticle, phetioID ) {
-    assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
     ModelElementIO.call( this, chargedParticle, phetioID );
   }
 
@@ -43,6 +40,7 @@ define( function( require ) {
 
   }, {
     documentation: 'A Charged Particle',
+    validator: { isValidValue: v => v instanceof phet.chargesAndFields.ChargedParticle },
 
     /**
      * @param {ChargedParticle} chargedParticle
@@ -50,7 +48,7 @@ define( function( require ) {
      * @override
      */
     toStateObject: function( chargedParticle ) {
-      assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
+      validate( chargedParticle, this.validator );
       return {
         charge: chargedParticle.charge,
         initialPosition: chargedParticle.initialPosition ? Vector2IO.toStateObject( chargedParticle.initialPosition ) : null
@@ -70,7 +68,7 @@ define( function( require ) {
     },
 
     setValue: function( chargedParticle, fromStateObject ) {
-      assert && assertInstanceOf( chargedParticle, phet.chargesAndFields.ChargedParticle );
+      validate( chargedParticle, this.validator );
       chargedParticle.charge = fromStateObject.charge;
       chargedParticle.initialPosition = fromStateObject.initialPosition;
     }

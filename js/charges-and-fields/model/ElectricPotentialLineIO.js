@@ -14,9 +14,7 @@ define( function( require ) {
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Vector2IO = require( 'DOT/Vector2IO' );
-
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var validate = require( 'AXON/validate' );
 
   /**
    *
@@ -25,12 +23,12 @@ define( function( require ) {
    * @constructor
    */
   function ElectricPotentialLineIO( electricPotentialLine, phetioID ) {
-    assert && assertInstanceOf( electricPotentialLine, phet.chargesAndFields.ElectricPotentialLine );
     ObjectIO.call( this, electricPotentialLine, phetioID );
   }
 
   phetioInherit( ModelElementIO, 'ElectricPotentialLineIO', ElectricPotentialLineIO, {}, {
     documentation: 'The vector that shows the charge strength and direction.',
+    validator: { isValidValue: v => v instanceof phet.chargesAndFields.ElectricPotentialLine },
 
     /**
      * @param {ElectricPotentialLine} electricPotentialLine
@@ -38,7 +36,7 @@ define( function( require ) {
      * @override
      */
     toStateObject: function( electricPotentialLine ) {
-      assert && assertInstanceOf( electricPotentialLine, phet.chargesAndFields.ElectricPotentialLine );
+      validate( electricPotentialLine, this.validator );
       return { position: Vector2IO.toStateObject( electricPotentialLine.position ) };
     },
 

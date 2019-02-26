@@ -14,9 +14,7 @@ define( function( require ) {
   var ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Vector2IO = require( 'DOT/Vector2IO' );
-
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var validate = require( 'AXON/validate' );
 
   /**
    *
@@ -25,12 +23,12 @@ define( function( require ) {
    * @constructor
    */
   function ElectricFieldSensorIO( electricFieldSensor, phetioID ) {
-    assert && assertInstanceOf( electricFieldSensor, phet.chargesAndFields.ElectricFieldSensor );
     ModelElementIO.call( this, electricFieldSensor, phetioID );
   }
 
   phetioInherit( ModelElementIO, 'ElectricFieldSensorIO', ElectricFieldSensorIO, {}, {
     documentation: 'The sensor that detects the charge direction and strength.',
+    validator: { isValidValue: v => v instanceof phet.chargesAndFields.ElectricFieldSensor },
 
     /**
      * @param {ElectricFieldSensor} electricFieldSensor
@@ -38,7 +36,7 @@ define( function( require ) {
      * @override
      */
     toStateObject: function( electricFieldSensor ) {
-      assert && assertInstanceOf( electricFieldSensor, phet.chargesAndFields.ElectricFieldSensor );
+      validate( electricFieldSensor, this.validator );
       return {
         computeElectricField: electricFieldSensor.computeElectricField,
         initialPosition: electricFieldSensor.initialPosition ? Vector2IO.toStateObject( electricFieldSensor.initialPosition ) : null

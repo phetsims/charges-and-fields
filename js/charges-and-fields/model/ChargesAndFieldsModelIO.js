@@ -14,9 +14,7 @@ define( function( require ) {
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Vector2IO = require( 'DOT/Vector2IO' );
-
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var validate = require( 'AXON/validate' );
 
   /**
    * Instrumented to help restore charged particles.
@@ -25,19 +23,19 @@ define( function( require ) {
    * @constructor
    */
   function ChargesAndFieldsModelIO( chargesAndFieldsModel, phetioID ) {
-    assert && assertInstanceOf( chargesAndFieldsModel, phet.chargesAndFields.ChargesAndFieldsModel );
     ObjectIO.call( this, chargesAndFieldsModel, phetioID );
   }
 
   phetioInherit( ObjectIO, 'ChargesAndFieldsModelIO', ChargesAndFieldsModelIO, {}, {
     documentation: 'The model for the whole sim',
+    validator: { isValidValue: v => v instanceof phet.chargesAndFields.ChargesAndFieldsModel },
 
     /**
      * Clear the children from the model so it can be deserialized.
      * @param chargesAndFieldsModel
      */
     clearChildInstances: function( chargesAndFieldsModel ) {
-      assert && assertInstanceOf( chargesAndFieldsModel, phet.chargesAndFields.ChargesAndFieldsModel );
+      validate( chargesAndFieldsModel, this.validator );
       chargesAndFieldsModel.chargedParticles.clear();
       chargesAndFieldsModel.electricFieldSensors.clear();
       chargesAndFieldsModel.electricPotentialLines.clear();
@@ -51,7 +49,7 @@ define( function( require ) {
        * @returns {ChargedParticle}
        */
       addChildInstance: function( chargesAndFieldsModel, tandem, stateObject ) {
-        assert && assertInstanceOf( chargesAndFieldsModel, phet.chargesAndFields.ChargesAndFieldsModel );
+        validate( chargesAndFieldsModel, this.validator );
         if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) {
           if ( stateObject.charge > 0 ) {
             return chargesAndFieldsModel.addPositiveCharge( tandem );
