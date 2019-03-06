@@ -100,7 +100,7 @@ define( function( require ) {
       assert && assert( midwayElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
       var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
       var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
-      var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared() ); // {Vector2}
+      var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared ); // {Vector2}
       assert && assert( deltaPosition.magnitude < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
 
       // if 'the second order correction is larger than the first'
