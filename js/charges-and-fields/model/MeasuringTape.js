@@ -13,10 +13,8 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
+  var Vector2Property = require( 'DOT/Vector2Property' );
 
   /**
    * @constructor
@@ -26,15 +24,13 @@ define( function( require ) {
   function MeasuringTape( tandem ) {
 
     // @public - Base (start of tape from the container) position
-    this.basePositionProperty = new Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'basePositionProperty' ),
-      phetioType: PropertyIO( Vector2IO )
+    this.basePositionProperty = new Vector2Property( Vector2.ZERO, {
+      tandem: tandem.createTandem( 'basePositionProperty' )
     } );
 
     // @public - Tip (end of measuring tape) position
-    this.tipPositionProperty = new Property( new Vector2( 0.2, 0 ), {
-      tandem: tandem.createTandem( 'tipPositionProperty' ),
-      phetioType: PropertyIO( Vector2IO )
+    this.tipPositionProperty = new Vector2Property( new Vector2( 0.2, 0 ), {
+      tandem: tandem.createTandem( 'tipPositionProperty' )
     } );
 
     // @public - Whether the measuring tape is out in the play area (false when in the toolbox)

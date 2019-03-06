@@ -16,10 +16,8 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
+  var Vector2Property = require( 'DOT/Vector2Property' );
 
   /**
    * @param {Object} options
@@ -30,9 +28,8 @@ define( function( require ) {
     var tandem = options.tandem;// required
 
     // @public {Property.<Vector2>}
-    this.positionProperty = new Property( new Vector2( 0, 0 ), {
+    this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' ),
-      phetioType: PropertyIO( Vector2IO ),
       useDeepEquality: true // see https://github.com/phetsims/charges-and-fields/issues/132
     } );
 

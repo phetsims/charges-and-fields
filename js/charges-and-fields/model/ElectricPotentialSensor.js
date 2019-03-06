@@ -15,9 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
 
   /**
    * @constructor
@@ -30,8 +28,7 @@ define( function( require ) {
 
     // @public
     this.positionProperty = new Property( new Vector2( 0, 0 ), {
-      tandem: tandem.createTandem( 'positionProperty' ),
-      phetioType: PropertyIO( Vector2IO )
+      tandem: tandem.createTandem( 'positionProperty' )
     } );
 
     // @public

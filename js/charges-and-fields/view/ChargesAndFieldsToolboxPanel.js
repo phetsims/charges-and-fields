@@ -22,12 +22,11 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
+  var Vector2Property = require( 'DOT/Vector2Property' );
 
   // images
   var electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
@@ -234,9 +233,8 @@ define( function( require ) {
 
       var unspooledMeterTape = 30; // in view coordinates
       var measuringTape = new MeasuringTapeNode( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
-        tipPositionProperty: new Property( new Vector2( unspooledMeterTape, 0 ), {
+        tipPositionProperty: new Vector2Property( new Vector2( unspooledMeterTape, 0 ), {
           tandem: tandem.createTandem( 'tipPositionProperty' ),
-          phetioType: PropertyIO( Vector2IO ),
           phetioDocumentation: 'Tip position of measuring tape'
         } ),
         scale: 0.8, // make it a bit small

@@ -19,13 +19,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
+  var Vector2Property = require( 'DOT/Vector2Property' );
 
   // strings
   var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -49,9 +47,8 @@ define( function( require ) {
     var position = electricPotentialLine.position;
 
     var self = this;
-    var locationProperty = new Property( position, {
+    var locationProperty = new Vector2Property( position, {
       tandem: tandem.createTandem( 'locationProperty' ),
-      phetioType: PropertyIO( Vector2IO ),
       useDeepEquality: true
     } );
 
