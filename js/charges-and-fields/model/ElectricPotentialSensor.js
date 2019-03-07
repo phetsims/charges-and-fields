@@ -14,8 +14,8 @@ define( function( require ) {
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Vector2Property = require( 'DOT/Vector2Property' );
 
   /**
    * @constructor
@@ -27,7 +27,7 @@ define( function( require ) {
   function ElectricPotentialSensor( computeElectricPotential, tandem ) {
 
     // @public
-    this.positionProperty = new Property( new Vector2( 0, 0 ), {
+    this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' )
     } );
 
