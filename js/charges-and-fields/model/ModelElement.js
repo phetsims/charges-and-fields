@@ -27,7 +27,7 @@ define( function( require ) {
 
     var tandem = options.tandem;// required
 
-    // @public {Property.<Vector2>}
+    // @public
     this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' ),
       useDeepEquality: true // see https://github.com/phetsims/charges-and-fields/issues/132

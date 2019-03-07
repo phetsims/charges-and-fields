@@ -26,7 +26,7 @@ define( function( require ) {
    */
   function ElectricFieldSensor( computeElectricField, tandem ) {
 
-    // @public {Property.<Vector2>} electricField Vector in Newtons per Coulomb
+    // @public - electricField Vector in Newtons per Coulomb
     this.electricFieldProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'electricFieldProperty' )
     } );
