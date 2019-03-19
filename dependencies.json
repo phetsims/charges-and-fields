@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.12 Tue Mar 19 2019 15:02:16 GMT-0400 (EDT)",
+  "comment": "# charges-and-fields 1.0.12-phetio Tue Mar 19 2019 15:58:24 GMT-0400 (EDT)",
   "assert": {
     "sha": "845be6b591cb746b0b05b7023208aef2e49a8855",
     "branch": "HEAD"
@@ -10,15 +10,15 @@
   },
   "brand": {
     "sha": "604dcfbf3f4d7cd1a24d3fc0ddf25cb8fb391b46",
-    "branch": "charges-and-fields-1.0-phetio"
+    "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "995d3cb565a39c61c18fd1e550c7328a012f4ae4",
+    "sha": "f5ad7ffe9a69790a68cdf78a7392f87317fb6027",
     "branch": "1.0-phetio"
   },
   "chipper": {
-    "sha": "2c5b2f676786e21f52925e56f387d80f021e4ed8",
-    "branch": "HEAD"
+    "sha": "663e9f0c925549953ae5065467189c217b8cb276",
+    "branch": "charges-and-fields-1.0-phetio"
   },
   "dot": {
     "sha": "2765eb4d9e836db1e467c9766c9f767f53659a95",
@@ -26,7 +26,7 @@
   },
   "joist": {
     "sha": "0815c2436327e12c8a0c298263ba7c41f3f99614",
-    "branch": "charges-and-fields-1.0-phetio"
+    "branch": "HEAD"
   },
   "kite": {
     "sha": "48cb255e5fba37c5b3f2f127a13656ea8b760d34",
@@ -46,6 +46,10 @@
   },
   "phetcommon": {
     "sha": "81c4aec6f484960ebe0e961a0a131bfd04710b4d",
+    "branch": "HEAD"
+  },
+  "phetmarks": {
+    "sha": "c7deeea0ade763093344ea0b2f07cf29a7a917fe",
     "branch": "HEAD"
   },
   "query-string-machine": {
@@ -71,9 +75,5 @@
   "tandem": {
     "sha": "2148ad6e7203e134bc935a0f36246396400ec954",
     "branch": "HEAD"
-  },
-  "phetmarks": {
-    "branch": "master",
-    "sha": "c7deeea0ade763093344ea0b2f07cf29a7a917fe"
   }
 }
