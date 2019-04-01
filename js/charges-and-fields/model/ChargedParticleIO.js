@@ -35,7 +35,7 @@ define( function( require ) {
         this.instance.charge = value.charge;
       },
       documentation: 'Set charge (in units of e)',
-      invocableForReadOnlyInstances: false
+      invocableForReadOnlyElements: false
     }
 
   }, {
