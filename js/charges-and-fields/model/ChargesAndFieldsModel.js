@@ -29,6 +29,7 @@ define( function( require ) {
   var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -583,15 +584,16 @@ define( function( require ) {
      * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
      * @param {Tandem} [tandem] - tandem to use (if undefined a new tandem from the group will be used), necessary to recreate state from a saved PhET-iO state
      */
-    addElectricPotentialLine: function( position, tandem ) {
+    addElectricPotentialLine: function(
+      position = this.electricPotentialSensor.positionProperty.get(), // use the Potential Sensor as default position
+      tandem = this.electricPotentialLineTandemGroup.createNextTandem()
+    ) {
+      assert && assert( position instanceof Vector2, 'position should be Vector2' );
+      assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
+
       // Do not try to add an equipotential line if there are no charges.
       if ( !this.isPlayAreaChargedProperty.get() ) {
         return;
-      }
-
-      // use the location of the electric Potential Sensor as default position
-      if ( !position ) {
-        position = this.electricPotentialSensor.positionProperty.get();
       }
 
       // If we are too close to a charged particle, also bail out.
@@ -610,7 +612,7 @@ define( function( require ) {
         this.getElectricPotential.bind( this ),
         this.getElectricField.bind( this ),
         this.isPlayAreaChargedProperty,
-        tandem || this.electricPotentialLineTandemGroup.createNextTandem()
+        tandem
       );
 
       this.electricPotentialLines.push( electricPotentialLine );
