@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.12-rc.3 Fri Mar 29 2019 13:13:40 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# charges-and-fields 1.0.12 Thu Apr 04 2019 09:53:54 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "f6333e20513be566277186ba4ec4d61354c17a65",
+    "sha": "7d77477214b2e9499ea7e8d623ad56bbc7b6f7ff",
     "branch": "1.0"
   },
   "chipper": {
