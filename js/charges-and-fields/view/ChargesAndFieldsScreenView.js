@@ -255,16 +255,19 @@ define( function( require ) {
       return positive || negative || electricFieldSensors;
     } ).linkAttribute( chargesAndSensorsPanel, 'visible' );
 
+    const chargedParticlesTandem = tandem.createTandem( 'chargedParticles' );
+
     // Handle the comings and goings of charged particles.
     model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
       // Create and add the view representation for this chargedParticle.
+
       var chargedParticleNode = new ChargedParticleNode(
         addedChargedParticle,
         snapToGridLines,
         modelViewTransform,
         self.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        tandem.createTandem( addedChargedParticle.tandem.tail )
+        chargedParticlesTandem.createTandem( addedChargedParticle.tandem.tail )
       );
       draggableElementsLayer.addChild( chargedParticleNode );
 
@@ -278,6 +281,8 @@ define( function( require ) {
     // Handle the comings and goings of charged electric field sensors.
     model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
 
+      const electricFieldSensorTandem = tandem.createTandem( 'electricFieldSensors' );
+
       // Create and add the view representation for this electric Field Sensor
       var electricFieldSensorNode = new ElectricFieldSensorNode(
         addedElectricFieldSensor,
@@ -287,7 +292,7 @@ define( function( require ) {
         model.isPlayAreaChargedProperty,
         model.areValuesVisibleProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        tandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.tail )
+        electricFieldSensorTandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.tail )
       );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
