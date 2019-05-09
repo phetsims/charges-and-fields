@@ -38,7 +38,6 @@ define( function( require ) {
     toStateObject: function( electricFieldSensor ) {
       validate( electricFieldSensor, this.validator );
       return {
-        computeElectricField: electricFieldSensor.computeElectricField,
         initialPosition: electricFieldSensor.initialPosition ? Vector2IO.toStateObject( electricFieldSensor.initialPosition ) : null
       };
     },
@@ -50,7 +49,6 @@ define( function( require ) {
      */
     fromStateObject: function( stateObject ) {
       return {
-        computeElectricField: stateObject.computeElectricField,
         initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
       };
     }
