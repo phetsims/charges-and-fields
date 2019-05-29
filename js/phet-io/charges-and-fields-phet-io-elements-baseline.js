@@ -1115,7 +1115,7 @@ window.phet.phetio.phetioElementsBaseline =
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
       "phetioEventType": "model",
-      "phetioFeatured": false,
+      "phetioFeatured": true,
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
@@ -1181,7 +1181,7 @@ window.phet.phetio.phetioElementsBaseline =
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
       "phetioEventType": "model",
-      "phetioFeatured": false,
+      "phetioFeatured": true,
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
@@ -1445,7 +1445,7 @@ window.phet.phetio.phetioElementsBaseline =
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
       "phetioEventType": "model",
-      "phetioFeatured": false,
+      "phetioFeatured": true,
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
@@ -1555,7 +1555,7 @@ window.phet.phetio.phetioElementsBaseline =
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
       "phetioEventType": "model",
-      "phetioFeatured": false,
+      "phetioFeatured": true,
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
@@ -2006,7 +2006,7 @@ window.phet.phetio.phetioElementsBaseline =
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
       "phetioEventType": "model",
-      "phetioFeatured": false,
+      "phetioFeatured": true,
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
@@ -2083,7 +2083,7 @@ window.phet.phetio.phetioElementsBaseline =
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
       "phetioEventType": "model",
-      "phetioFeatured": false,
+      "phetioFeatured": true,
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
@@ -3073,7 +3073,7 @@ window.phet.phetio.phetioElementsBaseline =
     "chargesAndFields.navigationBar.phetButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
       "phetioEventType": "model",
-      "phetioFeatured": false,
+      "phetioFeatured": true,
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
