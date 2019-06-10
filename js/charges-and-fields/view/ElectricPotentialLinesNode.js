@@ -197,7 +197,7 @@ define( function( require ) {
       pathsNode.addChild( electricPotentialLinePath );
 
       // TODO: Use Group
-      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel~' + electricPotentialLine.electricPotentialLineTandem.tail ) );
+      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel~' + electricPotentialLine.electricPotentialLineTandem.name ) );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {

@@ -50,7 +50,7 @@ define( function( require ) {
        */
       addChildInstance: function( chargesAndFieldsModel, tandem, stateObject ) {
         validate( chargesAndFieldsModel, this.validator );
-        if ( tandem.tail.indexOf( 'chargedParticle' ) === 0 ) {
+        if ( tande.name.indexOf( 'chargedParticle' ) === 0 ) {
           if ( stateObject.charge > 0 ) {
             return chargesAndFieldsModel.addPositiveCharge( tandem );
           }
@@ -61,10 +61,10 @@ define( function( require ) {
             throw new Error( 'This sim does not support charges with no charge' );
           }
         }
-        else if ( tandem.tail.indexOf( 'electricFieldSensor' ) === 0 ) {
+        else if ( tande.name.indexOf( 'electricFieldSensor' ) === 0 ) {
           return chargesAndFieldsModel.addElectricFieldSensor( tandem );
         }
-        else if ( tandem.tail.indexOf( 'electricPotentialLines' ) === 0 ) {
+        else if ( tande.name.indexOf( 'electricPotentialLines' ) === 0 ) {
           return chargesAndFieldsModel.addElectricPotentialLine( Vector2IO.fromStateObject( stateObject.position ), tandem );
         }
         else {

@@ -267,7 +267,7 @@ define( function( require ) {
         modelViewTransform,
         self.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        chargedParticlesTandem.createTandem( addedChargedParticle.tandem.tail )
+        chargedParticlesTandem.createTandem( addedChargedParticle.tandem.name )
       );
       draggableElementsLayer.addChild( chargedParticleNode );
 
@@ -292,7 +292,7 @@ define( function( require ) {
         model.isPlayAreaChargedProperty,
         model.areValuesVisibleProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
-        electricFieldSensorTandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.tail )
+        electricFieldSensorTandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.name )
       );
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
