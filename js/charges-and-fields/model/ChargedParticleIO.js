@@ -32,7 +32,7 @@ define( function( require ) {
       returnType: VoidIO,
       parameterTypes: [ NumberIO ],
       implementation: function( value ) {
-        this.instance.charge = value.charge;
+        this.phetioObject.charge = value.charge;
       },
       documentation: 'Set charge (in units of e)',
       invocableForReadOnlyElements: false
