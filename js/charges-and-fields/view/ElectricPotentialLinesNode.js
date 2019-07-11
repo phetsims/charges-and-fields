@@ -1,4 +1,4 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2015-2019, University of Colorado Boulder
 
 /**
  * Scenery Node responsible for the drawing of the electricPotential lines and their accompanying voltage labels

@@ -1,4 +1,4 @@
-// Copyright 2015-2018, University of Colorado Boulder
+// Copyright 2015-2019, University of Colorado Boulder
 
 /**
  * View for the electric potential Grid Node that displays a two dimensional grid of rectangles that represent the
