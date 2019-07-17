@@ -11,11 +11,11 @@ define( function( require ) {
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   var ChargesAndFieldsGlobals = {
     projectorColorsProperty: new BooleanProperty( phet.chipper.queryParameters.colorProfile === 'projector', {
-      tandem: ChargesAndFieldsConstants.GLOBALS_TANDEM.createTandem( 'projectorColorsProperty' )
+      tandem: Tandem.globalTandem.createTandem( 'projectorColorsProperty' )
     } )
   };
 
