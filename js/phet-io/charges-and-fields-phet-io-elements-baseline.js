@@ -3,6 +3,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
   {
     "chargesAndFields.chargesAndFieldsScreen.activeProperty": {
       "phetioDocumentation": "Indicates whether the screen is active.  For single-screen simulations, the screen is always active.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -14,6 +15,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -25,6 +27,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.allowNewElectricFieldSensorsProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -36,6 +39,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.allowNewNegativeChargesProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -47,6 +51,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.allowNewPositiveChargesProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -58,6 +63,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.areValuesVisibleProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -69,6 +75,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -80,6 +87,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.lengthProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -91,6 +99,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargesAndSensorsEnclosureBoundsProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -102,6 +111,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -113,6 +123,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.lengthProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -124,6 +135,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialSensor.electricPotentialProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -135,6 +147,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialSensor.isActiveProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -146,6 +159,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialSensor.positionProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -157,6 +171,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.isElectricFieldDirectionOnlyProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -168,6 +183,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.isElectricFieldVisibleProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -179,6 +195,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.isElectricPotentialVisibleProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -190,6 +207,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.isGridVisibleProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -201,6 +219,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.isPlayAreaChargedProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -212,6 +231,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.measuringTape.basePositionProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -223,6 +243,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.measuringTape.isActiveProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -234,6 +255,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.measuringTape.tipPositionProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -245,6 +267,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.snapToGridProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -256,6 +279,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -267,6 +291,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.availableModelBoundsProperty": {
       "phetioDocumentation": "Registers the model bounds based on the screen size",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -278,6 +303,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -289,6 +315,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.electricFieldSensor": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -300,6 +327,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.electricFieldSensor.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -311,6 +339,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.electricFieldSensor.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -322,6 +351,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.electricFieldSensor.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -333,6 +363,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.negativeCharge": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -344,6 +375,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.negativeCharge.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -355,6 +387,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.negativeCharge.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -366,6 +399,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.negativeCharge.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -377,6 +411,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -388,6 +423,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -399,6 +435,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.positiveCharge": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -410,6 +447,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.positiveCharge.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -421,6 +459,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.positiveCharge.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -432,6 +471,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.positiveCharge.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -443,6 +483,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -454,6 +495,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -465,6 +507,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.directionOnlyCheckbox": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -476,6 +519,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.directionOnlyCheckbox.enabledProperty": {
       "phetioDocumentation": "When disabled, the checkbox is grayed out and cannot be pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -487,6 +531,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.directionOnlyCheckbox.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -498,6 +543,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.directionOnlyCheckbox.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -509,6 +555,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.directionOnlyCheckbox.property": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -520,6 +567,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.directionOnlyCheckbox.toggleAction": {
       "phetioDocumentation": "Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -531,6 +579,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.directionOnlyCheckbox.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -542,6 +591,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.electricFieldCheckbox": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -553,6 +603,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.electricFieldCheckbox.enabledProperty": {
       "phetioDocumentation": "When disabled, the checkbox is grayed out and cannot be pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -564,6 +615,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.electricFieldCheckbox.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -575,6 +627,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.electricFieldCheckbox.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -586,6 +639,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.electricFieldCheckbox.property": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -597,6 +651,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.electricFieldCheckbox.toggleAction": {
       "phetioDocumentation": "Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -608,6 +663,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.electricFieldCheckbox.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -619,6 +675,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.gridCheckbox": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -630,6 +687,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.gridCheckbox.enabledProperty": {
       "phetioDocumentation": "When disabled, the checkbox is grayed out and cannot be pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -641,6 +699,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.gridCheckbox.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -652,6 +711,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.gridCheckbox.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -663,6 +723,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.gridCheckbox.property": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -674,6 +735,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.gridCheckbox.toggleAction": {
       "phetioDocumentation": "Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -685,6 +747,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.gridCheckbox.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -696,6 +759,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -707,6 +771,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -718,6 +783,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.snapToGridCheckbox": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -729,6 +795,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.snapToGridCheckbox.enabledProperty": {
       "phetioDocumentation": "When disabled, the checkbox is grayed out and cannot be pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -740,6 +807,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.snapToGridCheckbox.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -751,6 +819,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.snapToGridCheckbox.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -762,6 +831,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.snapToGridCheckbox.property": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -773,6 +843,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.snapToGridCheckbox.toggleAction": {
       "phetioDocumentation": "Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -784,6 +855,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.snapToGridCheckbox.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -795,6 +867,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.valuesCheckbox": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -806,6 +879,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.valuesCheckbox.enabledProperty": {
       "phetioDocumentation": "When disabled, the checkbox is grayed out and cannot be pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -817,6 +891,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.valuesCheckbox.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -828,6 +903,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.valuesCheckbox.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -839,6 +915,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.valuesCheckbox.property": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -850,6 +927,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.valuesCheckbox.toggleAction": {
       "phetioDocumentation": "Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -861,6 +939,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.valuesCheckbox.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -872,6 +951,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -883,6 +963,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.voltageCheckbox": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -894,6 +975,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.voltageCheckbox.enabledProperty": {
       "phetioDocumentation": "When disabled, the checkbox is grayed out and cannot be pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -905,6 +987,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.voltageCheckbox.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -916,6 +999,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.voltageCheckbox.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -927,6 +1011,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.voltageCheckbox.property": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -938,6 +1023,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.voltageCheckbox.toggleAction": {
       "phetioDocumentation": "Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -949,6 +1035,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.controlPanel.voltageCheckbox.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -960,6 +1047,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -971,6 +1059,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -982,6 +1071,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -993,6 +1083,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1004,6 +1095,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1015,6 +1107,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.backgroundRectangle": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1026,6 +1119,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.backgroundRectangle.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1037,6 +1131,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.backgroundRectangle.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1048,6 +1143,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.backgroundRectangle.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1059,6 +1155,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.circle": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1070,6 +1167,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.circle.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1081,6 +1179,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.circle.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1092,6 +1191,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.circle.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1103,6 +1203,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1114,6 +1215,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -1125,6 +1227,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.firedEmitter": {
       "phetioDocumentation": "Emits when the button is fired",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1136,6 +1239,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1147,6 +1251,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1158,6 +1263,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.pressListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1169,6 +1275,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.pressListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1180,6 +1287,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.clearButton.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -1191,6 +1299,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshair": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1202,6 +1311,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshair.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1213,6 +1323,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshair.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1224,6 +1335,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshair.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1235,6 +1347,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshairMount": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1246,6 +1359,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshairMount.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1257,6 +1371,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshairMount.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1268,6 +1383,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.crosshairMount.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1279,6 +1395,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.dragListener.dragAction": {
       "phetioDocumentation": "Emits whenever a drag occurs with an EventIO argument.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -1290,6 +1407,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.dragListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1301,6 +1419,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.dragListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1312,6 +1431,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.electricPotentialPanelTitleText": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1323,6 +1443,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.electricPotentialPanelTitleText.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1334,6 +1455,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.electricPotentialPanelTitleText.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1345,6 +1467,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.electricPotentialPanelTitleText.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1356,6 +1479,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.electricPotentialPanelTitleText.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1367,6 +1491,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1378,6 +1503,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.outlineImage": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1389,6 +1515,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.outlineImage.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1400,6 +1527,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.outlineImage.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1411,6 +1539,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.outlineImage.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1422,6 +1551,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1433,6 +1563,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1444,6 +1575,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -1455,6 +1587,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.firedEmitter": {
       "phetioDocumentation": "Emits when the button is fired",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1466,6 +1599,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1477,6 +1611,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.pencilButtonImage": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1488,6 +1623,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.pencilButtonImage.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1499,6 +1635,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.pencilButtonImage.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1510,6 +1647,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.pencilButtonImage.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1521,6 +1659,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1532,6 +1671,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.pressListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1543,6 +1683,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.pressListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1554,6 +1695,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.plotElectricPotentialLineButton.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -1565,6 +1707,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1576,6 +1719,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.voltageReadout": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1587,6 +1731,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.voltageReadout.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1598,6 +1743,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.voltageReadout.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1609,6 +1755,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.voltageReadout.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1620,6 +1767,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialSensorNode.voltageReadout.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1631,6 +1779,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.arrowPath": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1642,6 +1791,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.arrowPath.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1653,6 +1803,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.arrowPath.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1664,6 +1815,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.arrowPath.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1675,6 +1827,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.legendText": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1686,6 +1839,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.legendText.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1697,6 +1851,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.legendText.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1708,6 +1863,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.legendText.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1719,6 +1875,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.legendText.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1730,6 +1887,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.majorGridLinesPath": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1741,6 +1899,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.majorGridLinesPath.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1752,6 +1911,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.majorGridLinesPath.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1763,6 +1923,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.majorGridLinesPath.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1774,6 +1935,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.minorGridLinesPath": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1785,6 +1947,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.minorGridLinesPath.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1796,6 +1959,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.minorGridLinesPath.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1807,6 +1971,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.gridNode.minorGridLinesPath.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1818,6 +1983,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1829,6 +1995,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.baseDragHandler": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1840,6 +2007,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.baseDragHandler.dragAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -1851,6 +2019,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.baseDragHandler.dragEndAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1862,6 +2031,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.baseDragHandler.dragStartAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1873,6 +2043,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.baseDragHandler.isDraggingProperty": {
       "phetioDocumentation": "Indicates whether the object is dragging",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1884,6 +2055,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1895,6 +2067,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1906,6 +2079,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.tipDragHandler": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1917,6 +2091,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.tipDragHandler.dragAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -1928,6 +2103,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.tipDragHandler.dragEndAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1939,6 +2115,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.tipDragHandler.dragStartAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1950,6 +2127,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.tipDragHandler.isDraggingProperty": {
       "phetioDocumentation": "Indicates whether the object is dragging",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1961,6 +2139,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.measuringTapeNode.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1972,6 +2151,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1983,6 +2163,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -1994,6 +2175,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton": {
       "phetioDocumentation": "The orange, round button that can be used to restore the initial state",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2005,6 +2187,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -2016,6 +2199,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.firedEmitter": {
       "phetioDocumentation": "Emits when the button is fired",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2027,6 +2211,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.isFiringProperty": {
       "phetioDocumentation": "Temporarily becomes true while the Reset All button is firing.  Commonly used to disable audio effects during reset.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2038,6 +2223,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2049,6 +2235,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2060,6 +2247,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.pressListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2071,6 +2259,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.pressListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2082,6 +2271,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.resetAllButton.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -2093,6 +2283,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2104,6 +2295,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.backgroundRectangle": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2115,6 +2307,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.backgroundRectangle.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2126,6 +2319,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.backgroundRectangle.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2137,6 +2331,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.backgroundRectangle.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2148,6 +2343,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.crosshairMount": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2159,6 +2355,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.crosshairMount.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2170,6 +2367,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.crosshairMount.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2181,6 +2379,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.crosshairMount.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2192,6 +2391,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.electricPotentialSensor": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2203,6 +2403,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.electricPotentialSensor.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2214,6 +2415,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.electricPotentialSensor.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2225,6 +2427,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.electricPotentialSensor.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2236,6 +2439,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2247,6 +2451,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.baseDragHandler": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2258,6 +2463,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.baseDragHandler.dragAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -2269,6 +2475,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.baseDragHandler.dragEndAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2280,6 +2487,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.baseDragHandler.dragStartAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2291,6 +2499,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.baseDragHandler.isDraggingProperty": {
       "phetioDocumentation": "Indicates whether the object is dragging",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2302,6 +2511,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2313,6 +2523,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2324,6 +2535,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.tipDragHandler": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2335,6 +2547,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.tipDragHandler.dragAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -2346,6 +2559,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.tipDragHandler.dragEndAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2357,6 +2571,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.tipDragHandler.dragStartAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2368,6 +2583,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.tipDragHandler.isDraggingProperty": {
       "phetioDocumentation": "Indicates whether the object is dragging",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2379,6 +2595,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTape.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2390,6 +2607,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTapeIconImage": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2401,6 +2619,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTapeIconImage.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2412,6 +2631,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTapeIconImage.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2423,6 +2643,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.measuringTapeIconImage.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2434,6 +2655,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2445,6 +2667,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.outlineImage": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2456,6 +2679,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.outlineImage.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2467,6 +2691,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.outlineImage.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2478,6 +2703,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.outlineImage.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2489,6 +2715,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2500,6 +2727,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.tipPositionProperty": {
       "phetioDocumentation": "Tip position of measuring tape",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2511,6 +2739,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2522,6 +2751,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.voltageReading": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2533,6 +2763,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.voltageReading.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2544,6 +2775,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.voltageReading.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2555,6 +2787,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.voltageReading.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2566,6 +2799,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.toolboxPanel.voltageReading.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2577,6 +2811,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.view.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2588,6 +2823,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.activeProperty": {
       "phetioDocumentation": "Determines whether the entire simulation is running and processing user input. Setting this property to false pauses the simulation, and prevents user interaction.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -2599,6 +2835,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.barrierRectangle": {
       "phetioDocumentation": "Semi-transparent barrier used to block input events when a dialog is shown, also fades out the background",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2610,6 +2847,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.barrierRectangle.inputListener.firedEmitter": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2621,6 +2859,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.barrierRectangle.inputListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2632,6 +2871,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.barrierRectangle.inputListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2643,6 +2883,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.barrierRectangle.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2654,6 +2895,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.barrierRectangle.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2665,6 +2907,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.barrierRectangle.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2676,6 +2919,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.browserTabVisibleProperty": {
       "phetioDocumentation": "Indicates whether the browser tab containing the simulation is currently visible",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2687,6 +2931,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.mouseDownAction": {
       "phetioDocumentation": "Emits when a mouse button is pressed",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2698,6 +2943,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.mouseMovedAction": {
       "phetioDocumentation": "Emits when the mouse is moved",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -2709,6 +2955,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.mouseOutAction": {
       "phetioDocumentation": "Emits when the mouse moves out of the display",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2720,6 +2967,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.mouseOverAction": {
       "phetioDocumentation": "Emits when the mouse is moved over a Node",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2731,6 +2979,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.mouseUpAction": {
       "phetioDocumentation": "Emits when a mouse button is released",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2742,6 +2991,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.penCancelAction": {
       "phetioDocumentation": "Emits when a pen is canceled",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2753,6 +3003,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.penEndAction": {
       "phetioDocumentation": "Emits when a pen is lifted",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2764,6 +3015,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.penMoveAction": {
       "phetioDocumentation": "Emits when a pen is moved",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -2775,6 +3027,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.penStartAction": {
       "phetioDocumentation": "Emits when a pen touches the screen",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2786,6 +3039,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.touchCancelAction": {
       "phetioDocumentation": "Emits when a touch is canceled",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2797,6 +3051,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.touchEndAction": {
       "phetioDocumentation": "Emits when a touch ends",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2808,6 +3063,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.touchMoveAction": {
       "phetioDocumentation": "Emits when a touch moves",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -2819,6 +3075,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.touchStartAction": {
       "phetioDocumentation": "Emits when a touch begins",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2830,6 +3087,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.validatePointersAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -2841,6 +3099,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.controller.input.wheelScrollAction": {
       "phetioDocumentation": "Emits when the mouse wheel scrolls",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -2852,6 +3111,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.focusProperty": {
       "phetioDocumentation": "Stores the current focus for the simulation, null if there is not focus. This is not updated based on mouse or touch input, only keyboard and other alternative inputs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2863,6 +3123,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton": {
       "phetioDocumentation": "The button that appears at the right side of the navigation bar, which shows a menu when pressed",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2874,6 +3135,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.enabledProperty": {
       "phetioDocumentation": "When disabled, the button is grayed out and cannot be pressed",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -2885,6 +3147,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.firedEmitter": {
       "phetioDocumentation": "Emits when the button is fired",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2896,6 +3159,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu": {
       "phetioDocumentation": "This menu is displayed when the PhET button is pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2907,6 +3171,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.aboutMenuItem": {
       "phetioDocumentation": "This menu item shows a dialog with information about the simulation.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2918,6 +3183,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.aboutMenuItem.inputListener.firedEmitter": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2929,6 +3195,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.aboutMenuItem.inputListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2940,6 +3207,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.aboutMenuItem.inputListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2951,6 +3219,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.aboutMenuItem.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2962,6 +3231,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.aboutMenuItem.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -2973,6 +3243,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.aboutMenuItem.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -2984,6 +3255,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.optionsMenuItem": {
       "phetioDocumentation": "This menu item shows an options dialog.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -2995,6 +3267,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.optionsMenuItem.inputListener.firedEmitter": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3006,6 +3279,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.optionsMenuItem.inputListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3017,6 +3291,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.optionsMenuItem.inputListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3028,6 +3303,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.optionsMenuItem.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3039,6 +3315,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.optionsMenuItem.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3050,6 +3327,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.optionsMenuItem.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3061,6 +3339,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.screenshotMenuItem": {
       "phetioDocumentation": "This menu item captures a screenshot from the simulation and saves it to the file system.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3072,6 +3351,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.screenshotMenuItem.inputListener.firedEmitter": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3083,6 +3363,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.screenshotMenuItem.inputListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3094,6 +3375,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.screenshotMenuItem.inputListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3105,6 +3387,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.screenshotMenuItem.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3116,6 +3399,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.screenshotMenuItem.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3127,6 +3411,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.phetMenu.screenshotMenuItem.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -3138,6 +3423,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.pickableProperty": {
       "phetioDocumentation": "Set whether the phetButton will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3149,6 +3435,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.pressListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3160,6 +3447,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.phetButton.pressListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3171,6 +3459,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.titleTextNode": {
       "phetioDocumentation": "Displays the title of the simulation in the navigation bar (bottom left)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3182,6 +3471,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.titleTextNode.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3193,6 +3483,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.titleTextNode.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3204,6 +3495,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.titleTextNode.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3215,6 +3507,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.navigationBar.titleTextNode.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3226,6 +3519,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.phetioCommandProcessor": {
       "phetioDocumentation": "Processes messages from the wrapper frame and returns the results. This serves as the source of PhET-iO data stream messages when commands are invoked from the wrapper.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3237,6 +3531,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.resizeAction": {
       "phetioDocumentation": "Executes when the sim is resized",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3248,6 +3543,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.screenIndexProperty": {
       "phetioDocumentation": "Indicates which screen is selected (0-indexed)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -3259,6 +3555,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.soundEnabledProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3270,6 +3567,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.general.stepSimulationAction": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": true,
@@ -3281,6 +3579,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.colorProfile.profileNameProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3292,6 +3591,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3303,6 +3603,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3314,6 +3615,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3325,6 +3627,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.projectorCheckbox": {
       "phetioDocumentation": "The checkbox that toggles if projector mode is enabled.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3336,6 +3639,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.projectorCheckbox.enabledProperty": {
       "phetioDocumentation": "When disabled, the checkbox is grayed out and cannot be pressed.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -3347,6 +3651,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.projectorCheckbox.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3358,6 +3663,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.projectorCheckbox.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3369,6 +3675,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.projectorCheckbox.property": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3380,6 +3687,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.projectorCheckbox.toggleAction": {
       "phetioDocumentation": "Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.",
+      "phetioDynamicElement": false,
       "phetioEventType": "user",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3391,6 +3699,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.projectorCheckbox.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": true,
       "phetioHighFrequency": false,
@@ -3402,6 +3711,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3413,6 +3723,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.projectorColorsProperty": {
       "phetioDocumentation": "",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -3424,6 +3735,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "phetioEngine": {
       "phetioDocumentation": "Central point for PhET-iO interoperability",
+      "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
