@@ -28,7 +28,7 @@ define( function( require ) {
       team: 'Ariel Paul, Kathy Perkins',
       qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
     },
-    optionsNode: new GlobalOptionsNode( Tandem.globalTandem.createTandem( 'options' ) ),
+    createOptionsDialogContent: tandem => new GlobalOptionsNode( tandem ),
     webgl: true
   };
 
