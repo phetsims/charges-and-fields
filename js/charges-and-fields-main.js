@@ -8,8 +8,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
   var ChargesAndFieldsScreen = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsScreen' );
   var GlobalOptionsNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GlobalOptionsNode' );
   var Sim = require( 'JOIST/Sim' );
@@ -33,10 +31,6 @@ define( function( require ) {
     optionsNode: new GlobalOptionsNode( Tandem.globalTandem.createTandem( 'options' ) ),
     webgl: true
   };
-
-  ChargesAndFieldsGlobals.projectorColorsProperty.link( function( useProjectorColors ) {
-    ChargesAndFieldsColorProfile.profileNameProperty.set( useProjectorColors ? 'projector' : 'default' );
-  } );
 
   SimLauncher.launch( function() {
     var sim = new Sim( chargesAndFieldsTitleString, [

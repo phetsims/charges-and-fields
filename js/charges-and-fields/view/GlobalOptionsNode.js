@@ -1,7 +1,7 @@
-// Copyright 2015-2018, University of Colorado Boulder
+// Copyright 2015-2019, University of Colorado Boulder
 
 /**
- * Global options shown in the "Options" dialog from the PhET Menu
+ * Global options shown in the "Options" dialog from the PhET Menu.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsGlobals = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsGlobals' );
+  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var OptionsDialog = require( 'JOIST/OptionsDialog' );
@@ -22,8 +22,7 @@ define( function( require ) {
    */
   function GlobalOptionsNode( tandem ) {
 
-    var projectorCheckbox = new ProjectorModeCheckbox( {
-      projectorModeEnabledProperty: ChargesAndFieldsGlobals.projectorColorsProperty,
+    var projectorCheckbox = new ProjectorModeCheckbox( ChargesAndFieldsColorProfile, {
       tandem: tandem.createTandem( 'projectorCheckbox' ),
       phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
     } );

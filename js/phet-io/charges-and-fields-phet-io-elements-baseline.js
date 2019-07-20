@@ -3673,6 +3673,18 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO.<NullableIO.<BooleanIO>>"
     },
+    "chargesAndFields.global.options.projectorCheckbox.projectorModeEnabledProperty": {
+      "phetioDocumentation": "",
+      "phetioDynamicElement": false,
+      "phetioEventType": "model",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": true,
+      "phetioStudioControl": true,
+      "phetioTypeName": "PropertyIO.<BooleanIO>"
+    },
     "chargesAndFields.global.options.projectorCheckbox.property": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
@@ -3711,18 +3723,6 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.global.options.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
-      "phetioDynamicElement": false,
-      "phetioEventType": "model",
-      "phetioFeatured": false,
-      "phetioHighFrequency": false,
-      "phetioPlayback": false,
-      "phetioReadOnly": false,
-      "phetioState": true,
-      "phetioStudioControl": true,
-      "phetioTypeName": "PropertyIO.<BooleanIO>"
-    },
-    "chargesAndFields.global.projectorColorsProperty": {
-      "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioEventType": "model",
       "phetioFeatured": false,
