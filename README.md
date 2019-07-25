@@ -1,13 +1,13 @@
-Charges And Fields
+Charges and Fields
 =============
-"Charges And Fields" is an educational simulation in HTML5, by <a href="https://phet.colorado.edu/" target="_blank">PhET Interactive Simulations</a>
+"Charges and Fields" is an educational simulation in HTML5, by <a href="https://phet.colorado.edu/" target="_blank">PhET Interactive Simulations</a>
 at the University of Colorado Boulder.
 For a description of this simulation, associated resources, and a link to the published version,
 <a href="https://phet.colorado.edu/en/simulation/charges-and-fields" target="_blank">visit the simulation's web page</a>.
 
 ### Try it!
 
-<a href="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html" target="_blank">Click here to run "Charges And Fields".</a>
+<a href="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html" target="_blank">Click here to run "Charges and Fields".</a>
 
 <a href="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html" target="_blank">
 <img src="https://raw.githubusercontent.com/phetsims/charges-and-fields/master/assets/charges-and-fields-screenshot.png" alt="Screenshot" style="width: 400px;"/>
