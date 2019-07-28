@@ -23,68 +23,63 @@ define( function( require ) {
 
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const inherit = require( 'PHET_CORE/inherit' );
 
-  /**
-   * @constructor
-   *
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
-   */
-  function ChargeTracker( chargedParticles ) {
-    this.chargedParticles = chargedParticles;
+  class ChargeTracker {
 
-    // @private functions to be called back when particle positions change, tagged with listener.particle = particle
-    this.positionListeners = [];
+    /**
+     * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+     */
+    constructor( chargedParticles ) {
+      this.chargedParticles = chargedParticles;
 
-    // @private
-    this.particleAddedListener = this.onParticleAdded.bind( this );
-    this.particleRemovedListener = this.onParticleRemoved.bind( this );
+      // @private functions to be called back when particle positions change, tagged with listener.particle = particle
+      this.positionListeners = [];
 
-    // Listen to the charged particles individually
-    this.chargedParticles.addItemAddedListener( this.particleAddedListener );
-    this.chargedParticles.addItemRemovedListener( this.particleRemovedListener );
+      // @private
+      this.particleAddedListener = this.onParticleAdded.bind( this );
+      this.particleRemovedListener = this.onParticleRemoved.bind( this );
 
-    // @public
-    // Queued changes of type { charge: {number}, oldPosition: {Vector2}, newPosition: {Vector2} } that will
-    // accumulate. oldPosition === null means "add it", newPosition === null means "remove it". We'll apply these
-    // graphical deltas at the next rendering.
-    this.queue = [];
+      // Listen to the charged particles individually
+      this.chargedParticles.addItemAddedListener( this.particleAddedListener );
+      this.chargedParticles.addItemRemovedListener( this.particleRemovedListener );
 
-    // Queue up changes that will initialize things properly.
-    this.rebuild();
-  }
+      // @public
+      // Queued changes of type { charge: {number}, oldPosition: {Vector2}, newPosition: {Vector2} } that will
+      // accumulate. oldPosition === null means "add it", newPosition === null means "remove it". We'll apply these
+      // graphical deltas at the next rendering.
+      this.queue = [];
 
-  chargesAndFields.register( 'ChargeTracker', ChargeTracker );
-
-  inherit( Object, ChargeTracker, {
+      // Queue up changes that will initialize things properly.
+      this.rebuild();
+    }
 
     /**
      * Clears the queue, essentially saying "the external state is now up-to-date with the changes"
      * @public
      */
-    clear: function() {
+    clear() {
       while ( this.queue.length ) {
         this.queue.pop();
       }
-    },
+    }
 
     /**
      * Clears the queue and adds all current particle positions, as if our external state has been reset to neutral.
      * @public
      */
-    rebuild: function() {
+    rebuild() {
       this.clear();
 
       for ( let i = 0; i < this.chargedParticles.length; i++ ) {
         this.addParticle( this.chargedParticles.get( i ) );
       }
-    },
+    }
 
     /**
      * Called when this ChargeTracker won't be used anymore. Removes all listeners.
      * @public
      */
-    dispose: function() {
+    dispose() {
       // Remove add/remove listeners
       this.chargedParticles.removeItemAddedListener( this.particleAddedListener );
       this.chargedParticles.removeItemRemovedListener( this.particleRemovedListener );
@@ -94,7 +89,7 @@ define( function( require ) {
         const positionListener = this.positionListeners.pop();
         positionListener.particle.positionProperty.unlink( positionListener );
       }
-    },
+    }
 
     /**
      * Handle adding a particle with the queue.
@@ -102,13 +97,13 @@ define( function( require ) {
      *
      * @param {ChargedParticle} particle
      */
-    addParticle: function( particle ) {
+    addParticle( particle ) {
       this.queue.push( {
         charge: particle.charge,
         oldPosition: null,
         newPosition: particle.positionProperty.get().copy()
       } );
-    },
+    }
 
     /**
      * Called when the particle is added to the model's list of charged particles. Hooks up listeners and the queue.
@@ -116,7 +111,7 @@ define( function( require ) {
      *
      * @param {ChargedParticle}
      */
-    onParticleAdded: function( particle ) {
+    onParticleAdded( particle ) {
       this.addParticle( particle );
 
       // add the position listener (need a reference to the particle with the listener, so we can't use the same one)
@@ -124,7 +119,7 @@ define( function( require ) {
       positionListener.particle = particle;
       this.positionListeners.push( positionListener );
       particle.positionProperty.lazyLink( positionListener );
-    },
+    }
 
     /**
      * Called when our listener to the particle's position is fired. We see if we can reposition it, or create a new
@@ -135,7 +130,7 @@ define( function( require ) {
      * @param {Vector2} newPosition
      * @param {Vector2} oldPosition
      */
-    onParticleMoved: function( particle, newPosition, oldPosition ) {
+    onParticleMoved( particle, newPosition, oldPosition ) {
       // Check to see if we can update an add/move for the same particle to a new position instead of creating
       // multiple queue entries for a single particle. This will help collapse multiple moves of the same particle in
       // one frame.
@@ -158,7 +153,7 @@ define( function( require ) {
         } );
         // console.log( 'move ' + particle.charge + ' ' + oldPosition.toString() + ' to ' + newPosition.toString() );
       }
-    },
+    }
 
     /**
      * Called when the particle is removed from the model's list of charged particles. Removes listeners, etc.
@@ -166,7 +161,7 @@ define( function( require ) {
      *
      * @param {ChargedParticle}
      */
-    onParticleRemoved: function( particle ) {
+    onParticleRemoved( particle ) {
       // See if we can update an already-in-queue item with a null location.
       let modified = false;
       for ( let i = 0; i < this.queue.length; i++ ) {
@@ -202,7 +197,7 @@ define( function( require ) {
         }
       }
     }
-  } );
+  }
 
-  return ChargeTracker;
+  return chargesAndFields.register( 'ChargeTracker', ChargeTracker );
 } );

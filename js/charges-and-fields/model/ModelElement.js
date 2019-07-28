@@ -5,7 +5,6 @@
  *
  * @author Martin Veillette (Berea College)
  */
-
 define( function( require ) {
   'use strict';
 
@@ -14,63 +13,59 @@ define( function( require ) {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const Emitter = require( 'AXON/Emitter' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
 
-  /**
-   * @param {Object} options
-   * @constructor
-   */
-  function ModelElement( options ) {
+  class ModelElement extends PhetioObject {
 
-    const tandem = options.tandem;// required
+    /**
+     * @param {Object} options
+     */
+    constructor( options ) {
 
-    // @public
-    this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
-      tandem: tandem.createTandem( 'positionProperty' ),
-      useDeepEquality: true // see https://github.com/phetsims/charges-and-fields/issues/132
-    } );
+      super( options );
 
-    // @public {Property.<boolean>}
-    // Flag that indicates if this model element is controlled by the user
-    this.isUserControlledProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isUserControlledProperty' )
-    } );
+      const tandem = options.tandem;// required
 
-    // @public {Property.<boolean>}
-    // Flag that indicates if the model element is active or dormant
-    this.isActiveProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isActiveProperty' )
-    } );
+      // @public
+      this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
+        tandem: tandem.createTandem( 'positionProperty' ),
+        useDeepEquality: true // see https://github.com/phetsims/charges-and-fields/issues/132
+      } );
 
-    // @public {Property.<boolean>}
-    // If false, the user will not be able to interact with this charge at all.
-    this.isInteractiveProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isInteractiveProperty' )
-    } );
+      // @public {Property.<boolean>}
+      // Flag that indicates if this model element is controlled by the user
+      this.isUserControlledProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'isUserControlledProperty' )
+      } );
 
-    // @public (read-only) {Tween|null} - Tween that is animating the particle back to its home in the toolbox, or null
-    // if not animating.  Public access is only for checking existence, not for manipulating or reading the tween attributes
-    this.animationTween = null;
+      // @public {Property.<boolean>}
+      // Flag that indicates if the model element is active or dormant
+      this.isActiveProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'isActiveProperty' )
+      } );
 
-    // @public
-    this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
+      // @public {Property.<boolean>}
+      // If false, the user will not be able to interact with this charge at all.
+      this.isInteractiveProperty = new BooleanProperty( true, {
+        tandem: tandem.createTandem( 'isInteractiveProperty' )
+      } );
 
-    this.disposeEmitter = new Emitter();
+      // @public (read-only) {Tween|null} - Tween that is animating the particle back to its home in the toolbox, or null
+      // if not animating.  Public access is only for checking existence, not for manipulating or reading the tween attributes
+      this.animationTween = null;
 
-    // @public
-    this.returnedToOriginEmitter = new Emitter();
+      // @public
+      this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
 
-    PhetioObject.call( this, options );
-  }
+      this.disposeEmitter = new Emitter();
 
-  chargesAndFields.register( 'ModelElement', ModelElement );
+      // @public
+      this.returnedToOriginEmitter = new Emitter();
+    }
 
-  return inherit( PhetioObject, ModelElement, {
-
-    dispose: function() {
+    dispose() {
       this.disposeEmitter.emit();
       this.isInteractiveProperty.dispose();
       this.isUserControlledProperty.dispose();
@@ -80,13 +75,13 @@ define( function( require ) {
       // Cancel animation (if any) so it doesn't try to update a disposed ModelElement
       this.animationTween && this.animationTween.stop();
       PhetioObject.prototype.dispose.call( this );
-    },
+    }
 
     /**
      * Function that animates the position of the chargeParticle toward its origin Position.
      * @public
      */
-    animate: function() {
+    animate() {
 
       assert && assert( this.animationTween === null, 'cannot start animating while already animating' );
       const self = this;
@@ -115,6 +110,7 @@ define( function( require ) {
 
       this.animationTween.start( phet.joist.elapsedTime );
     }
-  } );
-} );
+  }
 
+  return chargesAndFields.register( 'ModelElement', ModelElement );
+} );

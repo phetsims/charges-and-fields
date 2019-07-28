@@ -11,31 +11,30 @@ define( function( require ) {
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   const OptionsDialog = require( 'JOIST/OptionsDialog' );
   const ProjectorModeCheckbox = require( 'JOIST/ProjectorModeCheckbox' );
 
-  /**
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function GlobalOptionsNode( tandem ) {
+  class GlobalOptionsNode extends LayoutBox {
 
-    const projectorCheckbox = new ProjectorModeCheckbox( ChargesAndFieldsColorProfile, {
-      tandem: tandem.createTandem( 'projectorCheckbox' ),
-      phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
-    } );
+    /**
+     * @param {Tandem} tandem
+     */
+    constructor( tandem ) {
 
-    LayoutBox.call( this, _.extend( {
-      children: [ projectorCheckbox ],
-      spacing: OptionsDialog.DEFAULT_SPACING,
-      align: 'left',
-      tandem: tandem
-    } ) );
+      const projectorCheckbox = new ProjectorModeCheckbox( ChargesAndFieldsColorProfile, {
+        tandem: tandem.createTandem( 'projectorCheckbox' ),
+        phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
+      } );
+
+      super( _.extend( {
+        children: [ projectorCheckbox ],
+        spacing: OptionsDialog.DEFAULT_SPACING,
+        align: 'left',
+        tandem: tandem
+      } ) );
+    }
   }
 
-  chargesAndFields.register( 'GlobalOptionsNode', GlobalOptionsNode );
-
-  return inherit( LayoutBox, GlobalOptionsNode );
+  return chargesAndFields.register( 'GlobalOptionsNode', GlobalOptionsNode );
 } );

@@ -20,7 +20,6 @@ define( function( require ) {
     /**
      * @param {number} charge - (positive=+1 or negative=-1)
      * @param {Object} options - required actually to supply tandem
-     * @constructor
      */
     constructor( charge, options ) {
 

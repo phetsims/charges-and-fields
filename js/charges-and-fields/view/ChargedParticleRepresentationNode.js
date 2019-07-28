@@ -12,7 +12,6 @@ define( function( require ) {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const Circle = require( 'SCENERY/nodes/Circle' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const RadialGradient = require( 'SCENERY/util/RadialGradient' );
@@ -21,57 +20,57 @@ define( function( require ) {
   // constants
   const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
-  /**
-   * Constructor for the scenery node of the charge
-   * @constructor
-   *
-   * @param {number} charge
-   * @param {Object} [options] - Passed to Node
-   */
-  function ChargedParticleRepresentationNode( charge, options ) {
+  class ChargedParticleRepresentationNode extends Node {
 
-    Node.call( this, options );
+    /**
+     * Constructor for the scenery node of the charge
+     *
+     * @param {number} charge
+     * @param {Object} [options] - Passed to Node
+     */
+    constructor( charge, options ) {
 
-    assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
+      super( options );
 
-    // Create and add the circle that represents the charge particle
-    const circle = new Circle( CIRCLE_RADIUS );
-    this.addChild( circle );
+      assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
-    if ( charge === 1 ) {
-      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
-        .addColorStop( 0, 'rgb(255,43,79)' ) // mostly red
-        .addColorStop( 0.5, 'rgb(245, 60, 44 )' )
-        .addColorStop( 1, 'rgb(232,9,0)' );
-    }
-    else {
-      // then it must be a negative charge
-      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
-        .addColorStop( 0, 'rgb(79,207,255)' ) // mostly blue
-        .addColorStop( 0.5, 'rgb(44, 190, 245)' )
-        .addColorStop( 1, 'rgb(0,169,232)' );
-    }
+      // Create and add the circle that represents the charge particle
+      const circle = new Circle( CIRCLE_RADIUS );
+      this.addChild( circle );
 
-    // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
-    const ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
-    const pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white', pickable: false };
-    if ( charge === 1 ) {
-      // plus Shape representing a positive charge
-      const plusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
-        .lineTo( CIRCLE_RADIUS * ratio, 0 )
-        .moveTo( 0, -CIRCLE_RADIUS * ratio )
-        .lineTo( 0, CIRCLE_RADIUS * ratio );
-      this.addChild( new Path( plusShape, pathOptions ) );
-    }
-    else {
-      // minus Shape representing a negative charge
-      const minusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
-        .lineTo( CIRCLE_RADIUS * ratio, 0 );
-      this.addChild( new Path( minusShape, pathOptions ) );
+      if ( charge === 1 ) {
+        circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
+          .addColorStop( 0, 'rgb(255,43,79)' ) // mostly red
+          .addColorStop( 0.5, 'rgb(245, 60, 44 )' )
+          .addColorStop( 1, 'rgb(232,9,0)' );
+      }
+      else {
+        // then it must be a negative charge
+        circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
+          .addColorStop( 0, 'rgb(79,207,255)' ) // mostly blue
+          .addColorStop( 0.5, 'rgb(44, 190, 245)' )
+          .addColorStop( 1, 'rgb(0,169,232)' );
+      }
+
+      // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
+      const ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
+      const pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white', pickable: false };
+      if ( charge === 1 ) {
+        // plus Shape representing a positive charge
+        const plusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
+          .lineTo( CIRCLE_RADIUS * ratio, 0 )
+          .moveTo( 0, -CIRCLE_RADIUS * ratio )
+          .lineTo( 0, CIRCLE_RADIUS * ratio );
+        this.addChild( new Path( plusShape, pathOptions ) );
+      }
+      else {
+        // minus Shape representing a negative charge
+        const minusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
+          .lineTo( CIRCLE_RADIUS * ratio, 0 );
+        this.addChild( new Path( minusShape, pathOptions ) );
+      }
     }
   }
 
-  chargesAndFields.register( 'ChargedParticleRepresentationNode', ChargedParticleRepresentationNode );
-
-  return inherit( Node, ChargedParticleRepresentationNode );
+  return chargesAndFields.register( 'ChargedParticleRepresentationNode', ChargedParticleRepresentationNode );
 } );

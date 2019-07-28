@@ -11,31 +11,29 @@ define( function( require ) {
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   const ChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModel' );
   const ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Screen = require( 'JOIST/Screen' );
 
-  /**
-   * @constructor
-   *
-   * @param {Tandem} tandem
-   */
-  function ChargesAndFieldsScreen( tandem ) {
-    const options = {
-      backgroundColorProperty: ChargesAndFieldsColorProfile.backgroundProperty,
-      tandem: tandem
-    };
+  class ChargesAndFieldsScreen extends Screen {
 
-    Screen.call( this,
-      function() {
-        return new ChargesAndFieldsModel( tandem.createTandem( 'model' ) );
-      },
-      function( model ) {
-        return new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) );
-      },
-      options );
+    /**
+     * @param {Tandem} tandem
+     */
+    constructor( tandem ) {
+      const options = {
+        backgroundColorProperty: ChargesAndFieldsColorProfile.backgroundProperty,
+        tandem: tandem
+      };
+
+      super(
+        function() {
+          return new ChargesAndFieldsModel( tandem.createTandem( 'model' ) );
+        },
+        function( model ) {
+          return new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) );
+        },
+        options );
+    }
   }
 
-  chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
-
-  return inherit( Screen, ChargesAndFieldsScreen );
+  return chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
 } );

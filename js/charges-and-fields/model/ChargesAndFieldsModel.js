@@ -22,7 +22,6 @@ define( function( require ) {
   const ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
   const ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   const ObservableArray = require( 'AXON/ObservableArray' );
   const ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
@@ -41,298 +40,296 @@ define( function( require ) {
   // To avoid bugs, do not try to compute E-field at length scales smaller than MIN_DISTANCE_SCALE
   const MIN_DISTANCE_SCALE = 1e-9;
 
-  /**
-   * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
-   * @constructor
-   *
-   * @param {Tandem} tandem
-   */
-  function ChargesAndFieldsModel( tandem ) {
+  class ChargesAndFieldsModel extends PhetioObject {
 
-    // @public
-    this.chargedParticleGroupTandem = tandem.createGroupTandem( 'chargedParticle' );
+    /**
+     * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
+     *
+     * @param {Tandem} tandem
+     */
+    constructor( tandem ) {
 
-    // @public
-    this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
-
-    const self = this;
-
-    // @public (read-write) {function} - supplied by the view to indicate when the charges and sensors panel is visible
-    // used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
-    this.isChargesAndSensorsPanelDisplayed = null;
-
-    // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
-    // The other visibility properties can be found in the ChargesAndFieldsScreenView file
-
-    // @public {Property.<boolean>} control the visibility of a grid of arrows representing the local electric field
-    this.isElectricFieldVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' )
-    } );
-
-    // @public {Property.<boolean>} controls the color shading in the fill of the electric field arrows
-    this.isElectricFieldDirectionOnlyProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' )
-    } );
-
-    // @public {Property.<boolean>} control the visibility of the electric potential field, a.k.a. rectangular grid
-    this.isElectricPotentialVisibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' )
-    } );
-
-    // @public {Property.<boolean>} control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
-    this.areValuesVisibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'areValuesVisibleProperty' )
-    } );
-
-    // @public {Property.<boolean>} control the visibility of the simple grid with minor and major axes
-    this.isGridVisibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isGridVisibleProperty' )
-    } );
-
-    // @public {Property.<boolean>} should we snap the position of model elements to the grid (minor or major)
-    this.snapToGridProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'snapToGridProperty' )
-    } );
-
-    // @public {Property.<boolean>} is there at least one active charged particle on the board
-    this.isPlayAreaChargedProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isPlayAreaChargedProperty' )
-    } );
-
-    // @public {Property.<boolean>} whether adding positive charges is allowed (and displayed) in general
-    this.allowNewPositiveChargesProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'allowNewPositiveChargesProperty' )
-    } );
-
-    // @public {Property.<boolean>} whether adding negative charges is allowed (and displayed) in general
-    this.allowNewNegativeChargesProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'allowNewNegativeChargesProperty' )
-    } );
-
-    // @public {Property.<boolean>} whether adding electric field sensors is allowed (and displayed) in general
-    this.allowNewElectricFieldSensorsProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' )
-    } );
-
-    // @public {Property.<Bounds2>} in meters
-    this.chargesAndSensorsEnclosureBoundsProperty = new Property(
-      new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
-        tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
-        phetioType: PropertyIO( Bounds2IO )
+      super( {
+        phetioType: ChargesAndFieldsModelIO,
+        tandem: tandem,
+        phetioState: false
       } );
 
-    //----------------------------------------------------------------------------------------
-    // Initialize variables
-    //----------------------------------------------------------------------------------------
+      // @public
+      this.chargedParticleGroupTandem = tandem.createGroupTandem( 'chargedParticle' );
 
-    this.isResetting = false; // is the model being reset, necessary flag to address performance issues in the reset process
+      // @public
+      this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
 
-    // @public read-only
-    this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
+      const self = this;
 
-    // @public read-only
-    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
+      // @public (read-write) {function} - supplied by the view to indicate when the charges and sensors panel is visible
+      // used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
+      this.isChargesAndSensorsPanelDisplayed = null;
 
-    // Observable array of all draggable electric charges
-    // @public
-    this.chargedParticles = new ObservableArray( {
-      tandem: tandem.createTandem( 'chargedParticles' ),
-      phetioType: ObservableArrayIO( ChargedParticleIO )
-    } ); // {ObservableArray.<ChargedParticle>}
-    const chargedParticles = this.chargedParticles;
+      // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
+      // The other visibility properties can be found in the ChargesAndFieldsScreenView file
 
-    // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
-    // This is the relevant array to calculate the electric field, and electric potential
-    // @public
-    this.activeChargedParticles = new ObservableArray( {
-      phetioType: PropertyIO( ChargedParticleIO )
-    } ); // {ObservableArray.<ChargedParticle>}
+      // @public {Property.<boolean>} control the visibility of a grid of arrows representing the local electric field
+      this.isElectricFieldVisibleProperty = new BooleanProperty( true, {
+        tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' )
+      } );
 
-    // @public - Observable array of all draggable electric field sensors
-    this.electricFieldSensors = new ObservableArray( {
-      phetioType: PropertyIO( ElectricFieldSensorIO )
-    } ); // {ObservableArray.<ElectricFieldSensor>}
-    const electricFieldSensors = this.electricFieldSensors;
+      // @public {Property.<boolean>} controls the color shading in the fill of the electric field arrows
+      this.isElectricFieldDirectionOnlyProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' )
+      } );
 
-    // @public - electric potential sensor
-    this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
-      tandem.createTandem( 'electricPotentialSensor' ) );
+      // @public {Property.<boolean>} control the visibility of the electric potential field, a.k.a. rectangular grid
+      this.isElectricPotentialVisibleProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' )
+      } );
 
-    this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
+      // @public {Property.<boolean>} control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+      this.areValuesVisibleProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'areValuesVisibleProperty' )
+      } );
 
-    // observable array that contains the model of electricPotential line, each element is an electricPotential line
-    // @public read-only
-    this.electricPotentialLines = new ObservableArray( {
-      tandem: tandem.createTandem( 'electricPotentialLines' ),
-      phetioType: ObservableArrayIO( ElectricPotentialLineIO )
-    } ); // {ObservableArray.<ElectricPotentialLine>}
+      // @public {Property.<boolean>} control the visibility of the simple grid with minor and major axes
+      this.isGridVisibleProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'isGridVisibleProperty' )
+      } );
 
-    //----------------------------------------------------------------------------------------
-    //
-    // Hook up all the listeners the model
-    //
-    //----------------------------------------------------------------------------------------
+      // @public {Property.<boolean>} should we snap the position of model elements to the grid (minor or major)
+      this.snapToGridProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'snapToGridProperty' )
+      } );
 
-    this.snapToGridProperty.link( function( snapToGrid ) {
-      if ( snapToGrid ) {
-        self.snapAllElements();
-      }
-    } );
+      // @public {Property.<boolean>} is there at least one active charged particle on the board
+      this.isPlayAreaChargedProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'isPlayAreaChargedProperty' )
+      } );
 
-    //------------------------
-    // AddItem Added Listener on the charged Particles Observable Array
-    //------------------------
+      // @public {Property.<boolean>} whether adding positive charges is allowed (and displayed) in general
+      this.allowNewPositiveChargesProperty = new BooleanProperty( true, {
+        tandem: tandem.createTandem( 'allowNewPositiveChargesProperty' )
+      } );
 
-    // the following logic is the crux of the simulation
-    this.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
+      // @public {Property.<boolean>} whether adding negative charges is allowed (and displayed) in general
+      this.allowNewNegativeChargesProperty = new BooleanProperty( true, {
+        tandem: tandem.createTandem( 'allowNewNegativeChargesProperty' )
+      } );
 
-      const userControlledListener = function( isUserControlled ) {
+      // @public {Property.<boolean>} whether adding electric field sensors is allowed (and displayed) in general
+      this.allowNewElectricFieldSensorsProperty = new BooleanProperty( true, {
+        tandem: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' )
+      } );
 
-        // determine if the charge particle is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled &&
+      // @public {Property.<Bounds2>} in meters
+      this.chargesAndSensorsEnclosureBoundsProperty = new Property(
+        new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
+          tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
+          phetioType: PropertyIO( Bounds2IO )
+        } );
 
-             // only drop in if the toolbox is showing (may be hidden by phet-io)
-             self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
-             self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
-          addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
-          addedChargedParticle.animate(); // animate the charge to its destination position
+      //----------------------------------------------------------------------------------------
+      // Initialize variables
+      //----------------------------------------------------------------------------------------
+
+      this.isResetting = false; // is the model being reset, necessary flag to address performance issues in the reset process
+
+      // @public read-only
+      this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
+
+      // @public read-only
+      this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
+
+      // Observable array of all draggable electric charges
+      // @public
+      this.chargedParticles = new ObservableArray( {
+        tandem: tandem.createTandem( 'chargedParticles' ),
+        phetioType: ObservableArrayIO( ChargedParticleIO )
+      } ); // {ObservableArray.<ChargedParticle>}
+      const chargedParticles = this.chargedParticles;
+
+      // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
+      // This is the relevant array to calculate the electric field, and electric potential
+      // @public
+      this.activeChargedParticles = new ObservableArray( {
+        phetioType: PropertyIO( ChargedParticleIO )
+      } ); // {ObservableArray.<ChargedParticle>}
+
+      // @public - Observable array of all draggable electric field sensors
+      this.electricFieldSensors = new ObservableArray( {
+        phetioType: PropertyIO( ElectricFieldSensorIO )
+      } ); // {ObservableArray.<ElectricFieldSensor>}
+      const electricFieldSensors = this.electricFieldSensors;
+
+      // @public - electric potential sensor
+      this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
+        tandem.createTandem( 'electricPotentialSensor' ) );
+
+      this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
+
+      // observable array that contains the model of electricPotential line, each element is an electricPotential line
+      // @public read-only
+      this.electricPotentialLines = new ObservableArray( {
+        tandem: tandem.createTandem( 'electricPotentialLines' ),
+        phetioType: ObservableArrayIO( ElectricPotentialLineIO )
+      } ); // {ObservableArray.<ElectricPotentialLine>}
+
+      //----------------------------------------------------------------------------------------
+      //
+      // Hook up all the listeners the model
+      //
+      //----------------------------------------------------------------------------------------
+
+      this.snapToGridProperty.link( function( snapToGrid ) {
+        if ( snapToGrid ) {
+          self.snapAllElements();
         }
-      };
+      } );
 
-      addedChargedParticle.isUserControlledProperty.link( userControlledListener );
+      //------------------------
+      // AddItem Added Listener on the charged Particles Observable Array
+      //------------------------
 
-      const isActiveListener = function( isActive ) {
+      // the following logic is the crux of the simulation
+      this.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
 
-        // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLines
-        self.clearElectricPotentialLines();
+        const userControlledListener = function( isUserControlled ) {
 
-        if ( isActive ) {
-          // add particle to the activeChargedParticle observable array
-          // use for the webGlNode
-          self.activeChargedParticles.push( addedChargedParticle );
-        }
-        else {
-          // remove particle from the activeChargeParticle array
-          self.activeChargedParticles.remove( addedChargedParticle );
-        }
-        // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
-        self.updateIsPlayAreaCharged();
+          // determine if the charge particle is no longer controlled by the user and is inside the enclosure
+          if ( !isUserControlled &&
 
-        // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
-        self.updateAllSensors();
-      };
+               // only drop in if the toolbox is showing (may be hidden by phet-io)
+               self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
+               self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
+            addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
+            addedChargedParticle.animate(); // animate the charge to its destination position
+          }
+        };
 
-      addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
+        addedChargedParticle.isUserControlledProperty.link( userControlledListener );
 
-      // position and oldPosition refer to a charged particle
-      const positionListener = function( position, oldPosition ) {
+        const isActiveListener = function( isActive ) {
 
-        self.updateIsPlayAreaCharged();
-
-        // verify that the charge isActive before doing any charge-dependent updates to the model
-        if ( addedChargedParticle.isActiveProperty.get() ) {
-
-          // remove electricPotential lines when the position of a charged particle changes and the charge isActive
+          // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLines
           self.clearElectricPotentialLines();
 
-          // update the electricPotential and electricField sensors
+          if ( isActive ) {
+            // add particle to the activeChargedParticle observable array
+            // use for the webGlNode
+            self.activeChargedParticles.push( addedChargedParticle );
+          }
+          else {
+            // remove particle from the activeChargeParticle array
+            self.activeChargedParticles.remove( addedChargedParticle );
+          }
+          // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
+          self.updateIsPlayAreaCharged();
+
+          // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
           self.updateAllSensors();
+        };
 
-        } // end of if (isActive) statement
-      };
+        addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
-      addedChargedParticle.positionProperty.link( positionListener );
+        // position and oldPosition refer to a charged particle
+        const positionListener = function( position, oldPosition ) {
 
-      // remove listeners when a chargedParticle is removed
-      chargedParticles.addItemRemovedListener( function removalListener( removedChargeParticle ) {
-        if ( removedChargeParticle === addedChargedParticle ) {
-          addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
-          addedChargedParticle.isActiveProperty.unlink( isActiveListener );
-          addedChargedParticle.positionProperty.unlink( positionListener );
-          chargedParticles.removeItemRemovedListener( removalListener );
-          removedChargeParticle.dispose();
-        }
+          self.updateIsPlayAreaCharged();
+
+          // verify that the charge isActive before doing any charge-dependent updates to the model
+          if ( addedChargedParticle.isActiveProperty.get() ) {
+
+            // remove electricPotential lines when the position of a charged particle changes and the charge isActive
+            self.clearElectricPotentialLines();
+
+            // update the electricPotential and electricField sensors
+            self.updateAllSensors();
+
+          } // end of if (isActive) statement
+        };
+
+        addedChargedParticle.positionProperty.link( positionListener );
+
+        // remove listeners when a chargedParticle is removed
+        chargedParticles.addItemRemovedListener( function removalListener( removedChargeParticle ) {
+          if ( removedChargeParticle === addedChargedParticle ) {
+            addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
+            addedChargedParticle.isActiveProperty.unlink( isActiveListener );
+            addedChargedParticle.positionProperty.unlink( positionListener );
+            chargedParticles.removeItemRemovedListener( removalListener );
+            removedChargeParticle.dispose();
+          }
+        } );
       } );
-    } );
 
-    //------------------------
-    // AddItem Removed Listener on the charged Particles Observable Array
-    //------------------------
+      //------------------------
+      // AddItem Removed Listener on the charged Particles Observable Array
+      //------------------------
 
-    this.chargedParticles.addItemRemovedListener( function( removedChargeParticle ) {
-      // check that the particle was active before updating charge dependent model components
-      if ( removedChargeParticle.isActiveProperty.get() && !self.isResetting ) {
+      this.chargedParticles.addItemRemovedListener( function( removedChargeParticle ) {
+        // check that the particle was active before updating charge dependent model components
+        if ( removedChargeParticle.isActiveProperty.get() && !self.isResetting ) {
 
-        // Remove electricPotential lines
-        self.clearElectricPotentialLines();
+          // Remove electricPotential lines
+          self.clearElectricPotentialLines();
 
-        // Update all the visible sensors
-        self.updateAllSensors();
-      }
-
-      // remove particle from the activeChargedParticles array
-      self.activeChargedParticles.remove( removedChargeParticle );
-
-      // update the property isPlayAreaCharged to see if is there at least one active charge on the board
-      self.updateIsPlayAreaCharged();
-    } );
-
-    //------------------------
-    // AddItem Added Listener on the electric Field Sensors Observable Array
-    //------------------------
-
-    this.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
-
-      // Listener for sensor position changes
-      const positionListener = function( position ) {
-        addedElectricFieldSensor.electricField = self.getElectricField( position );
-      };
-
-      // update the Electric Field Sensors upon a change of its own position
-      addedElectricFieldSensor.positionProperty.link( positionListener );
-
-      const userControlledListener = function( isUserControlled ) {
-
-        // determine if the sensor is no longer controlled by the user and is inside the enclosure
-        if ( !isUserControlled &&
-
-             // only drop in if the toolbox is showing (may be hidden by phet-io)
-             self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
-             self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
-          addedElectricFieldSensor.isActiveProperty.set( false );
-          addedElectricFieldSensor.animate();
+          // Update all the visible sensors
+          self.updateAllSensors();
         }
-      };
 
-      addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
+        // remove particle from the activeChargedParticles array
+        self.activeChargedParticles.remove( removedChargeParticle );
 
-      // remove listeners when an electricFieldSensor is removed
-      electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
-        if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
-          addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
-          addedElectricFieldSensor.positionProperty.unlink( positionListener );
-          electricFieldSensors.removeItemRemovedListener( removalListener );
-        }
+        // update the property isPlayAreaCharged to see if is there at least one active charge on the board
+        self.updateIsPlayAreaCharged();
       } );
-    } );
 
-    this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
+      //------------------------
+      // AddItem Added Listener on the electric Field Sensors Observable Array
+      //------------------------
 
-    PhetioObject.call( this, {
-      phetioType: ChargesAndFieldsModelIO,
-      tandem: tandem,
-      phetioState: false
-    } );
-  }
+      this.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
 
-  chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
+        // Listener for sensor position changes
+        const positionListener = function( position ) {
+          addedElectricFieldSensor.electricField = self.getElectricField( position );
+        };
 
-  return inherit( PhetioObject, ChargesAndFieldsModel, {
+        // update the Electric Field Sensors upon a change of its own position
+        addedElectricFieldSensor.positionProperty.link( positionListener );
+
+        const userControlledListener = function( isUserControlled ) {
+
+          // determine if the sensor is no longer controlled by the user and is inside the enclosure
+          if ( !isUserControlled &&
+
+               // only drop in if the toolbox is showing (may be hidden by phet-io)
+               self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
+               self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
+            addedElectricFieldSensor.isActiveProperty.set( false );
+            addedElectricFieldSensor.animate();
+          }
+        };
+
+        addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
+
+        // remove listeners when an electricFieldSensor is removed
+        electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
+          if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
+            addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
+            addedElectricFieldSensor.positionProperty.unlink( positionListener );
+            electricFieldSensors.removeItemRemovedListener( removalListener );
+          }
+        } );
+      } );
+
+      this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
+    }
+
     /**
      * Reset function
      * @public
      */
-    reset: function() {
+    reset() {
       // we want to avoid the cost of constantly re-updating the grids when emptying the chargedParticles array
       // so we set the flag isResetting to true.
       this.isResetting = true;
@@ -356,7 +353,7 @@ define( function( require ) {
       this.measuringTape.reset();
 
       this.isResetting = false; // done with the resetting process
-    },
+    }
 
     /**
      * Adds an element to a particular array (ChargedParticle/ElectricFieldSensor to
@@ -366,13 +363,13 @@ define( function( require ) {
      * @param {ChargedParticle | ElectricFieldSensor} element
      * @param {ObservableArray.<ChargedParticle> | ObservableArray.<ElectricFieldSensor>} observableArray
      */
-    addModelElement: function( element, observableArray ) {
+    addModelElement( element, observableArray ) {
       observableArray.push( element );
       element.returnedToOriginEmitter.addListener( function() {
         observableArray.remove( element );
       } );
       return element; // for chaining
-    },
+    }
 
     /**
      * Adds a positive charge to the model, and returns it.
@@ -380,9 +377,9 @@ define( function( require ) {
      *
      * @returns {ChargedParticle}
      */
-    addPositiveCharge: function( tandem ) {
+    addPositiveCharge( tandem ) {
       return this.addModelElement( new ChargedParticle( 1, { tandem: tandem } ), this.chargedParticles );
-    },
+    }
 
     /**
      * Adds a negative charge to the model, and returns it.
@@ -390,9 +387,9 @@ define( function( require ) {
      *
      * @returns {ChargedParticle}
      */
-    addNegativeCharge: function( tandem ) {
+    addNegativeCharge( tandem ) {
       return this.addModelElement( new ChargedParticle( -1, { tandem: tandem } ), this.chargedParticles );
-    },
+    }
 
     /**
      * Adds an electric field sensor to the model, and returns it.
@@ -400,9 +397,9 @@ define( function( require ) {
      *
      * @returns {ElectricFieldSensor}
      */
-    addElectricFieldSensor: function( tandem ) {
+    addElectricFieldSensor( tandem ) {
       return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), tandem ), this.electricFieldSensors );
-    },
+    }
 
     /**
      * Function that determines if there is at least one active and "uncompensated" charge
@@ -410,7 +407,7 @@ define( function( require ) {
      * (see https://github.com/phetsims/charges-and-fields/issues/46)
      * @private
      */
-    updateIsPlayAreaCharged: function() {
+    updateIsPlayAreaCharged() {
       let netElectricCharge = 0; // {number} Total electric charge on screen
       let numberActiveChargedParticles = 0; // {number} Total active charged particles on screen
 
@@ -476,18 +473,18 @@ define( function( require ) {
         // incredibly unlikely to be the case in the first place.
         this.isPlayAreaChargedProperty.set( true );
       }
-    },
+    }
 
     /**
      * Update all sensors
      * @private
      */
-    updateAllSensors: function() {
+    updateAllSensors() {
       this.electricPotentialSensor.update();
       for ( let i = 0; i < this.electricFieldSensors.length; i++ ) {
         this.electricFieldSensors.get( i ).update();
       }
-    },
+    }
 
     /**
      * Return the electric field (a vector) at a location 'position'
@@ -495,7 +492,7 @@ define( function( require ) {
      * @param {Vector2} position - location of sensor
      * @returns {Vector2} electricField
      */
-    getElectricField: function( position ) {
+    getElectricField( position ) {
       const electricField = new Vector2( 0, 0 );
 
       if ( !this.isPlayAreaChargedProperty.get() ) {
@@ -524,7 +521,7 @@ define( function( require ) {
       } );
       electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
       return electricField;
-    },
+    }
 
     /**
      * Return the electric potential at a location 'position' due to the configuration of charges on the board.
@@ -532,7 +529,7 @@ define( function( require ) {
      * @param {Vector2} position
      * @returns {number} electricPotential
      */
-    getElectricPotential: function( position ) {
+    getElectricPotential( position ) {
       let electricPotential = 0;
 
       if ( !this.isPlayAreaChargedProperty.get() ) {
@@ -559,7 +556,7 @@ define( function( require ) {
         electricPotential *= K_CONSTANT; // prefactor depends on units
         return electricPotential;
       }
-    },
+    }
 
     /**
      * get local charge at this position
@@ -567,7 +564,7 @@ define( function( require ) {
      * @param {Vector2} position
      * @returns {number}
      */
-    getCharge: function( position ) {
+    getCharge( position ) {
       let charge = 0;
       this.activeChargedParticles.forEach( function( chargedParticle ) {
         if ( chargedParticle.positionProperty.value.equals( position ) ) {
@@ -575,7 +572,7 @@ define( function( require ) {
         }
       } );
       return charge;
-    },
+    }
 
     /**
      * Push an electricPotentialLine to an observable array
@@ -586,7 +583,7 @@ define( function( require ) {
      *                          - recreate state from a saved PhET-iO state.  The tandem is optional but is never
      *                          - included if the vector position vector is not included.
      */
-    addElectricPotentialLine: function(
+    addElectricPotentialLine(
       position = this.electricPotentialSensor.positionProperty.get(), // use the Potential Sensor as default position
       tandem = this.electricPotentialLineTandemGroup.createNextTandem()
     ) {
@@ -620,7 +617,7 @@ define( function( require ) {
       this.electricPotentialLines.push( electricPotentialLine );
 
       return electricPotentialLine; // for chaining and for PhET-iO restore state
-    },
+    }
 
     /**
      * Push many electric Potential Lines to an observable array
@@ -628,7 +625,7 @@ define( function( require ) {
      * @param {number} numberOfLines
      * USED IN DEBUGGING MODE
      */
-    addManyElectricPotentialLines: function( numberOfLines ) {
+    addManyElectricPotentialLines( numberOfLines ) {
       for ( let i = 0; i < numberOfLines; i++ ) {
         const position = new Vector2(
           WIDTH * ( phet.joist.random.nextDouble() - 0.5 ),
@@ -636,31 +633,31 @@ define( function( require ) {
 
         this.addElectricPotentialLine( position );
       }
-    },
+    }
 
     /**
      * Function that clears the Equipotential Lines Observable Array
      * @public
      */
-    clearElectricPotentialLines: function() {
+    clearElectricPotentialLines() {
       this.electricPotentialLines.clear();
-    },
+    }
 
     /**
      * snap the position to the minor gridlines
      * @param {Property.<Vector2>} positionProperty
      * @public
      */
-    snapToGridLines: function( positionProperty ) {
+    snapToGridLines( positionProperty ) {
       if ( this.snapToGridProperty.value && this.isGridVisibleProperty.value ) {
         positionProperty.set( positionProperty.get()
           .dividedScalar( GRID_MINOR_SPACING )
           .roundedSymmetric()
           .timesScalar( GRID_MINOR_SPACING ) );
       }
-    },
+    }
 
-    snapAllElements: function() {
+    snapAllElements() {
       const self = this;
 
       this.activeChargedParticles.forEach( function( chargedParticles ) {
@@ -674,8 +671,8 @@ define( function( require ) {
       self.snapToGridLines( this.electricPotentialSensor.positionProperty );
       self.snapToGridLines( this.measuringTape.basePositionProperty );
       self.snapToGridLines( this.measuringTape.tipPositionProperty );
-
     }
-  } );
-} );
+  }
 
+  return chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
+} );

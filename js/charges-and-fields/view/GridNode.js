@@ -6,7 +6,6 @@
  *
  * @author Martin Veillette (Berea College)
  */
-
 define( function( require ) {
   'use strict';
 
@@ -15,7 +14,6 @@ define( function( require ) {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
@@ -35,129 +33,127 @@ define( function( require ) {
   // strings
   const oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
 
-  /**
-   *
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} boundsProperty - bounds in model coordinates
-   * @param {Property.<boolean>} isGridVisibleProperty
-   * @param {Property.<boolean>} areValuesVisibleProperty
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function GridNode( modelViewTransform,
-                     boundsProperty,
-                     isGridVisibleProperty,
-                     areValuesVisibleProperty,
-                     tandem ) {
+  class GridNode extends Node {
 
-    const self = this;
+    /**
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<Bounds2>} boundsProperty - bounds in model coordinates
+     * @param {Property.<boolean>} isGridVisibleProperty
+     * @param {Property.<boolean>} areValuesVisibleProperty
+     * @param {Tandem} tandem
+     */
+    constructor( modelViewTransform,
+                 boundsProperty,
+                 isGridVisibleProperty,
+                 areValuesVisibleProperty,
+                 tandem ) {
 
-    Node.call( this );
+      super();
 
-    const gridLinesParent = new Node();
+      const self = this;
 
-    // separation in model coordinates of the major grid lines
-    const majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
-    const majorDeltaY = majorDeltaX; // we want a square grid
+      const gridLinesParent = new Node();
 
-    // separation in model coordinates of the minor grid lines
-    const deltaX = majorDeltaX / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
-    const deltaY = majorDeltaY / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
+      // separation in model coordinates of the major grid lines
+      const majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
+      const majorDeltaY = majorDeltaX; // we want a square grid
 
-    // the following variables are integers
-    const minI = Math.ceil( boundsProperty.get().minX / deltaX );
-    const maxI = Math.floor( boundsProperty.get().maxX / deltaX );
-    const minJ = Math.ceil( boundsProperty.get().minY / deltaY );
-    const maxJ = Math.floor( boundsProperty.get().maxY / deltaY );
+      // separation in model coordinates of the minor grid lines
+      const deltaX = majorDeltaX / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
+      const deltaY = majorDeltaY / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
 
-    let i; // {number} an integer
-    let j; // {number} an integer
-    let isMajorGridLine; // {boolean}
-    const majorGridLinesShape = new Shape();
-    const minorGridLinesShape = new Shape();
+      // the following variables are integers
+      const minI = Math.ceil( boundsProperty.get().minX / deltaX );
+      const maxI = Math.floor( boundsProperty.get().maxX / deltaX );
+      const minJ = Math.ceil( boundsProperty.get().minY / deltaY );
+      const maxJ = Math.floor( boundsProperty.get().maxY / deltaY );
 
-    // vertical gridLines
-    for ( i = minI; i <= maxI; i++ ) {
-      isMajorGridLine = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
-      if ( isMajorGridLine ) {
-        majorGridLinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
+      let i; // {number} an integer
+      let j; // {number} an integer
+      let isMajorGridLine; // {boolean}
+      const majorGridLinesShape = new Shape();
+      const minorGridLinesShape = new Shape();
+
+      // vertical gridLines
+      for ( i = minI; i <= maxI; i++ ) {
+        isMajorGridLine = ( i % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+        if ( isMajorGridLine ) {
+          majorGridLinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
+        }
+        else {
+          minorGridLinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
+        }
       }
-      else {
-        minorGridLinesShape.moveTo( i * deltaX, minJ * deltaY ).verticalLineTo( maxJ * deltaY );
+
+      // horizontal gridLines
+      for ( j = minJ; j <= maxJ; j++ ) {
+        isMajorGridLine = ( j % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
+        if ( isMajorGridLine ) {
+          majorGridLinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
+        }
+        else {
+          minorGridLinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
+        }
       }
+
+      const majorGridLinesPath = new Path( modelViewTransform.modelToViewShape( majorGridLinesShape ), {
+        lineWidth: MAJOR_GRIDLINE_LINEWIDTH,
+        lineCap: 'butt',
+        lineJoin: 'bevel',
+        stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
+        tandem: tandem.createTandem( 'majorGridLinesPath' )
+      } );
+
+      const minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
+        lineWidth: MINOR_GRIDLINE_LINEWIDTH,
+        lineCap: 'butt',
+        lineJoin: 'bevel',
+        stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
+        tandem: tandem.createTandem( 'minorGridLinesPath' )
+      } );
+
+      // Create the one-meter double headed arrow representation
+      const arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
+      const arrowPath = new Path( arrowShape, {
+        fill: ChargesAndFieldsColorProfile.gridLengthScaleArrowFillProperty,
+        stroke: ChargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty,
+        tandem: tandem.createTandem( 'arrowPath' )
+      } );
+
+      // Create and add the text (legend) accompanying the double headed arrow
+      const legendText = new Text( oneMeterString, {
+        fill: ChargesAndFieldsColorProfile.gridTextFillProperty,
+        font: FONT,
+        tandem: tandem.createTandem( 'legendText' )
+      } );
+
+      // add all the nodes
+      gridLinesParent.addChild( minorGridLinesPath );
+      gridLinesParent.addChild( majorGridLinesPath );
+      this.addChild( gridLinesParent );
+      this.addChild( arrowPath );
+      this.addChild( legendText );
+
+      // layout
+      arrowPath.top = modelViewTransform.modelToViewY( ARROW_POSITION.y ); // empirically determined such that the electric field arrows do not overlap with it
+      arrowPath.left = modelViewTransform.modelToViewX( ARROW_POSITION.x ); // should be set to an integer value such that it spans two majorGridLines
+      legendText.centerX = arrowPath.centerX;
+      legendText.top = arrowPath.bottom;
+
+      // Show/ Hide the arrow
+      // no need to unlink, present for the lifetime of the simulation
+      areValuesVisibleProperty.link( function( isVisible ) {
+        arrowPath.visible = isVisible;
+        legendText.visible = isVisible;
+      } );
+
+      // Show/ Hide the grid
+      // no need to unlink, present for the lifetime of the simulation
+      isGridVisibleProperty.link( function( isVisible ) {
+        self.visible = isVisible;
+      } );
     }
-
-    // horizontal gridLines
-    for ( j = minJ; j <= maxJ; j++ ) {
-      isMajorGridLine = ( j % MINOR_GRIDLINES_PER_MAJOR_GRIDLINE === 0 );
-      if ( isMajorGridLine ) {
-        majorGridLinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
-      }
-      else {
-        minorGridLinesShape.moveTo( minI * deltaX, j * deltaY ).horizontalLineTo( maxI * deltaX );
-      }
-    }
-
-    const majorGridLinesPath = new Path( modelViewTransform.modelToViewShape( majorGridLinesShape ), {
-      lineWidth: MAJOR_GRIDLINE_LINEWIDTH,
-      lineCap: 'butt',
-      lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
-      tandem: tandem.createTandem( 'majorGridLinesPath' )
-    } );
-
-    const minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
-      lineWidth: MINOR_GRIDLINE_LINEWIDTH,
-      lineCap: 'butt',
-      lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
-      tandem: tandem.createTandem( 'minorGridLinesPath' )
-    } );
-
-    // Create the one-meter double headed arrow representation
-    const arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
-    const arrowPath = new Path( arrowShape, {
-      fill: ChargesAndFieldsColorProfile.gridLengthScaleArrowFillProperty,
-      stroke: ChargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty,
-      tandem: tandem.createTandem( 'arrowPath' )
-    } );
-
-    // Create and add the text (legend) accompanying the double headed arrow
-    const legendText = new Text( oneMeterString, {
-      fill: ChargesAndFieldsColorProfile.gridTextFillProperty,
-      font: FONT,
-      tandem: tandem.createTandem( 'legendText' )
-    } );
-
-    // add all the nodes
-    gridLinesParent.addChild( minorGridLinesPath );
-    gridLinesParent.addChild( majorGridLinesPath );
-    this.addChild( gridLinesParent );
-    this.addChild( arrowPath );
-    this.addChild( legendText );
-
-    // layout
-    arrowPath.top = modelViewTransform.modelToViewY( ARROW_POSITION.y ); // empirically determined such that the electric field arrows do not overlap with it
-    arrowPath.left = modelViewTransform.modelToViewX( ARROW_POSITION.x ); // should be set to an integer value such that it spans two majorGridLines
-    legendText.centerX = arrowPath.centerX;
-    legendText.top = arrowPath.bottom;
-
-    // Show/ Hide the arrow
-    // no need to unlink, present for the lifetime of the simulation
-    areValuesVisibleProperty.link( function( isVisible ) {
-      arrowPath.visible = isVisible;
-      legendText.visible = isVisible;
-    } );
-
-    // Show/ Hide the grid
-    // no need to unlink, present for the lifetime of the simulation
-    isGridVisibleProperty.link( function( isVisible ) {
-      self.visible = isVisible;
-    } );
-
   }
 
-  chargesAndFields.register( 'GridNode', GridNode );
-
-  return inherit( Node, GridNode );
+  return chargesAndFields.register( 'GridNode', GridNode );
 } );

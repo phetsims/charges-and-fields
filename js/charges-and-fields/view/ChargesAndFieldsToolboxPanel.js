@@ -15,7 +15,6 @@ define( function( require ) {
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const Image = require( 'SCENERY/nodes/Image' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   const MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -38,117 +37,115 @@ define( function( require ) {
   // strings
   const voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
-  /**
-   * Toolbox constructor
-   * @param {MeasuringTape} measuringTape
-   * @param {ElectricPotentialSensor} electricPotentialSensor
-   * @param {ChargesAndFieldsMeasuringTapeNode} measuringTapeNode
-   * @param {ElectricPotentialSensorNode} electricPotentialSensorNode
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} availableModelBoundsProperty
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function ChargesAndFieldsToolboxPanel( measuringTape,
-                                         electricPotentialSensor,
-                                         measuringTapeNode,
-                                         electricPotentialSensorNode,
-                                         modelViewTransform,
-                                         availableModelBoundsProperty,
-                                         tandem ) {
-    const self = this;
+  class ChargesAndFieldsToolboxPanel extends Panel {
 
-    // Create the icon image for the electricPotential sensor
-    const electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon( tandem ); // {Node}
+    /**
+     * @param {MeasuringTape} measuringTape
+     * @param {ElectricPotentialSensor} electricPotentialSensor
+     * @param {ChargesAndFieldsMeasuringTapeNode} measuringTapeNode
+     * @param {ElectricPotentialSensorNode} electricPotentialSensorNode
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<Bounds2>} availableModelBoundsProperty
+     * @param {Tandem} tandem
+     */
+    constructor( measuringTape,
+                 electricPotentialSensor,
+                 measuringTapeNode,
+                 electricPotentialSensorNode,
+                 modelViewTransform,
+                 availableModelBoundsProperty,
+                 tandem ) {
 
-    // Create the icon image for the measuring Tape
-    const measuringTapeIconNode = this.createMeasuringTapeIcon( tandem ); // {Node}
+      // Create the icon image for the electricPotential sensor
+      const electricPotentialSensorIconNode = ChargesAndFieldsToolboxPanel.createElectricPotentialSensorIcon( tandem ); // {Node}
 
-    // The content panel with the two icons
-    const panelContent = new LayoutBox( {
-      spacing: 20,
-      children: [ electricPotentialSensorIconNode, measuringTapeIconNode ],
-      pickable: true
-    } );
+      // Create the icon image for the measuring Tape
+      const measuringTapeIconNode = ChargesAndFieldsToolboxPanel.createMeasuringTapeIcon( tandem ); // {Node}
 
-    // Options for the panel
-    const panelOptions = {
-      lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
-      xMargin: 12,
-      yMargin: 10,
-      fill: ChargesAndFieldsColorProfile.controlPanelFillProperty,
-      stroke: ChargesAndFieldsColorProfile.controlPanelBorderProperty,
-      tandem: tandem
-    };
+      // The content panel with the two icons
+      const panelContent = new LayoutBox( {
+        spacing: 20,
+        children: [ electricPotentialSensorIconNode, measuringTapeIconNode ],
+        pickable: true
+      } );
 
-    // add the panelContent
-    Panel.call( this, panelContent, panelOptions );
+      // Options for the panel
+      const panelOptions = {
+        lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
+        xMargin: 12,
+        yMargin: 10,
+        fill: ChargesAndFieldsColorProfile.controlPanelFillProperty,
+        stroke: ChargesAndFieldsColorProfile.controlPanelBorderProperty,
+        tandem: tandem
+      };
 
-    // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
-    const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
+      // add the panelContent
+      super( panelContent, panelOptions );
 
-    const measuringTapeMovableDragHandler = {
-      down: function( event ) {
+      const self = this;
 
-        // Don't try to start drags with a right mouse button or an attached pointer.
-        if ( !event.canStartPress() ) { return; }
+      // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
+      const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
-        measuringTape.isActiveProperty.set( true );
+      const measuringTapeMovableDragHandler = {
+        down: function( event ) {
 
-        const initialViewPosition = self.globalToParentPoint( event.pointer.point )
-          .minus( measuringTapeNode.getLocalBaseCenter() );
-        measuringTape.basePositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
-        measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.get().plus( tipToBasePosition ) );
+          // Don't try to start drags with a right mouse button or an attached pointer.
+          if ( !event.canStartPress() ) { return; }
 
-        measuringTapeNode.startBaseDrag( event );
-      }
-    };
+          measuringTape.isActiveProperty.set( true );
 
-    // When pressed, creates a model element and triggers press() on the corresponding view
-    electricPotentialSensorIconNode.addInputListener( {
-      down: function( event ) {
+          const initialViewPosition = self.globalToParentPoint( event.pointer.point )
+            .minus( measuringTapeNode.getLocalBaseCenter() );
+          measuringTape.basePositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
+          measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.get().plus( tipToBasePosition ) );
 
-        // Don't try to start drags with a right mouse button or an attached pointer.
-        if ( !event.canStartPress() ) { return; }
+          measuringTapeNode.startBaseDrag( event );
+        }
+      };
 
-        electricPotentialSensor.isActiveProperty.set( true );
+      // When pressed, creates a model element and triggers press() on the corresponding view
+      electricPotentialSensorIconNode.addInputListener( {
+        down: function( event ) {
 
-        // initial position of the pointer in the screenView coordinates
-        const initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
-        electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
+          // Don't try to start drags with a right mouse button or an attached pointer.
+          if ( !event.canStartPress() ) { return; }
 
-        electricPotentialSensorNode.movableDragHandler.press( event, electricPotentialSensorNode );
-      }
-    } );
+          electricPotentialSensor.isActiveProperty.set( true );
 
-    // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
-    measuringTapeIconNode.addInputListener( measuringTapeMovableDragHandler );
+          // initial position of the pointer in the screenView coordinates
+          const initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
+          electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
-    // hide and show
-    electricPotentialSensor.isActiveProperty.link( function( visible ) {
-      electricPotentialSensorIconNode.visible = !visible;
-    } );
+          electricPotentialSensorNode.movableDragHandler.press( event, electricPotentialSensorNode );
+        }
+      } );
 
-    // measuringTape visibility has the opposite visibility of the measuringTape Icon
-    measuringTape.isActiveProperty.link( function( active ) {
-      measuringTapeIconNode.visible = !active;
-    } );
+      // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
+      measuringTapeIconNode.addInputListener( measuringTapeMovableDragHandler );
 
-    // no need to dispose of this link since this is present for the lifetime of the sim
-    availableModelBoundsProperty.link( function( bounds ) {
-      measuringTapeMovableDragHandler.dragBounds = bounds;
-    } );
-  }
+      // hide and show
+      electricPotentialSensor.isActiveProperty.link( function( visible ) {
+        electricPotentialSensorIconNode.visible = !visible;
+      } );
 
-  chargesAndFields.register( 'ChargesAndFieldsToolboxPanel', ChargesAndFieldsToolboxPanel );
+      // measuringTape visibility has the opposite visibility of the measuringTape Icon
+      measuringTape.isActiveProperty.link( function( active ) {
+        measuringTapeIconNode.visible = !active;
+      } );
 
-  return inherit( Panel, ChargesAndFieldsToolboxPanel, {
+      // no need to dispose of this link since this is present for the lifetime of the sim
+      availableModelBoundsProperty.link( function( bounds ) {
+        measuringTapeMovableDragHandler.dragBounds = bounds;
+      } );
+    }
+
     /**
      * Returns an icon of the sensor (without the two buttons)
      * @private
      * @returns {Node}
      */
-    createElectricPotentialSensorIcon: function( tandem ) {
+    static createElectricPotentialSensorIcon( tandem ) {
 
       const node = new Node( {
         // Show a cursor hand over the sensor icon
@@ -220,14 +217,14 @@ define( function( require ) {
       node.addChild( voltageReading );
 
       return node;
-    },
+    }
 
     /**
      * Returns an icon of the measuring tape
      * @private
      * @returns {Node}
      */
-    createMeasuringTapeIcon: function( tandem ) {
+    static createMeasuringTapeIcon( tandem ) {
       // procedure to create an icon Image of a measuringTape
       // first, create an actual measuring tape
 
@@ -255,6 +252,9 @@ define( function( require ) {
 
       return measuringTapeIcon;
     }
-  } );
+  }
+
+  return chargesAndFields.register( 'ChargesAndFieldsToolboxPanel', ChargesAndFieldsToolboxPanel );
+
 } );
 

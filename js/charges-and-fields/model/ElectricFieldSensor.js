@@ -12,43 +12,39 @@ define( function( require ) {
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
 
-  /**
-   * @constructor
-   *
-   * @param {Function} computeElectricField - function( Vector2 ) : number, computes electric field at the given
-   *                                          point in the model.
-   * @param {Tandem} tandem
-   */
-  function ElectricFieldSensor( computeElectricField, tandem ) {
+  class ElectricFieldSensor extends ModelElement {
 
-    // @public - electricField Vector in Newtons per Coulomb
-    this.electricFieldProperty = new Vector2Property( new Vector2( 0, 0 ), {
-      tandem: tandem.createTandem( 'electricFieldProperty' )
-    } );
+    /**
+     * @param {Function} computeElectricField - function( Vector2 ) : number, computes electric field at the given
+     *                                          point in the model.
+     * @param {Tandem} tandem
+     */
+    constructor( computeElectricField, tandem ) {
 
-    ModelElement.call( this, { tandem: tandem, phetioType: ElectricFieldSensorIO } );
+      super( { tandem: tandem, phetioType: ElectricFieldSensorIO } );
 
-    this.computeElectricField = computeElectricField;
+      // @public - electricField Vector in Newtons per Coulomb
+      this.electricFieldProperty = new Vector2Property( new Vector2( 0, 0 ), {
+        tandem: tandem.createTandem( 'electricFieldProperty' )
+      } );
 
-    // @public (phet-io)
-    this.electricFieldSensorTandem = tandem;
+      this.computeElectricField = computeElectricField;
 
-    this.positionProperty.link( this.update.bind( this ) );
-  }
+      // @public (phet-io)
+      this.electricFieldSensorTandem = tandem;
 
-  chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );
+      this.positionProperty.link( this.update.bind( this ) );
+    }
 
-  return inherit( ModelElement, ElectricFieldSensor, {
     /**
      * Should be called to update the value of this sensor.
      * @public
      */
-    update: function() {
+    update() {
       const eField = this.computeElectricField( this.positionProperty.get() );
 
       assert && assert( eField.x !== Infinity && eField.y !== Infinity,
@@ -58,14 +54,16 @@ define( function( require ) {
         'E-field is NaN: ' + eField );
 
       this.electricFieldProperty.set( this.computeElectricField( this.positionProperty.get() ) );
-    },
+    }
 
     /**
      * @public
      */
-    dispose: function() {
+    dispose() {
       this.electricFieldProperty.dispose();
       ModelElement.prototype.dispose.call( this );
     }
-  } );
+  }
+
+  return chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );
 } );

@@ -11,32 +11,30 @@ define( function( require ) {
   // modules
   const ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const inherit = require( 'PHET_CORE/inherit' );
 
-  /**
-   * @constructor
-   *
-   * Drawn pointing to the right, with the origin at the center hole
-   */
-  function ElectricFieldArrowShape() {
-    const ratio = 2 / 5;
-    const circleRadius = 2;
-    const arrowLength = 40;
+  class ElectricFieldArrowShape extends ArrowShape {
 
-    // Main body of the arrow
-    ArrowShape.call( this, -ratio * arrowLength, 0, ( 1 - ratio ) * arrowLength, 0, {
-      headHeight: 10,
-      headWidth: 16,
-      tailWidth: 8
-    } );
+    /**
+     * Drawn pointing to the right, with the origin at the center hole
+     */
+    constructor() {
+      const ratio = 2 / 5;
+      const circleRadius = 2;
+      const arrowLength = 40;
 
-    // Cut a hole in the middle
-    this.moveTo( circleRadius, 0 );
-    this.arc( 0, 0, circleRadius, 0, 2 * Math.PI, false );
-    this.close();
+      // Main body of the arrow
+      super( -ratio * arrowLength, 0, ( 1 - ratio ) * arrowLength, 0, {
+        headHeight: 10,
+        headWidth: 16,
+        tailWidth: 8
+      } );
+
+      // Cut a hole in the middle
+      this.moveTo( circleRadius, 0 );
+      this.arc( 0, 0, circleRadius, 0, 2 * Math.PI, false );
+      this.close();
+    }
   }
 
-  chargesAndFields.register( 'ElectricFieldArrowShape', ElectricFieldArrowShape );
-
-  return inherit( ArrowShape, ElectricFieldArrowShape );
+  return chargesAndFields.register( 'ElectricFieldArrowShape', ElectricFieldArrowShape );
 } );

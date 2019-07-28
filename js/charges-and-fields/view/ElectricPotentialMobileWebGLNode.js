@@ -12,7 +12,6 @@ define( function( require ) {
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
   const WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
@@ -21,132 +20,132 @@ define( function( require ) {
   const MAX_PARTICLES_LIMIT = 32;
   const scratchFloatArray = new Float32Array( 9 );
 
-  /**
-   *
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - all the chargedParticles in this array are active
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isVisibleProperty
-   * @constructor
-   */
-  function ElectricPotentialMobileWebGLNode( chargedParticles, modelViewTransform, isVisibleProperty ) {
-    this.chargedParticles = chargedParticles;
-    this.modelViewTransform = modelViewTransform;
-    this.isVisibleProperty = isVisibleProperty;
+  class ElectricPotentialMobileWebGLNode extends WebGLNode {
 
-    WebGLNode.call( this, ElectricPotentialMobilePainter, {
-      layerSplit: true, // ensure we're on our own layer
-      webglScale: 1 / 16
-    } );
+    /**
+     * @param {ObservableArray.<ChargedParticle>} chargedParticles - all the chargedParticles in this array are active
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} isVisibleProperty
+     */
+    constructor( chargedParticles, modelViewTransform, isVisibleProperty ) {
 
-    // Invalidate paint on a bunch of changes
-    const invalidateSelfListener = this.invalidatePaint.bind( this );
-    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
-    isVisibleProperty.link( invalidateSelfListener ); // visibility change
-    chargedParticles.addItemAddedListener( function( particle ) {
-      particle.positionProperty.link( invalidateSelfListener );
-    } ); // particle added
-    chargedParticles.addItemRemovedListener( function( particle ) {
-      invalidateSelfListener();
-      particle.positionProperty.unlink( invalidateSelfListener );
-    } ); // particle removed
-  }
+      super( ElectricPotentialMobilePainter, {
+        layerSplit: true, // ensure we're on our own layer
+        webglScale: 1 / 16
+      } );
 
-  chargesAndFields.register( 'ElectricPotentialMobileWebGLNode', ElectricPotentialMobileWebGLNode );
+      this.chargedParticles = chargedParticles;
+      this.modelViewTransform = modelViewTransform;
+      this.isVisibleProperty = isVisibleProperty;
 
-  inherit( WebGLNode, ElectricPotentialMobileWebGLNode, {}, {
+      // Invalidate paint on a bunch of changes
+      const invalidateSelfListener = this.invalidatePaint.bind( this );
+      ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
+      ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
+      ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
+      isVisibleProperty.link( invalidateSelfListener ); // visibility change
+      chargedParticles.addItemAddedListener( function( particle ) {
+        particle.positionProperty.link( invalidateSelfListener );
+      } ); // particle added
+      chargedParticles.addItemRemovedListener( function( particle ) {
+        invalidateSelfListener();
+        particle.positionProperty.unlink( invalidateSelfListener );
+      } ); // particle removed
+    }
+
     /**
      * Detection for how many particles we can support.
      * @public read-only
      */
-    getNumberOfParticlesSupported: function() {
+    static getNumberOfParticlesSupported() {
       const canvas = document.createElement( 'canvas' );
       const gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
       return ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
-    },
-    particlesSupportedForContext: function( gl ) {
+    }
+
+    static particlesSupportedForContext( gl ) {
       const otherVectorCount = 7; // colors, matrix and one extra to be safe
       const maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
       return Math.min( MAX_PARTICLES_LIMIT, maxVertexUniforms - otherVectorCount );
     }
-  } );
-
-  /**
-   * @constructor
-   *
-   * @param {WebGLRenderingContext} gl
-   * @param {WaveWebGLNode} node
-   */
-  function ElectricPotentialMobilePainter( gl, node ) {
-    this.gl = gl;
-    this.node = node;
-
-    this.maximumNumParticles = ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
-
-    const particleIndices = _.range( this.maximumNumParticles );
-
-    // shader for the display of the data
-    this.displayShaderProgram = new ShaderProgram( gl, [
-      // vertex shader
-      'attribute vec3 aPosition;', // vertex attribute
-      'varying vec2 vPosition;',
-      'void main() {',
-      '  vPosition = aPosition.xy;',
-      '  gl_Position = vec4( aPosition, 1 );',
-      '}'
-    ].join( '\n' ), [
-      // fragment shader
-      'precision mediump float;',
-      'varying vec2 vPosition;',
-      'uniform vec3 uZeroColor;',
-      'uniform vec3 uPositiveColor;',
-      'uniform vec3 uNegativeColor;',
-      'uniform mat3 uMatrixInverse;', // matrix to transform from normalized-device-coordinates to the model
-      'const float kConstant = 9.0;',
-      // 'uniform vec3 charge0;', etc.
-      _.map( particleIndices, function( n ) {
-        return 'uniform vec3 charge' + n + ';';
-      } ).join( '\n' ),
-      'void main() {',
-      // homogeneous model-view transformation
-      '  vec2 modelPosition = ( uMatrixInverse * vec3( vPosition, 1 ) ).xy;',
-
-      // compute the total, not worrying about div by zero (will be covered up by charge icon)
-      '  float voltage = 0.0;',
-      _.map( particleIndices, function( n ) {
-        return '  voltage += charge' + n + '.z * kConstant / length( modelPosition - charge' + n + '.xy );';
-      } ).join( '\n' ),
-
-      // rules to color pulled from ChangesAndFieldsScreenView
-      '  if ( voltage > 0.0 ) {',
-      '    voltage = min( voltage / 40.0, 1.0 );', // clamp to [0,1]
-      '    gl_FragColor = vec4( uPositiveColor * voltage + uZeroColor * ( 1.0 - voltage ), 1.0 );',
-      '  } else {',
-      '    voltage = min( -voltage / 40.0, 1.0 );', // clamp to [0,1]
-      '    gl_FragColor = vec4( uNegativeColor * voltage + uZeroColor * ( 1.0 - voltage ), 1.0 );',
-      '  }',
-      // '  gl_FragColor = vec4( charge0.x, charge0.y, 0.0, 1.0 );',
-      '}'
-    ].join( '\n' ), {
-      attributes: [ 'aPosition' ],
-      uniforms: [ 'uMatrixInverse', 'uZeroColor', 'uPositiveColor', 'uNegativeColor' ].concat(
-        _.map( particleIndices, function( n ) { return 'charge' + n; } ) )
-    } );
-
-    // we only need one vertex buffer with the same contents for all three shaders!
-    this.vertexBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, this.vertexBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( [
-      -1, -1,
-      -1, +1,
-      +1, -1,
-      +1, +1
-    ] ), gl.STATIC_DRAW );
   }
 
-  inherit( Object, ElectricPotentialMobilePainter, {
-    paint: function( modelViewMatrix, projectionMatrix ) {
+  chargesAndFields.register( 'ElectricPotentialMobileWebGLNode', ElectricPotentialMobileWebGLNode );
+
+  class ElectricPotentialMobilePainter {
+
+    /**
+     * @param {WebGLRenderingContext} gl
+     * @param {WaveWebGLNode} node
+     */
+    constructor( gl, node ) {
+      this.gl = gl;
+      this.node = node;
+
+      this.maximumNumParticles = ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
+
+      const particleIndices = _.range( this.maximumNumParticles );
+
+      // shader for the display of the data
+      this.displayShaderProgram = new ShaderProgram( gl, [
+        // vertex shader
+        'attribute vec3 aPosition;', // vertex attribute
+        'varying vec2 vPosition;',
+        'void main() {',
+        '  vPosition = aPosition.xy;',
+        '  gl_Position = vec4( aPosition, 1 );',
+        '}'
+      ].join( '\n' ), [
+        // fragment shader
+        'precision mediump float;',
+        'varying vec2 vPosition;',
+        'uniform vec3 uZeroColor;',
+        'uniform vec3 uPositiveColor;',
+        'uniform vec3 uNegativeColor;',
+        'uniform mat3 uMatrixInverse;', // matrix to transform from normalized-device-coordinates to the model
+        'const float kConstant = 9.0;',
+        // 'uniform vec3 charge0;', etc.
+        _.map( particleIndices, function( n ) {
+          return 'uniform vec3 charge' + n + ';';
+        } ).join( '\n' ),
+        'void main() {',
+        // homogeneous model-view transformation
+        '  vec2 modelPosition = ( uMatrixInverse * vec3( vPosition, 1 ) ).xy;',
+
+        // compute the total, not worrying about div by zero (will be covered up by charge icon)
+        '  float voltage = 0.0;',
+        _.map( particleIndices, function( n ) {
+          return '  voltage += charge' + n + '.z * kConstant / length( modelPosition - charge' + n + '.xy );';
+        } ).join( '\n' ),
+
+        // rules to color pulled from ChangesAndFieldsScreenView
+        '  if ( voltage > 0.0 ) {',
+        '    voltage = min( voltage / 40.0, 1.0 );', // clamp to [0,1]
+        '    gl_FragColor = vec4( uPositiveColor * voltage + uZeroColor * ( 1.0 - voltage ), 1.0 );',
+        '  } else {',
+        '    voltage = min( -voltage / 40.0, 1.0 );', // clamp to [0,1]
+        '    gl_FragColor = vec4( uNegativeColor * voltage + uZeroColor * ( 1.0 - voltage ), 1.0 );',
+        '  }',
+        // '  gl_FragColor = vec4( charge0.x, charge0.y, 0.0, 1.0 );',
+        '}'
+      ].join( '\n' ), {
+        attributes: [ 'aPosition' ],
+        uniforms: [ 'uMatrixInverse', 'uZeroColor', 'uPositiveColor', 'uNegativeColor' ].concat(
+          _.map( particleIndices, function( n ) { return 'charge' + n; } ) )
+      } );
+
+      // we only need one vertex buffer with the same contents for all three shaders!
+      this.vertexBuffer = gl.createBuffer();
+      gl.bindBuffer( gl.ARRAY_BUFFER, this.vertexBuffer );
+      gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( [
+        -1, -1,
+        -1, +1,
+        +1, -1,
+        +1, +1
+      ] ), gl.STATIC_DRAW );
+    }
+
+    paint( modelViewMatrix, projectionMatrix ) {
       const gl = this.gl;
       const displayShaderProgram = this.displayShaderProgram;
 
@@ -194,16 +193,16 @@ define( function( require ) {
       displayShaderProgram.unuse();
 
       return WebGLNode.PAINTED_SOMETHING;
-    },
+    }
 
-    dispose: function() {
+    dispose() {
       // clears all of our resources
       this.displayShaderProgram.dispose();
       this.gl.deleteBuffer( this.vertexBuffer );
 
       this.displayShaderProgram = null;
     }
-  } );
+  }
 
   return ElectricPotentialMobileWebGLNode;
 } );

@@ -14,95 +14,90 @@ define( function( require ) {
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // Spacing in the model coordinate frame.
   const ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
-  /**
-   * @constructor
-   *
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
-   * @param {Property.<boolean>} isVisibleProperty
-   */
-  function ElectricPotentialCanvasNode( chargedParticles,
-                                        modelViewTransform,
-                                        modelBounds,
-                                        isVisibleProperty ) {
+  class ElectricPotentialCanvasNode extends CanvasNode {
 
-    CanvasNode.call( this, {
-      canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
-    } );
+    /**
+     * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
+     * @param {Property.<boolean>} isVisibleProperty
+     */
+    constructor( chargedParticles,
+                 modelViewTransform,
+                 modelBounds,
+                 isVisibleProperty ) {
 
-    this.chargeTracker = new ChargeTracker( chargedParticles );
+      super( {
+        canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
+      } );
 
-    this.modelViewTransform = modelViewTransform;
-    this.modelBounds = modelBounds;
-    this.viewBounds = this.modelViewTransform.modelToViewBounds( modelBounds );
-    this.isVisibleProperty = isVisibleProperty;
+      this.chargeTracker = new ChargeTracker( chargedParticles );
 
-    // Invalidate paint on a bunch of changes
-    const invalidateSelfListener = this.forceRepaint.bind( this );
-    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
-    isVisibleProperty.link( invalidateSelfListener ); // visibility change
-    chargedParticles.addItemAddedListener( function( particle ) {
-      particle.positionProperty.link( invalidateSelfListener );
-    } ); // particle added
-    chargedParticles.addItemRemovedListener( function( particle ) {
-      invalidateSelfListener();
-      particle.positionProperty.unlink( invalidateSelfListener );
-    } ); // particle removed
+      this.modelViewTransform = modelViewTransform;
+      this.modelBounds = modelBounds;
+      this.viewBounds = this.modelViewTransform.modelToViewBounds( modelBounds );
+      this.isVisibleProperty = isVisibleProperty;
 
-    isVisibleProperty.linkAttribute( this, 'visible' );
+      // Invalidate paint on a bunch of changes
+      const invalidateSelfListener = this.forceRepaint.bind( this );
+      ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
+      ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
+      ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
+      isVisibleProperty.link( invalidateSelfListener ); // visibility change
+      chargedParticles.addItemAddedListener( function( particle ) {
+        particle.positionProperty.link( invalidateSelfListener );
+      } ); // particle added
+      chargedParticles.addItemRemovedListener( function( particle ) {
+        invalidateSelfListener();
+        particle.positionProperty.unlink( invalidateSelfListener );
+      } ); // particle removed
 
-    this.modelPositions = []; // {Array.<Vector2>}
-    const width = modelBounds.width;
-    const height = modelBounds.height;
-    const numHorizontal = Math.ceil( width / ELECTRIC_POTENTIAL_SENSOR_SPACING );
-    const numVertical = Math.ceil( height / ELECTRIC_POTENTIAL_SENSOR_SPACING );
-    for ( let row = 0; row < numVertical; row++ ) {
-      const y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
+      isVisibleProperty.linkAttribute( this, 'visible' );
 
-      for ( let col = 0; col < numHorizontal; col++ ) {
-        const x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
+      this.modelPositions = []; // {Array.<Vector2>}
+      const width = modelBounds.width;
+      const height = modelBounds.height;
+      const numHorizontal = Math.ceil( width / ELECTRIC_POTENTIAL_SENSOR_SPACING );
+      const numVertical = Math.ceil( height / ELECTRIC_POTENTIAL_SENSOR_SPACING );
+      for ( let row = 0; row < numVertical; row++ ) {
+        const y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
 
-        this.modelPositions.push( new Vector2( x, y ) );
+        for ( let col = 0; col < numHorizontal; col++ ) {
+          const x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
+
+          this.modelPositions.push( new Vector2( x, y ) );
+        }
       }
+
+      this.electricPotentials = new Float64Array( this.modelPositions.length ); // eslint-disable-line no-undef
+
+      this.directCanvas = document.createElement( 'canvas' );
+      this.directCanvas.width = numHorizontal;
+      this.directCanvas.height = numVertical;
+      this.directContext = this.directCanvas.getContext( '2d' );
+      this.directCanvasDirty = true; // Store a dirty flag, in case there weren't charge changes detected
+
+      this.imageData = this.directContext.getImageData( 0, 0, numHorizontal, numVertical );
+      assert && assert( this.imageData.width === numHorizontal );
+      assert && assert( this.imageData.height === numVertical );
+
+      this.disposeElectricPotentialCanvasNode = function() {
+        isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
+      };
+
     }
 
-    this.electricPotentials = new Float64Array( this.modelPositions.length ); // eslint-disable-line no-undef
-
-    this.directCanvas = document.createElement( 'canvas' );
-    this.directCanvas.width = numHorizontal;
-    this.directCanvas.height = numVertical;
-    this.directContext = this.directCanvas.getContext( '2d' );
-    this.directCanvasDirty = true; // Store a dirty flag, in case there weren't charge changes detected
-
-    this.imageData = this.directContext.getImageData( 0, 0, numHorizontal, numVertical );
-    assert && assert( this.imageData.width === numHorizontal );
-    assert && assert( this.imageData.height === numVertical );
-
-    this.disposeElectricPotentialCanvasNode = function() {
-      isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
-    };
-
-  }
-
-  chargesAndFields.register( 'ElectricPotentialCanvasNode', ElectricPotentialCanvasNode );
-
-  return inherit( CanvasNode, ElectricPotentialCanvasNode, {
-
-    forceRepaint: function() {
+    forceRepaint() {
       this.invalidatePaint();
       this.directCanvasDirty = true;
-    },
+    }
 
-    updateElectricPotentials: function() {
+    updateElectricPotentials() {
       const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
       const numChanges = this.chargeTracker.queue.length;
@@ -168,14 +163,14 @@ define( function( require ) {
 
         this.directCanvasDirty = false;
       }
-    },
+    }
 
     /**
      * Function responsible for painting the canvas Node as a grid array of squares
      * @override
      * @param {CanvasRenderingContext2D} context
      */
-    paintCanvas: function( context ) {
+    paintCanvas( context ) {
       this.updateElectricPotentials();
 
       context.save();
@@ -189,11 +184,12 @@ define( function( require ) {
       context.drawImage( this.directCanvas, 0, 0 );
 
       context.restore();
-    },
-
-    dispose: function() {
-      this.disposeElectricPotentialCanvasNode();
     }
 
-  } );
+    dispose() {
+      this.disposeElectricPotentialCanvasNode();
+    }
+  }
+
+  return chargesAndFields.register( 'ElectricPotentialCanvasNode', ElectricPotentialCanvasNode );
 } );

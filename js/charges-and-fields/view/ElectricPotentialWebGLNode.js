@@ -38,7 +38,6 @@ define( function( require ) {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
   const Util = require( 'SCENERY/util/Util' );
@@ -54,51 +53,49 @@ define( function( require ) {
   const scratchInverseMatrix = new Matrix3();
   const scratchFloatArray = new Float32Array( 9 );
 
-  /**
-   *
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isVisibleProperty
-   * @constructor
-   */
-  function ElectricPotentialWebGLNode( chargedParticles,
-                                       modelViewTransform,
-                                       isVisibleProperty ) {
-    this.chargedParticles = chargedParticles;
-    this.modelViewTransform = modelViewTransform;
-    this.isVisibleProperty = isVisibleProperty;
+  class ElectricPotentialWebGLNode extends WebGLNode {
 
-    WebGLNode.call( this, ElectricPotentialPainter, {
-      layerSplit: true // ensure we're on our own layer
-    } );
+    /**
+     * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} isVisibleProperty
+     */
+    constructor( chargedParticles,
+                 modelViewTransform,
+                 isVisibleProperty ) {
 
-    // Invalidate paint on a bunch of changes
-    const invalidateSelfListener = this.invalidatePaint.bind( this );
-    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
-    isVisibleProperty.link( invalidateSelfListener ); // visibility change
-    chargedParticles.addItemAddedListener( function( particle ) {
-      particle.positionProperty.link( invalidateSelfListener );
-    } ); // particle added
-    chargedParticles.addItemRemovedListener( function( particle ) {
-      invalidateSelfListener();
-      particle.positionProperty.unlink( invalidateSelfListener );
-    } ); // particle removed
+      super( ElectricPotentialPainter, {
+        layerSplit: true // ensure we're on our own layer
+      } );
 
-    this.disposeElectricPotentialWebGLNode = function() {
-      isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
-    };
-  }
+      this.chargedParticles = chargedParticles;
+      this.modelViewTransform = modelViewTransform;
+      this.isVisibleProperty = isVisibleProperty;
 
-  chargesAndFields.register( 'ElectricPotentialWebGLNode', ElectricPotentialWebGLNode );
+      // Invalidate paint on a bunch of changes
+      const invalidateSelfListener = this.invalidatePaint.bind( this );
+      ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
+      ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
+      ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
+      isVisibleProperty.link( invalidateSelfListener ); // visibility change
+      chargedParticles.addItemAddedListener( function( particle ) {
+        particle.positionProperty.link( invalidateSelfListener );
+      } ); // particle added
+      chargedParticles.addItemRemovedListener( function( particle ) {
+        invalidateSelfListener();
+        particle.positionProperty.unlink( invalidateSelfListener );
+      } ); // particle removed
 
-  inherit( WebGLNode, ElectricPotentialWebGLNode, {}, {
+      this.disposeElectricPotentialWebGLNode = function() {
+        isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
+      };
+    }
+
     /**
      * Detection for support, because iOS Safari 8 doesn't support rendering to a float texture, AND doesn't support
      * classic detection via an extension (OES_texture_float works).
      */
-    supportsRenderingToFloatTexture: function() {
+    static supportsRenderingToFloatTexture() {
       const canvas = document.createElement( 'canvas' );
       const gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
       gl.getExtension( 'OES_texture_float' );
@@ -112,147 +109,148 @@ define( function( require ) {
       gl.bindFramebuffer( gl.FRAMEBUFFER, framebuffer );
       gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0 );
       return gl.checkFramebufferStatus( gl.FRAMEBUFFER ) === gl.FRAMEBUFFER_COMPLETE;
-    },
+    }
 
-    dispose: function() {
+    dispose() {
       this.disposeElectricPotentialWebGLNode();
     }
-  } );
-
-  /**
-   * @constructor
-   *
-   * @param {WebGLRenderingContext} gl
-   * @param {WaveWebGLNode} node
-   */
-  function ElectricPotentialPainter( gl, node ) {
-    this.gl = gl;
-    this.node = node;
-
-    this.chargeTracker = new ChargeTracker( node.chargedParticles );
-
-    // we will need this extension
-    gl.getExtension( 'OES_texture_float' );
-
-    // the framebuffer we'll be drawing into (with either of the two textures)
-    this.framebuffer = gl.createFramebuffer();
-
-    // the two textures we'll be switching between
-    this.currentTexture = gl.createTexture();
-    this.previousTexture = gl.createTexture();
-    this.sizeTexture( this.currentTexture );
-    this.sizeTexture( this.previousTexture );
-
-    // shader meant to clear a texture (renders solid black everywhere)
-    this.clearShaderProgram = new ShaderProgram( gl, [
-      // vertex shader
-      'attribute vec3 aPosition;',
-      'void main() {',
-      '  gl_Position = vec4( aPosition, 1 );',
-      '}'
-    ].join( '\n' ), [
-      // fragment shader
-      'precision mediump float;',
-      'void main() {',
-      '  gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );',
-      '}'
-    ].join( '\n' ), {
-      attributes: [ 'aPosition' ],
-      uniforms: []
-    } );
-
-    // shader for the "compute" step, that adds a texture lookup + change to the other texture
-    this.computeShaderProgram = new ShaderProgram( gl, [
-      // vertex shader
-      'attribute vec3 aPosition;', // vertex attribute
-      'varying vec2 vPosition;',
-      'void main() {',
-      '  vPosition = aPosition.xy;',
-      '  gl_Position = vec4( aPosition, 1 );',
-      '}'
-    ].join( '\n' ), [
-      // fragment shader
-      'precision mediump float;',
-      'varying vec2 vPosition;',
-      'uniform sampler2D uTexture;', // our other texture (that we read from)
-      'uniform float uCharge;',
-      'uniform vec2 uOldPosition;',
-      'uniform vec2 uNewPosition;',
-      'uniform int uType;', // see types at the top of the file
-      'uniform vec2 uCanvasSize;', // dimensions of the Canvas
-      'uniform vec2 uTextureSize;', // dimensions of the texture that covers the Canvas
-      'uniform mat3 uMatrixInverse;', // matrix to transform from normalized-device-coordinates to the model
-      'const float kConstant = 9.0;',
-      'void main() {',
-      // homogeneous model-view transformation
-      '  vec2 modelPosition = ( uMatrixInverse * vec3( vPosition, 1 ) ).xy;',
-      // look up the value before our change (vPosition NDC => [0,1] => scaled to match the part of the texture)
-      '  float oldValue = texture2D( uTexture, ( vPosition * 0.5 + 0.5 ) * uCanvasSize / uTextureSize ).x;',
-      '  float change = 0.0;',
-      // if applicable, add the particle's contribution in the new position
-      '  if ( uType == ' + TYPE_ADD + ' || uType == ' + TYPE_MOVE + ' ) {',
-      '    change += uCharge * kConstant / length( modelPosition - uNewPosition );',
-      '  }',
-      // if applicable, remove the particle's contribution in the old position
-      '  if ( uType == ' + TYPE_REMOVE + ' || uType == ' + TYPE_MOVE + ' ) {',
-      '    change -= uCharge * kConstant / length( modelPosition - uOldPosition );',
-      '  }',
-      // stuff the result in the x coordinate
-      '  gl_FragColor = vec4( oldValue + change, 0.0, 0.0, 1.0 );',
-      '}'
-    ].join( '\n' ), {
-      attributes: [ 'aPosition' ],
-      uniforms: [ 'uTexture', 'uCanvasSize', 'uTextureSize', 'uCharge', 'uOldPosition', 'uNewPosition', 'uType', 'uMatrixInverse' ]
-    } );
-
-    // shader for the "display" step, that colorizes the latest potential data
-    this.displayShaderProgram = new ShaderProgram( gl, [
-      // vertex shader
-      'attribute vec3 aPosition;', // vertex attribute
-      'varying vec2 texCoord;',
-      'void main() {',
-      '  texCoord = aPosition.xy * 0.5 + 0.5;',
-      '  gl_Position = vec4( aPosition, 1 );',
-      '}'
-    ].join( '\n' ), [
-      // fragment shader
-      'precision mediump float;',
-      'varying vec2 texCoord;',
-      'uniform sampler2D uTexture;', // the texture that contains our floating-point potential data
-      'uniform vec2 uScale;', // how to scale our texture lookup
-      'uniform vec3 uZeroColor;',
-      'uniform vec3 uPositiveColor;',
-      'uniform vec3 uNegativeColor;',
-      'void main() {',
-      '  float value = texture2D( uTexture, texCoord * uScale ).x;',
-      // rules to color pulled from ChangesAndFieldsScreenView
-      '  if ( value > 0.0 ) {',
-      '    value = min( value / 40.0, 1.0 );', // clamp to [0,1]
-      '    gl_FragColor = vec4( uPositiveColor * value + uZeroColor * ( 1.0 - value ), 1.0 );',
-      '  } else {',
-      '    value = min( -value / 40.0, 1.0 );', // clamp to [0,1]
-      '    gl_FragColor = vec4( uNegativeColor * value + uZeroColor * ( 1.0 - value ), 1.0 );',
-      '  }',
-      '}'
-    ].join( '\n' ), {
-      attributes: [ 'aPosition' ],
-      uniforms: [ 'uTexture', 'uScale', 'uZeroColor', 'uPositiveColor', 'uNegativeColor' ]
-    } );
-
-    // we only need one vertex buffer with the same contents for all three shaders!
-    this.vertexBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, this.vertexBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( [
-      -1, -1,
-      -1, +1,
-      +1, -1,
-      +1, +1
-    ] ), gl.STATIC_DRAW );
   }
 
-  inherit( Object, ElectricPotentialPainter, {
+  chargesAndFields.register( 'ElectricPotentialWebGLNode', ElectricPotentialWebGLNode );
+
+  class ElectricPotentialPainter {
+
+    /**
+     * @param {WebGLRenderingContext} gl
+     * @param {WaveWebGLNode} node
+     */
+    constructor( gl, node ) {
+      this.gl = gl;
+      this.node = node;
+
+      this.chargeTracker = new ChargeTracker( node.chargedParticles );
+
+      // we will need this extension
+      gl.getExtension( 'OES_texture_float' );
+
+      // the framebuffer we'll be drawing into (with either of the two textures)
+      this.framebuffer = gl.createFramebuffer();
+
+      // the two textures we'll be switching between
+      this.currentTexture = gl.createTexture();
+      this.previousTexture = gl.createTexture();
+      this.sizeTexture( this.currentTexture );
+      this.sizeTexture( this.previousTexture );
+
+      // shader meant to clear a texture (renders solid black everywhere)
+      this.clearShaderProgram = new ShaderProgram( gl, [
+        // vertex shader
+        'attribute vec3 aPosition;',
+        'void main() {',
+        '  gl_Position = vec4( aPosition, 1 );',
+        '}'
+      ].join( '\n' ), [
+        // fragment shader
+        'precision mediump float;',
+        'void main() {',
+        '  gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );',
+        '}'
+      ].join( '\n' ), {
+        attributes: [ 'aPosition' ],
+        uniforms: []
+      } );
+
+      // shader for the "compute" step, that adds a texture lookup + change to the other texture
+      this.computeShaderProgram = new ShaderProgram( gl, [
+        // vertex shader
+        'attribute vec3 aPosition;', // vertex attribute
+        'varying vec2 vPosition;',
+        'void main() {',
+        '  vPosition = aPosition.xy;',
+        '  gl_Position = vec4( aPosition, 1 );',
+        '}'
+      ].join( '\n' ), [
+        // fragment shader
+        'precision mediump float;',
+        'varying vec2 vPosition;',
+        'uniform sampler2D uTexture;', // our other texture (that we read from)
+        'uniform float uCharge;',
+        'uniform vec2 uOldPosition;',
+        'uniform vec2 uNewPosition;',
+        'uniform int uType;', // see types at the top of the file
+        'uniform vec2 uCanvasSize;', // dimensions of the Canvas
+        'uniform vec2 uTextureSize;', // dimensions of the texture that covers the Canvas
+        'uniform mat3 uMatrixInverse;', // matrix to transform from normalized-device-coordinates to the model
+        'const float kConstant = 9.0;',
+        'void main() {',
+        // homogeneous model-view transformation
+        '  vec2 modelPosition = ( uMatrixInverse * vec3( vPosition, 1 ) ).xy;',
+        // look up the value before our change (vPosition NDC => [0,1] => scaled to match the part of the texture)
+        '  float oldValue = texture2D( uTexture, ( vPosition * 0.5 + 0.5 ) * uCanvasSize / uTextureSize ).x;',
+        '  float change = 0.0;',
+        // if applicable, add the particle's contribution in the new position
+        '  if ( uType == ' + TYPE_ADD + ' || uType == ' + TYPE_MOVE + ' ) {',
+        '    change += uCharge * kConstant / length( modelPosition - uNewPosition );',
+        '  }',
+        // if applicable, remove the particle's contribution in the old position
+        '  if ( uType == ' + TYPE_REMOVE + ' || uType == ' + TYPE_MOVE + ' ) {',
+        '    change -= uCharge * kConstant / length( modelPosition - uOldPosition );',
+        '  }',
+        // stuff the result in the x coordinate
+        '  gl_FragColor = vec4( oldValue + change, 0.0, 0.0, 1.0 );',
+        '}'
+      ].join( '\n' ), {
+        attributes: [ 'aPosition' ],
+        uniforms: [ 'uTexture', 'uCanvasSize', 'uTextureSize', 'uCharge', 'uOldPosition', 'uNewPosition', 'uType', 'uMatrixInverse' ]
+      } );
+
+      // shader for the "display" step, that colorizes the latest potential data
+      this.displayShaderProgram = new ShaderProgram( gl, [
+        // vertex shader
+        'attribute vec3 aPosition;', // vertex attribute
+        'varying vec2 texCoord;',
+        'void main() {',
+        '  texCoord = aPosition.xy * 0.5 + 0.5;',
+        '  gl_Position = vec4( aPosition, 1 );',
+        '}'
+      ].join( '\n' ), [
+        // fragment shader
+        'precision mediump float;',
+        'varying vec2 texCoord;',
+        'uniform sampler2D uTexture;', // the texture that contains our floating-point potential data
+        'uniform vec2 uScale;', // how to scale our texture lookup
+        'uniform vec3 uZeroColor;',
+        'uniform vec3 uPositiveColor;',
+        'uniform vec3 uNegativeColor;',
+        'void main() {',
+        '  float value = texture2D( uTexture, texCoord * uScale ).x;',
+        // rules to color pulled from ChangesAndFieldsScreenView
+        '  if ( value > 0.0 ) {',
+        '    value = min( value / 40.0, 1.0 );', // clamp to [0,1]
+        '    gl_FragColor = vec4( uPositiveColor * value + uZeroColor * ( 1.0 - value ), 1.0 );',
+        '  } else {',
+        '    value = min( -value / 40.0, 1.0 );', // clamp to [0,1]
+        '    gl_FragColor = vec4( uNegativeColor * value + uZeroColor * ( 1.0 - value ), 1.0 );',
+        '  }',
+        '}'
+      ].join( '\n' ), {
+        attributes: [ 'aPosition' ],
+        uniforms: [ 'uTexture', 'uScale', 'uZeroColor', 'uPositiveColor', 'uNegativeColor' ]
+      } );
+
+      // we only need one vertex buffer with the same contents for all three shaders!
+      this.vertexBuffer = gl.createBuffer();
+      gl.bindBuffer( gl.ARRAY_BUFFER, this.vertexBuffer );
+      gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( [
+        -1, -1,
+        -1, +1,
+        +1, -1,
+        +1, +1
+      ] ), gl.STATIC_DRAW );
+    }
+
     // resizes a texture to be able to cover the canvas area, and sets drawable properties for the size
-    sizeTexture: function( texture ) {
+    sizeTexture( texture ) {
       const gl = this.gl;
       const width = gl.canvas.width;
       const height = gl.canvas.height;
@@ -268,9 +266,9 @@ define( function( require ) {
       gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
       gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, powerOf2Width, powerOf2Height, 0, gl.RGB, gl.FLOAT, null );
       gl.bindTexture( gl.TEXTURE_2D, null );
-    },
+    }
 
-    paint: function( modelViewMatrix, projectionMatrix ) {
+    paint( modelViewMatrix, projectionMatrix ) {
       const gl = this.gl;
       const clearShaderProgram = this.clearShaderProgram;
       const computeShaderProgram = this.computeShaderProgram;
@@ -400,9 +398,9 @@ define( function( require ) {
       this.chargeTracker.clear();
 
       return WebGLNode.PAINTED_SOMETHING;
-    },
+    }
 
-    dispose: function() {
+    dispose() {
       const gl = this.gl;
 
       // clears all of our resources
@@ -420,7 +418,7 @@ define( function( require ) {
 
       this.chargeTracker.dispose();
     }
-  } );
+  }
 
   return ElectricPotentialWebGLNode;
 } );

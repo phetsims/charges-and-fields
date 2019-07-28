@@ -15,7 +15,6 @@ define( function( require ) {
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
   const ElectricFieldArrowCanvas = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowCanvas' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -26,89 +25,86 @@ define( function( require ) {
 
   const scratchVector = new Vector2( 0, 0 );
 
-  /**
-   * @constructor
-   *
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
-   * @param {Property.<boolean>} isElectricFieldDirectionOnlyProperty
-   * @param {Property.<boolean>} isVisibleProperty
-   */
-  function ElectricFieldCanvasNode( chargedParticles,
-                                    modelViewTransform,
-                                    modelBounds,
-                                    isElectricFieldDirectionOnlyProperty,
-                                    isVisibleProperty ) {
+  class ElectricFieldCanvasNode extends CanvasNode {
 
-    CanvasNode.call( this, {
-      canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
-    } );
+    /**
+     * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
+     * @param {Property.<boolean>} isElectricFieldDirectionOnlyProperty
+     * @param {Property.<boolean>} isVisibleProperty
+     */
+    constructor( chargedParticles,
+                 modelViewTransform,
+                 modelBounds,
+                 isElectricFieldDirectionOnlyProperty,
+                 isVisibleProperty ) {
 
-    this.chargeTracker = new ChargeTracker( chargedParticles );
+      super( {
+        canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
+      } );
 
-    this.modelViewTransform = modelViewTransform;
-    this.modelBounds = modelBounds;
-    this.viewBounds = this.modelViewTransform.modelToViewBounds( modelBounds );
-    this.isElectricFieldDirectionOnlyProperty = isElectricFieldDirectionOnlyProperty;
-    this.isVisibleProperty = isVisibleProperty;
+      this.chargeTracker = new ChargeTracker( chargedParticles );
 
-    // Invalidate paint on a bunch of changes
-    const invalidateSelfListener = this.invalidatePaint.bind( this );
+      this.modelViewTransform = modelViewTransform;
+      this.modelBounds = modelBounds;
+      this.viewBounds = this.modelViewTransform.modelToViewBounds( modelBounds );
+      this.isElectricFieldDirectionOnlyProperty = isElectricFieldDirectionOnlyProperty;
+      this.isVisibleProperty = isVisibleProperty;
 
-    ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( invalidateSelfListener ); // color change
+      // Invalidate paint on a bunch of changes
+      const invalidateSelfListener = this.invalidatePaint.bind( this );
 
-    isVisibleProperty.link( invalidateSelfListener ); // visibility change
+      ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( invalidateSelfListener ); // color change
 
-    isElectricFieldDirectionOnlyProperty.link( invalidateSelfListener ); // visibility change
+      isVisibleProperty.link( invalidateSelfListener ); // visibility change
 
-    chargedParticles.addItemAddedListener( function( particle ) {
-      particle.positionProperty.link( invalidateSelfListener );
-    } ); // particle added
+      isElectricFieldDirectionOnlyProperty.link( invalidateSelfListener ); // visibility change
 
-    chargedParticles.addItemRemovedListener( function( particle ) {
-      invalidateSelfListener();
-      particle.positionProperty.unlink( invalidateSelfListener );
-    } ); // particle removed
+      chargedParticles.addItemAddedListener( function( particle ) {
+        particle.positionProperty.link( invalidateSelfListener );
+      } ); // particle added
 
-    isVisibleProperty.linkAttribute( this, 'visible' );
+      chargedParticles.addItemRemovedListener( function( particle ) {
+        invalidateSelfListener();
+        particle.positionProperty.unlink( invalidateSelfListener );
+      } ); // particle removed
 
-    this.modelPositions = []; // {Array.<Vector2>}
-    const width = modelBounds.width;
-    const height = modelBounds.height;
-    const numHorizontal = Math.ceil( width / ELECTRIC_FIELD_SENSOR_SPACING );
-    const numVertical = Math.ceil( height / ELECTRIC_FIELD_SENSOR_SPACING );
-    for ( let row = 0; row < numVertical; row++ ) {
-      const y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
+      isVisibleProperty.linkAttribute( this, 'visible' );
 
-      for ( let col = 0; col < numHorizontal; col++ ) {
-        const x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
+      this.modelPositions = []; // {Array.<Vector2>}
+      const width = modelBounds.width;
+      const height = modelBounds.height;
+      const numHorizontal = Math.ceil( width / ELECTRIC_FIELD_SENSOR_SPACING );
+      const numVertical = Math.ceil( height / ELECTRIC_FIELD_SENSOR_SPACING );
+      for ( let row = 0; row < numVertical; row++ ) {
+        const y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
 
-        this.modelPositions.push( new Vector2( x, y ) );
+        for ( let col = 0; col < numHorizontal; col++ ) {
+          const x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
+
+          this.modelPositions.push( new Vector2( x, y ) );
+        }
       }
+
+      // {Array.<Vector2>}
+      this.viewPositions = this.modelPositions.map( function( position ) {
+        return modelViewTransform.modelToViewPosition( position );
+      } );
+
+      // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
+      this.electricField = this.modelPositions.map( function() {
+        return new Vector2( 0, 0 );
+      } );
+
+      this.disposeElectricFieldCanvasNode = function() {
+        isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
+        isElectricFieldDirectionOnlyProperty.unlink( invalidateSelfListener ); // visibility change
+      };
     }
 
-    // {Array.<Vector2>}
-    this.viewPositions = this.modelPositions.map( function( position ) {
-      return modelViewTransform.modelToViewPosition( position );
-    } );
 
-    // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
-    this.electricField = this.modelPositions.map( function() {
-      return new Vector2( 0, 0 );
-    } );
-
-    this.disposeElectricFieldCanvasNode = function() {
-      isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
-      isElectricFieldDirectionOnlyProperty.unlink( invalidateSelfListener ); // visibility change
-    };
-  }
-
-  chargesAndFields.register( 'ElectricFieldCanvasNode', ElectricFieldCanvasNode );
-
-  return inherit( CanvasNode, ElectricFieldCanvasNode, {
-
-    updateElectricPotentials: function() {
+    updateElectricPotentials() {
       const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
       const numChanges = this.chargeTracker.queue.length;
@@ -144,14 +140,14 @@ define( function( require ) {
       }
 
       this.chargeTracker.clear();
-    },
+    }
 
     /**
      * Function responsible for painting electric field arrows
      * @override
      * @param {CanvasRenderingContext2D} context
      */
-    paintCanvas: function( context ) {
+    paintCanvas( context ) {
       this.updateElectricPotentials();
 
       const isDirectionOnly = this.isElectricFieldDirectionOnlyProperty.get();
@@ -175,11 +171,13 @@ define( function( require ) {
 
         context.restore();
       }
-    },
+    }
 
-    dispose: function() {
+    dispose() {
       this.disposeElectricFieldCanvasNode();
     }
-  } );
+  }
+
+  return chargesAndFields.register( 'ElectricFieldCanvasNode', ElectricFieldCanvasNode );
 } );
 

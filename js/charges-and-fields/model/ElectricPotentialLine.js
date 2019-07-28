@@ -12,7 +12,6 @@ define( function( require ) {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const dot = require( 'DOT/dot' );
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -24,50 +23,47 @@ define( function( require ) {
   const MAX_EPSILON_DISTANCE = 0.05; // {number} maximum step length along electricPotential in meters
   const MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
 
-  /**
-   *
-   * @param {Vector2} position
-   * @param {Bounds2} bounds - if an equipotential line is not closed, it will terminate outside these bounds
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - array of active ChargedParticles
-   * @param {Function} getElectricPotential - function that returns a number
-   * @param {Function} getElectricField - function that returns a vector
-   * @param {Property.<boolean>} isPlayAreaChargedProperty
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function ElectricPotentialLine( position,
-                                  bounds,
-                                  chargedParticles,
-                                  getElectricPotential,
-                                  getElectricField,
-                                  isPlayAreaChargedProperty,
-                                  tandem ) {
+  class ElectricPotentialLine {
 
-    this.getElectricPotential = getElectricPotential; // @private static
-    this.getElectricField = getElectricField; // @private static
-    this.chargedParticles = chargedParticles; // @private static
-    this.bounds = bounds; // @private static
-    this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private static
+    /**
+     *
+     * @param {Vector2} position
+     * @param {Bounds2} bounds - if an equipotential line is not closed, it will terminate outside these bounds
+     * @param {ObservableArray.<ChargedParticle>} chargedParticles - array of active ChargedParticles
+     * @param {Function} getElectricPotential - function that returns a number
+     * @param {Function} getElectricField - function that returns a vector
+     * @param {Property.<boolean>} isPlayAreaChargedProperty
+     * @param {Tandem} tandem
+     */
+    constructor( position,
+                 bounds,
+                 chargedParticles,
+                 getElectricPotential,
+                 getElectricField,
+                 isPlayAreaChargedProperty,
+                 tandem ) {
 
-    this.position = position; // {Vector2} @public read-only static
-    this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
+      this.getElectricPotential = getElectricPotential; // @private static
+      this.getElectricField = getElectricField; // @private static
+      this.chargedParticles = chargedParticles; // @private static
+      this.bounds = bounds; // @private static
+      this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private static
 
-    this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
-    this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
-    this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
+      this.position = position; // {Vector2} @public read-only static
+      this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
 
-    // @public (read-only) - used to identify tandems for the corresponding views
-    this.electricPotentialLineTandem = tandem;
+      this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
+      this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
+      this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
 
-    PhetioObject.call( this, {
-      tandem: tandem,
-      phetioType: ElectricPotentialLineIO
-    } );
-  }
+      // @public (read-only) - used to identify tandems for the corresponding views
+      this.electricPotentialLineTandem = tandem;
 
-  chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
-
-  return inherit( PhetioObject, ElectricPotentialLine, {
+      PhetioObject.call( this, {
+        tandem: tandem,
+        phetioType: ElectricPotentialLineIO
+      } );
+    }
 
     /**
      * Given an (initial) position, find a position with the targeted electric potential within a distance 'deltaDistance'
@@ -83,7 +79,7 @@ define( function( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithElectricPotential: function( position, electricPotential, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithElectricPotential( position, electricPotential, deltaDistance ) {
       /*
        * General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
        * to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
@@ -111,7 +107,7 @@ define( function( require ) {
       else {
         return midwayPosition.add( deltaPosition ); // {Vector2} finalPosition
       }
-    },
+    }
 
     /**
      * Given an (initial) position, find a position with the same (ideally) electric potential within a distance deltaDistance
@@ -125,7 +121,7 @@ define( function( require ) {
      * @param {number} deltaDistance - a distance in meters, can be positive or negative
      * @returns {Vector2} finalPosition
      */
-    getNextPositionAlongEquipotentialWithRK4: function( position, deltaDistance ) {
+    getNextPositionAlongEquipotentialWithRK4( position, deltaDistance ) {
       const initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       const k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
@@ -138,7 +134,7 @@ define( function( require ) {
           y: deltaDistance * ( k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y ) / 6
         };
       return position.plus( deltaDisplacement ); // {Vector2} finalPosition
-    },
+    }
 
     /**
      * This method returns an array of points {Vector2} with the same electric potential as the electric potential
@@ -151,7 +147,7 @@ define( function( require ) {
      * @param {Vector2} position - initial position
      * @returns {Array.<Vector2>} a series of positions with the same electric Potential as the initial position
      */
-    getEquipotentialPositionArray: function( position ) {
+    getEquipotentialPositionArray( position ) {
 
       /*
        * General Idea of this algorithm
@@ -253,7 +249,7 @@ define( function( require ) {
 
       // let's return the entire array, i.e. the reversed clockwise array, the initial position, and the counterclockwise array
       return reversedArray.concat( position, counterClockwisePositionArray );
-    },
+    }
 
     /**
      * Function that prunes points from a positionArray. The goal of this method is to
@@ -267,7 +263,7 @@ define( function( require ) {
      * @param {Array.<Vector2>} positionArray
      * @returns {Array.<Vector2>}
      */
-    getPrunedPositionArray: function( positionArray ) {
+    getPrunedPositionArray( positionArray ) {
       const length = positionArray.length;
       const prunedPositionArray = []; // {Array.<Vector2>}
 
@@ -293,7 +289,7 @@ define( function( require ) {
       // push last data point
       prunedPositionArray.push( positionArray[ length - 1 ] );
       return prunedPositionArray;
-    },
+    }
 
     /**
      * Function that returns the smallest distance between the midwayPoint and
@@ -305,11 +301,11 @@ define( function( require ) {
      * @param {Vector2} finalPoint
      * @returns {number}
      */
-    getDistanceFromLine: function( initialPoint, midwayPoint, finalPoint ) {
+    getDistanceFromLine( initialPoint, midwayPoint, finalPoint ) {
       const midwayDisplacement = midwayPoint.minus( initialPoint );
       const finalDisplacement = finalPoint.minus( initialPoint );
       return Math.abs( midwayDisplacement.crossScalar( finalDisplacement.normalized() ) );
-    },
+    }
 
     /**
      * Function that returns the an updated epsilonDistance based on the three last points
@@ -320,7 +316,7 @@ define( function( require ) {
      * @param {boolean} isClockwise
      * @returns {number}
      */
-    getAdaptativeEpsilonDistance: function( epsilonDistance, positionArray, isClockwise ) {
+    getAdaptativeEpsilonDistance( epsilonDistance, positionArray, isClockwise ) {
       const deflectionAngle = this.getRotationAngle( positionArray ); // non negative number in radians
       if ( deflectionAngle === 0 ) {
 
@@ -337,7 +333,7 @@ define( function( require ) {
       epsilonDistance = dot.clamp( Math.abs( epsilonDistance ), MIN_EPSILON_DISTANCE, MAX_EPSILON_DISTANCE );
       epsilonDistance = isClockwise ? epsilonDistance : -epsilonDistance;
       return epsilonDistance;
-    },
+    }
 
     /**
      * Function that returns the rotation angle between the three last points of a position array
@@ -346,24 +342,24 @@ define( function( require ) {
      * @param {Array.<Vector2>} positionArray
      * @returns {number}
      */
-    getRotationAngle: function( positionArray ) {
+    getRotationAngle( positionArray ) {
       assert && assert( positionArray.length > 2, 'the positionArray must contain at least three elements' );
       const length = positionArray.length;
       const newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
       const oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
       return newDeltaPosition.angleBetween( oldDeltaPosition ); // a positive number
-    },
+    }
 
     /**
      * Returns the Shape of the electric potential line
      * @public read-only
      * @returns {Shape}
      */
-    getShape: function() {
+    getShape() {
       const shape = new Shape();
       const prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
       return this.positionArrayToStraightLine( shape, prunedPositionArray, { isClosedLineSegments: this.isLineClosed } );
-    },
+    }
 
     /**
      * Function that returns an appended shape with lines between points.
@@ -373,7 +369,7 @@ define( function( require ) {
      * @param {Object} [options]
      * @returns {Shape}
      */
-    positionArrayToStraightLine: function( shape, positionArray, options ) {
+    positionArrayToStraightLine( shape, positionArray, options ) {
       options = _.extend( {
         // is the resulting shape forming a close path
         isClosedLineSegments: false
@@ -388,6 +384,7 @@ define( function( require ) {
       }
       return shape;
     }
+  }
 
-  } );
+  return chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
 } );

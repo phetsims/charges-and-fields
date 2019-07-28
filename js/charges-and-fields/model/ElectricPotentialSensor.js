@@ -5,64 +5,64 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-
 define( function( require ) {
   'use strict';
 
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
 
-  /**
-   * @constructor
-   *
-   * @param {Function} computeElectricPotential - function( Vector2 ) : number, computes electric potential at the given
-   *                                              point in the model.
-   * @param {Tandem} tandem
-   */
-  function ElectricPotentialSensor( computeElectricPotential, tandem ) {
+  class ElectricPotentialSensor {
 
-    // @public
-    this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
-      tandem: tandem.createTandem( 'positionProperty' )
-    } );
+    /**
+     * @param {Function} computeElectricPotential - function( Vector2 ) : number, computes electric potential at the given
+     *                                              point in the model.
+     * @param {Tandem} tandem
+     */
+    constructor( computeElectricPotential, tandem ) {
 
-    // @public
-    this.electricPotentialProperty = new NumberProperty( 0, {
-      tandem: tandem.createTandem( 'electricPotentialProperty' ),
-      units: 'volts',
-      phetioReadOnly: true
-    } );
+      // @public
+      this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
+        tandem: tandem.createTandem( 'positionProperty' )
+      } );
 
-    // @public - Whether the sensor is out in the play area (false when in the toolbox)
-    this.isActiveProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isActiveProperty' )
-    } );
+      // @public
+      this.electricPotentialProperty = new NumberProperty( 0, {
+        tandem: tandem.createTandem( 'electricPotentialProperty' ),
+        units: 'volts',
+        phetioReadOnly: true
+      } );
 
-    this.computeElectricPotential = computeElectricPotential;
+      // @public - Whether the sensor is out in the play area (false when in the toolbox)
+      this.isActiveProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'isActiveProperty' )
+      } );
 
-    this.positionProperty.link( this.update.bind( this ) );
-  }
+      this.computeElectricPotential = computeElectricPotential;
 
-  chargesAndFields.register( 'ElectricPotentialSensor', ElectricPotentialSensor );
+      this.positionProperty.link( this.update.bind( this ) );
+    }
 
-  return inherit( Object, ElectricPotentialSensor, {
     /**
      * Should be called to update the value of this sensor.
      * @public
      */
-    update: function() {
+    update() {
       this.electricPotentialProperty.set( this.computeElectricPotential( this.positionProperty.get() ) );
-    },
+    }
 
-    reset: function() {
+    /**
+     * @public
+     */
+    reset() {
       this.positionProperty.reset();
       this.electricPotentialProperty.reset();
       this.isActiveProperty.reset();
     }
-  } );
+  }
+
+  return chargesAndFields.register( 'ElectricPotentialSensor', ElectricPotentialSensor );
 } );

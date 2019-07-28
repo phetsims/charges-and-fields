@@ -16,7 +16,6 @@ define( function( require ) {
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -32,225 +31,225 @@ define( function( require ) {
   // constants
   const IS_DEBUG = false; // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
 
-  /**
-   * Function that generates a voltage label for the electricPotential line
-   * @param {ElectricPotentialLine} electricPotentialLine
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function VoltageLabel( electricPotentialLine, modelViewTransform, tandem ) {
+  class VoltageLabel extends Node {
 
-    Node.call( this, { cursor: 'pointer', tandem: tandem } );
+    /**
+     * Function that generates a voltage label for the electricPotential line
+     * @param {ElectricPotentialLine} electricPotentialLine
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Tandem} tandem
+     */
+    constructor( electricPotentialLine, modelViewTransform, tandem ) {
 
-    const electricPotential = electricPotentialLine.electricPotential;
-    const position = electricPotentialLine.position;
+      super( { cursor: 'pointer', tandem: tandem } );
 
-    const self = this;
-    const locationProperty = new Vector2Property( position, {
-      tandem: tandem.createTandem( 'locationProperty' ),
-      useDeepEquality: true
-    } );
+      const electricPotential = electricPotentialLine.electricPotential;
+      const position = electricPotentialLine.position;
 
-    const movableDragHandler = new DragListener( {
-      applyOffset: false,
-      locationProperty: locationProperty,
-      tandem: tandem.createTandem( 'dragListener' ),
-      transform: modelViewTransform,
-      start: function( event ) {
-        // Move the label to the front of this layer when grabbed by the user.
-        self.moveToFront();
-      }
-    } );
-    this.addInputListener( movableDragHandler );
+      const self = this;
+      const locationProperty = new Vector2Property( position, {
+        tandem: tandem.createTandem( 'locationProperty' ),
+        useDeepEquality: true
+      } );
 
-    // a smaller electric potential should have more precision
-    const electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
-                                         Util.toFixed( electricPotential, 2 ) :
-                                         Util.toFixed( electricPotential, 1 );
-
-    // Create the voltage label for the electricPotential line
-    const voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
-    const voltageLabelText = new Text( voltageLabelString, {
-      font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
-      center: modelViewTransform.modelToViewPosition( position ),
-      fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty,
-      tandem: tandem.createTandem( 'voltageLabelText' )
-    } );
-
-    // Create a background rectangle for the voltage label
-    const backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
-      center: modelViewTransform.modelToViewPosition( position ),
-      fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
-      tandem: tandem.createTandem( 'backgroundRectangle' )
-    } );
-
-    this.addChild( backgroundRectangle ); // must go first
-    this.addChild( voltageLabelText );
-
-    // finds the closest location on positionArray to the position of the cursor
-    const locationFunction = function( cursorLocation ) {
-      let smallestDistanceSquared = Number.POSITIVE_INFINITY;
-      let closestLocation; // {Vector2}
-      electricPotentialLine.positionArray.forEach( function( position ) {
-        const distanceSquared = position.distanceSquared( cursorLocation );
-        if ( distanceSquared < smallestDistanceSquared ) {
-          smallestDistanceSquared = distanceSquared;
-          closestLocation = position;
+      const movableDragHandler = new DragListener( {
+        applyOffset: false,
+        locationProperty: locationProperty,
+        tandem: tandem.createTandem( 'dragListener' ),
+        transform: modelViewTransform,
+        start: function( event ) {
+          // Move the label to the front of this layer when grabbed by the user.
+          self.moveToFront();
         }
       } );
-      self.center = modelViewTransform.modelToViewPosition( closestLocation );
-    };
+      this.addInputListener( movableDragHandler );
 
-    locationProperty.link( locationFunction );
+      // a smaller electric potential should have more precision
+      const electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
+                                           Util.toFixed( electricPotential, 2 ) :
+                                           Util.toFixed( electricPotential, 1 );
 
-    // create a dispose function to unlink the color functions
-    this.disposeVoltageLabel = function() {
-      locationProperty.unlink( locationFunction );
-      locationProperty.dispose();
-      movableDragHandler.dispose();
-      voltageLabelText.dispose();
-      backgroundRectangle.dispose();
-    };
-  }
+      // Create the voltage label for the electricPotential line
+      const voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
+      const voltageLabelText = new Text( voltageLabelString, {
+        font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
+        center: modelViewTransform.modelToViewPosition( position ),
+        fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty,
+        tandem: tandem.createTandem( 'voltageLabelText' )
+      } );
 
-  inherit( Node, VoltageLabel, {
-    dispose: function() {
+      // Create a background rectangle for the voltage label
+      const backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
+        center: modelViewTransform.modelToViewPosition( position ),
+        fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
+        tandem: tandem.createTandem( 'backgroundRectangle' )
+      } );
+
+      this.addChild( backgroundRectangle ); // must go first
+      this.addChild( voltageLabelText );
+
+      // finds the closest location on positionArray to the position of the cursor
+      const locationFunction = function( cursorLocation ) {
+        let smallestDistanceSquared = Number.POSITIVE_INFINITY;
+        let closestLocation; // {Vector2}
+        electricPotentialLine.positionArray.forEach( function( position ) {
+          const distanceSquared = position.distanceSquared( cursorLocation );
+          if ( distanceSquared < smallestDistanceSquared ) {
+            smallestDistanceSquared = distanceSquared;
+            closestLocation = position;
+          }
+        } );
+        self.center = modelViewTransform.modelToViewPosition( closestLocation );
+      };
+
+      locationProperty.link( locationFunction );
+
+      // create a dispose function to unlink the color functions
+      this.disposeVoltageLabel = function() {
+        locationProperty.unlink( locationFunction );
+        locationProperty.dispose();
+        movableDragHandler.dispose();
+        voltageLabelText.dispose();
+        backgroundRectangle.dispose();
+      };
+    }
+
+    dispose() {
       this.disposeVoltageLabel();
       Node.prototype.dispose.call( this );
     }
-  } );
-
-  /**
-   * Function that generates a scenery path from the shape of the electricPotential line
-   * @param {Shape} electricPotentialLineShape
-   * @param {ModelViewTransform2} modelViewTransform
-   * @constructor
-   */
-  function ElectricPotentialLinePath( electricPotentialLineShape, modelViewTransform ) {
-    Path.call( this, modelViewTransform.modelToViewShape( electricPotentialLineShape ), {
-      stroke: ChargesAndFieldsColorProfile.electricPotentialLineProperty
-    } );
   }
 
-  inherit( Path, ElectricPotentialLinePath );
+  class ElectricPotentialLinePath extends Path {
 
-  /**
-   * Function that generates an array of Circles with their centers determined by the position array
-   * @param {Array.<Vector2>} positionArray
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options]
-   * @constructor
-   */
-  function Circles( positionArray, modelViewTransform, options ) {
-
-    const self = this;
-
-    Node.call( this );
-
-    options = _.extend( {
-      radius: 2
-    }, options );
-
-    // create and add all the circles
-    positionArray.forEach( function( position ) {
-      const circle = new Circle( options.radius, options );
-      circle.center = modelViewTransform.modelToViewPosition( position );
-      self.addChild( circle );
-    } );
+    /**
+     * Function that generates a scenery path from the shape of the electricPotential line
+     * @param {Shape} electricPotentialLineShape
+     * @param {ModelViewTransform2} modelViewTransform
+     */
+    constructor( electricPotentialLineShape, modelViewTransform ) {
+      super( modelViewTransform.modelToViewShape( electricPotentialLineShape ), {
+        stroke: ChargesAndFieldsColorProfile.electricPotentialLineProperty
+      } );
+    }
   }
 
-  inherit( Node, Circles );
+  class Circles extends Node {
+
+    /**
+     * Function that generates an array of Circles with their centers determined by the position array
+     * @param {Array.<Vector2>} positionArray
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Object} [options]
+     */
+    constructor( positionArray, modelViewTransform, options ) {
+
+      super();
+
+      options = _.extend( {
+        radius: 2
+      }, options );
+
+      // create and add all the circles
+      positionArray.forEach( function( position ) {
+        const circle = new Circle( options.radius, options );
+        circle.center = modelViewTransform.modelToViewPosition( position );
+        self.addChild( circle );
+      } );
+    }
+
+  }
 
   /**
    * Scenery node that is responsible for displaying the electric potential lines
-   *
-   * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLines - array of models of electricPotentialLine
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
-   * @param {Tandem} tandem
-   * @constructor
    */
-  function ElectricPotentialLinesNode( electricPotentialLines, modelViewTransform, areValuesVisibleProperty, tandem ) {
+  class ElectricPotentialLinesNode extends Node {
 
-    // call the super constructor
-    Node.call( this, { tandem: tandem } );
+    /**
+     * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLines - array of models of electricPotentialLine
+     * @param {ModelViewTransform2} modelViewTransform
+     * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
+     * @param {Tandem} tandem
+     */
+    constructor( electricPotentialLines, modelViewTransform, areValuesVisibleProperty, tandem ) {
 
-    // Create and add the parent node for all the lines (paths)
-    const pathsNode = new Node();
-    this.addChild( pathsNode );
+      // call the super constructor
+      super( { tandem: tandem } );
 
-    // Create and add the parent node for the circles (used in DEBUG mode)
-    let circlesNode;
-    if ( IS_DEBUG ) {
-      circlesNode = new Node();
-      this.addChild( circlesNode );
-    }
+      // Create and add the parent node for all the lines (paths)
+      const pathsNode = new Node();
+      this.addChild( pathsNode );
 
-    // Create and add the parent node for the label nodes
-    const labelsNode = new Node();
-    this.addChild( labelsNode );
-
-    // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-    electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
-
-      const electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
-      pathsNode.addChild( electricPotentialLinePath );
-
-      // TODO: Use Group
-      const voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel~' + electricPotentialLine.electricPotentialLineTandem.name ) );
-      labelsNode.addChild( voltageLabel );
-
+      // Create and add the parent node for the circles (used in DEBUG mode)
+      let circlesNode;
       if ( IS_DEBUG ) {
-
-        // create all the circles corresponding to the positions calculated in the model
-        const electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, {
-          fill: 'pink',
-          radius: 1
-        } );
-
-        // create all the circles corresponding to the positions used to create the shape of the electric potential line
-        const electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
-
-        // no translatable strings, for debug only
-        const text = new Text( 'model=' + electricPotentialLine.positionArray.length +
-                               '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
-          center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
-          fill: 'green',
-          font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
-        } );
-
-        // add the circles and text
-        circlesNode.addChild( electricPotentialModelCircles );
-        circlesNode.addChild( electricPotentialViewCircles );
-        circlesNode.addChild( text );
+        circlesNode = new Node();
+        this.addChild( circlesNode );
       }
 
-      electricPotentialLines.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
-        if ( removedElectricPotentialLine === electricPotentialLine ) {
-          pathsNode.removeChild( electricPotentialLinePath );
-          labelsNode.removeChild( voltageLabel );
-          if ( IS_DEBUG ) {
-            circlesNode.removeAllChildren();
-          }
+      // Create and add the parent node for the label nodes
+      const labelsNode = new Node();
+      this.addChild( labelsNode );
 
-          // dispose of the link for garbage collection
-          electricPotentialLinePath.dispose();
-          voltageLabel.dispose();
+      // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
+      electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
 
-          electricPotentialLines.removeItemRemovedListener( removalListener );
+        const electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
+        pathsNode.addChild( electricPotentialLinePath );
+
+        // TODO: Use Group
+        const voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel~' + electricPotentialLine.electricPotentialLineTandem.name ) );
+        labelsNode.addChild( voltageLabel );
+
+        if ( IS_DEBUG ) {
+
+          // create all the circles corresponding to the positions calculated in the model
+          const electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, {
+            fill: 'pink',
+            radius: 1
+          } );
+
+          // create all the circles corresponding to the positions used to create the shape of the electric potential line
+          const electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
+
+          // no translatable strings, for debug only
+          const text = new Text( 'model=' + electricPotentialLine.positionArray.length +
+                                 '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
+            center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
+            fill: 'green',
+            font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
+          } );
+
+          // add the circles and text
+          circlesNode.addChild( electricPotentialModelCircles );
+          circlesNode.addChild( electricPotentialViewCircles );
+          circlesNode.addChild( text );
         }
-      } ); // end of addItemRemovedListener
 
-    } ); // end of addItemAddedListener
+        electricPotentialLines.addItemRemovedListener( function removalListener( removedElectricPotentialLine ) {
+          if ( removedElectricPotentialLine === electricPotentialLine ) {
+            pathsNode.removeChild( electricPotentialLinePath );
+            labelsNode.removeChild( voltageLabel );
+            if ( IS_DEBUG ) {
+              circlesNode.removeAllChildren();
+            }
 
-    // Control the visibility of the value (voltage) labels
-    // no need to unlink present for the lifetime of the sim
-    areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
+            // dispose of the link for garbage collection
+            electricPotentialLinePath.dispose();
+            voltageLabel.dispose();
+
+            electricPotentialLines.removeItemRemovedListener( removalListener );
+          }
+        } ); // end of addItemRemovedListener
+
+      } ); // end of addItemAddedListener
+
+      // Control the visibility of the value (voltage) labels
+      // no need to unlink present for the lifetime of the sim
+      areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
+    }
   }
 
-  chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );
-
-  return inherit( Node, ElectricPotentialLinesNode );
+  return chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );
 } );
 
