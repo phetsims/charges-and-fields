@@ -10,10 +10,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  const phetioInherit = require( 'TANDEM/phetioInherit' );
 
   /**
    * @param {ModelElement} modelElement

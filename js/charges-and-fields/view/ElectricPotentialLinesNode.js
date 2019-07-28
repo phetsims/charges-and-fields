@@ -11,26 +11,26 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var DragListener = require( 'SCENERY/listeners/DragListener' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
-  var Vector2Property = require( 'DOT/Vector2Property' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   // strings
-  var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
-  var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
+  const pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+  const voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // constants
-  var IS_DEBUG = false; // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
+  const IS_DEBUG = false; // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
 
   /**
    * Function that generates a voltage label for the electricPotential line
@@ -43,16 +43,16 @@ define( function( require ) {
 
     Node.call( this, { cursor: 'pointer', tandem: tandem } );
 
-    var electricPotential = electricPotentialLine.electricPotential;
-    var position = electricPotentialLine.position;
+    const electricPotential = electricPotentialLine.electricPotential;
+    const position = electricPotentialLine.position;
 
-    var self = this;
-    var locationProperty = new Vector2Property( position, {
+    const self = this;
+    const locationProperty = new Vector2Property( position, {
       tandem: tandem.createTandem( 'locationProperty' ),
       useDeepEquality: true
     } );
 
-    var movableDragHandler = new DragListener( {
+    const movableDragHandler = new DragListener( {
       applyOffset: false,
       locationProperty: locationProperty,
       tandem: tandem.createTandem( 'dragListener' ),
@@ -65,13 +65,13 @@ define( function( require ) {
     this.addInputListener( movableDragHandler );
 
     // a smaller electric potential should have more precision
-    var electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
-                                       Util.toFixed( electricPotential, 2 ) :
-                                       Util.toFixed( electricPotential, 1 );
+    const electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
+                                         Util.toFixed( electricPotential, 2 ) :
+                                         Util.toFixed( electricPotential, 1 );
 
     // Create the voltage label for the electricPotential line
-    var voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
-    var voltageLabelText = new Text( voltageLabelString, {
+    const voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );
+    const voltageLabelText = new Text( voltageLabelString, {
       font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.electricPotentialLineProperty,
@@ -79,7 +79,7 @@ define( function( require ) {
     } );
 
     // Create a background rectangle for the voltage label
-    var backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
+    const backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
       center: modelViewTransform.modelToViewPosition( position ),
       fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
       tandem: tandem.createTandem( 'backgroundRectangle' )
@@ -89,11 +89,11 @@ define( function( require ) {
     this.addChild( voltageLabelText );
 
     // finds the closest location on positionArray to the position of the cursor
-    var locationFunction = function( cursorLocation ) {
-      var smallestDistanceSquared = Number.POSITIVE_INFINITY;
-      var closestLocation; // {Vector2}
+    const locationFunction = function( cursorLocation ) {
+      const smallestDistanceSquared = Number.POSITIVE_INFINITY;
+      let closestLocation; // {Vector2}
       electricPotentialLine.positionArray.forEach( function( position ) {
-        var distanceSquared = position.distanceSquared( cursorLocation );
+        const distanceSquared = position.distanceSquared( cursorLocation );
         if ( distanceSquared < smallestDistanceSquared ) {
           smallestDistanceSquared = distanceSquared;
           closestLocation = position;
@@ -144,7 +144,7 @@ define( function( require ) {
    */
   function Circles( positionArray, modelViewTransform, options ) {
 
-    var self = this;
+    const self = this;
 
     Node.call( this );
 
@@ -154,7 +154,7 @@ define( function( require ) {
 
     // create and add all the circles
     positionArray.forEach( function( position ) {
-      var circle = new Circle( options.radius, options );
+      const circle = new Circle( options.radius, options );
       circle.center = modelViewTransform.modelToViewPosition( position );
       self.addChild( circle );
     } );
@@ -177,43 +177,43 @@ define( function( require ) {
     Node.call( this, { tandem: tandem } );
 
     // Create and add the parent node for all the lines (paths)
-    var pathsNode = new Node();
+    const pathsNode = new Node();
     this.addChild( pathsNode );
 
     // Create and add the parent node for the circles (used in DEBUG mode)
     if ( IS_DEBUG ) {
-      var circlesNode = new Node();
+      const circlesNode = new Node();
       this.addChild( circlesNode );
     }
 
     // Create and add the parent node for the label nodes
-    var labelsNode = new Node();
+    const labelsNode = new Node();
     this.addChild( labelsNode );
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
     electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
 
-      var electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
+      const electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
       pathsNode.addChild( electricPotentialLinePath );
 
       // TODO: Use Group
-      var voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel~' + electricPotentialLine.electricPotentialLineTandem.name ) );
+      const voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel~' + electricPotentialLine.electricPotentialLineTandem.name ) );
       labelsNode.addChild( voltageLabel );
 
       if ( IS_DEBUG ) {
 
         // create all the circles corresponding to the positions calculated in the model
-        var electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, {
+        const electricPotentialModelCircles = new Circles( electricPotentialLine.positionArray, modelViewTransform, {
           fill: 'pink',
           radius: 1
         } );
 
         // create all the circles corresponding to the positions used to create the shape of the electric potential line
-        var electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
+        const electricPotentialViewCircles = new Circles( electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ), modelViewTransform, { fill: 'orange' } );
 
         // no translatable strings, for debug only
-        var text = new Text( 'model=' + electricPotentialLine.positionArray.length +
-                             '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
+        const text = new Text( 'model=' + electricPotentialLine.positionArray.length +
+                               '    view=' + electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length, {
           center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
           fill: 'green',
           font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT

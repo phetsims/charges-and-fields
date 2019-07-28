@@ -10,11 +10,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
-  var validate = require( 'AXON/validate' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
+  const phetioInherit = require( 'TANDEM/phetioInherit' );
+  const Vector2IO = require( 'DOT/Vector2IO' );
+  const validate = require( 'AXON/validate' );
 
   /**
    *

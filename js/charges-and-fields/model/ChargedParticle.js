@@ -6,16 +6,15 @@
  *
  * @author Martin Veillette (Berea College)
  */
-
 define( function( require ) {
   'use strict';
 
   // modules
-  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {number} charge - (positive=+1 or negative=-1)

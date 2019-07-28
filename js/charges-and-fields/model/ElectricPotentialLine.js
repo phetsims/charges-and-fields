@@ -9,20 +9,20 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var dot = require( 'DOT/dot' );
-  var ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Shape = require( 'KITE/Shape' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const dot = require( 'DOT/dot' );
+  const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Shape = require( 'KITE/Shape' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
   // see getEquipotentialPositionArray to find how these are used
-  var MAX_STEPS = 5000; // {number} integer, the maximum number of steps in the search for a closed path
-  var MIN_STEPS = 1000; // {number} integer, the minimum number of steps it will do while searching for a closed path
-  var MAX_EPSILON_DISTANCE = 0.05; // {number} maximum step length along electricPotential in meters
-  var MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
+  const MAX_STEPS = 5000; // {number} integer, the maximum number of steps in the search for a closed path
+  const MIN_STEPS = 1000; // {number} integer, the minimum number of steps it will do while searching for a closed path
+  const MAX_EPSILON_DISTANCE = 0.05; // {number} maximum step length along electricPotential in meters
+  const MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
 
   /**
    *
@@ -92,15 +92,15 @@ define( function( require ) {
        * and the electric potential at the intermediate point is found. By knowing the electric field at the intermediate point
        * the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
        */
-      var initialElectricField = this.getElectricField( position ); // {Vector2}
+      const initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
-      var electricPotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var midwayPosition = ( electricPotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
-      var midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
+      const electricPotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const midwayPosition = ( electricPotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
+      const midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
       assert && assert( midwayElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
-      var midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
-      var deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
-      var deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared ); // {Vector2}
+      const midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
+      const deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
+      const deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared ); // {Vector2}
       assert && assert( deltaPosition.magnitude < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
 
       // if 'the second order correction is larger than the first'
@@ -126,13 +126,13 @@ define( function( require ) {
      * @returns {Vector2} finalPosition
      */
     getNextPositionAlongEquipotentialWithRK4: function( position, deltaDistance ) {
-      var initialElectricField = this.getElectricField( position ); // {Vector2}
+      const initialElectricField = this.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
-      var k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var k2Vector = this.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var k3Vector = this.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var k4Vector = this.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      var deltaDisplacement =
+      const k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const k2Vector = this.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const k3Vector = this.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const k4Vector = this.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const deltaDisplacement =
         {
           x: deltaDistance * ( k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x ) / 6,
           y: deltaDistance * ( k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y ) / 6
@@ -171,18 +171,18 @@ define( function( require ) {
        * i.e. after joining all the points, the directed line would be made of points that have an electric field
        * pointing clockwise (yes  clockwise) to the direction of the line.
        */
-      var stepCounter = 0; // {number} integer
+      const stepCounter = 0; // {number} integer
 
-      var nextClockwisePosition; // {Vector2}
-      var nextCounterClockwisePosition; // {Vector2}
-      var currentClockwisePosition = position; // {Vector2}
-      var currentCounterClockwisePosition = position; // {Vector2}
-      var clockwisePositionArray = [];
-      var counterClockwisePositionArray = [];
+      let nextClockwisePosition; // {Vector2}
+      let nextCounterClockwisePosition; // {Vector2}
+      const currentClockwisePosition = position; // {Vector2}
+      const currentCounterClockwisePosition = position; // {Vector2}
+      const clockwisePositionArray = [];
+      const counterClockwisePositionArray = [];
 
       // initial epsilon distance for the two heads.
-      var clockwiseEpsilonDistance = MIN_EPSILON_DISTANCE;
-      var counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+      const clockwiseEpsilonDistance = MIN_EPSILON_DISTANCE;
+      const counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
 
       while ( ( stepCounter < MAX_STEPS ) && !this.isLineClosed &&
               ( this.isEquipotentialLineTerminatingInsideBounds || ( stepCounter < MIN_STEPS ) ) ) {
@@ -215,7 +215,7 @@ define( function( require ) {
           assert && assert( counterClockwiseEpsilonDistance < 0 );
 
           // distance between the two searching heads
-          var approachDistance = currentClockwisePosition.distance( currentCounterClockwisePosition );
+          const approachDistance = currentClockwisePosition.distance( currentCounterClockwisePosition );
 
           // logic to stop the while loop when the two heads are getting closer
           if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
@@ -244,12 +244,12 @@ define( function( require ) {
         // this is very difficult to come up with such a scenario. so far this
         // was encountered only with a pure quadrupole configuration.
         // let's redo the entire process but starting a tad to the right so we don't get stuck in our search
-        var weeVector = new Vector2( 0.00031415, 0.00027178 ); // (pi, e)
+        const weeVector = new Vector2( 0.00031415, 0.00027178 ); // (pi, e)
         return this.getEquipotentialPositionArray( position.plus( weeVector ) );
       }
 
       // let's order all the positions (including the initial point) in an array in a counterclockwise fashion
-      var reversedArray = clockwisePositionArray.reverse();
+      const reversedArray = clockwisePositionArray.reverse();
 
       // let's return the entire array, i.e. the reversed clockwise array, the initial position, and the counterclockwise array
       return reversedArray.concat( position, counterClockwisePositionArray );
@@ -268,20 +268,20 @@ define( function( require ) {
      * @returns {Array.<Vector2>}
      */
     getPrunedPositionArray: function( positionArray ) {
-      var length = positionArray.length;
-      var prunedPositionArray = []; // {Array.<Vector2>}
+      const length = positionArray.length;
+      const prunedPositionArray = []; // {Array.<Vector2>}
 
       // push first data point
       prunedPositionArray.push( positionArray[ 0 ] );
 
-      var maxOffset = 0.001; // in model coordinates, the threshold of visual acuity when rendered on the screen
-      var lastPushedIndex = 0; // index of the last positionArray element pushed into prunedPosition
+      const maxOffset = 0.001; // in model coordinates, the threshold of visual acuity when rendered on the screen
+      const lastPushedIndex = 0; // index of the last positionArray element pushed into prunedPosition
 
-      for ( var i = 1; i < length - 1; i++ ) {
-        var lastPushedPoint = prunedPositionArray[ prunedPositionArray.length - 1 ];
+      for ( let i = 1; i < length - 1; i++ ) {
+        const lastPushedPoint = prunedPositionArray[ prunedPositionArray.length - 1 ];
 
-        for ( var j = lastPushedIndex; j < i + 1; j++ ) {
-          var distance = this.getDistanceFromLine( lastPushedPoint, positionArray[ j + 1 ], positionArray[ i + 1 ] );
+        for ( let j = lastPushedIndex; j < i + 1; j++ ) {
+          const distance = this.getDistanceFromLine( lastPushedPoint, positionArray[ j + 1 ], positionArray[ i + 1 ] );
           if ( distance > maxOffset ) {
             prunedPositionArray.push( positionArray[ i ] );
             lastPushedIndex = i;
@@ -306,8 +306,8 @@ define( function( require ) {
      * @returns {number}
      */
     getDistanceFromLine: function( initialPoint, midwayPoint, finalPoint ) {
-      var midwayDisplacement = midwayPoint.minus( initialPoint );
-      var finalDisplacement = finalPoint.minus( initialPoint );
+      const midwayDisplacement = midwayPoint.minus( initialPoint );
+      const finalDisplacement = finalPoint.minus( initialPoint );
       return Math.abs( midwayDisplacement.crossScalar( finalDisplacement.normalized() ) );
     },
 
@@ -321,7 +321,7 @@ define( function( require ) {
      * @returns {number}
      */
     getAdaptativeEpsilonDistance: function( epsilonDistance, positionArray, isClockwise ) {
-      var deflectionAngle = this.getRotationAngle( positionArray ); // non negative number in radians
+      const deflectionAngle = this.getRotationAngle( positionArray ); // non negative number in radians
       if ( deflectionAngle === 0 ) {
 
         // pedal to metal
@@ -348,9 +348,9 @@ define( function( require ) {
      */
     getRotationAngle: function( positionArray ) {
       assert && assert( positionArray.length > 2, 'the positionArray must contain at least three elements' );
-      var length = positionArray.length;
-      var newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
-      var oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
+      const length = positionArray.length;
+      const newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
+      const oldDeltaPosition = positionArray[ length - 2 ].minus( positionArray[ length - 3 ] );
       return newDeltaPosition.angleBetween( oldDeltaPosition ); // a positive number
     },
 
@@ -360,8 +360,8 @@ define( function( require ) {
      * @returns {Shape}
      */
     getShape: function() {
-      var shape = new Shape();
-      var prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
+      const shape = new Shape();
+      const prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
       return this.positionArrayToStraightLine( shape, prunedPositionArray, { isClosedLineSegments: this.isLineClosed } );
     },
 
@@ -380,10 +380,10 @@ define( function( require ) {
       }, options );
 
       // if the line is open, there is one less segments than point vectors
-      var segmentsNumber = ( options.isClosedLineSegments ) ? positionArray.length : positionArray.length - 1;
+      const segmentsNumber = ( options.isClosedLineSegments ) ? positionArray.length : positionArray.length - 1;
 
       shape.moveToPoint( positionArray[ 0 ] );
-      for ( var i = 1; i < segmentsNumber + 1; i++ ) {
+      for ( let i = 1; i < segmentsNumber + 1; i++ ) {
         shape.lineToPoint( positionArray[ ( i ) % positionArray.length ] );
       }
       return shape;

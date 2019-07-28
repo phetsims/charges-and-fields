@@ -11,17 +11,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var Color = require( 'SCENERY/util/Color' );
-  var ColorProfile = require( 'SCENERY_PHET/ColorProfile' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const Color = require( 'SCENERY/util/Color' );
+  const ColorProfile = require( 'SCENERY_PHET/ColorProfile' );
 
   // constants
-  var BLACK = new Color( 0, 0, 0 );
-  var WHITE = new Color( 255, 255, 255 );
-  var RED = new Color( 255, 0, 0 );
-  var BLUE = new Color( 0, 0, 255 );
+  const BLACK = new Color( 0, 0, 0 );
+  const WHITE = new Color( 255, 255, 255 );
+  const RED = new Color( 255, 0, 0 );
+  const BLUE = new Color( 0, 0, 255 );
 
-  var ChargesAndFieldsColorProfile = new ColorProfile( [ 'default', 'projector' ], {
+  const ChargesAndFieldsColorProfile = new ColorProfile( [ 'default', 'projector' ], {
     background: {
       default: BLACK,
       projector: WHITE

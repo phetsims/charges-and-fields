@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
-  var Property = require( 'AXON/Property' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
+  const Property = require( 'AXON/Property' );
 
   // strings
-  var centimeterUnitString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
+  const centimeterUnitString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
 
   /**
    * @constructor

@@ -11,29 +11,29 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Shape = require( 'KITE/Shape' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants related to text
-  var FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
+  const FONT = ChargesAndFieldsConstants.GRID_LABEL_FONT;
 
   // constants
-  var MINOR_GRIDLINES_PER_MAJOR_GRIDLINE = ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
-  var MAJOR_GRIDLINE_LINEWIDTH = 2;
-  var MINOR_GRIDLINE_LINEWIDTH = 1;
-  var ARROW_LENGTH = 1; // in model coordinates
-  var ARROW_POSITION = new Vector2( 2, -2.20 ); // top left position in model coordinates
+  const MINOR_GRIDLINES_PER_MAJOR_GRIDLINE = ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
+  const MAJOR_GRIDLINE_LINEWIDTH = 2;
+  const MINOR_GRIDLINE_LINEWIDTH = 1;
+  const ARROW_LENGTH = 1; // in model coordinates
+  const ARROW_POSITION = new Vector2( 2, -2.20 ); // top left position in model coordinates
 
   // strings
-  var oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
+  const oneMeterString = require( 'string!CHARGES_AND_FIELDS/oneMeter' );
 
   /**
    *
@@ -50,31 +50,31 @@ define( function( require ) {
                      areValuesVisibleProperty,
                      tandem ) {
 
-    var self = this;
+    const self = this;
 
     Node.call( this );
 
-    var gridLinesParent = new Node();
+    const gridLinesParent = new Node();
 
     // separation in model coordinates of the major grid lines
-    var majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
-    var majorDeltaY = majorDeltaX; // we want a square grid
+    const majorDeltaX = ChargesAndFieldsConstants.GRID_MAJOR_SPACING;
+    const majorDeltaY = majorDeltaX; // we want a square grid
 
     // separation in model coordinates of the minor grid lines
-    var deltaX = majorDeltaX / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
-    var deltaY = majorDeltaY / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
+    const deltaX = majorDeltaX / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
+    const deltaY = majorDeltaY / MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
 
     // the following variables are integers
-    var minI = Math.ceil( boundsProperty.get().minX / deltaX );
-    var maxI = Math.floor( boundsProperty.get().maxX / deltaX );
-    var minJ = Math.ceil( boundsProperty.get().minY / deltaY );
-    var maxJ = Math.floor( boundsProperty.get().maxY / deltaY );
+    const minI = Math.ceil( boundsProperty.get().minX / deltaX );
+    const maxI = Math.floor( boundsProperty.get().maxX / deltaX );
+    const minJ = Math.ceil( boundsProperty.get().minY / deltaY );
+    const maxJ = Math.floor( boundsProperty.get().maxY / deltaY );
 
-    var i; // {number} an integer
-    var j; // {number} an integer
-    var isMajorGridLine; // {boolean}
-    var majorGridLinesShape = new Shape();
-    var minorGridLinesShape = new Shape();
+    let i; // {number} an integer
+    let j; // {number} an integer
+    let isMajorGridLine; // {boolean}
+    const majorGridLinesShape = new Shape();
+    const minorGridLinesShape = new Shape();
 
     // vertical gridLines
     for ( i = minI; i <= maxI; i++ ) {
@@ -98,7 +98,7 @@ define( function( require ) {
       }
     }
 
-    var majorGridLinesPath = new Path( modelViewTransform.modelToViewShape( majorGridLinesShape ), {
+    const majorGridLinesPath = new Path( modelViewTransform.modelToViewShape( majorGridLinesShape ), {
       lineWidth: MAJOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
@@ -106,7 +106,7 @@ define( function( require ) {
       tandem: tandem.createTandem( 'majorGridLinesPath' )
     } );
 
-    var minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
+    const minorGridLinesPath = new Path( modelViewTransform.modelToViewShape( minorGridLinesShape ), {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
@@ -115,15 +115,15 @@ define( function( require ) {
     } );
 
     // Create the one-meter double headed arrow representation
-    var arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
-    var arrowPath = new Path( arrowShape, {
+    const arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
+    const arrowPath = new Path( arrowShape, {
       fill: ChargesAndFieldsColorProfile.gridLengthScaleArrowFillProperty,
       stroke: ChargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty,
       tandem: tandem.createTandem( 'arrowPath' )
     } );
 
     // Create and add the text (legend) accompanying the double headed arrow
-    var legendText = new Text( oneMeterString, {
+    const legendText = new Text( oneMeterString, {
       fill: ChargesAndFieldsColorProfile.gridTextFillProperty,
       font: FONT,
       tandem: tandem.createTandem( 'legendText' )

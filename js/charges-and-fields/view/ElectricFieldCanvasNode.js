@@ -9,22 +9,22 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
-  var ElectricFieldArrowCanvas = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowCanvas' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
+  const ElectricFieldArrowCanvas = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowCanvas' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // Spacing in the model coordinate frame.
-  var ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
+  const ELECTRIC_FIELD_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_SPACING;
 
-  var MIN_VISIBLE_ELECTRIC_FIELD_MAG = 1e-9; // V/m
+  const MIN_VISIBLE_ELECTRIC_FIELD_MAG = 1e-9; // V/m
 
-  var scratchVector = new Vector2( 0, 0 );
+  const scratchVector = new Vector2( 0, 0 );
 
   /**
    * @constructor
@@ -54,7 +54,7 @@ define( function( require ) {
     this.isVisibleProperty = isVisibleProperty;
 
     // Invalidate paint on a bunch of changes
-    var invalidateSelfListener = this.invalidatePaint.bind( this );
+    const invalidateSelfListener = this.invalidatePaint.bind( this );
 
     ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( invalidateSelfListener ); // color change
 
@@ -74,15 +74,15 @@ define( function( require ) {
     isVisibleProperty.linkAttribute( this, 'visible' );
 
     this.modelPositions = []; // {Array.<Vector2>}
-    var width = modelBounds.width;
-    var height = modelBounds.height;
-    var numHorizontal = Math.ceil( width / ELECTRIC_FIELD_SENSOR_SPACING );
-    var numVertical = Math.ceil( height / ELECTRIC_FIELD_SENSOR_SPACING );
-    for ( var row = 0; row < numVertical; row++ ) {
-      var y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
+    const width = modelBounds.width;
+    const height = modelBounds.height;
+    const numHorizontal = Math.ceil( width / ELECTRIC_FIELD_SENSOR_SPACING );
+    const numVertical = Math.ceil( height / ELECTRIC_FIELD_SENSOR_SPACING );
+    for ( let row = 0; row < numVertical; row++ ) {
+      const y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
 
-      for ( var col = 0; col < numHorizontal; col++ ) {
-        var x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
+      for ( let col = 0; col < numHorizontal; col++ ) {
+        const x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
 
         this.modelPositions.push( new Vector2( x, y ) );
       }
@@ -109,22 +109,22 @@ define( function( require ) {
   return inherit( CanvasNode, ElectricFieldCanvasNode, {
 
     updateElectricPotentials: function() {
-      var kConstant = ChargesAndFieldsConstants.K_CONSTANT;
+      const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
-      var numChanges = this.chargeTracker.queue.length;
+      const numChanges = this.chargeTracker.queue.length;
 
-      for ( var i = 0; i < numChanges; i++ ) {
-        var item = this.chargeTracker.queue[ i ];
-        var oldPosition = item.oldPosition;
-        var newPosition = item.newPosition;
-        var charge = item.charge;
+      for ( let i = 0; i < numChanges; i++ ) {
+        const item = this.chargeTracker.queue[ i ];
+        const oldPosition = item.oldPosition;
+        const newPosition = item.newPosition;
+        const charge = item.charge;
 
-        for ( var j = 0; j < this.modelPositions.length; j++ ) {
-          var position = this.modelPositions[ j ];
-          var electricField = this.electricField[ j ];
+        for ( let j = 0; j < this.modelPositions.length; j++ ) {
+          const position = this.modelPositions[ j ];
+          const electricField = this.electricField[ j ];
 
           if ( oldPosition ) {
-            var oldDistanceSquared = position.distanceSquared( oldPosition );
+            const oldDistanceSquared = position.distanceSquared( oldPosition );
             if ( oldDistanceSquared !== 0 ) {
               electricField.subtract( scratchVector.set( position )
                 .subtract( oldPosition )
@@ -133,7 +133,7 @@ define( function( require ) {
           }
 
           if ( newPosition ) {
-            var newDistanceSquared = position.distanceSquared( newPosition );
+            const newDistanceSquared = position.distanceSquared( newPosition );
             if ( newDistanceSquared !== 0 ) {
               electricField.add( scratchVector.set( position )
                 .subtract( newPosition )
@@ -154,12 +154,12 @@ define( function( require ) {
     paintCanvas: function( context ) {
       this.updateElectricPotentials();
 
-      var isDirectionOnly = this.isElectricFieldDirectionOnlyProperty.get();
-      var maxMagnitude = ChargesAndFieldsConstants.EFIELD_COLOR_SAT_MAGNITUDE;
+      const isDirectionOnly = this.isElectricFieldDirectionOnlyProperty.get();
+      const maxMagnitude = ChargesAndFieldsConstants.EFIELD_COLOR_SAT_MAGNITUDE;
 
-      for ( var i = 0; i < this.viewPositions.length; i++ ) {
-        var viewPosition = this.viewPositions[ i ];
-        var electricField = this.electricField[ i ];
+      for ( let i = 0; i < this.viewPositions.length; i++ ) {
+        const viewPosition = this.viewPositions[ i ];
+        const electricField = this.electricField[ i ];
 
         context.save();
         context.globalAlpha = Util.clamp( electricField.magnitude / maxMagnitude, 0, 1 );

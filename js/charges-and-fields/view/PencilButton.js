@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
 
   // images
-  var pencilImage = require( 'mipmap!CHARGES_AND_FIELDS/pencil.png,level=5' );
+  const pencilImage = require( 'mipmap!CHARGES_AND_FIELDS/pencil.png,level=5' );
 
   /**
    * @param {Tandem} tandem

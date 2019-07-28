@@ -10,16 +10,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
-  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
+  const WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 
   // higher values support more particles, but may compromise performance
-  var MAX_PARTICLES_LIMIT = 32;
-  var scratchFloatArray = new Float32Array( 9 );
+  const MAX_PARTICLES_LIMIT = 32;
+  const scratchFloatArray = new Float32Array( 9 );
 
   /**
    *
@@ -39,7 +39,7 @@ define( function( require ) {
     } );
 
     // Invalidate paint on a bunch of changes
-    var invalidateSelfListener = this.invalidatePaint.bind( this );
+    const invalidateSelfListener = this.invalidatePaint.bind( this );
     ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
@@ -61,13 +61,13 @@ define( function( require ) {
      * @public read-only
      */
     getNumberOfParticlesSupported: function() {
-      var canvas = document.createElement( 'canvas' );
-      var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+      const canvas = document.createElement( 'canvas' );
+      const gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
       return ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
     },
     particlesSupportedForContext: function( gl ) {
-      var otherVectorCount = 7; // colors, matrix and one extra to be safe
-      var maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
+      const otherVectorCount = 7; // colors, matrix and one extra to be safe
+      const maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
       return Math.min( MAX_PARTICLES_LIMIT, maxVertexUniforms - otherVectorCount );
     }
   } );
@@ -84,7 +84,7 @@ define( function( require ) {
 
     this.maximumNumParticles = ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
 
-    var particleIndices = _.range( this.maximumNumParticles );
+    const particleIndices = _.range( this.maximumNumParticles );
 
     // shader for the display of the data
     this.displayShaderProgram = new ShaderProgram( gl, [
@@ -147,8 +147,8 @@ define( function( require ) {
 
   inherit( Object, ElectricPotentialMobilePainter, {
     paint: function( modelViewMatrix, projectionMatrix ) {
-      var gl = this.gl;
-      var displayShaderProgram = this.displayShaderProgram;
+      const gl = this.gl;
+      const displayShaderProgram = this.displayShaderProgram;
 
       // If we're not visible, clear everything and exit. Our layerSplit above guarantees this won't clear other
       // node's renderings.
@@ -159,22 +159,22 @@ define( function( require ) {
       displayShaderProgram.use();
 
       // TODO: reduce allocations
-      var projectionMatrixInverse = new Matrix3().set( projectionMatrix ).invert();
-      var matrixInverse = this.node.modelViewTransform.getInverse().timesMatrix( modelViewMatrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
+      const projectionMatrixInverse = new Matrix3().set( projectionMatrix ).invert();
+      const matrixInverse = this.node.modelViewTransform.getInverse().timesMatrix( modelViewMatrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
       gl.uniformMatrix3fv( displayShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverse.copyToArray( scratchFloatArray ) );
 
       // tell the shader our colors / scale
-      var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
-      var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
-      var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
+      const zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
+      const positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
+      const negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
       gl.uniform3f( displayShaderProgram.uniformLocations.uZeroColor, zeroColor.red / 255, zeroColor.green / 255, zeroColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uPositiveColor, positiveColor.red / 255, positiveColor.green / 255, positiveColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uNegativeColor, negativeColor.red / 255, negativeColor.green / 255, negativeColor.blue / 255 );
 
       // update uniforms for the particle location
-      for ( var i = 0; i < this.maximumNumParticles; i++ ) {
-        var particle = this.node.chargedParticles.get( i );
-        var uniformLocation = displayShaderProgram.uniformLocations[ 'charge' + i ];
+      for ( let i = 0; i < this.maximumNumParticles; i++ ) {
+        const particle = this.node.chargedParticles.get( i );
+        const uniformLocation = displayShaderProgram.uniformLocations[ 'charge' + i ];
 
         if ( particle ) {
           gl.uniform3f( uniformLocation, particle.positionProperty.get().x, particle.positionProperty.get().y, particle.charge );

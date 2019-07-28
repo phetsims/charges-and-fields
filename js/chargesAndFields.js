@@ -8,7 +8,7 @@
 define( function( require ) {
   'use strict';
 
-  var Namespace = require( 'PHET_CORE/Namespace' );
+  const Namespace = require( 'PHET_CORE/Namespace' );
 
   return new Namespace( 'chargesAndFields' );
 } );

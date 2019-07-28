@@ -9,17 +9,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
-  var Shape = require( 'KITE/Shape' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const RadialGradient = require( 'SCENERY/util/RadialGradient' );
+  const Shape = require( 'KITE/Shape' );
 
   // constants
-  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
+  const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
   /**
    * Constructor for the scenery node of the charge
@@ -35,7 +35,7 @@ define( function( require ) {
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
     // Create and add the circle that represents the charge particle
-    var circle = new Circle( CIRCLE_RADIUS );
+    const circle = new Circle( CIRCLE_RADIUS );
     this.addChild( circle );
 
     if ( charge === 1 ) {
@@ -53,11 +53,11 @@ define( function( require ) {
     }
 
     // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
-    var ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
-    var pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white', pickable: false };
+    const ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
+    const pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white', pickable: false };
     if ( charge === 1 ) {
       // plus Shape representing a positive charge
-      var plusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
+      const plusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
         .lineTo( CIRCLE_RADIUS * ratio, 0 )
         .moveTo( 0, -CIRCLE_RADIUS * ratio )
         .lineTo( 0, CIRCLE_RADIUS * ratio );
@@ -65,7 +65,7 @@ define( function( require ) {
     }
     else {
       // minus Shape representing a negative charge
-      var minusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
+      const minusShape = new Shape().moveTo( -CIRCLE_RADIUS * ratio, 0 )
         .lineTo( CIRCLE_RADIUS * ratio, 0 );
       this.addChild( new Path( minusShape, pathOptions ) );
     }

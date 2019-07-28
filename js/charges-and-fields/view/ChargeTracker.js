@@ -22,8 +22,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @constructor
@@ -75,7 +75,7 @@ define( function( require ) {
     rebuild: function() {
       this.clear();
 
-      for ( var i = 0; i < this.chargedParticles.length; i++ ) {
+      for ( let i = 0; i < this.chargedParticles.length; i++ ) {
         this.addParticle( this.chargedParticles.get( i ) );
       }
     },
@@ -91,7 +91,7 @@ define( function( require ) {
 
       // Remove position listeners
       while ( this.positionListeners.length ) {
-        var positionListener = this.positionListeners.pop();
+        const positionListener = this.positionListeners.pop();
         positionListener.particle.positionProperty.unlink( positionListener );
       }
     },
@@ -120,7 +120,7 @@ define( function( require ) {
       this.addParticle( particle );
 
       // add the position listener (need a reference to the particle with the listener, so we can't use the same one)
-      var positionListener = this.onParticleMoved.bind( this, particle );
+      const positionListener = this.onParticleMoved.bind( this, particle );
       positionListener.particle = particle;
       this.positionListeners.push( positionListener );
       particle.positionProperty.lazyLink( positionListener );
@@ -139,9 +139,9 @@ define( function( require ) {
       // Check to see if we can update an add/move for the same particle to a new position instead of creating
       // multiple queue entries for a single particle. This will help collapse multiple moves of the same particle in
       // one frame.
-      var modified = false;
-      for ( var i = 0; i < this.queue.length; i++ ) {
-        var item = this.queue[ i ];
+      let modified = false;
+      for ( let i = 0; i < this.queue.length; i++ ) {
+        const item = this.queue[ i ];
         if ( item.newPosition && item.newPosition.equals( oldPosition ) && item.charge === particle.charge ) {
           item.newPosition = newPosition;
           // console.log( 'update ' + particle.charge + ' ' + newPosition.toString() );
@@ -168,9 +168,9 @@ define( function( require ) {
      */
     onParticleRemoved: function( particle ) {
       // See if we can update an already-in-queue item with a null location.
-      var modified = false;
-      for ( var i = 0; i < this.queue.length; i++ ) {
-        var item = this.queue[ i ];
+      let modified = false;
+      for ( let i = 0; i < this.queue.length; i++ ) {
+        const item = this.queue[ i ];
         if ( item.newPosition && item.newPosition.equals( particle.positionProperty.get() ) && item.charge === particle.charge ) {
           item.newPosition = null;
           // console.log( 'update ' + particle.charge + ' null' );
@@ -194,7 +194,7 @@ define( function( require ) {
       }
 
       // remove the position listener
-      for ( var k = 0; k < this.positionListeners.length; k++ ) {
+      for ( let k = 0; k < this.positionListeners.length; k++ ) {
         if ( this.positionListeners[ k ].particle === particle ) {
           particle.positionProperty.unlink( this.positionListeners[ k ] );
           this.positionListeners.splice( k, 1 );

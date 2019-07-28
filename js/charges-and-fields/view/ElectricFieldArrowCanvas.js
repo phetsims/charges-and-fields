@@ -10,33 +10,33 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ElectricFieldArrowShape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowShape' );
-  var Emitter = require( 'AXON/Emitter' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ElectricFieldArrowShape = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowShape' );
+  const Emitter = require( 'AXON/Emitter' );
 
   // Our shape that we'll use to draw (origin is where it will rotate)
-  var arrowShape = new ElectricFieldArrowShape();
-  var emitter = new Emitter();
+  const arrowShape = new ElectricFieldArrowShape();
+  const emitter = new Emitter();
 
-  var scale = 1.3;
-  var padding = 2;
+  const scale = 1.3;
+  const padding = 2;
 
-  var scaledPaddedBounds = new Bounds2( arrowShape.bounds.minX * scale,
+  const scaledPaddedBounds = new Bounds2( arrowShape.bounds.minX * scale,
     arrowShape.bounds.minY * scale,
     arrowShape.bounds.maxX * scale,
     arrowShape.bounds.maxY * scale ).dilated( padding ).roundedOut();
 
-  var canvas = document.createElement( 'canvas' );
+  const canvas = document.createElement( 'canvas' );
   canvas.width = scaledPaddedBounds.width;
   canvas.height = scaledPaddedBounds.height;
-  var context = canvas.getContext( '2d' );
+  const context = canvas.getContext( '2d' );
 
   // Offset based on where the center is from the upper-left. Will usually be negative so it can be applied.
   // When drawing in this code, we'll want to negate it.
-  var xOffset = scaledPaddedBounds.minX;
-  var yOffset = scaledPaddedBounds.minY;
+  const xOffset = scaledPaddedBounds.minX;
+  const yOffset = scaledPaddedBounds.minY;
 
   function draw() {
     context.save();

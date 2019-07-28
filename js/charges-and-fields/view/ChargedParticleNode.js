@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var DragListener = require( 'SCENERY/listeners/DragListener' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Touch = require( 'SCENERY/input/Touch' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Touch = require( 'SCENERY/input/Touch' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
+  const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
@@ -37,7 +37,7 @@ define( function( require ) {
                                 enclosureBounds,
                                 tandem ) {
 
-    var self = this;
+    const self = this;
 
     this.modelElement = chargedParticle;
 
@@ -47,7 +47,7 @@ define( function( require ) {
     this.touchArea = this.localBounds.dilated( 10 );
 
     // Register for synchronization with model.
-    var positionListener = function( position ) {
+    const positionListener = function( position ) {
       self.translation = modelViewTransform.modelToViewPosition( position );
     };
     chargedParticle.positionProperty.link( positionListener );
@@ -79,11 +79,11 @@ define( function( require ) {
     } );
 
     // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
-    var isDragListenerAttached = false;
+    let isDragListenerAttached = false;
 
-    var isInteractiveListener = function() {
+    const isInteractiveListener = function() {
 
-      var isInteractive = chargedParticle.isInteractiveProperty.get();
+      const isInteractive = chargedParticle.isInteractiveProperty.get();
 
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {

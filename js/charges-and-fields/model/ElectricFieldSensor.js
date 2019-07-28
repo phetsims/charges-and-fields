@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector2Property = require( 'DOT/Vector2Property' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   /**
    * @constructor
@@ -49,7 +49,7 @@ define( function( require ) {
      * @public
      */
     update: function() {
-      var eField = this.computeElectricField( this.positionProperty.get() );
+      const eField = this.computeElectricField( this.positionProperty.get() );
 
       assert && assert( eField.x !== Infinity && eField.y !== Infinity,
         'E-field is infinity: ' + eField );

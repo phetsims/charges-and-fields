@@ -9,24 +9,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var Checkbox = require( 'SUN/Checkbox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const Checkbox = require( 'SUN/Checkbox' );
+  const HStrut = require( 'SCENERY/nodes/HStrut' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Panel = require( 'SUN/Panel' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var directionOnlyString = require( 'string!CHARGES_AND_FIELDS/directionOnly' );
-  var electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
-  var gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
-  var snapToGridString = require( 'string!CHARGES_AND_FIELDS/snapToGrid' );
-  var valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
-  var voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
+  const directionOnlyString = require( 'string!CHARGES_AND_FIELDS/directionOnly' );
+  const electricFieldString = require( 'string!CHARGES_AND_FIELDS/electricField' );
+  const gridString = require( 'string!CHARGES_AND_FIELDS/grid' );
+  const snapToGridString = require( 'string!CHARGES_AND_FIELDS/snapToGrid' );
+  const valuesString = require( 'string!CHARGES_AND_FIELDS/values' );
+  const voltageString = require( 'string!CHARGES_AND_FIELDS/voltage' );
 
   /**
    * @constructor
@@ -47,7 +47,7 @@ define( function( require ) {
      * @returns {Checkbox}
      */
     function createCheckbox( tandemId, string, property ) {
-      var text = new Text( string, {
+      const text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECK_BOX_FONT,
         fill: ChargesAndFieldsColorProfile.controlPanelTextProperty,
         maxWidth: 250
@@ -68,24 +68,24 @@ define( function( require ) {
      * @returns {Node}
      */
     function createIndentedNode( checkbox ) {
-      var node = new Node();
-      var hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
+      const node = new Node();
+      const hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
       checkbox.left = hStrut.right;
       node.setChildren( [ hStrut, checkbox ] );
       return node;
     }
 
     // create checkboxes
-    var electricFieldCheckbox = createCheckbox( 'electricFieldCheckbox', electricFieldString, model.isElectricFieldVisibleProperty );
-    var directionOnlyCheckbox = createCheckbox( 'directionOnlyCheckbox', directionOnlyString, model.isElectricFieldDirectionOnlyProperty );
-    var voltageCheckbox = createCheckbox( 'voltageCheckbox', voltageString, model.isElectricPotentialVisibleProperty );
-    var valuesCheckbox = createCheckbox( 'valuesCheckbox', valuesString, model.areValuesVisibleProperty );
-    var gridCheckbox = createCheckbox( 'gridCheckbox', gridString, model.isGridVisibleProperty );
-    var snapToGridCheckbox = createCheckbox( 'snapToGridCheckbox', snapToGridString, model.snapToGridProperty );
+    const electricFieldCheckbox = createCheckbox( 'electricFieldCheckbox', electricFieldString, model.isElectricFieldVisibleProperty );
+    const directionOnlyCheckbox = createCheckbox( 'directionOnlyCheckbox', directionOnlyString, model.isElectricFieldDirectionOnlyProperty );
+    const voltageCheckbox = createCheckbox( 'voltageCheckbox', voltageString, model.isElectricPotentialVisibleProperty );
+    const valuesCheckbox = createCheckbox( 'valuesCheckbox', valuesString, model.areValuesVisibleProperty );
+    const gridCheckbox = createCheckbox( 'gridCheckbox', gridString, model.isGridVisibleProperty );
+    const snapToGridCheckbox = createCheckbox( 'snapToGridCheckbox', snapToGridString, model.snapToGridProperty );
 
     // some of the checkboxes need to be indented with respect to the other checkboxes
-    var directionOnlyGroup = createIndentedNode( directionOnlyCheckbox );
-    var snapToGridGroup = createIndentedNode( snapToGridCheckbox );
+    const directionOnlyGroup = createIndentedNode( directionOnlyCheckbox );
+    const snapToGridGroup = createIndentedNode( snapToGridCheckbox );
 
     // @private
     this.toggleNodes = [

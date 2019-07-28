@@ -9,27 +9,27 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Panel = require( 'SUN/Panel' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  var minusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
-  var plusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
-  var sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
+  const minusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/minusOneNanoC' );
+  const plusOneNanoCString = require( 'string!CHARGES_AND_FIELDS/plusOneNanoC' );
+  const sensorsString = require( 'string!CHARGES_AND_FIELDS/sensors' );
 
-  var HORIZONTAL_SPACING = 60;
-  var VERTICAL_SPACING = 25;
-  var Y_MARGIN = 10;
+  const HORIZONTAL_SPACING = 60;
+  const VERTICAL_SPACING = 25;
+  const Y_MARGIN = 10;
 
   /**
    * Enclosure that contains the charges and sensor
@@ -50,7 +50,7 @@ define( function( require ) {
                                    canAddMoreChargedParticlesProperty,
                                    modelViewTransform,
                                    tandem ) {
-    var self = this;
+    const self = this;
 
     // @private {Array.<Node>}
     this.draggableItems = [];
@@ -63,14 +63,14 @@ define( function( require ) {
      * @param {Property.<boolean>} isVisibleProperty
      */
     function createDraggableItem( itemTandem, label, createModelElement, previewNode, isVisibleProperty ) {
-      var labelText = new Text( label, {
+      const labelText = new Text( label, {
         font: ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT,
         fill: ChargesAndFieldsColorProfile.enclosureTextProperty,
         centerX: 0,
         maxWidth: 200
       } );
 
-      var node = new Node( {
+      const node = new Node( {
         children: [
           previewNode,
           labelText
@@ -91,10 +91,10 @@ define( function( require ) {
           if ( !event.canStartPress() ) { return; }
 
           // Representation node location, so that when being "disposed" it will animate back towards the right place.
-          var initialViewPosition = previewNode.getUniqueTrailTo( screenView ).getAncestorMatrix().timesVector2( Vector2.ZERO );
+          const initialViewPosition = previewNode.getUniqueTrailTo( screenView ).getAncestorMatrix().timesVector2( Vector2.ZERO );
 
           // Create the new model element.
-          var modelElement = createModelElement();
+          const modelElement = createModelElement();
           modelElement.initialPosition = modelViewTransform.viewToModelPosition( initialViewPosition );
           modelElement.isActiveProperty.set( false );
 
@@ -114,17 +114,17 @@ define( function( require ) {
     }
 
     // {Property.<boolean>}
-    var positiveVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewPositiveChargesProperty ], function( canAdd, allowNew ) {
+    const positiveVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewPositiveChargesProperty ], function( canAdd, allowNew ) {
       return canAdd && allowNew;
     } );
 
     // {Property.<boolean>}
-    var negativeVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewNegativeChargesProperty ], function( canAdd, allowNew ) {
+    const negativeVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewNegativeChargesProperty ], function( canAdd, allowNew ) {
       return canAdd && allowNew;
     } );
 
     // {Property.<boolean>}
-    var electricFieldSensorVisibleProperty = model.allowNewElectricFieldSensorsProperty;
+    const electricFieldSensorVisibleProperty = model.allowNewElectricFieldSensorsProperty;
 
     this.hboxContent = new HBox( {
       align: 'bottom',

@@ -10,11 +10,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
-  var validate = require( 'AXON/validate' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  const phetioInherit = require( 'TANDEM/phetioInherit' );
+  const Vector2IO = require( 'DOT/Vector2IO' );
+  const validate = require( 'AXON/validate' );
 
   /**
    * Instrumented to help restore charged particles.

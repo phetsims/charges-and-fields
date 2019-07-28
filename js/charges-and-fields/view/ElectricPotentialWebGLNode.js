@@ -35,24 +35,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
-  var Util = require( 'SCENERY/util/Util' );
-  var WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
+  const Util = require( 'SCENERY/util/Util' );
+  const WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 
   // integer constants for our shader
-  var TYPE_ADD = 0;
-  var TYPE_REMOVE = 1;
-  var TYPE_MOVE = 2;
+  const TYPE_ADD = 0;
+  const TYPE_REMOVE = 1;
+  const TYPE_MOVE = 2;
 
   // persistent matrices/arrays so we minimize the number of created objects during rendering
-  var scratchProjectionMatrix = new Matrix3();
-  var scratchInverseMatrix = new Matrix3();
-  var scratchFloatArray = new Float32Array( 9 );
+  const scratchProjectionMatrix = new Matrix3();
+  const scratchInverseMatrix = new Matrix3();
+  const scratchFloatArray = new Float32Array( 9 );
 
   /**
    *
@@ -73,7 +73,7 @@ define( function( require ) {
     } );
 
     // Invalidate paint on a bunch of changes
-    var invalidateSelfListener = this.invalidatePaint.bind( this );
+    const invalidateSelfListener = this.invalidatePaint.bind( this );
     ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
@@ -99,11 +99,11 @@ define( function( require ) {
      * classic detection via an extension (OES_texture_float works).
      */
     supportsRenderingToFloatTexture: function() {
-      var canvas = document.createElement( 'canvas' );
-      var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+      const canvas = document.createElement( 'canvas' );
+      const gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
       gl.getExtension( 'OES_texture_float' );
-      var framebuffer = gl.createFramebuffer();
-      var texture = gl.createTexture();
+      const framebuffer = gl.createFramebuffer();
+      const texture = gl.createTexture();
       gl.bindTexture( gl.TEXTURE_2D, texture );
       gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
       gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
@@ -253,11 +253,11 @@ define( function( require ) {
   inherit( Object, ElectricPotentialPainter, {
     // resizes a texture to be able to cover the canvas area, and sets drawable properties for the size
     sizeTexture: function( texture ) {
-      var gl = this.gl;
-      var width = gl.canvas.width;
-      var height = gl.canvas.height;
-      var powerOf2Width = Util.toPowerOf2( width );
-      var powerOf2Height = Util.toPowerOf2( height );
+      const gl = this.gl;
+      const width = gl.canvas.width;
+      const height = gl.canvas.height;
+      const powerOf2Width = Util.toPowerOf2( width );
+      const powerOf2Height = Util.toPowerOf2( height );
       this.canvasWidth = width;
       this.canvasHeight = height;
       this.textureWidth = powerOf2Width;
@@ -271,10 +271,10 @@ define( function( require ) {
     },
 
     paint: function( modelViewMatrix, projectionMatrix ) {
-      var gl = this.gl;
-      var clearShaderProgram = this.clearShaderProgram;
-      var computeShaderProgram = this.computeShaderProgram;
-      var displayShaderProgram = this.displayShaderProgram;
+      const gl = this.gl;
+      const clearShaderProgram = this.clearShaderProgram;
+      const computeShaderProgram = this.computeShaderProgram;
+      const displayShaderProgram = this.displayShaderProgram;
 
       // If we're not visible, clear everything and exit. Our layerSplit above guarantees this won't clear other
       // node's renderings.
@@ -310,14 +310,14 @@ define( function( require ) {
       gl.uniform2f( computeShaderProgram.uniformLocations.uCanvasSize, this.canvasWidth, this.canvasHeight );
       gl.uniform2f( computeShaderProgram.uniformLocations.uTextureSize, this.textureWidth, this.textureHeight );
 
-      var matrixInverse = scratchInverseMatrix;
-      var projectionMatrixInverse = scratchProjectionMatrix.set( projectionMatrix ).invert();
+      const matrixInverse = scratchInverseMatrix;
+      const projectionMatrixInverse = scratchProjectionMatrix.set( projectionMatrix ).invert();
       matrixInverse.set( this.node.modelViewTransform.getInverse() ).multiplyMatrix( modelViewMatrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
       gl.uniformMatrix3fv( computeShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverse.copyToArray( scratchFloatArray ) );
 
       // do a draw call for each particle change
-      for ( var i = 0; i < this.chargeTracker.queue.length; i++ ) {
-        var item = this.chargeTracker.queue[ i ];
+      for ( let i = 0; i < this.chargeTracker.queue.length; i++ ) {
+        const item = this.chargeTracker.queue[ i ];
 
         // make future rendering output into currentTexture
         gl.bindFramebuffer( gl.FRAMEBUFFER, this.framebuffer );
@@ -348,7 +348,7 @@ define( function( require ) {
         }
 
         // tell the shader the type of change we are making
-        var type = item.oldPosition ? ( item.newPosition ? TYPE_MOVE : TYPE_REMOVE ) : TYPE_ADD;
+        const type = item.oldPosition ? ( item.newPosition ? TYPE_MOVE : TYPE_REMOVE ) : TYPE_ADD;
         gl.uniform1i( computeShaderProgram.uniformLocations.uType, type );
         // console.log( type );
 
@@ -358,7 +358,7 @@ define( function( require ) {
         gl.bindFramebuffer( gl.FRAMEBUFFER, null );
 
         // swap buffers (since currentTexture now has the most up-to-date info, we'll want to use it for reading)
-        var tmp = this.currentTexture;
+        const tmp = this.currentTexture;
         this.currentTexture = this.previousTexture;
         this.previousTexture = tmp;
       }
@@ -372,9 +372,9 @@ define( function( require ) {
       displayShaderProgram.use();
 
       // tell the shader our colors / scale
-      var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
-      var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
-      var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
+      const zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
+      const positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
+      const negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
       gl.uniform3f( displayShaderProgram.uniformLocations.uZeroColor, zeroColor.red / 255, zeroColor.green / 255, zeroColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uPositiveColor, positiveColor.red / 255, positiveColor.green / 255, positiveColor.blue / 255 );
       gl.uniform3f( displayShaderProgram.uniformLocations.uNegativeColor, negativeColor.red / 255, negativeColor.green / 255, negativeColor.blue / 255 );
@@ -403,7 +403,7 @@ define( function( require ) {
     },
 
     dispose: function() {
-      var gl = this.gl;
+      const gl = this.gl;
 
       // clears all of our resources
       this.computeShaderProgram.dispose();

@@ -10,33 +10,33 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  var MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector2Property = require( 'DOT/Vector2Property' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  const MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Panel = require( 'SUN/Panel' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Shape = require( 'KITE/Shape' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   // images
-  var electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
-  var electricPotentialPanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
+  const electricPotentialLinePanelOutlineImage = require( 'mipmap!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
+  const electricPotentialPanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
   // constants
-  var CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
+  const CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
 
   // strings
-  var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
+  const voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   /**
    * Toolbox constructor
@@ -56,23 +56,23 @@ define( function( require ) {
                                          modelViewTransform,
                                          availableModelBoundsProperty,
                                          tandem ) {
-    var self = this;
+    const self = this;
 
     // Create the icon image for the electricPotential sensor
-    var electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon( tandem ); // {Node}
+    const electricPotentialSensorIconNode = this.createElectricPotentialSensorIcon( tandem ); // {Node}
 
     // Create the icon image for the measuring Tape
-    var measuringTapeIconNode = this.createMeasuringTapeIcon( tandem ); // {Node}
+    const measuringTapeIconNode = this.createMeasuringTapeIcon( tandem ); // {Node}
 
     // The content panel with the two icons
-    var panelContent = new LayoutBox( {
+    const panelContent = new LayoutBox( {
       spacing: 20,
       children: [ electricPotentialSensorIconNode, measuringTapeIconNode ],
       pickable: true
     } );
 
     // Options for the panel
-    var panelOptions = {
+    const panelOptions = {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10,
@@ -85,9 +85,9 @@ define( function( require ) {
     Panel.call( this, panelContent, panelOptions );
 
     // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
-    var tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
+    const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
-    var measuringTapeMovableDragHandler = {
+    const measuringTapeMovableDragHandler = {
       down: function( event ) {
 
         // Don't try to start drags with a right mouse button or an attached pointer.
@@ -95,7 +95,7 @@ define( function( require ) {
 
         measuringTape.isActiveProperty.set( true );
 
-        var initialViewPosition = self.globalToParentPoint( event.pointer.point )
+        const initialViewPosition = self.globalToParentPoint( event.pointer.point )
           .minus( measuringTapeNode.getLocalBaseCenter() );
         measuringTape.basePositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
         measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.get().plus( tipToBasePosition ) );
@@ -114,7 +114,7 @@ define( function( require ) {
         electricPotentialSensor.isActiveProperty.set( true );
 
         // initial position of the pointer in the screenView coordinates
-        var initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
+        const initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
         electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
         electricPotentialSensorNode.movableDragHandler.press( event, electricPotentialSensorNode );
@@ -150,14 +150,14 @@ define( function( require ) {
      */
     createElectricPotentialSensorIcon: function( tandem ) {
 
-      var node = new Node( {
+      const node = new Node( {
         // Show a cursor hand over the sensor icon
         cursor: 'pointer',
         tandem: tandem.createTandem( 'electricPotentialSensor' )
       } );
 
       // Create and add the centered circle around the crosshair. The origin of this node is the center of the circle
-      var circle = new Circle( CIRCLE_RADIUS, {
+      const circle = new Circle( CIRCLE_RADIUS, {
         lineWidth: 2,
         centerX: 0,
         centerY: 0,
@@ -165,11 +165,11 @@ define( function( require ) {
       } );
 
       // Create the crosshair
-      var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
+      const crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
         .lineTo( CIRCLE_RADIUS, 0 )
         .moveTo( 0, -CIRCLE_RADIUS )
         .lineTo( 0, CIRCLE_RADIUS );
-      var crosshair = new Path( crosshairShape, {
+      const crosshair = new Path( crosshairShape, {
         centerX: 0,
         centerY: 0,
         stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
@@ -177,27 +177,27 @@ define( function( require ) {
 
       // Create the base of the crosshair
       // TODO: why is the fill the same as the stroke?
-      var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
+      const crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
         fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
         stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
         tandem: tandem.createTandem( 'crosshairMount' )
       } );
 
       // Create the voltage Reading reading
-      var voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
+      const voltageReading = new Text( '0.0' + ' ' + voltageUnitString, {
         font: ChargesAndFieldsConstants.DEFAULT_FONT,
         fill: 'black',
         stroke: 'black',
         maxWidth: 200,
         tandem: tandem.createTandem( 'voltageReading' )
       } );
-      var outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
+      const outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
         tandem: tandem.createTandem( 'outlineImage' )
       } );
       outlineImage.scale( 0.5 * 6 / 25 );
 
       // Create the background rectangle behind the voltage Reading
-      var backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
+      const backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
         fill: 'white',
         stroke: 'black',
         tandem: tandem.createTandem( 'backgroundRectangle' )
@@ -231,8 +231,8 @@ define( function( require ) {
       // procedure to create an icon Image of a measuringTape
       // first, create an actual measuring tape
 
-      var unspooledMeterTape = 30; // in view coordinates
-      var measuringTape = new MeasuringTapeNode( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
+      const unspooledMeterTape = 30; // in view coordinates
+      const measuringTape = new MeasuringTapeNode( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
         tipPositionProperty: new Vector2Property( new Vector2( unspooledMeterTape, 0 ), {
           tandem: tandem.createTandem( 'tipPositionProperty' ),
           phetioDocumentation: 'Tip position of measuring tape'
@@ -243,7 +243,7 @@ define( function( require ) {
       } );
 
       // second, create the measuringTape icon
-      var measuringTapeIcon = new Node( { children: [ measuringTape ] } );
+      const measuringTapeIcon = new Node( { children: [ measuringTape ] } );
 
       // Create the measuringTape icon using toImage
       measuringTape.toImage( function( image ) {

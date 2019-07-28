@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @constructor
@@ -19,9 +19,9 @@ define( function( require ) {
    * Drawn pointing to the right, with the origin at the center hole
    */
   function ElectricFieldArrowShape() {
-    var ratio = 2 / 5;
-    var circleRadius = 2;
-    var arrowLength = 40;
+    const ratio = 2 / 5;
+    const circleRadius = 2;
+    const arrowLength = 40;
 
     // Main body of the arrow
     ArrowShape.call( this, -ratio * arrowLength, 0, ( 1 - ratio ) * arrowLength, 0, {

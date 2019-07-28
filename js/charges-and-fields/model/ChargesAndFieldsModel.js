@@ -9,37 +9,37 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var Bounds2IO = require( 'DOT/Bounds2IO' );
-  var ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
-  var ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargesAndFieldsModelIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModelIO' );
-  var ElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensor' );
-  var ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
-  var ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
-  var ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
-  var ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
-  var ObservableArray = require( 'AXON/ObservableArray' );
-  var ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const Bounds2IO = require( 'DOT/Bounds2IO' );
+  const ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
+  const ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const ChargesAndFieldsModelIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModelIO' );
+  const ElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensor' );
+  const ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
+  const ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
+  const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
+  const ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
+  const ObservableArray = require( 'AXON/ObservableArray' );
+  const ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Property = require( 'AXON/Property' );
+  const PropertyIO = require( 'AXON/PropertyIO' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var GRID_MINOR_SPACING = ChargesAndFieldsConstants.GRID_MAJOR_SPACING / ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
-  var K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
-  var HEIGHT = ChargesAndFieldsConstants.HEIGHT;
-  var WIDTH = ChargesAndFieldsConstants.WIDTH;
+  const GRID_MINOR_SPACING = ChargesAndFieldsConstants.GRID_MAJOR_SPACING / ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
+  const K_CONSTANT = ChargesAndFieldsConstants.K_CONSTANT;
+  const HEIGHT = ChargesAndFieldsConstants.HEIGHT;
+  const WIDTH = ChargesAndFieldsConstants.WIDTH;
 
   // To avoid bugs, do not try to compute E-field at length scales smaller than MIN_DISTANCE_SCALE
-  var MIN_DISTANCE_SCALE = 1e-9;
+  const MIN_DISTANCE_SCALE = 1e-9;
 
   /**
    * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
@@ -55,7 +55,7 @@ define( function( require ) {
     // @public
     this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
 
-    var self = this;
+    const self = this;
 
     // @public (read-write) {function} - supplied by the view to indicate when the charges and sensors panel is visible
     // used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
@@ -139,7 +139,7 @@ define( function( require ) {
       tandem: tandem.createTandem( 'chargedParticles' ),
       phetioType: ObservableArrayIO( ChargedParticleIO )
     } ); // {ObservableArray.<ChargedParticle>}
-    var chargedParticles = this.chargedParticles;
+    const chargedParticles = this.chargedParticles;
 
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
     // This is the relevant array to calculate the electric field, and electric potential
@@ -152,7 +152,7 @@ define( function( require ) {
     this.electricFieldSensors = new ObservableArray( {
       phetioType: PropertyIO( ElectricFieldSensorIO )
     } ); // {ObservableArray.<ElectricFieldSensor>}
-    var electricFieldSensors = this.electricFieldSensors;
+    const electricFieldSensors = this.electricFieldSensors;
 
     // @public - electric potential sensor
     this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
@@ -186,7 +186,7 @@ define( function( require ) {
     // the following logic is the crux of the simulation
     this.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
 
-      var userControlledListener = function( isUserControlled ) {
+      const userControlledListener = function( isUserControlled ) {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
@@ -201,7 +201,7 @@ define( function( require ) {
 
       addedChargedParticle.isUserControlledProperty.link( userControlledListener );
 
-      var isActiveListener = function( isActive ) {
+      const isActiveListener = function( isActive ) {
 
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLines
         self.clearElectricPotentialLines();
@@ -225,7 +225,7 @@ define( function( require ) {
       addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
       // position and oldPosition refer to a charged particle
-      var positionListener = function( position, oldPosition ) {
+      const positionListener = function( position, oldPosition ) {
 
         self.updateIsPlayAreaCharged();
 
@@ -284,14 +284,14 @@ define( function( require ) {
     this.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
 
       // Listener for sensor position changes
-      var positionListener = function( position ) {
+      const positionListener = function( position ) {
         addedElectricFieldSensor.electricField = self.getElectricField( position );
       };
 
       // update the Electric Field Sensors upon a change of its own position
       addedElectricFieldSensor.positionProperty.link( positionListener );
 
-      var userControlledListener = function( isUserControlled ) {
+      const userControlledListener = function( isUserControlled ) {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
@@ -411,8 +411,8 @@ define( function( require ) {
      * @private
      */
     updateIsPlayAreaCharged: function() {
-      var netElectricCharge = 0; // {number} Total electric charge on screen
-      var numberActiveChargedParticles = 0; // {number} Total active charged particles on screen
+      let netElectricCharge = 0; // {number} Total electric charge on screen
+      let numberActiveChargedParticles = 0; // {number} Total active charged particles on screen
 
       this.activeChargedParticles.forEach( function( chargedParticle ) {
         numberActiveChargedParticles++;
@@ -433,9 +433,9 @@ define( function( require ) {
       else if ( numberActiveChargedParticles === 2 ) {
 
         // {boolean} indicator for a co-located pair
-        var colocated = this.activeChargedParticles.get( 1 ).positionProperty.get()
-                          .minus( this.activeChargedParticles.get( 0 ).positionProperty.get() )
-                          .magnitude < MIN_DISTANCE_SCALE;
+        const colocated = this.activeChargedParticles.get( 1 ).positionProperty.get()
+                            .minus( this.activeChargedParticles.get( 0 ).positionProperty.get() )
+                            .magnitude < MIN_DISTANCE_SCALE;
 
         this.isPlayAreaChargedProperty.set( colocated ? false : true );
 
@@ -446,8 +446,8 @@ define( function( require ) {
 
       // Check for two compensating pairs
       else if ( numberActiveChargedParticles === 4 ) {
-        var positiveChargePositionArray = [];
-        var negativeChargePositionArray = [];
+        const positiveChargePositionArray = [];
+        const negativeChargePositionArray = [];
         this.activeChargedParticles.forEach( function( chargedParticle ) {
           if ( chargedParticle.charge === 1 ) {
             positiveChargePositionArray.push( chargedParticle.positionProperty.get() );
@@ -484,7 +484,7 @@ define( function( require ) {
      */
     updateAllSensors: function() {
       this.electricPotentialSensor.update();
-      for ( var i = 0; i < this.electricFieldSensors.length; i++ ) {
+      for ( let i = 0; i < this.electricFieldSensors.length; i++ ) {
         this.electricFieldSensors.get( i ).update();
       }
     },
@@ -496,14 +496,14 @@ define( function( require ) {
      * @returns {Vector2} electricField
      */
     getElectricField: function( position ) {
-      var electricField = new Vector2( 0, 0 );
+      const electricField = new Vector2( 0, 0 );
 
       if ( !this.isPlayAreaChargedProperty.get() ) {
         return electricField;
       }
 
       this.activeChargedParticles.forEach( function( chargedParticle ) {
-        var distanceSquared = chargedParticle.positionProperty.get().distanceSquared( position );
+        const distanceSquared = chargedParticle.positionProperty.get().distanceSquared( position );
 
         // Avoid bugs stemming from large or infinite fields (#82, #84, #85).
         // Assign the E-field an angle of zero and a magnitude well above the maximum allowed value.
@@ -513,10 +513,10 @@ define( function( require ) {
           return;
         }
 
-        var distancePowerCube = Math.pow( distanceSquared, 1.5 );
+        const distancePowerCube = Math.pow( distanceSquared, 1.5 );
 
         // For performance reasons, we don't want to generate more vector allocations
-        var electricFieldContribution = {
+        const electricFieldContribution = {
           x: ( position.x - chargedParticle.positionProperty.get().x ) * ( chargedParticle.charge ) / distancePowerCube,
           y: ( position.y - chargedParticle.positionProperty.get().y ) * ( chargedParticle.charge ) / distancePowerCube
         };
@@ -533,13 +533,13 @@ define( function( require ) {
      * @returns {number} electricPotential
      */
     getElectricPotential: function( position ) {
-      var electricPotential = 0;
+      let electricPotential = 0;
 
       if ( !this.isPlayAreaChargedProperty.get() ) {
         return electricPotential;
       }
 
-      var netChargeOnSite = this.getCharge( position ); // the net charge at position
+      const netChargeOnSite = this.getCharge( position ); // the net charge at position
 
       if ( netChargeOnSite > 0 ) {
         return Number.POSITIVE_INFINITY;
@@ -549,7 +549,7 @@ define( function( require ) {
       }
       else {
         this.activeChargedParticles.forEach( function( chargedParticle ) {
-          var distance = chargedParticle.positionProperty.get().distance( position );
+          const distance = chargedParticle.positionProperty.get().distance( position );
 
           if ( distance > 0 ) {
             electricPotential += ( chargedParticle.charge ) / distance;
@@ -568,7 +568,7 @@ define( function( require ) {
      * @returns {number}
      */
     getCharge: function( position ) {
-      var charge = 0;
+      const charge = 0;
       this.activeChargedParticles.forEach( function( chargedParticle ) {
         if ( chargedParticle.positionProperty.value.equals( position ) ) {
           charge += chargedParticle.charge;
@@ -599,7 +599,7 @@ define( function( require ) {
       }
 
       // If we are too close to a charged particle, also bail out.
-      var isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), function( chargedParticle ) {
+      const isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), function( chargedParticle ) {
         // in model coordinates, should be less than the radius (in the view) of a charged particle
         return chargedParticle.positionProperty.get().distance( position ) < 0.03;
       } ) );
@@ -607,7 +607,7 @@ define( function( require ) {
         return;
       }
 
-      var electricPotentialLine = new ElectricPotentialLine(
+      const electricPotentialLine = new ElectricPotentialLine(
         position,
         this.enlargedBounds,
         this.activeChargedParticles,
@@ -629,9 +629,8 @@ define( function( require ) {
      * USED IN DEBUGGING MODE
      */
     addManyElectricPotentialLines: function( numberOfLines ) {
-      var i;
-      for ( i = 0; i < numberOfLines; i++ ) {
-        var position = new Vector2(
+      for ( let i = 0; i < numberOfLines; i++ ) {
+        const position = new Vector2(
           WIDTH * ( phet.joist.random.nextDouble() - 0.5 ),
           HEIGHT * ( phet.joist.random.nextDouble() - 0.5 ) ); // a random position on the graph
 
@@ -662,7 +661,7 @@ define( function( require ) {
     },
 
     snapAllElements: function() {
-      var self = this;
+      const self = this;
 
       this.activeChargedParticles.forEach( function( chargedParticles ) {
         self.snapToGridLines( chargedParticles.positionProperty );

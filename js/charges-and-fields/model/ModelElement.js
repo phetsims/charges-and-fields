@@ -10,14 +10,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var Emitter = require( 'AXON/Emitter' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector2Property = require( 'DOT/Vector2Property' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const Emitter = require( 'AXON/Emitter' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   /**
    * @param {Object} options
@@ -25,7 +25,7 @@ define( function( require ) {
    */
   function ModelElement( options ) {
 
-    var tandem = options.tandem;// required
+    const tandem = options.tandem;// required
 
     // @public
     this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
@@ -89,16 +89,16 @@ define( function( require ) {
     animate: function() {
 
       assert && assert( this.animationTween === null, 'cannot start animating while already animating' );
-      var self = this;
+      const self = this;
 
       // distance from current position to the destination position
-      var distanceToDestination = this.positionProperty.get().distance( this.initialPosition );
+      const distanceToDestination = this.positionProperty.get().distance( this.initialPosition );
 
       // time to perform the animation in milliseconds, time is proportional to distance
-      var animationTime = ( distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY ) * 1000; // in milliseconds
+      const animationTime = ( distanceToDestination / ChargesAndFieldsConstants.ANIMATION_VELOCITY ) * 1000; // in milliseconds
 
       // convenience variable for the Tween animation
-      var position = {
+      const position = {
         x: this.positionProperty.get().x,
         y: this.positionProperty.get().y
       };

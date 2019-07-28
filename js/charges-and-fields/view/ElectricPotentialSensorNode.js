@@ -13,35 +13,35 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var DragListener = require( 'SCENERY/listeners/DragListener' );
-  var EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
+  const EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
+  const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Shape = require( 'KITE/Shape' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
 
   // constants
-  var CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
+  const CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
 
   // strings
-  var equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
-  var pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
-  var voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
+  const equipotentialString = require( 'string!CHARGES_AND_FIELDS/equipotential' );
+  const pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
+  const voltageUnitString = require( 'string!CHARGES_AND_FIELDS/voltageUnit' );
 
   // images
-  var electricPotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
+  const electricPotentialLinePanelOutlineImage = require( 'image!CHARGES_AND_FIELDS/electricPotentialPanelOutline.png' );
 
   /**
    *
@@ -66,7 +66,7 @@ define( function( require ) {
                                         isPlayAreaChargedProperty,
                                         tandem ) {
 
-    var self = this;
+    const self = this;
 
     // Call the super constructor
     Node.call( this, {
@@ -81,7 +81,7 @@ define( function( require ) {
     this.isUserControlledProperty = new Property( false );
 
     // Create the centered circle around the crosshair. The origin of this node is the center of the circle
-    var circle = new Circle( CIRCLE_RADIUS, {
+    const circle = new Circle( CIRCLE_RADIUS, {
       lineWidth: 3,
       centerX: 0,
       centerY: 0,
@@ -90,11 +90,11 @@ define( function( require ) {
     } );
 
     // Create the crosshair
-    var crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
+    const crosshairShape = new Shape().moveTo( -CIRCLE_RADIUS, 0 )
       .lineTo( CIRCLE_RADIUS, 0 )
       .moveTo( 0, -CIRCLE_RADIUS )
       .lineTo( 0, CIRCLE_RADIUS );
-    var crosshair = new Path( crosshairShape, {
+    const crosshair = new Path( crosshairShape, {
       centerX: 0,
       centerY: 0,
       stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
@@ -103,14 +103,14 @@ define( function( require ) {
 
     // Create the base of the crosshair
     // TODO: why are the fill and stroke set to the same thing?
-    var crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
+    const crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
       fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
       stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
       tandem: tandem.createTandem( 'crosshairMount' )
     } );
 
     // Create the text node above the readout
-    var electricPotentialPanelTitleText = new Text( equipotentialString, {
+    const electricPotentialPanelTitleText = new Text( equipotentialString, {
       maxWidth: 85,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       fill: ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty,
@@ -118,7 +118,7 @@ define( function( require ) {
     } );
 
     // Create the button that allows the board to be cleared of all lines.
-    var clearButton = new EraserButton( {
+    const clearButton = new EraserButton( {
       tandem: tandem.createTandem( 'clearButton' ),
       baseColor: '#f2f2f2',
       iconWidth: 23,
@@ -128,20 +128,20 @@ define( function( require ) {
     } );
 
     // Create the button that allows to plot the ElectricPotential Lines
-    var plotElectricPotentialLineButton = new PencilButton( tandem.createTandem( 'plotElectricPotentialLineButton' ), {
+    const plotElectricPotentialLineButton = new PencilButton( tandem.createTandem( 'plotElectricPotentialLineButton' ), {
       baseColor: '#f2f2f2',
       listener: function() {
         addElectricPotentialLine();
       }
     } );
 
-    var isPlayAreaChargedListener = function( charged ) {
+    const isPlayAreaChargedListener = function( charged ) {
       plotElectricPotentialLineButton.enabled = charged;
     };
     isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
     // See see https://github.com/phetsims/charges-and-fields/issues/73
-    var doNotStartDragListener = {
+    const doNotStartDragListener = {
       down: function( event ) {
         event.handle();
       }
@@ -150,7 +150,7 @@ define( function( require ) {
     plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
 
     // Create the voltage readout
-    var voltageReadout = new Text( '', {
+    const voltageReadout = new Text( '', {
       maxWidth: 65,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       tandem: tandem.createTandem( 'voltageReadout' ),
@@ -158,7 +158,7 @@ define( function( require ) {
     } );
 
     // The clear and plot buttons
-    var buttonsBox = new LayoutBox( {
+    const buttonsBox = new LayoutBox( {
       orientation: 'horizontal',
       spacing: 10,
       children: [ clearButton, plotElectricPotentialLineButton ],
@@ -167,8 +167,8 @@ define( function( require ) {
     } );
 
     // Create the background rectangle behind the voltage Reading
-    var backgroundAdjustment = 0;
-    var backgroundRectangle = new Rectangle(
+    const backgroundAdjustment = 0;
+    const backgroundRectangle = new Rectangle(
       backgroundAdjustment,
       0,
       buttonsBox.width - backgroundAdjustment * 2,
@@ -179,12 +179,12 @@ define( function( require ) {
       } );
 
     // Create the body of the sensor
-    var outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
+    const outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
       tandem: tandem.createTandem( 'outlineImage' )
     } );
 
     // Organize the content of the control panel
-    var bodyContent = new LayoutBox( {
+    const bodyContent = new LayoutBox( {
       spacing: 7,
       children: [ electricPotentialPanelTitleText, backgroundRectangle, buttonsBox ],
       pickable: true
@@ -203,7 +203,7 @@ define( function( require ) {
     updateVoltageReadout( electricPotentialSensor.electricPotentialProperty.get() );
 
     // Add the nodes to the body
-    var bodyNode = new Node();
+    const bodyNode = new Node();
     bodyNode.addChild( outlineImage ); // must go first
     bodyNode.addChild( bodyContent );
     bodyNode.addChild( voltageReadout ); // must be last
@@ -237,13 +237,13 @@ define( function( require ) {
     bodyNode.top = crosshairMount.bottom;
 
     // Register for synchronization with model.
-    var positionListener = function( position ) {
+    const positionListener = function( position ) {
       self.translation = modelViewTransform.modelToViewPosition( position );
     };
     electricPotentialSensor.positionProperty.link( positionListener );
 
     // Update the value of the electric potential on the panel and the fill color on the crosshair
-    var potentialListener = function( electricPotential ) {
+    const potentialListener = function( electricPotential ) {
       // update the text of the voltage
       updateVoltageReadout( electricPotential );
 
@@ -308,10 +308,10 @@ define( function( require ) {
 
       // let's find the exponent as in
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
-      var absolute = Math.abs( number );
-      var exponent = Math.floor( Math.log( absolute ) / Math.log( 10 ) ); // Math.log10 using Math.log
+      const absolute = Math.abs( number );
+      const exponent = Math.floor( Math.log( absolute ) / Math.log( 10 ) ); // Math.log10 using Math.log
 
-      var decimalPlaces;
+      let decimalPlaces;
 
       if ( exponent >= options.maxDecimalPlaces ) {
         decimalPlaces = 0;

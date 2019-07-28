@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
-  var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  var ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  var ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  var ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const CanvasNode = require( 'SCENERY/nodes/CanvasNode' );
+  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
+  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
+  const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // Spacing in the model coordinate frame.
-  var ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
+  const ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
   /**
    * @constructor
@@ -45,7 +45,7 @@ define( function( require ) {
     this.isVisibleProperty = isVisibleProperty;
 
     // Invalidate paint on a bunch of changes
-    var invalidateSelfListener = this.forceRepaint.bind( this );
+    const invalidateSelfListener = this.forceRepaint.bind( this );
     ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
     ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
@@ -61,15 +61,15 @@ define( function( require ) {
     isVisibleProperty.linkAttribute( this, 'visible' );
 
     this.modelPositions = []; // {Array.<Vector2>}
-    var width = modelBounds.width;
-    var height = modelBounds.height;
-    var numHorizontal = Math.ceil( width / ELECTRIC_POTENTIAL_SENSOR_SPACING );
-    var numVertical = Math.ceil( height / ELECTRIC_POTENTIAL_SENSOR_SPACING );
-    for ( var row = 0; row < numVertical; row++ ) {
-      var y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
+    const width = modelBounds.width;
+    const height = modelBounds.height;
+    const numHorizontal = Math.ceil( width / ELECTRIC_POTENTIAL_SENSOR_SPACING );
+    const numVertical = Math.ceil( height / ELECTRIC_POTENTIAL_SENSOR_SPACING );
+    for ( let row = 0; row < numVertical; row++ ) {
+      const y = modelBounds.minY + ( row + 0.5 ) * height / numVertical;
 
-      for ( var col = 0; col < numHorizontal; col++ ) {
-        var x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
+      for ( let col = 0; col < numHorizontal; col++ ) {
+        const x = modelBounds.minX + ( col + 0.5 ) * width / numHorizontal;
 
         this.modelPositions.push( new Vector2( x, y ) );
       }
@@ -103,29 +103,29 @@ define( function( require ) {
     },
 
     updateElectricPotentials: function() {
-      var kConstant = ChargesAndFieldsConstants.K_CONSTANT;
+      const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
-      var numChanges = this.chargeTracker.queue.length;
+      const numChanges = this.chargeTracker.queue.length;
 
-      for ( var i = 0; i < numChanges; i++ ) {
-        var item = this.chargeTracker.queue[ i ];
-        var oldPosition = item.oldPosition;
-        var newPosition = item.newPosition;
-        var charge = item.charge;
+      for ( let i = 0; i < numChanges; i++ ) {
+        const item = this.chargeTracker.queue[ i ];
+        const oldPosition = item.oldPosition;
+        const newPosition = item.newPosition;
+        const charge = item.charge;
 
-        for ( var j = 0; j < this.modelPositions.length; j++ ) {
-          var position = this.modelPositions[ j ];
-          var electricPotential = this.electricPotentials[ j ];
+        for ( let j = 0; j < this.modelPositions.length; j++ ) {
+          const position = this.modelPositions[ j ];
+          const electricPotential = this.electricPotentials[ j ];
 
           if ( oldPosition ) {
-            var oldDistance = position.distance( oldPosition );
+            const oldDistance = position.distance( oldPosition );
             if ( oldDistance !== 0 ) {
               electricPotential -= charge * kConstant / oldDistance;
             }
           }
 
           if ( newPosition ) {
-            var newDistance = position.distance( newPosition );
+            const newDistance = position.distance( newPosition );
             if ( newDistance !== 0 ) {
               electricPotential += charge * kConstant / newDistance;
             }
@@ -139,15 +139,15 @@ define( function( require ) {
 
       // Update our direct canvas if necessary
       if ( numChanges || this.directCanvasDirty ) {
-        var zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
-        var positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
-        var negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
-        var data = this.imageData.data;
+        const zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
+        const positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
+        const negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
+        const data = this.imageData.data;
 
-        for ( var k = 0; k < this.electricPotentials.length; k++ ) {
-          var value = this.electricPotentials[ k ] / 40; // mapped with special constant
+        for ( let k = 0; k < this.electricPotentials.length; k++ ) {
+          let value = this.electricPotentials[ k ] / 40; // mapped with special constant
 
-          var extremeColor;
+          let extremeColor;
           if ( value > 0 ) {
             extremeColor = positiveColor;
           }
@@ -157,7 +157,7 @@ define( function( require ) {
           }
           value = Math.min( value, 1 ); // clamp to [0,1]
 
-          var offset = 4 * k;
+          const offset = 4 * k;
           data[ offset + 0 ] = extremeColor.r * value + zeroColor.r * ( 1 - value );
           data[ offset + 1 ] = extremeColor.g * value + zeroColor.g * ( 1 - value );
           data[ offset + 2 ] = extremeColor.b * value + zeroColor.b * ( 1 - value );
@@ -180,10 +180,10 @@ define( function( require ) {
 
       context.save();
 
-      var sx = this.viewBounds.width / this.directCanvas.width;
-      var sy = -this.viewBounds.height / this.directCanvas.height;
-      var tx = this.viewBounds.minX;
-      var ty = this.viewBounds.maxY;
+      const sx = this.viewBounds.width / this.directCanvas.width;
+      const sy = -this.viewBounds.height / this.directCanvas.height;
+      const tx = this.viewBounds.minX;
+      const ty = this.viewBounds.maxY;
       context.transform( sx, 0, 0, sy, tx, ty );
 
       context.drawImage( this.directCanvas, 0, 0 );
