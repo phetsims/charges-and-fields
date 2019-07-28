@@ -115,7 +115,7 @@ define( function( require ) {
 
         for ( let j = 0; j < this.modelPositions.length; j++ ) {
           const position = this.modelPositions[ j ];
-          const electricPotential = this.electricPotentials[ j ];
+          let electricPotential = this.electricPotentials[ j ];
 
           if ( oldPosition ) {
             const oldDistance = position.distance( oldPosition );

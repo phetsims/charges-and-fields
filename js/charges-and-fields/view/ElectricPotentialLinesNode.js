@@ -90,7 +90,7 @@ define( function( require ) {
 
     // finds the closest location on positionArray to the position of the cursor
     const locationFunction = function( cursorLocation ) {
-      const smallestDistanceSquared = Number.POSITIVE_INFINITY;
+      let smallestDistanceSquared = Number.POSITIVE_INFINITY;
       let closestLocation; // {Vector2}
       electricPotentialLine.positionArray.forEach( function( position ) {
         const distanceSquared = position.distanceSquared( cursorLocation );
@@ -181,8 +181,9 @@ define( function( require ) {
     this.addChild( pathsNode );
 
     // Create and add the parent node for the circles (used in DEBUG mode)
+    let circlesNode;
     if ( IS_DEBUG ) {
-      const circlesNode = new Node();
+      circlesNode = new Node();
       this.addChild( circlesNode );
     }
 

@@ -171,18 +171,18 @@ define( function( require ) {
        * i.e. after joining all the points, the directed line would be made of points that have an electric field
        * pointing clockwise (yes  clockwise) to the direction of the line.
        */
-      const stepCounter = 0; // {number} integer
+      let stepCounter = 0; // {number} integer
 
       let nextClockwisePosition; // {Vector2}
       let nextCounterClockwisePosition; // {Vector2}
-      const currentClockwisePosition = position; // {Vector2}
-      const currentCounterClockwisePosition = position; // {Vector2}
+      let currentClockwisePosition = position; // {Vector2}
+      let currentCounterClockwisePosition = position; // {Vector2}
       const clockwisePositionArray = [];
       const counterClockwisePositionArray = [];
 
       // initial epsilon distance for the two heads.
-      const clockwiseEpsilonDistance = MIN_EPSILON_DISTANCE;
-      const counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
+      let clockwiseEpsilonDistance = MIN_EPSILON_DISTANCE;
+      let counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
 
       while ( ( stepCounter < MAX_STEPS ) && !this.isLineClosed &&
               ( this.isEquipotentialLineTerminatingInsideBounds || ( stepCounter < MIN_STEPS ) ) ) {
@@ -275,7 +275,7 @@ define( function( require ) {
       prunedPositionArray.push( positionArray[ 0 ] );
 
       const maxOffset = 0.001; // in model coordinates, the threshold of visual acuity when rendered on the screen
-      const lastPushedIndex = 0; // index of the last positionArray element pushed into prunedPosition
+      let lastPushedIndex = 0; // index of the last positionArray element pushed into prunedPosition
 
       for ( let i = 1; i < length - 1; i++ ) {
         const lastPushedPoint = prunedPositionArray[ prunedPositionArray.length - 1 ];

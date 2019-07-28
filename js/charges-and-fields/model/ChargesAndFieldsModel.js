@@ -568,7 +568,7 @@ define( function( require ) {
      * @returns {number}
      */
     getCharge: function( position ) {
-      const charge = 0;
+      let charge = 0;
       this.activeChargedParticles.forEach( function( chargedParticle ) {
         if ( chargedParticle.positionProperty.value.equals( position ) ) {
           charge += chargedParticle.charge;
