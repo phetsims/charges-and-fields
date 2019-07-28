@@ -74,7 +74,7 @@ define( function( require ) {
 
       // Cancel animation (if any) so it doesn't try to update a disposed ModelElement
       this.animationTween && this.animationTween.stop();
-      PhetioObject.prototype.dispose.call( this );
+      super.dispose();
     }
 
     /**
@@ -84,7 +84,6 @@ define( function( require ) {
     animate() {
 
       assert && assert( this.animationTween === null, 'cannot start animating while already animating' );
-      const self = this;
 
       // distance from current position to the destination position
       const distanceToDestination = this.positionProperty.get().distance( this.initialPosition );
@@ -101,11 +100,11 @@ define( function( require ) {
       this.animationTween = new TWEEN.Tween( position ).to( {
         x: this.initialPosition.x,
         y: this.initialPosition.y
-      }, animationTime ).easing( TWEEN.Easing.Cubic.InOut ).onUpdate( function() {
-        self.positionProperty.set( new Vector2( position.x, position.y ) );
-      } ).onComplete( function() {
-        self.animationTween = null; // done with the animation
-        self.returnedToOriginEmitter.emit(); // model element can be removed from its observable array
+      }, animationTime ).easing( TWEEN.Easing.Cubic.InOut ).onUpdate( () => {
+        this.positionProperty.set( new Vector2( position.x, position.y ) );
+      } ).onComplete( () => {
+        this.animationTween = null; // done with the animation
+        this.returnedToOriginEmitter.emit(); // model element can be removed from its observable array
       } );
 
       this.animationTween.start( phet.joist.elapsedTime );

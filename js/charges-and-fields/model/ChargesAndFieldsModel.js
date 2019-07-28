@@ -61,8 +61,6 @@ define( function( require ) {
       // @public
       this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
 
-      const self = this;
-
       // @public (read-write) {function} - supplied by the view to indicate when the charges and sensors panel is visible
       // used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
       this.isChargesAndSensorsPanelDisplayed = null;
@@ -179,9 +177,9 @@ define( function( require ) {
       //
       //----------------------------------------------------------------------------------------
 
-      this.snapToGridProperty.link( function( snapToGrid ) {
+      this.snapToGridProperty.link( snapToGrid => {
         if ( snapToGrid ) {
-          self.snapAllElements();
+          this.snapAllElements();
         }
       } );
 
@@ -190,16 +188,16 @@ define( function( require ) {
       //------------------------
 
       // the following logic is the crux of the simulation
-      this.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
+      this.chargedParticles.addItemAddedListener( addedChargedParticle => {
 
-        const userControlledListener = function( isUserControlled ) {
+        const userControlledListener = isUserControlled => {
 
           // determine if the charge particle is no longer controlled by the user and is inside the enclosure
           if ( !isUserControlled &&
 
                // only drop in if the toolbox is showing (may be hidden by phet-io)
-               self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
-               self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
+               this.isChargesAndSensorsPanelDisplayed && this.isChargesAndSensorsPanelDisplayed() &&
+               this.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
             addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
             addedChargedParticle.animate(); // animate the charge to its destination position
           }
@@ -207,42 +205,42 @@ define( function( require ) {
 
         addedChargedParticle.isUserControlledProperty.link( userControlledListener );
 
-        const isActiveListener = function( isActive ) {
+        const isActiveListener = isActive => {
 
           // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLines
-          self.clearElectricPotentialLines();
+          this.clearElectricPotentialLines();
 
           if ( isActive ) {
             // add particle to the activeChargedParticle observable array
             // use for the webGlNode
-            self.activeChargedParticles.push( addedChargedParticle );
+            this.activeChargedParticles.push( addedChargedParticle );
           }
           else {
             // remove particle from the activeChargeParticle array
-            self.activeChargedParticles.remove( addedChargedParticle );
+            this.activeChargedParticles.remove( addedChargedParticle );
           }
           // update the status of the isPlayAreaCharged,  to find is there is at least one active charge particle on board
-          self.updateIsPlayAreaCharged();
+          this.updateIsPlayAreaCharged();
 
           // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
-          self.updateAllSensors();
+          this.updateAllSensors();
         };
 
         addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
         // position and oldPosition refer to a charged particle
-        const positionListener = function( position, oldPosition ) {
+        const positionListener = ( position, oldPosition ) => {
 
-          self.updateIsPlayAreaCharged();
+          this.updateIsPlayAreaCharged();
 
           // verify that the charge isActive before doing any charge-dependent updates to the model
           if ( addedChargedParticle.isActiveProperty.get() ) {
 
             // remove electricPotential lines when the position of a charged particle changes and the charge isActive
-            self.clearElectricPotentialLines();
+            this.clearElectricPotentialLines();
 
             // update the electricPotential and electricField sensors
-            self.updateAllSensors();
+            this.updateAllSensors();
 
           } // end of if (isActive) statement
         };
@@ -265,46 +263,46 @@ define( function( require ) {
       // AddItem Removed Listener on the charged Particles Observable Array
       //------------------------
 
-      this.chargedParticles.addItemRemovedListener( function( removedChargeParticle ) {
+      this.chargedParticles.addItemRemovedListener( removedChargeParticle => {
         // check that the particle was active before updating charge dependent model components
-        if ( removedChargeParticle.isActiveProperty.get() && !self.isResetting ) {
+        if ( removedChargeParticle.isActiveProperty.get() && !this.isResetting ) {
 
           // Remove electricPotential lines
-          self.clearElectricPotentialLines();
+          this.clearElectricPotentialLines();
 
           // Update all the visible sensors
-          self.updateAllSensors();
+          this.updateAllSensors();
         }
 
         // remove particle from the activeChargedParticles array
-        self.activeChargedParticles.remove( removedChargeParticle );
+        this.activeChargedParticles.remove( removedChargeParticle );
 
         // update the property isPlayAreaCharged to see if is there at least one active charge on the board
-        self.updateIsPlayAreaCharged();
+        this.updateIsPlayAreaCharged();
       } );
 
       //------------------------
       // AddItem Added Listener on the electric Field Sensors Observable Array
       //------------------------
 
-      this.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
+      this.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
 
         // Listener for sensor position changes
-        const positionListener = function( position ) {
-          addedElectricFieldSensor.electricField = self.getElectricField( position );
+        const positionListener = position => {
+          addedElectricFieldSensor.electricField = this.getElectricField( position );
         };
 
         // update the Electric Field Sensors upon a change of its own position
         addedElectricFieldSensor.positionProperty.link( positionListener );
 
-        const userControlledListener = function( isUserControlled ) {
+        const userControlledListener = isUserControlled => {
 
           // determine if the sensor is no longer controlled by the user and is inside the enclosure
           if ( !isUserControlled &&
 
                // only drop in if the toolbox is showing (may be hidden by phet-io)
-               self.isChargesAndSensorsPanelDisplayed && self.isChargesAndSensorsPanelDisplayed() &&
-               self.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
+               this.isChargesAndSensorsPanelDisplayed && this.isChargesAndSensorsPanelDisplayed() &&
+               this.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
             addedElectricFieldSensor.isActiveProperty.set( false );
             addedElectricFieldSensor.animate();
           }
@@ -658,19 +656,12 @@ define( function( require ) {
     }
 
     snapAllElements() {
-      const self = this;
+      this.activeChargedParticles.forEach( chargedParticles => this.snapToGridLines( chargedParticles.positionProperty ) );
+      this.electricFieldSensors.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
 
-      this.activeChargedParticles.forEach( function( chargedParticles ) {
-        self.snapToGridLines( chargedParticles.positionProperty );
-      } );
-
-      this.electricFieldSensors.forEach( function( electricFieldSensor ) {
-        self.snapToGridLines( electricFieldSensor.positionProperty );
-      } );
-
-      self.snapToGridLines( this.electricPotentialSensor.positionProperty );
-      self.snapToGridLines( this.measuringTape.basePositionProperty );
-      self.snapToGridLines( this.measuringTape.tipPositionProperty );
+      this.snapToGridLines( this.electricPotentialSensor.positionProperty );
+      this.snapToGridLines( this.measuringTape.basePositionProperty );
+      this.snapToGridLines( this.measuringTape.tipPositionProperty );
     }
   }
 

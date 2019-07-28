@@ -61,7 +61,7 @@ define( function( require ) {
      */
     dispose() {
       this.electricFieldProperty.dispose();
-      ModelElement.prototype.dispose.call( this );
+      super.dispose();
     }
   }
 

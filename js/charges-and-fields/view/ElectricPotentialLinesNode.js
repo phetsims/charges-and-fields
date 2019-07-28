@@ -116,7 +116,7 @@ define( function( require ) {
 
     dispose() {
       this.disposeVoltageLabel();
-      Node.prototype.dispose.call( this );
+      super.dispose();
     }
   }
 

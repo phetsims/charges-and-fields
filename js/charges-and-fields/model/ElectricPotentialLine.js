@@ -23,7 +23,7 @@ define( function( require ) {
   const MAX_EPSILON_DISTANCE = 0.05; // {number} maximum step length along electricPotential in meters
   const MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
 
-  class ElectricPotentialLine {
+  class ElectricPotentialLine extends PhetioObject {
 
     /**
      *
@@ -43,6 +43,11 @@ define( function( require ) {
                  isPlayAreaChargedProperty,
                  tandem ) {
 
+      super( {
+        tandem: tandem,
+        phetioType: ElectricPotentialLineIO
+      } );
+
       this.getElectricPotential = getElectricPotential; // @private static
       this.getElectricField = getElectricField; // @private static
       this.chargedParticles = chargedParticles; // @private static
@@ -58,11 +63,6 @@ define( function( require ) {
 
       // @public (read-only) - used to identify tandems for the corresponding views
       this.electricPotentialLineTandem = tandem;
-
-      PhetioObject.call( this, {
-        tandem: tandem,
-        phetioType: ElectricPotentialLineIO
-      } );
     }
 
     /**

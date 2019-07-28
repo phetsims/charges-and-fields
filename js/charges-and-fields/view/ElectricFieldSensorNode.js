@@ -304,7 +304,7 @@ define( function( require ) {
 
     dispose() {
       this.disposeElectricFieldSensorNode();
-      ElectricFieldSensorRepresentationNode.prototype.dispose.call( this );
+      super.dispose();
     }
   }
 
