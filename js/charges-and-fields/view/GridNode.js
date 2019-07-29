@@ -50,8 +50,6 @@ define( function( require ) {
 
       super();
 
-      const self = this;
-
       const gridLinesParent = new Node();
 
       // separation in model coordinates of the major grid lines
@@ -149,8 +147,8 @@ define( function( require ) {
 
       // Show/ Hide the grid
       // no need to unlink, present for the lifetime of the simulation
-      isGridVisibleProperty.link( function( isVisible ) {
-        self.visible = isVisible;
+      isGridVisibleProperty.link( isVisible => {
+        this.visible = isVisible;
       } );
     }
   }

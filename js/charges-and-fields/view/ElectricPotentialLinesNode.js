@@ -46,7 +46,6 @@ define( function( require ) {
       const electricPotential = electricPotentialLine.electricPotential;
       const position = electricPotentialLine.position;
 
-      const self = this;
       const locationProperty = new Vector2Property( position, {
         tandem: tandem.createTandem( 'locationProperty' ),
         useDeepEquality: true
@@ -57,9 +56,9 @@ define( function( require ) {
         locationProperty: locationProperty,
         tandem: tandem.createTandem( 'dragListener' ),
         transform: modelViewTransform,
-        start: function( event ) {
+        start: event => {
           // Move the label to the front of this layer when grabbed by the user.
-          self.moveToFront();
+          this.moveToFront();
         }
       } );
       this.addInputListener( movableDragHandler );
@@ -89,7 +88,7 @@ define( function( require ) {
       this.addChild( voltageLabelText );
 
       // finds the closest location on positionArray to the position of the cursor
-      const locationFunction = function( cursorLocation ) {
+      const locationFunction = cursorLocation => {
         let smallestDistanceSquared = Number.POSITIVE_INFINITY;
         let closestLocation; // {Vector2}
         electricPotentialLine.positionArray.forEach( function( position ) {
@@ -99,7 +98,7 @@ define( function( require ) {
             closestLocation = position;
           }
         } );
-        self.center = modelViewTransform.modelToViewPosition( closestLocation );
+        this.center = modelViewTransform.modelToViewPosition( closestLocation );
       };
 
       locationProperty.link( locationFunction );
@@ -151,13 +150,12 @@ define( function( require ) {
       }, options );
 
       // create and add all the circles
-      positionArray.forEach( function( position ) {
+      positionArray.forEach( position => {
         const circle = new Circle( options.radius, options );
         circle.center = modelViewTransform.modelToViewPosition( position );
-        self.addChild( circle );
+        this.addChild( circle );
       } );
     }
-
   }
 
   /**

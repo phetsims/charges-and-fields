@@ -56,8 +56,6 @@ define( function( require ) {
 
       super( { tandem: tandem } );
 
-      const self = this;
-
       this.modelElement = electricFieldSensor; // @public (read-only)
 
       // Expand the touch area
@@ -183,8 +181,8 @@ define( function( require ) {
       isDirectionLabelVisibleDerivedProperty.link( isDirectionLabelVisibleListener );
 
       // Register for synchronization with model.
-      const positionListener = function( position ) {
-        self.translation = modelViewTransform.modelToViewPosition( position );
+      const positionListener = position => {
+        this.translation = modelViewTransform.modelToViewPosition( position );
       };
       electricFieldSensor.positionProperty.link( positionListener );
 
@@ -194,16 +192,16 @@ define( function( require ) {
         tandem: tandem.createTandem( 'dragListener' ),
         dragBoundsProperty: availableModelBoundsProperty,
         transform: modelViewTransform,
-        canStartPress: function() { return !electricFieldSensor.animationTween; },
-        offsetLocation: function( point, listener ) {
+        canStartPress: () => { return !electricFieldSensor.animationTween; },
+        offsetLocation: ( point, listener ) => {
           return listener.pointer instanceof Touch ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
         },
-        start: function( event, listener ) {
+        start: ( event, listener ) => {
           // Move the sensor to the front of this layer when grabbed by the user.
-          self.moveToFront();
+          this.moveToFront();
         },
 
-        end: function( event, listener ) {
+        end: ( event, listener ) => {
           snapToGridLines( electricFieldSensor.positionProperty );
 
           if ( !enclosureBounds.containsPoint( electricFieldSensor.positionProperty.get() ) ) {
@@ -222,17 +220,17 @@ define( function( require ) {
 
       // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
       let isDragListenerAttached = false;
-      const isInteractiveListener = function() {
+      const isInteractiveListener = () => {
         const isInteractive = electricFieldSensor.isInteractiveProperty.get();
 
         if ( isDragListenerAttached !== isInteractive ) {
           if ( isInteractive ) {
-            self.cursor = 'pointer';
-            self.addInputListener( self.movableDragHandler );
+            this.cursor = 'pointer';
+            this.addInputListener( this.movableDragHandler );
           }
           else {
-            self.cursor = null;
-            self.removeInputListener( self.movableDragHandler );
+            this.cursor = null;
+            this.removeInputListener( this.movableDragHandler );
           }
 
           isDragListenerAttached = isInteractive;

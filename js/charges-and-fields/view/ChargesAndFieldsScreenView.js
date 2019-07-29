@@ -77,8 +77,6 @@ define( function( require ) {
         tandem: tandem
       } );
 
-      const self = this;
-
       // Create a property that registers the model bounds based on the screen size
       // the availableModelBounds should not be reset when the resetAllButton is pressed,
       this.availableModelBoundsProperty = new Property( model.enlargedBounds, {
@@ -236,12 +234,12 @@ define( function( require ) {
         return trail.isVisible() && trail.rootNode() === phet.joist.display.rootNode;
       };
 
-      function updateSensorPanelLayout() {
-        chargesAndSensorsPanel.bottom = self.layoutBounds.bottom - 15;
-        chargesAndSensorsPanel.centerX = self.layoutBounds.centerX;
+      const updateSensorPanelLayout = () => {
+        chargesAndSensorsPanel.bottom = this.layoutBounds.bottom - 15;
+        chargesAndSensorsPanel.centerX = this.layoutBounds.centerX;
 
         model.chargesAndSensorsEnclosureBoundsProperty.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
-      }
+      };
 
       chargesAndSensorsPanel.on( 'localBounds', updateSensorPanelLayout );
       updateSensorPanelLayout();
@@ -258,14 +256,14 @@ define( function( require ) {
       const chargedParticlesTandem = tandem.createTandem( 'chargedParticles' );
 
       // Handle the comings and goings of charged particles.
-      model.chargedParticles.addItemAddedListener( function( addedChargedParticle ) {
+      model.chargedParticles.addItemAddedListener( addedChargedParticle => {
         // Create and add the view representation for this chargedParticle.
 
         const chargedParticleNode = new ChargedParticleNode(
           addedChargedParticle,
           snapToGridLines,
           modelViewTransform,
-          self.availableModelBoundsProperty,
+          this.availableModelBoundsProperty,
           model.chargesAndSensorsEnclosureBoundsProperty.get(),
           chargedParticlesTandem.createTandem( addedChargedParticle.tandem.name )
         );
@@ -279,7 +277,7 @@ define( function( require ) {
       } );
 
       // Handle the comings and goings of charged electric field sensors.
-      model.electricFieldSensors.addItemAddedListener( function( addedElectricFieldSensor ) {
+      model.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
 
         const electricFieldSensorTandem = tandem.createTandem( 'electricFieldSensors' );
 
@@ -288,7 +286,7 @@ define( function( require ) {
           addedElectricFieldSensor,
           snapToGridLines,
           modelViewTransform,
-          self.availableModelBoundsProperty,
+          this.availableModelBoundsProperty,
           model.isPlayAreaChargedProperty,
           model.areValuesVisibleProperty,
           model.chargesAndSensorsEnclosureBoundsProperty.get(),
@@ -326,17 +324,17 @@ define( function( require ) {
       } );
 
       // dynamic parts of the control layout
-      function updateControlLayout() {
+      const updateControlLayout = () => {
 
         // right-align control panels
-        const right = modelViewTransform.modelToViewX( self.availableModelBoundsProperty.get().right ) - 10;
+        const right = modelViewTransform.modelToViewX( this.availableModelBoundsProperty.get().right ) - 10;
         controlPanel.right = right;
         resetAllButton.right = right;
         toolboxPanel.right = right;
 
         // toolbox panel below the control panel
         toolboxPanel.top = controlPanel.bottom + 10;
-      }
+      };
 
       // link the available model bounds
       this.availableModelBoundsProperty.link( function( bounds ) {

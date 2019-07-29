@@ -69,8 +69,6 @@ define( function( require ) {
         cursor: 'pointer', // Show a cursor hand over the sensor
         tandem: tandem
       } );
-      const self = this;
-
       this.modelElement = electricPotentialSensor; // @public (read-only)
 
       // @public
@@ -233,8 +231,8 @@ define( function( require ) {
       bodyNode.top = crosshairMount.bottom;
 
       // Register for synchronization with model.
-      const positionListener = function( position ) {
-        self.translation = modelViewTransform.modelToViewPosition( position );
+      const positionListener = position => {
+        this.translation = modelViewTransform.modelToViewPosition( position );
       };
       electricPotentialSensor.positionProperty.link( positionListener );
 
@@ -258,12 +256,12 @@ define( function( require ) {
           snapToGridLines( electricPotentialSensor.positionProperty );
         }
       } );
-      this.movableDragHandler.isUserControlledProperty.link( function( controlled ) {
-        self.isUserControlledProperty.value = controlled;
+      this.movableDragHandler.isUserControlledProperty.link( controlled => {
+        this.isUserControlledProperty.value = controlled;
       } );
 
       // When dragging, move the electric potential sensor
-      self.addInputListener( this.movableDragHandler );
+      this.addInputListener( this.movableDragHandler );
 
       // Show/Hide this node
       // no need to unlink, stays for the lifetime of the simulation

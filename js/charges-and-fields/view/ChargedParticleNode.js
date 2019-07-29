@@ -39,16 +39,14 @@ define( function( require ) {
 
       super( chargedParticle.charge, { tandem: tandem } );
 
-      const self = this;
-
       this.modelElement = chargedParticle;
 
       // Set up the mouse areas for this node so that this can still be grabbed when invisible.
       this.touchArea = this.localBounds.dilated( 10 );
 
       // Register for synchronization with model.
-      const positionListener = function( position ) {
-        self.translation = modelViewTransform.modelToViewPosition( position );
+      const positionListener = position => {
+        this.translation = modelViewTransform.modelToViewPosition( position );
       };
       chargedParticle.positionProperty.link( positionListener );
 
@@ -59,14 +57,14 @@ define( function( require ) {
         dragBoundsProperty: availableModelBoundsProperty,
         transform: modelViewTransform,
         canStartPress: function() { return !chargedParticle.animationTween; },
-        offsetLocation: function( point, listener ) {
+        offsetLocation: ( point, listener ) => {
           return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
         },
-        start: function( event, listener ) {
+        start: ( event, listener ) => {
           // Move the chargedParticle to the front of this layer when grabbed by the user.
-          self.moveToFront();
+          this.moveToFront();
         },
-        end: function( event, listener ) {
+        end: ( event, listener ) => {
           snapToGridLines( chargedParticle.positionProperty );
 
           if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {
@@ -81,18 +79,18 @@ define( function( require ) {
       // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
       let isDragListenerAttached = false;
 
-      const isInteractiveListener = function() {
+      const isInteractiveListener = () => {
 
         const isInteractive = chargedParticle.isInteractiveProperty.get();
 
         if ( isDragListenerAttached !== isInteractive ) {
           if ( isInteractive ) {
-            self.cursor = 'pointer';
-            self.addInputListener( self.movableDragHandler );
+            this.cursor = 'pointer';
+            this.addInputListener( this.movableDragHandler );
           }
           else {
-            self.cursor = null;
-            self.removeInputListener( self.movableDragHandler );
+            this.cursor = null;
+            this.removeInputListener( this.movableDragHandler );
           }
 
           isDragListenerAttached = isInteractive;

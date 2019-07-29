@@ -166,12 +166,10 @@ define( function( require ) {
         tandem: tandem
       } );
 
-      const self = this;
-
       this.hboxContent = hboxContent;
 
-      draggableItems.forEach( function( draggableItem ) {
-        draggableItem.on( 'visibility', self.updateChildrenWithVisibility.bind( self ) );
+      draggableItems.forEach( draggableItem => {
+        draggableItem.on( 'visibility', this.updateChildrenWithVisibility.bind( this ) );
       } );
 
       this.draggableItems = draggableItems;

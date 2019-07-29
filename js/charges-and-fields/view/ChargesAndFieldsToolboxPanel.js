@@ -82,20 +82,18 @@ define( function( require ) {
       // add the panelContent
       super( panelContent, panelOptions );
 
-      const self = this;
-
       // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
       const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
       const measuringTapeMovableDragHandler = {
-        down: function( event ) {
+        down: event => {
 
           // Don't try to start drags with a right mouse button or an attached pointer.
           if ( !event.canStartPress() ) { return; }
 
           measuringTape.isActiveProperty.set( true );
 
-          const initialViewPosition = self.globalToParentPoint( event.pointer.point )
+          const initialViewPosition = this.globalToParentPoint( event.pointer.point )
             .minus( measuringTapeNode.getLocalBaseCenter() );
           measuringTape.basePositionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
           measuringTape.tipPositionProperty.set( measuringTape.basePositionProperty.get().plus( tipToBasePosition ) );
@@ -106,7 +104,7 @@ define( function( require ) {
 
       // When pressed, creates a model element and triggers press() on the corresponding view
       electricPotentialSensorIconNode.addInputListener( {
-        down: function( event ) {
+        down: event => {
 
           // Don't try to start drags with a right mouse button or an attached pointer.
           if ( !event.canStartPress() ) { return; }
@@ -114,7 +112,7 @@ define( function( require ) {
           electricPotentialSensor.isActiveProperty.set( true );
 
           // initial position of the pointer in the screenView coordinates
-          const initialViewPosition = self.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
+          const initialViewPosition = this.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
           electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
           electricPotentialSensorNode.movableDragHandler.press( event, electricPotentialSensorNode );
