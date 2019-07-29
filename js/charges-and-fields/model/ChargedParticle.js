@@ -1,8 +1,7 @@
 // Copyright 2014-2019, University of Colorado Boulder
 
 /**
- * Type of a charged particle
- * The particle has charge (+1 or -1) and a position.
+ * Type of a charged particle, which has charge (+1 or -1) and a position.
  *
  * @author Martin Veillette (Berea College)
  */
@@ -22,15 +21,12 @@ define( function( require ) {
      * @param {Object} options - required actually to supply tandem
      */
     constructor( charge, options ) {
-
       options = _.extend( { tandem: Tandem.required, phetioType: ChargedParticleIO }, options );
-
       super( options );
-
       assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
-      // @public read-only
-      this.charge = charge; // a charge of one corresponds to one nano Coulomb
+      // @public (read-only) {number} - a charge of one corresponds to one nano Coulomb
+      this.charge = charge;
     }
   }
 
