@@ -4,7 +4,7 @@
  * Constants used throughout the simulation.
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );

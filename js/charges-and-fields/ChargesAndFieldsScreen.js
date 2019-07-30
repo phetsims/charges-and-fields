@@ -3,7 +3,7 @@
 /**
  * Charges and Fields main Screen
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules

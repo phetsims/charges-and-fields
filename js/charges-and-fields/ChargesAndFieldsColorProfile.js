@@ -7,7 +7,7 @@
  * @author Martin Veillette (Berea College)
  * @author Andrew Adare <andrew.adare@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules

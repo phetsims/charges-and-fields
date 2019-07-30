@@ -9,7 +9,7 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules

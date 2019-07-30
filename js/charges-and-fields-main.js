@@ -3,8 +3,9 @@
 /**
  * Main entry point for the sim.
  *
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
