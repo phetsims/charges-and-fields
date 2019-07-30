@@ -85,7 +85,7 @@ define( require => {
       // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
       const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
-      const measuringTapeMovableDragHandler = {
+      const measuringTapeInputListener = {
         down: event => {
 
           // Don't try to start drags with a right mouse button or an attached pointer.
@@ -120,21 +120,19 @@ define( require => {
       } );
 
       // Add the listener that will allow the user to click on this and create a model element, then position it in the model.
-      measuringTapeIconNode.addInputListener( measuringTapeMovableDragHandler );
+      measuringTapeIconNode.addInputListener( measuringTapeInputListener );
 
       // hide and show
-      electricPotentialSensor.isActiveProperty.link( function( visible ) {
-        electricPotentialSensorIconNode.visible = !visible;
-      } );
+      electricPotentialSensor.isActiveProperty.link( visible => electricPotentialSensorIconNode.setVisible( !visible ) );
 
       // measuringTape visibility has the opposite visibility of the measuringTape Icon
-      measuringTape.isActiveProperty.link( function( active ) {
-        measuringTapeIconNode.visible = !active;
-      } );
+      measuringTape.isActiveProperty.link( active => measuringTapeIconNode.setVisible( !active ) );
 
       // no need to dispose of this link since this is present for the lifetime of the sim
-      availableModelBoundsProperty.link( function( bounds ) {
-        measuringTapeMovableDragHandler.dragBounds = bounds;
+      availableModelBoundsProperty.link( bounds => {
+
+        // TODO: did this mean to say measuringTape.dragBounds???
+        measuringTapeInputListener.dragBounds = bounds;
       } );
     }
 
@@ -241,7 +239,7 @@ define( require => {
       const measuringTapeIcon = new Node( { children: [ measuringTape ] } );
 
       // Create the measuringTape icon using toImage
-      measuringTape.toImage( function( image ) {
+      measuringTape.toImage( image => {
         measuringTapeIcon.children = [ new Image( image, {
           cursor: 'pointer',
           tandem: tandem.createTandem( 'measuringTapeIconImage' )

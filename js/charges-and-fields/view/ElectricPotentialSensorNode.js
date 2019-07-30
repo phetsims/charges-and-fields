@@ -116,29 +116,23 @@ define( require => {
         tandem: tandem.createTandem( 'clearButton' ),
         baseColor: '#f2f2f2',
         iconWidth: 23,
-        listener: function() {
-          clearElectricPotentialLines();
-        }
+        listener: () => clearElectricPotentialLines()
       } );
 
       // Create the button that allows to plot the ElectricPotential Lines
       const plotElectricPotentialLineButton = new PencilButton( tandem.createTandem( 'plotElectricPotentialLineButton' ), {
         baseColor: '#f2f2f2',
-        listener: function() {
-          addElectricPotentialLine();
-        }
+        listener: () => addElectricPotentialLine()
       } );
 
-      const isPlayAreaChargedListener = function( charged ) {
+      const isPlayAreaChargedListener = charged => {
         plotElectricPotentialLineButton.enabled = charged;
       };
       isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
       // See see https://github.com/phetsims/charges-and-fields/issues/73
       const doNotStartDragListener = {
-        down: function( event ) {
-          event.handle();
-        }
+        down: event => event.handle()
       };
       clearButton.addInputListener( doNotStartDragListener );
       plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
@@ -237,7 +231,8 @@ define( require => {
       electricPotentialSensor.positionProperty.link( positionListener );
 
       // Update the value of the electric potential on the panel and the fill color on the crosshair
-      const potentialListener = function( electricPotential ) {
+      const potentialListener = electricPotential => {
+
         // update the text of the voltage
         updateVoltageReadout( electricPotential );
 
@@ -252,7 +247,7 @@ define( require => {
         tandem: tandem.createTandem( 'dragListener' ),
         dragBoundsProperty: availableModelBoundsProperty,
         transform: modelViewTransform,
-        end: function( event, listener ) {
+        end: ( event, listener ) => {
           snapToGridLines( electricPotentialSensor.positionProperty );
         }
       } );
@@ -320,7 +315,7 @@ define( require => {
         return Util.toFixed( number, decimalPlaces );
       }
 
-      this.disposeElectricPotentialSensorNode = function() {
+      this.disposeElectricPotentialSensorNode = () => {
         electricPotentialSensor.positionProperty.unlink( positionListener );
         electricPotentialSensor.electricPotentialProperty.unlink( potentialListener );
         isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );

@@ -363,9 +363,7 @@ define( require => {
      */
     addModelElement( element, observableArray ) {
       observableArray.push( element );
-      element.returnedToOriginEmitter.addListener( function() {
-        observableArray.remove( element );
-      } );
+      element.returnedToOriginEmitter.addListener( () => observableArray.remove( element ) );
       return element; // for chaining
     }
 
@@ -409,7 +407,7 @@ define( require => {
       let netElectricCharge = 0; // {number} Total electric charge on screen
       let numberActiveChargedParticles = 0; // {number} Total active charged particles on screen
 
-      this.activeChargedParticles.forEach( function( chargedParticle ) {
+      this.activeChargedParticles.forEach( chargedParticle => {
         numberActiveChargedParticles++;
         netElectricCharge += chargedParticle.charge;
       } );
@@ -443,7 +441,7 @@ define( require => {
       else if ( numberActiveChargedParticles === 4 ) {
         const positiveChargePositionArray = [];
         const negativeChargePositionArray = [];
-        this.activeChargedParticles.forEach( function( chargedParticle ) {
+        this.activeChargedParticles.forEach( chargedParticle => {
           if ( chargedParticle.charge === 1 ) {
             positiveChargePositionArray.push( chargedParticle.positionProperty.get() );
           }
@@ -497,7 +495,7 @@ define( require => {
         return electricField;
       }
 
-      this.activeChargedParticles.forEach( function( chargedParticle ) {
+      this.activeChargedParticles.forEach( chargedParticle => {
         const distanceSquared = chargedParticle.positionProperty.get().distanceSquared( position );
 
         // Avoid bugs stemming from large or infinite fields (#82, #84, #85).
@@ -543,7 +541,7 @@ define( require => {
         return Number.NEGATIVE_INFINITY;
       }
       else {
-        this.activeChargedParticles.forEach( function( chargedParticle ) {
+        this.activeChargedParticles.forEach( chargedParticle => {
           const distance = chargedParticle.positionProperty.get().distance( position );
 
           if ( distance > 0 ) {
@@ -564,7 +562,7 @@ define( require => {
      */
     getCharge( position ) {
       let charge = 0;
-      this.activeChargedParticles.forEach( function( chargedParticle ) {
+      this.activeChargedParticles.forEach( chargedParticle => {
         if ( chargedParticle.positionProperty.value.equals( position ) ) {
           charge += chargedParticle.charge;
         }
@@ -594,7 +592,7 @@ define( require => {
       }
 
       // If we are too close to a charged particle, also bail out.
-      const isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), function( chargedParticle ) {
+      const isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), chargedParticle => {
         // in model coordinates, should be less than the radius (in the view) of a charged particle
         return chargedParticle.positionProperty.get().distance( position ) < 0.03;
       } ) );

@@ -49,13 +49,15 @@ define( require => {
       ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
       ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
       isVisibleProperty.link( invalidateSelfListener ); // visibility change
-      chargedParticles.addItemAddedListener( function( particle ) {
-        particle.positionProperty.link( invalidateSelfListener );
-      } ); // particle added
-      chargedParticles.addItemRemovedListener( function( particle ) {
+
+      // particle added
+      chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) );
+
+      // particle removed
+      chargedParticles.addItemRemovedListener( particle => {
         invalidateSelfListener();
         particle.positionProperty.unlink( invalidateSelfListener );
-      } ); // particle removed
+      } );
 
       isVisibleProperty.linkAttribute( this, 'visible' );
 
@@ -86,10 +88,8 @@ define( require => {
       assert && assert( this.imageData.width === numHorizontal );
       assert && assert( this.imageData.height === numVertical );
 
-      this.disposeElectricPotentialCanvasNode = function() {
-        isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
-      };
-
+      // visibility change
+      this.disposeElectricPotentialCanvasNode = () => isVisibleProperty.unlink( invalidateSelfListener );
     }
 
     forceRepaint() {

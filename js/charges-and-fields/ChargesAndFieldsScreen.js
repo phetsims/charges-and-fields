@@ -25,12 +25,8 @@ define( require => {
       };
 
       super(
-        function() {
-          return new ChargesAndFieldsModel( tandem.createTandem( 'model' ) );
-        },
-        function( model ) {
-          return new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) );
-        },
+        () => new ChargesAndFieldsModel( tandem.createTandem( 'model' ) ),
+        model => new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) ),
         options );
     }
   }

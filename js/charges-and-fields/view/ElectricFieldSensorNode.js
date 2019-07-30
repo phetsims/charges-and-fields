@@ -43,6 +43,7 @@ define( require => {
      * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
      * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
      * @param {Property.<boolean>} areValuesVisibleProperty
+     * @param {Bounds2} enclosureBounds
      * @param {Tandem} tandem
      */
     constructor( electricFieldSensor,
@@ -96,7 +97,7 @@ define( require => {
       directionLabel.bottom = fieldStrengthLabel.top;
 
       // when the electric field changes update the arrow and the labels
-      const electricFieldListener = function( electricField ) {
+      const electricFieldListener = electricField => {
         const magnitude = electricField.magnitude;
         const angle = electricField.angle; // angle from the model, in radians
 
@@ -144,7 +145,7 @@ define( require => {
       };
       electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
-      const isActiveListener = function( isActive ) {
+      const isActiveListener = isActive => {
         arrowNode.visible = isActive;
         if ( areValuesVisibleProperty.get() ) {
           fieldStrengthLabel.visible = isActive;
@@ -154,30 +155,26 @@ define( require => {
       electricFieldSensor.isActiveProperty.link( isActiveListener );
 
       // Show/hide labels
-      const areValuesVisibleListener = function( isVisible ) {
+      const areValuesVisibleListener = isVisible => {
         fieldStrengthLabel.visible = isVisible;
         directionLabel.visible = isVisible;
       };
       areValuesVisibleProperty.link( areValuesVisibleListener );
 
       // Show/hide field arrow
-      const isPlayAreaChargedListener = function( isPlayAreaCharged ) {
-        arrowNode.visible = isPlayAreaCharged;
-      };
+      const isPlayAreaChargedListener = isPlayAreaCharged => arrowNode.setVisible( isPlayAreaCharged );
       isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
       // The direction label is visible if:
       // (1) 'values' is checked
       // (2) the net play area charge is marked as nonzero
-      const isDirectionLabelVisibleDerivedProperty = new DerivedProperty( [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
-        function( areValuesVisible, isPlayAreaCharged ) {
-          return areValuesVisible && isPlayAreaCharged;
-        } );
+      const isDirectionLabelVisibleDerivedProperty = new DerivedProperty(
+        [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
+        ( areValuesVisible, isPlayAreaCharged ) => areValuesVisible && isPlayAreaCharged
+      );
 
       // Show/hide labels
-      const isDirectionLabelVisibleListener = function( isVisible ) {
-        directionLabel.visible = isVisible;
-      };
+      const isDirectionLabelVisibleListener = isVisible => directionLabel.setVisible( isVisible );
       isDirectionLabelVisibleDerivedProperty.link( isDirectionLabelVisibleListener );
 
       // Register for synchronization with model.
@@ -214,9 +211,7 @@ define( require => {
           }
         }
       } );
-      this.movableDragHandler.isUserControlledProperty.link( function( controlled ) {
-        electricFieldSensor.isUserControlledProperty.value = controlled;
-      } );
+      this.movableDragHandler.isUserControlledProperty.link( controlled => electricFieldSensor.isUserControlledProperty.set( controlled ) );
 
       // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
       let isDragListenerAttached = false;
@@ -240,7 +235,7 @@ define( require => {
 
       this.availableModelBoundsProperty = availableModelBoundsProperty;
 
-      this.disposeElectricFieldSensorNode = function() {
+      this.disposeElectricFieldSensorNode = () => {
         arrowNode.dispose();
         electricFieldSensor.isActiveProperty.unlink( isActiveListener );
         electricFieldSensor.isInteractiveProperty.unlink( isInteractiveListener );

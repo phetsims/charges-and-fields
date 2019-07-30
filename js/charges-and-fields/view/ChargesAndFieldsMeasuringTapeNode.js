@@ -46,11 +46,9 @@ define( require => {
 
       this.measuringTape = measuringTape;
 
-      this.getIsTipUserControlledProperty().link( function() {
-        snapToGridLines( measuringTape.tipPositionProperty );
-      } );
+      this.getIsTipUserControlledProperty().link( () => snapToGridLines( measuringTape.tipPositionProperty ) );
 
-      this.getIsBaseUserControlledProperty().link( function() {
+      this.getIsBaseUserControlledProperty().link( () => {
         snapToGridLines( measuringTape.basePositionProperty );
         snapToGridLines( measuringTape.tipPositionProperty );
       } );

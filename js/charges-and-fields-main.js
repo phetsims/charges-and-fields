@@ -33,7 +33,7 @@ define( require => {
     webgl: true
   };
 
-  SimLauncher.launch( function() {
+  SimLauncher.launch( () => {
     const sim = new Sim( chargesAndFieldsTitleString, [
       new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) )
     ], simOptions );

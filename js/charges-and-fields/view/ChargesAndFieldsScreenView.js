@@ -59,7 +59,7 @@ define( require => {
    * @param {Node} node
    * @returns {boolean}
    */
-  const isDisplayed = function( node ) {
+  const isDisplayed = node => {
     const trail = node.getUniqueTrail();
     return trail.isVisible() && trail.rootNode() === phet.joist.display.rootNode;
   };
@@ -172,10 +172,9 @@ define( require => {
 
       // Create the Reset All Button in the bottom right, which resets the model
       const resetAllButton = new ResetAllButton( {
-        listener: function() {
-          // do not reset the availableDragBoundsProperty
-          model.reset();
-        },
+
+        // do not reset the availableDragBoundsProperty
+        listener: model.reset(),
         tandem: tandem.createTandem( 'resetAllButton' )
       } );
 
@@ -211,17 +210,18 @@ define( require => {
                                  ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
                                  Number.POSITIVE_INFINITY;
 
-      const canAddMoreChargedParticlesProperty = new DerivedProperty( [ model.chargedParticles.lengthProperty ],
-        function( length ) {
-          return length < numberChargesLimit;
-        } );
+      const canAddMoreChargedParticlesProperty = new DerivedProperty(
+        [ model.chargedParticles.lengthProperty ],
+        length => length < numberChargesLimit
+      );
 
       // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
       const chargesAndSensorsPanel = new ChargesAndSensorsPanel(
         model, this,
-        function( modelElement, event ) {
+        ( modelElement, event ) => {
+
           // Horrible horrible hacks
-          draggableElementsLayer.children.forEach( function( potentialView ) {
+          draggableElementsLayer.children.forEach( potentialView => {
             if ( potentialView.modelElement === modelElement ) {
               potentialView.movableDragHandler.press( event, potentialView );
             }
@@ -229,7 +229,7 @@ define( require => {
         },
         canAddMoreChargedParticlesProperty, modelViewTransform, tandem.createTandem( 'chargesAndSensorsPanel' ) );
 
-      model.isChargesAndSensorsPanelDisplayed = function() {
+      model.isChargesAndSensorsPanelDisplayed = () => {
         const trail = chargesAndSensorsPanel.getUniqueTrail();
         return trail.isVisible() && trail.rootNode() === phet.joist.display.rootNode;
       };
@@ -249,9 +249,8 @@ define( require => {
         model.allowNewPositiveChargesProperty,
         model.allowNewNegativeChargesProperty,
         model.allowNewElectricFieldSensorsProperty
-      ], function( positive, negative, electricFieldSensors ) {
-        return positive || negative || electricFieldSensors;
-      } ).linkAttribute( chargesAndSensorsPanel, 'visible' );
+      ], ( positive, negative, electricFieldSensors ) => positive || negative || electricFieldSensors )
+        .linkAttribute( chargesAndSensorsPanel, 'visible' );
 
       const chargedParticlesTandem = tandem.createTandem( 'chargedParticles' );
 
@@ -307,7 +306,7 @@ define( require => {
       // listens to the isUserControlled property of the electric potential sensor
       // return the electric Potential sensor to the toolboxPanel if it is not user Controlled and the
       // location of the sensor is inside the toolboxPanel panel
-      electricPotentialSensorNode.isUserControlledProperty.link( function( isUserControlled ) {
+      electricPotentialSensorNode.isUserControlledProperty.link( isUserControlled => {
         if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 5 ) ) && isDisplayed( toolboxPanel ) ) {
           model.electricPotentialSensor.isActiveProperty.set( false );
         }
@@ -316,7 +315,7 @@ define( require => {
       // listens to the isUserControlled property of the measuring tape
       // return the measuring tape to the toolboxPanel if not user Controlled and its position is located within the
       // toolbox panel
-      measuringTapeNode.isBaseUserControlledProperty.link( function( isBaseUserControlled ) {
+      measuringTapeNode.isBaseUserControlledProperty.link( isBaseUserControlled => {
         const tapeBaseBounds = measuringTapeNode.localToParentBounds( measuringTapeNode.getLocalBaseBounds() );
         if ( !isBaseUserControlled && toolboxPanel.bounds.intersectsBounds( tapeBaseBounds.eroded( 5 ) ) && isDisplayed( toolboxPanel ) ) {
           model.measuringTape.isActiveProperty.set( false );
@@ -337,7 +336,7 @@ define( require => {
       };
 
       // link the available model bounds
-      this.availableModelBoundsProperty.link( function( bounds ) {
+      this.availableModelBoundsProperty.link( bounds => {
 
         // the measuring Tape is subject to dragBounds (specified in model coordinates)
         measuringTapeNode.dragBounds = bounds;
@@ -369,9 +368,7 @@ define( require => {
       // and set up initial charges on the play area
       if ( IS_DEBUG_MODE ) {
         this.addChild( new RectangularPushButton( {
-          listener: function() {
-            model.addManyElectricPotentialLines( 20 );
-          },
+          listener: () => model.addManyElectricPotentialLines( 20 ),
           baseColor: 'rgb( 0, 222, 120 )',
           minWidth: 20,
           minHeight: 20,

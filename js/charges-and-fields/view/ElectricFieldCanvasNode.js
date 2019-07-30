@@ -61,11 +61,9 @@ define( require => {
 
       isElectricFieldDirectionOnlyProperty.link( invalidateSelfListener ); // visibility change
 
-      chargedParticles.addItemAddedListener( function( particle ) {
-        particle.positionProperty.link( invalidateSelfListener );
-      } ); // particle added
+      chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) ); // particle added
 
-      chargedParticles.addItemRemovedListener( function( particle ) {
+      chargedParticles.addItemRemovedListener( particle => {
         invalidateSelfListener();
         particle.positionProperty.unlink( invalidateSelfListener );
       } ); // particle removed
@@ -88,16 +86,12 @@ define( require => {
       }
 
       // {Array.<Vector2>}
-      this.viewPositions = this.modelPositions.map( function( position ) {
-        return modelViewTransform.modelToViewPosition( position );
-      } );
+      this.viewPositions = this.modelPositions.map( position => modelViewTransform.modelToViewPosition( position ) );
 
       // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
-      this.electricField = this.modelPositions.map( function() {
-        return new Vector2( 0, 0 );
-      } );
+      this.electricField = this.modelPositions.map( () => new Vector2( 0, 0 ) );
 
-      this.disposeElectricFieldCanvasNode = function() {
+      this.disposeElectricFieldCanvasNode = () => {
         isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
         isElectricFieldDirectionOnlyProperty.unlink( invalidateSelfListener ); // visibility change
       };

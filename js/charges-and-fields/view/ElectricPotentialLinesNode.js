@@ -91,7 +91,7 @@ define( require => {
       const locationFunction = cursorLocation => {
         let smallestDistanceSquared = Number.POSITIVE_INFINITY;
         let closestLocation; // {Vector2}
-        electricPotentialLine.positionArray.forEach( function( position ) {
+        electricPotentialLine.positionArray.forEach( position => {
           const distanceSquared = position.distanceSquared( cursorLocation );
           if ( distanceSquared < smallestDistanceSquared ) {
             smallestDistanceSquared = distanceSquared;
@@ -104,7 +104,7 @@ define( require => {
       locationProperty.link( locationFunction );
 
       // create a dispose function to unlink the color functions
-      this.disposeVoltageLabel = function() {
+      this.disposeVoltageLabel = () => {
         locationProperty.unlink( locationFunction );
         locationProperty.dispose();
         movableDragHandler.dispose();
@@ -190,7 +190,7 @@ define( require => {
       this.addChild( labelsNode );
 
       // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-      electricPotentialLines.addItemAddedListener( function( electricPotentialLine ) {
+      electricPotentialLines.addItemAddedListener( electricPotentialLine => {
 
         const electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
         pathsNode.addChild( electricPotentialLinePath );

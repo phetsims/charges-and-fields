@@ -140,7 +140,7 @@ define( require => {
 
       // Show/ Hide the arrow
       // no need to unlink, present for the lifetime of the simulation
-      areValuesVisibleProperty.link( function( isVisible ) {
+      areValuesVisibleProperty.link( isVisible => {
         arrowPath.visible = isVisible;
         legendText.visible = isVisible;
       } );

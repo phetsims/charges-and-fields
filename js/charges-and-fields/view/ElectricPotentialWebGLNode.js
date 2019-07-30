@@ -78,17 +78,18 @@ define( require => {
       ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
       ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
       isVisibleProperty.link( invalidateSelfListener ); // visibility change
-      chargedParticles.addItemAddedListener( function( particle ) {
-        particle.positionProperty.link( invalidateSelfListener );
-      } ); // particle added
-      chargedParticles.addItemRemovedListener( function( particle ) {
+
+      // particle added
+      chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) );
+
+      // particle removed
+      chargedParticles.addItemRemovedListener( particle => {
         invalidateSelfListener();
         particle.positionProperty.unlink( invalidateSelfListener );
-      } ); // particle removed
+      } );
 
-      this.disposeElectricPotentialWebGLNode = function() {
-        isVisibleProperty.unlink( invalidateSelfListener ); // visibility change
-      };
+      // visibility change
+      this.disposeElectricPotentialWebGLNode = () => isVisibleProperty.unlink( invalidateSelfListener );
     }
 
     /**

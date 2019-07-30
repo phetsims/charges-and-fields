@@ -44,13 +44,16 @@ define( require => {
       ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
       ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
       isVisibleProperty.link( invalidateSelfListener ); // visibility change
-      chargedParticles.addItemAddedListener( function( particle ) {
-        particle.positionProperty.link( invalidateSelfListener );
-      } ); // particle added
-      chargedParticles.addItemRemovedListener( function( particle ) {
+
+      // particle added
+      // TODO: I've seen this pattern elsewhere in the code
+      chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) );
+
+      // particle removed
+      chargedParticles.addItemRemovedListener( particle => {
         invalidateSelfListener();
         particle.positionProperty.unlink( invalidateSelfListener );
-      } ); // particle removed
+      } );
     }
 
     /**
@@ -105,18 +108,14 @@ define( require => {
         'uniform mat3 uMatrixInverse;', // matrix to transform from normalized-device-coordinates to the model
         'const float kConstant = 9.0;',
         // 'uniform vec3 charge0;', etc.
-        _.map( particleIndices, function( n ) {
-          return 'uniform vec3 charge' + n + ';';
-        } ).join( '\n' ),
+        _.map( particleIndices, n => 'uniform vec3 charge' + n + ';' ).join( '\n' ),
         'void main() {',
         // homogeneous model-view transformation
         '  vec2 modelPosition = ( uMatrixInverse * vec3( vPosition, 1 ) ).xy;',
 
         // compute the total, not worrying about div by zero (will be covered up by charge icon)
         '  float voltage = 0.0;',
-        _.map( particleIndices, function( n ) {
-          return '  voltage += charge' + n + '.z * kConstant / length( modelPosition - charge' + n + '.xy );';
-        } ).join( '\n' ),
+        _.map( particleIndices, n => '  voltage += charge' + n + '.z * kConstant / length( modelPosition - charge' + n + '.xy );' ).join( '\n' ),
 
         // rules to color pulled from ChangesAndFieldsScreenView
         '  if ( voltage > 0.0 ) {',
@@ -131,7 +130,7 @@ define( require => {
       ].join( '\n' ), {
         attributes: [ 'aPosition' ],
         uniforms: [ 'uMatrixInverse', 'uZeroColor', 'uPositiveColor', 'uNegativeColor' ].concat(
-          _.map( particleIndices, function( n ) { return 'charge' + n; } ) )
+          _.map( particleIndices, n => 'charge' + n ) )
       } );
 
       // we only need one vertex buffer with the same contents for all three shaders!

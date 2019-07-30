@@ -56,7 +56,7 @@ define( require => {
         tandem: tandem.createTandem( 'dragListener' ),
         dragBoundsProperty: availableModelBoundsProperty,
         transform: modelViewTransform,
-        canStartPress: function() { return !chargedParticle.animationTween; },
+        canStartPress: () => !chargedParticle.animationTween,
         offsetLocation: ( point, listener ) => {
           return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
         },
@@ -72,7 +72,7 @@ define( require => {
           }
         }
       } );
-      this.movableDragHandler.isUserControlledProperty.link( function( controlled ) {
+      this.movableDragHandler.isUserControlledProperty.link( controlled => {
         chargedParticle.isUserControlledProperty.value = controlled;
       } );
 
@@ -98,7 +98,7 @@ define( require => {
       };
       chargedParticle.isInteractiveProperty.link( isInteractiveListener );
 
-      this.disposeChargedParticleNode = function() {
+      this.disposeChargedParticleNode = () => {
         chargedParticle.positionProperty.unlink( positionListener );
         chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
         this.movableDragHandler.dispose();

@@ -84,7 +84,7 @@ define( require => {
 
         // When pressed, creates a model element and triggers press() on the corresponding view
         node.addInputListener( {
-          down: function( event ) {
+          down: event => {
 
             // Don't try to start drags with a right mouse button or an attached pointer.
             if ( !event.canStartPress() ) { return; }
@@ -113,14 +113,16 @@ define( require => {
       }
 
       // {Property.<boolean>}
-      const positiveVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewPositiveChargesProperty ], function( canAdd, allowNew ) {
-        return canAdd && allowNew;
-      } );
+      const positiveVisibleProperty = new DerivedProperty(
+        [ canAddMoreChargedParticlesProperty, model.allowNewPositiveChargesProperty ],
+        ( canAdd, allowNew ) => canAdd && allowNew
+      );
 
       // {Property.<boolean>}
-      const negativeVisibleProperty = new DerivedProperty( [ canAddMoreChargedParticlesProperty, model.allowNewNegativeChargesProperty ], function( canAdd, allowNew ) {
-        return canAdd && allowNew;
-      } );
+      const negativeVisibleProperty = new DerivedProperty(
+        [ canAddMoreChargedParticlesProperty, model.allowNewNegativeChargesProperty ],
+        ( canAdd, allowNew ) => canAdd && allowNew
+      );
 
       // {Property.<boolean>}
       const electricFieldSensorVisibleProperty = model.allowNewElectricFieldSensorsProperty;
@@ -131,25 +133,19 @@ define( require => {
         children: [
           createDraggableItem( tandem.createTandem( 'positiveCharge' ),
             plusOneNanoCString,
-            function() {
-              return model.addPositiveCharge( model.chargedParticleGroupTandem.createNextTandem() );
-            },
+            () => model.addPositiveCharge( model.chargedParticleGroupTandem.createNextTandem() ),
             new ChargedParticleRepresentationNode( 1 ),
             positiveVisibleProperty ),
 
           createDraggableItem( tandem.createTandem( 'negativeCharge' ),
             minusOneNanoCString,
-            function() {
-              return model.addNegativeCharge( model.chargedParticleGroupTandem.createNextTandem() );
-            },
+            () => model.addNegativeCharge( model.chargedParticleGroupTandem.createNextTandem() ),
             new ChargedParticleRepresentationNode( -1 ),
             negativeVisibleProperty ),
 
           createDraggableItem( tandem.createTandem( 'electricFieldSensor' ),
             sensorsString,
-            function() {
-              return model.addElectricFieldSensor( model.electricFieldSensorGroupTandem.createNextTandem() );
-            },
+            () => model.addElectricFieldSensor( model.electricFieldSensorGroupTandem.createNextTandem() ),
 
             new ElectricFieldSensorRepresentationNode(),
             electricFieldSensorVisibleProperty )
@@ -182,9 +178,7 @@ define( require => {
      * @private
      */
     updateChildrenWithVisibility() {
-      this.hboxContent.children = this.draggableItems.filter( function( draggableItem ) {
-        return draggableItem.visible;
-      } );
+      this.hboxContent.children = this.draggableItems.filter( draggableItem => draggableItem.visible );
     }
   }
 
