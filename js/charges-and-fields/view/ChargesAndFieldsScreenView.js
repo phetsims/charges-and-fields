@@ -174,7 +174,7 @@ define( require => {
       const resetAllButton = new ResetAllButton( {
 
         // do not reset the availableDragBoundsProperty
-        listener: model.reset(),
+        listener: () => model.reset(),
         tandem: tandem.createTandem( 'resetAllButton' )
       } );
 
