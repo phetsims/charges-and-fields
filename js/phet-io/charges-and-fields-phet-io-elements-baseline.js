@@ -83,7 +83,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": true,
       "phetioStudioControl": true,
-      "phetioTypeName": "ObservableArrayIO"
+      "phetioTypeName": "ObservableArrayIO.<ChargedParticleIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.lengthProperty": {
       "phetioDocumentation": "",
@@ -119,7 +119,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": true,
       "phetioStudioControl": true,
-      "phetioTypeName": "ObservableArrayIO"
+      "phetioTypeName": "ObservableArrayIO.<ElectricPotentialLineIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.lengthProperty": {
       "phetioDocumentation": "",

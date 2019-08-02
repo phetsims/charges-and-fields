@@ -759,7 +759,7 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": null,
       "typeName": "ObjectIO"
     },
-    "ObservableArrayIO": {
+    "ObservableArrayIO.<ChargedParticleIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
       "events": [
         "itemAdded",
@@ -787,8 +787,45 @@ window.phet.phetio.phetioTypes = assert &&
           "returnType": "NumberIO"
         }
       },
+      "parameterTypes": [
+        "ChargedParticleIO"
+      ],
       "supertype": "ObjectIO",
-      "typeName": "ObservableArrayIO"
+      "typeName": "ObservableArrayIO.<ChargedParticleIO>"
+    },
+    "ObservableArrayIO.<ElectricPotentialLineIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [
+        "itemAdded",
+        "itemRemoved"
+      ],
+      "methodOrder": [],
+      "methods": {
+        "addItemAddedListener": {
+          "documentation": "Add a listener that is called when an item is added to the observable array.",
+          "parameterTypes": [
+            "FunctionIO(ElectricPotentialLineIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "addItemRemovedListener": {
+          "documentation": "Add a listener that is called when an item is removed from the observable array.",
+          "parameterTypes": [
+            "FunctionIO(ElectricPotentialLineIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "getLength": {
+          "documentation": "Get the number of elements in the observable array",
+          "parameterTypes": [],
+          "returnType": "NumberIO"
+        }
+      },
+      "parameterTypes": [
+        "ElectricPotentialLineIO"
+      ],
+      "supertype": "ObjectIO",
+      "typeName": "ObservableArrayIO.<ElectricPotentialLineIO>"
     },
     "PhetButtonIO": {
       "documentation": "The PhET Button in the bottom right of the screen",
