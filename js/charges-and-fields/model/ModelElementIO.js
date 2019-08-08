@@ -25,7 +25,8 @@ define( require => {
   }
 
   phetioInherit( ObjectIO, 'ModelElementIO', ModelElementIO, {}, {
-    validator: { valueType: ModelElement }
+    validator: { valueType: ModelElement },
+    documentation: 'A Model Element'
   } );
 
   chargesAndFields.register( 'ModelElementIO', ModelElementIO );
