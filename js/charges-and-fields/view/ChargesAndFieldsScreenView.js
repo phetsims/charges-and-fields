@@ -292,7 +292,9 @@ define( require => {
           model.isPlayAreaChargedProperty,
           model.areValuesVisibleProperty,
           model.chargesAndSensorsEnclosureBoundsProperty.get(),
-          electricFieldSensorTandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.name )
+
+          // TODO: Group for the view side
+          electricFieldSensorTandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.name.split( '_' ).join( '~' ) )
         );
         draggableElementsLayer.addChild( electricFieldSensorNode );
 

@@ -141,7 +141,6 @@ define( require => {
       // @public {ObservableArray.<ChargedParticle>}
       this.chargedParticles = new Group( 'particle', {
         prototype: ( tandem, state ) => {
-          console.log( 'creating particle' );
           state = state || { charge: +1 };
           const charge = new ChargedParticle( state.charge, { tandem: tandem, phetioDynamicElement: true } );
           charge.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( charge ) );
