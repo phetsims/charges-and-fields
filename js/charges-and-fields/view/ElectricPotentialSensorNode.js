@@ -44,11 +44,12 @@ define( require => {
 
   class ElectricPotentialSensorNode extends Node {
     /**
-     *
+     * TODO: this interface is unwieldy and difficult to navigate.  Why not pass the model with all these functions?
      * @param {ElectricPotentialSensor} electricPotentialSensor - model of the electric potential sensor
      * @param {Function} snapToGridLines - A Function that snap the position to the minor gridlines.
      * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
      * @param {Function} clearElectricPotentialLines - A function for deleting all electric potential lines in the model
+     * @param {Function} canAddElectricPotentialLine -
      * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
      * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
      * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
@@ -59,6 +60,7 @@ define( require => {
                  snapToGridLines,
                  getElectricPotentialColor,
                  clearElectricPotentialLines,
+                 canAddElectricPotentialLine,
                  addElectricPotentialLine,
                  modelViewTransform,
                  availableModelBoundsProperty,

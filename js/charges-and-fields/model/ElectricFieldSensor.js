@@ -25,7 +25,7 @@ define( require => {
      */
     constructor( computeElectricField, tandem ) {
 
-      super( { tandem: tandem, phetioType: ElectricFieldSensorIO } );
+      super( { tandem: tandem, phetioType: ElectricFieldSensorIO, phetioDynamicElement: true } );
 
       // @public - electricField Vector in Newtons per Coulomb
       this.electricFieldProperty = new Vector2Property( new Vector2( 0, 0 ), {

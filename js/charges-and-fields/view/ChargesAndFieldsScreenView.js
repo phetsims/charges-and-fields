@@ -153,6 +153,7 @@ define( require => {
         snapToGridLines,
         this.getElectricPotentialColor.bind( this ),
         model.clearElectricPotentialLines.bind( model ),
+        model.canAddElectricPotentialLine.bind( model ),
         model.addElectricPotentialLine.bind( model ),
         modelViewTransform,
         this.availableModelBoundsProperty,
@@ -264,7 +265,9 @@ define( require => {
           modelViewTransform,
           this.availableModelBoundsProperty,
           model.chargesAndSensorsEnclosureBoundsProperty.get(),
-          chargedParticlesTandem.createTandem( addedChargedParticle.tandem.name )
+
+          // TODO Group tandem for these?
+          chargedParticlesTandem.createTandem( addedChargedParticle.tandem.name.split( '_' ).join( '~' ) )
         );
         draggableElementsLayer.addChild( chargedParticleNode );
 
@@ -297,7 +300,6 @@ define( require => {
         model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
           if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
             electricFieldSensorNode.dispose();
-            removedElectricFieldSensor.dispose();
             model.electricFieldSensors.removeItemRemovedListener( removalListener );
           }
         } );

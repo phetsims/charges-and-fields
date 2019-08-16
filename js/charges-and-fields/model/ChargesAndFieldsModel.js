@@ -16,12 +16,13 @@ define( require => {
   const ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  const ChargesAndFieldsModelIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModelIO' );
   const ElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensor' );
   const ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
   const ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
   const ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
+  const Group = require( 'TANDEM/Group' );
+  const GroupIO = require( 'TANDEM/GroupIO' );
   const MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   const ObservableArray = require( 'AXON/ObservableArray' );
   const ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
@@ -50,7 +51,6 @@ define( require => {
     constructor( tandem ) {
 
       super( {
-        phetioType: ChargesAndFieldsModelIO,
         tandem: tandem,
         phetioState: false
       } );
@@ -138,23 +138,39 @@ define( require => {
       this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
       // Observable array of all draggable electric charges
-      // @public
-      this.chargedParticles = new ObservableArray( {
+      // @public {ObservableArray.<ChargedParticle>}
+      this.chargedParticles = new Group( 'particle', {
+        prototype: ( tandem, state ) => {
+          console.log( 'creating particle' );
+          state = state || { charge: +1 };
+          const charge = new ChargedParticle( state.charge, { tandem: tandem, phetioDynamicElement: true } );
+          charge.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( charge ) );
+          return charge;
+        }
+      }, {
         tandem: tandem.createTandem( 'chargedParticles' ),
-        phetioType: ObservableArrayIO( ChargedParticleIO )
-      } ); // {ObservableArray.<ChargedParticle>}
+        phetioType: GroupIO( ChargedParticleIO )
+      } );
       const chargedParticles = this.chargedParticles;
 
       // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
       // This is the relevant array to calculate the electric field, and electric potential
-      // @public
+      // @public {ObservableArray.<ChargedParticle>}
       this.activeChargedParticles = new ObservableArray( {
         phetioType: PropertyIO( ChargedParticleIO )
-      } ); // {ObservableArray.<ChargedParticle>}
+      } );
 
       // @public - Observable array of all draggable electric field sensors
-      this.electricFieldSensors = new ObservableArray( {
-        phetioType: PropertyIO( ElectricFieldSensorIO )
+      this.electricFieldSensors = new Group( 'electricFieldSensor', {
+        prototype: ( tandem, state ) => {
+          // TODO: state seems irrelevant here
+          const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), tandem );
+          sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.remove( sensor ) );
+          return sensor;
+        }
+      }, {
+        tandem: tandem.createTandem( 'electricFieldSensors' ),
+        phetioType: GroupIO( ElectricFieldSensorIO )
       } ); // {ObservableArray.<ElectricFieldSensor>}
       const electricFieldSensors = this.electricFieldSensors;
 
@@ -254,7 +270,7 @@ define( require => {
             addedChargedParticle.isActiveProperty.unlink( isActiveListener );
             addedChargedParticle.positionProperty.unlink( positionListener );
             chargedParticles.removeItemRemovedListener( removalListener );
-            removedChargeParticle.dispose();
+            // removedChargeParticle.dispose();  // done in Group clear.  TODO: Does this need to be done elsewhere?
           }
         } );
       } );
@@ -354,27 +370,13 @@ define( require => {
     }
 
     /**
-     * Adds an element to a particular array (ChargedParticle/ElectricFieldSensor to
-     * chargedParticles/electricFieldSensors), and sets it up for removal when returned to the panel.
-     * @private
-     *
-     * @param {ChargedParticle | ElectricFieldSensor} element
-     * @param {ObservableArray.<ChargedParticle> | ObservableArray.<ElectricFieldSensor>} observableArray
-     */
-    addModelElement( element, observableArray ) {
-      observableArray.push( element );
-      element.returnedToOriginEmitter.addListener( () => observableArray.remove( element ) );
-      return element; // for chaining
-    }
-
-    /**
      * Adds a positive charge to the model, and returns it.
      * @public
      *
      * @returns {ChargedParticle}
      */
-    addPositiveCharge( tandem ) {
-      return this.addModelElement( new ChargedParticle( 1, { tandem: tandem } ), this.chargedParticles );
+    addPositiveCharge() {
+      return this.chargedParticles.createNextGroupMember( { charge: 1 } );
     }
 
     /**
@@ -383,18 +385,16 @@ define( require => {
      *
      * @returns {ChargedParticle}
      */
-    addNegativeCharge( tandem ) {
-      return this.addModelElement( new ChargedParticle( -1, { tandem: tandem } ), this.chargedParticles );
+    addNegativeCharge() {
+      return this.chargedParticles.createNextGroupMember( { charge: -1 } );
     }
 
     /**
      * Adds an electric field sensor to the model, and returns it.
      * @public
-     *
-     * @returns {ElectricFieldSensor}
      */
-    addElectricFieldSensor( tandem ) {
-      return this.addModelElement( new ElectricFieldSensor( this.getElectricField.bind( this ), tandem ), this.electricFieldSensors );
+    addElectricFieldSensor() {
+      return this.electricFieldSensors.createNextGroupMember();
     }
 
     /**
@@ -570,6 +570,22 @@ define( require => {
       return charge;
     }
 
+    canAddElectricPotentialLine( position ) {
+
+
+      // Do not try to add an equipotential line if there are no charges.
+      if ( !this.isPlayAreaChargedProperty.get() ) {
+        return false;
+      }
+
+      // If we are too close to a charged particle, also bail out.
+      const isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), chargedParticle => {
+        // in model coordinates, should be less than the radius (in the view) of a charged particle
+        return chargedParticle.positionProperty.get().distance( position ) < 0.03;
+      } ) );
+      return !isTooCloseToParticle;
+    }
+
     /**
      * Push an electricPotentialLine to an observable array
      * The drawing of the electricPotential line is handled in the view (electricPotentialLineNode)
@@ -627,7 +643,7 @@ define( require => {
           WIDTH * ( phet.joist.random.nextDouble() - 0.5 ),
           HEIGHT * ( phet.joist.random.nextDouble() - 0.5 ) ); // a random position on the graph
 
-        this.addElectricPotentialLine( position );
+        this.canAddElectricPotentialLine( position ) && this.addElectricPotentialLine( position );
       }
     }
 

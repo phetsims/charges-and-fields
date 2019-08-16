@@ -45,14 +45,15 @@ define( require => {
 
       super( {
         tandem: tandem,
-        phetioType: ElectricPotentialLineIO
+        phetioType: ElectricPotentialLineIO,
+        phetioDynamicElement: true
       } );
 
-      this.getElectricPotential = getElectricPotential; // @private static
-      this.getElectricField = getElectricField; // @private static
-      this.chargedParticles = chargedParticles; // @private static
-      this.bounds = bounds; // @private static
-      this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private static
+      this.getElectricPotential = getElectricPotential; // @private
+      this.getElectricField = getElectricField; // @private
+      this.chargedParticles = chargedParticles; // @private
+      this.bounds = bounds; // @private
+      this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private
 
       this.position = position; // {Vector2} @public read-only static
       this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts

@@ -133,13 +133,13 @@ define( require => {
         children: [
           createDraggableItem( tandem.createTandem( 'positiveCharge' ),
             plusOneNanoCString,
-            () => model.addPositiveCharge( model.chargedParticleGroupTandem.createNextTandem() ),
+            () => model.addPositiveCharge(),
             new ChargedParticleRepresentationNode( 1 ),
             positiveVisibleProperty ),
 
           createDraggableItem( tandem.createTandem( 'negativeCharge' ),
             minusOneNanoCString,
-            () => model.addNegativeCharge( model.chargedParticleGroupTandem.createNextTandem() ),
+            () => model.addNegativeCharge(),
             new ChargedParticleRepresentationNode( -1 ),
             negativeVisibleProperty ),
 
