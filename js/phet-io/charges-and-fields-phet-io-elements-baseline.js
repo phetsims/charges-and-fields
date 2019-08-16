@@ -111,7 +111,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.isActiveProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -123,7 +123,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.isInteractiveProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -135,7 +135,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.isUserControlledProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -147,7 +147,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.positionProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -207,7 +207,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.electricFieldProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -219,7 +219,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.isActiveProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -231,7 +231,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.isInteractiveProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -243,7 +243,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.isUserControlledProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,
@@ -255,7 +255,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.positionProperty": {
       "phetioDocumentation": "",
-      "phetioDynamicElement": false,
+      "phetioDynamicElement": true,
       "phetioEventType": "MODEL",
       "phetioFeatured": false,
       "phetioHighFrequency": false,

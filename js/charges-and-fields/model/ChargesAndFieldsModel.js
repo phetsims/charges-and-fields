@@ -140,11 +140,15 @@ define( require => {
       // Observable array of all draggable electric charges
       // @public {ObservableArray.<ChargedParticle>}
       this.chargedParticles = new Group( 'particle', {
-        prototype: ( tandem, state ) => {
-          state = state || { charge: +1 };
-          const charge = new ChargedParticle( state.charge, { tandem: tandem, phetioDynamicElement: true } );
-          charge.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( charge ) );
-          return charge;
+        prototype: {
+          create: ( tandem, state ) => {
+            const charge = new ChargedParticle( state.charge, { tandem: tandem, phetioDynamicElement: true } );
+            charge.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( charge ) );
+            return charge;
+          },
+          defaults: {
+            charge: +1
+          }
         }
       }, {
         tandem: tandem.createTandem( 'chargedParticles' ),
@@ -161,11 +165,14 @@ define( require => {
 
       // @public - Observable array of all draggable electric field sensors
       this.electricFieldSensors = new Group( 'electricFieldSensor', {
-        prototype: ( tandem, state ) => {
-          // TODO: state seems irrelevant here
-          const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), tandem );
-          sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.remove( sensor ) );
-          return sensor;
+        prototype: {
+          create: ( tandem, state ) => {
+            // TODO: state seems irrelevant here
+            const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), tandem );
+            sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.remove( sensor ) );
+            return sensor;
+          },
+          defaults: {}
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensors' ),
