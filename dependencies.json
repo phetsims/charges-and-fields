@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.43 Mon Aug 19 2019 13:02:11 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# charges-and-fields 1.0.44-rc.1 Mon Aug 19 2019 15:53:51 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "9fca99e4a139064101eb93021f77c6bc31bf7e65",
+    "sha": "c66aed1befa7acc6c66eb3fe78daa3419f610afc",
     "branch": "1.0"
   },
   "chipper": {
@@ -26,7 +26,7 @@
   },
   "joist": {
     "sha": "7f81c1cb36aea9c7e05fcfb6fd33cc582b6d0719",
-    "branch": "charges-and-fields-1.0"
+    "branch": "HEAD"
   },
   "kite": {
     "sha": "3b656b9a455ced42b9af90a15a25446b248490ab",
@@ -50,7 +50,7 @@
   },
   "scenery-phet": {
     "sha": "4608a68121ce040dc8c4e301b23bb8d9296a35ee",
-    "branch": "charges-and-fields-1.0"
+    "branch": "HEAD"
   },
   "sherpa": {
     "sha": "5ddfccd4d439c8ceeb4739de4c790d2e75cb7ef7",
