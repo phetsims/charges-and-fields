@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.15-phetio Mon Aug 05 2019 15:00:17 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# charges-and-fields 1.0.15-phetio Mon Aug 19 2019 13:04:05 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "845be6b591cb746b0b05b7023208aef2e49a8855",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "6829b28bff4b6ad4475960fd37e51cf8958301d2",
+    "sha": "00353b256e9747ab0bda9778b47cff17d26f31eb",
     "branch": "1.0-phetio"
   },
   "chipper": {
@@ -25,8 +25,8 @@
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "0815c2436327e12c8a0c298263ba7c41f3f99614",
-    "branch": "HEAD"
+    "sha": "710caa81bbaf9dc6ce6aa16d89bb4eb91a1abf20",
+    "branch": "charges-and-fields-1.0-phetio"
   },
   "kite": {
     "sha": "48cb255e5fba37c5b3f2f127a13656ea8b760d34",
@@ -61,8 +61,8 @@
     "branch": "HEAD"
   },
   "scenery-phet": {
-    "sha": "edf3e62563f7a4b824559b4bf4b0bc6151354ad0",
-    "branch": "HEAD"
+    "sha": "f182a854418fcc526f2bf5581e0d90285b93072b",
+    "branch": "charges-and-fields-1.0-phetio"
   },
   "sherpa": {
     "sha": "bc19483f9cae25372295f860bf9d44dc850ea73b",
