@@ -43,8 +43,6 @@ define( require => {
   class ChargesAndFieldsModel extends PhetioObject {
 
     /**
-     * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
-     *
      * @param {Tandem} tandem
      */
     constructor( tandem ) {
