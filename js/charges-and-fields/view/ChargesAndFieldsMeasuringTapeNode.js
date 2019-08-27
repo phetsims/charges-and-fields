@@ -40,7 +40,6 @@ define( require => {
         modelViewTransform: modelViewTransform,
         basePositionProperty: measuringTape.basePositionProperty,
         tipPositionProperty: measuringTape.tipPositionProperty,
-        isTipDragBounded: true,
         textBackgroundColor: 'rgba( 0, 0, 0, 0.65 )'
       } );
 
