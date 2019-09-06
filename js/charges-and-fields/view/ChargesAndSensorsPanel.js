@@ -145,7 +145,7 @@ define( require => {
 
           createDraggableItem( tandem.createTandem( 'electricFieldSensor' ),
             sensorsString,
-            () => model.addElectricFieldSensor( model.electricFieldSensorGroupTandem.createNextTandem() ),
+            () => model.addElectricFieldSensor(),
 
             new ElectricFieldSensorRepresentationNode(),
             electricFieldSensorVisibleProperty )

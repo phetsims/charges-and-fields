@@ -13,24 +13,15 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const phetioInherit = require( 'TANDEM/phetioInherit' );
 
-  /**
-   * @param {ModelElement} modelElement
-   * @param {string} phetioID
-   * @constructor
-   */
-  function ModelElementIO( modelElement, phetioID ) {
-    ObjectIO.call( this, modelElement, phetioID );
-  }
+  // TODO: this seems unnecessary
+  class ModelElementIO extends ObjectIO {}
 
-  phetioInherit( ObjectIO, 'ModelElementIO', ModelElementIO, {}, {
-    validator: { valueType: ModelElement },
-    documentation: 'A Model Element'
-  } );
+  ModelElementIO.validator = { valueType: ModelElement };
+  ModelElementIO.documentation = 'A Model Element';
+  ModelElementIO.typeName = 'ModelElementIO';
+  ObjectIO.validateSubtype( ModelElementIO );
 
-  chargesAndFields.register( 'ModelElementIO', ModelElementIO );
-
-  return ModelElementIO;
+  return chargesAndFields.register( 'ModelElementIO', ModelElementIO );
 } );
 

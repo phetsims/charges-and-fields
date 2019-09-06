@@ -55,7 +55,10 @@ define( require => {
                  enclosureBounds,
                  tandem ) {
 
-      super( { tandem: tandem } );
+      super( {
+        tandem: tandem,
+        phetioDynamicElement: true
+      } );
 
       this.modelElement = electricFieldSensor; // @public (read-only)
 

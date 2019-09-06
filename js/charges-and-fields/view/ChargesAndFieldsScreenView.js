@@ -24,12 +24,15 @@ define( require => {
   const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
   const ElectricFieldCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldCanvasNode' );
   const ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
+  const ElectricFieldSensorNodeIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNodeIO' );
   const ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
   const ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
   const ElectricPotentialMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialMobileWebGLNode' );
   const ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   const ElectricPotentialWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialWebGLNode' );
   const GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
+  const Group = require( 'TANDEM/Group' );
+  const GroupIO = require( 'TANDEM/GroupIO' );
   const LinearFunction = require( 'DOT/LinearFunction' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -278,33 +281,52 @@ define( require => {
         } );
       } );
 
+      const electricFieldSensorGroup = new Group( 'electricFieldSensor', {
+        prototype: {
+          create: ( tandem, stateObject ) => {
+
+            // get the model sensor if it's in the phetioObject map. When not setting state, the model element should
+            // always exist.
+            if ( !phet.phetIo.phetioEngine.hasPhetioObject( stateObject.sensorPhetioID ) ) {
+              return; // TODO: Assert this only happens while we're setting state
+            }
+            const electricFieldSensor = phet.phetIo.phetioEngine.getPhetioObject( stateObject.sensorPhetioID );
+
+            // Create and add the view representation for this electric Field Sensor
+            const electricFieldSensorNode = new ElectricFieldSensorNode(
+              electricFieldSensor,
+              snapToGridLines,
+              modelViewTransform,
+              this.availableModelBoundsProperty,
+              model.isPlayAreaChargedProperty,
+              model.areValuesVisibleProperty,
+              model.chargesAndSensorsEnclosureBoundsProperty.get(),
+              tandem
+            );
+            draggableElementsLayer.addChild( electricFieldSensorNode );
+
+            // Add the removal listener for if and when this electric field sensor is removed from the model.
+            model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
+              if ( removedElectricFieldSensor === electricFieldSensor ) {
+                electricFieldSensorNode.dispose();
+                model.electricFieldSensors.removeItemRemovedListener( removalListener );
+              }
+            } );
+
+            return electricFieldSensorNode;
+          },
+          defaultState: {
+            sensorPhetioID: model.electricFieldSensors.prototypes.prototype.tandem.phetioID
+          }
+        }
+      }, {
+        tandem: tandem.createTandem( 'electricFieldSensors' ),
+        phetioType: GroupIO( ElectricFieldSensorNodeIO )
+      } );
+
       // Handle the comings and goings of charged electric field sensors.
       model.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
-
-        const electricFieldSensorTandem = tandem.createTandem( 'electricFieldSensors' );
-
-        // Create and add the view representation for this electric Field Sensor
-        const electricFieldSensorNode = new ElectricFieldSensorNode(
-          addedElectricFieldSensor,
-          snapToGridLines,
-          modelViewTransform,
-          this.availableModelBoundsProperty,
-          model.isPlayAreaChargedProperty,
-          model.areValuesVisibleProperty,
-          model.chargesAndSensorsEnclosureBoundsProperty.get(),
-
-          // TODO: Group for the view side
-          electricFieldSensorTandem.createTandem( addedElectricFieldSensor.electricFieldSensorTandem.name.split( '_' ).join( '~' ) )
-        );
-        draggableElementsLayer.addChild( electricFieldSensorNode );
-
-        // Add the removal listener for if and when this electric field sensor is removed from the model.
-        model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
-          if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
-            electricFieldSensorNode.dispose();
-            model.electricFieldSensors.removeItemRemovedListener( removalListener );
-          }
-        } );
+        electricFieldSensorGroup.createNextGroupMember( { sensorPhetioID: addedElectricFieldSensor.tandem.phetioID } );
       } );
 
       // listens to the isUserControlled property of the electric potential sensor

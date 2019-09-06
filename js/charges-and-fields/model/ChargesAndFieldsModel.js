@@ -44,8 +44,6 @@ define( require => {
   class ChargesAndFieldsModel extends PhetioObject {
 
     /**
-     * Main constructor for ChargesAndFieldsModel, which contains all of the model logic for the entire sim screen.
-     *
      * @param {Tandem} tandem
      */
     constructor( tandem ) {
@@ -54,12 +52,6 @@ define( require => {
         tandem: tandem,
         phetioState: false
       } );
-
-      // @public
-      this.chargedParticleGroupTandem = tandem.createGroupTandem( 'chargedParticle' );
-
-      // @public
-      this.electricFieldSensorGroupTandem = tandem.createGroupTandem( 'electricFieldSensor' );
 
       // @public (read-write) {function} - supplied by the view to indicate when the charges and sensors panel is visible
       // used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
@@ -146,7 +138,7 @@ define( require => {
             charge.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( charge ) );
             return charge;
           },
-          defaults: {
+          defaultState: {
             charge: +1
           }
         }
@@ -172,7 +164,7 @@ define( require => {
             sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.remove( sensor ) );
             return sensor;
           },
-          defaults: {}
+          defaultState: {}
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensors' ),
