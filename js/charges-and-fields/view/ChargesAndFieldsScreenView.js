@@ -281,7 +281,7 @@ define( require => {
         } );
       } );
 
-      const electricFieldSensorGroup = new Group( 'electricFieldSensor', {
+      const electricFieldSensorNodes = new Group( 'electricFieldSensorNode', {
         prototype: {
           create: ( tandem, stateObject ) => {
 
@@ -303,15 +303,6 @@ define( require => {
               model.chargesAndSensorsEnclosureBoundsProperty.get(),
               tandem
             );
-            draggableElementsLayer.addChild( electricFieldSensorNode );
-
-            // Add the removal listener for if and when this electric field sensor is removed from the model.
-            model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
-              if ( removedElectricFieldSensor === electricFieldSensor ) {
-                electricFieldSensorNode.dispose();
-                model.electricFieldSensors.removeItemRemovedListener( removalListener );
-              }
-            } );
 
             return electricFieldSensorNode;
           },
@@ -320,13 +311,23 @@ define( require => {
           }
         }
       }, {
-        tandem: tandem.createTandem( 'electricFieldSensors' ),
+        tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
         phetioType: GroupIO( ElectricFieldSensorNodeIO )
       } );
 
       // Handle the comings and goings of charged electric field sensors.
       model.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
-        electricFieldSensorGroup.createNextGroupMember( { sensorPhetioID: addedElectricFieldSensor.tandem.phetioID } );
+        const electricFieldSensorNode = electricFieldSensorNodes.createNextGroupMember( { sensorPhetioID: addedElectricFieldSensor.tandem.phetioID } );
+
+        draggableElementsLayer.addChild( electricFieldSensorNode );
+
+        // Add the removal listener for if and when this electric field sensor is removed from the model.
+        model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
+          if ( removedElectricFieldSensor === electricFieldSensorNode ) {
+            electricFieldSensorNode.dispose();
+            model.electricFieldSensors.removeItemRemovedListener( removalListener );
+          }
+        } );
       } );
 
       // listens to the isUserControlled property of the electric potential sensor
