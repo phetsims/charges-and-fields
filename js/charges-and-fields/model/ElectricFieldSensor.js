@@ -21,11 +21,18 @@ define( require => {
     /**
      * @param {Function} computeElectricField - function( Vector2 ) : number, computes electric field at the given
      *                                          point in the model.
+     * @param {number|null} initialPosition - optionally pass a the initalPosition for the animating home from toolbox.
+     *                                        This is to support PhET-iO State.
      * @param {Tandem} tandem
      */
-    constructor( computeElectricField, tandem ) {
+    constructor( computeElectricField, initialPosition, tandem ) {
 
-      super( { tandem: tandem, phetioType: ElectricFieldSensorIO, phetioDynamicElement: true } );
+      super( {
+        initialPosition: initialPosition,
+        tandem: tandem,
+        phetioType: ElectricFieldSensorIO,
+        phetioDynamicElement: true
+      } );
 
       // @public - electricField Vector in Newtons per Coulomb
       this.electricFieldProperty = new Vector2Property( new Vector2( 0, 0 ), {

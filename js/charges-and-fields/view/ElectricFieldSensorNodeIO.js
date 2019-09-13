@@ -12,30 +12,11 @@ define( require => {
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const validate = require( 'AXON/validate' );
 
+  // TODO: delete me
   class ElectricFieldSensorNodeIO extends ObjectIO {
 
-    /**
-     * @param {ElectricFieldSensor} electricFieldSensor
-     * @returns {Object}
-     * @override
-     */
-    static toStateObject( electricFieldSensorNode ) {
-      validate( electricFieldSensorNode, this.validator );
-      return {
-        sensorPhetioID: electricFieldSensorNode.modelElement.tandem.phetioID
-      };
-    }
 
-    /**
-     * @param {Object} stateObject
-     * @returns {Object}
-     * @override
-     */
-    static fromStateObject( stateObject ) {
-      return {};
-    }
   }
 
   ElectricFieldSensorNodeIO.documentation = 'The view of the sensor that detects the charge direction and strength.';

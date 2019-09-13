@@ -350,14 +350,6 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObjectIO",
       "typeName": "FunctionIO.(ElectricFieldSensorIO)=>VoidIO"
     },
-    "FunctionIO.(ElectricFieldSensorNodeIO)=>VoidIO": {
-      "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> ElectricFieldSensorNodeIO<br><strong>Return Type:</strong> VoidIO",
-      "events": [],
-      "methodOrder": [],
-      "methods": {},
-      "supertype": "ObjectIO",
-      "typeName": "FunctionIO.(ElectricFieldSensorNodeIO)=>VoidIO"
-    },
     "FunctionIO.(ElectricPotentialLineIO)=>VoidIO": {
       "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> ElectricPotentialLineIO<br><strong>Return Type:</strong> VoidIO",
       "events": [],
@@ -365,6 +357,14 @@ window.phet.phetio.phetioTypes = assert &&
       "methods": {},
       "supertype": "ObjectIO",
       "typeName": "FunctionIO.(ElectricPotentialLineIO)=>VoidIO"
+    },
+    "FunctionIO.(ModelElementNodeIO)=>VoidIO": {
+      "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> ModelElementNodeIO<br><strong>Return Type:</strong> VoidIO",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "supertype": "ObjectIO",
+      "typeName": "FunctionIO.(ModelElementNodeIO)=>VoidIO"
     },
     "FunctionIO.(NullableIO.<BooleanIO>,NullableIO.<NullableIO.<BooleanIO>>)=>VoidIO": {
       "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> NullableIO.<BooleanIO>, NullableIO.<NullableIO.<BooleanIO>><br><strong>Return Type:</strong> VoidIO",
@@ -492,7 +492,7 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObservableArrayIO.<ElectricFieldSensorIO>",
       "typeName": "GroupIO.<ElectricFieldSensorIO>"
     },
-    "GroupIO.<ElectricFieldSensorNodeIO>": {
+    "GroupIO.<ModelElementNodeIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
       "events": [
         "itemAdded",
@@ -503,14 +503,14 @@ window.phet.phetio.phetioTypes = assert &&
         "addItemAddedListener": {
           "documentation": "Add a listener that is called when an item is added to the observable array.",
           "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorNodeIO)=>VoidIO"
+            "FunctionIO.(ModelElementNodeIO)=>VoidIO"
           ],
           "returnType": "VoidIO"
         },
         "addItemRemovedListener": {
           "documentation": "Add a listener that is called when an item is removed from the observable array.",
           "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorNodeIO)=>VoidIO"
+            "FunctionIO.(ModelElementNodeIO)=>VoidIO"
           ],
           "returnType": "VoidIO"
         },
@@ -520,8 +520,8 @@ window.phet.phetio.phetioTypes = assert &&
           "returnType": "NumberIO"
         }
       },
-      "supertype": "ObservableArrayIO.<ElectricFieldSensorNodeIO>",
-      "typeName": "GroupIO.<ElectricFieldSensorNodeIO>"
+      "supertype": "ObservableArrayIO.<ModelElementNodeIO>",
+      "typeName": "GroupIO.<ModelElementNodeIO>"
     },
     "LinkedElementIO": {
       "documentation": "A LinkedElement",
@@ -695,37 +695,6 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObjectIO",
       "typeName": "ObservableArrayIO.<ElectricFieldSensorIO>"
     },
-    "ObservableArrayIO.<ElectricFieldSensorNodeIO>": {
-      "documentation": "An array that sends notifications when its values have changed.",
-      "events": [
-        "itemAdded",
-        "itemRemoved"
-      ],
-      "methodOrder": [],
-      "methods": {
-        "addItemAddedListener": {
-          "documentation": "Add a listener that is called when an item is added to the observable array.",
-          "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorNodeIO)=>VoidIO"
-          ],
-          "returnType": "VoidIO"
-        },
-        "addItemRemovedListener": {
-          "documentation": "Add a listener that is called when an item is removed from the observable array.",
-          "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorNodeIO)=>VoidIO"
-          ],
-          "returnType": "VoidIO"
-        },
-        "getLength": {
-          "documentation": "Get the number of elements in the observable array",
-          "parameterTypes": [],
-          "returnType": "NumberIO"
-        }
-      },
-      "supertype": "ObjectIO",
-      "typeName": "ObservableArrayIO.<ElectricFieldSensorNodeIO>"
-    },
     "ObservableArrayIO.<ElectricPotentialLineIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
       "events": [
@@ -756,6 +725,37 @@ window.phet.phetio.phetioTypes = assert &&
       },
       "supertype": "ObjectIO",
       "typeName": "ObservableArrayIO.<ElectricPotentialLineIO>"
+    },
+    "ObservableArrayIO.<ModelElementNodeIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [
+        "itemAdded",
+        "itemRemoved"
+      ],
+      "methodOrder": [],
+      "methods": {
+        "addItemAddedListener": {
+          "documentation": "Add a listener that is called when an item is added to the observable array.",
+          "parameterTypes": [
+            "FunctionIO.(ModelElementNodeIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "addItemRemovedListener": {
+          "documentation": "Add a listener that is called when an item is removed from the observable array.",
+          "parameterTypes": [
+            "FunctionIO.(ModelElementNodeIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "getLength": {
+          "documentation": "Get the number of elements in the observable array",
+          "parameterTypes": [],
+          "returnType": "NumberIO"
+        }
+      },
+      "supertype": "ObjectIO",
+      "typeName": "ObservableArrayIO.<ModelElementNodeIO>"
     },
     "PhetButtonIO": {
       "documentation": "The PhET Button in the bottom right of the screen",

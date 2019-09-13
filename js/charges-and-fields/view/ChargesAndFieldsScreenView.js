@@ -24,7 +24,7 @@ define( require => {
   const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
   const ElectricFieldCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldCanvasNode' );
   const ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
-  const ElectricFieldSensorNodeIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNodeIO' );
+  const ModelElementNodeIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ModelElementNodeIO' );
   const ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
   const ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
   const ElectricPotentialMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialMobileWebGLNode' );
@@ -256,22 +256,12 @@ define( require => {
       ], ( positive, negative, electricFieldSensors ) => positive || negative || electricFieldSensors )
         .linkAttribute( chargesAndSensorsPanel, 'visible' );
 
-      const chargedParticlesTandem = tandem.createTandem( 'chargedParticles' );
-
       // Handle the comings and goings of charged particles.
       model.chargedParticles.addItemAddedListener( addedChargedParticle => {
         // Create and add the view representation for this chargedParticle.
 
-        const chargedParticleNode = new ChargedParticleNode(
-          addedChargedParticle,
-          snapToGridLines,
-          modelViewTransform,
-          this.availableModelBoundsProperty,
-          model.chargesAndSensorsEnclosureBoundsProperty.get(),
+        const chargedParticleNode = chargedParticleNodes.createNextCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
 
-          // TODO Group tandem for these?
-          chargedParticlesTandem.createTandem( addedChargedParticle.tandem.name.split( '_' ).join( '~' ) )
-        );
         draggableElementsLayer.addChild( chargedParticleNode );
 
         addedChargedParticle.disposeEmitter.addListener( function callback() {
@@ -281,16 +271,30 @@ define( require => {
         } );
       } );
 
+      const chargedParticleNodes = new Group( 'chargedParticleNode', {
+        prototype: {
+          create: ( tandem, prototypeName, chargedParticle ) => {
+
+            return new ChargedParticleNode(
+              chargedParticle,
+              snapToGridLines,
+              modelViewTransform,
+              this.availableModelBoundsProperty,
+              model.chargesAndSensorsEnclosureBoundsProperty.get(),
+              tandem
+            );
+          },
+          defaultArguments: [ model.chargedParticles.prototypes.prototype ]
+        }
+      }, {
+        tandem: tandem.createTandem( 'chargedParticleNodes' ),
+        phetioState: false,
+        phetioType: GroupIO( ModelElementNodeIO )
+      } );
+
       const electricFieldSensorNodes = new Group( 'electricFieldSensorNode', {
         prototype: {
-          create: ( tandem, stateObject ) => {
-
-            // get the model sensor if it's in the phetioObject map. When not setting state, the model element should
-            // always exist.
-            if ( !phet.phetIo.phetioEngine.hasPhetioObject( stateObject.sensorPhetioID ) ) {
-              return; // TODO: Assert this only happens while we're setting state
-            }
-            const electricFieldSensor = phet.phetIo.phetioEngine.getPhetioObject( stateObject.sensorPhetioID );
+          create: ( tandem, prototypeName, electricFieldSensor ) => {
 
             // Create and add the view representation for this electric Field Sensor
             const electricFieldSensorNode = new ElectricFieldSensorNode(
@@ -306,18 +310,18 @@ define( require => {
 
             return electricFieldSensorNode;
           },
-          defaultState: {
-            sensorPhetioID: model.electricFieldSensors.prototypes.prototype.tandem.phetioID
-          }
+          defaultArguments: [ model.electricFieldSensors.prototypes.prototype ]
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
-        phetioType: GroupIO( ElectricFieldSensorNodeIO )
+        phetioType: GroupIO( ModelElementNodeIO )
+        // TODO: phetioState: false because the Node isn't holding any state.
       } );
 
       // Handle the comings and goings of charged electric field sensors.
       model.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
-        const electricFieldSensorNode = electricFieldSensorNodes.createNextCorrespondingGroupMember( addedElectricFieldSensor, { sensorPhetioID: addedElectricFieldSensor.tandem.phetioID } );
+        const electricFieldSensorNode = electricFieldSensorNodes.createNextCorrespondingGroupMember(
+          addedElectricFieldSensor, addedElectricFieldSensor );
 
         draggableElementsLayer.addChild( electricFieldSensorNode );
 

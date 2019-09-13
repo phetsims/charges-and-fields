@@ -13,9 +13,43 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  const validate = require( 'AXON/validate' );
+  const Vector2IO = require( 'DOT/Vector2IO' );
 
-  // TODO: this seems unnecessary
-  class ModelElementIO extends ObjectIO {}
+  class ModelElementIO extends ObjectIO {
+
+    /**
+     * @param {ModelElement} modelElement
+     * @returns {Object}
+     * @override
+     */
+    static toStateObject( modelElement ) {
+      validate( modelElement, this.validator );
+      return {
+        initialPosition: modelElement.initialPosition ? Vector2IO.toStateObject( modelElement.initialPosition ) : null
+      };
+    }
+
+    /**
+     * @param {Object} stateObject
+     * @returns {Object}
+     * @override
+     */
+    static fromStateObject( stateObject ) {
+      return {
+        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
+      };
+    }
+
+    /**
+     * @override
+     * @param {Object} stateObject - see ModelElementIO.toStateObject
+     * @returns {Array.<*>}
+     */
+    static stateObjectToArgs( stateObject ) {
+      return [ stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null ];
+    }
+  }
 
   ModelElementIO.validator = { valueType: ModelElement };
   ModelElementIO.documentation = 'A Model Element';

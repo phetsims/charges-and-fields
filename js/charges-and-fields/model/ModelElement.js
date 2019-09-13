@@ -24,6 +24,12 @@ define( require => {
      */
     constructor( options ) {
 
+      options = _.extend( {
+
+        // {Vector2|null} Where to animate the element when it is done being used. This can be passed in when
+        // ModelElements' state is set with PhET-iO, see ModelElementIO
+        initialPosition: null
+      }, options );
       super( options );
 
       const tandem = options.tandem;// required
@@ -57,7 +63,7 @@ define( require => {
       this.animationTween = null;
 
       // @public
-      this.initialPosition = null; // {Vector2} Where to animate the element when it is done being used.
+      this.initialPosition = options.initialPosition; // {Vector2|null} Where to animate the element when it is done being used.
 
       this.disposeEmitter = new Emitter();
 

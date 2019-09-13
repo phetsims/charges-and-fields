@@ -457,6 +457,114 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO.<Bounds2IO>"
     },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes": {
+      "phetioDocumentation": "",
+      "phetioDynamicElement": false,
+      "phetioEventType": "MODEL",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": false,
+      "phetioStudioControl": true,
+      "phetioTypeName": "GroupIO.<ModelElementNodeIO>"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.lengthProperty": {
+      "phetioDocumentation": "",
+      "phetioDynamicElement": false,
+      "phetioEventType": "MODEL",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": true,
+      "phetioState": true,
+      "phetioStudioControl": true,
+      "phetioTypeName": "NumberPropertyIO"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype": {
+      "phetioDocumentation": "",
+      "phetioDynamicElement": true,
+      "phetioEventType": "MODEL",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": false,
+      "phetioStudioControl": true,
+      "phetioTypeName": "NodeIO"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.dragListener.dragAction": {
+      "phetioDocumentation": "Emits whenever a drag occurs with an EventIO argument. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
+      "phetioDynamicElement": true,
+      "phetioEventType": "USER",
+      "phetioFeatured": false,
+      "phetioHighFrequency": true,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": false,
+      "phetioStudioControl": true,
+      "phetioTypeName": "ActionIO.<EventIO>"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.dragListener.pressAction": {
+      "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
+      "phetioDynamicElement": true,
+      "phetioEventType": "USER",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": false,
+      "phetioStudioControl": true,
+      "phetioTypeName": "ActionIO.<EventIO>"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.dragListener.releaseAction": {
+      "phetioDocumentation": "Executes whenever a release occurs. The arguments are:<br/><ol><li>event: NullableIO.<EventIO></li></ol>",
+      "phetioDynamicElement": true,
+      "phetioEventType": "USER",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": false,
+      "phetioStudioControl": true,
+      "phetioTypeName": "ActionIO.<NullableIO.<EventIO>>"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.opacityProperty": {
+      "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
+      "phetioDynamicElement": true,
+      "phetioEventType": "MODEL",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": true,
+      "phetioStudioControl": true,
+      "phetioTypeName": "NumberPropertyIO"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.pickableProperty": {
+      "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
+      "phetioDynamicElement": true,
+      "phetioEventType": "MODEL",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": true,
+      "phetioStudioControl": true,
+      "phetioTypeName": "PropertyIO.<NullableIO.<BooleanIO>>"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.visibleProperty": {
+      "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
+      "phetioDynamicElement": true,
+      "phetioEventType": "MODEL",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": true,
+      "phetioStudioControl": true,
+      "phetioTypeName": "PropertyIO.<BooleanIO>"
+    },
     "chargesAndFields.chargesAndFieldsScreen.view.chargesAndSensorsPanel": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
@@ -1211,7 +1319,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO.<ElectricFieldSensorNodeIO>"
+      "phetioTypeName": "GroupIO.<ModelElementNodeIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.lengthProperty": {
       "phetioDocumentation": "",

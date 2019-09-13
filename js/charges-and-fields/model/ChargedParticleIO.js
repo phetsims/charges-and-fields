@@ -14,7 +14,6 @@ define( require => {
   const ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   const NumberIO = require( 'TANDEM/types/NumberIO' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
   const VoidIO = require( 'TANDEM/types/VoidIO' );
   const validate = require( 'AXON/validate' );
 
@@ -28,28 +27,20 @@ define( require => {
      */
     static toStateObject( chargedParticle ) {
       validate( chargedParticle, this.validator );
-      return {
-        charge: chargedParticle.charge,
-        initialPosition: chargedParticle.initialPosition ? Vector2IO.toStateObject( chargedParticle.initialPosition ) : null
-      };
+      const parentStateObject = ModelElementIO.toStateObject( chargedParticle );
+      parentStateObject.charge = chargedParticle.charge;
+      return parentStateObject;
     }
 
     /**
-     * @param {Object} stateObject
-     * @returns {Object}
      * @override
+     * @param {Object} stateObject - see ChargedParticleIO.toStateObject
+     * @returns {Array.<*>}
      */
-    static fromStateObject( stateObject ) {
-      return {
-        charge: stateObject.charge,
-        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
-      };
-    }
+    static stateObjectToArgs( stateObject ) {
 
-    static setValue( chargedParticle, fromStateObject ) {
-      validate( chargedParticle, this.validator );
-      chargedParticle.charge = fromStateObject.charge;
-      chargedParticle.initialPosition = fromStateObject.initialPosition;
+      // Put charge first for the ChargedParticle Group create function api.
+      return [ stateObject.charge ].concat( ModelElementIO.stateObjectToArgs( stateObject ) );
     }
   }
 

@@ -133,14 +133,16 @@ define( require => {
       // @public {ObservableArray.<ChargedParticle>}
       this.chargedParticles = new Group( 'particle', {
         prototype: {
-          create: ( tandem, state ) => {
-            const charge = new ChargedParticle( state.charge, { tandem: tandem, phetioDynamicElement: true } );
-            charge.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( charge ) );
-            return charge;
+          create: ( tandem, prototypeName, charge, initialPosition ) => {
+            const chargedParticle = new ChargedParticle( charge, {
+              tandem: tandem,
+              phetioDynamicElement: true,
+              initialPosition: initialPosition
+            } );
+            chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( chargedParticle ) );
+            return chargedParticle;
           },
-          defaultState: {
-            charge: +1
-          }
+          defaultArguments: [ 1 ]
         }
       }, {
         tandem: tandem.createTandem( 'chargedParticles' ),
@@ -158,13 +160,12 @@ define( require => {
       // @public - Observable array of all draggable electric field sensors
       this.electricFieldSensors = new Group( 'electricFieldSensor', {
         prototype: {
-          create: ( tandem, state ) => {
-            // TODO: state seems irrelevant here
-            const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), tandem );
+          create: ( tandem, prototypeName, initialPosition ) => {
+            const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
             sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.remove( sensor ) );
             return sensor;
           },
-          defaultState: {}
+          defaultArguments: [] // TODO: we should be able to delete this
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensors' ),
@@ -375,7 +376,7 @@ define( require => {
      * @returns {ChargedParticle}
      */
     addPositiveCharge() {
-      return this.chargedParticles.createNextGroupMember( { charge: 1 } );
+      return this.chargedParticles.createNextGroupMember( 1 );
     }
 
     /**
@@ -385,7 +386,7 @@ define( require => {
      * @returns {ChargedParticle}
      */
     addNegativeCharge() {
-      return this.chargedParticles.createNextGroupMember( { charge: -1 } );
+      return this.chargedParticles.createNextGroupMember( -1 );
     }
 
     /**

@@ -37,7 +37,10 @@ define( require => {
                  enclosureBounds,
                  tandem ) {
 
-      super( chargedParticle.charge, { tandem: tandem } );
+      super( chargedParticle.charge, {
+        tandem: tandem,
+        phetioDynamicElement: true
+      } );
 
       this.modelElement = chargedParticle;
 
