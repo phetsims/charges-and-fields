@@ -164,8 +164,7 @@ define( require => {
             const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
             sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.remove( sensor ) );
             return sensor;
-          },
-          defaultArguments: [] // TODO: we should be able to delete this
+          }
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensors' ),
