@@ -317,13 +317,13 @@ define( require => {
 
       // Handle the comings and goings of charged electric field sensors.
       model.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
-        const electricFieldSensorNode = electricFieldSensorNodes.createNextGroupMember( { sensorPhetioID: addedElectricFieldSensor.tandem.phetioID } );
+        const electricFieldSensorNode = electricFieldSensorNodes.createNextCorrespondingGroupMember( addedElectricFieldSensor, { sensorPhetioID: addedElectricFieldSensor.tandem.phetioID } );
 
         draggableElementsLayer.addChild( electricFieldSensorNode );
 
         // Add the removal listener for if and when this electric field sensor is removed from the model.
         model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
-          if ( removedElectricFieldSensor === electricFieldSensorNode ) {
+          if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
             electricFieldSensorNode.dispose();
             model.electricFieldSensors.removeItemRemovedListener( removalListener );
           }
