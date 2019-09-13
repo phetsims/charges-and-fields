@@ -268,7 +268,7 @@ define( require => {
             addedChargedParticle.isActiveProperty.unlink( isActiveListener );
             addedChargedParticle.positionProperty.unlink( positionListener );
             chargedParticles.removeItemRemovedListener( removalListener );
-            // removedChargeParticle.dispose();  // done in Group clear.  TODO: Does this need to be done elsewhere?
+            removedChargeParticle.dispose();
           }
         } );
       } );
