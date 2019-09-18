@@ -491,7 +491,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "NodeIO"
+      "phetioTypeName": "ModelElementNodeIO"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.dragListener.dragAction": {
       "phetioDocumentation": "Emits whenever a drag occurs with an EventIO argument. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
@@ -1343,7 +1343,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "NodeIO"
+      "phetioTypeName": "ModelElementNodeIO"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.arrowNode": {
       "phetioDocumentation": "",

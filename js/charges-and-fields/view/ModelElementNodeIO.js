@@ -21,25 +21,19 @@ define( require => {
   class ModelElementNodeIO extends NodeIO {
 
     /**
+     * Used in the data stream.
      * @param {ModelElementNode} modelElementNode
      * @returns {Object}
      * @override
      */
     static toStateObject( modelElementNode ) {
       validate( modelElementNode, this.validator );
+
+      // Techncially we do not need any information here and could return {}, but  we include the phetioID of
+      // corresponding model element for understandability.
       return {
         modelPhetioID: modelElementNode.modelElement.tandem.phetioID
       };
-    }
-
-    /**
-     * @override
-     * @param {Object} stateObject - see ModelElementNodeIO.toStateObject
-     * @returns {Array.<*>}
-     */
-    static stateObjectToArgs( stateObject ) {
-      return phet.phetIo.phetioEngine.hasPhetioObject( stateObject.modelPhetioID ) ?
-        [ phet.phetIo.phetioEngine.getPhetioObject( stateObject.modelPhetioID ) ] : null;
     }
   }
 
