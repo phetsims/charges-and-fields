@@ -261,14 +261,6 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "PropertyIO.<BooleanIO>",
       "typeName": "DerivedPropertyIO.<BooleanIO>"
     },
-    "ElectricFieldSensorIO": {
-      "documentation": "The sensor that detects the charge direction and strength.",
-      "events": [],
-      "methodOrder": [],
-      "methods": {},
-      "supertype": "ModelElementIO",
-      "typeName": "ElectricFieldSensorIO"
-    },
     "EmitterIO.<>": {
       "documentation": "Emits when an event occurs and calls added listeners.",
       "events": [
@@ -342,14 +334,6 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObjectIO",
       "typeName": "FunctionIO.(ChargedParticleIO)=>VoidIO"
     },
-    "FunctionIO.(ElectricFieldSensorIO)=>VoidIO": {
-      "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> ElectricFieldSensorIO<br><strong>Return Type:</strong> VoidIO",
-      "events": [],
-      "methodOrder": [],
-      "methods": {},
-      "supertype": "ObjectIO",
-      "typeName": "FunctionIO.(ElectricFieldSensorIO)=>VoidIO"
-    },
     "FunctionIO.(ElectricPotentialLineIO)=>VoidIO": {
       "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> ElectricPotentialLineIO<br><strong>Return Type:</strong> VoidIO",
       "events": [],
@@ -357,6 +341,14 @@ window.phet.phetio.phetioTypes = assert &&
       "methods": {},
       "supertype": "ObjectIO",
       "typeName": "FunctionIO.(ElectricPotentialLineIO)=>VoidIO"
+    },
+    "FunctionIO.(ModelElementIO)=>VoidIO": {
+      "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> ModelElementIO<br><strong>Return Type:</strong> VoidIO",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "supertype": "ObjectIO",
+      "typeName": "FunctionIO.(ModelElementIO)=>VoidIO"
     },
     "FunctionIO.(ModelElementNodeIO)=>VoidIO": {
       "documentation": "Wrapper for the built-in JS function type.<br><strong>Arguments:</strong> ModelElementNodeIO<br><strong>Return Type:</strong> VoidIO",
@@ -461,7 +453,7 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObservableArrayIO.<ChargedParticleIO>",
       "typeName": "GroupIO.<ChargedParticleIO>"
     },
-    "GroupIO.<ElectricFieldSensorIO>": {
+    "GroupIO.<ModelElementIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
       "events": [
         "itemAdded",
@@ -472,14 +464,14 @@ window.phet.phetio.phetioTypes = assert &&
         "addItemAddedListener": {
           "documentation": "Add a listener that is called when an item is added to the observable array.",
           "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorIO)=>VoidIO"
+            "FunctionIO.(ModelElementIO)=>VoidIO"
           ],
           "returnType": "VoidIO"
         },
         "addItemRemovedListener": {
           "documentation": "Add a listener that is called when an item is removed from the observable array.",
           "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorIO)=>VoidIO"
+            "FunctionIO.(ModelElementIO)=>VoidIO"
           ],
           "returnType": "VoidIO"
         },
@@ -489,8 +481,8 @@ window.phet.phetio.phetioTypes = assert &&
           "returnType": "NumberIO"
         }
       },
-      "supertype": "ObservableArrayIO.<ElectricFieldSensorIO>",
-      "typeName": "GroupIO.<ElectricFieldSensorIO>"
+      "supertype": "ObservableArrayIO.<ModelElementIO>",
+      "typeName": "GroupIO.<ModelElementIO>"
     },
     "GroupIO.<ModelElementNodeIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
@@ -672,37 +664,6 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObjectIO",
       "typeName": "ObservableArrayIO.<ChargedParticleIO>"
     },
-    "ObservableArrayIO.<ElectricFieldSensorIO>": {
-      "documentation": "An array that sends notifications when its values have changed.",
-      "events": [
-        "itemAdded",
-        "itemRemoved"
-      ],
-      "methodOrder": [],
-      "methods": {
-        "addItemAddedListener": {
-          "documentation": "Add a listener that is called when an item is added to the observable array.",
-          "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorIO)=>VoidIO"
-          ],
-          "returnType": "VoidIO"
-        },
-        "addItemRemovedListener": {
-          "documentation": "Add a listener that is called when an item is removed from the observable array.",
-          "parameterTypes": [
-            "FunctionIO.(ElectricFieldSensorIO)=>VoidIO"
-          ],
-          "returnType": "VoidIO"
-        },
-        "getLength": {
-          "documentation": "Get the number of elements in the observable array",
-          "parameterTypes": [],
-          "returnType": "NumberIO"
-        }
-      },
-      "supertype": "ObjectIO",
-      "typeName": "ObservableArrayIO.<ElectricFieldSensorIO>"
-    },
     "ObservableArrayIO.<ElectricPotentialLineIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
       "events": [
@@ -733,6 +694,37 @@ window.phet.phetio.phetioTypes = assert &&
       },
       "supertype": "ObjectIO",
       "typeName": "ObservableArrayIO.<ElectricPotentialLineIO>"
+    },
+    "ObservableArrayIO.<ModelElementIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [
+        "itemAdded",
+        "itemRemoved"
+      ],
+      "methodOrder": [],
+      "methods": {
+        "addItemAddedListener": {
+          "documentation": "Add a listener that is called when an item is added to the observable array.",
+          "parameterTypes": [
+            "FunctionIO.(ModelElementIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "addItemRemovedListener": {
+          "documentation": "Add a listener that is called when an item is removed from the observable array.",
+          "parameterTypes": [
+            "FunctionIO.(ModelElementIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "getLength": {
+          "documentation": "Get the number of elements in the observable array",
+          "parameterTypes": [],
+          "returnType": "NumberIO"
+        }
+      },
+      "supertype": "ObjectIO",
+      "typeName": "ObservableArrayIO.<ModelElementIO>"
     },
     "ObservableArrayIO.<ModelElementNodeIO>": {
       "documentation": "An array that sends notifications when its values have changed.",

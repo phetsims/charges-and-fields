@@ -21,7 +21,10 @@ define( require => {
      * @param {Object} options - required actually to supply tandem
      */
     constructor( charge, options ) {
-      options = _.extend( { tandem: Tandem.required, phetioType: ChargedParticleIO }, options );
+      options = _.extend( {
+        tandem: Tandem.required,
+        phetioType: ChargedParticleIO
+      }, options );
       super( options );
       assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 

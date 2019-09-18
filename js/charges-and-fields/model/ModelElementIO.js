@@ -11,7 +11,6 @@ define( require => {
 
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   const validate = require( 'AXON/validate' );
   const Vector2IO = require( 'DOT/Vector2IO' );
@@ -51,7 +50,7 @@ define( require => {
     }
   }
 
-  ModelElementIO.validator = { valueType: ModelElement };
+  ModelElementIO.validator = { isValidValue: e => e instanceof phet.chargesAndFields.ModelElement };
   ModelElementIO.documentation = 'A Model Element';
   ModelElementIO.typeName = 'ModelElementIO';
   ObjectIO.validateSubtype( ModelElementIO );

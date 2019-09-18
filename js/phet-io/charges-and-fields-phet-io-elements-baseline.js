@@ -179,7 +179,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO.<ElectricFieldSensorIO>"
+      "phetioTypeName": "GroupIO.<ModelElementIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.lengthProperty": {
       "phetioDocumentation": "",
@@ -203,7 +203,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": true,
       "phetioStudioControl": true,
-      "phetioTypeName": "ElectricFieldSensorIO"
+      "phetioTypeName": "ModelElementIO"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.electricFieldProperty": {
       "phetioDocumentation": "",

@@ -19,7 +19,6 @@ define( require => {
 
   class ChargedParticleIO extends ModelElementIO {
 
-
     /**
      * @param {ChargedParticle} chargedParticle
      * @returns {Object}

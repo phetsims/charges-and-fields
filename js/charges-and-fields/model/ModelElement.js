@@ -13,6 +13,7 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const Emitter = require( 'AXON/Emitter' );
+  const ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
@@ -28,7 +29,8 @@ define( require => {
 
         // {Vector2|null} Where to animate the element when it is done being used. This can be passed in when
         // ModelElements' state is set with PhET-iO, see ModelElementIO
-        initialPosition: null
+        initialPosition: null,
+        phetioType: ModelElementIO
       }, options );
       super( options );
 

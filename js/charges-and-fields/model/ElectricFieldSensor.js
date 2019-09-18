@@ -11,7 +11,6 @@ define( require => {
 
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
@@ -30,7 +29,6 @@ define( require => {
       super( {
         initialPosition: initialPosition,
         tandem: tandem,
-        phetioType: ElectricFieldSensorIO,
         phetioDynamicElement: true
       } );
 

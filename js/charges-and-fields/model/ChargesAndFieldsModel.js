@@ -17,13 +17,13 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const ElectricFieldSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensor' );
-  const ElectricFieldSensorIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricFieldSensorIO' );
   const ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
   const ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
   const Group = require( 'TANDEM/Group' );
   const GroupIO = require( 'TANDEM/GroupIO' );
   const MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
+  const ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   const ObservableArray = require( 'AXON/ObservableArray' );
   const ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -168,7 +168,7 @@ define( require => {
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensors' ),
-        phetioType: GroupIO( ElectricFieldSensorIO )
+        phetioType: GroupIO( ModelElementIO )
       } ); // {ObservableArray.<ElectricFieldSensor>}
       const electricFieldSensors = this.electricFieldSensors;
 
