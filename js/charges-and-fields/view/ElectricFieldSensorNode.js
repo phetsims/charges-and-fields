@@ -189,7 +189,7 @@ define( require => {
         tandem: tandem.createTandem( 'dragListener' ),
         dragBoundsProperty: availableModelBoundsProperty,
         transform: modelViewTransform,
-        canStartPress: () => { return !electricFieldSensor.animationTween; },
+        canStartPress: () => !electricFieldSensor.animationTween,
         offsetLocation: ( point, listener ) => {
           return listener.pointer instanceof Touch ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
         },
