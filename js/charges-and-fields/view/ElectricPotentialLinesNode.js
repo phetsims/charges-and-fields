@@ -20,6 +20,7 @@ define( require => {
   const Path = require( 'SCENERY/nodes/Path' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
   const Vector2Property = require( 'DOT/Vector2Property' );
@@ -41,7 +42,7 @@ define( require => {
      */
     constructor( electricPotentialLine, modelViewTransform, tandem ) {
 
-      super( { cursor: 'pointer', tandem: tandem } );
+      super( { cursor: 'pointer' } );
 
       const electricPotential = electricPotentialLine.electricPotential;
       const position = electricPotentialLine.position;
@@ -190,13 +191,24 @@ define( require => {
       this.addChild( labelsNode );
 
       // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-      electricPotentialLines.addItemAddedListener( electricPotentialLine => {
+      // TODO: this feels too complicated to be directly in this Node, perhaps refactor into ElectricPotentialLineNode
+      electricPotentialLines.addItemAddedListener( function updateView( electricPotentialLine ) {
+
+        if ( electricPotentialLine.chargedParticles.length === 0 ) {
+
+          // try again next time we changed
+          electricPotentialLine.chargeChangedEmitter.addListener( function changedEmitter() {
+            updateView( electricPotentialLine );
+            electricPotentialLine.chargeChangedEmitter.removeListener( changedEmitter );
+          } );
+          return;
+        }
 
         const electricPotentialLinePath = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
         pathsNode.addChild( electricPotentialLinePath );
 
         // TODO: Use Group
-        const voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel~' + electricPotentialLine.electricPotentialLineTandem.name ) );
+        const voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, Tandem.optional );
         labelsNode.addChild( voltageLabel );
 
         if ( IS_DEBUG ) {

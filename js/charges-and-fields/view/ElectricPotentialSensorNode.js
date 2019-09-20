@@ -45,27 +45,21 @@ define( require => {
   class ElectricPotentialSensorNode extends Node {
     /**
      * TODO: this interface is unwieldy and difficult to navigate.  Why not pass the model with all these functions?
-     * @param {ElectricPotentialSensor} electricPotentialSensor - model of the electric potential sensor
+     * @param {ChargesAndFieldsModel} model
      * @param {Function} snapToGridLines - A Function that snap the position to the minor gridlines.
      * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
-     * @param {Function} clearElectricPotentialLines - A function for deleting all electric potential lines in the model
-     * @param {Function} canAddElectricPotentialLine -
-     * @param {Function} addElectricPotentialLine - A function for adding an electric potential line to the model
      * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
-     * @param {Property.<Bounds2>} availableModelBoundsProperty - dragbounds in model coordinates for the electric potential sensor node
-     * @param {Property.<boolean>} isPlayAreaChargedProperty - tracks whether net charge in play area is nonzero
+     * @param {Property.<Bounds2>} availableModelBoundsProperty - drag bounds in model coordinates for the electric potential sensor node
      * @param {Tandem} tandem
      */
-    constructor( electricPotentialSensor,
+    constructor( model,
                  snapToGridLines,
                  getElectricPotentialColor,
-                 clearElectricPotentialLines,
-                 canAddElectricPotentialLine,
-                 addElectricPotentialLine,
                  modelViewTransform,
                  availableModelBoundsProperty,
-                 isPlayAreaChargedProperty,
                  tandem ) {
+
+      const electricPotentialSensor = model.electricPotentialSensor;
 
       super( {
         cursor: 'pointer', // Show a cursor hand over the sensor
@@ -118,19 +112,19 @@ define( require => {
         tandem: tandem.createTandem( 'clearButton' ),
         baseColor: '#f2f2f2',
         iconWidth: 23,
-        listener: () => clearElectricPotentialLines()
+        listener: () => model.clearElectricPotentialLines()
       } );
 
       // Create the button that allows to plot the ElectricPotential Lines
       const plotElectricPotentialLineButton = new PencilButton( tandem.createTandem( 'plotElectricPotentialLineButton' ), {
         baseColor: '#f2f2f2',
-        listener: () => addElectricPotentialLine()
+        listener: () => model.addElectricPotentialLine( electricPotentialSensor.positionProperty.get() )
       } );
 
       const isPlayAreaChargedListener = charged => {
         plotElectricPotentialLineButton.enabled = charged;
       };
-      isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
+      model.isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
       // See see https://github.com/phetsims/charges-and-fields/issues/73
       const doNotStartDragListener = {
@@ -320,7 +314,7 @@ define( require => {
       this.disposeElectricPotentialSensorNode = () => {
         electricPotentialSensor.positionProperty.unlink( positionListener );
         electricPotentialSensor.electricPotentialProperty.unlink( potentialListener );
-        isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
+        model.isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
       };
     }
 

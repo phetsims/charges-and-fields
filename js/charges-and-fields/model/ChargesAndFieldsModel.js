@@ -25,7 +25,6 @@ define( require => {
   const MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   const ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   const ObservableArray = require( 'AXON/ObservableArray' );
-  const ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
@@ -178,12 +177,34 @@ define( require => {
 
       this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
-      // observable array that contains the model of electricPotential line, each element is an electricPotential line
+      // Contains the model of electricPotential line, each element is an electricPotential line
       // @public read-only
-      this.electricPotentialLines = new ObservableArray( {
+      this.electricPotentialLines = new Group( 'electricPotentialLine', {
+        prototype: {
+          create: ( tandem, prototypeName, position ) => {
+
+            assert && assert( position instanceof Vector2, 'position should be Vector2' );
+            assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
+
+            // for chaining and for PhET-iO restore state
+            return new ElectricPotentialLine(
+              position,
+              this.enlargedBounds,
+              this.activeChargedParticles,
+              this.getElectricPotential.bind( this ),
+              this.getElectricField.bind( this ),
+              this.isPlayAreaChargedProperty,
+              tandem
+            );
+          },
+          defaultArguments: [ this.electricPotentialSensor.positionProperty.get() ]
+        }
+      }, {
         tandem: tandem.createTandem( 'electricPotentialLines' ),
-        phetioType: ObservableArrayIO( ElectricPotentialLineIO )
-      } ); // {ObservableArray.<ElectricPotentialLine>}
+        phetioType: GroupIO( ElectricPotentialLineIO )
+      } );
+
+      this.electricPotentialLines.addItemRemovedListener( item => item.dispose() );
 
       //----------------------------------------------------------------------------------------
       //
@@ -334,8 +355,6 @@ define( require => {
           }
         } );
       } );
-
-      this.electricPotentialLineTandemGroup = tandem.createGroupTandem( 'electricPotentialLines' );
     }
 
     /**
@@ -490,7 +509,7 @@ define( require => {
     getElectricField( position ) {
       const electricField = new Vector2( 0, 0 );
 
-      if ( !this.isPlayAreaChargedProperty.get() ) {
+      if ( this.chargedParticles.length === 0 ) {
         return electricField;
       }
 
@@ -590,16 +609,13 @@ define( require => {
      * The drawing of the electricPotential line is handled in the view (electricPotentialLineNode)
      * @public
      * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
-     * @param {Tandem} [tandem] - tandem to use (if undefined a new tandem from the group will be used), necessary to
-     *                          - recreate state from a saved PhET-iO state.  The tandem is optional but is never
-     *                          - included if the vector position vector is not included.
      */
     addElectricPotentialLine(
-      position = this.electricPotentialSensor.positionProperty.get(), // use the Potential Sensor as default position
-      tandem = this.electricPotentialLineTandemGroup.createNextTandem()
+      position = this.electricPotentialSensor.positionProperty.get() // use the Potential Sensor as default position
     ) {
-      assert && assert( position instanceof Vector2, 'position should be Vector2' );
-      assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
+
+      // TODO: perhaps we want this, but it seems like isPlayAreaChargedProperty is not being kept up and in sync.
+      // assert && assert( !this.isPlayAreaChargedProperty.get() );
 
       // Do not try to add an equipotential line if there are no charges.
       if ( !this.isPlayAreaChargedProperty.get() ) {
@@ -608,26 +624,14 @@ define( require => {
 
       // If we are too close to a charged particle, also bail out.
       const isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), chargedParticle => {
+
         // in model coordinates, should be less than the radius (in the view) of a charged particle
         return chargedParticle.positionProperty.get().distance( position ) < 0.03;
       } ) );
       if ( isTooCloseToParticle ) {
         return;
       }
-
-      const electricPotentialLine = new ElectricPotentialLine(
-        position,
-        this.enlargedBounds,
-        this.activeChargedParticles,
-        this.getElectricPotential.bind( this ),
-        this.getElectricField.bind( this ),
-        this.isPlayAreaChargedProperty,
-        tandem
-      );
-
-      this.electricPotentialLines.push( electricPotentialLine );
-
-      return electricPotentialLine; // for chaining and for PhET-iO restore state
+      this.electricPotentialLines.createNextGroupMember( position );
     }
 
     /**

@@ -273,9 +273,9 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioHighFrequency": false,
       "phetioPlayback": false,
       "phetioReadOnly": false,
-      "phetioState": true,
+      "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "ObservableArrayIO<ElectricPotentialLineIO>"
+      "phetioTypeName": "GroupIO<ElectricPotentialLineIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.lengthProperty": {
       "phetioDocumentation": "",
@@ -288,6 +288,18 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioState": true,
       "phetioStudioControl": true,
       "phetioTypeName": "NumberPropertyIO"
+    },
+    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.prototype": {
+      "phetioDocumentation": "",
+      "phetioDynamicElement": true,
+      "phetioEventType": "MODEL",
+      "phetioFeatured": false,
+      "phetioHighFrequency": false,
+      "phetioPlayback": false,
+      "phetioReadOnly": false,
+      "phetioState": true,
+      "phetioStudioControl": true,
+      "phetioTypeName": "ElectricPotentialLineIO"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialSensor.electricPotentialProperty": {
       "phetioDocumentation": "",

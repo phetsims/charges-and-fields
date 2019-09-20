@@ -12,6 +12,7 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const dot = require( 'DOT/dot' );
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
+  const Emitter = require( 'AXON/Emitter' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -62,8 +63,33 @@ define( require => {
       this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
       this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
 
+
+      this.chargeChangedEmitter = new Emitter();
+
+      // Used to make sure that electric potential lines will be correct by the time that PhET-iO state has applied the entire state
+      const chargeChangedListener = () => {
+        this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
+        this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
+        this.chargeChangedEmitter.emit();
+      };
+
+      // TODO: remove listeners on dispose
+      this.chargedParticles.addItemAddedListener( chargeChangedListener );
+      this.chargedParticles.addItemRemovedListener( chargeChangedListener );
+
+      // @public
+      this.disposeEmitter = new Emitter();
+
       // @public (read-only) - used to identify tandems for the corresponding views
       this.electricPotentialLineTandem = tandem;
+    }
+
+    /**
+     * @override
+     */
+    dispose() {
+      this.disposeEmitter.emit();
+      super.dispose();
     }
 
     /**
@@ -149,6 +175,10 @@ define( require => {
      * @returns {Array.<Vector2>} a series of positions with the same electric Potential as the initial position
      */
     getEquipotentialPositionArray( position ) {
+
+      if ( this.chargedParticles.length === 0 ) {
+        return [];
+      }
 
       /*
        * General Idea of this algorithm

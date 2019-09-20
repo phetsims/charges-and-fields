@@ -152,16 +152,13 @@ define( require => {
 
       // Create the draggable electric potential sensor node with a electric potential readout
       const electricPotentialSensorNode = new ElectricPotentialSensorNode(
-        model.electricPotentialSensor,
+        model,
         snapToGridLines,
         this.getElectricPotentialColor.bind( this ),
-        model.clearElectricPotentialLines.bind( model ),
-        model.canAddElectricPotentialLine.bind( model ),
-        model.addElectricPotentialLine.bind( model ),
         modelViewTransform,
         this.availableModelBoundsProperty,
-        model.isPlayAreaChargedProperty,
-        tandem.createTandem( 'electricPotentialSensorNode' ) );
+        tandem.createTandem( 'electricPotentialSensorNode' )
+      );
 
       // Create a visual grid with major and minor lines on the view
       const gridNode = new GridNode(

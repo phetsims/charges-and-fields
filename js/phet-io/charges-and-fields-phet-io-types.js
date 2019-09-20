@@ -576,6 +576,40 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObservableArrayIO<ChargedParticleIO>",
       "typeName": "GroupIO<ChargedParticleIO>"
     },
+    "GroupIO<ElectricPotentialLineIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [
+        "itemAdded",
+        "itemRemoved"
+      ],
+      "methodOrder": [],
+      "methods": {
+        "addItemAddedListener": {
+          "documentation": "Add a listener that is called when an item is added to the observable array.",
+          "parameterTypes": [
+            "FunctionIO(ElectricPotentialLineIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "addItemRemovedListener": {
+          "documentation": "Add a listener that is called when an item is removed from the observable array.",
+          "parameterTypes": [
+            "FunctionIO(ElectricPotentialLineIO)=>VoidIO"
+          ],
+          "returnType": "VoidIO"
+        },
+        "getLength": {
+          "documentation": "Get the number of elements in the observable array",
+          "parameterTypes": [],
+          "returnType": "NumberIO"
+        }
+      },
+      "parameterTypes": [
+        "ElectricPotentialLineIO"
+      ],
+      "supertype": "ObservableArrayIO<ElectricPotentialLineIO>",
+      "typeName": "GroupIO<ElectricPotentialLineIO>"
+    },
     "GroupIO<ModelElementIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
       "events": [

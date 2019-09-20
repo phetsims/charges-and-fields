@@ -35,6 +35,15 @@ define( require => {
     static fromStateObject( stateObject ) {
       return {};
     }
+
+    /**
+     * @override
+     * @param {Object} stateObject
+     * @returns {Array.<*>}
+     */
+    static stateObjectToArgs( stateObject ) {
+      return [ Vector2IO.fromStateObject( stateObject.position ) ];
+    }
   }
 
   ElectricPotentialLineIO.documentation = 'The vector that shows the charge strength and direction.';
