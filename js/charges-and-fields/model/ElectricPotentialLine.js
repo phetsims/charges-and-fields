@@ -298,6 +298,10 @@ define( require => {
       const length = positionArray.length;
       const prunedPositionArray = []; // {Array.<Vector2>}
 
+      if ( length === 0 ) {
+        return [];
+      }
+
       // push first data point
       prunedPositionArray.push( positionArray[ 0 ] );
 
