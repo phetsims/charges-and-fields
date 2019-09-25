@@ -67,28 +67,28 @@ define( require => {
       this.chargeChangedEmitter = new Emitter();
 
       // Used to make sure that electric potential lines will be correct by the time that PhET-iO state has applied the entire state
-      const chargeChangedListener = () => {
+      this.chargeChangedListener = () => {
         this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
         this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
         this.chargeChangedEmitter.emit();
       };
 
-      // TODO: remove listeners on dispose
-      this.chargedParticles.addItemAddedListener( chargeChangedListener );
-      this.chargedParticles.addItemRemovedListener( chargeChangedListener );
+      this.chargedParticles.addItemAddedListener( this.chargeChangedListener );
+      this.chargedParticles.addItemRemovedListener( this.chargeChangedListener );
 
       // @public
       this.disposeEmitter = new Emitter();
-
-      // @public (read-only) - used to identify tandems for the corresponding views
-      this.electricPotentialLineTandem = tandem;
     }
 
     /**
      * @override
      */
     dispose() {
+      this.chargedParticles.removeItemAddedListener( this.chargeChangedListener );
+      this.chargedParticles.removeItemRemovedListener( this.chargeChangedListener );
+      this.chargeChangedEmitter.dispose();
       this.disposeEmitter.emit();
+      this.disposeEmitter.dispose();
       super.dispose();
     }
 
@@ -388,6 +388,9 @@ define( require => {
      */
     getShape() {
       const shape = new Shape();
+      if ( this.chargedParticles.lengthProperty.value === 0 ) {
+        return shape; // to support mutable potential lines and PhET-iO state
+      }
       const prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
       return this.positionArrayToStraightLine( shape, prunedPositionArray, { isClosedLineSegments: this.isLineClosed } );
     }
