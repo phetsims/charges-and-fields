@@ -50,10 +50,6 @@ define( require => {
         stroke: ChargesAndFieldsColorProfile.electricPotentialLineProperty
       } );
 
-      electricPotentialLine.chargeChangedEmitter.addListener( () => {
-        this.path.shape = modelViewTransform.modelToViewShape( electricPotentialLine.getShape() );
-      } );
-
       // @public (read-only) {Node} - label that says the voltage
       this.voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, Tandem.optional );
 
