@@ -46,7 +46,13 @@ define( require => {
     constructor( electricPotentialLine, modelViewTransform ) {
 
       // @public (read-only) {Node} - the path of the potential line
-      this.path = new ElectricPotentialLinePath( electricPotentialLine.getShape(), modelViewTransform );
+      this.path = new Path( modelViewTransform.modelToViewShape( electricPotentialLine.getShape() ), {
+        stroke: ChargesAndFieldsColorProfile.electricPotentialLineProperty
+      } );
+
+      electricPotentialLine.chargeChangedEmitter.addListener( () => {
+        this.path.shape = modelViewTransform.modelToViewShape( electricPotentialLine.getShape() );
+      } );
 
       // @public (read-only) {Node} - label that says the voltage
       this.voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, Tandem.optional );
@@ -183,20 +189,6 @@ define( require => {
     dispose() {
       this.disposeVoltageLabel();
       super.dispose();
-    }
-  }
-
-  class ElectricPotentialLinePath extends Path {
-
-    /**
-     * Function that generates a scenery path from the shape of the electricPotential line
-     * @param {Shape} electricPotentialLineShape
-     * @param {ModelViewTransform2} modelViewTransform
-     */
-    constructor( electricPotentialLineShape, modelViewTransform ) {
-      super( modelViewTransform.modelToViewShape( electricPotentialLineShape ), {
-        stroke: ChargesAndFieldsColorProfile.electricPotentialLineProperty
-      } );
     }
   }
 

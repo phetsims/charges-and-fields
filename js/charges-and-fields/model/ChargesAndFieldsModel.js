@@ -20,6 +20,7 @@ define( require => {
   const ElectricPotentialLine = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLine' );
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
   const ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
+  const Emitter = require( 'AXON/Emitter' );
   const Group = require( 'TANDEM/Group' );
   const GroupIO = require( 'TANDEM/GroupIO' );
   const MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
@@ -177,6 +178,11 @@ define( require => {
 
       this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
+      // TODO: not sure we are keeping this. This was to bypass that add/remove listeners on the chargesParticles list in
+      // TODO: electricPotentialLine.js was not firing the changed emitter. We need to make sure all changes cause the
+      // TODO: line to mutate.
+      this.changedEmitter = new Emitter();
+
       // Contains the model of electricPotential line, each element is an electricPotential line
       // @public read-only
       this.electricPotentialLines = new Group( 'electricPotentialLine', {
@@ -187,15 +193,7 @@ define( require => {
             assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
 
             // for chaining and for PhET-iO restore state
-            return new ElectricPotentialLine(
-              position,
-              this.enlargedBounds,
-              this.activeChargedParticles,
-              this.getElectricPotential.bind( this ),
-              this.getElectricField.bind( this ),
-              this.isPlayAreaChargedProperty,
-              tandem
-            );
+            return new ElectricPotentialLine( this, position, tandem );
           },
           defaultArguments: [ this.electricPotentialSensor.positionProperty.get() ]
         }
@@ -259,6 +257,7 @@ define( require => {
 
           // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
           this.updateAllSensors();
+          this.changedEmitter.emit();
         };
 
         addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
@@ -278,6 +277,7 @@ define( require => {
             this.updateAllSensors();
 
           } // end of if (isActive) statement
+          this.changedEmitter.emit();
         };
 
         addedChargedParticle.positionProperty.link( positionListener );
@@ -314,6 +314,7 @@ define( require => {
 
         // update the property isPlayAreaCharged to see if is there at least one active charge on the board
         this.updateIsPlayAreaCharged();
+        this.changedEmitter.emit();
       } );
 
       //------------------------
@@ -509,10 +510,6 @@ define( require => {
     getElectricField( position ) {
       const electricField = new Vector2( 0, 0 );
 
-      if ( this.chargedParticles.length === 0 ) {
-        return electricField;
-      }
-
       this.activeChargedParticles.forEach( chargedParticle => {
         const distanceSquared = chargedParticle.positionProperty.get().distanceSquared( position );
 
@@ -606,7 +603,7 @@ define( require => {
 
     /**
      * Push an electricPotentialLine to an observable array
-     * The drawing of the electricPotential line is handled in the view (electricPotentialLineNode)
+     * The drawing of the electricPotential line is handled in the view (ElectricPotentialLineView)
      * @public
      * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
      */
@@ -655,7 +652,12 @@ define( require => {
      * @public
      */
     clearElectricPotentialLines() {
-      this.electricPotentialLines.clear();
+      const isSettingState = _.hasIn( window, 'phet.phetIo.phetioEngine' ) && phet.phetIo.phetioEngine.phetioStateEngine.isSettingState;
+
+      // Clear lines without disrupting phet-io state
+      if ( !isSettingState ) {
+        this.electricPotentialLines.clear();
+      }
     }
 
     /**

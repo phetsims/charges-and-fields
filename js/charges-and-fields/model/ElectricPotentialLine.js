@@ -27,22 +27,11 @@ define( require => {
   class ElectricPotentialLine extends PhetioObject {
 
     /**
-     *
+     * @param {ChargesAndFieldsModel} model
      * @param {Vector2} position
-     * @param {Bounds2} bounds - if an equipotential line is not closed, it will terminate outside these bounds
-     * @param {ObservableArray.<ChargedParticle>} chargedParticles - array of active ChargedParticles
-     * @param {Function} getElectricPotential - function that returns a number
-     * @param {Function} getElectricField - function that returns a vector
-     * @param {Property.<boolean>} isPlayAreaChargedProperty
      * @param {Tandem} tandem
      */
-    constructor( position,
-                 bounds,
-                 chargedParticles,
-                 getElectricPotential,
-                 getElectricField,
-                 isPlayAreaChargedProperty,
-                 tandem ) {
+    constructor( model, position, tandem ) {
 
       super( {
         tandem: tandem,
@@ -50,31 +39,28 @@ define( require => {
         phetioDynamicElement: true
       } );
 
-      this.getElectricPotential = getElectricPotential; // @private
-      this.getElectricField = getElectricField; // @private
-      this.chargedParticles = chargedParticles; // @private
-      this.bounds = bounds; // @private
-      this.isPlayAreaChargedProperty = isPlayAreaChargedProperty; // @private
-
+      this.model = model;
       this.position = position; // {Vector2} @public read-only static
-      this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
-
-      this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
-      this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
-      this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
-
 
       this.chargeChangedEmitter = new Emitter();
 
-      // Used to make sure that electric potential lines will be correct by the time that PhET-iO state has applied the entire state
+      // On startup and whenever the charge configuration changes, update the state of this line
       this.chargeChangedListener = () => {
-        this.electricPotential = getElectricPotential( position ); // {number} @public read-only static - value in volts
-        this.positionArray = this.getEquipotentialPositionArray( position ); // @public read-only
-        this.chargeChangedEmitter.emit();
-      };
+        this.electricPotential = model.getElectricPotential( position ); // {number} @public read-only static - value in volts
 
-      this.chargedParticles.addItemAddedListener( this.chargeChangedListener );
-      this.chargedParticles.addItemRemovedListener( this.chargeChangedListener );
+        this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
+        this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
+
+        // TODO: the conditional here is to support mutating this potential line, let's do this better.
+        const hasMagneticField = this.model.getElectricField( position ).magnitude !== 0;
+        this.positionArray = hasMagneticField ? this.getEquipotentialPositionArray( position ) : []; // @public read-only
+
+        if ( !this.isDisposed ) {
+          this.chargeChangedEmitter.emit();
+        }
+      };
+      this.chargeChangedListener();
+      this.model.changedEmitter.addListener( this.chargeChangedListener );
 
       // @public
       this.disposeEmitter = new Emitter();
@@ -84,8 +70,7 @@ define( require => {
      * @override
      */
     dispose() {
-      this.chargedParticles.removeItemAddedListener( this.chargeChangedListener );
-      this.chargedParticles.removeItemRemovedListener( this.chargeChangedListener );
+      this.model.changedEmitter.removeListener( this.chargeChangedListener );
       this.chargeChangedEmitter.dispose();
       this.disposeEmitter.emit();
       this.disposeEmitter.dispose();
@@ -115,13 +100,13 @@ define( require => {
        * and the electric potential at the intermediate point is found. By knowing the electric field at the intermediate point
        * the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
        */
-      const initialElectricField = this.getElectricField( position ); // {Vector2}
+      const initialElectricField = this.model.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
       const electricPotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
       const midwayPosition = ( electricPotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
-      const midwayElectricField = this.getElectricField( midwayPosition ); // {Vector2}
+      const midwayElectricField = this.model.getElectricField( midwayPosition ); // {Vector2}
       assert && assert( midwayElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
-      const midwayElectricPotential = this.getElectricPotential( midwayPosition ); //  {number}
+      const midwayElectricPotential = this.model.getElectricPotential( midwayPosition ); //  {number}
       const deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       const deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared ); // {Vector2}
       assert && assert( deltaPosition.magnitude < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
@@ -149,12 +134,12 @@ define( require => {
      * @returns {Vector2} finalPosition
      */
     getNextPositionAlongEquipotentialWithRK4( position, deltaDistance ) {
-      const initialElectricField = this.getElectricField( position ); // {Vector2}
+      const initialElectricField = this.model.getElectricField( position ); // {Vector2}
       assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
-      const k1Vector = this.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      const k2Vector = this.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      const k3Vector = this.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-      const k4Vector = this.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const k1Vector = this.model.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const k2Vector = this.model.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const k3Vector = this.model.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+      const k4Vector = this.model.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
       const deltaDisplacement =
         {
           x: deltaDistance * ( k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x ) / 6,
@@ -176,7 +161,7 @@ define( require => {
      */
     getEquipotentialPositionArray( position ) {
 
-      if ( this.chargedParticles.length === 0 ) {
+      if ( this.model.activeChargedParticles.length === 0 ) {
         return [];
       }
 
@@ -261,7 +246,7 @@ define( require => {
 
         // is at least one current head inside the bounds?
         this.isEquipotentialLineTerminatingInsideBounds =
-          ( this.bounds.containsPoint( currentClockwisePosition ) || this.bounds.containsPoint( currentCounterClockwisePosition ) );
+          ( this.model.enlargedBounds.containsPoint( currentClockwisePosition ) || this.model.enlargedBounds.containsPoint( currentCounterClockwisePosition ) );
 
       } // end of while()
 
@@ -392,7 +377,7 @@ define( require => {
      */
     getShape() {
       const shape = new Shape();
-      if ( this.chargedParticles.lengthProperty.value === 0 ) {
+      if ( this.model.activeChargedParticles.lengthProperty.value === 0 ) {
         return shape; // to support mutable potential lines and PhET-iO state
       }
       const prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
