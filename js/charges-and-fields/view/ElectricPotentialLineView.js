@@ -22,12 +22,12 @@ define( require => {
   const DragListener = require( 'SCENERY/listeners/DragListener' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  const Tandem = require( 'TANDEM/Tandem' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
-  const Vector2Property = require( 'DOT/Vector2Property' );
 
   // strings
   const pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -37,13 +37,22 @@ define( require => {
   // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
   const IS_DEBUG = phet.chipper.queryParameters.dev;
 
-  class ElectricPotentialLineView {
+  class ElectricPotentialLineView extends PhetioObject {
 
     /**
      * @param {ElectricPotentialLine} electricPotentialLine
      * @param {ModelViewTransform2} modelViewTransform
+     * @param {Tandem} tandem
      */
-    constructor( electricPotentialLine, modelViewTransform ) {
+    constructor( electricPotentialLine, modelViewTransform, tandem ) {
+      super( {
+        tandem: tandem,
+        phetioDynamicElement: true,
+
+        // TODO: needs to be instrumented because it's part of a group, but can't be an ObjectIO because this is not
+        // serializable. Instead, we are considering removing this phetioType and marking as phetioState: false.
+        phetioType: ReferenceIO
+      } );
 
       // @public (read-only) {Node} - the path of the potential line
       this.path = new Path( modelViewTransform.modelToViewShape( electricPotentialLine.getShape() ), {
@@ -51,7 +60,7 @@ define( require => {
       } );
 
       // @public (read-only) {Node} - label that says the voltage
-      this.voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, Tandem.optional );
+      this.voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel' ) );
 
       // @public (read-only) {Node|null} - if running in development mode, then display each sample point on the potential line
       this.circles = null;
@@ -94,6 +103,7 @@ define( require => {
       this.path.dispose();
       this.voltageLabel.dispose();
       this.circles && this.circles.dispose();
+      super.dispose();
     }
   }
 
@@ -112,14 +122,9 @@ define( require => {
       const electricPotential = electricPotentialLine.electricPotential;
       const position = electricPotentialLine.position;
 
-      const locationProperty = new Vector2Property( position, {
-        tandem: tandem.createTandem( 'locationProperty' ),
-        useDeepEquality: true
-      } );
-
       const movableDragHandler = new DragListener( {
         applyOffset: false,
-        locationProperty: locationProperty,
+        locationProperty: electricPotentialLine.voltageLabelLocationProperty,
         tandem: tandem.createTandem( 'dragListener' ),
         transform: modelViewTransform,
         start: event => {
@@ -147,8 +152,7 @@ define( require => {
       // Create a background rectangle for the voltage label
       const backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
         center: modelViewTransform.modelToViewPosition( position ),
-        fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty,
-        tandem: tandem.createTandem( 'backgroundRectangle' )
+        fill: ChargesAndFieldsColorProfile.voltageLabelBackgroundProperty
       } );
 
       this.addChild( backgroundRectangle ); // must go first
@@ -170,12 +174,11 @@ define( require => {
         }
       };
 
-      locationProperty.link( locationFunction );
+      electricPotentialLine.voltageLabelLocationProperty.link( locationFunction );
 
       // create a dispose function to unlink the color functions
       this.disposeVoltageLabel = () => {
-        locationProperty.unlink( locationFunction );
-        locationProperty.dispose();
+        electricPotentialLine.voltageLabelLocationProperty.unlink( locationFunction );
         movableDragHandler.dispose();
         voltageLabelText.dispose();
         backgroundRectangle.dispose();

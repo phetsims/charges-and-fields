@@ -11,7 +11,10 @@ define( require => {
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ElectricPotentialLineView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLineView' );
+  const Group = require( 'TANDEM/Group' );
+  const GroupIO = require( 'TANDEM/GroupIO' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
 
   // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
   const IS_DEBUG = phet.chipper.queryParameters.dev;
@@ -44,9 +47,24 @@ define( require => {
       const labelsNode = new Node();
       this.addChild( labelsNode );
 
+      const electricPotentialLineViews = new Group( 'electricPotentialLineView', {
+        prototype: {
+          create: ( tandem, prototypeName, electricPotentialLine ) => {
+            return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
+          },
+          defaultArguments: [ electricPotentialLines.prototypes.prototype ]
+        }
+      }, {
+        tandem: tandem.createTandem( 'electricPotentialLineViews' ),
+        phetioType: GroupIO( ReferenceIO ),
+        phetioState: false
+      } );
+      this.electricPotentialLineViews = electricPotentialLineViews;
+      this.electricPotentialLineViews.addItemRemovedListener( item => item.dispose() );
+
       // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
       electricPotentialLines.addItemAddedListener( function updateView( electricPotentialLine ) {
-        const electricPotentialLineView = new ElectricPotentialLineView( electricPotentialLine, modelViewTransform );
+        const electricPotentialLineView = electricPotentialLineViews.createNextGroupMember( electricPotentialLine );
 
         pathsNode.addChild( electricPotentialLineView.path );
         labelsNode.addChild( electricPotentialLineView.voltageLabel );
@@ -56,7 +74,7 @@ define( require => {
           circlesNode.addChild( electricPotentialLineView.circles );
         }
 
-        const modelDisposeListener = () => electricPotentialLineView.dispose();
+        const modelDisposeListener = () => electricPotentialLineViews.remove( electricPotentialLineView );
         electricPotentialLine.disposeEmitter.addListener( modelDisposeListener );
 
         // try again next time we changed

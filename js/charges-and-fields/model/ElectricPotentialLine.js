@@ -16,6 +16,7 @@ define( require => {
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   // constants
   // see getEquipotentialPositionArray to find how these are used
@@ -41,6 +42,12 @@ define( require => {
 
       this.model = model;
       this.position = position; // {Vector2} @public read-only static
+
+      // @public - the position of where the user is trying to drag the voltage label, in model coordinates
+      this.voltageLabelLocationProperty = new Vector2Property( position, {
+        tandem: tandem.createTandem( 'voltageLabelLocationProperty' ),
+        useDeepEquality: true
+      } );
 
       this.chargeChangedEmitter = new Emitter();
 
@@ -71,6 +78,7 @@ define( require => {
      */
     dispose() {
       this.model.changedEmitter.removeListener( this.chargeChangedListener );
+      this.voltageLabelLocationProperty.dispose();
       this.chargeChangedEmitter.dispose();
       this.disposeEmitter.emit();
       this.disposeEmitter.dispose();
