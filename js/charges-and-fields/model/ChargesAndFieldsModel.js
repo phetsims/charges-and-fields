@@ -178,10 +178,8 @@ define( require => {
 
       this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
-      // TODO: not sure we are keeping this. This was to bypass that add/remove listeners on the chargesParticles list in
-      // TODO: electricPotentialLine.js was not firing the changed emitter. We need to make sure all changes cause the
-      // TODO: line to mutate.
-      this.changedEmitter = new Emitter();
+      // @public - emits whenever the charge model changes, i.e. charges added/removed/moved
+      this.chargeConfigurationChangedEmitter = new Emitter();
 
       // Contains the model of electricPotential line, each element is an electricPotential line
       // @public read-only
@@ -257,7 +255,7 @@ define( require => {
 
           // update the two grid sensors (if they are set to visible), the electric fields sensors and the electricPotential sensor
           this.updateAllSensors();
-          this.changedEmitter.emit();
+          this.chargeConfigurationChangedEmitter.emit();
         };
 
         addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
@@ -277,7 +275,7 @@ define( require => {
             this.updateAllSensors();
 
           } // end of if (isActive) statement
-          this.changedEmitter.emit();
+          this.chargeConfigurationChangedEmitter.emit();
         };
 
         addedChargedParticle.positionProperty.link( positionListener );
@@ -314,7 +312,7 @@ define( require => {
 
         // update the property isPlayAreaCharged to see if is there at least one active charge on the board
         this.updateIsPlayAreaCharged();
-        this.changedEmitter.emit();
+        this.chargeConfigurationChangedEmitter.emit();
       } );
 
       //------------------------

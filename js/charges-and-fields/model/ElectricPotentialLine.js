@@ -67,7 +67,7 @@ define( require => {
         }
       };
       this.chargeChangedListener();
-      this.model.changedEmitter.addListener( this.chargeChangedListener );
+      this.model.chargeConfigurationChangedEmitter.addListener( this.chargeChangedListener );
 
       // @public
       this.disposeEmitter = new Emitter();
@@ -77,7 +77,7 @@ define( require => {
      * @override
      */
     dispose() {
-      this.model.changedEmitter.removeListener( this.chargeChangedListener );
+      this.model.chargeConfigurationChangedEmitter.removeListener( this.chargeChangedListener );
       this.voltageLabelLocationProperty.dispose();
       this.chargeChangedEmitter.dispose();
       this.disposeEmitter.emit();

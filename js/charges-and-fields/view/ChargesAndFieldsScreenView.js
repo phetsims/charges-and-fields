@@ -311,8 +311,8 @@ define( require => {
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
-        phetioType: GroupIO( ModelElementNodeIO )
-        // TODO: phetioState: false because the Node isn't holding any state.
+        phetioType: GroupIO( ModelElementNodeIO ),
+        phetioState: false
       } );
 
       // Handle the comings and goings of charged electric field sensors.

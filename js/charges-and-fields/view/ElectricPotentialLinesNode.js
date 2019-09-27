@@ -2,7 +2,6 @@
 
 /**
  * Scenery Node responsible for layering ElectricPotentialLineView related Nodes.
- * TODO: Should this use a Group to hold ElectricPotentialLineView? Yes, though they don't need to be in state
  * @author Martin Veillette (Berea College)
  */
 define( require => {
