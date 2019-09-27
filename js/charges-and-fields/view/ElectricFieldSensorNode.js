@@ -16,7 +16,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
   const ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
-  const ModelElementNodeIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ModelElementNodeIO' );
+  const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Touch = require( 'SCENERY/input/Touch' );
@@ -59,7 +59,7 @@ define( require => {
       super( {
         tandem: tandem,
         phetioDynamicElement: true,
-        phetioType: ModelElementNodeIO
+        phetioType: ReferenceIO
       } );
 
       this.modelElement = electricFieldSensor; // @public (read-only)

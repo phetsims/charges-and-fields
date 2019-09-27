@@ -48,9 +48,6 @@ define( require => {
       super( {
         tandem: tandem,
         phetioDynamicElement: true,
-
-        // TODO: needs to be instrumented because it's part of a group, but can't be an ObjectIO because this is not
-        // serializable. Instead, we are considering removing this phetioType and marking as phetioState: false.
         phetioType: ReferenceIO
       } );
 

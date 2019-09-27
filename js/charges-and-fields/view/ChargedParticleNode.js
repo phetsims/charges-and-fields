@@ -13,7 +13,7 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
-  const ModelElementNodeIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ModelElementNodeIO' );
+  const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const Touch = require( 'SCENERY/input/Touch' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -41,7 +41,7 @@ define( require => {
       super( chargedParticle.charge, {
         tandem: tandem,
         phetioDynamicElement: true,
-        phetioType: ModelElementNodeIO
+        phetioType: ReferenceIO
       } );
 
       this.modelElement = chargedParticle;

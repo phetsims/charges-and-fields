@@ -24,7 +24,6 @@ define( require => {
   const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
   const ElectricFieldCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldCanvasNode' );
   const ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
-  const ModelElementNodeIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ModelElementNodeIO' );
   const ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
   const ElectricPotentialLinesNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLinesNode' );
   const ElectricPotentialMobileWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialMobileWebGLNode' );
@@ -40,6 +39,7 @@ define( require => {
   const PropertyIO = require( 'AXON/PropertyIO' );
   const Rectangle = require( 'DOT/Rectangle' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Util = require( 'SCENERY/util/Util' );
@@ -285,7 +285,7 @@ define( require => {
         }
       }, {
         tandem: tandem.createTandem( 'chargedParticleNodes' ),
-        phetioType: GroupIO( ModelElementNodeIO )
+        phetioType: GroupIO( ReferenceIO )
       } );
 
       const electricFieldSensorNodes = new Group( 'electricFieldSensorNode', {
@@ -310,7 +310,7 @@ define( require => {
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
-        phetioType: GroupIO( ModelElementNodeIO )
+        phetioType: GroupIO( ReferenceIO )
       } );
 
       // Handle the comings and goings of charged electric field sensors.
