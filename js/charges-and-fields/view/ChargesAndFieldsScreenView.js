@@ -285,7 +285,6 @@ define( require => {
         }
       }, {
         tandem: tandem.createTandem( 'chargedParticleNodes' ),
-        phetioState: false,
         phetioType: GroupIO( ModelElementNodeIO )
       } );
 
@@ -311,8 +310,7 @@ define( require => {
         }
       }, {
         tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
-        phetioType: GroupIO( ModelElementNodeIO ),
-        phetioState: false
+        phetioType: GroupIO( ModelElementNodeIO )
       } );
 
       // Handle the comings and goings of charged electric field sensors.

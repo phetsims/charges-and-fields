@@ -29,7 +29,7 @@ define( require => {
     static toStateObject( modelElementNode ) {
       validate( modelElementNode, this.validator );
 
-      // Techncially we do not need any information here and could return {}, but  we include the phetioID of
+      // Technically we do not need any information here and could return {}, but  we include the phetioID of
       // corresponding model element for understandability.
       return {
         modelPhetioID: modelElementNode.modelElement.tandem.phetioID

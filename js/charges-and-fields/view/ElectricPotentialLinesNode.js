@@ -55,15 +55,14 @@ define( require => {
         }
       }, {
         tandem: tandem.createTandem( 'electricPotentialLineViews' ),
-        phetioType: GroupIO( ReferenceIO ),
-        phetioState: false
+        phetioType: GroupIO( ReferenceIO )
       } );
       this.electricPotentialLineViews = electricPotentialLineViews;
       this.electricPotentialLineViews.addItemRemovedListener( item => item.dispose() );
 
       // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
       electricPotentialLines.addItemAddedListener( function updateView( electricPotentialLine ) {
-        const electricPotentialLineView = electricPotentialLineViews.createNextGroupMember( electricPotentialLine );
+        const electricPotentialLineView = electricPotentialLineViews.createNextCorrespondingGroupMember( electricPotentialLine, electricPotentialLine );
 
         pathsNode.addChild( electricPotentialLineView.path );
         labelsNode.addChild( electricPotentialLineView.voltageLabel );
