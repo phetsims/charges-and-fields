@@ -62,7 +62,7 @@ define( require => {
 
       // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
       electricPotentialLines.addItemAddedListener( function updateView( electricPotentialLine ) {
-        const electricPotentialLineView = electricPotentialLineViews.createNextCorrespondingGroupMember( electricPotentialLine, electricPotentialLine );
+        const electricPotentialLineView = electricPotentialLineViews.createCorrespondingGroupMember( electricPotentialLine, electricPotentialLine );
 
         pathsNode.addChild( electricPotentialLineView.path );
         labelsNode.addChild( electricPotentialLineView.voltageLabel );

@@ -257,7 +257,7 @@ define( require => {
       model.chargedParticles.addItemAddedListener( addedChargedParticle => {
         // Create and add the view representation for this chargedParticle.
 
-        const chargedParticleNode = chargedParticleNodes.createNextCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
+        const chargedParticleNode = chargedParticleNodes.createCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
 
         draggableElementsLayer.addChild( chargedParticleNode );
 
@@ -315,7 +315,7 @@ define( require => {
 
       // Handle the comings and goings of charged electric field sensors.
       model.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
-        const electricFieldSensorNode = electricFieldSensorNodes.createNextCorrespondingGroupMember(
+        const electricFieldSensorNode = electricFieldSensorNodes.createCorrespondingGroupMember(
           addedElectricFieldSensor, addedElectricFieldSensor );
 
         draggableElementsLayer.addChild( electricFieldSensorNode );
