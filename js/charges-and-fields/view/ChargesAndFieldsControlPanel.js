@@ -44,7 +44,7 @@ define( require => {
        */
       function createCheckbox( tandemId, string, property ) {
         const text = new Text( string, {
-          font: ChargesAndFieldsConstants.CHECK_BOX_FONT,
+          font: ChargesAndFieldsConstants.CHECKBOX_FONT,
           fill: ChargesAndFieldsColorProfile.controlPanelTextProperty,
           maxWidth: 250
         } );
