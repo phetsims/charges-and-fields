@@ -58,10 +58,9 @@ define( require => {
         phetioType: GroupIO( ReferenceIO )
       } );
       this.electricPotentialLineViews = electricPotentialLineViews;
-      this.electricPotentialLineViews.addItemRemovedListener( item => item.dispose() );
 
       // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-      electricPotentialLines.addItemAddedListener( function updateView( electricPotentialLine ) {
+      electricPotentialLines.groupMemberCreatedEmitter.addListener( function updateView( electricPotentialLine ) {
         const electricPotentialLineView = electricPotentialLineViews.createCorrespondingGroupMember( electricPotentialLine, electricPotentialLine );
 
         pathsNode.addChild( electricPotentialLineView.path );
@@ -72,7 +71,7 @@ define( require => {
           circlesNode.addChild( electricPotentialLineView.circles );
         }
 
-        const modelDisposeListener = () => electricPotentialLineViews.remove( electricPotentialLineView );
+        const modelDisposeListener = () => electricPotentialLineViews.disposeGroupMember( electricPotentialLineView );
         electricPotentialLine.disposeEmitter.addListener( modelDisposeListener );
 
         // try again next time we changed

@@ -9,9 +9,9 @@ define( require => {
   'use strict';
 
   // modules
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bounds2 = require( 'DOT/Bounds2' );
   const Bounds2IO = require( 'DOT/Bounds2IO' );
-  const ChargedParticle = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticle' );
   const ChargedParticleNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleNode' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
@@ -42,6 +42,7 @@ define( require => {
   const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
+  const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'SCENERY/util/Util' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -55,7 +56,7 @@ define( require => {
   const ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );
   const ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );
 
-  const IS_DEBUG_MODE = false; // debug mode that displays a push button capable of adding multiple electric potential lines
+  const IS_DEBUG_MODE = phet.chipper.queryParameters.dev; // debug mode that displays a push button capable of adding multiple electric potential lines
 
   /**
    * Determine whether a node is visible in the display, it must be a child and visible.
@@ -211,10 +212,13 @@ define( require => {
                                  ElectricPotentialMobileWebGLNode.getNumberOfParticlesSupported() :
                                  Number.POSITIVE_INFINITY;
 
-      const canAddMoreChargedParticlesProperty = new DerivedProperty(
-        [ model.chargedParticles.lengthProperty ],
-        length => length < numberChargesLimit
-      );
+      const canAddMoreChargedParticlesProperty = new BooleanProperty( false );
+      const updateCanAddMoreChargedParticlesProperty = () => {
+        canAddMoreChargedParticlesProperty.value = model.chargedParticles.length < numberChargesLimit;
+      };
+      updateCanAddMoreChargedParticlesProperty();
+      model.chargedParticles.groupMemberCreatedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
+      model.chargedParticles.groupMemberDisposedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
 
       // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
       const chargesAndSensorsPanel = new ChargesAndSensorsPanel(
@@ -254,9 +258,9 @@ define( require => {
         .linkAttribute( chargesAndSensorsPanel, 'visible' );
 
       // Handle the comings and goings of charged particles.
-      model.chargedParticles.addItemAddedListener( addedChargedParticle => {
-        // Create and add the view representation for this chargedParticle.
+      model.chargedParticles.groupMemberCreatedEmitter.addListener( addedChargedParticle => {
 
+        // Create and add the view representation for this chargedParticle.
         const chargedParticleNode = chargedParticleNodes.createCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
 
         draggableElementsLayer.addChild( chargedParticleNode );
@@ -264,7 +268,7 @@ define( require => {
         addedChargedParticle.disposeEmitter.addListener( function callback() {
           addedChargedParticle.disposeEmitter.removeListener( callback );
           draggableElementsLayer.removeChild( chargedParticleNode );
-          chargedParticleNode.dispose();
+          chargedParticleNodes.disposeGroupMember( chargedParticleNode ); // TODO: I changed this!!!!
         } );
       } );
 
@@ -314,17 +318,17 @@ define( require => {
       } );
 
       // Handle the comings and goings of charged electric field sensors.
-      model.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
+      model.electricFieldSensors.groupMemberCreatedEmitter.addListener( addedElectricFieldSensor => {
         const electricFieldSensorNode = electricFieldSensorNodes.createCorrespondingGroupMember(
           addedElectricFieldSensor, addedElectricFieldSensor );
 
         draggableElementsLayer.addChild( electricFieldSensorNode );
 
         // Add the removal listener for if and when this electric field sensor is removed from the model.
-        model.electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
+        model.electricFieldSensors.groupMemberDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor ) {
           if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
-            electricFieldSensorNode.dispose();
-            model.electricFieldSensors.removeItemRemovedListener( removalListener );
+            electricFieldSensorNodes.disposeGroupMember( electricFieldSensorNode );
+            model.electricFieldSensors.groupMemberDisposedEmitter.removeListener( removalListener );
           }
         } );
       } );
@@ -369,6 +373,7 @@ define( require => {
 
         updateControlLayout();
       } );
+      updateControlLayout();
 
       controlPanel.on( 'localBounds', updateControlLayout );
 
@@ -396,28 +401,21 @@ define( require => {
         this.addChild( new RectangularPushButton( {
           listener: () => model.addManyElectricPotentialLines( 20 ),
           baseColor: 'rgb( 0, 222, 120 )',
-          minWidth: 20,
-          minHeight: 20,
-          centerX: resetAllButton.centerX,
-          centerY: resetAllButton.centerY - 40
+          top: this.layoutBounds.top,
+          left: this.layoutBounds.left,
+          content: new Text( 'add some potential lines' ),
+          tandem: tandem.createTandem( 'debugButton' )
         } ) );
 
-        const charge1 = new ChargedParticle( 1 );
-        const charge2 = new ChargedParticle( -1 );
-        charge1.initialPosition = new Vector2( 0, -1.5 );
-        charge2.initialPosition = new Vector2( 0, -1.5 );
+        const charge1 = model.chargedParticles.createNextGroupMember( 1, new Vector2( 0, -1.5 ) );
+        const charge2 = model.chargedParticles.createNextGroupMember( -1, new Vector2( 0, -1.5 ) );
         charge1.isActiveProperty.set( true );
         charge2.isActiveProperty.set( true );
-
-        model.chargedParticles.push( charge1 );
-        model.chargedParticles.push( charge2 );
-
-        model.activeChargedParticles.push( charge1 );
-        model.activeChargedParticles.push( charge2 );
+        charge1.positionProperty.set( new Vector2( 2,2) );
+        charge2.positionProperty.set( new Vector2( 0,1) );
 
         model.isPlayAreaChargedProperty.set( true ); // set isPlayAreaCharged to true since there are charges
       }
-
     }
 
 

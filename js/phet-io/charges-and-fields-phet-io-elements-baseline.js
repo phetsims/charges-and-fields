@@ -85,18 +85,6 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "GroupIO<ChargedParticleIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.lengthProperty": {
-      "phetioDocumentation": "",
-      "phetioDynamicElement": false,
-      "phetioEventType": "MODEL",
-      "phetioFeatured": false,
-      "phetioHighFrequency": false,
-      "phetioPlayback": false,
-      "phetioReadOnly": true,
-      "phetioState": true,
-      "phetioStudioControl": true,
-      "phetioTypeName": "NumberPropertyIO"
-    },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": true,
@@ -181,18 +169,6 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "GroupIO<ModelElementIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.lengthProperty": {
-      "phetioDocumentation": "",
-      "phetioDynamicElement": false,
-      "phetioEventType": "MODEL",
-      "phetioFeatured": false,
-      "phetioHighFrequency": false,
-      "phetioPlayback": false,
-      "phetioReadOnly": true,
-      "phetioState": true,
-      "phetioStudioControl": true,
-      "phetioTypeName": "NumberPropertyIO"
-    },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": true,
@@ -276,18 +252,6 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioState": false,
       "phetioStudioControl": true,
       "phetioTypeName": "GroupIO<ElectricPotentialLineIO>"
-    },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.lengthProperty": {
-      "phetioDocumentation": "",
-      "phetioDynamicElement": false,
-      "phetioEventType": "MODEL",
-      "phetioFeatured": false,
-      "phetioHighFrequency": false,
-      "phetioPlayback": false,
-      "phetioReadOnly": true,
-      "phetioState": true,
-      "phetioStudioControl": true,
-      "phetioTypeName": "NumberPropertyIO"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.prototype": {
       "phetioDocumentation": "",
@@ -492,18 +456,6 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioState": false,
       "phetioStudioControl": true,
       "phetioTypeName": "GroupIO<ReferenceIO>"
-    },
-    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.lengthProperty": {
-      "phetioDocumentation": "",
-      "phetioDynamicElement": false,
-      "phetioEventType": "MODEL",
-      "phetioFeatured": false,
-      "phetioHighFrequency": false,
-      "phetioPlayback": false,
-      "phetioReadOnly": true,
-      "phetioState": true,
-      "phetioStudioControl": true,
-      "phetioTypeName": "NumberPropertyIO"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype": {
       "phetioDocumentation": "",
@@ -1309,18 +1261,6 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "GroupIO<ReferenceIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.lengthProperty": {
-      "phetioDocumentation": "",
-      "phetioDynamicElement": false,
-      "phetioEventType": "MODEL",
-      "phetioFeatured": false,
-      "phetioHighFrequency": false,
-      "phetioPlayback": false,
-      "phetioReadOnly": true,
-      "phetioState": true,
-      "phetioStudioControl": true,
-      "phetioTypeName": "NumberPropertyIO"
-    },
     "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": true,
@@ -1560,18 +1500,6 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioState": false,
       "phetioStudioControl": true,
       "phetioTypeName": "GroupIO<ReferenceIO>"
-    },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.lengthProperty": {
-      "phetioDocumentation": "",
-      "phetioDynamicElement": false,
-      "phetioEventType": "MODEL",
-      "phetioFeatured": false,
-      "phetioHighFrequency": false,
-      "phetioPlayback": false,
-      "phetioReadOnly": true,
-      "phetioState": true,
-      "phetioStudioControl": true,
-      "phetioTypeName": "NumberPropertyIO"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype": {
       "phetioDocumentation": "",

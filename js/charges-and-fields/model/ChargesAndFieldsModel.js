@@ -139,7 +139,7 @@ define( require => {
               phetioDynamicElement: true,
               initialPosition: initialPosition
             } );
-            chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.remove( chargedParticle ) );
+            chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.disposeGroupMember( chargedParticle ) );
             return chargedParticle;
           },
           defaultArguments: [ 1 ]
@@ -162,7 +162,7 @@ define( require => {
         prototype: {
           create: ( tandem, prototypeName, initialPosition ) => {
             const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
-            sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.remove( sensor ) );
+            sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.disposeGroupMember( sensor ) );
             return sensor;
           }
         }
@@ -200,8 +200,6 @@ define( require => {
         phetioType: GroupIO( ElectricPotentialLineIO )
       } );
 
-      this.electricPotentialLines.addItemRemovedListener( item => item.dispose() );
-
       //----------------------------------------------------------------------------------------
       //
       // Hook up all the listeners the model
@@ -219,7 +217,7 @@ define( require => {
       //------------------------
 
       // the following logic is the crux of the simulation
-      this.chargedParticles.addItemAddedListener( addedChargedParticle => {
+      this.chargedParticles.groupMemberCreatedEmitter.addListener( addedChargedParticle => {
 
         const userControlledListener = isUserControlled => {
 
@@ -281,13 +279,12 @@ define( require => {
         addedChargedParticle.positionProperty.link( positionListener );
 
         // remove listeners when a chargedParticle is removed
-        chargedParticles.addItemRemovedListener( function removalListener( removedChargeParticle ) {
+        chargedParticles.groupMemberDisposedEmitter.addListener( function removalListener( removedChargeParticle ) {
           if ( removedChargeParticle === addedChargedParticle ) {
             addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
             addedChargedParticle.isActiveProperty.unlink( isActiveListener );
             addedChargedParticle.positionProperty.unlink( positionListener );
-            chargedParticles.removeItemRemovedListener( removalListener );
-            removedChargeParticle.dispose();
+            chargedParticles.groupMemberDisposedEmitter.removeListener( removalListener );
           }
         } );
       } );
@@ -296,7 +293,7 @@ define( require => {
       // AddItem Removed Listener on the charged Particles Observable Array
       //------------------------
 
-      this.chargedParticles.addItemRemovedListener( removedChargeParticle => {
+      this.chargedParticles.groupMemberDisposedEmitter.addListener( removedChargeParticle => {
         // check that the particle was active before updating charge dependent model components
         if ( removedChargeParticle.isActiveProperty.get() && !this.isResetting ) {
 
@@ -319,7 +316,7 @@ define( require => {
       // AddItem Added Listener on the electric Field Sensors Observable Array
       //------------------------
 
-      this.electricFieldSensors.addItemAddedListener( addedElectricFieldSensor => {
+      this.electricFieldSensors.groupMemberCreatedEmitter.addListener( addedElectricFieldSensor => {
 
         // Listener for sensor position changes
         const positionListener = position => {
@@ -345,12 +342,11 @@ define( require => {
         addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
 
         // remove listeners when an electricFieldSensor is removed
-        electricFieldSensors.addItemRemovedListener( function removalListener( removedElectricFieldSensor ) {
+        electricFieldSensors.groupMemberDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor ) {
           if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
             addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
             addedElectricFieldSensor.positionProperty.unlink( positionListener );
-            electricFieldSensors.removeItemRemovedListener( removalListener );
-            removedElectricFieldSensor.dispose();
+            electricFieldSensors.groupMemberDisposedEmitter.removeListener( removalListener );
           }
         } );
       } );
@@ -495,7 +491,7 @@ define( require => {
     updateAllSensors() {
       this.electricPotentialSensor.update();
       for ( let i = 0; i < this.electricFieldSensors.length; i++ ) {
-        this.electricFieldSensors.get( i ).update();
+        this.electricFieldSensors.array[ i ].update();
       }
     }
 
@@ -673,8 +669,8 @@ define( require => {
     }
 
     snapAllElements() {
-      this.activeChargedParticles.forEach( chargedParticles => this.snapToGridLines( chargedParticles.positionProperty ) );
-      this.electricFieldSensors.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
+      this.activeChargedParticles.forEach( chargedParticle => this.snapToGridLines( chargedParticle.positionProperty ) );
+      this.electricFieldSensors.array.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
 
       this.snapToGridLines( this.electricPotentialSensor.positionProperty );
       this.snapToGridLines( this.measuringTape.basePositionProperty );
