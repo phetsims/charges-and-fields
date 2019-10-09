@@ -130,24 +130,8 @@ define( require => {
       this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
       // Observable array of all draggable electric charges
-      // @public {ObservableArray.<ChargedParticle>}
-      this.chargedParticles = new Group( 'particle', {
-        prototype: {
-          create: ( tandem, prototypeName, charge, initialPosition ) => {
-            const chargedParticle = new ChargedParticle( charge, {
-              tandem: tandem,
-              phetioDynamicElement: true,
-              initialPosition: initialPosition
-            } );
-            chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.disposeGroupMember( chargedParticle ) );
-            return chargedParticle;
-          },
-          defaultArguments: [ 1 ]
-        }
-      }, {
-        tandem: tandem.createTandem( 'chargedParticles' ),
-        phetioType: GroupIO( ChargedParticleIO )
-      } );
+      // @public {Group.<ChargedParticle>}
+      this.chargedParticles = ChargedParticle.createGroup( tandem.createTandem( 'chargedParticles' ) );
       const chargedParticles = this.chargedParticles;
 
       // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)

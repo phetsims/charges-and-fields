@@ -11,6 +11,8 @@ define( require => {
   // modules
   const ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const Group = require( 'TANDEM/Group' );
+  const GroupIO = require( 'TANDEM/GroupIO' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const Tandem = require( 'TANDEM/Tandem' );
 
@@ -19,17 +21,44 @@ define( require => {
     /**
      * @param {number} charge - (positive=+1 or negative=-1)
      * @param {Object} options - required actually to supply tandem
+     * @private - see createGroup
      */
     constructor( charge, options ) {
       options = _.extend( {
         tandem: Tandem.required,
-        phetioType: ChargedParticleIO
+        phetioType: ChargedParticleIO,
+        phetioDynamicElement: true
       }, options );
       super( options );
       assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
       // @public (read-only) {number} - a charge of one corresponds to one nano Coulomb
       this.charge = charge;
+    }
+
+    /**
+     * @public
+     * @param tandem
+     * @returns {Group}
+     */
+    static createGroup( tandem ) {
+      const myGroup = new Group( 'particle', {
+        prototype: {
+          create: ( tandem, prototypeName, charge, initialPosition ) => {
+            const chargedParticle = new ChargedParticle( charge, {
+              tandem: tandem,
+              initialPosition: initialPosition
+            } );
+            chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeGroupMember( chargedParticle ) );
+            return chargedParticle;
+          },
+          defaultArguments: [ 1 ]
+        }
+      }, {
+        tandem: tandem,
+        phetioType: GroupIO( ChargedParticleIO )
+      } );
+      return myGroup;
     }
   }
 
