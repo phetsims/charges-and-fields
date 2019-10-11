@@ -201,7 +201,7 @@ define( require => {
       //------------------------
 
       // the following logic is the crux of the simulation
-      this.chargedParticles.memberCreatedEmitter.addListener( addedChargedParticle => {
+      this.chargedParticles.addMemberCreatedListener( addedChargedParticle => {
 
         const userControlledListener = isUserControlled => {
 
@@ -263,7 +263,7 @@ define( require => {
         addedChargedParticle.positionProperty.link( positionListener );
 
         // remove listeners when a chargedParticle is removed
-        chargedParticles.memberDisposedEmitter.addListener( function removalListener( removedChargeParticle ) {
+        chargedParticles.addMemberDisposedListener( function removalListener( removedChargeParticle ) {
           if ( removedChargeParticle === addedChargedParticle ) {
             addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
             addedChargedParticle.isActiveProperty.unlink( isActiveListener );
@@ -277,7 +277,7 @@ define( require => {
       // AddItem Removed Listener on the charged Particles Observable Array
       //------------------------
 
-      this.chargedParticles.memberDisposedEmitter.addListener( removedChargeParticle => {
+      this.chargedParticles.addMemberDisposedListener( removedChargeParticle => {
         // check that the particle was active before updating charge dependent model components
         if ( removedChargeParticle.isActiveProperty.get() && !this.isResetting ) {
 
@@ -300,7 +300,7 @@ define( require => {
       // AddItem Added Listener on the electric Field Sensors Observable Array
       //------------------------
 
-      this.electricFieldSensors.memberCreatedEmitter.addListener( addedElectricFieldSensor => {
+      this.electricFieldSensors.addMemberCreatedListener( addedElectricFieldSensor => {
 
         // Listener for sensor position changes
         const positionListener = position => {
@@ -326,7 +326,7 @@ define( require => {
         addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
 
         // remove listeners when an electricFieldSensor is removed
-        electricFieldSensors.memberDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor ) {
+        electricFieldSensors.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
           if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
             addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
             addedElectricFieldSensor.positionProperty.unlink( positionListener );
