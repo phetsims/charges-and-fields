@@ -10,8 +10,8 @@ define( require => {
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ElectricPotentialLineView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialLineView' );
-  const Group = require( 'TANDEM/Group' );
-  const GroupIO = require( 'TANDEM/GroupIO' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Node = require( 'SCENERY/nodes/Node' );
   const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
 
@@ -46,11 +46,11 @@ define( require => {
       const labelsNode = new Node();
       this.addChild( labelsNode );
 
-      const electricPotentialLineViews = new Group( 'electricPotentialLineView', ( tandem, electricPotentialLine ) => {
+      const electricPotentialLineViews = new PhetioGroup( 'electricPotentialLineView', ( tandem, electricPotentialLine ) => {
         return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
       }, [ electricPotentialLines.memberPrototype ], {
         tandem: tandem.createTandem( 'electricPotentialLineViews' ),
-        phetioType: GroupIO( ReferenceIO )
+        phetioType: PhetioGroupIO( ReferenceIO )
       } );
       this.electricPotentialLineViews = electricPotentialLineViews;
 

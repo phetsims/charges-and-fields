@@ -21,8 +21,8 @@ define( require => {
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
   const ElectricPotentialSensor = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialSensor' );
   const Emitter = require( 'AXON/Emitter' );
-  const Group = require( 'TANDEM/Group' );
-  const GroupIO = require( 'TANDEM/GroupIO' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const MeasuringTape = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/MeasuringTape' );
   const ModelElementIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElementIO' );
   const ObservableArray = require( 'AXON/ObservableArray' );
@@ -142,13 +142,13 @@ define( require => {
       } );
 
       // @public - Observable array of all draggable electric field sensors
-      this.electricFieldSensors = new Group( 'electricFieldSensor', ( tandem, initialPosition ) => {
+      this.electricFieldSensors = new PhetioGroup( 'electricFieldSensor', ( tandem, initialPosition ) => {
         const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
         sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.disposeGroupMember( sensor ) );
         return sensor;
       }, [ null ], {
         tandem: tandem.createTandem( 'electricFieldSensors' ),
-        phetioType: GroupIO( ModelElementIO )
+        phetioType: PhetioGroupIO( ModelElementIO )
       } ); // {ObservableArray.<ElectricFieldSensor>}
       const electricFieldSensors = this.electricFieldSensors;
 
@@ -163,7 +163,7 @@ define( require => {
 
       // Contains the model of electricPotential line, each element is an electricPotential line
       // @public read-only
-      this.electricPotentialLines = new Group( 'electricPotentialLine', ( tandem, position ) => {
+      this.electricPotentialLines = new PhetioGroup( 'electricPotentialLine', ( tandem, position ) => {
 
         assert && assert( position instanceof Vector2, 'position should be Vector2' );
         assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
@@ -172,7 +172,7 @@ define( require => {
         return new ElectricPotentialLine( this, position, tandem );
       }, [ this.electricPotentialSensor.positionProperty.get() ], {
         tandem: tandem.createTandem( 'electricPotentialLines' ),
-        phetioType: GroupIO( ElectricPotentialLineIO )
+        phetioType: PhetioGroupIO( ElectricPotentialLineIO )
       } );
 
       //----------------------------------------------------------------------------------------

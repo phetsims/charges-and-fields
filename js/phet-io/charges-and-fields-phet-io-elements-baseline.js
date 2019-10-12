@@ -83,7 +83,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO<ChargedParticleIO>"
+      "phetioTypeName": "PhetioGroupIO<ChargedParticleIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype": {
       "phetioDocumentation": "",
@@ -167,7 +167,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO<ModelElementIO>"
+      "phetioTypeName": "PhetioGroupIO<ModelElementIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype": {
       "phetioDocumentation": "",
@@ -251,7 +251,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO<ElectricPotentialLineIO>"
+      "phetioTypeName": "PhetioGroupIO<ElectricPotentialLineIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.prototype": {
       "phetioDocumentation": "",
@@ -455,7 +455,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO<ReferenceIO>"
+      "phetioTypeName": "PhetioGroupIO<ReferenceIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype": {
       "phetioDocumentation": "",
@@ -1259,7 +1259,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO<ReferenceIO>"
+      "phetioTypeName": "PhetioGroupIO<ReferenceIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype": {
       "phetioDocumentation": "",
@@ -1499,7 +1499,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioReadOnly": false,
       "phetioState": false,
       "phetioStudioControl": true,
-      "phetioTypeName": "GroupIO<ReferenceIO>"
+      "phetioTypeName": "PhetioGroupIO<ReferenceIO>"
     },
     "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype": {
       "phetioDocumentation": "",

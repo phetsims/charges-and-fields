@@ -30,8 +30,8 @@ define( require => {
   const ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   const ElectricPotentialWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialWebGLNode' );
   const GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
-  const Group = require( 'TANDEM/Group' );
-  const GroupIO = require( 'TANDEM/GroupIO' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const LinearFunction = require( 'DOT/LinearFunction' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -272,7 +272,7 @@ define( require => {
         } );
       } );
 
-      const chargedParticleNodes = new Group( 'chargedParticleNode', ( tandem, chargedParticle ) => {
+      const chargedParticleNodes = new PhetioGroup( 'chargedParticleNode', ( tandem, chargedParticle ) => {
         return new ChargedParticleNode(
           chargedParticle,
           snapToGridLines,
@@ -283,10 +283,10 @@ define( require => {
         );
       }, [ model.chargedParticles.memberPrototype ], {
         tandem: tandem.createTandem( 'chargedParticleNodes' ),
-        phetioType: GroupIO( ReferenceIO )
+        phetioType: PhetioGroupIO( ReferenceIO )
       } );
 
-      const electricFieldSensorNodes = new Group( 'electricFieldSensorNode', ( tandem, electricFieldSensor ) => {
+      const electricFieldSensorNodes = new PhetioGroup( 'electricFieldSensorNode', ( tandem, electricFieldSensor ) => {
 
         // Create and add the view representation for this electric Field Sensor
         const electricFieldSensorNode = new ElectricFieldSensorNode(
@@ -303,7 +303,7 @@ define( require => {
         return electricFieldSensorNode;
       }, [ model.electricFieldSensors.memberPrototype ], {
         tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
-        phetioType: GroupIO( ReferenceIO )
+        phetioType: PhetioGroupIO( ReferenceIO )
       } );
 
       // Handle the comings and goings of charged electric field sensors.

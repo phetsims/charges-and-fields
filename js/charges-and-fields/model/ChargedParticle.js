@@ -11,8 +11,8 @@ define( require => {
   // modules
   const ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const Group = require( 'TANDEM/Group' );
-  const GroupIO = require( 'TANDEM/GroupIO' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const Tandem = require( 'TANDEM/Tandem' );
 
@@ -42,7 +42,7 @@ define( require => {
      * @returns {Group}
      */
     static createGroup( tandem ) {
-      const myGroup = new Group( 'particle', ( tandem, charge, initialPosition ) => {
+      const myGroup = new PhetioGroup( 'particle', ( tandem, charge, initialPosition ) => {
         const chargedParticle = new ChargedParticle( charge, {
           tandem: tandem,
           initialPosition: initialPosition
@@ -51,7 +51,7 @@ define( require => {
         return chargedParticle;
       }, [ 1, null ], {
         tandem: tandem,
-        phetioType: GroupIO( ChargedParticleIO )
+        phetioType: PhetioGroupIO( ChargedParticleIO )
       } );
       return myGroup;
     }

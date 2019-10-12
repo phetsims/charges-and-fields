@@ -494,50 +494,6 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObjectIO",
       "typeName": "FunctionIO(Vector2IO,NullableIO<Vector2IO>)=>VoidIO"
     },
-    "GroupIO<ChargedParticleIO>": {
-      "documentation": "An array that sends notifications when its values have changed.",
-      "events": [],
-      "methodOrder": [],
-      "methods": {},
-      "parameterTypes": [
-        "ChargedParticleIO"
-      ],
-      "supertype": "ObjectIO",
-      "typeName": "GroupIO<ChargedParticleIO>"
-    },
-    "GroupIO<ElectricPotentialLineIO>": {
-      "documentation": "An array that sends notifications when its values have changed.",
-      "events": [],
-      "methodOrder": [],
-      "methods": {},
-      "parameterTypes": [
-        "ElectricPotentialLineIO"
-      ],
-      "supertype": "ObjectIO",
-      "typeName": "GroupIO<ElectricPotentialLineIO>"
-    },
-    "GroupIO<ModelElementIO>": {
-      "documentation": "An array that sends notifications when its values have changed.",
-      "events": [],
-      "methodOrder": [],
-      "methods": {},
-      "parameterTypes": [
-        "ModelElementIO"
-      ],
-      "supertype": "ObjectIO",
-      "typeName": "GroupIO<ModelElementIO>"
-    },
-    "GroupIO<ReferenceIO>": {
-      "documentation": "An array that sends notifications when its values have changed.",
-      "events": [],
-      "methodOrder": [],
-      "methods": {},
-      "parameterTypes": [
-        "ReferenceIO"
-      ],
-      "supertype": "ObjectIO",
-      "typeName": "GroupIO<ReferenceIO>"
-    },
     "LinkedElementIO": {
       "documentation": "A LinkedElement",
       "events": [],
@@ -956,6 +912,50 @@ window.phet.phetio.phetioTypes = assert &&
       },
       "supertype": "ObjectIO",
       "typeName": "PhetioEngineIO"
+    },
+    "PhetioGroupIO<ChargedParticleIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "parameterTypes": [
+        "ChargedParticleIO"
+      ],
+      "supertype": "ObjectIO",
+      "typeName": "PhetioGroupIO<ChargedParticleIO>"
+    },
+    "PhetioGroupIO<ElectricPotentialLineIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "parameterTypes": [
+        "ElectricPotentialLineIO"
+      ],
+      "supertype": "ObjectIO",
+      "typeName": "PhetioGroupIO<ElectricPotentialLineIO>"
+    },
+    "PhetioGroupIO<ModelElementIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "parameterTypes": [
+        "ModelElementIO"
+      ],
+      "supertype": "ObjectIO",
+      "typeName": "PhetioGroupIO<ModelElementIO>"
+    },
+    "PhetioGroupIO<ReferenceIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "parameterTypes": [
+        "ReferenceIO"
+      ],
+      "supertype": "ObjectIO",
+      "typeName": "PhetioGroupIO<ReferenceIO>"
     },
     "PropertyIO<BooleanIO>": {
       "documentation": "Observable values that send out notifications when the value changes. This differs from the traditional listener pattern in that added listeners also receive a callback with the current value when the listeners are registered. This is a widely-used pattern in PhET-iO simulations.",
