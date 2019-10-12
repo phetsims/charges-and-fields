@@ -272,47 +272,36 @@ define( require => {
         } );
       } );
 
-      const chargedParticleNodes = new Group( 'chargedParticleNode', {
-        prototype: {
-          create: ( tandem, prototypeName, chargedParticle ) => {
-
-            return new ChargedParticleNode(
-              chargedParticle,
-              snapToGridLines,
-              modelViewTransform,
-              this.availableModelBoundsProperty,
-              model.chargesAndSensorsEnclosureBoundsProperty.get(),
-              tandem
-            );
-          },
-          defaultArguments: [ model.chargedParticles.prototypes.prototype ]
-        }
-      }, {
+      const chargedParticleNodes = new Group( 'chargedParticleNode', ( tandem, chargedParticle ) => {
+        return new ChargedParticleNode(
+          chargedParticle,
+          snapToGridLines,
+          modelViewTransform,
+          this.availableModelBoundsProperty,
+          model.chargesAndSensorsEnclosureBoundsProperty.get(),
+          tandem
+        );
+      }, [ model.chargedParticles.memberPrototype ], {
         tandem: tandem.createTandem( 'chargedParticleNodes' ),
         phetioType: GroupIO( ReferenceIO )
       } );
 
-      const electricFieldSensorNodes = new Group( 'electricFieldSensorNode', {
-        prototype: {
-          create: ( tandem, prototypeName, electricFieldSensor ) => {
+      const electricFieldSensorNodes = new Group( 'electricFieldSensorNode', ( tandem, electricFieldSensor ) => {
 
-            // Create and add the view representation for this electric Field Sensor
-            const electricFieldSensorNode = new ElectricFieldSensorNode(
-              electricFieldSensor,
-              snapToGridLines,
-              modelViewTransform,
-              this.availableModelBoundsProperty,
-              model.isPlayAreaChargedProperty,
-              model.areValuesVisibleProperty,
-              model.chargesAndSensorsEnclosureBoundsProperty.get(),
-              tandem
-            );
+        // Create and add the view representation for this electric Field Sensor
+        const electricFieldSensorNode = new ElectricFieldSensorNode(
+          electricFieldSensor,
+          snapToGridLines,
+          modelViewTransform,
+          this.availableModelBoundsProperty,
+          model.isPlayAreaChargedProperty,
+          model.areValuesVisibleProperty,
+          model.chargesAndSensorsEnclosureBoundsProperty.get(),
+          tandem
+        );
 
-            return electricFieldSensorNode;
-          },
-          defaultArguments: [ model.electricFieldSensors.prototypes.prototype ]
-        }
-      }, {
+        return electricFieldSensorNode;
+      }, [ model.electricFieldSensors.memberPrototype ], {
         tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
         phetioType: GroupIO( ReferenceIO )
       } );
@@ -411,8 +400,8 @@ define( require => {
         const charge2 = model.chargedParticles.createNextGroupMember( -1, new Vector2( 0, -1.5 ) );
         charge1.isActiveProperty.set( true );
         charge2.isActiveProperty.set( true );
-        charge1.positionProperty.set( new Vector2( 2,2) );
-        charge2.positionProperty.set( new Vector2( 0,1) );
+        charge1.positionProperty.set( new Vector2( 2, 2 ) );
+        charge2.positionProperty.set( new Vector2( 0, 1 ) );
 
         model.isPlayAreaChargedProperty.set( true ); // set isPlayAreaCharged to true since there are charges
       }

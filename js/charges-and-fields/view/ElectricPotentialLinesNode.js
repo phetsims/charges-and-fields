@@ -46,14 +46,9 @@ define( require => {
       const labelsNode = new Node();
       this.addChild( labelsNode );
 
-      const electricPotentialLineViews = new Group( 'electricPotentialLineView', {
-        prototype: {
-          create: ( tandem, prototypeName, electricPotentialLine ) => {
-            return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
-          },
-          defaultArguments: [ electricPotentialLines.prototypes.prototype ]
-        }
-      }, {
+      const electricPotentialLineViews = new Group( 'electricPotentialLineView', ( tandem, electricPotentialLine ) => {
+        return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
+      }, [ electricPotentialLines.memberPrototype ], {
         tandem: tandem.createTandem( 'electricPotentialLineViews' ),
         phetioType: GroupIO( ReferenceIO )
       } );

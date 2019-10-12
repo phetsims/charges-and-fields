@@ -142,15 +142,11 @@ define( require => {
       } );
 
       // @public - Observable array of all draggable electric field sensors
-      this.electricFieldSensors = new Group( 'electricFieldSensor', {
-        prototype: {
-          create: ( tandem, prototypeName, initialPosition ) => {
-            const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
-            sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.disposeGroupMember( sensor ) );
-            return sensor;
-          }
-        }
-      }, {
+      this.electricFieldSensors = new Group( 'electricFieldSensor', ( tandem, initialPosition ) => {
+        const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
+        sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.disposeGroupMember( sensor ) );
+        return sensor;
+      }, [ null ], {
         tandem: tandem.createTandem( 'electricFieldSensors' ),
         phetioType: GroupIO( ModelElementIO )
       } ); // {ObservableArray.<ElectricFieldSensor>}
@@ -167,19 +163,14 @@ define( require => {
 
       // Contains the model of electricPotential line, each element is an electricPotential line
       // @public read-only
-      this.electricPotentialLines = new Group( 'electricPotentialLine', {
-        prototype: {
-          create: ( tandem, prototypeName, position ) => {
+      this.electricPotentialLines = new Group( 'electricPotentialLine', ( tandem, position ) => {
 
-            assert && assert( position instanceof Vector2, 'position should be Vector2' );
-            assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
+        assert && assert( position instanceof Vector2, 'position should be Vector2' );
+        assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
 
-            // for chaining and for PhET-iO restore state
-            return new ElectricPotentialLine( this, position, tandem );
-          },
-          defaultArguments: [ this.electricPotentialSensor.positionProperty.get() ]
-        }
-      }, {
+        // for chaining and for PhET-iO restore state
+        return new ElectricPotentialLine( this, position, tandem );
+      }, [ this.electricPotentialSensor.positionProperty.get() ], {
         tandem: tandem.createTandem( 'electricPotentialLines' ),
         phetioType: GroupIO( ElectricPotentialLineIO )
       } );

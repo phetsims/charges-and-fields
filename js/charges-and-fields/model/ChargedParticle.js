@@ -42,19 +42,14 @@ define( require => {
      * @returns {Group}
      */
     static createGroup( tandem ) {
-      const myGroup = new Group( 'particle', {
-        prototype: {
-          create: ( tandem, prototypeName, charge, initialPosition ) => {
-            const chargedParticle = new ChargedParticle( charge, {
-              tandem: tandem,
-              initialPosition: initialPosition
-            } );
-            chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeGroupMember( chargedParticle ) );
-            return chargedParticle;
-          },
-          defaultArguments: [ 1 ]
-        }
-      }, {
+      const myGroup = new Group( 'particle', ( tandem, charge, initialPosition ) => {
+        const chargedParticle = new ChargedParticle( charge, {
+          tandem: tandem,
+          initialPosition: initialPosition
+        } );
+        chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeGroupMember( chargedParticle ) );
+        return chargedParticle;
+      }, [ 1, null ], {
         tandem: tandem,
         phetioType: GroupIO( ChargedParticleIO )
       } );
