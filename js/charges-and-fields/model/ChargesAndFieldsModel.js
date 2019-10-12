@@ -364,7 +364,7 @@ define( require => {
      * @returns {ChargedParticle}
      */
     addPositiveCharge() {
-      return this.chargedParticles.createNextGroupMember( 1 );
+      return this.chargedParticles.createNextMember( 1 );
     }
 
     /**
@@ -374,7 +374,7 @@ define( require => {
      * @returns {ChargedParticle}
      */
     addNegativeCharge() {
-      return this.chargedParticles.createNextGroupMember( -1 );
+      return this.chargedParticles.createNextMember( -1 );
     }
 
     /**
@@ -382,7 +382,7 @@ define( require => {
      * @public
      */
     addElectricFieldSensor() {
-      return this.electricFieldSensors.createNextGroupMember();
+      return this.electricFieldSensors.createNextMember();
     }
 
     /**
@@ -597,7 +597,7 @@ define( require => {
       if ( isTooCloseToParticle ) {
         return;
       }
-      this.electricPotentialLines.createNextGroupMember( position );
+      this.electricPotentialLines.createNextMember( position );
     }
 
     /**

@@ -396,8 +396,8 @@ define( require => {
           tandem: tandem.createTandem( 'debugButton' )
         } ) );
 
-        const charge1 = model.chargedParticles.createNextGroupMember( 1, new Vector2( 0, -1.5 ) );
-        const charge2 = model.chargedParticles.createNextGroupMember( -1, new Vector2( 0, -1.5 ) );
+        const charge1 = model.chargedParticles.createNextMember( 1, new Vector2( 0, -1.5 ) );
+        const charge2 = model.chargedParticles.createNextMember( -1, new Vector2( 0, -1.5 ) );
         charge1.isActiveProperty.set( true );
         charge2.isActiveProperty.set( true );
         charge1.positionProperty.set( new Vector2( 2, 2 ) );
