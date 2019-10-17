@@ -20,6 +20,7 @@ define( require => {
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -200,7 +201,7 @@ define( require => {
 
       super();
 
-      options = _.extend( {
+      options = merge( {
         radius: 2
       }, options );
 

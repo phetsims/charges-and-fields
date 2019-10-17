@@ -21,6 +21,7 @@ define( require => {
   const EraserButton = require( 'SCENERY_PHET/buttons/EraserButton' );
   const Image = require( 'SCENERY/nodes/Image' );
   const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PencilButton = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/PencilButton' );
@@ -287,7 +288,7 @@ define( require => {
        * @returns {string}
        */
       function decimalAdjust( number, options ) {
-        options = _.extend( {
+        options = merge( {
           maxDecimalPlaces: 3
         }, options );
 

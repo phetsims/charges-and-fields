@@ -13,6 +13,7 @@ define( require => {
   const dot = require( 'DOT/dot' );
   const ElectricPotentialLineIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ElectricPotentialLineIO' );
   const Emitter = require( 'AXON/Emitter' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -401,7 +402,7 @@ define( require => {
      * @returns {Shape}
      */
     positionArrayToStraightLine( shape, positionArray, options ) {
-      options = _.extend( {
+      options = merge( {
         // is the resulting shape forming a close path
         isClosedLineSegments: false
       }, options );

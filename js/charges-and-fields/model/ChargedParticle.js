@@ -11,9 +11,10 @@ define( require => {
   // modules
   const ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  const merge = require( 'PHET_CORE/merge' );
+  const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const PhetioGroup = require( 'TANDEM/PhetioGroup' );
   const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
-  const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const Tandem = require( 'TANDEM/Tandem' );
 
   class ChargedParticle extends ModelElement {
@@ -24,7 +25,7 @@ define( require => {
      * @private - see createGroup
      */
     constructor( charge, options ) {
-      options = _.extend( {
+      options = merge( {
         tandem: Tandem.required,
         phetioType: ChargedParticleIO,
         phetioDynamicElement: true

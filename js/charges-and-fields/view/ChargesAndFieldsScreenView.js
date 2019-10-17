@@ -30,11 +30,12 @@ define( require => {
   const ElectricPotentialSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialSensorNode' );
   const ElectricPotentialWebGLNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialWebGLNode' );
   const GridNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GridNode' );
-  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
-  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const LinearFunction = require( 'DOT/LinearFunction' );
+  const merge = require( 'PHET_CORE/merge' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
   const Rectangle = require( 'DOT/Rectangle' );
@@ -486,7 +487,7 @@ define( require => {
      * @returns {string} color - e.g. 'rgba(0,0,0,1)'
      */
     interpolateRGBA( color1, color2, distance, options ) {
-      options = _.extend( {
+      options = merge( {
         // defaults
         transparency: 1
       }, options );

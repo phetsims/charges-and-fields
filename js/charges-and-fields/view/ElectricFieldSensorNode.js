@@ -16,6 +16,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
   const ElectricFieldSensorRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorRepresentationNode' );
+  const merge = require( 'PHET_CORE/merge' );
   const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -266,7 +267,7 @@ define( require => {
        * @returns {string}
        */
       function decimalAdjust( number, options ) {
-        options = _.extend( {
+        options = merge( {
           maxDecimalPlaces: 3
         }, options );
 

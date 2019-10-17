@@ -11,6 +11,7 @@ define( require => {
   // modules
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const Image = require( 'SCENERY/nodes/Image' );
+  const merge = require( 'PHET_CORE/merge' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
 
   // images
@@ -23,7 +24,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( tandem, options ) {
-      options = _.extend( {
+      options = merge( {
         iconWidth: 26,
         iconHeight: 20,
         tandem: tandem
