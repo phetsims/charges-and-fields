@@ -12,7 +12,6 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
   const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  const merge = require( 'PHET_CORE/merge' );
   const OptionsDialog = require( 'JOIST/OptionsDialog' );
   const ProjectorModeCheckbox = require( 'JOIST/ProjectorModeCheckbox' );
 
@@ -28,12 +27,12 @@ define( require => {
         phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
       } );
 
-      super( merge( {
+      super( {
         children: [ projectorCheckbox ],
         spacing: OptionsDialog.DEFAULT_SPACING,
         align: 'left',
         tandem: tandem
-      } ) );
+      } );
     }
   }
 
