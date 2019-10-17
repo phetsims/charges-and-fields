@@ -59,8 +59,8 @@ define( require => {
         this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
 
         // TODO: the conditional here is to support mutating this potential line, let's do this better.
-        const hasMagneticField = this.model.getElectricField( position ).magnitude !== 0;
-        this.positionArray = hasMagneticField ? this.getEquipotentialPositionArray( position ) : []; // @public read-only
+        const hasElectricField = this.model.getElectricField( position ).magnitude !== 0;
+        this.positionArray = hasElectricField ? this.getEquipotentialPositionArray( position ) : []; // @public read-only
 
         if ( !this.isDisposed ) {
           this.chargeChangedEmitter.emit();
