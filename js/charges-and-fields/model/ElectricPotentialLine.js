@@ -118,10 +118,10 @@ define( require => {
       const midwayElectricPotential = this.model.getElectricPotential( midwayPosition ); //  {number}
       const deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
       const deltaPosition = midwayElectricField.multiplyScalar( deltaElectricPotential / midwayElectricField.magnitudeSquared ); // {Vector2}
-      assert && assert( deltaPosition.magnitude < Math.abs( deltaDistance ), 'the second order correction is larger than the first' );
 
-      // if 'the second order correction is larger than the first'
+      // if the second order correction is larger than the first, use a more computationally expensive but accurate method.
       if ( deltaPosition.magnitude > Math.abs( deltaDistance ) ) {
+
         // use a fail safe method
         return this.getNextPositionAlongEquipotentialWithRK4( position, deltaDistance );
       }
