@@ -296,6 +296,14 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "PropertyIO<BooleanIO>",
       "typeName": "DerivedPropertyIO<BooleanIO>"
     },
+    "DialogIO": {
+      "documentation": "A dialog panel",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "supertype": "NodeIO",
+      "typeName": "DialogIO"
+    },
     "ElectricPotentialLineIO": {
       "documentation": "The vector that shows the charge strength and direction.",
       "events": [],
@@ -689,6 +697,17 @@ window.phet.phetio.phetioTypes = assert &&
       "methods": {},
       "supertype": "ObjectIO",
       "typeName": "PhetMenuIO"
+    },
+    "PhetioCapsuleIO<DialogIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "parameterTypes": [
+        "DialogIO"
+      ],
+      "supertype": "ObjectIO",
+      "typeName": "PhetioCapsuleIO<DialogIO>"
     },
     "PhetioCommandProcessorIO": {
       "documentation": "Invokes PhET-iO API commands on a running simulation.",
