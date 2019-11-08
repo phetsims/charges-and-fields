@@ -269,7 +269,7 @@ define( require => {
         addedChargedParticle.disposeEmitter.addListener( function callback() {
           addedChargedParticle.disposeEmitter.removeListener( callback );
           draggableElementsLayer.removeChild( chargedParticleNode );
-          chargedParticleNodes.disposeGroupMember( chargedParticleNode ); // TODO: I changed this!!!!
+          chargedParticleNodes.disposeMember( chargedParticleNode ); // TODO: I changed this!!!!
         } );
       } );
 
@@ -317,7 +317,7 @@ define( require => {
         // Add the removal listener for if and when this electric field sensor is removed from the model.
         model.electricFieldSensors.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
           if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
-            electricFieldSensorNodes.disposeGroupMember( electricFieldSensorNode );
+            electricFieldSensorNodes.disposeMember( electricFieldSensorNode );
             model.electricFieldSensors.memberDisposedEmitter.removeListener( removalListener );
           }
         } );

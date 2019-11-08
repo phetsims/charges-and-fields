@@ -66,7 +66,7 @@ define( require => {
           circlesNode.addChild( electricPotentialLineView.circles );
         }
 
-        const modelDisposeListener = () => electricPotentialLineViews.disposeGroupMember( electricPotentialLineView );
+        const modelDisposeListener = () => electricPotentialLineViews.disposeMember( electricPotentialLineView );
         electricPotentialLine.disposeEmitter.addListener( modelDisposeListener );
 
         // try again next time we changed

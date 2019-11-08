@@ -48,7 +48,7 @@ define( require => {
           tandem: tandem,
           initialPosition: initialPosition
         } );
-        chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeGroupMember( chargedParticle ) );
+        chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeMember( chargedParticle ) );
         return chargedParticle;
       }, [ 1, null ], {
         tandem: tandem,
