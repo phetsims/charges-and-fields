@@ -21,12 +21,12 @@ define( require => {
   class ElectricPotentialLinesNode extends Node {
 
     /**
-     * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLines - array of models of electricPotentialLine
+     * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLineGroup - array of models of electricPotentialLine
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
      * @param {Tandem} tandem
      */
-    constructor( electricPotentialLines, modelViewTransform, areValuesVisibleProperty, tandem ) {
+    constructor( electricPotentialLineGroup, modelViewTransform, areValuesVisibleProperty, tandem ) {
 
       // call the super constructor
       super( { tandem: tandem } );
@@ -46,17 +46,17 @@ define( require => {
       const labelsNode = new Node();
       this.addChild( labelsNode );
 
-      const electricPotentialLineViews = new PhetioGroup( 'electricPotentialLineView', ( tandem, electricPotentialLine ) => {
+      const electricPotentialLineViewGroup = new PhetioGroup( 'electricPotentialLineView', ( tandem, electricPotentialLine ) => {
         return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
-      }, [ electricPotentialLines.memberPrototype ], {
-        tandem: tandem.createTandem( 'electricPotentialLineViews' ),
+      }, [ electricPotentialLineGroup.memberPrototype ], {
+        tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
         phetioType: PhetioGroupIO( ReferenceIO )
       } );
-      this.electricPotentialLineViews = electricPotentialLineViews;
+      this.electricPotentialLineViews = electricPotentialLineViewGroup;
 
       // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-      electricPotentialLines.addMemberCreatedListener( function updateView( electricPotentialLine ) {
-        const electricPotentialLineView = electricPotentialLineViews.createCorrespondingGroupMember( electricPotentialLine, electricPotentialLine );
+      electricPotentialLineGroup.addMemberCreatedListener( function updateView( electricPotentialLine ) {
+        const electricPotentialLineView = electricPotentialLineViewGroup.createCorrespondingGroupMember( electricPotentialLine, electricPotentialLine );
 
         pathsNode.addChild( electricPotentialLineView.path );
         labelsNode.addChild( electricPotentialLineView.voltageLabel );
@@ -66,7 +66,7 @@ define( require => {
           circlesNode.addChild( electricPotentialLineView.circles );
         }
 
-        const modelDisposeListener = () => electricPotentialLineViews.disposeMember( electricPotentialLineView );
+        const modelDisposeListener = () => electricPotentialLineViewGroup.disposeMember( electricPotentialLineView );
         electricPotentialLine.disposeEmitter.addListener( modelDisposeListener );
 
         // try again next time we changed

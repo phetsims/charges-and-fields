@@ -144,7 +144,7 @@ define( require => {
 
       // Create the scenery node responsible for drawing the electricPotential lines
       const electricPotentialLinesNode = new ElectricPotentialLinesNode(
-        model.electricPotentialLines,
+        model.electricPotentialLineGroup,
         modelViewTransform,
         model.areValuesVisibleProperty,
         tandem.createTandem( 'electricPotentialLinesNode' ) );
@@ -255,25 +255,25 @@ define( require => {
         model.allowNewPositiveChargesProperty,
         model.allowNewNegativeChargesProperty,
         model.allowNewElectricFieldSensorsProperty
-      ], ( positive, negative, electricFieldSensors ) => positive || negative || electricFieldSensors )
+      ], ( positive, negative, electricFieldSensorGroup ) => positive || negative || electricFieldSensorGroup )
         .linkAttribute( chargesAndSensorsPanel, 'visible' );
 
       // Handle the comings and goings of charged particles.
       model.chargedParticles.addMemberCreatedListener( addedChargedParticle => {
 
         // Create and add the view representation for this chargedParticle.
-        const chargedParticleNode = chargedParticleNodes.createCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
+        const chargedParticleNode = chargedParticleNodeGroup.createCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
 
         draggableElementsLayer.addChild( chargedParticleNode );
 
         addedChargedParticle.disposeEmitter.addListener( function callback() {
           addedChargedParticle.disposeEmitter.removeListener( callback );
           draggableElementsLayer.removeChild( chargedParticleNode );
-          chargedParticleNodes.disposeMember( chargedParticleNode ); // TODO: I changed this!!!!
+          chargedParticleNodeGroup.disposeMember( chargedParticleNode ); // TODO: I changed this!!!!
         } );
       } );
 
-      const chargedParticleNodes = new PhetioGroup( 'chargedParticleNode', ( tandem, chargedParticle ) => {
+      const chargedParticleNodeGroup = new PhetioGroup( 'chargedParticleNode', ( tandem, chargedParticle ) => {
         return new ChargedParticleNode(
           chargedParticle,
           snapToGridLines,
@@ -283,11 +283,11 @@ define( require => {
           tandem
         );
       }, [ model.chargedParticles.memberPrototype ], {
-        tandem: tandem.createTandem( 'chargedParticleNodes' ),
+        tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
         phetioType: PhetioGroupIO( ReferenceIO )
       } );
 
-      const electricFieldSensorNodes = new PhetioGroup( 'electricFieldSensorNode', ( tandem, electricFieldSensor ) => {
+      const electricFieldSensorNodeGroup = new PhetioGroup( 'electricFieldSensorNode', ( tandem, electricFieldSensor ) => {
 
         // Create and add the view representation for this electric Field Sensor
         const electricFieldSensorNode = new ElectricFieldSensorNode(
@@ -302,23 +302,23 @@ define( require => {
         );
 
         return electricFieldSensorNode;
-      }, [ model.electricFieldSensors.memberPrototype ], {
-        tandem: tandem.createTandem( 'electricFieldSensorNodes' ),
+      }, [ model.electricFieldSensorGroup.memberPrototype ], {
+        tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
         phetioType: PhetioGroupIO( ReferenceIO )
       } );
 
       // Handle the comings and goings of charged electric field sensors.
-      model.electricFieldSensors.addMemberCreatedListener( addedElectricFieldSensor => {
-        const electricFieldSensorNode = electricFieldSensorNodes.createCorrespondingGroupMember(
+      model.electricFieldSensorGroup.addMemberCreatedListener( addedElectricFieldSensor => {
+        const electricFieldSensorNode = electricFieldSensorNodeGroup.createCorrespondingGroupMember(
           addedElectricFieldSensor, addedElectricFieldSensor );
 
         draggableElementsLayer.addChild( electricFieldSensorNode );
 
         // Add the removal listener for if and when this electric field sensor is removed from the model.
-        model.electricFieldSensors.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
+        model.electricFieldSensorGroup.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
           if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
-            electricFieldSensorNodes.disposeMember( electricFieldSensorNode );
-            model.electricFieldSensors.memberDisposedEmitter.removeListener( removalListener );
+            electricFieldSensorNodeGroup.disposeMember( electricFieldSensorNode );
+            model.electricFieldSensorGroup.memberDisposedEmitter.removeListener( removalListener );
           }
         } );
       } );

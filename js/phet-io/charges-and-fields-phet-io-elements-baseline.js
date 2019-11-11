@@ -79,7 +79,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles": {
+    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticleGroup": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": false,
@@ -92,7 +92,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PhetioGroupIO<ChargedParticleIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype": {
+    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticleGroup.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -105,7 +105,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ChargedParticleIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.isActiveProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticleGroup.prototype.isActiveProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -118,7 +118,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.isInteractiveProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticleGroup.prototype.isInteractiveProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -131,7 +131,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.isUserControlledProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticleGroup.prototype.isUserControlledProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -144,7 +144,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticles.prototype.positionProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.chargedParticleGroup.prototype.positionProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -170,7 +170,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<Bounds2IO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensorGroup": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": false,
@@ -183,7 +183,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PhetioGroupIO<ModelElementIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensorGroup.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -196,7 +196,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ModelElementIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.electricFieldProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensorGroup.prototype.electricFieldProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -209,7 +209,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<Vector2IO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.isActiveProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensorGroup.prototype.isActiveProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -222,7 +222,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.isInteractiveProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensorGroup.prototype.isInteractiveProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -235,7 +235,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.isUserControlledProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensorGroup.prototype.isUserControlledProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -248,7 +248,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensors.prototype.positionProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricFieldSensorGroup.prototype.positionProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -261,7 +261,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<Vector2IO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLineGroup": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": false,
@@ -274,7 +274,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PhetioGroupIO<ElectricPotentialLineIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.prototype": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLineGroup.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -287,7 +287,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ElectricPotentialLineIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLines.prototype.voltageLabelLocationProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLineGroup.prototype.voltageLabelLocationProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -482,7 +482,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<Bounds2IO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes": {
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodeGroup": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": false,
@@ -495,7 +495,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PhetioGroupIO<ReferenceIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype": {
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodeGroup.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -508,7 +508,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ReferenceIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.dragListener.dragAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodeGroup.prototype.dragListener.dragAction": {
       "phetioDocumentation": "Emits whenever a drag occurs with an EventIO argument. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -521,7 +521,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<EventIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.dragListener.pressAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodeGroup.prototype.dragListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -534,7 +534,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<EventIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodes.prototype.dragListener.releaseAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.chargedParticleNodeGroup.prototype.dragListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs. The arguments are:<br/><ol><li>event: NullableIO<EventIO></li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1353,7 +1353,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": false,
@@ -1366,7 +1366,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PhetioGroupIO<ReferenceIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1379,7 +1379,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ReferenceIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.arrowNode": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.arrowNode": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1392,7 +1392,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "NodeIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.arrowNode.opacityProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.arrowNode.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1405,7 +1405,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "NumberPropertyIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.arrowNode.pickableProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.arrowNode.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1418,7 +1418,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<NullableIO<BooleanIO>>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.arrowNode.visibleProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.arrowNode.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1431,7 +1431,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.directionLabel": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.directionLabel": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1444,7 +1444,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "TextIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.directionLabel.opacityProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.directionLabel.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1457,7 +1457,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "NumberPropertyIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.directionLabel.pickableProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.directionLabel.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1470,7 +1470,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<NullableIO<BooleanIO>>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.directionLabel.textProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.directionLabel.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1483,7 +1483,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<StringIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.directionLabel.visibleProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.directionLabel.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1496,7 +1496,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<BooleanIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.dragListener.dragAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.dragListener.dragAction": {
       "phetioDocumentation": "Emits whenever a drag occurs with an EventIO argument. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1509,7 +1509,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<EventIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.dragListener.pressAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.dragListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1522,7 +1522,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<EventIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.dragListener.releaseAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.dragListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs. The arguments are:<br/><ol><li>event: NullableIO<EventIO></li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1535,7 +1535,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<NullableIO<EventIO>>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.fieldStrengthLabel": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.fieldStrengthLabel": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1548,7 +1548,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "TextIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.fieldStrengthLabel.opacityProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.fieldStrengthLabel.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1561,7 +1561,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "NumberPropertyIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.fieldStrengthLabel.pickableProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.fieldStrengthLabel.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1574,7 +1574,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<NullableIO<BooleanIO>>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.fieldStrengthLabel.textProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.fieldStrengthLabel.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1587,7 +1587,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<StringIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodes.prototype.fieldStrengthLabel.visibleProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricFieldSensorNodeGroup.prototype.fieldStrengthLabel.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1613,7 +1613,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "NodeIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": false,
@@ -1626,7 +1626,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PhetioGroupIO<ReferenceIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1639,7 +1639,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ReferenceIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.dragListener.dragAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.dragListener.dragAction": {
       "phetioDocumentation": "Emits whenever a drag occurs with an EventIO argument. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1652,7 +1652,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<EventIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.dragListener.pressAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.dragListener.pressAction": {
       "phetioDocumentation": "Executes whenever a press occurs. The first argument when executing can be used to convey info about the Event. The arguments are:<br/><ol><li>event: EventIO</li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1665,7 +1665,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<EventIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.dragListener.releaseAction": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.dragListener.releaseAction": {
       "phetioDocumentation": "Executes whenever a release occurs. The arguments are:<br/><ol><li>event: NullableIO<EventIO></li></ol>",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1678,7 +1678,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ActionIO<NullableIO<EventIO>>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.voltageLabelText": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.voltageLabelText": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1691,7 +1691,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "TextIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.voltageLabelText.opacityProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.voltageLabelText.opacityProperty": {
       "phetioDocumentation": "Opacity of the parent NodeIO, between 0 (invisible) and 1 (fully visible)",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1704,7 +1704,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "NumberPropertyIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.voltageLabelText.pickableProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.voltageLabelText.pickableProperty": {
       "phetioDocumentation": "Sets whether the node will be pickable (and hence interactive), see the NodeIO documentation for more details",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1717,7 +1717,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<NullableIO<BooleanIO>>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.voltageLabelText.textProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.voltageLabelText.textProperty": {
       "phetioDocumentation": "Property for the displayed text",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,
@@ -1730,7 +1730,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "PropertyIO<StringIO>"
     },
-    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViews.prototype.voltageLabel.voltageLabelText.visibleProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.view.electricPotentialLinesNode.electricPotentialLineViewGroup.prototype.voltageLabel.voltageLabelText.visibleProperty": {
       "phetioDocumentation": "Controls whether the Node will be visible (and interactive), see the NodeIO documentation for more details.",
       "phetioDynamicElement": false,
       "phetioDynamicElementPrototype": true,

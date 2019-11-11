@@ -131,7 +131,7 @@ define( require => {
 
       // Observable array of all draggable electric charges
       // @public {Group.<ChargedParticle>}
-      this.chargedParticles = ChargedParticle.createGroup( tandem.createTandem( 'chargedParticles' ) );
+      this.chargedParticles = ChargedParticle.createGroup( tandem.createTandem( 'chargedParticleGroup' ) );
       const chargedParticles = this.chargedParticles;
 
       // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
@@ -142,15 +142,15 @@ define( require => {
       } );
 
       // @public - Observable array of all draggable electric field sensors
-      this.electricFieldSensors = new PhetioGroup( 'electricFieldSensor', ( tandem, initialPosition ) => {
+      this.electricFieldSensorGroup = new PhetioGroup( 'electricFieldSensorGroup', ( tandem, initialPosition ) => {
         const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
-        sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensors.disposeMember( sensor ) );
+        sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeMember( sensor ) );
         return sensor;
       }, [ null ], {
-        tandem: tandem.createTandem( 'electricFieldSensors' ),
+        tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
         phetioType: PhetioGroupIO( ModelElementIO )
       } ); // {ObservableArray.<ElectricFieldSensor>}
-      const electricFieldSensors = this.electricFieldSensors;
+      const electricFieldSensorGroup = this.electricFieldSensorGroup;
 
       // @public - electric potential sensor
       this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
@@ -163,7 +163,7 @@ define( require => {
 
       // Contains the model of electricPotential line, each element is an electricPotential line
       // @public read-only
-      this.electricPotentialLines = new PhetioGroup( 'electricPotentialLine', ( tandem, position ) => {
+      this.electricPotentialLineGroup = new PhetioGroup( 'electricPotentialLine', ( tandem, position ) => {
 
         assert && assert( position instanceof Vector2, 'position should be Vector2' );
         assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
@@ -171,7 +171,7 @@ define( require => {
         // for chaining and for PhET-iO restore state
         return new ElectricPotentialLine( this, position, tandem );
       }, [ this.electricPotentialSensor.positionProperty.get() ], {
-        tandem: tandem.createTandem( 'electricPotentialLines' ),
+        tandem: tandem.createTandem( 'electricPotentialLineGroup' ),
         phetioType: PhetioGroupIO( ElectricPotentialLineIO )
       } );
 
@@ -211,7 +211,7 @@ define( require => {
 
         const isActiveListener = isActive => {
 
-          // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLines
+          // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLineGroup
           this.clearElectricPotentialLines();
 
           if ( isActive ) {
@@ -291,7 +291,7 @@ define( require => {
       // AddItem Added Listener on the electric Field Sensors Observable Array
       //------------------------
 
-      this.electricFieldSensors.addMemberCreatedListener( addedElectricFieldSensor => {
+      this.electricFieldSensorGroup.addMemberCreatedListener( addedElectricFieldSensor => {
 
         // Listener for sensor position changes
         const positionListener = position => {
@@ -317,11 +317,11 @@ define( require => {
         addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
 
         // remove listeners when an electricFieldSensor is removed
-        electricFieldSensors.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
+        electricFieldSensorGroup.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
           if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
             addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
             addedElectricFieldSensor.positionProperty.unlink( positionListener );
-            electricFieldSensors.memberDisposedEmitter.removeListener( removalListener );
+            electricFieldSensorGroup.memberDisposedEmitter.removeListener( removalListener );
           }
         } );
       } );
@@ -349,8 +349,8 @@ define( require => {
 
       this.chargedParticles.clear(); // clear all the charges
       this.activeChargedParticles.clear(); // clear all the active charges
-      this.electricFieldSensors.clear(); // clear all the electric field sensors
-      this.electricPotentialLines.clear(); // clear the electricPotential 'lines'
+      this.electricFieldSensorGroup.clear(); // clear all the electric field sensors
+      this.electricPotentialLineGroup.clear(); // clear the electricPotential 'lines'
       this.electricPotentialSensor.reset(); // reposition the electricPotentialSensor
       this.measuringTape.reset();
 
@@ -382,7 +382,7 @@ define( require => {
      * @public
      */
     addElectricFieldSensor() {
-      return this.electricFieldSensors.createNextMember();
+      return this.electricFieldSensorGroup.createNextMember();
     }
 
     /**
@@ -465,8 +465,8 @@ define( require => {
      */
     updateAllSensors() {
       this.electricPotentialSensor.update();
-      for ( let i = 0; i < this.electricFieldSensors.length; i++ ) {
-        this.electricFieldSensors.array[ i ].update();
+      for ( let i = 0; i < this.electricFieldSensorGroup.length; i++ ) {
+        this.electricFieldSensorGroup.array[ i ].update();
       }
     }
 
@@ -597,7 +597,7 @@ define( require => {
       if ( isTooCloseToParticle ) {
         return;
       }
-      this.electricPotentialLines.createNextMember( position );
+      this.electricPotentialLineGroup.createNextMember( position );
     }
 
     /**
@@ -625,7 +625,7 @@ define( require => {
 
       // Clear lines without disrupting phet-io state
       if ( !isSettingState ) {
-        this.electricPotentialLines.clear();
+        this.electricPotentialLineGroup.clear();
       }
     }
 
@@ -645,7 +645,7 @@ define( require => {
 
     snapAllElements() {
       this.activeChargedParticles.forEach( chargedParticle => this.snapToGridLines( chargedParticle.positionProperty ) );
-      this.electricFieldSensors.array.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
+      this.electricFieldSensorGroup.array.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
 
       this.snapToGridLines( this.electricPotentialSensor.positionProperty );
       this.snapToGridLines( this.measuringTape.basePositionProperty );
