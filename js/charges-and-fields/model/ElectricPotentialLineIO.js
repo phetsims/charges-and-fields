@@ -33,16 +33,16 @@ define( require => {
      * @override
      */
     static fromStateObject( stateObject ) {
-      return {};
+      return { position: Vector2IO.fromStateObject( stateObject.position ) };
     }
 
     /**
      * @override
-     * @param {Object} stateObject
+     * @param {Object} state
      * @returns {Array.<*>}
      */
-    static stateObjectToArgs( stateObject ) {
-      return [ Vector2IO.fromStateObject( stateObject.position ) ];
+    static stateToArgs( state ) {
+      return [ state.position ];
     }
   }
 

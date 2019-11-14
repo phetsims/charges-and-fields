@@ -32,14 +32,26 @@ define( require => {
     }
 
     /**
-     * @override
-     * @param {Object} stateObject - see ChargedParticleIO.toStateObject
-     * @returns {Array.<*>}
+     * @param {Object} stateObject
+     * @returns {Object}
+     * @public
      */
-    static stateObjectToArgs( stateObject ) {
+    static fromStateObject( stateObject ) {
+      const state = ModelElementIO.fromStateObject( stateObject );
+      state.charge = stateObject.charge;
+      return state;
+    }
+
+    /**
+     * @override
+     * @param {Object} state - see ChargedParticleIO.toStateObject
+     * @returns {Array.<*>}
+     * @public
+     */
+    static stateToArgs( state ) {
 
       // Put charge first for the ChargedParticle Group create function api.
-      return [ stateObject.charge ].concat( ModelElementIO.stateObjectToArgs( stateObject ) );
+      return [ state.charge ].concat( ModelElementIO.stateToArgs( state ) );
     }
   }
 

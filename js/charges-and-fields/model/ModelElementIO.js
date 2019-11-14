@@ -42,11 +42,11 @@ define( require => {
 
     /**
      * @override
-     * @param {Object} stateObject - see ModelElementIO.toStateObject
+     * @param {Object} state - see ModelElementIO.toStateObject
      * @returns {Array.<*>}
      */
-    static stateObjectToArgs( stateObject ) {
-      return [ stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null ];
+    static stateToArgs( state ) {
+      return [ state.initialPosition ? state.initialPosition : null ];
     }
   }
 
