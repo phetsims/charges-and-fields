@@ -48,7 +48,7 @@ define( require => {
 
       const electricPotentialLineViewGroup = new PhetioGroup( 'electricPotentialLineView', ( tandem, electricPotentialLine ) => {
         return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
-      }, [ electricPotentialLineGroup.memberPrototype ], {
+      }, [ electricPotentialLineGroup.archetype ], {
         tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
         phetioType: PhetioGroupIO( ReferenceIO )
       } );

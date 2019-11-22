@@ -282,7 +282,7 @@ define( require => {
           model.chargesAndSensorsEnclosureBoundsProperty.get(),
           tandem
         );
-      }, [ model.chargedParticles.memberPrototype ], {
+      }, [ model.chargedParticles.archetype ], {
         tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
         phetioType: PhetioGroupIO( ReferenceIO )
       } );
@@ -302,7 +302,7 @@ define( require => {
         );
 
         return electricFieldSensorNode;
-      }, [ model.electricFieldSensorGroup.memberPrototype ], {
+      }, [ model.electricFieldSensorGroup.archetype ], {
         tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
         phetioType: PhetioGroupIO( ReferenceIO )
       } );
