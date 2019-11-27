@@ -45,7 +45,7 @@ define( require => {
      * @param {Object} state - see ModelElementIO.toStateObject
      * @returns {Array.<*>}
      */
-    static stateToArgs( state ) {
+    static stateToArgsForConstructor( state ) {
       return [ state.initialPosition ? state.initialPosition : null ];
     }
   }

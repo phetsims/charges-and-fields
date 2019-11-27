@@ -41,7 +41,7 @@ define( require => {
      * @param {Object} state
      * @returns {Array.<*>}
      */
-    static stateToArgs( state ) {
+    static stateToArgsForConstructor( state ) {
       return [ state.position ];
     }
   }

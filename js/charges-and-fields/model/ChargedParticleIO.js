@@ -48,10 +48,10 @@ define( require => {
      * @returns {Array.<*>}
      * @public
      */
-    static stateToArgs( state ) {
+    static stateToArgsForConstructor( state ) {
 
       // Put charge first for the ChargedParticle Group create function api.
-      return [ state.charge ].concat( ModelElementIO.stateToArgs( state ) );
+      return [ state.charge ].concat( ModelElementIO.stateToArgsForConstructor( state ) );
     }
   }
 
