@@ -146,7 +146,7 @@ define( require => {
         const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
         sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeMember( sensor ) );
         return sensor;
-      }, [ null ], {
+      }, [ Vector2.ZERO ], {
         tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
         phetioType: PhetioGroupIO( ModelElementIO )
       } ); // {ObservableArray.<ElectricFieldSensor>}
@@ -361,28 +361,31 @@ define( require => {
      * Adds a positive charge to the model, and returns it.
      * @public
      *
+     * @param {Vector2} initialPosition
      * @returns {ChargedParticle}
      */
-    addPositiveCharge() {
-      return this.chargedParticles.createNextMember( 1 );
+    addPositiveCharge( initialPosition ) {
+      return this.chargedParticles.createNextMember( 1, initialPosition );
     }
 
     /**
      * Adds a negative charge to the model, and returns it.
      * @public
      *
+     * @param {Vector2} initialPosition
      * @returns {ChargedParticle}
      */
-    addNegativeCharge() {
-      return this.chargedParticles.createNextMember( -1 );
+    addNegativeCharge( initialPosition ) {
+      return this.chargedParticles.createNextMember( -1, initialPosition );
     }
 
     /**
      * Adds an electric field sensor to the model, and returns it.
+     * @param {Vector2} initialPosition
      * @public
      */
-    addElectricFieldSensor() {
-      return this.electricFieldSensorGroup.createNextMember();
+    addElectricFieldSensor( initialPosition ) {
+      return this.electricFieldSensorGroup.createNextMember( initialPosition );
     }
 
     /**

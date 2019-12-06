@@ -92,9 +92,8 @@ define( require => {
             // Representation node location, so that when being "disposed" it will animate back towards the right place.
             const initialViewPosition = previewNode.getUniqueTrailTo( screenView ).getAncestorMatrix().timesVector2( Vector2.ZERO );
 
-            // Create the new model element.
-            const modelElement = createModelElement();
-            modelElement.initialPosition = modelViewTransform.viewToModelPosition( initialViewPosition );
+            // Create the new model element with its initial position.
+            const modelElement = createModelElement( modelViewTransform.viewToModelPosition( initialViewPosition ) );
             modelElement.isActiveProperty.set( false );
 
             // Hook up the initial drag to the corresponding view element
@@ -133,19 +132,19 @@ define( require => {
         children: [
           createDraggableItem( tandem.createTandem( 'positiveCharge' ),
             plusOneNanoCString,
-            () => model.addPositiveCharge(),
+            initialPosition => model.addPositiveCharge( initialPosition ),
             new ChargedParticleRepresentationNode( 1 ),
             positiveVisibleProperty ),
 
           createDraggableItem( tandem.createTandem( 'negativeCharge' ),
             minusOneNanoCString,
-            () => model.addNegativeCharge(),
+            initialPosition => model.addNegativeCharge( initialPosition ),
             new ChargedParticleRepresentationNode( -1 ),
             negativeVisibleProperty ),
 
           createDraggableItem( tandem.createTandem( 'electricFieldSensor' ),
             sensorsString,
-            () => model.addElectricFieldSensor(),
+            initialPosition => model.addElectricFieldSensor( initialPosition ),
 
             new ElectricFieldSensorRepresentationNode(),
             electricFieldSensorVisibleProperty )

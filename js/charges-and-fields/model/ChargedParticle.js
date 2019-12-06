@@ -16,21 +16,23 @@ define( require => {
   const PhetioGroup = require( 'TANDEM/PhetioGroup' );
   const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Tandem = require( 'TANDEM/Tandem' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   class ChargedParticle extends ModelElement {
 
     /**
      * @param {number} charge - (positive=+1 or negative=-1)
+     * @param {Vector2} initialPosition
      * @param {Object} options - required actually to supply tandem
      * @private - see createGroup
      */
-    constructor( charge, options ) {
+    constructor( charge, initialPosition, options ) {
       options = merge( {
         tandem: Tandem.required,
         phetioType: ChargedParticleIO,
         phetioDynamicElement: true
       }, options );
-      super( options );
+      super( initialPosition, options );
       assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
       // @public (read-only) {number} - a charge of one corresponds to one nano Coulomb
@@ -44,13 +46,12 @@ define( require => {
      */
     static createGroup( tandem ) {
       const myGroup = new PhetioGroup( 'particle', ( tandem, charge, initialPosition ) => {
-        const chargedParticle = new ChargedParticle( charge, {
-          tandem: tandem,
-          initialPosition: initialPosition
+        const chargedParticle = new ChargedParticle( charge, initialPosition, {
+          tandem: tandem
         } );
         chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeMember( chargedParticle ) );
         return chargedParticle;
-      }, [ 1, null ], {
+      }, [ 1, Vector2.ZERO ], {
         tandem: tandem,
         phetioType: PhetioGroupIO( ChargedParticleIO )
       } );

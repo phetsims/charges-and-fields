@@ -22,18 +22,18 @@ define( require => {
   class ModelElement extends PhetioObject {
 
     /**
+     * @param {Vector2} initialPosition - Where to animate the element when it is done being used.
      * @param {Object} options
      */
-    constructor( options ) {
+    constructor( initialPosition, options ) {
 
       options = merge( {
 
-        // {Vector2|null} Where to animate the element when it is done being used. This can be passed in when
-        // ModelElements' state is set with PhET-iO, see ModelElementIO
-        initialPosition: null,
         phetioType: ModelElementIO
       }, options );
       super( options );
+
+      assert && assert( initialPosition instanceof Vector2 );
 
       const tandem = options.tandem;// required
 
@@ -65,8 +65,8 @@ define( require => {
       // if not animating.  Public access is only for checking existence, not for manipulating or reading the tween attributes
       this.animationTween = null;
 
-      // @public
-      this.initialPosition = options.initialPosition; // {Vector2|null} Where to animate the element when it is done being used.
+      // @public {Vector2} Where to animate the element when it is done being used.
+      this.initialPosition = initialPosition;
 
       this.disposeEmitter = new Emitter();
 

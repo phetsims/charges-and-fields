@@ -20,14 +20,13 @@ define( require => {
     /**
      * @param {Function} computeElectricField - function( Vector2 ) : number, computes electric field at the given
      *                                          point in the model.
-     * @param {number|null} initialPosition - optionally pass a the initalPosition for the animating home from toolbox.
+     * @param {Vector2} initialPosition - optionally pass a the initalPosition for the animating home from toolbox.
      *                                        This is to support PhET-iO State.
      * @param {Tandem} tandem
      */
     constructor( computeElectricField, initialPosition, tandem ) {
 
-      super( {
-        initialPosition: initialPosition,
+      super( initialPosition, {
         tandem: tandem,
         phetioDynamicElement: true
       } );
