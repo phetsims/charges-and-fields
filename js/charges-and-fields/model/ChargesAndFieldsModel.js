@@ -142,7 +142,7 @@ define( require => {
       } );
 
       // @public - Observable array of all draggable electric field sensors
-      this.electricFieldSensorGroup = new PhetioGroup( 'electricFieldSensorGroup', ( tandem, initialPosition ) => {
+      this.electricFieldSensorGroup = new PhetioGroup( 'electricFieldSensor', ( tandem, initialPosition ) => {
         const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
         sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeMember( sensor ) );
         return sensor;
