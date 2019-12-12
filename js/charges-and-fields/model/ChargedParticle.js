@@ -28,7 +28,7 @@ define( require => {
      */
     constructor( charge, initialPosition, options ) {
       options = merge( {
-        tandem: Tandem.required,
+        tandem: Tandem.REQUIRED,
         phetioType: ChargedParticleIO,
         phetioDynamicElement: true
       }, options );
