@@ -41,20 +41,19 @@ define( require => {
 
     /**
      * @public
-     * @param tandem
+     * @param {Object} [options]
      * @returns {Group}
      */
-    static createGroup( tandem ) {
-      const myGroup = new PhetioGroup( 'particle', ( tandem, charge, initialPosition ) => {
+    static createGroup( options ) {
+      const myGroup = new PhetioGroup( ( tandem, charge, initialPosition ) => {
         const chargedParticle = new ChargedParticle( charge, initialPosition, {
           tandem: tandem
         } );
         chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeMember( chargedParticle ) );
         return chargedParticle;
-      }, [ 1, Vector2.ZERO ], {
-        tandem: tandem,
+      }, [ 1, Vector2.ZERO ], merge( {
         phetioType: PhetioGroupIO( ChargedParticleIO )
-      } );
+      }, options ) );
       return myGroup;
     }
   }

@@ -273,7 +273,7 @@ define( require => {
         } );
       } );
 
-      const chargedParticleNodeGroup = new PhetioGroup( 'chargedParticleNode', ( tandem, chargedParticle ) => {
+      const chargedParticleNodeGroup = new PhetioGroup( ( tandem, chargedParticle ) => {
         return new ChargedParticleNode(
           chargedParticle,
           snapToGridLines,
@@ -287,7 +287,7 @@ define( require => {
         phetioType: PhetioGroupIO( ReferenceIO )
       } );
 
-      const electricFieldSensorNodeGroup = new PhetioGroup( 'electricFieldSensorNode', ( tandem, electricFieldSensor ) => {
+      const electricFieldSensorNodeGroup = new PhetioGroup( ( tandem, electricFieldSensor ) => {
 
         // Create and add the view representation for this electric Field Sensor
         const electricFieldSensorNode = new ElectricFieldSensorNode(

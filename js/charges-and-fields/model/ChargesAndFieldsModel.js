@@ -131,7 +131,10 @@ define( require => {
 
       // Observable array of all draggable electric charges
       // @public {Group.<ChargedParticle>}
-      this.chargedParticles = ChargedParticle.createGroup( tandem.createTandem( 'chargedParticleGroup' ) );
+      this.chargedParticles = ChargedParticle.createGroup( {
+        tandem: tandem.createTandem( 'chargedParticleGroup' ),
+        phetioDynamicElementName: 'particle'
+      } );
       const chargedParticles = this.chargedParticles;
 
       // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
@@ -142,7 +145,7 @@ define( require => {
       } );
 
       // @public - Observable array of all draggable electric field sensors
-      this.electricFieldSensorGroup = new PhetioGroup( 'electricFieldSensor', ( tandem, initialPosition ) => {
+      this.electricFieldSensorGroup = new PhetioGroup( ( tandem, initialPosition ) => {
         const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
         sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeMember( sensor ) );
         return sensor;
@@ -163,7 +166,7 @@ define( require => {
 
       // Contains the model of electricPotential line, each element is an electricPotential line
       // @public read-only
-      this.electricPotentialLineGroup = new PhetioGroup( 'electricPotentialLine', ( tandem, position ) => {
+      this.electricPotentialLineGroup = new PhetioGroup( ( tandem, position ) => {
 
         assert && assert( position instanceof Vector2, 'position should be Vector2' );
         assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );

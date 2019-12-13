@@ -46,7 +46,7 @@ define( require => {
       const labelsNode = new Node();
       this.addChild( labelsNode );
 
-      const electricPotentialLineViewGroup = new PhetioGroup( 'electricPotentialLineView', ( tandem, electricPotentialLine ) => {
+      const electricPotentialLineViewGroup = new PhetioGroup( ( tandem, electricPotentialLine ) => {
         return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
       }, [ electricPotentialLineGroup.archetype ], {
         tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
