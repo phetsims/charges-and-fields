@@ -21,7 +21,7 @@ define( require => {
   const ChargesAndFieldsToolboxPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolboxPanel' );
   const ChargesAndSensorsPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsPanel' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const DotUtil = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
+  const DotUtils = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
   const ElectricFieldCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldCanvasNode' );
   const ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   const ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
@@ -48,7 +48,7 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  const linear = DotUtil.linear;
+  const linear = DotUtils.linear;
   const MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
   const MIN_ELECTRIC_POTENTIAL = -40; // electric potential at which color will saturate to minColor
 
