@@ -21,7 +21,7 @@ define( require => {
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Touch = require( 'SCENERY/input/Touch' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -134,7 +134,7 @@ define( require => {
           const fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
           fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
 
-          const angleString = Util.toFixed( Util.toDegrees( angle ), 1 );
+          const angleString = Utils.toFixed( Utils.toDegrees( angle ), 1 );
           directionLabel.text = isPlayAreaChargedProperty.get() ?
                                 StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
 
@@ -297,7 +297,7 @@ define( require => {
           decimalPlaces = options.maxDecimalPlaces;
         }
 
-        return Util.toFixed( number, decimalPlaces );
+        return Utils.toFixed( number, decimalPlaces );
       }
     }
 

@@ -28,7 +28,7 @@ define( require => {
   const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const pattern0Value1UnitsString = require( 'string!CHARGES_AND_FIELDS/pattern.0value.1units' );
@@ -135,8 +135,8 @@ define( require => {
 
       // a smaller electric potential should have more precision
       const electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
-                                           Util.toFixed( electricPotential, 2 ) :
-                                           Util.toFixed( electricPotential, 1 );
+                                           Utils.toFixed( electricPotential, 2 ) :
+                                           Utils.toFixed( electricPotential, 1 );
 
       // Create the voltage label for the electricPotential line
       const voltageLabelString = StringUtils.format( pattern0Value1UnitsString, electricPotentialValueString, voltageUnitString );

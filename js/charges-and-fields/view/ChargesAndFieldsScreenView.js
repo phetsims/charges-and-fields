@@ -21,7 +21,7 @@ define( require => {
   const ChargesAndFieldsToolboxPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsToolboxPanel' );
   const ChargesAndSensorsPanel = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndSensorsPanel' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const DotUtil = require( 'DOT/Util' ); // eslint-disable-line require-statement-match
+  const DotUtil = require( 'DOT/Utils' ); // eslint-disable-line require-statement-match
   const ElectricFieldCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldCanvasNode' );
   const ElectricFieldSensorNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldSensorNode' );
   const ElectricPotentialCanvasNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricPotentialCanvasNode' );
@@ -44,7 +44,7 @@ define( require => {
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'SCENERY/util/Util' );
+  const Utils = require( 'SCENERY/util/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -101,11 +101,11 @@ define( require => {
       this.model = model;
 
       // The mobile WebGL implementation will work with basic WebGL support
-      const allowMobileWebGL = Util.checkWebGLSupport() && phet.chipper.queryParameters.webgl;
+      const allowMobileWebGL = Utils.checkWebGLSupport() && phet.chipper.queryParameters.webgl;
 
       // The unlimited-particle implementation will work only with OES_texture_float where writing to
       // float textures is supported.
-      const allowWebGL = allowMobileWebGL && Util.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
+      const allowWebGL = allowMobileWebGL && Utils.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
                          ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
 
       let electricPotentialGridNode = null;

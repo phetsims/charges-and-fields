@@ -40,7 +40,7 @@ define( require => {
   const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const ShaderProgram = require( 'SCENERY/util/ShaderProgram' );
-  const Util = require( 'SCENERY/util/Util' );
+  const Utils = require( 'SCENERY/util/Utils' );
   const WebGLNode = require( 'SCENERY/nodes/WebGLNode' );
 
   // integer constants for our shader
@@ -255,8 +255,8 @@ define( require => {
       const gl = this.gl;
       const width = gl.canvas.width;
       const height = gl.canvas.height;
-      const powerOf2Width = Util.toPowerOf2( width );
-      const powerOf2Height = Util.toPowerOf2( height );
+      const powerOf2Width = Utils.toPowerOf2( width );
+      const powerOf2Height = Utils.toPowerOf2( height );
       this.canvasWidth = width;
       this.canvasHeight = height;
       this.textureWidth = powerOf2Width;

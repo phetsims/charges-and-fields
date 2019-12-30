@@ -30,7 +30,7 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
   const CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
@@ -309,7 +309,7 @@ define( require => {
           decimalPlaces = options.maxDecimalPlaces;
         }
 
-        return Util.toFixed( number, decimalPlaces );
+        return Utils.toFixed( number, decimalPlaces );
       }
 
       this.disposeElectricPotentialSensorNode = () => {

@@ -15,7 +15,7 @@ define( require => {
   const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
   const ChargeTracker = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargeTracker' );
   const ElectricFieldArrowCanvas = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ElectricFieldArrowCanvas' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // Spacing in the model coordinate frame.
@@ -152,7 +152,7 @@ define( require => {
         const electricField = this.electricField[ i ];
 
         context.save();
-        context.globalAlpha = Util.clamp( electricField.magnitude / maxMagnitude, 0, 1 );
+        context.globalAlpha = Utils.clamp( electricField.magnitude / maxMagnitude, 0, 1 );
         if ( isDirectionOnly && electricField.magnitude > MIN_VISIBLE_ELECTRIC_FIELD_MAG ) {
           context.globalAlpha = 1.0;
         }
