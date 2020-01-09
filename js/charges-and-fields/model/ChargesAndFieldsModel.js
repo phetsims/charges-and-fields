@@ -131,8 +131,15 @@ define( require => {
 
       // Observable array of all draggable electric charges
       // @public {Group.<ChargedParticle>}
-      this.chargedParticles = ChargedParticle.createGroup( {
+      this.chargedParticles = new PhetioGroup( ( tandem, charge, initialPosition ) => {
+        const chargedParticle = new ChargedParticle( charge, initialPosition, {
+          tandem: tandem
+        } );
+        chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.disposeMember( chargedParticle ) );
+        return chargedParticle;
+      }, [ 1, Vector2.ZERO ], {
         tandem: tandem.createTandem( 'chargedParticleGroup' ),
+        phetioType: PhetioGroupIO( ChargedParticleIO ),
         phetioDynamicElementName: 'particle'
       } );
       const chargedParticles = this.chargedParticles;

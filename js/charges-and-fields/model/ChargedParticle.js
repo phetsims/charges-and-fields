@@ -13,10 +13,7 @@ define( require => {
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const merge = require( 'PHET_CORE/merge' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
-  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
-  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Vector2 = require( 'DOT/Vector2' );
 
   class ChargedParticle extends ModelElement {
 
@@ -37,24 +34,6 @@ define( require => {
 
       // @public (read-only) {number} - a charge of one corresponds to one nano Coulomb
       this.charge = charge;
-    }
-
-    /**
-     * @public
-     * @param {Object} [options]
-     * @returns {Group}
-     */
-    static createGroup( options ) {
-      const myGroup = new PhetioGroup( ( tandem, charge, initialPosition ) => {
-        const chargedParticle = new ChargedParticle( charge, initialPosition, {
-          tandem: tandem
-        } );
-        chargedParticle.returnedToOriginEmitter.addListener( () => myGroup.disposeMember( chargedParticle ) );
-        return chargedParticle;
-      }, [ 1, Vector2.ZERO ], merge( {
-        phetioType: PhetioGroupIO( ChargedParticleIO )
-      }, options ) );
-      return myGroup;
     }
   }
 
