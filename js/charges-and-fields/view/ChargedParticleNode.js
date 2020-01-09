@@ -57,12 +57,12 @@ define( require => {
 
       this.movableDragHandler = new DragListener( {
         applyOffset: false,
-        locationProperty: chargedParticle.positionProperty,
+        positionProperty: chargedParticle.positionProperty,
         tandem: tandem.createTandem( 'dragListener' ),
         dragBoundsProperty: availableModelBoundsProperty,
         transform: modelViewTransform,
         canStartPress: () => !chargedParticle.animationTween,
-        offsetLocation: ( point, listener ) => {
+        offsetPosition: ( point, listener ) => {
           return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
         },
         start: ( event, listener ) => {

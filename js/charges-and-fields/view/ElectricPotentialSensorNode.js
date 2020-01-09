@@ -240,7 +240,7 @@ define( require => {
 
       // Should be added as a listener by our parent when the time is right
       this.movableDragHandler = new DragListener( {
-        locationProperty: electricPotentialSensor.positionProperty,
+        positionProperty: electricPotentialSensor.positionProperty,
         tandem: tandem.createTandem( 'dragListener' ),
         dragBoundsProperty: availableModelBoundsProperty,
         transform: modelViewTransform,

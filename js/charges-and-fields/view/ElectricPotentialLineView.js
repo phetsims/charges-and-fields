@@ -122,7 +122,7 @@ define( require => {
 
       const movableDragHandler = new DragListener( {
         applyOffset: false,
-        locationProperty: electricPotentialLine.voltageLabelLocationProperty,
+        positionProperty: electricPotentialLine.voltageLabelLocationProperty,
         tandem: tandem.createTandem( 'dragListener' ),
         transform: modelViewTransform,
         start: event => {
