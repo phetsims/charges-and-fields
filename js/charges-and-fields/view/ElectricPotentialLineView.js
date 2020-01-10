@@ -1,4 +1,4 @@
-// Copyright 2015-2019, University of Colorado Boulder
+// Copyright 2015-2020, University of Colorado Boulder
 
 /**
  * View object, with a variety of Nodes stored on it to be added by the parent container. Responsible for the drawing
