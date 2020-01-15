@@ -178,7 +178,8 @@ define( require => {
 
         // do not reset the availableDragBoundsProperty
         listener: () => model.reset(),
-        tandem: tandem.createTandem( 'resetAllButton' )
+        tandem: tandem.createTandem( 'resetAllButton' ),
+        phetioRestoreScreenStateOnReset: true // support screen resetting back to PhET-iO state.
       } );
 
       // Create a measuring tape (set to invisible initially)
