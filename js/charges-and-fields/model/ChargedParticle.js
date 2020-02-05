@@ -12,25 +12,27 @@ define( require => {
   const ChargedParticleIO = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargedParticleIO' );
   const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
   const merge = require( 'PHET_CORE/merge' );
+  const required = require( 'PHET_CORE/required' );
   const ModelElement = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ModelElement' );
   const Tandem = require( 'TANDEM/Tandem' );
 
   class ChargedParticle extends ModelElement {
 
-    // TODO: Should the required options be renamed to 'config'?
     /**
      * @param {number} charge - (positive=+1 or negative=-1)
      * @param {Vector2} initialPosition
-     * @param {Object} [options] - required actually to supply tandem
+     * @param {Object} config - required actually to supply tandem
      * @private - see createGroup
      */
-    constructor( charge, initialPosition, options ) {
-      options = merge( {
-        tandem: Tandem.REQUIRED,
+    constructor( charge, initialPosition, config ) {
+      config = merge( {
+
+        // {Tandem}
+        tandem: required( Tandem.REQUIRED ),
         phetioType: ChargedParticleIO,
         phetioDynamicElement: true
-      }, options );
-      super( initialPosition, options );
+      }, config );
+      super( initialPosition, config );
       assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
       // @public (read-only) {number} - a charge of one corresponds to one nano Coulomb
