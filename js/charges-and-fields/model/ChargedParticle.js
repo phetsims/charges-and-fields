@@ -17,10 +17,11 @@ define( require => {
 
   class ChargedParticle extends ModelElement {
 
+    // TODO: Should the required options be renamed to 'config'?
     /**
      * @param {number} charge - (positive=+1 or negative=-1)
      * @param {Vector2} initialPosition
-     * @param {Object} options - required actually to supply tandem
+     * @param {Object} [options] - required actually to supply tandem
      * @private - see createGroup
      */
     constructor( charge, initialPosition, options ) {

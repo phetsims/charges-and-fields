@@ -23,7 +23,7 @@ define( require => {
 
     /**
      * @param {Vector2} initialPosition - Where to animate the element when it is done being used.
-     * @param {Object} options
+     * @param {Object} [options]
      */
     constructor( initialPosition, options ) {
 
