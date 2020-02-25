@@ -129,8 +129,7 @@ define( require => {
       // @public read-only
       this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
-      // Observable array of all draggable electric charges
-      // @public {PhetioGroup.<ChargedParticle>}
+      // @public {PhetioGroup.<ChargedParticle>} group of draggable electric charges
       this.chargedParticles = new PhetioGroup( ( tandem, charge, initialPosition ) => {
         const chargedParticle = new ChargedParticle( charge, initialPosition, {
           tandem: tandem
@@ -151,7 +150,7 @@ define( require => {
         phetioType: PropertyIO( ChargedParticleIO )
       } );
 
-      // @public - Observable array of all draggable electric field sensors
+      // @public {PhetioGroup.<ElectricFieldSensor>} Observable group of electric field sensors
       this.electricFieldSensorGroup = new PhetioGroup( ( tandem, initialPosition ) => {
         const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
         sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeMember( sensor ) );
@@ -171,8 +170,7 @@ define( require => {
       // @public - emits whenever the charge model changes, i.e. charges added/removed/moved
       this.chargeConfigurationChangedEmitter = new Emitter();
 
-      // Contains the model of electricPotential line, each element is an electricPotential line
-      // @public read-only
+      // @public read-only {PhetioGroup.<ElectricPotentialLine>} group of electric potential lines
       this.electricPotentialLineGroup = new PhetioGroup( ( tandem, position ) => {
 
         assert && assert( position instanceof Vector2, 'position should be Vector2' );
