@@ -130,7 +130,7 @@ define( require => {
       this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
       // Observable array of all draggable electric charges
-      // @public {Group.<ChargedParticle>}
+      // @public {PhetioGroup.<ChargedParticle>}
       this.chargedParticles = new PhetioGroup( ( tandem, charge, initialPosition ) => {
         const chargedParticle = new ChargedParticle( charge, initialPosition, {
           tandem: tandem
