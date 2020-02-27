@@ -5,116 +5,113 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ChargedParticleRepresentationNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargedParticleRepresentationNode' );
-  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const ChargesAndFieldsConstants = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsConstants' );
-  const DragListener = require( 'SCENERY/listeners/DragListener' );
-  const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
-  const Touch = require( 'SCENERY/input/Touch' );
-  const Vector2 = require( 'DOT/Vector2' );
+import Vector2 from '../../../../dot/js/Vector2.js';
+import Touch from '../../../../scenery/js/input/Touch.js';
+import DragListener from '../../../../scenery/js/listeners/DragListener.js';
+import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import chargesAndFields from '../../chargesAndFields.js';
+import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
 
-  // constants
-  const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
+// constants
+const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
-  class ChargedParticleNode extends ChargedParticleRepresentationNode {
+class ChargedParticleNode extends ChargedParticleRepresentationNode {
 
-    /**
-     * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
-     * @param {ChargedParticle} chargedParticle - the model of the charged particle
-     * @param {function} snapToGridLines - function( {Property.<Vector2>})
-     * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
-     * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
-     * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
-     * @param {Tandem} tandem
-     */
-    constructor( chargedParticle,
-                 snapToGridLines,
-                 modelViewTransform,
-                 availableModelBoundsProperty,
-                 enclosureBounds,
-                 tandem ) {
+  /**
+   * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
+   * @param {ChargedParticle} chargedParticle - the model of the charged particle
+   * @param {function} snapToGridLines - function( {Property.<Vector2>})
+   * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
+   * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
+   * @param {Tandem} tandem
+   */
+  constructor( chargedParticle,
+               snapToGridLines,
+               modelViewTransform,
+               availableModelBoundsProperty,
+               enclosureBounds,
+               tandem ) {
 
-      super( chargedParticle.charge, {
-        tandem: tandem,
-        phetioDynamicElement: true,
-        phetioType: ReferenceIO
-      } );
+    super( chargedParticle.charge, {
+      tandem: tandem,
+      phetioDynamicElement: true,
+      phetioType: ReferenceIO
+    } );
 
-      this.modelElement = chargedParticle;
+    this.modelElement = chargedParticle;
 
-      // Set up the mouse areas for this node so that this can still be grabbed when invisible.
-      this.touchArea = this.localBounds.dilated( 10 );
+    // Set up the mouse areas for this node so that this can still be grabbed when invisible.
+    this.touchArea = this.localBounds.dilated( 10 );
 
-      // Register for synchronization with model.
-      const positionListener = position => {
-        this.translation = modelViewTransform.modelToViewPosition( position );
-      };
-      chargedParticle.positionProperty.link( positionListener );
+    // Register for synchronization with model.
+    const positionListener = position => {
+      this.translation = modelViewTransform.modelToViewPosition( position );
+    };
+    chargedParticle.positionProperty.link( positionListener );
 
-      this.movableDragHandler = new DragListener( {
-        applyOffset: false,
-        positionProperty: chargedParticle.positionProperty,
-        tandem: tandem.createTandem( 'dragListener' ),
-        dragBoundsProperty: availableModelBoundsProperty,
-        transform: modelViewTransform,
-        canStartPress: () => !chargedParticle.animationTween,
-        offsetPosition: ( point, listener ) => {
-          return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
-        },
-        start: ( event, listener ) => {
-          // Move the chargedParticle to the front of this layer when grabbed by the user.
-          this.moveToFront();
-        },
-        end: ( event, listener ) => {
-          snapToGridLines( chargedParticle.positionProperty );
+    this.movableDragHandler = new DragListener( {
+      applyOffset: false,
+      positionProperty: chargedParticle.positionProperty,
+      tandem: tandem.createTandem( 'dragListener' ),
+      dragBoundsProperty: availableModelBoundsProperty,
+      transform: modelViewTransform,
+      canStartPress: () => !chargedParticle.animationTween,
+      offsetPosition: ( point, listener ) => {
+        return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
+      },
+      start: ( event, listener ) => {
+        // Move the chargedParticle to the front of this layer when grabbed by the user.
+        this.moveToFront();
+      },
+      end: ( event, listener ) => {
+        snapToGridLines( chargedParticle.positionProperty );
 
-          if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {
-            chargedParticle.isActiveProperty.set( true );
-          }
+        if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {
+          chargedParticle.isActiveProperty.set( true );
         }
-      } );
-      this.movableDragHandler.isUserControlledProperty.link( controlled => {
-        chargedParticle.isUserControlledProperty.value = controlled;
-      } );
+      }
+    } );
+    this.movableDragHandler.isUserControlledProperty.link( controlled => {
+      chargedParticle.isUserControlledProperty.value = controlled;
+    } );
 
-      // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
-      let isDragListenerAttached = false;
+    // Conditionally hook up the input handling (and cursor) when the charged particle is interactive.
+    let isDragListenerAttached = false;
 
-      const isInteractiveListener = () => {
+    const isInteractiveListener = () => {
 
-        const isInteractive = chargedParticle.isInteractiveProperty.get();
+      const isInteractive = chargedParticle.isInteractiveProperty.get();
 
-        if ( isDragListenerAttached !== isInteractive ) {
-          if ( isInteractive ) {
-            this.cursor = 'pointer';
-            this.addInputListener( this.movableDragHandler );
-          }
-          else {
-            this.cursor = null;
-            this.removeInputListener( this.movableDragHandler );
-          }
-
-          isDragListenerAttached = isInteractive;
+      if ( isDragListenerAttached !== isInteractive ) {
+        if ( isInteractive ) {
+          this.cursor = 'pointer';
+          this.addInputListener( this.movableDragHandler );
         }
-      };
-      chargedParticle.isInteractiveProperty.link( isInteractiveListener );
+        else {
+          this.cursor = null;
+          this.removeInputListener( this.movableDragHandler );
+        }
 
-      this.disposeChargedParticleNode = () => {
-        chargedParticle.positionProperty.unlink( positionListener );
-        chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
-        this.movableDragHandler.dispose();
-      };
-    }
+        isDragListenerAttached = isInteractive;
+      }
+    };
+    chargedParticle.isInteractiveProperty.link( isInteractiveListener );
 
-    dispose() {
-      this.disposeChargedParticleNode();
-      super.dispose();
-    }
+    this.disposeChargedParticleNode = () => {
+      chargedParticle.positionProperty.unlink( positionListener );
+      chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
+      this.movableDragHandler.dispose();
+    };
   }
 
-  return chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );
-} );
+  dispose() {
+    this.disposeChargedParticleNode();
+    super.dispose();
+  }
+}
+
+chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );
+export default ChargedParticleNode;

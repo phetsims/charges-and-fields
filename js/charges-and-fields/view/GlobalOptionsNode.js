@@ -5,36 +5,33 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  const OptionsDialog = require( 'JOIST/OptionsDialog' );
-  const ProjectorModeCheckbox = require( 'JOIST/ProjectorModeCheckbox' );
+import OptionsDialog from '../../../../joist/js/OptionsDialog.js';
+import ProjectorModeCheckbox from '../../../../joist/js/ProjectorModeCheckbox.js';
+import LayoutBox from '../../../../scenery/js/nodes/LayoutBox.js';
+import chargesAndFields from '../../chargesAndFields.js';
+import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
 
-  class GlobalOptionsNode extends LayoutBox {
+class GlobalOptionsNode extends LayoutBox {
 
-    /**
-     * @param {Tandem} tandem
-     */
-    constructor( tandem ) {
+  /**
+   * @param {Tandem} tandem
+   */
+  constructor( tandem ) {
 
-      const projectorCheckbox = new ProjectorModeCheckbox( ChargesAndFieldsColorProfile, {
-        tandem: tandem.createTandem( 'projectorCheckbox' ),
-        phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
-      } );
+    const projectorCheckbox = new ProjectorModeCheckbox( ChargesAndFieldsColorProfile, {
+      tandem: tandem.createTandem( 'projectorCheckbox' ),
+      phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
+    } );
 
-      super( {
-        children: [ projectorCheckbox ],
-        spacing: OptionsDialog.DEFAULT_SPACING,
-        align: 'left',
-        tandem: tandem
-      } );
-    }
+    super( {
+      children: [ projectorCheckbox ],
+      spacing: OptionsDialog.DEFAULT_SPACING,
+      align: 'left',
+      tandem: tandem
+    } );
   }
+}
 
-  return chargesAndFields.register( 'GlobalOptionsNode', GlobalOptionsNode );
-} );
+chargesAndFields.register( 'GlobalOptionsNode', GlobalOptionsNode );
+export default GlobalOptionsNode;

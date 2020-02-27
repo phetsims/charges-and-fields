@@ -3,33 +3,30 @@
 /**
  * Charges and Fields main Screen
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const ChargesAndFieldsColorProfile = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsColorProfile' );
-  const ChargesAndFieldsModel = require( 'CHARGES_AND_FIELDS/charges-and-fields/model/ChargesAndFieldsModel' );
-  const ChargesAndFieldsScreenView = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/ChargesAndFieldsScreenView' );
-  const Screen = require( 'JOIST/Screen' );
+import Screen from '../../../joist/js/Screen.js';
+import chargesAndFields from '../chargesAndFields.js';
+import ChargesAndFieldsColorProfile from './ChargesAndFieldsColorProfile.js';
+import ChargesAndFieldsModel from './model/ChargesAndFieldsModel.js';
+import ChargesAndFieldsScreenView from './view/ChargesAndFieldsScreenView.js';
 
-  class ChargesAndFieldsScreen extends Screen {
+class ChargesAndFieldsScreen extends Screen {
 
-    /**
-     * @param {Tandem} tandem
-     */
-    constructor( tandem ) {
-      const options = {
-        backgroundColorProperty: ChargesAndFieldsColorProfile.backgroundProperty,
-        tandem: tandem
-      };
+  /**
+   * @param {Tandem} tandem
+   */
+  constructor( tandem ) {
+    const options = {
+      backgroundColorProperty: ChargesAndFieldsColorProfile.backgroundProperty,
+      tandem: tandem
+    };
 
-      super(
-        () => new ChargesAndFieldsModel( tandem.createTandem( 'model' ) ),
-        model => new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) ),
-        options );
-    }
+    super(
+      () => new ChargesAndFieldsModel( tandem.createTandem( 'model' ) ),
+      model => new ChargesAndFieldsScreenView( model, tandem.createTandem( 'view' ) ),
+      options );
   }
+}
 
-  return chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
-} );
+chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
+export default ChargesAndFieldsScreen;

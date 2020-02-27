@@ -5,38 +5,33 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const Image = require( 'SCENERY/nodes/Image' );
-  const merge = require( 'PHET_CORE/merge' );
-  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+import merge from '../../../../phet-core/js/merge.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
+import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
+import pencilImage from '../../../mipmaps/pencil_png.js';
+import chargesAndFields from '../../chargesAndFields.js';
 
-  // images
-  const pencilImage = require( 'mipmap!CHARGES_AND_FIELDS/pencil.png,level=5' );
+class PencilButton extends RectangularPushButton {
 
-  class PencilButton extends RectangularPushButton {
+  /**
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( tandem, options ) {
+    options = merge( {
+      iconWidth: 26,
+      iconHeight: 20,
+      tandem: tandem
+    }, options );
 
-    /**
-     * @param {Tandem} tandem
-     * @param {Object} [options]
-     */
-    constructor( tandem, options ) {
-      options = merge( {
-        iconWidth: 26,
-        iconHeight: 20,
-        tandem: tandem
-      }, options );
+    // pencil icon
+    options.content = new Image( pencilImage, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
+    options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
-      // pencil icon
-      options.content = new Image( pencilImage, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
-      options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
-
-      super( options );
-    }
+    super( options );
   }
+}
 
-  return chargesAndFields.register( 'PencilButton', PencilButton );
-} );
+chargesAndFields.register( 'PencilButton', PencilButton );
+export default PencilButton;

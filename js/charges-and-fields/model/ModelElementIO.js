@@ -6,55 +6,51 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const validate = require( 'AXON/validate' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
+import validate from '../../../../axon/js/validate.js';
+import Vector2IO from '../../../../dot/js/Vector2IO.js';
+import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
+import chargesAndFields from '../../chargesAndFields.js';
 
-  class ModelElementIO extends ObjectIO {
+class ModelElementIO extends ObjectIO {
 
-    /**
-     * @param {ModelElement} modelElement
-     * @returns {Object}
-     * @override
-     */
-    static toStateObject( modelElement ) {
-      validate( modelElement, this.validator );
-      return {
-        initialPosition: modelElement.initialPosition ? Vector2IO.toStateObject( modelElement.initialPosition ) : null
-      };
-    }
-
-    /**
-     * @param {Object} stateObject
-     * @returns {Object}
-     * @override
-     */
-    static fromStateObject( stateObject ) {
-      return {
-        initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
-      };
-    }
-
-    /**
-     * @override
-     * @param {Object} state - see ModelElementIO.toStateObject
-     * @returns {Array.<*>}
-     */
-    static stateToArgsForConstructor( state ) {
-      return [ state.initialPosition ? state.initialPosition : null ];
-    }
+  /**
+   * @param {ModelElement} modelElement
+   * @returns {Object}
+   * @override
+   */
+  static toStateObject( modelElement ) {
+    validate( modelElement, this.validator );
+    return {
+      initialPosition: modelElement.initialPosition ? Vector2IO.toStateObject( modelElement.initialPosition ) : null
+    };
   }
 
-  ModelElementIO.validator = { isValidValue: e => e instanceof phet.chargesAndFields.ModelElement };
-  ModelElementIO.documentation = 'A Model Element';
-  ModelElementIO.typeName = 'ModelElementIO';
-  ObjectIO.validateSubtype( ModelElementIO );
+  /**
+   * @param {Object} stateObject
+   * @returns {Object}
+   * @override
+   */
+  static fromStateObject( stateObject ) {
+    return {
+      initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
+    };
+  }
 
-  return chargesAndFields.register( 'ModelElementIO', ModelElementIO );
-} );
+  /**
+   * @override
+   * @param {Object} state - see ModelElementIO.toStateObject
+   * @returns {Array.<*>}
+   */
+  static stateToArgsForConstructor( state ) {
+    return [ state.initialPosition ? state.initialPosition : null ];
+  }
+}
 
+ModelElementIO.validator = { isValidValue: e => e instanceof phet.chargesAndFields.ModelElement };
+ModelElementIO.documentation = 'A Model Element';
+ModelElementIO.typeName = 'ModelElementIO';
+ObjectIO.validateSubtype( ModelElementIO );
+
+chargesAndFields.register( 'ModelElementIO', ModelElementIO );
+export default ModelElementIO;

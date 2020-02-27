@@ -5,10 +5,7 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  const Namespace = require( 'PHET_CORE/Namespace' );
+import Namespace from '../../phet-core/js/Namespace.js';
 
-  return new Namespace( 'chargesAndFields' );
-} );
+export default new Namespace( 'chargesAndFields' );

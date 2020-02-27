@@ -5,39 +5,34 @@
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ChargesAndFieldsScreen = require( 'CHARGES_AND_FIELDS/charges-and-fields/ChargesAndFieldsScreen' );
-  const GlobalOptionsNode = require( 'CHARGES_AND_FIELDS/charges-and-fields/view/GlobalOptionsNode' );
-  const Sim = require( 'JOIST/Sim' );
-  const SimLauncher = require( 'JOIST/SimLauncher' );
-  const Tandem = require( 'TANDEM/Tandem' );
+import Sim from '../../joist/js/Sim.js';
+import SimLauncher from '../../joist/js/SimLauncher.js';
+import Tandem from '../../tandem/js/Tandem.js';
+import chargesAndFieldsStrings from './charges-and-fields-strings.js';
+import ChargesAndFieldsScreen from './charges-and-fields/ChargesAndFieldsScreen.js';
+import GlobalOptionsNode from './charges-and-fields/view/GlobalOptionsNode.js';
 
-  // strings
-  const chargesAndFieldsTitleString = require( 'string!CHARGES_AND_FIELDS/charges-and-fields.title' );
+const chargesAndFieldsTitleString = chargesAndFieldsStrings[ 'charges-and-fields' ].title;
 
-  const tandem = Tandem.ROOT;
+const tandem = Tandem.ROOT;
 
-  const simOptions = {
-    credits: {
+const simOptions = {
+  credits: {
 
-      // all credits fields are optional
-      leadDesign: 'Michael Dubson, Amy Rouinfar',
-      softwareDevelopment: 'Andrew Adare, Michael Dubson, Jonathan Olson, Martin Veillette',
-      team: 'Ariel Paul, Kathy Perkins',
-      qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
-    },
-    createOptionsDialogContent: tandem => new GlobalOptionsNode( tandem ),
-    webgl: true
-  };
+    // all credits fields are optional
+    leadDesign: 'Michael Dubson, Amy Rouinfar',
+    softwareDevelopment: 'Andrew Adare, Michael Dubson, Jonathan Olson, Martin Veillette',
+    team: 'Ariel Paul, Kathy Perkins',
+    qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
+  },
+  createOptionsDialogContent: tandem => new GlobalOptionsNode( tandem ),
+  webgl: true
+};
 
-  SimLauncher.launch( () => {
-    const sim = new Sim( chargesAndFieldsTitleString, [
-      new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) )
-    ], simOptions );
-    sim.start();
-  } );
+SimLauncher.launch( () => {
+  const sim = new Sim( chargesAndFieldsTitleString, [
+    new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) )
+  ], simOptions );
+  sim.start();
 } );
-

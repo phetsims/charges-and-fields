@@ -5,36 +5,33 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ArrowShape = require( 'SCENERY_PHET/ArrowShape' );
-  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
+import chargesAndFields from '../../chargesAndFields.js';
 
-  class ElectricFieldArrowShape extends ArrowShape {
+class ElectricFieldArrowShape extends ArrowShape {
 
-    /**
-     * Drawn pointing to the right, with the origin at the center hole
-     */
-    constructor() {
-      const ratio = 2 / 5;
-      const circleRadius = 2;
-      const arrowLength = 40;
+  /**
+   * Drawn pointing to the right, with the origin at the center hole
+   */
+  constructor() {
+    const ratio = 2 / 5;
+    const circleRadius = 2;
+    const arrowLength = 40;
 
-      // Main body of the arrow
-      super( -ratio * arrowLength, 0, ( 1 - ratio ) * arrowLength, 0, {
-        headHeight: 10,
-        headWidth: 16,
-        tailWidth: 8
-      } );
+    // Main body of the arrow
+    super( -ratio * arrowLength, 0, ( 1 - ratio ) * arrowLength, 0, {
+      headHeight: 10,
+      headWidth: 16,
+      tailWidth: 8
+    } );
 
-      // Cut a hole in the middle
-      this.moveTo( circleRadius, 0 );
-      this.arc( 0, 0, circleRadius, 0, 2 * Math.PI, false );
-      this.close();
-    }
+    // Cut a hole in the middle
+    this.moveTo( circleRadius, 0 );
+    this.arc( 0, 0, circleRadius, 0, 2 * Math.PI, false );
+    this.close();
   }
+}
 
-  return chargesAndFields.register( 'ElectricFieldArrowShape', ElectricFieldArrowShape );
-} );
+chargesAndFields.register( 'ElectricFieldArrowShape', ElectricFieldArrowShape );
+export default ElectricFieldArrowShape;

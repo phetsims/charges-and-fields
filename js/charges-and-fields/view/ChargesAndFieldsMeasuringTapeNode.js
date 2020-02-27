@@ -5,54 +5,51 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
-  const MeasuringTapeNode = require( 'SCENERY_PHET/MeasuringTapeNode' );
-  const Property = require( 'AXON/Property' );
+import Property from '../../../../axon/js/Property.js';
+import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
+import chargesAndFieldsStrings from '../../charges-and-fields-strings.js';
+import chargesAndFields from '../../chargesAndFields.js';
 
-  // strings
-  const centimeterUnitString = require( 'string!CHARGES_AND_FIELDS/centimeterUnit' );
+const centimeterUnitString = chargesAndFieldsStrings.centimeterUnit;
 
-  class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
+class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
 
-    /**
-     * @param {MeasuringTape} measuringTape
-     * @param {function} snapToGridLines - function({Property.<Vector2>})
-     * @param {ModelViewTransform2} modelViewTransform
-     * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
-     * @param {Tandem} tandem
-     */
-    constructor( measuringTape,
-                 snapToGridLines,
-                 modelViewTransform,
-                 availableModelBoundsProperty,
-                 tandem ) {
+  /**
+   * @param {MeasuringTape} measuringTape
+   * @param {function} snapToGridLines - function({Property.<Vector2>})
+   * @param {ModelViewTransform2} modelViewTransform
+   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
+   * @param {Tandem} tandem
+   */
+  constructor( measuringTape,
+               snapToGridLines,
+               modelViewTransform,
+               availableModelBoundsProperty,
+               tandem ) {
 
-      super( new Property( {
-        name: centimeterUnitString,
-        multiplier: 100
-      } ), measuringTape.isActiveProperty, {
-        tandem: tandem,
-        dragBounds: availableModelBoundsProperty.get(),
-        modelViewTransform: modelViewTransform,
-        basePositionProperty: measuringTape.basePositionProperty,
-        tipPositionProperty: measuringTape.tipPositionProperty,
-        textBackgroundColor: 'rgba( 0, 0, 0, 0.65 )'
-      } );
+    super( new Property( {
+      name: centimeterUnitString,
+      multiplier: 100
+    } ), measuringTape.isActiveProperty, {
+      tandem: tandem,
+      dragBounds: availableModelBoundsProperty.get(),
+      modelViewTransform: modelViewTransform,
+      basePositionProperty: measuringTape.basePositionProperty,
+      tipPositionProperty: measuringTape.tipPositionProperty,
+      textBackgroundColor: 'rgba( 0, 0, 0, 0.65 )'
+    } );
 
-      this.measuringTape = measuringTape;
+    this.measuringTape = measuringTape;
 
-      this.getIsTipUserControlledProperty().link( () => snapToGridLines( measuringTape.tipPositionProperty ) );
+    this.getIsTipUserControlledProperty().link( () => snapToGridLines( measuringTape.tipPositionProperty ) );
 
-      this.getIsBaseUserControlledProperty().link( () => {
-        snapToGridLines( measuringTape.basePositionProperty );
-        snapToGridLines( measuringTape.tipPositionProperty );
-      } );
-    }
+    this.getIsBaseUserControlledProperty().link( () => {
+      snapToGridLines( measuringTape.basePositionProperty );
+      snapToGridLines( measuringTape.tipPositionProperty );
+    } );
   }
+}
 
-  return chargesAndFields.register( 'ChargesAndFieldsMeasuringTapeNode', ChargesAndFieldsMeasuringTapeNode );
-} );
+chargesAndFields.register( 'ChargesAndFieldsMeasuringTapeNode', ChargesAndFieldsMeasuringTapeNode );
+export default ChargesAndFieldsMeasuringTapeNode;
