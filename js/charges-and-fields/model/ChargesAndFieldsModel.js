@@ -629,10 +629,11 @@ class ChargesAndFieldsModel extends PhetioObject {
    * @public
    */
   clearElectricPotentialLines() {
-    const isSettingState = _.hasIn( window, 'phet.phetIo.phetioEngine' ) && phet.phetIo.phetioEngine.phetioStateEngine.isSettingState;
+    const isSettingPhetioState = _.hasIn( window, 'phet.phetIo.phetioEngine' ) &&
+                                 phet.phetIo.phetioEngine.phetioStateEngine.isSettingStateProperty.value;
 
     // Clear lines without disrupting phet-io state
-    if ( !isSettingState ) {
+    if ( !isSettingPhetioState ) {
       this.electricPotentialLineGroup.clear();
     }
   }
