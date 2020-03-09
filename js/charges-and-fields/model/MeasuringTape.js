@@ -20,12 +20,14 @@ class MeasuringTape {
 
     // @public - Base (start of tape from the container) position
     this.basePositionProperty = new Vector2Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'basePositionProperty' )
+      tandem: tandem.createTandem( 'basePositionProperty' ),
+      units: 'm'
     } );
 
     // @public - Tip (end of measuring tape) position
     this.tipPositionProperty = new Vector2Property( new Vector2( 0.2, 0 ), {
-      tandem: tandem.createTandem( 'tipPositionProperty' )
+      tandem: tandem.createTandem( 'tipPositionProperty' ),
+      units: 'm'
     } );
 
     // @public - Whether the measuring tape is out in the play area (false when in the toolbox)
