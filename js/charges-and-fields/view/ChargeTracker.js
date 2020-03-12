@@ -159,7 +159,7 @@ class ChargeTracker {
    * @param {ChargedParticle}
    */
   onParticleRemoved( particle ) {
-    // See if we can update an already-in-queue item with a null location.
+    // See if we can update an already-in-queue item with a null position.
     let modified = false;
     for ( let i = 0; i < this.queue.length; i++ ) {
       const item = this.queue[ i ];

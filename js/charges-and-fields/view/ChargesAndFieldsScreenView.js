@@ -322,7 +322,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     // listens to the isUserControlled property of the electric potential sensor
     // return the electric Potential sensor to the toolboxPanel if it is not user Controlled and the
-    // location of the sensor is inside the toolboxPanel panel
+    // position of the sensor is inside the toolboxPanel panel
     electricPotentialSensorNode.isUserControlledProperty.link( isUserControlled => {
       if ( !isUserControlled && toolboxPanel.bounds.intersectsBounds( electricPotentialSensorNode.bounds.eroded( 5 ) ) && isDisplayed( toolboxPanel ) ) {
         model.electricPotentialSensor.isActiveProperty.set( false );

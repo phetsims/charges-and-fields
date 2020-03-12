@@ -42,8 +42,8 @@ class ElectricPotentialLine extends PhetioObject {
     this.position = position; // {Vector2} @public read-only static
 
     // @public - the position of where the user is trying to drag the voltage label, in model coordinates
-    this.voltageLabelLocationProperty = new Vector2Property( position, {
-      tandem: tandem.createTandem( 'voltageLabelLocationProperty' ),
+    this.voltageLabelPositionProperty = new Vector2Property( position, {
+      tandem: tandem.createTandem( 'voltageLabelPositionProperty' ),
       useDeepEquality: true
     } );
 
@@ -76,7 +76,7 @@ class ElectricPotentialLine extends PhetioObject {
    */
   dispose() {
     this.model.chargeConfigurationChangedEmitter.removeListener( this.chargeChangedListener );
-    this.voltageLabelLocationProperty.dispose();
+    this.voltageLabelPositionProperty.dispose();
     this.chargeChangedEmitter.dispose();
     this.disposeEmitter.emit();
     this.disposeEmitter.dispose();

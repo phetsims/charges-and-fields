@@ -479,9 +479,9 @@ class ChargesAndFieldsModel extends PhetioObject {
   }
 
   /**
-   * Return the electric field (a vector) at a location 'position'
+   * Return the electric field (a vector) at the given position
    * @private
-   * @param {Vector2} position - location of sensor
+   * @param {Vector2} position - position of sensor
    * @returns {Vector2} electricField
    */
   getElectricField( position ) {
@@ -512,7 +512,7 @@ class ChargesAndFieldsModel extends PhetioObject {
   }
 
   /**
-   * Return the electric potential at a location 'position' due to the configuration of charges on the board.
+   * Return the electric potential at the given position due to the configuration of charges on the board.
    * @public read-Only
    * @param {Vector2} position
    * @returns {number} electricPotential

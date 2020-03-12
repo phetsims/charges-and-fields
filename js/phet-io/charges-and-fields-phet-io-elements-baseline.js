@@ -300,7 +300,7 @@ window.phet.phetio.phetioElementsBaseline = assert &&
       "phetioStudioControl": true,
       "phetioTypeName": "ElectricPotentialLineIO"
     },
-    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLineGroup.archetype.voltageLabelLocationProperty": {
+    "chargesAndFields.chargesAndFieldsScreen.model.electricPotentialLineGroup.archetype.voltageLabelPositionProperty": {
       "phetioDocumentation": "",
       "phetioDynamicElement": false,
       "phetioEventType": "MODEL",

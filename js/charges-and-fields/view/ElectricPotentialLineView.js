@@ -119,7 +119,7 @@ class VoltageLabel extends Node {
 
     const movableDragHandler = new DragListener( {
       applyOffset: false,
-      positionProperty: electricPotentialLine.voltageLabelLocationProperty,
+      positionProperty: electricPotentialLine.voltageLabelPositionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
       transform: modelViewTransform,
       start: event => {
@@ -153,27 +153,27 @@ class VoltageLabel extends Node {
     this.addChild( backgroundRectangle ); // must go first
     this.addChild( voltageLabelText );
 
-    // finds the closest location on positionArray to the position of the cursor
-    const locationFunction = cursorLocation => {
+    // finds the closest position on positionArray to the position of the cursor
+    const positionFunction = cursorPosition => {
       let smallestDistanceSquared = Number.POSITIVE_INFINITY;
-      let closestLocation; // {Vector2}
+      let closestPosition; // {Vector2}
       electricPotentialLine.positionArray.forEach( position => {
-        const distanceSquared = position.distanceSquared( cursorLocation );
+        const distanceSquared = position.distanceSquared( cursorPosition );
         if ( distanceSquared < smallestDistanceSquared ) {
           smallestDistanceSquared = distanceSquared;
-          closestLocation = position;
+          closestPosition = position;
         }
       } );
-      if ( closestLocation ) {
-        this.center = modelViewTransform.modelToViewPosition( closestLocation );
+      if ( closestPosition ) {
+        this.center = modelViewTransform.modelToViewPosition( closestPosition );
       }
     };
 
-    electricPotentialLine.voltageLabelLocationProperty.link( locationFunction );
+    electricPotentialLine.voltageLabelPositionProperty.link( positionFunction );
 
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = () => {
-      electricPotentialLine.voltageLabelLocationProperty.unlink( locationFunction );
+      electricPotentialLine.voltageLabelPositionProperty.unlink( positionFunction );
       movableDragHandler.dispose();
       voltageLabelText.dispose();
       backgroundRectangle.dispose();

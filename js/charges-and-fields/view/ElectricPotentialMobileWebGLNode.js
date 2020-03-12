@@ -166,7 +166,7 @@ class ElectricPotentialMobilePainter {
     gl.uniform3f( displayShaderProgram.uniformLocations.uPositiveColor, positiveColor.red / 255, positiveColor.green / 255, positiveColor.blue / 255 );
     gl.uniform3f( displayShaderProgram.uniformLocations.uNegativeColor, negativeColor.red / 255, negativeColor.green / 255, negativeColor.blue / 255 );
 
-    // update uniforms for the particle location
+    // update uniforms for the particle position
     for ( let i = 0; i < this.maximumNumParticles; i++ ) {
       const particle = this.node.chargedParticles.get( i );
       const uniformLocation = displayShaderProgram.uniformLocations[ 'charge' + i ];
