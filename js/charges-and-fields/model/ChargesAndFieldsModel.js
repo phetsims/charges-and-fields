@@ -38,6 +38,7 @@ const WIDTH = ChargesAndFieldsConstants.WIDTH;
 // To avoid bugs, do not try to compute E-field at length scales smaller than MIN_DISTANCE_SCALE
 const MIN_DISTANCE_SCALE = 1e-9;
 
+// TODO: why is this phet-io instrumented? 
 class ChargesAndFieldsModel extends PhetioObject {
 
   /**
