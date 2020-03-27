@@ -265,7 +265,7 @@ class ChargesAndFieldsModel extends PhetioObject {
           addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
           addedChargedParticle.isActiveProperty.unlink( isActiveListener );
           addedChargedParticle.positionProperty.unlink( positionListener );
-          chargedParticles.memberDisposedEmitter.removeListener( removalListener );
+          chargedParticles.removeMemberDisposedListener( removalListener );
         }
       } );
     } );
@@ -327,7 +327,7 @@ class ChargesAndFieldsModel extends PhetioObject {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
           addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
           addedElectricFieldSensor.positionProperty.unlink( positionListener );
-          electricFieldSensorGroup.memberDisposedEmitter.removeListener( removalListener );
+          electricFieldSensorGroup.removeMemberDisposedListener( removalListener );
         }
       } );
     } );

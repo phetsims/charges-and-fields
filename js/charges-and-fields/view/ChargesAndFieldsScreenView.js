@@ -315,7 +315,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       model.electricFieldSensorGroup.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
           electricFieldSensorNodeGroup.disposeMember( electricFieldSensorNode );
-          model.electricFieldSensorGroup.memberDisposedEmitter.removeListener( removalListener );
+          model.electricFieldSensorGroup.removeMemberDisposedListener( removalListener );
         }
       } );
     } );
