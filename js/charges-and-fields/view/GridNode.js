@@ -13,7 +13,7 @@ import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import chargesAndFieldsStrings from '../../charges-and-fields-strings.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';

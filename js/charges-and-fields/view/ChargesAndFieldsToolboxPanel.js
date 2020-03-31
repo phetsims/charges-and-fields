@@ -22,7 +22,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
 import electricPotentialPanelOutlineImage from '../../../images/electricPotentialPanelOutline_png.js';
 import electricPotentialLinePanelOutlineImage from '../../../mipmaps/electricPotentialPanelOutline_png.js';
-import chargesAndFieldsStrings from '../../charges-and-fields-strings.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';

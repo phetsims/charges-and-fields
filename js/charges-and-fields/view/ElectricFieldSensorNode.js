@@ -16,7 +16,7 @@ import Touch from '../../../../scenery/js/input/Touch.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
-import chargesAndFieldsStrings from '../../charges-and-fields-strings.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';

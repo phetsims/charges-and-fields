@@ -9,7 +9,7 @@
 import Sim from '../../joist/js/Sim.js';
 import SimLauncher from '../../joist/js/SimLauncher.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import chargesAndFieldsStrings from './charges-and-fields-strings.js';
+import chargesAndFieldsStrings from './chargesAndFieldsStrings.js';
 import ChargesAndFieldsScreen from './charges-and-fields/ChargesAndFieldsScreen.js';
 import GlobalOptionsNode from './charges-and-fields/view/GlobalOptionsNode.js';
 

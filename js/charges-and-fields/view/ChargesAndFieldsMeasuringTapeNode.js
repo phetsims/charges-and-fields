@@ -8,7 +8,7 @@
 
 import Property from '../../../../axon/js/Property.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
-import chargesAndFieldsStrings from '../../charges-and-fields-strings.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
 const centimeterUnitString = chargesAndFieldsStrings.centimeterUnit;
