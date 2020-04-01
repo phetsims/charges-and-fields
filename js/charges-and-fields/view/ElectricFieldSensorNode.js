@@ -14,8 +14,8 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import Touch from '../../../../scenery/js/input/Touch.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
+import NodeIO from '../../../../scenery/js/nodes/NodeIO.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
@@ -57,7 +57,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     super( {
       tandem: tandem,
       phetioDynamicElement: true,
-      phetioType: ReferenceIO
+      phetioType: NodeIO
     } );
 
     this.modelElement = electricFieldSensor; // @public (read-only)

@@ -22,7 +22,7 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
-import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
@@ -46,7 +46,8 @@ class ElectricPotentialLineView extends PhetioObject {
     super( {
       tandem: tandem,
       phetioDynamicElement: true,
-      phetioType: ReferenceIO
+      phetioType: ObjectIO,
+      phetioState: false
     } );
 
     // @public (read-only) {Node} - the path of the potential line

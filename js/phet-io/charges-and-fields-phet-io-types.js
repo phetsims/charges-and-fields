@@ -1090,16 +1090,27 @@ window.phet.phetio.phetioTypes = assert &&
       "supertype": "ObjectIO",
       "typeName": "PhetioGroupIO<ModelElementIO>"
     },
-    "PhetioGroupIO<ReferenceIO>": {
+    "PhetioGroupIO<NodeIO>": {
       "documentation": "An array that sends notifications when its values have changed.",
       "events": [],
       "methodOrder": [],
       "methods": {},
       "parameterTypes": [
-        "ReferenceIO"
+        "NodeIO"
       ],
       "supertype": "ObjectIO",
-      "typeName": "PhetioGroupIO<ReferenceIO>"
+      "typeName": "PhetioGroupIO<NodeIO>"
+    },
+    "PhetioGroupIO<ObjectIO>": {
+      "documentation": "An array that sends notifications when its values have changed.",
+      "events": [],
+      "methodOrder": [],
+      "methods": {},
+      "parameterTypes": [
+        "ObjectIO"
+      ],
+      "supertype": "ObjectIO",
+      "typeName": "PhetioGroupIO<ObjectIO>"
     },
     "PropertyIO<BooleanIO>": {
       "documentation": "Observable values that send out notifications when the value changes. This differs from the traditional listener pattern in that added listeners also receive a callback with the current value when the listeners are registered. This is a widely-used pattern in PhET-iO simulations.",
@@ -1498,7 +1509,7 @@ window.phet.phetio.phetioTypes = assert &&
       "typeName": "PropertyIO<Vector2IO>"
     },
     "ReferenceIO": {
-      "documentation": "Uses reference identity for toStateObject/fromStateObject",
+      "documentation": "Uses reference identity for toStateObject/fromStateObject and validates based on its parameter IO Type.",
       "events": [],
       "methodOrder": [],
       "methods": {},

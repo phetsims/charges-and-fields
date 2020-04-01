@@ -9,7 +9,7 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Touch from '../../../../scenery/js/input/Touch.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
-import ReferenceIO from '../../../../tandem/js/types/ReferenceIO.js';
+import NodeIO from '../../../../scenery/js/nodes/NodeIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
@@ -38,7 +38,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
     super( chargedParticle.charge, {
       tandem: tandem,
       phetioDynamicElement: true,
-      phetioType: ReferenceIO
+      phetioType: NodeIO
     } );
 
     this.modelElement = chargedParticle;
