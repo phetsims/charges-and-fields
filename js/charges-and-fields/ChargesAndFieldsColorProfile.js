@@ -10,6 +10,7 @@
 
 import ColorProfile from '../../../scenery-phet/js/ColorProfile.js';
 import Color from '../../../scenery/js/util/Color.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import chargesAndFields from '../chargesAndFields.js';
 
 // constants
@@ -155,6 +156,8 @@ const ChargesAndFieldsColorProfile = new ColorProfile( [ 'default', 'projector' 
     default: BLUE,
     projector: BLUE
   }
+}, {
+  tandem: Tandem.GLOBAL.createTandem( 'colorProfile' )
 } );
 
 chargesAndFields.register( 'ChargesAndFieldsColorProfile', ChargesAndFieldsColorProfile );
