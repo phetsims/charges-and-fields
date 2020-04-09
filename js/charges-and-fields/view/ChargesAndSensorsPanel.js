@@ -161,7 +161,7 @@ class ChargesAndSensorsPanel extends Panel {
     this.hboxContent = hboxContent;
 
     draggableItems.forEach( draggableItem => {
-      draggableItem.on( 'visibility', this.updateChildrenWithVisibility.bind( this ) );
+      draggableItem.visibleProperty.lazyLink( this.updateChildrenWithVisibility.bind( this ) );
     } );
 
     this.draggableItems = draggableItems;

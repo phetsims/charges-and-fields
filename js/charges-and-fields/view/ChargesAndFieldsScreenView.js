@@ -244,7 +244,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       model.chargesAndSensorsEnclosureBoundsProperty.set( modelViewTransform.viewToModelBounds( chargesAndSensorsPanel.bounds ) );
     };
 
-    chargesAndSensorsPanel.on( 'localBounds', updateSensorPanelLayout );
+    chargesAndSensorsPanel.localBoundsProperty.lazyLink( updateSensorPanelLayout );
     updateSensorPanelLayout();
 
     // Only show the ChargesAndSensorsPanel when at least one of its elements is visible
@@ -370,7 +370,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     } );
     updateControlLayout();
 
-    controlPanel.on( 'localBounds', updateControlLayout );
+    controlPanel.localBoundsProperty.lazyLink( updateControlLayout );
 
     // static parts of the control layout
     controlPanel.top = 30;
