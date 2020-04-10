@@ -61,7 +61,8 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     const panelContent = new LayoutBox( {
       spacing: 20,
       children: [ electricPotentialSensorIconNode, measuringTapeIconNode ],
-      pickable: true
+      pickable: true,
+      excludeInvisibleChildrenFromBounds: false
     } );
 
     // Options for the panel
