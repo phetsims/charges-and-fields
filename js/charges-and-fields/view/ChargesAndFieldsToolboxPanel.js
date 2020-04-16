@@ -20,8 +20,7 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
-import electricPotentialPanelOutlineImage from '../../../images/electricPotentialPanelOutline_png.js';
-import electricPotentialLinePanelOutlineImage from '../../../mipmaps/electricPotentialPanelOutline_png.js';
+import electricPotentialPanelOutlineImage from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
@@ -180,7 +179,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
       maxWidth: 200,
       tandem: tandem.createTandem( 'voltageReading' )
     } );
-    const outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
+    const outlineImage = new Image( electricPotentialPanelOutlineImage, {
       tandem: tandem.createTandem( 'outlineImage' )
     } );
     outlineImage.scale( 0.5 * 6 / 25 );

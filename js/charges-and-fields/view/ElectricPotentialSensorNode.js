@@ -24,7 +24,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import electricPotentialLinePanelOutlineImage from '../../../images/electricPotentialPanelOutline_png.js';
+import electricPotentialPanelOutlineImage from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
@@ -160,7 +160,7 @@ class ElectricPotentialSensorNode extends Node {
       } );
 
     // Create the body of the sensor
-    const outlineImage = new Image( electricPotentialLinePanelOutlineImage, {
+    const outlineImage = new Image( electricPotentialPanelOutlineImage, {
       tandem: tandem.createTandem( 'outlineImage' )
     } );
 
