@@ -215,8 +215,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
       canAddMoreChargedParticlesProperty.value = model.chargedParticles.length < numberChargesLimit;
     };
     updateCanAddMoreChargedParticlesProperty();
-    model.chargedParticles.addMemberCreatedListener( updateCanAddMoreChargedParticlesProperty );
-    model.chargedParticles.addMemberDisposedListener( updateCanAddMoreChargedParticlesProperty );
+    model.chargedParticles.elementCreatedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
+    model.chargedParticles.elementDisposedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     const chargesAndSensorsPanel = new ChargesAndSensorsPanel(
@@ -256,7 +256,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       .linkAttribute( chargesAndSensorsPanel, 'visible' );
 
     // Handle the comings and goings of charged particles.
-    model.chargedParticles.addMemberCreatedListener( addedChargedParticle => {
+    model.chargedParticles.elementCreatedEmitter.addListener( addedChargedParticle => {
 
       // Create and add the view representation for this chargedParticle.
       const chargedParticleNode = chargedParticleNodeGroup.createCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
@@ -313,17 +313,17 @@ class ChargesAndFieldsScreenView extends ScreenView {
     } );
 
     // Handle the comings and goings of charged electric field sensors.
-    model.electricFieldSensorGroup.addMemberCreatedListener( addedElectricFieldSensor => {
+    model.electricFieldSensorGroup.elementCreatedEmitter.addListener( addedElectricFieldSensor => {
       const electricFieldSensorNode = electricFieldSensorNodeGroup.createCorrespondingGroupMember(
         addedElectricFieldSensor, addedElectricFieldSensor );
 
       draggableElementsLayer.addChild( electricFieldSensorNode );
 
       // Add the removal listener for if and when this electric field sensor is removed from the model.
-      model.electricFieldSensorGroup.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
+      model.electricFieldSensorGroup.elementDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
           electricFieldSensorNodeGroup.disposeMember( electricFieldSensorNode );
-          model.electricFieldSensorGroup.removeMemberDisposedListener( removalListener );
+          model.electricFieldSensorGroup.elementDisposedEmitter.removeListener( removalListener );
         }
       } );
     } );

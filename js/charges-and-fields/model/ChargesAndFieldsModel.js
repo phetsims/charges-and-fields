@@ -198,7 +198,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     //------------------------
 
     // the following logic is the crux of the simulation
-    this.chargedParticles.addMemberCreatedListener( addedChargedParticle => {
+    this.chargedParticles.elementCreatedEmitter.addListener( addedChargedParticle => {
 
       const userControlledListener = isUserControlled => {
 
@@ -260,12 +260,12 @@ class ChargesAndFieldsModel extends PhetioObject {
       addedChargedParticle.positionProperty.link( positionListener );
 
       // remove listeners when a chargedParticle is removed
-      chargedParticles.addMemberDisposedListener( function removalListener( removedChargeParticle ) {
+      chargedParticles.elementDisposedEmitter.addListener( function removalListener( removedChargeParticle ) {
         if ( removedChargeParticle === addedChargedParticle ) {
           addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
           addedChargedParticle.isActiveProperty.unlink( isActiveListener );
           addedChargedParticle.positionProperty.unlink( positionListener );
-          chargedParticles.removeMemberDisposedListener( removalListener );
+          chargedParticles.elementDisposedEmitter.removeListener( removalListener );
         }
       } );
     } );
@@ -274,7 +274,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // AddItem Removed Listener on the charged Particles Observable Array
     //------------------------
 
-    this.chargedParticles.addMemberDisposedListener( removedChargeParticle => {
+    this.chargedParticles.elementDisposedEmitter.addListener( removedChargeParticle => {
       // check that the particle was active before updating charge dependent model components
       if ( removedChargeParticle.isActiveProperty.get() && !this.isResetting ) {
 
@@ -297,7 +297,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // AddItem Added Listener on the electric Field Sensors Observable Array
     //------------------------
 
-    this.electricFieldSensorGroup.addMemberCreatedListener( addedElectricFieldSensor => {
+    this.electricFieldSensorGroup.elementCreatedEmitter.addListener( addedElectricFieldSensor => {
 
       // Listener for sensor position changes
       const positionListener = position => {
@@ -323,11 +323,11 @@ class ChargesAndFieldsModel extends PhetioObject {
       addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
 
       // remove listeners when an electricFieldSensor is removed
-      electricFieldSensorGroup.addMemberDisposedListener( function removalListener( removedElectricFieldSensor ) {
+      electricFieldSensorGroup.elementDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
           addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
           addedElectricFieldSensor.positionProperty.unlink( positionListener );
-          electricFieldSensorGroup.removeMemberDisposedListener( removalListener );
+          electricFieldSensorGroup.elementDisposedEmitter.removeListener( removalListener );
         }
       } );
     } );
