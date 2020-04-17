@@ -107,7 +107,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
         electricPotentialSensor.isActiveProperty.set( true );
 
         // initial position of the pointer in the screenView coordinates
-        const initialViewPosition = this.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage.height * 6 / 25 );
+        const initialViewPosition = this.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage[ 0 ].height * 6 / 25 );
         electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
         electricPotentialSensorNode.movableDragHandler.press( event, electricPotentialSensorNode );
