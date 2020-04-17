@@ -259,14 +259,14 @@ class ChargesAndFieldsScreenView extends ScreenView {
     model.chargedParticles.elementCreatedEmitter.addListener( addedChargedParticle => {
 
       // Create and add the view representation for this chargedParticle.
-      const chargedParticleNode = chargedParticleNodeGroup.createCorrespondingGroupMember( addedChargedParticle, addedChargedParticle );
+      const chargedParticleNode = chargedParticleNodeGroup.createCorrespondingGroupElement( addedChargedParticle, addedChargedParticle );
 
       draggableElementsLayer.addChild( chargedParticleNode );
 
       addedChargedParticle.disposeEmitter.addListener( function callback() {
         addedChargedParticle.disposeEmitter.removeListener( callback );
         draggableElementsLayer.removeChild( chargedParticleNode );
-        chargedParticleNodeGroup.disposeMember( chargedParticleNode ); // TODO: I changed this!!!!
+        chargedParticleNodeGroup.disposeElement( chargedParticleNode );
       } );
     } );
 
@@ -314,7 +314,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     // Handle the comings and goings of charged electric field sensors.
     model.electricFieldSensorGroup.elementCreatedEmitter.addListener( addedElectricFieldSensor => {
-      const electricFieldSensorNode = electricFieldSensorNodeGroup.createCorrespondingGroupMember(
+      const electricFieldSensorNode = electricFieldSensorNodeGroup.createCorrespondingGroupElement(
         addedElectricFieldSensor, addedElectricFieldSensor );
 
       draggableElementsLayer.addChild( electricFieldSensorNode );
@@ -322,7 +322,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       // Add the removal listener for if and when this electric field sensor is removed from the model.
       model.electricFieldSensorGroup.elementDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
-          electricFieldSensorNodeGroup.disposeMember( electricFieldSensorNode );
+          electricFieldSensorNodeGroup.disposeElement( electricFieldSensorNode );
           model.electricFieldSensorGroup.elementDisposedEmitter.removeListener( removalListener );
         }
       } );
@@ -402,8 +402,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
         tandem: tandem.createTandem( 'debugButton' )
       } ) );
 
-      const charge1 = model.chargedParticles.createNextMember( 1, new Vector2( 0, -1.5 ) );
-      const charge2 = model.chargedParticles.createNextMember( -1, new Vector2( 0, -1.5 ) );
+      const charge1 = model.chargedParticles.createNextElement( 1, new Vector2( 0, -1.5 ) );
+      const charge2 = model.chargedParticles.createNextElement( -1, new Vector2( 0, -1.5 ) );
       charge1.isActiveProperty.set( true );
       charge2.isActiveProperty.set( true );
       charge1.positionProperty.set( new Vector2( 2, 2 ) );

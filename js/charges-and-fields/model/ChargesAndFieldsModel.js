@@ -132,7 +132,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       const chargedParticle = new ChargedParticle( charge, initialPosition, {
         tandem: tandem
       } );
-      chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.disposeMember( chargedParticle ) );
+      chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.disposeElement( chargedParticle ) );
       return chargedParticle;
     }, [ 1, Vector2.ZERO ], {
       tandem: tandem.createTandem( 'chargedParticleGroup' ),
@@ -151,7 +151,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // @public {PhetioGroup.<ElectricFieldSensor>} Observable group of electric field sensors
     this.electricFieldSensorGroup = new PhetioGroup( ( tandem, initialPosition ) => {
       const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
-      sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeMember( sensor ) );
+      sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeElement( sensor ) );
       return sensor;
     }, [ Vector2.ZERO ], {
       tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
@@ -371,7 +371,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    * @returns {ChargedParticle}
    */
   addPositiveCharge( initialPosition ) {
-    return this.chargedParticles.createNextMember( 1, initialPosition );
+    return this.chargedParticles.createNextElement( 1, initialPosition );
   }
 
   /**
@@ -382,7 +382,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    * @returns {ChargedParticle}
    */
   addNegativeCharge( initialPosition ) {
-    return this.chargedParticles.createNextMember( -1, initialPosition );
+    return this.chargedParticles.createNextElement( -1, initialPosition );
   }
 
   /**
@@ -391,7 +391,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    * @public
    */
   addElectricFieldSensor( initialPosition ) {
-    return this.electricFieldSensorGroup.createNextMember( initialPosition );
+    return this.electricFieldSensorGroup.createNextElement( initialPosition );
   }
 
   /**
@@ -606,7 +606,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     if ( isTooCloseToParticle ) {
       return;
     }
-    this.electricPotentialLineGroup.createNextMember( position );
+    this.electricPotentialLineGroup.createNextElement( position );
   }
 
   /**

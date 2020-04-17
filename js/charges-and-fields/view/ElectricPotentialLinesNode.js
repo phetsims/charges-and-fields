@@ -57,7 +57,7 @@ class ElectricPotentialLinesNode extends Node {
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
     electricPotentialLineGroup.elementCreatedEmitter.addListener( function updateView( electricPotentialLine ) {
-      const electricPotentialLineView = electricPotentialLineViewGroup.createCorrespondingGroupMember( electricPotentialLine, electricPotentialLine );
+      const electricPotentialLineView = electricPotentialLineViewGroup.createCorrespondingGroupElement( electricPotentialLine, electricPotentialLine );
 
       pathsNode.addChild( electricPotentialLineView.path );
       labelsNode.addChild( electricPotentialLineView.voltageLabel );
@@ -67,7 +67,7 @@ class ElectricPotentialLinesNode extends Node {
         circlesNode.addChild( electricPotentialLineView.circles );
       }
 
-      const modelDisposeListener = () => electricPotentialLineViewGroup.disposeMember( electricPotentialLineView );
+      const modelDisposeListener = () => electricPotentialLineViewGroup.disposeElement( electricPotentialLineView );
       electricPotentialLine.disposeEmitter.addListener( modelDisposeListener );
 
       // try again next time we changed
