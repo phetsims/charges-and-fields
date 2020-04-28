@@ -475,7 +475,7 @@ class ChargesAndFieldsModel extends PhetioObject {
   updateAllSensors() {
     this.electricPotentialSensor.update();
     for ( let i = 0; i < this.electricFieldSensorGroup.length; i++ ) {
-      this.electricFieldSensorGroup.array[ i ].update();
+      this.electricFieldSensorGroup.getElement( i ).update();
     }
   }
 
@@ -653,7 +653,7 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   snapAllElements() {
     this.activeChargedParticles.forEach( chargedParticle => this.snapToGridLines( chargedParticle.positionProperty ) );
-    this.electricFieldSensorGroup.array.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
+    this.electricFieldSensorGroup.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
 
     this.snapToGridLines( this.electricPotentialSensor.positionProperty );
     this.snapToGridLines( this.measuringTape.basePositionProperty );
