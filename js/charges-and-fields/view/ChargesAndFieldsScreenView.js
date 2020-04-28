@@ -212,11 +212,11 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     const canAddMoreChargedParticlesProperty = new BooleanProperty( false );
     const updateCanAddMoreChargedParticlesProperty = () => {
-      canAddMoreChargedParticlesProperty.value = model.chargedParticles.length < numberChargesLimit;
+      canAddMoreChargedParticlesProperty.value = model.chargedParticleGroup.length < numberChargesLimit;
     };
     updateCanAddMoreChargedParticlesProperty();
-    model.chargedParticles.elementCreatedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
-    model.chargedParticles.elementDisposedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
+    model.chargedParticleGroup.elementCreatedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
+    model.chargedParticleGroup.elementDisposedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     const chargesAndSensorsPanel = new ChargesAndSensorsPanel(
@@ -256,7 +256,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       .linkAttribute( chargesAndSensorsPanel, 'visible' );
 
     // Handle the comings and goings of charged particles.
-    model.chargedParticles.elementCreatedEmitter.addListener( addedChargedParticle => {
+    model.chargedParticleGroup.elementCreatedEmitter.addListener( addedChargedParticle => {
 
       // Create and add the view representation for this chargedParticle.
       const chargedParticleNode = chargedParticleNodeGroup.createCorrespondingGroupElement( addedChargedParticle, addedChargedParticle );
@@ -279,7 +279,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
         tandem
       );
-    }, [ model.chargedParticles.archetype ], {
+    }, [ model.chargedParticleGroup.archetype ], {
       tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
       phetioType: PhetioGroupIO( NodeIO ),
 
@@ -402,8 +402,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
         tandem: tandem.createTandem( 'debugButton' )
       } ) );
 
-      const charge1 = model.chargedParticles.createNextElement( 1, new Vector2( 0, -1.5 ) );
-      const charge2 = model.chargedParticles.createNextElement( -1, new Vector2( 0, -1.5 ) );
+      const charge1 = model.chargedParticleGroup.createNextElement( 1, new Vector2( 0, -1.5 ) );
+      const charge2 = model.chargedParticleGroup.createNextElement( -1, new Vector2( 0, -1.5 ) );
       charge1.isActiveProperty.set( true );
       charge2.isActiveProperty.set( true );
       charge1.positionProperty.set( new Vector2( 2, 2 ) );

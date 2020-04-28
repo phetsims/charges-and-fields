@@ -19,6 +19,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import ObservableArray from '../../../../axon/js/ObservableArray.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
 class ChargeTracker {
@@ -27,6 +28,8 @@ class ChargeTracker {
    * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
    */
   constructor( chargedParticles ) {
+    assert && assert( chargedParticles instanceof ObservableArray, 'invalid chargedParticles' );
+
     this.chargedParticles = chargedParticles;
 
     // @private functions to be called back when particle positions change, tagged with listener.particle = particle

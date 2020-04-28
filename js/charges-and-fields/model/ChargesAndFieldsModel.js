@@ -128,18 +128,18 @@ class ChargesAndFieldsModel extends PhetioObject {
     this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
 
     // @public {PhetioGroup.<ChargedParticle>} group of draggable electric charges
-    this.chargedParticles = new PhetioGroup( ( tandem, charge, initialPosition ) => {
+    this.chargedParticleGroup = new PhetioGroup( ( tandem, charge, initialPosition ) => {
       const chargedParticle = new ChargedParticle( charge, initialPosition, {
         tandem: tandem
       } );
-      chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticles.disposeElement( chargedParticle ) );
+      chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticleGroup.disposeElement( chargedParticle ) );
       return chargedParticle;
     }, [ 1, Vector2.ZERO ], {
       tandem: tandem.createTandem( 'chargedParticleGroup' ),
       phetioType: PhetioGroupIO( ChargedParticleIO ),
       phetioDynamicElementName: 'particle'
     } );
-    const chargedParticles = this.chargedParticles;
+    const chargedParticleGroup = this.chargedParticleGroup;
 
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
     // This is the relevant array to calculate the electric field, and electric potential
@@ -198,7 +198,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     //------------------------
 
     // the following logic is the crux of the simulation
-    this.chargedParticles.elementCreatedEmitter.addListener( addedChargedParticle => {
+    this.chargedParticleGroup.elementCreatedEmitter.addListener( addedChargedParticle => {
 
       const userControlledListener = isUserControlled => {
 
@@ -260,12 +260,12 @@ class ChargesAndFieldsModel extends PhetioObject {
       addedChargedParticle.positionProperty.link( positionListener );
 
       // remove listeners when a chargedParticle is removed
-      chargedParticles.elementDisposedEmitter.addListener( function removalListener( removedChargeParticle ) {
+      chargedParticleGroup.elementDisposedEmitter.addListener( function removalListener( removedChargeParticle ) {
         if ( removedChargeParticle === addedChargedParticle ) {
           addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
           addedChargedParticle.isActiveProperty.unlink( isActiveListener );
           addedChargedParticle.positionProperty.unlink( positionListener );
-          chargedParticles.elementDisposedEmitter.removeListener( removalListener );
+          chargedParticleGroup.elementDisposedEmitter.removeListener( removalListener );
         }
       } );
     } );
@@ -274,7 +274,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // AddItem Removed Listener on the charged Particles Observable Array
     //------------------------
 
-    this.chargedParticles.elementDisposedEmitter.addListener( removedChargeParticle => {
+    this.chargedParticleGroup.elementDisposedEmitter.addListener( removedChargeParticle => {
       // check that the particle was active before updating charge dependent model components
       if ( removedChargeParticle.isActiveProperty.get() && !this.isResetting ) {
 
@@ -338,7 +338,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    * @public
    */
   reset() {
-    // we want to avoid the cost of constantly re-updating the grids when emptying the chargedParticles array
+    // we want to avoid the cost of constantly re-updating the grids when clearing chargedParticleGroup
     // so we set the flag isResetting to true.
     this.isResetting = true;
 
@@ -353,7 +353,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     this.allowNewElectricFieldSensorsProperty.reset();
     this.chargesAndSensorsEnclosureBoundsProperty.reset();
 
-    this.chargedParticles.clear(); // clear all the charges
+    this.chargedParticleGroup.clear(); // clear all the charges
     this.activeChargedParticles.clear(); // clear all the active charges
     this.electricFieldSensorGroup.clear(); // clear all the electric field sensors
     this.electricPotentialLineGroup.clear(); // clear the electricPotential 'lines'
@@ -371,7 +371,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    * @returns {ChargedParticle}
    */
   addPositiveCharge( initialPosition ) {
-    return this.chargedParticles.createNextElement( 1, initialPosition );
+    return this.chargedParticleGroup.createNextElement( 1, initialPosition );
   }
 
   /**
@@ -382,7 +382,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    * @returns {ChargedParticle}
    */
   addNegativeCharge( initialPosition ) {
-    return this.chargedParticles.createNextElement( -1, initialPosition );
+    return this.chargedParticleGroup.createNextElement( -1, initialPosition );
   }
 
   /**
