@@ -8,7 +8,7 @@
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import chargesAndFields from '../chargesAndFields.js';
 
-export default chargesAndFields.register( 'ChargesAndFieldsConstants', {
+const ChargesAndFieldsConstants = {
 
   K_CONSTANT: 9, // prefactor in E-field equation: E= k*Q/r^2 when Q is in nano coulomb, r is in meter and E is in Volt/meter
 
@@ -39,4 +39,6 @@ export default chargesAndFields.register( 'ChargesAndFieldsConstants', {
 
   MAX_EFIELD_MAGNITUDE: 1e6, // V/m - maximum allowed electric field magnitude
   EFIELD_COLOR_SAT_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
-} );
+};
+chargesAndFields.register( 'ChargesAndFieldsConstants', ChargesAndFieldsConstants );
+export default ChargesAndFieldsConstants;

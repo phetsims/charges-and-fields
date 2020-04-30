@@ -63,7 +63,7 @@ draw();
 ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( draw );
 ChargesAndFieldsColorProfile.electricFieldGridSaturationStrokeProperty.link( draw );
 
-export default chargesAndFields.register( 'ElectricFieldArrowCanvas', {
+const ElectricFieldArrowCanvas = {
   // @public {number} - Scale that was applied to the ArrowShape. Presumably un-scale by this amount.
   scale: scale,
 
@@ -78,4 +78,6 @@ export default chargesAndFields.register( 'ElectricFieldArrowCanvas', {
 
   // @public {Emitter} - Emits when the contents of the Canvas have changed (needs to be redrawn).
   updateEmitter: emitter
-} );
+};
+chargesAndFields.register( 'ElectricFieldArrowCanvas', ElectricFieldArrowCanvas );
+export default ElectricFieldArrowCanvas;
