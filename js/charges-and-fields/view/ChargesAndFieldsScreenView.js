@@ -259,7 +259,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
     model.chargedParticleGroup.elementCreatedEmitter.addListener( addedChargedParticle => {
 
       // Create and add the view representation for this chargedParticle.
-      const chargedParticleNode = chargedParticleNodeGroup.createCorrespondingGroupElement( addedChargedParticle, addedChargedParticle );
+      const chargedParticleNode = chargedParticleNodeGroup.createCorrespondingGroupElement(
+        addedChargedParticle.tandem.name, addedChargedParticle );
 
       draggableElementsLayer.addChild( chargedParticleNode );
 
@@ -315,7 +316,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     // Handle the comings and goings of charged electric field sensors.
     model.electricFieldSensorGroup.elementCreatedEmitter.addListener( addedElectricFieldSensor => {
       const electricFieldSensorNode = electricFieldSensorNodeGroup.createCorrespondingGroupElement(
-        addedElectricFieldSensor, addedElectricFieldSensor );
+        addedElectricFieldSensor.tandem.name, addedElectricFieldSensor );
 
       draggableElementsLayer.addChild( electricFieldSensorNode );
 

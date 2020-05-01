@@ -57,7 +57,8 @@ class ElectricPotentialLinesNode extends Node {
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
     electricPotentialLineGroup.elementCreatedEmitter.addListener( function updateView( electricPotentialLine ) {
-      const electricPotentialLineView = electricPotentialLineViewGroup.createCorrespondingGroupElement( electricPotentialLine, electricPotentialLine );
+      const electricPotentialLineView = electricPotentialLineViewGroup.createCorrespondingGroupElement(
+        electricPotentialLine.tandem.name, electricPotentialLine );
 
       pathsNode.addChild( electricPotentialLineView.path );
       labelsNode.addChild( electricPotentialLineView.voltageLabel );
