@@ -212,7 +212,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     const canAddMoreChargedParticlesProperty = new BooleanProperty( false );
     const updateCanAddMoreChargedParticlesProperty = () => {
-      canAddMoreChargedParticlesProperty.value = model.chargedParticleGroup.length < numberChargesLimit;
+      canAddMoreChargedParticlesProperty.value = model.chargedParticleGroup.count < numberChargesLimit;
     };
     updateCanAddMoreChargedParticlesProperty();
     model.chargedParticleGroup.elementCreatedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );

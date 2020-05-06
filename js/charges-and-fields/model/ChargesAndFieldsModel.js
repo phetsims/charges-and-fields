@@ -474,7 +474,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    */
   updateAllSensors() {
     this.electricPotentialSensor.update();
-    for ( let i = 0; i < this.electricFieldSensorGroup.length; i++ ) {
+    for ( let i = 0; i < this.electricFieldSensorGroup.count; i++ ) {
       this.electricFieldSensorGroup.getElement( i ).update();
     }
   }
