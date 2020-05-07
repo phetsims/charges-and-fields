@@ -7,7 +7,7 @@
  */
 
 import Sim from '../../joist/js/Sim.js';
-import SimLauncher from '../../joist/js/SimLauncher.js';
+import simLauncher from '../../joist/js/simLauncher.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import chargesAndFieldsStrings from './chargesAndFieldsStrings.js';
 import ChargesAndFieldsScreen from './charges-and-fields/ChargesAndFieldsScreen.js';
@@ -30,7 +30,7 @@ const simOptions = {
   webgl: true
 };
 
-SimLauncher.launch( () => {
+simLauncher.launch( () => {
   const sim = new Sim( chargesAndFieldsTitleString, [
     new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) )
   ], simOptions );
