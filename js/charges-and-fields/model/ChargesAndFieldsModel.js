@@ -572,10 +572,10 @@ class ChargesAndFieldsModel extends PhetioObject {
     }
 
     // If we are too close to a charged particle, also bail out.
-    const isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), chargedParticle => {
-      // in model coordinates, should be less than the radius (in the view) of a charged particle
-      return chargedParticle.positionProperty.get().distance( position ) < 0.03;
-    } ) );
+    // in model coordinates, should be less than the radius (in the view) of a charged particle
+    const isTooCloseToParticle = this.activeChargedParticles.some(
+      chargedParticle => chargedParticle.positionProperty.get().distance( position ) < 0.03
+    );
     return !isTooCloseToParticle;
   }
 
@@ -598,11 +598,10 @@ class ChargesAndFieldsModel extends PhetioObject {
     }
 
     // If we are too close to a charged particle, also bail out.
-    const isTooCloseToParticle = _.some( _.map( this.activeChargedParticles.getArray(), chargedParticle => {
-
-      // in model coordinates, should be less than the radius (in the view) of a charged particle
-      return chargedParticle.positionProperty.get().distance( position ) < 0.03;
-    } ) );
+    // in model coordinates, should be less than the radius (in the view) of a charged particle
+    const isTooCloseToParticle = this.activeChargedParticles.some(
+      chargedParticle => chargedParticle.positionProperty.get().distance( position ) < 0.03
+    );
     if ( isTooCloseToParticle ) {
       return;
     }
