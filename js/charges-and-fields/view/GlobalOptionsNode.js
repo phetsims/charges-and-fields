@@ -30,6 +30,20 @@ class GlobalOptionsNode extends LayoutBox {
       align: 'left',
       tandem: tandem
     } );
+
+    // @private
+    this.disposeGlobalOptionsNode = () => {
+      projectorCheckbox.dispose();
+    };
+  }
+
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeGlobalOptionsNode();
+    super.dispose();
   }
 }
 
