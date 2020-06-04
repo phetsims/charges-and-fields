@@ -71,6 +71,10 @@ class ModelElement extends PhetioObject {
     this.returnedToOriginEmitter = new Emitter();
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeEmitter.emit();
     this.isInteractiveProperty.dispose();

@@ -315,6 +315,10 @@ class ElectricPotentialSensorNode extends Node {
     };
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeElectricPotentialSensorNode();
   }

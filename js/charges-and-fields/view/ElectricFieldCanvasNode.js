@@ -95,6 +95,9 @@ class ElectricFieldCanvasNode extends CanvasNode {
   }
 
 
+  /**
+   * @private
+   */
   updateElectricPotentials() {
     const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
@@ -136,6 +139,7 @@ class ElectricFieldCanvasNode extends CanvasNode {
   /**
    * Function responsible for painting electric field arrows
    * @override
+   * @public
    * @param {CanvasRenderingContext2D} context
    */
   paintCanvas( context ) {
@@ -164,6 +168,10 @@ class ElectricFieldCanvasNode extends CanvasNode {
     }
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeElectricFieldCanvasNode();
   }

@@ -181,6 +181,10 @@ class VoltageLabel extends Node {
     };
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeVoltageLabel();
     super.dispose();

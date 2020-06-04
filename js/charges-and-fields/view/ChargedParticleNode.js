@@ -107,6 +107,10 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
     };
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeChargedParticleNode();
     super.dispose();

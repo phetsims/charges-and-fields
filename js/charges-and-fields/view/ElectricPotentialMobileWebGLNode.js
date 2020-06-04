@@ -57,7 +57,7 @@ class ElectricPotentialMobileWebGLNode extends WebGLNode {
 
   /**
    * Detection for how many particles we can support.
-   * @public read-only
+   * @public
    */
   static getNumberOfParticlesSupported() {
     const canvas = document.createElement( 'canvas' );
@@ -65,6 +65,12 @@ class ElectricPotentialMobileWebGLNode extends WebGLNode {
     return ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl );
   }
 
+  /**
+   * @public
+   *
+   * @param {WebGL2RenderingContext} gl
+   * @returns {number}
+   */
   static particlesSupportedForContext( gl ) {
     const otherVectorCount = 7; // colors, matrix and one extra to be safe
     const maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
@@ -143,6 +149,13 @@ class ElectricPotentialMobilePainter {
     ] ), gl.STATIC_DRAW );
   }
 
+  /**
+   * @public
+   *
+   * @param {Matrix3} modelViewMatrix
+   * @param {Matrix3} projectionMatrix
+   * @returns {number} - WebGLNode.PAINTED_NOTHING or WebGLNode.PAINTED_SOMETHING.
+   */
   paint( modelViewMatrix, projectionMatrix ) {
     const gl = this.gl;
     const displayShaderProgram = this.displayShaderProgram;
@@ -193,6 +206,10 @@ class ElectricPotentialMobilePainter {
     return WebGLNode.PAINTED_SOMETHING;
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     // clears all of our resources
     this.displayShaderProgram.dispose();

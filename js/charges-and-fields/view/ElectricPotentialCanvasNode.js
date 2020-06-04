@@ -89,11 +89,17 @@ class ElectricPotentialCanvasNode extends CanvasNode {
     this.disposeElectricPotentialCanvasNode = () => isVisibleProperty.unlink( invalidateSelfListener );
   }
 
+  /**
+   * @private
+   */
   forceRepaint() {
     this.invalidatePaint();
     this.directCanvasDirty = true;
   }
 
+  /**
+   * @private
+   */
   updateElectricPotentials() {
     const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
@@ -164,6 +170,7 @@ class ElectricPotentialCanvasNode extends CanvasNode {
 
   /**
    * Function responsible for painting the canvas Node as a grid array of squares
+   * @public
    * @override
    * @param {CanvasRenderingContext2D} context
    */
@@ -183,6 +190,10 @@ class ElectricPotentialCanvasNode extends CanvasNode {
     context.restore();
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeElectricPotentialCanvasNode();
   }

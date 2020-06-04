@@ -15,6 +15,7 @@ import chargesAndFields from '../../chargesAndFields.js';
 class ModelElementIO extends ObjectIO {
 
   /**
+   * @public
    * @param {ModelElement} modelElement
    * @returns {Object}
    * @override
@@ -27,6 +28,7 @@ class ModelElementIO extends ObjectIO {
   }
 
   /**
+   * @public
    * @param {Object} stateObject
    * @returns {Object}
    * @override
@@ -38,6 +40,7 @@ class ModelElementIO extends ObjectIO {
   }
 
   /**
+   * @public
    * @override
    * @param {Object} state - see ModelElementIO.toStateObject
    * @returns {Array.<*>}

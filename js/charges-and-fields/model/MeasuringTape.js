@@ -36,6 +36,10 @@ class MeasuringTape {
     } );
   }
 
+  /**
+   * Resets values to their original state
+   * @public
+   */
   reset() {
     this.basePositionProperty.reset();
     this.tipPositionProperty.reset();

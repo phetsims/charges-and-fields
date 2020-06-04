@@ -72,6 +72,8 @@ class ElectricPotentialLine extends PhetioObject {
   }
 
   /**
+   * Releases references
+   * @public
    * @override
    */
   dispose() {

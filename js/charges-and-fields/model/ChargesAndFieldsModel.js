@@ -38,7 +38,7 @@ const WIDTH = ChargesAndFieldsConstants.WIDTH;
 // To avoid bugs, do not try to compute E-field at length scales smaller than MIN_DISTANCE_SCALE
 const MIN_DISTANCE_SCALE = 1e-9;
 
-// TODO: why is this phet-io instrumented? 
+// TODO: why is this phet-io instrumented?
 class ChargesAndFieldsModel extends PhetioObject {
 
   /**
@@ -563,6 +563,12 @@ class ChargesAndFieldsModel extends PhetioObject {
     return charge;
   }
 
+  /**
+   * @private
+   *
+   * @param {Vector2} position
+   * @returns {boolean}
+   */
   canAddElectricPotentialLine( position ) {
 
 
@@ -613,6 +619,7 @@ class ChargesAndFieldsModel extends PhetioObject {
    * The drawing of the electric Potential Lines is handled in the view.
    * @param {number} numberOfLines
    * USED IN DEBUGGING MODE
+   * @public
    */
   addManyElectricPotentialLines( numberOfLines ) {
     for ( let i = 0; i < numberOfLines; i++ ) {
@@ -650,6 +657,9 @@ class ChargesAndFieldsModel extends PhetioObject {
     }
   }
 
+  /**
+   * @private
+   */
   snapAllElements() {
     this.activeChargedParticles.forEach( chargedParticle => this.snapToGridLines( chargedParticle.positionProperty ) );
     this.electricFieldSensorGroup.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );

@@ -17,6 +17,7 @@ import ModelElementIO from './ModelElementIO.js';
 class ChargedParticleIO extends ModelElementIO {
 
   /**
+   * @public
    * @param {ChargedParticle} chargedParticle
    * @returns {Object}
    * @override

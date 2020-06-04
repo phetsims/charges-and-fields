@@ -298,6 +298,10 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     }
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeElectricFieldSensorNode();
     super.dispose();

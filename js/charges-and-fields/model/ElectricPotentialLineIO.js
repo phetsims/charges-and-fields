@@ -15,6 +15,7 @@ import ModelElementIO from './ModelElementIO.js';
 class ElectricPotentialLineIO extends ModelElementIO {
 
   /**
+   * @public
    * @param {ElectricPotentialLine} electricPotentialLine
    * @returns {Object}
    * @override
@@ -25,6 +26,7 @@ class ElectricPotentialLineIO extends ModelElementIO {
   }
 
   /**
+   * @public
    * @param {Object} stateObject
    * @returns {Object}
    * @override
@@ -34,6 +36,7 @@ class ElectricPotentialLineIO extends ModelElementIO {
   }
 
   /**
+   * @public
    * @override
    * @param {Object} state
    * @returns {Array.<*>}

@@ -92,6 +92,7 @@ class ElectricPotentialWebGLNode extends WebGLNode {
   /**
    * Detection for support, because iOS Safari 8 doesn't support rendering to a float texture, AND doesn't support
    * classic detection via an extension (OES_texture_float works).
+   * @public
    */
   static supportsRenderingToFloatTexture() {
     const canvas = document.createElement( 'canvas' );
@@ -109,6 +110,10 @@ class ElectricPotentialWebGLNode extends WebGLNode {
     return gl.checkFramebufferStatus( gl.FRAMEBUFFER ) === gl.FRAMEBUFFER_COMPLETE;
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     this.disposeElectricPotentialWebGLNode();
   }
@@ -247,7 +252,12 @@ class ElectricPotentialPainter {
     ] ), gl.STATIC_DRAW );
   }
 
-  // resizes a texture to be able to cover the canvas area, and sets drawable properties for the size
+  /**
+   * Resizes a texture to be able to cover the canvas area, and sets drawable properties for the size
+   * @private
+   *
+   * @param {WebGLTexture} texture
+   */
   sizeTexture( texture ) {
     const gl = this.gl;
     const width = gl.canvas.width;
@@ -266,6 +276,13 @@ class ElectricPotentialPainter {
     gl.bindTexture( gl.TEXTURE_2D, null );
   }
 
+  /**
+   * @public
+   *
+   * @param {Matrix3} modelViewMatrix
+   * @param {Matrix3} projectionMatrix
+   * @returns {number} - WebGLNode.PAINTED_NOTHING or WebGLNode.PAINTED_SOMETHING.
+   */
   paint( modelViewMatrix, projectionMatrix ) {
     const gl = this.gl;
     const clearShaderProgram = this.clearShaderProgram;
@@ -398,6 +415,10 @@ class ElectricPotentialPainter {
     return WebGLNode.PAINTED_SOMETHING;
   }
 
+  /**
+   * Releases references
+   * @public
+   */
   dispose() {
     const gl = this.gl;
 
