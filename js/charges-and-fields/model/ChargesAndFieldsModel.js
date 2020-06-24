@@ -639,7 +639,7 @@ class ChargesAndFieldsModel extends PhetioObject {
 
     // Clear lines without disrupting phet-io state
     if ( !phet.joist.sim.isSettingPhetioStateProperty.value ) {
-      this.electricPotentialLineGroup.clear();
+      this.electricPotentialLineGroup.clear( { resetIndex: false } );
     }
   }
 
