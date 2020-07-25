@@ -9,8 +9,11 @@
 
 import validate from '../../../../axon/js/validate.js';
 import Vector2IO from '../../../../dot/js/Vector2IO.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
+
+const NullableIOVector2IO = NullableIO( Vector2IO );
 
 class ModelElementIO extends ObjectIO {
 
@@ -23,30 +26,18 @@ class ModelElementIO extends ObjectIO {
   static toStateObject( modelElement ) {
     validate( modelElement, this.validator );
     return {
-      initialPosition: modelElement.initialPosition ? Vector2IO.toStateObject( modelElement.initialPosition ) : null
-    };
-  }
-
-  /**
-   * @public
-   * @param {Object} stateObject
-   * @returns {Object}
-   * @override
-   */
-  static fromStateObject( stateObject ) {
-    return {
-      initialPosition: stateObject.initialPosition ? Vector2IO.fromStateObject( stateObject.initialPosition ) : null
+      initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition )
     };
   }
 
   /**
    * @public
    * @override
-   * @param {Object} state - see ModelElementIO.toStateObject
+   * @param {Object} stateObject - see ModelElementIO.toStateObject
    * @returns {Array.<*>}
    */
-  static stateToArgsForConstructor( state ) {
-    return [ state.initialPosition ? state.initialPosition : null ];
+  static stateToArgsForConstructor( stateObject ) {
+    return [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ];
   }
 }
 

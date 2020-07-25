@@ -27,22 +27,12 @@ class ElectricPotentialLineIO extends ModelElementIO {
 
   /**
    * @public
+   * @override
    * @param {Object} stateObject
-   * @returns {Object}
-   * @override
-   */
-  static fromStateObject( stateObject ) {
-    return { position: Vector2IO.fromStateObject( stateObject.position ) };
-  }
-
-  /**
-   * @public
-   * @override
-   * @param {Object} state
    * @returns {Array.<*>}
    */
-  static stateToArgsForConstructor( state ) {
-    return [ state.position ];
+  static stateToArgsForConstructor( stateObject ) {
+    return [ Vector2IO.fromStateObject( stateObject.position ) ];
   }
 }
 

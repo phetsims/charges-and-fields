@@ -30,26 +30,15 @@ class ChargedParticleIO extends ModelElementIO {
   }
 
   /**
-   * @param {Object} stateObject
-   * @returns {Object}
-   * @public
-   */
-  static fromStateObject( stateObject ) {
-    const state = ModelElementIO.fromStateObject( stateObject );
-    state.charge = stateObject.charge;
-    return state;
-  }
-
-  /**
    * @override
-   * @param {Object} state - see ChargedParticleIO.toStateObject
+   * @param {Object} stateObject - see ChargedParticleIO.toStateObject
    * @returns {Array.<*>}
    * @public
    */
-  static stateToArgsForConstructor( state ) {
+  static stateToArgsForConstructor( stateObject ) {
 
-    // Put charge first for the ChargedParticle Group create function api.
-    return [ state.charge ].concat( ModelElementIO.stateToArgsForConstructor( state ) );
+    // Put charge first for the chargedParticleGroup create function api.
+    return [ stateObject.charge ].concat( ModelElementIO.stateToArgsForConstructor( stateObject ) );
   }
 }
 
