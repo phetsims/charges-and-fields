@@ -7,7 +7,6 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import required from '../../../../phet-core/js/required.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargedParticleIO from './ChargedParticleIO.js';
@@ -18,18 +17,18 @@ class ChargedParticle extends ModelElement {
   /**
    * @param {number} charge - (positive=+1 or negative=-1)
    * @param {Vector2} initialPosition
-   * @param {Object} config - required actually to supply tandem
+   * @param {Object} [options]
    * @private - see createGroup
    */
-  constructor( charge, initialPosition, config ) {
-    config = merge( {
+  constructor( charge, initialPosition, options ) {
+    options = merge( {
 
       // {Tandem}
-      tandem: required( Tandem.REQUIRED ),
+      tandem: Tandem.REQUIRED,
       phetioType: ChargedParticleIO,
       phetioDynamicElement: true
-    }, config );
-    super( initialPosition, config );
+    }, options );
+    super( initialPosition, options );
     assert && assert( charge === 1 || charge === -1, 'Charges should be +1 or -1' );
 
     // @public (read-only) {number} - a charge of one corresponds to one nano Coulomb
