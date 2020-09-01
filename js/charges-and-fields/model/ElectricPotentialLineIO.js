@@ -10,9 +10,9 @@ import validate from '../../../../axon/js/validate.js';
 import Vector2IO from '../../../../dot/js/Vector2IO.js';
 import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ModelElementIO from './ModelElementIO.js';
+import ModelElement from './ModelElement.js';
 
-class ElectricPotentialLineIO extends ModelElementIO {
+class ElectricPotentialLineIO extends ModelElement.ModelElementIO {
 
   /**
    * @public

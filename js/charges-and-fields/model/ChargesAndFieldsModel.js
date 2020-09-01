@@ -21,13 +21,12 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from './ChargedParticle.js';
-import ChargedParticleIO from './ChargedParticleIO.js';
 import ElectricFieldSensor from './ElectricFieldSensor.js';
 import ElectricPotentialLine from './ElectricPotentialLine.js';
 import ElectricPotentialLineIO from './ElectricPotentialLineIO.js';
 import ElectricPotentialSensor from './ElectricPotentialSensor.js';
 import MeasuringTape from './MeasuringTape.js';
-import ModelElementIO from './ModelElementIO.js';
+import ModelElement from './ModelElement.js';
 
 // constants
 const GRID_MINOR_SPACING = ChargesAndFieldsConstants.GRID_MAJOR_SPACING / ChargesAndFieldsConstants.MINOR_GRIDLINES_PER_MAJOR_GRIDLINE;
@@ -136,7 +135,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return chargedParticle;
     }, [ 1, Vector2.ZERO ], {
       tandem: tandem.createTandem( 'chargedParticleGroup' ),
-      phetioType: PhetioGroupIO( ChargedParticleIO ),
+      phetioType: PhetioGroupIO( ChargedParticle.ChargedParticleIO ),
       phetioDynamicElementName: 'particle'
     } );
     const chargedParticleGroup = this.chargedParticleGroup;
@@ -145,7 +144,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // This is the relevant array to calculate the electric field, and electric potential
     // @public {ObservableArray.<ChargedParticle>}
     this.activeChargedParticles = new ObservableArray( {
-      phetioType: PropertyIO( ChargedParticleIO )
+      phetioType: PropertyIO( ChargedParticle.ChargedParticleIO )
     } );
 
     // @public {PhetioGroup.<ElectricFieldSensor>} Observable group of electric field sensors
@@ -155,7 +154,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return sensor;
     }, [ Vector2.ZERO ], {
       tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
-      phetioType: PhetioGroupIO( ModelElementIO )
+      phetioType: PhetioGroupIO( ModelElement.ModelElementIO )
     } ); // {ObservableArray.<ElectricFieldSensor>}
     const electricFieldSensorGroup = this.electricFieldSensorGroup;
 

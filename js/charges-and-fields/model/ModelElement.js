@@ -9,12 +9,17 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2IO from '../../../../dot/js/Vector2IO.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
+import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
-import ModelElementIO from './ModelElementIO.js';
+
+// constants
+const NullableIOVector2IO = NullableIO( Vector2IO );
 
 class ModelElement extends PhetioObject {
 
@@ -26,7 +31,7 @@ class ModelElement extends PhetioObject {
 
     options = merge( {
 
-      phetioType: ModelElementIO
+      phetioType: ModelElement.ModelElementIO
     }, options );
     super( options );
 
@@ -119,7 +124,48 @@ class ModelElement extends PhetioObject {
 
     this.animationTween.start( phet.joist.elapsedTime );
   }
+
+  /**
+   * @public
+   * @returns {Object}
+   * @override
+   */
+  toStateObject() {
+    return {
+      initialPosition: NullableIOVector2IO.toStateObject( this.initialPosition )
+    };
+  }
+
+  // @private
+  static fromStateObject( stateObject ) {
+    return {
+      initialPosition: NullableIOVector2IO.fromStateObject( stateObject.initialPosition )
+    };
+  }
+
+  /**
+   * @param {Object} stateObject
+   * @public
+   */
+  applyState( stateObject ) {
+    const s = ModelElement.fromStateObject( stateObject );
+    this.initialPosition = s.initialPosition;
+  }
+
+  /**
+   * @public
+   * @override
+   * @param {Object} stateObject
+   * @returns {Array.<*>}
+   */
+  static stateToArgsForConstructor( stateObject ) {
+    return [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ];
+  }
 }
+
+ModelElement.ModelElementIO = PhetioObject.createIOType( ModelElement, 'ModelElementIO', ObjectIO, {
+  documentation: 'A Model Element'
+} );
 
 chargesAndFields.register( 'ModelElement', ModelElement );
 export default ModelElement;
