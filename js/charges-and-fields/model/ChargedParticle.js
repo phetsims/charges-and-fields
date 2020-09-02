@@ -7,9 +7,9 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
 import VoidIO from '../../../../tandem/js/types/VoidIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ModelElement from './ModelElement.js';
@@ -67,7 +67,7 @@ class ChargedParticle extends ModelElement {
   }
 }
 
-ChargedParticle.ChargedParticleIO = PhetioObject.createIOType( ChargedParticle, 'ChargedParticleIO', ModelElement.ModelElementIO, {
+ChargedParticle.ChargedParticleIO = ObjectIO.createIOType( ChargedParticle, 'ChargedParticleIO', ModelElement.ModelElementIO, {
   documentation: 'A Charged Particle',
   methods: {
     setCharge: {
