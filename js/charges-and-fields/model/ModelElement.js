@@ -163,7 +163,7 @@ class ModelElement extends PhetioObject {
   }
 }
 
-ModelElement.ModelElementIO = ObjectIO.createIOType( ModelElement, 'ModelElementIO', ObjectIO, {
+ModelElement.ModelElementIO = ObjectIO.createIOType( ModelElement, 'ModelElementIO', {
   documentation: 'A Model Element'
 } );
 
