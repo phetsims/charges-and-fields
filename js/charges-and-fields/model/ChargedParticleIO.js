@@ -47,7 +47,7 @@ ChargedParticleIO.methods = {
     returnType: VoidIO,
     parameterTypes: [ NumberIO ],
     implementation: function( value ) {
-      this.phetioObject.charge = value.charge;
+      this.charge = value.charge;
     },
     documentation: 'Set charge (in units of e)',
     invocableForReadOnlyElements: false
