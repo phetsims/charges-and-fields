@@ -9,13 +9,12 @@
 import Emitter from '../../../../axon/js/Emitter.js';
 import dot from '../../../../dot/js/dot.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector2IO from '../../../../dot/js/Vector2IO.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ModelElement from './ModelElement.js';
+import ElectricPotentialLineIO from './ElectricPotentialLineIO.js';
 
 // constants
 // see getEquipotentialPositionArray to find how these are used
@@ -35,7 +34,7 @@ class ElectricPotentialLine extends PhetioObject {
 
     super( {
       tandem: tandem,
-      phetioType: ElectricPotentialLine.ElectricPotentialLineIO,
+      phetioType: ElectricPotentialLineIO,
       phetioDynamicElement: true
     } );
 
@@ -416,40 +415,7 @@ class ElectricPotentialLine extends PhetioObject {
     }
     return shape;
   }
-
-  /**
-   * @public
-   * @returns {Object}
-   * @override
-   */
-  toStateObject() {
-    return { position: Vector2IO.toStateObject( this.position ) };
-  }
-
-  // @private: just used for applyState
-  static fromStateObject( stateObject ) {
-    return { position: Vector2IO.fromStateObject( stateObject.position ) };
-  }
-
-  // @public
-  applyState( stateObject ) {
-    this.position = ElectricPotentialLine.fromStateObject( stateObject ).position;
-  }
-
-  /**
-   * @public
-   * @override
-   * @param {Object} stateObject
-   * @returns {Array.<*>}
-   */
-  static stateToArgsForConstructor( stateObject ) {
-    return [ Vector2IO.fromStateObject( stateObject.position ) ];
-  }
 }
-
-ElectricPotentialLine.ElectricPotentialLineIO = PhetioObject.createIOType( ElectricPotentialLine, 'ElectricPotentialLineIO', ModelElement.ModelElementIO, {
-  documentation: 'The vector that shows the charge strength and direction.'
-} );
 
 chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
 export default ElectricPotentialLine;
