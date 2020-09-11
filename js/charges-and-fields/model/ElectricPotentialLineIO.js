@@ -1,7 +1,7 @@
 // Copyright 2017-2020, University of Colorado Boulder
 
 /**
- * IO type for ElectricPotentialLine
+ * IO Type for ElectricPotentialLine
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -39,7 +39,7 @@ class ElectricPotentialLineIO extends ModelElementIO {
 ElectricPotentialLineIO.documentation = 'The vector that shows the charge strength and direction.';
 ElectricPotentialLineIO.validator = { isValidValue: v => v instanceof phet.chargesAndFields.ElectricPotentialLine };
 ElectricPotentialLineIO.typeName = 'ElectricPotentialLineIO';
-ObjectIO.validateSubtype( ElectricPotentialLineIO );
+ObjectIO.validateIOType( ElectricPotentialLineIO );
 
 chargesAndFields.register( 'ElectricPotentialLineIO', ElectricPotentialLineIO );
 export default ElectricPotentialLineIO;

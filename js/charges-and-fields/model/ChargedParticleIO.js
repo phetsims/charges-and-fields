@@ -1,7 +1,7 @@
 // Copyright 2017-2020, University of Colorado Boulder
 
 /**
- * IO type for ChargedParticle
+ * IO Type for ChargedParticle
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -56,7 +56,7 @@ ChargedParticleIO.methods = {
 ChargedParticleIO.documentation = 'A Charged Particle';
 ChargedParticleIO.validator = { isValidValue: v => v instanceof phet.chargesAndFields.ChargedParticle };
 ChargedParticleIO.typeName = 'ChargedParticleIO';
-ObjectIO.validateSubtype( ChargedParticleIO );
+ObjectIO.validateIOType( ChargedParticleIO );
 
 chargesAndFields.register( 'ChargedParticleIO', ChargedParticleIO );
 export default ChargedParticleIO;

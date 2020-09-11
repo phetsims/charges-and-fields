@@ -1,7 +1,7 @@
 // Copyright 2017-2020, University of Colorado Boulder
 
 /**
- * IO type for ModelElement
+ * IO Type for ModelElement
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -44,7 +44,7 @@ class ModelElementIO extends ObjectIO {
 ModelElementIO.validator = { isValidValue: e => e instanceof phet.chargesAndFields.ModelElement };
 ModelElementIO.documentation = 'A Model Element';
 ModelElementIO.typeName = 'ModelElementIO';
-ObjectIO.validateSubtype( ModelElementIO );
+ObjectIO.validateIOType( ModelElementIO );
 
 chargesAndFields.register( 'ModelElementIO', ModelElementIO );
 export default ModelElementIO;
