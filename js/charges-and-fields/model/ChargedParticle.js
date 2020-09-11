@@ -7,11 +7,9 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import VoidIO from '../../../../tandem/js/types/VoidIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import ChargedParticleIO from './ChargedParticleIO.js';
 import ModelElement from './ModelElement.js';
 
 class ChargedParticle extends ModelElement {
@@ -27,7 +25,7 @@ class ChargedParticle extends ModelElement {
 
       // {Tandem}
       tandem: Tandem.REQUIRED,
-      phetioType: ChargedParticle.ChargedParticleIO,
+      phetioType: ChargedParticleIO,
       phetioDynamicElement: true
     }, options );
     super( initialPosition, options );
@@ -36,51 +34,7 @@ class ChargedParticle extends ModelElement {
     // @public (read-only) {number} - a charge of one corresponds to one nano Coulomb
     this.charge = charge;
   }
-
-  // @public
-  applyState( stateObject ) {
-    super.applyState( stateObject );
-    this.charge = stateObject.charge;
-  }
-
-  /**
-   * @public
-   * @returns {Object}
-   * @override
-   */
-  toStateObject() {
-    const parentStateObject = super.toStateObject();
-    parentStateObject.charge = this.charge;
-    return parentStateObject;
-  }
-
-  /**
-   * @override
-   * @param {Object} stateObject - see ChargedParticleIO.toStateObject
-   * @returns {Array.<*>}
-   * @public
-   */
-  static stateToArgsForConstructor( stateObject ) {
-    assert && assert( stateObject.charge === 1 || stateObject.charge === -1 );
-    // Put charge first for the chargedParticleGroup create function api.
-    return [ stateObject.charge ].concat( ModelElement.ModelElementIO.stateToArgsForConstructor( stateObject ) );
-  }
 }
-
-ChargedParticle.ChargedParticleIO = PhetioObject.createIOType( ChargedParticle, 'ChargedParticleIO', ModelElement.ModelElementIO, {
-  documentation: 'A Charged Particle',
-  methods: {
-    setCharge: {
-      returnType: VoidIO,
-      parameterTypes: [ NumberIO ],
-      implementation: function( value ) {
-        this.phetioObject.charge = value.charge;
-      },
-      documentation: 'Set charge (in units of e)',
-      invocableForReadOnlyElements: false
-    }
-  }
-} );
 
 chargesAndFields.register( 'ChargedParticle', ChargedParticle );
 export default ChargedParticle;
