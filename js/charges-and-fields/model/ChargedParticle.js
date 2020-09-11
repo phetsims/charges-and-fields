@@ -67,8 +67,7 @@ class ChargedParticle extends ModelElement {
   }
 }
 
-ChargedParticle.ChargedParticleIO = ObjectIO.createIOType( ChargedParticle, 'ChargedParticleIO', {
-  parentIOType: ModelElement.ModelElementIO,
+ChargedParticle.ChargedParticleIO = ObjectIO.createIOType( ChargedParticle, 'ChargedParticleIO', ModelElement.ModelElementIO, {
   documentation: 'A Charged Particle',
   methods: {
     setCharge: {

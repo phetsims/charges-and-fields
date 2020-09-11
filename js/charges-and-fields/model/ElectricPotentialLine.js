@@ -448,8 +448,7 @@ class ElectricPotentialLine extends PhetioObject {
   }
 }
 
-ElectricPotentialLine.ElectricPotentialLineIO = ObjectIO.createIOType( ElectricPotentialLine, 'ElectricPotentialLineIO', {
-  parentIOType: ModelElement.ModelElementIO,
+ElectricPotentialLine.ElectricPotentialLineIO = ObjectIO.createIOType( ElectricPotentialLine, 'ElectricPotentialLineIO', ModelElement.ModelElementIO, {
   documentation: 'The vector that shows the charge strength and direction.'
 } );
 
