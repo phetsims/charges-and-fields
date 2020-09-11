@@ -14,7 +14,6 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
-import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ModelElement from './ModelElement.js';
 
@@ -448,7 +447,7 @@ class ElectricPotentialLine extends PhetioObject {
   }
 }
 
-ElectricPotentialLine.ElectricPotentialLineIO = ObjectIO.createIOType( ElectricPotentialLine, 'ElectricPotentialLineIO', ModelElement.ModelElementIO, {
+ElectricPotentialLine.ElectricPotentialLineIO = PhetioObject.createIOType( ElectricPotentialLine, 'ElectricPotentialLineIO', ModelElement.ModelElementIO, {
   documentation: 'The vector that shows the charge strength and direction.'
 } );
 
