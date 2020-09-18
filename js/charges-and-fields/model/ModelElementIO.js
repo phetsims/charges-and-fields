@@ -19,11 +19,7 @@ const ModelElementIO = new IOType( 'ModelElementIO', {
   // TODO: polymorphism with this? https://github.com/phetsims/tandem/issues/211
   isValidValue: e => e instanceof phet.chargesAndFields.ModelElement || e instanceof phet.chargesAndFields.ElectricPotentialLine,
   documentation: 'A Model Element',
-  toStateObject( modelElement ) {
-    return {
-      initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition )
-    };
-  },
+  toStateObject: modelElement => ( { initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition ) } ),
   stateToArgsForConstructor: stateObject => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
 } );
 

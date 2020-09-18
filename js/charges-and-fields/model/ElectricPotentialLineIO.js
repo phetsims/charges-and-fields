@@ -15,26 +15,8 @@ const ElectricPotentialLineIO = new IOType( 'ElectricPotentialLineIO', {
   isValidValue: v => v instanceof phet.chargesAndFields.ElectricPotentialLine,
   documentation: 'The vector that shows the charge strength and direction.',
   supertype: ModelElementIO,
-
-  /**
-   * @public
-   * @param {ElectricPotentialLine} electricPotentialLine
-   * @returns {Object}
-   * @override
-   */
-  toStateObject( electricPotentialLine ) {
-    return { position: Vector2IO.toStateObject( electricPotentialLine.position ) };
-  },
-
-  /**
-   * @public
-   * @override
-   * @param {Object} stateObject
-   * @returns {Array.<*>}
-   */
-  stateToArgsForConstructor( stateObject ) {
-    return [ Vector2IO.fromStateObject( stateObject.position ) ];
-  }
+  toStateObject: electricPotentialLine => ( { position: Vector2IO.toStateObject( electricPotentialLine.position ) } ),
+  stateToArgsForConstructor: stateObject => [ Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 
 chargesAndFields.register( 'ElectricPotentialLineIO', ElectricPotentialLineIO );

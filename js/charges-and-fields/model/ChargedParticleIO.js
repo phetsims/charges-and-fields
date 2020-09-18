@@ -27,30 +27,13 @@ const ChargedParticleIO = new IOType( 'ChargedParticleIO', {
       invocableForReadOnlyElements: false
     }
   },
-
-  /**
-   * @public
-   * @param {ChargedParticle} chargedParticle
-   * @returns {Object}
-   * @override
-   */
-  toStateObject( chargedParticle ) {
+  toStateObject: chargedParticle => {
     const parentStateObject = ModelElementIO.toStateObject( chargedParticle );
     parentStateObject.charge = chargedParticle.charge;
     return parentStateObject;
   },
-
-  /**
-   * @override
-   * @param {Object} stateObject - see ChargedParticleIO.toStateObject
-   * @returns {Array.<*>}
-   * @public
-   */
-  stateToArgsForConstructor( stateObject ) {
-
-    // Put charge first for the chargedParticleGroup create function api.
-    return [ stateObject.charge ].concat( ModelElementIO.stateToArgsForConstructor( stateObject ) );
-  }
+  // Put charge first for the chargedParticleGroup create function api.
+  stateToArgsForConstructor: stateObject => [ stateObject.charge ].concat( ModelElementIO.stateToArgsForConstructor( stateObject ) )
 } );
 
 chargesAndFields.register( 'ChargedParticleIO', ChargedParticleIO );
