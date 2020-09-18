@@ -16,7 +16,7 @@ const NullableIOVector2IO = NullableIO( Vector2IO );
 
 const ModelElementIO = new IOType( 'ModelElementIO', {
 
-  // TODO: polymorphism with this? https://github.com/phetsims/tandem/issues/211
+  // TODO: https://github.com/phetsims/tandem/issues/211 polymorphism with this?
   isValidValue: e => e instanceof phet.chargesAndFields.ModelElement || e instanceof phet.chargesAndFields.ElectricPotentialLine,
   documentation: 'A Model Element',
   toStateObject: modelElement => ( { initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition ) } ),
