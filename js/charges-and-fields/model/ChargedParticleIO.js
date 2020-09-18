@@ -7,14 +7,26 @@
  * @author Andrew Adare (PhET Interactive Simulations)
  */
 
-import validate from '../../../../axon/js/validate.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
-import ObjectIO from '../../../../tandem/js/types/ObjectIO.js';
 import VoidIO from '../../../../tandem/js/types/VoidIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ModelElementIO from './ModelElementIO.js';
 
-class ChargedParticleIO extends ModelElementIO {
+const ChargedParticleIO = new IOType( 'ChargedParticleIO', {
+  isValidValue: v => v instanceof phet.chargesAndFields.ChargedParticle,
+  supertype: ModelElementIO,
+  methods: {
+    setCharge: {
+      returnType: VoidIO,
+      parameterTypes: [ NumberIO ],
+      implementation: function( value ) {
+        this.charge = value.charge;
+      },
+      documentation: 'Set charge (in units of e)',
+      invocableForReadOnlyElements: false
+    }
+  },
 
   /**
    * @public
@@ -22,12 +34,11 @@ class ChargedParticleIO extends ModelElementIO {
    * @returns {Object}
    * @override
    */
-  static toStateObject( chargedParticle ) {
-    validate( chargedParticle, this.validator );
+  toStateObject( chargedParticle ) {
     const parentStateObject = ModelElementIO.toStateObject( chargedParticle );
     parentStateObject.charge = chargedParticle.charge;
     return parentStateObject;
-  }
+  },
 
   /**
    * @override
@@ -35,28 +46,12 @@ class ChargedParticleIO extends ModelElementIO {
    * @returns {Array.<*>}
    * @public
    */
-  static stateToArgsForConstructor( stateObject ) {
+  stateToArgsForConstructor( stateObject ) {
 
     // Put charge first for the chargedParticleGroup create function api.
     return [ stateObject.charge ].concat( ModelElementIO.stateToArgsForConstructor( stateObject ) );
   }
-}
-
-ChargedParticleIO.methods = {
-  setCharge: {
-    returnType: VoidIO,
-    parameterTypes: [ NumberIO ],
-    implementation: function( value ) {
-      this.charge = value.charge;
-    },
-    documentation: 'Set charge (in units of e)',
-    invocableForReadOnlyElements: false
-  }
-};
-ChargedParticleIO.documentation = 'A Charged Particle';
-ChargedParticleIO.validator = { isValidValue: v => v instanceof phet.chargesAndFields.ChargedParticle };
-ChargedParticleIO.typeName = 'ChargedParticleIO';
-ObjectIO.validateIOType( ChargedParticleIO );
+} );
 
 chargesAndFields.register( 'ChargedParticleIO', ChargedParticleIO );
 export default ChargedParticleIO;
