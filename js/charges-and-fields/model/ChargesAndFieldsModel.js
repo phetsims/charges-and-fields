@@ -145,7 +145,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // This is the relevant array to calculate the electric field, and electric potential
     // @public {ObservableArray.<ChargedParticle>}
     this.activeChargedParticles = new ObservableArray( {
-      phetioType: PropertyIO( ChargedParticleIO )
+      phetioType: ObservableArray.ObservableArrayIO( ChargedParticleIO )
     } );
 
     // @public {PhetioGroup.<ElectricFieldSensor>} Observable group of electric field sensors
