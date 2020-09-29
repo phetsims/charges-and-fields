@@ -20,7 +20,6 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from './ChargedParticle.js';
-import ChargedParticleIO from './ChargedParticleIO.js';
 import ElectricFieldSensor from './ElectricFieldSensor.js';
 import ElectricPotentialLine from './ElectricPotentialLine.js';
 import ElectricPotentialLineIO from './ElectricPotentialLineIO.js';
@@ -135,7 +134,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return chargedParticle;
     }, [ 1, Vector2.ZERO ], {
       tandem: tandem.createTandem( 'chargedParticleGroup' ),
-      phetioType: PhetioGroupIO( ChargedParticleIO ),
+      phetioType: PhetioGroupIO( ChargedParticle.ChargedParticleIO ),
       phetioDynamicElementName: 'particle'
     } );
     const chargedParticleGroup = this.chargedParticleGroup;
@@ -144,7 +143,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // This is the relevant array to calculate the electric field, and electric potential
     // @public {ObservableArray.<ChargedParticle>}
     this.activeChargedParticles = new ObservableArray( {
-      phetioType: ObservableArray.ObservableArrayIO( ChargedParticleIO )
+      phetioType: ObservableArray.ObservableArrayIO( ChargedParticle.ChargedParticleIO )
     } );
 
     // @public {PhetioGroup.<ElectricFieldSensor>} Observable group of electric field sensors

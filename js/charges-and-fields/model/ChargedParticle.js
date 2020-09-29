@@ -8,9 +8,12 @@
 
 import merge from '../../../../phet-core/js/merge.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NumberIO from '../../../../tandem/js/types/NumberIO.js';
+import VoidIO from '../../../../tandem/js/types/VoidIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargedParticleIO from './ChargedParticleIO.js';
 import ModelElement from './ModelElement.js';
+import ModelElementIO from './ModelElementIO.js';
 
 class ChargedParticle extends ModelElement {
 
@@ -25,7 +28,7 @@ class ChargedParticle extends ModelElement {
 
       // {Tandem}
       tandem: Tandem.REQUIRED,
-      phetioType: ChargedParticleIO,
+      phetioType: ChargedParticle.ChargedParticleIO,
       phetioDynamicElement: true
     }, options );
     super( initialPosition, options );
@@ -35,6 +38,29 @@ class ChargedParticle extends ModelElement {
     this.charge = charge;
   }
 }
+
+ChargedParticle.ChargedParticleIO = new IOType( 'ChargedParticleIO', {
+  valueType: ChargedParticle,
+  supertype: ModelElementIO,
+  methods: {
+    setCharge: {
+      returnType: VoidIO,
+      parameterTypes: [ NumberIO ],
+      implementation: function( value ) {
+        this.charge = value.charge;
+      },
+      documentation: 'Set charge (in units of e)',
+      invocableForReadOnlyElements: false
+    }
+  },
+  toStateObject: chargedParticle => {
+    const parentStateObject = ModelElementIO.toStateObject( chargedParticle );
+    parentStateObject.charge = chargedParticle.charge;
+    return parentStateObject;
+  },
+  // Put charge first for the chargedParticleGroup create function api.
+  stateToArgsForConstructor: stateObject => [ stateObject.charge ].concat( ModelElementIO.stateToArgsForConstructor( stateObject ) )
+} );
 
 chargesAndFields.register( 'ChargedParticle', ChargedParticle );
 export default ChargedParticle;
