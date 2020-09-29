@@ -13,7 +13,6 @@ import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import VoidIO from '../../../../tandem/js/types/VoidIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ModelElement from './ModelElement.js';
-import ModelElementIO from './ModelElementIO.js';
 
 class ChargedParticle extends ModelElement {
 
@@ -41,7 +40,7 @@ class ChargedParticle extends ModelElement {
 
 ChargedParticle.ChargedParticleIO = new IOType( 'ChargedParticleIO', {
   valueType: ChargedParticle,
-  supertype: ModelElementIO,
+  supertype: ModelElement.ModelElementIO,
   methods: {
     setCharge: {
       returnType: VoidIO,
@@ -54,12 +53,12 @@ ChargedParticle.ChargedParticleIO = new IOType( 'ChargedParticleIO', {
     }
   },
   toStateObject: chargedParticle => {
-    const parentStateObject = ModelElementIO.toStateObject( chargedParticle );
+    const parentStateObject = ModelElement.ModelElementIO.toStateObject( chargedParticle );
     parentStateObject.charge = chargedParticle.charge;
     return parentStateObject;
   },
   // Put charge first for the chargedParticleGroup create function api.
-  stateToArgsForConstructor: stateObject => [ stateObject.charge ].concat( ModelElementIO.stateToArgsForConstructor( stateObject ) )
+  stateToArgsForConstructor: stateObject => [ stateObject.charge ].concat( ModelElement.ModelElementIO.stateToArgsForConstructor( stateObject ) )
 } );
 
 chargesAndFields.register( 'ChargedParticle', ChargedParticle );

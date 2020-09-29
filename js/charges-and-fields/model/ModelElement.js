@@ -9,12 +9,17 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2IO from '../../../../dot/js/Vector2IO.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
+import NullableIO from '../../../../tandem/js/types/NullableIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
-import ModelElementIO from './ModelElementIO.js';
+
+// constants
+const NullableIOVector2IO = NullableIO( Vector2IO );
 
 class ModelElement extends PhetioObject {
 
@@ -26,7 +31,7 @@ class ModelElement extends PhetioObject {
 
     options = merge( {
 
-      phetioType: ModelElementIO
+      phetioType: ModelElement.ModelElementIO
     }, options );
     super( options );
 
@@ -120,6 +125,15 @@ class ModelElement extends PhetioObject {
     this.animationTween.start( phet.joist.elapsedTime );
   }
 }
+
+ModelElement.ModelElementIO = new IOType( 'ModelElementIO', {
+
+  // TODO: How will this be compatible with https://github.com/phetsims/tandem/issues/213 ?
+  isValidValue: e => e instanceof ModelElement || e instanceof phet.chargesAndFields.ElectricPotentialLine,
+  documentation: 'A Model Element',
+  toStateObject: modelElement => ( { initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition ) } ),
+  stateToArgsForConstructor: stateObject => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
+} );
 
 chargesAndFields.register( 'ModelElement', ModelElement );
 export default ModelElement;

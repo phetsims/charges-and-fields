@@ -16,7 +16,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ModelElementIO from './ModelElementIO.js';
+import ModelElement from './ModelElement.js';
 
 // constants
 // see getEquipotentialPositionArray to find how these are used
@@ -422,7 +422,7 @@ class ElectricPotentialLine extends PhetioObject {
 ElectricPotentialLine.ElectricPotentialLineIO = new IOType( 'ElectricPotentialLineIO', {
   valueType: ElectricPotentialLine,
   documentation: 'The vector that shows the charge strength and direction.',
-  supertype: ModelElementIO,
+  supertype: ModelElement.ModelElementIO,
   toStateObject: electricPotentialLine => ( { position: Vector2IO.toStateObject( electricPotentialLine.position ) } ),
   stateToArgsForConstructor: stateObject => [ Vector2IO.fromStateObject( stateObject.position ) ]
 } );
