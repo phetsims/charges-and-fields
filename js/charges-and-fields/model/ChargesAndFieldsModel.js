@@ -22,7 +22,6 @@ import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from './ChargedParticle.js';
 import ElectricFieldSensor from './ElectricFieldSensor.js';
 import ElectricPotentialLine from './ElectricPotentialLine.js';
-import ElectricPotentialLineIO from './ElectricPotentialLineIO.js';
 import ElectricPotentialSensor from './ElectricPotentialSensor.js';
 import MeasuringTape from './MeasuringTape.js';
 import ModelElementIO from './ModelElementIO.js';
@@ -176,7 +175,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return new ElectricPotentialLine( this, position, tandem );
     }, [ this.electricPotentialSensor.positionProperty.get() ], {
       tandem: tandem.createTandem( 'electricPotentialLineGroup' ),
-      phetioType: PhetioGroupIO( ElectricPotentialLineIO )
+      phetioType: PhetioGroupIO( ElectricPotentialLine.ElectricPotentialLineIO )
     } );
 
     //----------------------------------------------------------------------------------------

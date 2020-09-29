@@ -9,12 +9,14 @@
 import Emitter from '../../../../axon/js/Emitter.js';
 import dot from '../../../../dot/js/dot.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2IO from '../../../../dot/js/Vector2IO.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ElectricPotentialLineIO from './ElectricPotentialLineIO.js';
+import ModelElementIO from './ModelElementIO.js';
 
 // constants
 // see getEquipotentialPositionArray to find how these are used
@@ -34,7 +36,7 @@ class ElectricPotentialLine extends PhetioObject {
 
     super( {
       tandem: tandem,
-      phetioType: ElectricPotentialLineIO,
+      phetioType: ElectricPotentialLine.ElectricPotentialLineIO,
       phetioDynamicElement: true
     } );
 
@@ -416,6 +418,14 @@ class ElectricPotentialLine extends PhetioObject {
     return shape;
   }
 }
+
+ElectricPotentialLine.ElectricPotentialLineIO = new IOType( 'ElectricPotentialLineIO', {
+  valueType: ElectricPotentialLine,
+  documentation: 'The vector that shows the charge strength and direction.',
+  supertype: ModelElementIO,
+  toStateObject: electricPotentialLine => ( { position: Vector2IO.toStateObject( electricPotentialLine.position ) } ),
+  stateToArgsForConstructor: stateObject => [ Vector2IO.fromStateObject( stateObject.position ) ]
+} );
 
 chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
 export default ElectricPotentialLine;
