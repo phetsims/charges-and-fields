@@ -9,7 +9,6 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector2IO from '../../../../dot/js/Vector2IO.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
@@ -19,7 +18,7 @@ import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 // constants
-const NullableIOVector2IO = NullableIO( Vector2IO );
+const NullableIOVector2IO = NullableIO( Vector2.Vector2IO );
 
 class ModelElement extends PhetioObject {
 

@@ -9,7 +9,6 @@
 import Emitter from '../../../../axon/js/Emitter.js';
 import dot from '../../../../dot/js/dot.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Vector2IO from '../../../../dot/js/Vector2IO.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -423,8 +422,8 @@ ElectricPotentialLine.ElectricPotentialLineIO = new IOType( 'ElectricPotentialLi
   valueType: ElectricPotentialLine,
   documentation: 'The vector that shows the charge strength and direction.',
   supertype: ModelElement.ModelElementIO,
-  toStateObject: electricPotentialLine => ( { position: Vector2IO.toStateObject( electricPotentialLine.position ) } ),
-  stateToArgsForConstructor: stateObject => [ Vector2IO.fromStateObject( stateObject.position ) ]
+  toStateObject: electricPotentialLine => ( { position: Vector2.Vector2IO.toStateObject( electricPotentialLine.position ) } ),
+  stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 
 chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
