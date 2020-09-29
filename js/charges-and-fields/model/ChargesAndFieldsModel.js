@@ -11,7 +11,6 @@ import Emitter from '../../../../axon/js/Emitter.js';
 import ObservableArray from '../../../../axon/js/ObservableArray.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Bounds2IO from '../../../../dot/js/Bounds2IO.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import PhetioGroupIO from '../../../../tandem/js/PhetioGroupIO.js';
@@ -109,7 +108,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     this.chargesAndSensorsEnclosureBoundsProperty = new Property(
       new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
         tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
-        phetioType: Property.PropertyIO( Bounds2IO )
+        phetioType: Property.PropertyIO( Bounds2.Bounds2IO )
       } );
 
     //----------------------------------------------------------------------------------------
