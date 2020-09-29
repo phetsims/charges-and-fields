@@ -9,7 +9,6 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import PropertyIO from '../../../../axon/js/PropertyIO.js';
 import Bounds2IO from '../../../../dot/js/Bounds2IO.js';
 import LinearFunction from '../../../../dot/js/LinearFunction.js';
 import Rectangle from '../../../../dot/js/Rectangle.js';
@@ -81,7 +80,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     // the availableModelBounds should not be reset when the resetAllButton is pressed,
     this.availableModelBoundsProperty = new Property( model.enlargedBounds, {
       tandem: tandem.createTandem( 'availableModelBoundsProperty' ),
-      phetioType: PropertyIO( Bounds2IO ),
+      phetioType: Property.PropertyIO( Bounds2IO ),
       phetioDocumentation: 'Registers the model bounds based on the screen size'
     } );
 
