@@ -7,7 +7,6 @@
 
 import Node from '../../../../scenery/js/nodes/Node.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
-import PhetioGroupIO from '../../../../tandem/js/PhetioGroupIO.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ElectricPotentialLineView from './ElectricPotentialLineView.js';
@@ -47,7 +46,7 @@ class ElectricPotentialLinesNode extends Node {
       return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
     }, [ electricPotentialLineGroup.archetype ], {
       tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
-      phetioType: PhetioGroupIO( IOType.ObjectIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( IOType.ObjectIO ),
 
       // These elements are not created by the PhET-IO state engine, they can just listen to the model for supporting
       // state in the same way they do for sim logic.

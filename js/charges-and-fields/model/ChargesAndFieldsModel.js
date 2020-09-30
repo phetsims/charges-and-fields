@@ -13,7 +13,6 @@ import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
-import PhetioGroupIO from '../../../../tandem/js/PhetioGroupIO.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
@@ -132,7 +131,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return chargedParticle;
     }, [ 1, Vector2.ZERO ], {
       tandem: tandem.createTandem( 'chargedParticleGroup' ),
-      phetioType: PhetioGroupIO( ChargedParticle.ChargedParticleIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( ChargedParticle.ChargedParticleIO ),
       phetioDynamicElementName: 'particle'
     } );
     const chargedParticleGroup = this.chargedParticleGroup;
@@ -151,7 +150,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return sensor;
     }, [ Vector2.ZERO ], {
       tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
-      phetioType: PhetioGroupIO( ModelElement.ModelElementIO )
+      phetioType: PhetioGroup.PhetioGroupIO( ModelElement.ModelElementIO )
     } ); // {ObservableArray.<ElectricFieldSensor>}
     const electricFieldSensorGroup = this.electricFieldSensorGroup;
 
@@ -174,7 +173,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return new ElectricPotentialLine( this, position, tandem );
     }, [ this.electricPotentialSensor.positionProperty.get() ], {
       tandem: tandem.createTandem( 'electricPotentialLineGroup' ),
-      phetioType: PhetioGroupIO( ElectricPotentialLine.ElectricPotentialLineIO )
+      phetioType: PhetioGroup.PhetioGroupIO( ElectricPotentialLine.ElectricPotentialLineIO )
     } );
 
     //----------------------------------------------------------------------------------------

@@ -23,7 +23,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Utils from '../../../../scenery/js/util/Utils.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
-import PhetioGroupIO from '../../../../tandem/js/PhetioGroupIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
@@ -278,7 +277,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       );
     }, [ model.chargedParticleGroup.archetype ], {
       tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
-      phetioType: PhetioGroupIO( Node.NodeIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
 
       // These elements are not created by the PhET-IO state engine, they can just listen to the model for supporting
       // state in the same way they do for sim logic.
@@ -302,7 +301,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       return electricFieldSensorNode;
     }, [ model.electricFieldSensorGroup.archetype ], {
       tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
-      phetioType: PhetioGroupIO( Node.NodeIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
 
       // These elements are not created by the PhET-IO state engine, they can just listen to the model for supporting
       // state in the same way they do for sim logic.
