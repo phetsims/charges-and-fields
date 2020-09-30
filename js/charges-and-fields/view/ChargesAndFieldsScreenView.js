@@ -19,7 +19,6 @@ import merge from '../../../../phet-core/js/merge.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
-import NodeIO from '../../../../scenery/js/nodes/NodeIO.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Utils from '../../../../scenery/js/util/Utils.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
@@ -279,7 +278,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       );
     }, [ model.chargedParticleGroup.archetype ], {
       tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
-      phetioType: PhetioGroupIO( NodeIO ),
+      phetioType: PhetioGroupIO( Node.NodeIO ),
 
       // These elements are not created by the PhET-IO state engine, they can just listen to the model for supporting
       // state in the same way they do for sim logic.
@@ -303,7 +302,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       return electricFieldSensorNode;
     }, [ model.electricFieldSensorGroup.archetype ], {
       tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
-      phetioType: PhetioGroupIO( NodeIO ),
+      phetioType: PhetioGroupIO( Node.NodeIO ),
 
       // These elements are not created by the PhET-IO state engine, they can just listen to the model for supporting
       // state in the same way they do for sim logic.
