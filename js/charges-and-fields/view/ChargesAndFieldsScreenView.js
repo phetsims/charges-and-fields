@@ -12,10 +12,10 @@ import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import LinearFunction from '../../../../dot/js/LinearFunction.js';
 import Rectangle from '../../../../dot/js/Rectangle.js';
-import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import merge from '../../../../phet-core/js/merge.js';
+import platform from '../../../../phet-core/js/platform.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -39,6 +39,7 @@ import ElectricPotentialMobileWebGLNode from './ElectricPotentialMobileWebGLNode
 import ElectricPotentialSensorNode from './ElectricPotentialSensorNode.js';
 import ElectricPotentialWebGLNode from './ElectricPotentialWebGLNode.js';
 import GridNode from './GridNode.js';
+import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
 
 // constants
 const linear = DotUtils.linear;
@@ -103,7 +104,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
     let electricPotentialGridNode = null;
 
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
-    if ( allowWebGL ) {
+    // Don't trust Safari's OES_texture_float support currently!
+    if ( allowWebGL && !platform.safari ) {
       electricPotentialGridNode = new ElectricPotentialWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
