@@ -41,6 +41,7 @@ define( function( require ) {
   var Util = require( 'SCENERY/util/Util' );
   var Vector2 = require( 'DOT/Vector2' );
   var chargesAndFields = require( 'CHARGES_AND_FIELDS/chargesAndFields' );
+  var platform = require( 'PHET_CORE/platform' );
 
   // constants
   var linear = DotUtil.linear;
@@ -94,7 +95,7 @@ define( function( require ) {
     var electricPotentialGridNode;
 
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
-    if ( allowWebGL ) {
+    if ( allowWebGL && !platform.safari ) {
       electricPotentialGridNode = new ElectricPotentialWebGLNode(
         model.activeChargedParticles,
         modelViewTransform,
