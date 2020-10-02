@@ -32,7 +32,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
+import ObservableArrayDef from '../../../../axon/js/ObservableArrayDef.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import WebGLNode from '../../../../scenery/js/nodes/WebGLNode.js';
 import ShaderProgram from '../../../../scenery/js/util/ShaderProgram.js';
@@ -59,7 +59,7 @@ class ElectricPotentialWebGLNode extends WebGLNode {
    * @param {Property.<boolean>} isVisibleProperty
    */
   constructor( chargedParticles, modelViewTransform, isVisibleProperty ) {
-    assert && assert( chargedParticles instanceof ObservableArray, 'invalid chargedParticles' );
+    assert && assert( ObservableArrayDef.isObservableArray( chargedParticles ), 'invalid chargedParticles' );
 
     super( ElectricPotentialPainter, {
       layerSplit: true // ensure we're on our own layer

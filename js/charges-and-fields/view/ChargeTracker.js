@@ -19,7 +19,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
+import ObservableArrayDef from '../../../../axon/js/ObservableArrayDef.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
 class ChargeTracker {
@@ -28,7 +28,7 @@ class ChargeTracker {
    * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
    */
   constructor( chargedParticles ) {
-    assert && assert( chargedParticles instanceof ObservableArray, 'invalid chargedParticles' );
+    assert && assert( ObservableArrayDef.isObservableArray( chargedParticles ), 'invalid chargedParticles' );
 
     this.chargedParticles = chargedParticles;
 
