@@ -25,7 +25,7 @@ import chargesAndFields from '../../chargesAndFields.js';
 class ChargeTracker {
 
   /**
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+   * @param {ObservableArrayDef.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
    */
   constructor( chargedParticles ) {
     assert && assert( ObservableArrayDef.isObservableArray( chargedParticles ), 'invalid chargedParticles' );

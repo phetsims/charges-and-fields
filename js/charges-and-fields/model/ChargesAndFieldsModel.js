@@ -138,7 +138,7 @@ class ChargesAndFieldsModel extends PhetioObject {
 
     // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
     // This is the relevant array to calculate the electric field, and electric potential
-    // @public {ObservableArray.<ChargedParticle>}
+    // @public {ObservableArrayDef.<ChargedParticle>}
     this.activeChargedParticles = createObservableArray( {
       phetioType: createObservableArray.ObservableArrayIO( ChargedParticle.ChargedParticleIO )
     } );
@@ -151,7 +151,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     }, [ Vector2.ZERO ], {
       tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( ModelElement.ModelElementIO )
-    } ); // {ObservableArray.<ElectricFieldSensor>}
+    } ); // {ObservableArrayDef.<ElectricFieldSensor>}
     const electricFieldSensorGroup = this.electricFieldSensorGroup;
 
     // @public - electric potential sensor

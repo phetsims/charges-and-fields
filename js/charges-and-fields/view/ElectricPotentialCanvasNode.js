@@ -19,7 +19,7 @@ const ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POT
 class ElectricPotentialCanvasNode extends CanvasNode {
 
   /**
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+   * @param {ObservableArrayDef.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
    * @param {Property.<boolean>} isVisibleProperty

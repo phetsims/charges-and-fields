@@ -17,7 +17,7 @@ const IS_DEBUG = phet.chipper.queryParameters.dev;
 class ElectricPotentialLinesNode extends Node {
 
   /**
-   * @param {ObservableArray.<ElectricPotentialLine>} electricPotentialLineGroup - array of models of electricPotentialLine
+   * @param {ObservableArrayDef.<ElectricPotentialLine>} electricPotentialLineGroup - array of models of electricPotentialLine
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
    * @param {Tandem} tandem

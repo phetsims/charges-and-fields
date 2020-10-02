@@ -25,7 +25,7 @@ const scratchVector = new Vector2( 0, 0 );
 class ElectricFieldCanvasNode extends CanvasNode {
 
   /**
-   * @param {ObservableArray.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+   * @param {ObservableArrayDef.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
    * @param {Property.<boolean>} isElectricFieldDirectionOnlyProperty
