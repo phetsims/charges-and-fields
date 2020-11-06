@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.20-phetiorc.4 Wed Nov 04 2020 13:56:22 GMT-0900 (Alaska Standard Time)",
+  "comment": "# charges-and-fields 1.0.20-phetio Fri Nov 06 2020 08:36:01 GMT-0700 (Mountain Standard Time)",
   "assert": {
     "sha": "845be6b591cb746b0b05b7023208aef2e49a8855",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "ea731037d2e31e2a031e2034ce8afd97d08ae364",
+    "sha": "8251fd067a6a86ece99682adf35deb3954d0053a",
     "branch": "1.0-phetio"
   },
   "chipper": {
