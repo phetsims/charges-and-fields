@@ -281,7 +281,9 @@ class ChargesAndFieldsModel extends PhetioObject {
       }
 
       // remove particle from the activeChargedParticles array
-      this.activeChargedParticles.remove( removedChargeParticle );
+      if ( this.activeChargedParticles.includes( removedChargeParticle ) ) {
+        this.activeChargedParticles.remove( removedChargeParticle );
+      }
 
       // update the property isPlayAreaCharged to see if is there at least one active charge on the board
       this.updateIsPlayAreaCharged();
