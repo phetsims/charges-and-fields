@@ -11,6 +11,7 @@ import Emitter from '../../../../axon/js/Emitter.js';
 import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import dotRandom from '../../../../dot/js/dotRandom.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
@@ -621,8 +622,8 @@ class ChargesAndFieldsModel extends PhetioObject {
   addManyElectricPotentialLines( numberOfLines ) {
     for ( let i = 0; i < numberOfLines; i++ ) {
       const position = new Vector2(
-        WIDTH * ( phet.joist.random.nextDouble() - 0.5 ),
-        HEIGHT * ( phet.joist.random.nextDouble() - 0.5 ) ); // a random position on the graph
+        WIDTH * ( dotRandom.nextDouble() - 0.5 ),
+        HEIGHT * ( dotRandom.nextDouble() - 0.5 ) ); // a random position on the graph
 
       this.canAddElectricPotentialLine( position ) && this.addElectricPotentialLine( position );
     }
