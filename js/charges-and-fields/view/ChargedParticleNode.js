@@ -7,7 +7,6 @@
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Touch from '../../../../scenery/js/input/Touch.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import chargesAndFields from '../../chargesAndFields.js';
@@ -60,7 +59,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
       transform: modelViewTransform,
       canStartPress: () => !chargedParticle.animationTween,
       offsetPosition: ( point, listener ) => {
-        return listener.pointer instanceof Touch ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
+        return listener.pointer.isTouchLike() ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
       },
       start: ( event, listener ) => {
         // Move the chargedParticle to the front of this layer when grabbed by the user.
