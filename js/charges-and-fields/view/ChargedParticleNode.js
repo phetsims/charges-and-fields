@@ -59,7 +59,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
       transform: modelViewTransform,
       canStartPress: () => !chargedParticle.animationTween,
       offsetPosition: ( point, listener ) => {
-        return listener.pointer.isTouchLike() ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
+        return listener.pointer && listener.pointer.isTouchLike() ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
       },
       start: ( event, listener ) => {
         // Move the chargedParticle to the front of this layer when grabbed by the user.

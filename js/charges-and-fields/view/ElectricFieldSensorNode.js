@@ -193,7 +193,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
       transform: modelViewTransform,
       canStartPress: () => !electricFieldSensor.animationTween,
       offsetPosition: ( point, listener ) => {
-        return listener.pointer.isTouchLike() ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
+        return listener.pointer && listener.pointer.isTouchLike() ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
       },
       start: ( event, listener ) => {
         // Move the sensor to the front of this layer when grabbed by the user.
