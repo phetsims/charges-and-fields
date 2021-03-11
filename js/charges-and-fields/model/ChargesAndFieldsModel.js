@@ -425,7 +425,7 @@ class ChargesAndFieldsModel extends PhetioObject {
                           .minus( this.activeChargedParticles.get( 0 ).positionProperty.get() )
                           .magnitude < MIN_DISTANCE_SCALE;
 
-      this.isPlayAreaChargedProperty.set( colocated ? false : true );
+      this.isPlayAreaChargedProperty.set( !colocated );
 
       if ( colocated ) {
         this.electricField = Vector2.ZERO;
