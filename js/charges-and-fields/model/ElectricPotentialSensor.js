@@ -29,7 +29,7 @@ class ElectricPotentialSensor {
     // @public
     this.electricPotentialProperty = new NumberProperty( 0, {
       tandem: tandem.createTandem( 'electricPotentialProperty' ),
-      units: 'volts',
+      units: 'V',
       phetioReadOnly: true
     } );
 
