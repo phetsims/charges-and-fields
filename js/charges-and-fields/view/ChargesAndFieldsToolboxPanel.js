@@ -173,7 +173,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 
     // Create the voltage Reading reading
     // TODO: Is this internationalized?
-    const voltageReading = new Text( '0.0 ' + voltageUnitString, {
+    const voltageReading = new Text( `0.0 ${voltageUnitString}`, {
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       fill: 'black',
       stroke: 'black',

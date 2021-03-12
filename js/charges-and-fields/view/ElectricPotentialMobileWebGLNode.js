@@ -113,14 +113,14 @@ class ElectricPotentialMobilePainter {
       'uniform mat3 uMatrixInverse;', // matrix to transform from normalized-device-coordinates to the model
       'const float kConstant = 9.0;',
       // 'uniform vec3 charge0;', etc.
-      _.map( particleIndices, n => 'uniform vec3 charge' + n + ';' ).join( '\n' ),
+      _.map( particleIndices, n => `uniform vec3 charge${n};` ).join( '\n' ),
       'void main() {',
       // homogeneous model-view transformation
       '  vec2 modelPosition = ( uMatrixInverse * vec3( vPosition, 1 ) ).xy;',
 
       // compute the total, not worrying about div by zero (will be covered up by charge icon)
       '  float voltage = 0.0;',
-      _.map( particleIndices, n => '  voltage += charge' + n + '.z * kConstant / length( modelPosition - charge' + n + '.xy );' ).join( '\n' ),
+      _.map( particleIndices, n => `  voltage += charge${n}.z * kConstant / length( modelPosition - charge${n}.xy );` ).join( '\n' ),
 
       // rules to color pulled from ChangesAndFieldsScreenView
       '  if ( voltage > 0.0 ) {',
@@ -135,7 +135,7 @@ class ElectricPotentialMobilePainter {
     ].join( '\n' ), {
       attributes: [ 'aPosition' ],
       uniforms: [ 'uMatrixInverse', 'uZeroColor', 'uPositiveColor', 'uNegativeColor' ].concat(
-        _.map( particleIndices, n => 'charge' + n ) )
+        _.map( particleIndices, n => `charge${n}` ) )
     } );
 
     // we only need one vertex buffer with the same contents for all three shaders!
@@ -185,7 +185,7 @@ class ElectricPotentialMobilePainter {
     const chargedParticleQuantity = this.node.chargedParticles.length;
     for ( let i = 0; i < this.maximumNumParticles; i++ ) {
       const particle = i < chargedParticleQuantity ? this.node.chargedParticles.get( i ) : null;
-      const uniformLocation = displayShaderProgram.uniformLocations[ 'charge' + i ];
+      const uniformLocation = displayShaderProgram.uniformLocations[ `charge${i}` ];
 
       if ( particle ) {
         gl.uniform3f( uniformLocation, particle.positionProperty.get().x, particle.positionProperty.get().y, particle.charge );

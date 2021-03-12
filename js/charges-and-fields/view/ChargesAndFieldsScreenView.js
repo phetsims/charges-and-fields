@@ -496,12 +496,12 @@ class ChargesAndFieldsScreenView extends ScreenView {
     }, options );
 
     if ( distance < 0 || distance > 1 ) {
-      throw new Error( 'distance must be between 0 and 1: ' + distance );
+      throw new Error( `distance must be between 0 and 1: ${distance}` );
     }
     const r = Math.floor( linear( 0, 1, color1.r, color2.r, distance ) );
     const g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
     const b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
-    return 'rgba(' + r + ',' + g + ',' + b + ',' + options.transparency + ')';
+    return `rgba(${r},${g},${b},${options.transparency})`;
   }
 
   /**

@@ -192,11 +192,11 @@ class ElectricPotentialPainter {
       '  float oldValue = texture2D( uTexture, ( vPosition * 0.5 + 0.5 ) * uCanvasSize / uTextureSize ).x;',
       '  float change = 0.0;',
       // if applicable, add the particle's contribution in the new position
-      '  if ( uType == ' + TYPE_ADD + ' || uType == ' + TYPE_MOVE + ' ) {',
+      `  if ( uType == ${TYPE_ADD} || uType == ${TYPE_MOVE} ) {`,
       '    change += uCharge * kConstant / length( modelPosition - uNewPosition );',
       '  }',
       // if applicable, remove the particle's contribution in the old position
-      '  if ( uType == ' + TYPE_REMOVE + ' || uType == ' + TYPE_MOVE + ' ) {',
+      `  if ( uType == ${TYPE_REMOVE} || uType == ${TYPE_MOVE} ) {`,
       '    change -= uCharge * kConstant / length( modelPosition - uOldPosition );',
       '  }',
       // stuff the result in the x coordinate

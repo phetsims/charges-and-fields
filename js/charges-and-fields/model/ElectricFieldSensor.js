@@ -47,8 +47,8 @@ class ElectricFieldSensor extends ModelElement {
   update() {
     const eField = this.computeElectricField( this.positionProperty.get() );
 
-    assert && assert( eField.x !== Infinity && eField.y !== Infinity, 'E-field is infinity: ' + eField );
-    assert && assert( !_.isNaN( eField.x ) && !_.isNaN( eField.y ), 'E-field is NaN: ' + eField );
+    assert && assert( eField.x !== Infinity && eField.y !== Infinity, `E-field is infinity: ${eField}` );
+    assert && assert( !_.isNaN( eField.x ) && !_.isNaN( eField.y ), `E-field is NaN: ${eField}` );
 
     this.electricFieldProperty.set( this.computeElectricField( this.positionProperty.get() ) );
   }
