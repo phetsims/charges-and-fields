@@ -76,7 +76,7 @@ class ElectricPotentialLineView extends PhetioObject {
 
       // no translatable strings, for debug only
       const text = new Text( `model=${electricPotentialLine.positionArray.length
-                             }    view=${electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length}`, {
+      }    view=${electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length}`, {
         center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
         fill: 'green',
         font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT
