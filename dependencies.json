@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.48 Mon May 10 2021 13:55:40 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# charges-and-fields 1.0.49-rc.1 Fri May 14 2021 02:32:16 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "70d60a9283fe565c2edbf535a58f08b856dc915f",
+    "sha": "c8c5827a234a7f1e53df1bac02b37b0b94850cd1",
     "branch": "1.0"
   },
   "chipper": {
@@ -46,7 +46,7 @@
   },
   "scenery": {
     "sha": "9cf3381ff8c89c0a546242105633b0d73eceba83",
-    "branch": "charges-and-fields-1.0"
+    "branch": "HEAD"
   },
   "scenery-phet": {
     "sha": "4608a68121ce040dc8c4e301b23bb8d9296a35ee",
