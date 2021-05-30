@@ -131,6 +131,9 @@ ModelElement.ModelElementIO = new IOType( 'ModelElementIO', {
   isValidValue: e => e instanceof ModelElement || e instanceof phet.chargesAndFields.ElectricPotentialLine,
   documentation: 'A Model Element',
   toStateObject: modelElement => ( { initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition ) } ),
+  stateSchema: {
+    initialPosition: NullableIOVector2IO
+  },
   stateToArgsForConstructor: stateObject => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
 } );
 

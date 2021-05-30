@@ -52,6 +52,9 @@ ChargedParticle.ChargedParticleIO = new IOType( 'ChargedParticleIO', {
       invocableForReadOnlyElements: false
     }
   },
+  stateSchema: {
+    charge: NumberIO
+  },
   toStateObject: chargedParticle => {
     const parentStateObject = ModelElement.ModelElementIO.toStateObject( chargedParticle );
     parentStateObject.charge = chargedParticle.charge;
