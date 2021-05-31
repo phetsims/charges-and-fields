@@ -422,7 +422,13 @@ ElectricPotentialLine.ElectricPotentialLineIO = new IOType( 'ElectricPotentialLi
   valueType: ElectricPotentialLine,
   documentation: 'The vector that shows the charge strength and direction.',
   supertype: ModelElement.ModelElementIO,
-  toStateObject: electricPotentialLine => ( { position: Vector2.Vector2IO.toStateObject( electricPotentialLine.position ) } ),
+  toStateObject: electricPotentialLine => ( {
+    position: Vector2.Vector2IO.toStateObject( electricPotentialLine.position ),
+    initialPosition: Vector2.Vector2IO.toStateObject( new Vector2( 0, 0 ) ) // TODO: https://github.com/phetsims/phet-io/issues/1774
+  } ),
+  stateSchema: {
+    position: Vector2.Vector2IO
+  },
   stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 

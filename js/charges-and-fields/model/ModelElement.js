@@ -130,7 +130,9 @@ ModelElement.ModelElementIO = new IOType( 'ModelElementIO', {
   // TODO: How will this be compatible with https://github.com/phetsims/tandem/issues/213 ?
   isValidValue: e => e instanceof ModelElement || e instanceof phet.chargesAndFields.ElectricPotentialLine,
   documentation: 'A Model Element',
-  toStateObject: modelElement => ( { initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition ) } ),
+  toStateObject: modelElement => ( {
+    initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition )
+  } ),
   stateSchema: {
     initialPosition: NullableIOVector2IO
   },
