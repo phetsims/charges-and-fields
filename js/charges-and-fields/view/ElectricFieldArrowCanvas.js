@@ -1,4 +1,4 @@
-// Copyright 2016-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * Contains and updates a Canvas where a canonical electric field arrow is drawn facing to the right. Contains

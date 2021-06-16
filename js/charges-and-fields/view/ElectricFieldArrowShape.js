@@ -1,4 +1,4 @@
-// Copyright 2016-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * Arrow shape for the electric field arrows. Notably, it has a cut-out part in the middle (where the arrow spins around).

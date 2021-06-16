@@ -1,4 +1,4 @@
-// Copyright 2015-2021, University of Colorado Boulder
+[object Promise]
 
 /**
  * View object, with a variety of Nodes stored on it to be added by the parent container. Responsible for the drawing

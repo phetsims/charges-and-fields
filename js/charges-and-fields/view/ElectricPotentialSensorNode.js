@@ -1,4 +1,4 @@
-// Copyright 2014-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * View for the ElectricPotentialSensorNode which renders the sensor as a scenery node.

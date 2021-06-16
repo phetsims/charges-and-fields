@@ -1,4 +1,4 @@
-// Copyright 2014-2021, University of Colorado Boulder
+[object Promise]
 
 /**
  * Model of the charges and fields simulation

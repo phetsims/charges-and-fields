@@ -1,4 +1,4 @@
-// Copyright 2014-2021, University of Colorado Boulder
+[object Promise]
 
 /**
  * View for the charged particle, which can be dragged to translate.

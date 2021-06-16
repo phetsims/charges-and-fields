@@ -1,4 +1,4 @@
-// Copyright 2014-2021, University of Colorado Boulder
+[object Promise]
 
 /**
  * Type of a charged particle, which has charge (+1 or -1) and a position.

@@ -1,4 +1,4 @@
-// Copyright 2015-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * Global options shown in the "Options" dialog from the PhET Menu.

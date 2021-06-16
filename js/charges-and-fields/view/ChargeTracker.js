@@ -1,4 +1,4 @@
-// Copyright 2016-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * Tracks movement of particles, so that efficient deltas can be computed for Canvas/WebGL display of the electric

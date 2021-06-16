@@ -1,4 +1,4 @@
-// Copyright 2015-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * Scenery Node representing grid lines (located in the model) with major and minor lines.

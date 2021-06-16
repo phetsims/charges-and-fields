@@ -1,4 +1,4 @@
-// Copyright 2016-2021, University of Colorado Boulder
+[object Promise]
 
 /**
  * Model for the electric field sensor

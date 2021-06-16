@@ -1,4 +1,4 @@
-// Copyright 2016-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * Model for the measuring tape.

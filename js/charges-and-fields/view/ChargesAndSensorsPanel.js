@@ -1,4 +1,4 @@
-// Copyright 2015-2020, University of Colorado Boulder
+[object Promise]
 
 /**
  * Scenery Node that contains an enclosure for a positive, a negative electric charge and an electric sensor.

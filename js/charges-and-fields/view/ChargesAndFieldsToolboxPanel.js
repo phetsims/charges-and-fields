@@ -1,4 +1,4 @@
-// Copyright 2015-2021, University of Colorado Boulder
+[object Promise]
 
 /**
  * Toolbox from which the user can drag (or otherwise enable) tools.
