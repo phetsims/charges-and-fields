@@ -1,4 +1,4 @@
-[object Promise]
+// Copyright 2015-2021, University of Colorado Boulder
 
 /**
  * Scenery Node responsible for layering ElectricPotentialLineView related Nodes.

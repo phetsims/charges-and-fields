@@ -1,4 +1,4 @@
-[object Promise]
+// Copyright 2016-2021, University of Colorado Boulder
 
 /**
  * View for a draggable measuring tape for Charges and Fields.

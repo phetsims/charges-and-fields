@@ -1,4 +1,4 @@
-[object Promise]
+// Copyright 2014-2021, University of Colorado Boulder
 
 /**
  * Type for a user controlled movable element. The element can return to its origin when animated.

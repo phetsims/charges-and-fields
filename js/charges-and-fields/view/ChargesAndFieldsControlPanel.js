@@ -1,4 +1,4 @@
-[object Promise]
+// Copyright 2014-2021, University of Colorado Boulder
 
 /**
  * Control panel with Check Boxes that control the electrical Properties of the simulation

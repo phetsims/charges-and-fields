@@ -1,4 +1,4 @@
-[object Promise]
+// Copyright 2016-2021, University of Colorado Boulder
 
 /**
  * View for the electric potential Node that uses Canvas.
