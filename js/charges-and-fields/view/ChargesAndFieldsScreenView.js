@@ -511,15 +511,17 @@ class ChargesAndFieldsScreenView extends ScreenView {
    * the size of the screen to ensure a minimally visible area,
    * but keeping it centered at the bottom of the screen.
    * @public
-   * @param {number} width
-   * @param {number} height
+   * @param {Bounds2} viewBounds
    */
-  layout( width, height ) {
+  layout( viewBounds ) {
 
     this.resetTransform();
 
-    const scale = this.getLayoutScale( width, height ); // {number}
+    const scale = this.getLayoutScale( viewBounds ); // {number}
     this.setScaleMagnitude( scale );
+
+    const width = viewBounds.width;
+    const height = viewBounds.height;
 
     let offsetX = 0;
     let offsetY = 0;
@@ -533,13 +535,12 @@ class ChargesAndFieldsScreenView extends ScreenView {
     else if ( scale === height / this.layoutBounds.height ) {
       offsetX = ( width / scale - this.layoutBounds.width ) / 2;
     }
-    this.translate( offsetX, offsetY );
+    this.translate( offsetX + viewBounds.left / scale, offsetY + viewBounds.top / scale );
 
-    // nominal view Bounds
-    const viewBounds = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
+    const nominalViewBounds = new Rectangle( -offsetX, -offsetY, width / scale, height / scale );
 
     // the modelBounds are the nominal viewBounds (in model coordinates) or the model.enlargedBounds, whichever is smaller.
-    this.availableModelBoundsProperty.set( this.modelViewTransform.viewToModelBounds( viewBounds ).intersection( this.model.enlargedBounds ) );
+    this.availableModelBoundsProperty.set( this.modelViewTransform.viewToModelBounds( nominalViewBounds ).intersection( this.model.enlargedBounds ) );
   }
 }
 
