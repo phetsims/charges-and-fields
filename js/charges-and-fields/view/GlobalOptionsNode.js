@@ -10,7 +10,6 @@ import OptionsDialog from '../../../../joist/js/OptionsDialog.js';
 import ProjectorModeCheckbox from '../../../../joist/js/ProjectorModeCheckbox.js';
 import LayoutBox from '../../../../scenery/js/nodes/LayoutBox.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
 
 class GlobalOptionsNode extends LayoutBox {
 
@@ -19,7 +18,7 @@ class GlobalOptionsNode extends LayoutBox {
    */
   constructor( tandem ) {
 
-    const projectorCheckbox = new ProjectorModeCheckbox( ChargesAndFieldsColorProfile, {
+    const projectorCheckbox = new ProjectorModeCheckbox( null, {
       tandem: tandem.createTandem( 'projectorCheckbox' ),
       phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
     } );

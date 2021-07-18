@@ -8,8 +8,8 @@
  * @author Andrew Adare <andrew.adare@colorado.edu>
  */
 
-import ColorProfile from '../../../scenery-phet/js/ColorProfile.js';
 import Color from '../../../scenery/js/util/Color.js';
+import ProfileColorProperty from '../../../scenery/js/util/ProfileColorProperty.js';
 import chargesAndFields from '../chargesAndFields.js';
 
 // constants
@@ -18,144 +18,144 @@ const WHITE = new Color( 255, 255, 255 );
 const RED = new Color( 255, 0, 0 );
 const BLUE = new Color( 0, 0, 255 );
 
-const ChargesAndFieldsColorProfile = new ColorProfile( [ 'default', 'projector' ], {
-  background: {
+const ChargesAndFieldsColorProfile = {
+  backgroundProperty: new ProfileColorProperty( 'background', {
     default: BLACK,
     projector: WHITE
-  },
-  reversedBackground: {
+  } ),
+  reversedBackgroundProperty: new ProfileColorProperty( 'reversedBackground', {
     default: WHITE,
     projector: BLACK
-  },
-  controlPanelBorder: {
+  } ),
+  controlPanelBorderProperty: new ProfileColorProperty( 'controlPanelBorder', {
     default: new Color( 210, 210, 210 ),
     projector: new Color( 192, 192, 192 )
-  },
-  controlPanelFill: {
+  } ),
+  controlPanelFillProperty: new ProfileColorProperty( 'controlPanelFill', {
     default: new Color( 10, 10, 10 ),
     projector: new Color( 238, 238, 238 )
-  },
-  controlPanelText: {
+  } ),
+  controlPanelTextProperty: new ProfileColorProperty( 'controlPanelText', {
     default: new Color( 229, 229, 126 ),
     projector: BLACK
-  },
-  enclosureText: {
+  } ),
+  enclosureTextProperty: new ProfileColorProperty( 'enclosureText', {
     default: WHITE,
     projector: BLACK
-  },
-  enclosureFill: {
+  } ),
+  enclosureFillProperty: new ProfileColorProperty( 'enclosureFill', {
     default: new Color( 10, 10, 10 ),
     projector: new Color( 238, 238, 238 )
-  },
-  enclosureBorder: {
+  } ),
+  enclosureBorderProperty: new ProfileColorProperty( 'enclosureBorder', {
     default: new Color( 210, 210, 210 ),
     projector: new Color( 192, 192, 192 )
-  },
-  checkbox: {
+  } ),
+  checkboxProperty: new ProfileColorProperty( 'checkbox', {
     default: new Color( 230, 230, 230 ),
     projector: BLACK
-  },
-  checkboxBackground: {
+  } ),
+  checkboxBackgroundProperty: new ProfileColorProperty( 'checkboxBackground', {
     default: new Color( 30, 30, 30 ),
     projector: WHITE
-  },
-  voltageLabel: {
+  } ),
+  voltageLabelProperty: new ProfileColorProperty( 'voltageLabel', {
     default: WHITE,
     projector: BLACK
-  },
-  voltageLabelBackground: {
+  } ),
+  voltageLabelBackgroundProperty: new ProfileColorProperty( 'voltageLabelBackground', {
     default: new Color( 0, 0, 0, 0.5 ),
     projector: new Color( 255, 255, 255, 0.5 )
-  },
-  electricPotentialLine: {
+  } ),
+  electricPotentialLineProperty: new ProfileColorProperty( 'electricPotentialLine', {
     default: new Color( 50, 255, 100 ),
     projector: BLACK
-  },
-  measuringTapeText: {
+  } ),
+  measuringTapeTextProperty: new ProfileColorProperty( 'measuringTapeText', {
     default: WHITE,
     projector: BLACK
-  },
-  electricFieldSensorCircleFill: {
+  } ),
+  electricFieldSensorCircleFillProperty: new ProfileColorProperty( 'electricFieldSensorCircleFill', {
     default: new Color( 255, 255, 0 ),
     projector: new Color( 255, 153, 0 )
-  },
-  electricFieldSensorCircleStroke: {
+  } ),
+  electricFieldSensorCircleStrokeProperty: new ProfileColorProperty( 'electricFieldSensorCircleStroke', {
     default: new Color( 128, 120, 133 ),
     projector: BLACK
-  },
-  electricFieldSensorArrow: {
+  } ),
+  electricFieldSensorArrowProperty: new ProfileColorProperty( 'electricFieldSensorArrow', {
     default: RED,
     projector: RED
-  },
-  electricFieldSensorLabel: {
+  } ),
+  electricFieldSensorLabelProperty: new ProfileColorProperty( 'electricFieldSensorLabel', {
     default: new Color( 229, 229, 126 ),
     projector: BLACK
-  },
-  gridStroke: {
+  } ),
+  gridStrokeProperty: new ProfileColorProperty( 'gridStroke', {
     default: new Color( 50, 50, 50 ),
     projector: new Color( 255, 204, 51 )
-  },
-  gridLengthScaleArrowStroke: {
+  } ),
+  gridLengthScaleArrowStrokeProperty: new ProfileColorProperty( 'gridLengthScaleArrowStroke', {
     default: WHITE,
     projector: RED
-  },
-  gridLengthScaleArrowFill: {
+  } ),
+  gridLengthScaleArrowFillProperty: new ProfileColorProperty( 'gridLengthScaleArrowFill', {
     default: WHITE,
     projector: new Color( 255, 153, 0 )
-  },
-  gridTextFill: {
+  } ),
+  gridTextFillProperty: new ProfileColorProperty( 'gridTextFill', {
     default: WHITE,
     projector: BLACK
-  },
-  electricPotentialSensorCircleStroke: {
+  } ),
+  electricPotentialSensorCircleStrokeProperty: new ProfileColorProperty( 'electricPotentialSensorCircleStroke', {
     default: WHITE,
     projector: BLACK
-  },
-  electricPotentialSensorCrosshairStroke: {
+  } ),
+  electricPotentialSensorCrosshairStrokeProperty: new ProfileColorProperty( 'electricPotentialSensorCrosshairStroke', {
     default: WHITE,
     projector: BLACK
-  },
-  electricPotentialPanelTitleText: {
+  } ),
+  electricPotentialPanelTitleTextProperty: new ProfileColorProperty( 'electricPotentialPanelTitleText', {
     default: WHITE,
     projector: WHITE
-  },
-  electricPotentialSensorTextPanelTextFill: {
+  } ),
+  electricPotentialSensorTextPanelTextFillProperty: new ProfileColorProperty( 'electricPotentialSensorTextPanelTextFill', {
     default: BLACK,
     projector: BLACK
-  },
-  electricPotentialSensorTextPanelBorder: {
+  } ),
+  electricPotentialSensorTextPanelBorderProperty: new ProfileColorProperty( 'electricPotentialSensorTextPanelBorder', {
     default: BLACK,
     projector: new Color( 250, 250, 250 )
-  },
-  electricPotentialSensorTextPanelBackground: {
+  } ),
+  electricPotentialSensorTextPanelBackgroundProperty: new ProfileColorProperty( 'electricPotentialSensorTextPanelBackground', {
     default: WHITE,
     projector: WHITE
-  },
-  electricFieldGridSaturation: {
+  } ),
+  electricFieldGridSaturationProperty: new ProfileColorProperty( 'electricFieldGridSaturation', {
     default: WHITE,
     projector: RED
-  },
-  electricFieldGridSaturationStroke: {
+  } ),
+  electricFieldGridSaturationStrokeProperty: new ProfileColorProperty( 'electricFieldGridSaturationStroke', {
     default: BLACK,
     projector: BLACK
-  },
-  electricFieldGridZero: {
+  } ),
+  electricFieldGridZeroProperty: new ProfileColorProperty( 'electricFieldGridZero', {
     default: BLACK,
     projector: WHITE
-  },
-  electricPotentialGridSaturationPositive: {
+  } ),
+  electricPotentialGridSaturationPositiveProperty: new ProfileColorProperty( 'electricPotentialGridSaturationPositive', {
     default: new Color( 210, 0, 0 ),
     projector: new Color( 210, 0, 0 )
-  },
-  electricPotentialGridZero: {
+  } ),
+  electricPotentialGridZeroProperty: new ProfileColorProperty( 'electricPotentialGridZero', {
     default: BLACK,
     projector: WHITE
-  },
-  electricPotentialGridSaturationNegative: {
+  } ),
+  electricPotentialGridSaturationNegativeProperty: new ProfileColorProperty( 'electricPotentialGridSaturationNegative', {
     default: BLUE,
     projector: BLUE
-  }
-} );
+  } )
+};
 
 chargesAndFields.register( 'ChargesAndFieldsColorProfile', ChargesAndFieldsColorProfile );
 
