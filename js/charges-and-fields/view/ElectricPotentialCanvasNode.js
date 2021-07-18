@@ -9,7 +9,7 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import CanvasNode from '../../../../scenery/js/nodes/CanvasNode.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargeTracker from './ChargeTracker.js';
 
@@ -42,9 +42,9 @@ class ElectricPotentialCanvasNode extends CanvasNode {
 
     // Invalidate paint on a bunch of changes
     const invalidateSelfListener = this.forceRepaint.bind( this );
-    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
+    chargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
+    chargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
+    chargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 
     // particle added
@@ -137,9 +137,9 @@ class ElectricPotentialCanvasNode extends CanvasNode {
 
     // Update our direct canvas if necessary
     if ( numChanges || this.directCanvasDirty ) {
-      const zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
-      const positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
-      const negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
+      const zeroColor = chargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
+      const positiveColor = chargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
+      const negativeColor = chargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
       const data = this.imageData.data;
 
       for ( let k = 0; k < this.electricPotentials.length; k++ ) {

@@ -18,7 +18,7 @@ const WHITE = new Color( 255, 255, 255 );
 const RED = new Color( 255, 0, 0 );
 const BLUE = new Color( 0, 0, 255 );
 
-const ChargesAndFieldsColorProfile = {
+const chargesAndFieldsColorProfile = {
   backgroundProperty: new ProfileColorProperty( 'background', {
     default: BLACK,
     projector: WHITE
@@ -157,6 +157,6 @@ const ChargesAndFieldsColorProfile = {
   } )
 };
 
-chargesAndFields.register( 'ChargesAndFieldsColorProfile', ChargesAndFieldsColorProfile );
+chargesAndFields.register( 'chargesAndFieldsColorProfile', chargesAndFieldsColorProfile );
 
-export default ChargesAndFieldsColorProfile;
+export default chargesAndFieldsColorProfile;

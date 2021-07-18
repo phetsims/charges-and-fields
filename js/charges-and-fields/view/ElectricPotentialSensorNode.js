@@ -27,7 +27,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import electricPotentialPanelOutlineImage from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import PencilButton from './PencilButton.js';
 
@@ -72,7 +72,7 @@ class ElectricPotentialSensorNode extends Node {
       lineWidth: 3,
       centerX: 0,
       centerY: 0,
-      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty,
+      stroke: chargesAndFieldsColorProfile.electricPotentialSensorCircleStrokeProperty,
       tandem: tandem.createTandem( 'circle' )
     } );
 
@@ -84,15 +84,15 @@ class ElectricPotentialSensorNode extends Node {
     const crosshair = new Path( crosshairShape, {
       centerX: 0,
       centerY: 0,
-      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+      stroke: chargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
       tandem: tandem.createTandem( 'crosshair' )
     } );
 
     // Create the base of the crosshair
     // TODO: why are the fill and stroke set to the same thing?
     const crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
-      fill: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
-      stroke: ChargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+      fill: chargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+      stroke: chargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
       tandem: tandem.createTandem( 'crosshairMount' )
     } );
 
@@ -100,7 +100,7 @@ class ElectricPotentialSensorNode extends Node {
     const electricPotentialPanelTitleText = new Text( equipotentialString, {
       maxWidth: 85,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      fill: ChargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty,
+      fill: chargesAndFieldsColorProfile.electricPotentialPanelTitleTextProperty,
       tandem: tandem.createTandem( 'electricPotentialPanelTitleText' )
     } );
 
@@ -135,7 +135,7 @@ class ElectricPotentialSensorNode extends Node {
       maxWidth: 65,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       tandem: tandem.createTandem( 'voltageReadout' ),
-      fill: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty
+      fill: chargesAndFieldsColorProfile.electricPotentialSensorTextPanelTextFillProperty
     } );
 
     // The clear and plot buttons
@@ -154,8 +154,8 @@ class ElectricPotentialSensorNode extends Node {
       0,
       buttonsBox.width - backgroundAdjustment * 2,
       voltageReadout.height * 1.5, 5, 5, {
-        fill: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty,
-        stroke: ChargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty,
+        fill: chargesAndFieldsColorProfile.electricPotentialSensorTextPanelBackgroundProperty,
+        stroke: chargesAndFieldsColorProfile.electricPotentialSensorTextPanelBorderProperty,
         tandem: tandem.createTandem( 'backgroundRectangle' )
       } );
 
@@ -201,9 +201,9 @@ class ElectricPotentialSensorNode extends Node {
       updateCircleFill( electricPotentialSensor.electricPotentialProperty.get() );
     }
 
-    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( updateCircleFillWithPotential );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( updateCircleFillWithPotential );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( updateCircleFillWithPotential );
+    chargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( updateCircleFillWithPotential );
+    chargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( updateCircleFillWithPotential );
+    chargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( updateCircleFillWithPotential );
 
     // Add the various components to this node
     this.addChild( crosshairMount );

@@ -15,7 +15,7 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 // constants related to text
@@ -95,7 +95,7 @@ class GridNode extends Node {
       lineWidth: MAJOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
+      stroke: chargesAndFieldsColorProfile.gridStrokeProperty,
       tandem: tandem.createTandem( 'majorGridLinesPath' )
     } );
 
@@ -103,21 +103,21 @@ class GridNode extends Node {
       lineWidth: MINOR_GRIDLINE_LINEWIDTH,
       lineCap: 'butt',
       lineJoin: 'bevel',
-      stroke: ChargesAndFieldsColorProfile.gridStrokeProperty,
+      stroke: chargesAndFieldsColorProfile.gridStrokeProperty,
       tandem: tandem.createTandem( 'minorGridLinesPath' )
     } );
 
     // Create the one-meter double headed arrow representation
     const arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
     const arrowPath = new Path( arrowShape, {
-      fill: ChargesAndFieldsColorProfile.gridLengthScaleArrowFillProperty,
-      stroke: ChargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty,
+      fill: chargesAndFieldsColorProfile.gridLengthScaleArrowFillProperty,
+      stroke: chargesAndFieldsColorProfile.gridLengthScaleArrowStrokeProperty,
       tandem: tandem.createTandem( 'arrowPath' )
     } );
 
     // Create and add the text (legend) accompanying the double headed arrow
     const legendText = new Text( oneMeterString, {
-      fill: ChargesAndFieldsColorProfile.gridTextFillProperty,
+      fill: chargesAndFieldsColorProfile.gridTextFillProperty,
       font: FONT,
       tandem: tandem.createTandem( 'legendText' )
     } );

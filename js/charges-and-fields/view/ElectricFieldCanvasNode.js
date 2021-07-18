@@ -10,7 +10,7 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import CanvasNode from '../../../../scenery/js/nodes/CanvasNode.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargeTracker from './ChargeTracker.js';
 import ElectricFieldArrowCanvas from './ElectricFieldArrowCanvas.js';
@@ -52,7 +52,7 @@ class ElectricFieldCanvasNode extends CanvasNode {
     // Invalidate paint on a bunch of changes
     const invalidateSelfListener = this.invalidatePaint.bind( this );
 
-    ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( invalidateSelfListener ); // color change
+    chargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( invalidateSelfListener ); // color change
 
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 

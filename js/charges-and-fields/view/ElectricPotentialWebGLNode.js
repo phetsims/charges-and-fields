@@ -38,7 +38,7 @@ import WebGLNode from '../../../../scenery/js/nodes/WebGLNode.js';
 import ShaderProgram from '../../../../scenery/js/util/ShaderProgram.js';
 import Utils from '../../../../scenery/js/util/Utils.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargeTracker from './ChargeTracker.js';
 
 // integer constants for our shader
@@ -71,9 +71,9 @@ class ElectricPotentialWebGLNode extends WebGLNode {
 
     // Invalidate paint on a bunch of changes
     const invalidateSelfListener = this.invalidatePaint.bind( this );
-    ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
-    ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
+    chargesAndFieldsColorProfile.electricPotentialGridZeroProperty.link( invalidateSelfListener );
+    chargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.link( invalidateSelfListener );
+    chargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.link( invalidateSelfListener );
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 
     // particle added
@@ -385,9 +385,9 @@ class ElectricPotentialPainter {
     displayShaderProgram.use();
 
     // tell the shader our colors / scale
-    const zeroColor = ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
-    const positiveColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
-    const negativeColor = ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
+    const zeroColor = chargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get();
+    const positiveColor = chargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get();
+    const negativeColor = chargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get();
     gl.uniform3f( displayShaderProgram.uniformLocations.uZeroColor, zeroColor.red / 255, zeroColor.green / 255, zeroColor.blue / 255 );
     gl.uniform3f( displayShaderProgram.uniformLocations.uPositiveColor, positiveColor.red / 255, positiveColor.green / 255, positiveColor.blue / 255 );
     gl.uniform3f( displayShaderProgram.uniformLocations.uNegativeColor, negativeColor.red / 255, negativeColor.green / 255, negativeColor.blue / 255 );

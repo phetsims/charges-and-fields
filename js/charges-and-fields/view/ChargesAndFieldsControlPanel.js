@@ -14,7 +14,7 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 const directionOnlyString = chargesAndFieldsStrings.directionOnly;
@@ -42,7 +42,7 @@ class ChargesAndFieldsControlPanel extends Panel {
     function createCheckbox( tandemId, string, property ) {
       const text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECKBOX_FONT,
-        fill: ChargesAndFieldsColorProfile.controlPanelTextProperty,
+        fill: chargesAndFieldsColorProfile.controlPanelTextProperty,
         maxWidth: 250
       } );
 
@@ -50,8 +50,8 @@ class ChargesAndFieldsControlPanel extends Panel {
         tandem: tandem.createTandem( tandemId ),
         boxWidth: 25,
         spacing: 7,
-        checkboxColor: ChargesAndFieldsColorProfile.checkboxProperty,
-        checkboxColorBackground: ChargesAndFieldsColorProfile.checkboxBackgroundProperty
+        checkboxColor: chargesAndFieldsColorProfile.checkboxProperty,
+        checkboxColorBackground: chargesAndFieldsColorProfile.checkboxBackgroundProperty
       } );
     }
 
@@ -102,8 +102,8 @@ class ChargesAndFieldsControlPanel extends Panel {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10,
-      fill: ChargesAndFieldsColorProfile.controlPanelFillProperty,
-      stroke: ChargesAndFieldsColorProfile.controlPanelBorderProperty,
+      fill: chargesAndFieldsColorProfile.controlPanelFillProperty,
+      stroke: chargesAndFieldsColorProfile.controlPanelBorderProperty,
       tandem: tandem
     } );
 

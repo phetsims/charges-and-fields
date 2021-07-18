@@ -14,7 +14,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
 import ElectricFieldSensorRepresentationNode from './ElectricFieldSensorRepresentationNode.js';
@@ -61,7 +61,7 @@ class ChargesAndSensorsPanel extends Panel {
     function createDraggableItem( itemTandem, label, createModelElement, previewNode, isVisibleProperty ) {
       const labelText = new Text( label, {
         font: ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT,
-        fill: ChargesAndFieldsColorProfile.enclosureTextProperty,
+        fill: chargesAndFieldsColorProfile.enclosureTextProperty,
         centerX: 0,
         maxWidth: 200
       } );
@@ -151,8 +151,8 @@ class ChargesAndSensorsPanel extends Panel {
     super( hboxContent, {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       cornerRadius: 5,
-      stroke: ChargesAndFieldsColorProfile.enclosureBorderProperty,
-      fill: ChargesAndFieldsColorProfile.enclosureFillProperty,
+      stroke: chargesAndFieldsColorProfile.enclosureBorderProperty,
+      fill: chargesAndFieldsColorProfile.enclosureFillProperty,
       xMargin: HORIZONTAL_SPACING / 2,
       yMargin: Y_MARGIN,
       tandem: tandem

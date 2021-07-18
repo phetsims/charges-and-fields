@@ -24,7 +24,7 @@ import Utils from '../../../../scenery/js/util/Utils.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ChargesAndFieldsColorProfile from '../ChargesAndFieldsColorProfile.js';
+import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticleNode from './ChargedParticleNode.js';
 import ChargesAndFieldsControlPanel from './ChargesAndFieldsControlPanel.js';
@@ -183,7 +183,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       tandem.createTandem( 'measuringTapeNode' ) );
 
     // The color of measurement text of the measuring tape updates itself when the projector/default color scheme changes
-    ChargesAndFieldsColorProfile.measuringTapeTextProperty.linkAttribute( measuringTapeNode, 'textColor' );
+    chargesAndFieldsColorProfile.measuringTapeTextProperty.linkAttribute( measuringTapeNode, 'textColor' );
 
     // Create the toolboxPanel with the measuring tape and the electric potential sensor icons
     const toolboxPanel = new ChargesAndFieldsToolboxPanel(
@@ -434,9 +434,9 @@ class ChargesAndFieldsScreenView extends ScreenView {
       distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
       finalColor = this.interpolateRGBA(
         // {Color} color that corresponds to the Electric Potential being zero
-        ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get(),
+        chargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get(),
         // {Color} color of Max Electric Potential
-        ChargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get(),
+        chargesAndFieldsColorProfile.electricPotentialGridSaturationPositiveProperty.get(),
         distance, // {number} distance must be between 0 and 1
         options );
     }
@@ -447,9 +447,9 @@ class ChargesAndFieldsScreenView extends ScreenView {
       distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential );
       finalColor = this.interpolateRGBA(
         // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
-        ChargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get(),
+        chargesAndFieldsColorProfile.electricPotentialGridSaturationNegativeProperty.get(),
         // {Color} color that corresponds to the Electric Potential being zero zero
-        ChargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get(),
+        chargesAndFieldsColorProfile.electricPotentialGridZeroProperty.get(),
         distance, // {number} distance must be between 0 and 1
         options );
     }
@@ -458,8 +458,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
   /**
    * Function that returns a color that is proportional to the magnitude of the electric Field.
-   * The color interpolates between ChargesAndFieldsColorProfile.electricFieldGridZero (for an
-   * electric field value of zero) and ChargesAndFieldsColorProfile.electricFieldGridSaturation (which corresponds to an
+   * The color interpolates between chargesAndFieldsColorProfile.electricFieldGridZero (for an
+   * electric field value of zero) and chargesAndFieldsColorProfile.electricFieldGridSaturation (which corresponds to an
    * electric field value of EFIELD_COLOR_SAT_MAGNITUDE).
    * @private
    * @param {number} electricFieldMagnitude - a non negative number
@@ -473,8 +473,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
     const distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
 
     return this.interpolateRGBA(
-      ChargesAndFieldsColorProfile.electricFieldGridZeroProperty.get(), // {Color} color that corresponds to zero electric Field
-      ChargesAndFieldsColorProfile.electricFieldGridSaturationProperty.get(), // {Color} color that corresponds to the largest electric field
+      chargesAndFieldsColorProfile.electricFieldGridZeroProperty.get(), // {Color} color that corresponds to zero electric Field
+      chargesAndFieldsColorProfile.electricFieldGridSaturationProperty.get(), // {Color} color that corresponds to the largest electric field
       distance, // {number} distance must be between 0 and 1
       options );
   }
