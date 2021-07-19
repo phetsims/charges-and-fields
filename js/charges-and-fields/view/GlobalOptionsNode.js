@@ -18,7 +18,7 @@ class GlobalOptionsNode extends LayoutBox {
    */
   constructor( tandem ) {
 
-    const projectorCheckbox = new ProjectorModeCheckbox( null, {
+    const projectorCheckbox = new ProjectorModeCheckbox( {
       tandem: tandem.createTandem( 'projectorCheckbox' ),
       phetioDocumentation: 'The checkbox that toggles if projector mode is enabled.'
     } );
