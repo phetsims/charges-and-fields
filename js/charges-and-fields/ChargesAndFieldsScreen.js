@@ -6,7 +6,7 @@
 
 import Screen from '../../../joist/js/Screen.js';
 import chargesAndFields from '../chargesAndFields.js';
-import chargesAndFieldsColorProfile from './chargesAndFieldsColorProfile.js';
+import ChargesAndFieldsColors from './ChargesAndFieldsColors.js';
 import ChargesAndFieldsModel from './model/ChargesAndFieldsModel.js';
 import ChargesAndFieldsScreenView from './view/ChargesAndFieldsScreenView.js';
 
@@ -17,7 +17,7 @@ class ChargesAndFieldsScreen extends Screen {
    */
   constructor( tandem ) {
     const options = {
-      backgroundColorProperty: chargesAndFieldsColorProfile.backgroundProperty,
+      backgroundColorProperty: ChargesAndFieldsColors.backgroundProperty,
       tandem: tandem
     };
 

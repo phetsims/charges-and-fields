@@ -9,7 +9,7 @@
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
+import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 // constants
@@ -30,8 +30,8 @@ class ElectricFieldSensorRepresentationNode extends Node {
     const circle = new Circle( CIRCLE_RADIUS, {
       centerX: 0,
       centerY: 0,
-      fill: chargesAndFieldsColorProfile.electricFieldSensorCircleFillProperty,
-      stroke: chargesAndFieldsColorProfile.electricFieldSensorCircleStrokeProperty
+      fill: ChargesAndFieldsColors.electricFieldSensorCircleFillProperty,
+      stroke: ChargesAndFieldsColors.electricFieldSensorCircleStrokeProperty
     } );
 
     // add circle

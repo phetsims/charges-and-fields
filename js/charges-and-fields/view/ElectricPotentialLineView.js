@@ -25,7 +25,7 @@ import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
+import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 const pattern0Value1UnitsString = chargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
@@ -52,7 +52,7 @@ class ElectricPotentialLineView extends PhetioObject {
 
     // @public (read-only) {Node} - the path of the potential line
     this.path = new Path( modelViewTransform.modelToViewShape( electricPotentialLine.getShape() ), {
-      stroke: chargesAndFieldsColorProfile.electricPotentialLineProperty
+      stroke: ChargesAndFieldsColors.electricPotentialLineProperty
     } );
 
     // @public (read-only) {Node} - label that says the voltage
@@ -141,14 +141,14 @@ class VoltageLabel extends Node {
     const voltageLabelText = new Text( voltageLabelString, {
       font: ChargesAndFieldsConstants.VOLTAGE_LABEL_FONT,
       center: modelViewTransform.modelToViewPosition( position ),
-      fill: chargesAndFieldsColorProfile.electricPotentialLineProperty,
+      fill: ChargesAndFieldsColors.electricPotentialLineProperty,
       tandem: tandem.createTandem( 'voltageLabelText' )
     } );
 
     // Create a background rectangle for the voltage label
     const backgroundRectangle = new Rectangle( 0, 0, voltageLabelText.width * 1.2, voltageLabelText.height * 1.2, 3, 3, {
       center: modelViewTransform.modelToViewPosition( position ),
-      fill: chargesAndFieldsColorProfile.voltageLabelBackgroundProperty
+      fill: ChargesAndFieldsColors.voltageLabelBackgroundProperty
     } );
 
     this.addChild( backgroundRectangle ); // must go first

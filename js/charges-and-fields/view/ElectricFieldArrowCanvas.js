@@ -10,7 +10,7 @@
 import Emitter from '../../../../axon/js/Emitter.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
+import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ElectricFieldArrowShape from './ElectricFieldArrowShape.js';
 
 // Our shape that we'll use to draw (origin is where it will rotate)
@@ -46,11 +46,11 @@ function draw() {
 
   context.beginPath();
   arrowShape.writeToContext( context );
-  context.fillStyle = chargesAndFieldsColorProfile.electricFieldGridSaturationProperty.get().toCSS();
+  context.fillStyle = ChargesAndFieldsColors.electricFieldGridSaturationProperty.get().toCSS();
   context.fill();
 
   context.lineWidth = 0.5;
-  context.strokeStyle = chargesAndFieldsColorProfile.electricFieldGridSaturationStrokeProperty.get().toCSS();
+  context.strokeStyle = ChargesAndFieldsColors.electricFieldGridSaturationStrokeProperty.get().toCSS();
   context.stroke();
 
   context.restore();
@@ -60,8 +60,8 @@ function draw() {
 
 // Draw immediately, and update on any color profile changes
 draw();
-chargesAndFieldsColorProfile.electricFieldGridSaturationProperty.link( draw );
-chargesAndFieldsColorProfile.electricFieldGridSaturationStrokeProperty.link( draw );
+ChargesAndFieldsColors.electricFieldGridSaturationProperty.link( draw );
+ChargesAndFieldsColors.electricFieldGridSaturationStrokeProperty.link( draw );
 
 const ElectricFieldArrowCanvas = {
   // @public {number} - Scale that was applied to the ArrowShape. Presumably un-scale by this amount.

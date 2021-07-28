@@ -17,7 +17,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
-import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
+import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ElectricFieldSensorRepresentationNode from './ElectricFieldSensorRepresentationNode.js';
 
@@ -68,8 +68,8 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     // TODO: why is the fill and stroke set to the same value?
     const arrowNode = new ArrowNode( 0, 0, 1, 0, {
       pickable: false,
-      stroke: chargesAndFieldsColorProfile.electricFieldSensorArrowProperty,
-      fill: chargesAndFieldsColorProfile.electricFieldSensorArrowProperty,
+      stroke: ChargesAndFieldsColors.electricFieldSensorArrowProperty,
+      fill: ChargesAndFieldsColors.electricFieldSensorArrowProperty,
       tandem: tandem.createTandem( 'arrowNode' )
     } );
 
@@ -77,13 +77,13 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     const fieldStrengthLabel = new Text( '', {
       font: LABEL_FONT,
       pickable: false,
-      fill: chargesAndFieldsColorProfile.electricFieldSensorLabelProperty,
+      fill: ChargesAndFieldsColors.electricFieldSensorLabelProperty,
       tandem: tandem.createTandem( 'fieldStrengthLabel' )
     } );
     const directionLabel = new Text( '', {
       font: LABEL_FONT,
       pickable: false,
-      fill: chargesAndFieldsColorProfile.electricFieldSensorLabelProperty,
+      fill: ChargesAndFieldsColors.electricFieldSensorLabelProperty,
       tandem: tandem.createTandem( 'directionLabel' )
     } );
 

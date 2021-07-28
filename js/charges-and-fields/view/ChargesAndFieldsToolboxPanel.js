@@ -23,7 +23,7 @@ import Panel from '../../../../sun/js/Panel.js';
 import electricPotentialPanelOutlineImage from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsColorProfile from '../chargesAndFieldsColorProfile.js';
+import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 // constants
@@ -69,8 +69,8 @@ class ChargesAndFieldsToolboxPanel extends Panel {
       lineWidth: ChargesAndFieldsConstants.PANEL_LINE_WIDTH,
       xMargin: 12,
       yMargin: 10,
-      fill: chargesAndFieldsColorProfile.controlPanelFillProperty,
-      stroke: chargesAndFieldsColorProfile.controlPanelBorderProperty,
+      fill: ChargesAndFieldsColors.controlPanelFillProperty,
+      stroke: ChargesAndFieldsColors.controlPanelBorderProperty,
       tandem: tandem
     };
 
@@ -149,7 +149,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
       lineWidth: 2,
       centerX: 0,
       centerY: 0,
-      stroke: chargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+      stroke: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty
     } );
 
     // Create the crosshair
@@ -160,14 +160,14 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     const crosshair = new Path( crosshairShape, {
       centerX: 0,
       centerY: 0,
-      stroke: chargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty
+      stroke: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty
     } );
 
     // Create the base of the crosshair
     // TODO: why is the fill the same as the stroke?
     const crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
-      fill: chargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
-      stroke: chargesAndFieldsColorProfile.electricPotentialSensorCrosshairStrokeProperty,
+      fill: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty,
+      stroke: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty,
       tandem: tandem.createTandem( 'crosshairMount' )
     } );
 
