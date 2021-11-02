@@ -431,7 +431,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     if ( electricPotential > 0 ) {
 
       // clamped linear interpolation function, output lies between 0 and 1;
-      distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION( electricPotential );
+      distance = ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION.evaluate( electricPotential );
       finalColor = this.interpolateRGBA(
         // {Color} color that corresponds to the Electric Potential being zero
         ChargesAndFieldsColors.electricPotentialGridZeroProperty.get(),
@@ -444,7 +444,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     else {
 
       // clamped linear interpolation function, output lies between 0 and 1
-      distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION( electricPotential );
+      distance = ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION.evaluate( electricPotential );
       finalColor = this.interpolateRGBA(
         // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
         ChargesAndFieldsColors.electricPotentialGridSaturationNegativeProperty.get(),
@@ -470,7 +470,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
   getElectricFieldMagnitudeColor( electricFieldMagnitude, options ) {
 
     // ELECTRIC_FIELD_LINEAR_FUNCTION is a clamped linear function
-    const distance = ELECTRIC_FIELD_LINEAR_FUNCTION( electricFieldMagnitude ); // a value between 0 and 1
+    const distance = ELECTRIC_FIELD_LINEAR_FUNCTION.evaluate( electricFieldMagnitude ); // a value between 0 and 1
 
     return this.interpolateRGBA(
       ChargesAndFieldsColors.electricFieldGridZeroProperty.get(), // {Color} color that corresponds to zero electric Field
