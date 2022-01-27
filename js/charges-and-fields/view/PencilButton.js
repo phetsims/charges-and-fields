@@ -9,7 +9,7 @@
 import merge from '../../../../phet-core/js/merge.js';
 import { Image } from '../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
-import pencilImage from '../../../mipmaps/pencil_png.js';
+import pencil_png from '../../../mipmaps/pencil_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
 class PencilButton extends RectangularPushButton {
@@ -26,7 +26,7 @@ class PencilButton extends RectangularPushButton {
     }, options );
 
     // pencil icon
-    options.content = new Image( pencilImage, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
+    options.content = new Image( pencil_png, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
     super( options );

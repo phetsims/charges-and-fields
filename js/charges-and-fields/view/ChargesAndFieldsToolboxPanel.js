@@ -20,7 +20,7 @@ import { Path } from '../../../../scenery/js/imports.js';
 import { Rectangle } from '../../../../scenery/js/imports.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
-import electricPotentialPanelOutlineImage from '../../../mipmaps/electricPotentialPanelOutline_png.js';
+import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
@@ -107,7 +107,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
         electricPotentialSensor.isActiveProperty.set( true );
 
         // initial position of the pointer in the screenView coordinates
-        const initialViewPosition = this.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutlineImage[ 0 ].height * 6 / 25 );
+        const initialViewPosition = this.globalToParentPoint( event.pointer.point ).plusXY( 0, -electricPotentialPanelOutline_png[ 0 ].height * 6 / 25 );
         electricPotentialSensor.positionProperty.set( modelViewTransform.viewToModelPosition( initialViewPosition ) );
 
         electricPotentialSensorNode.movableDragHandler.press( event, electricPotentialSensorNode );
@@ -180,7 +180,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
       maxWidth: 200,
       tandem: tandem.createTandem( 'voltageReading' )
     } );
-    const outlineImage = new Image( electricPotentialPanelOutlineImage, {
+    const outlineImage = new Image( electricPotentialPanelOutline_png, {
       tandem: tandem.createTandem( 'outlineImage' )
     } );
     outlineImage.scale( 0.5 * 6 / 25 );

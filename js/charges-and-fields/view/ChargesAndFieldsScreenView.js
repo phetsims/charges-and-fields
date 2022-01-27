@@ -39,7 +39,7 @@ import ElectricPotentialMobileWebGLNode from './ElectricPotentialMobileWebGLNode
 import ElectricPotentialSensorNode from './ElectricPotentialSensorNode.js';
 import ElectricPotentialWebGLNode from './ElectricPotentialWebGLNode.js';
 import GridNode from './GridNode.js';
-import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line require-statement-match
+import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line default-import-match-filename
 
 // constants
 const linear = DotUtils.linear;
