@@ -61,11 +61,11 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
       offsetPosition: ( point, listener ) => {
         return listener.pointer && listener.pointer.isTouchLike() ? new Vector2( 0, -2 * CIRCLE_RADIUS ) : Vector2.ZERO;
       },
-      start: ( event, listener ) => {
+      start: () => {
         // Move the chargedParticle to the front of this layer when grabbed by the user.
         this.moveToFront();
       },
-      end: ( event, listener ) => {
+      end: () => {
         snapToGridLines( chargedParticle.positionProperty );
 
         if ( !enclosureBounds.containsPoint( chargedParticle.positionProperty.get() ) ) {

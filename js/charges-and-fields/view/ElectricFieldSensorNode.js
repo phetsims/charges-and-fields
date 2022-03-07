@@ -195,12 +195,12 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
       offsetPosition: ( point, listener ) => {
         return listener.pointer && listener.pointer.isTouchLike() ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
       },
-      start: ( event, listener ) => {
+      start: () => {
         // Move the sensor to the front of this layer when grabbed by the user.
         this.moveToFront();
       },
 
-      end: ( event, listener ) => {
+      end: () => {
         snapToGridLines( electricFieldSensor.positionProperty );
 
         if ( !enclosureBounds.containsPoint( electricFieldSensor.positionProperty.get() ) ) {

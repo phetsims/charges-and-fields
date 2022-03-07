@@ -240,7 +240,7 @@ class ElectricPotentialSensorNode extends Node {
       tandem: tandem.createTandem( 'dragListener' ),
       dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
-      end: ( event, listener ) => {
+      end: () => {
         snapToGridLines( electricPotentialSensor.positionProperty );
       }
     } );
