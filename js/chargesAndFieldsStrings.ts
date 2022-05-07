@@ -9,30 +9,30 @@ import chargesAndFields from './chargesAndFields.js';
 
 type StringsType = {
   'charges-and-fields': {
-    'title': string
-  },
-  'plusOneNanoC': string,
-  'minusOneNanoC': string,
-  'electricField': string,
-  'directionOnly': string,
-  'voltage': string,
-  'values': string,
-  'grid': string,
-  'sensors': string,
-  'eFieldUnit': string,
-  'centimeterUnit': string,
-  'angleUnit': string,
-  'snapToGrid': string,
-  'voltageUnit': string,
-  'oneMeter': string,
-  'equipotential': string,
+    'title': string;
+  };
+  'plusOneNanoC': string;
+  'minusOneNanoC': string;
+  'electricField': string;
+  'directionOnly': string;
+  'voltage': string;
+  'values': string;
+  'grid': string;
+  'sensors': string;
+  'eFieldUnit': string;
+  'centimeterUnit': string;
+  'angleUnit': string;
+  'snapToGrid': string;
+  'voltageUnit': string;
+  'oneMeter': string;
+  'equipotential': string;
   'pattern': {
     '0value': {
-      '1units': string
+      '1units': string;
     }
-  },
+  };
   'options': {
-    'projectorColors': string
+    'projectorColors': string;
   }
 };
 
