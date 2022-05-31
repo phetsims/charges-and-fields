@@ -16,17 +16,10 @@ import { Shape } from '../../../../kite/js/imports.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
-import { DragListener } from '../../../../scenery/js/imports.js';
-import { Circle } from '../../../../scenery/js/imports.js';
-import { Image } from '../../../../scenery/js/imports.js';
-import { LayoutBox } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Path } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Circle, DragListener, HBox, Image, Node, Path, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import PencilButton from './PencilButton.js';
@@ -139,8 +132,7 @@ class ElectricPotentialSensorNode extends Node {
     } );
 
     // The clear and plot buttons
-    const buttonsBox = new LayoutBox( {
-      orientation: 'horizontal',
+    const buttonsBox = new HBox( {
       spacing: 10,
       children: [ clearButton, plotElectricPotentialLineButton ],
       pickable: true,
@@ -165,7 +157,7 @@ class ElectricPotentialSensorNode extends Node {
     } );
 
     // Organize the content of the control panel
-    const bodyContent = new LayoutBox( {
+    const bodyContent = new VBox( {
       spacing: 7,
       children: [ electricPotentialPanelTitleText, backgroundRectangle, buttonsBox ],
       pickable: true

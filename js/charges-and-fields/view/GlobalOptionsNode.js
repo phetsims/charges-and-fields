@@ -8,10 +8,10 @@
 
 import OptionsDialog from '../../../../joist/js/OptionsDialog.js';
 import ProjectorModeCheckbox from '../../../../joist/js/ProjectorModeCheckbox.js';
-import { LayoutBox } from '../../../../scenery/js/imports.js';
+import { VBox } from '../../../../scenery/js/imports.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
-class GlobalOptionsNode extends LayoutBox {
+class GlobalOptionsNode extends VBox {
 
   /**
    * @param {Tandem} tandem
