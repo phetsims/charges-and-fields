@@ -46,7 +46,7 @@ class ChargesAndFieldsControlPanel extends Panel {
         maxWidth: 250
       } );
 
-      return new Checkbox( text, property, {
+      return new Checkbox( property, text, {
         tandem: tandem.createTandem( tandemId ),
         boxWidth: 25,
         spacing: 7,
