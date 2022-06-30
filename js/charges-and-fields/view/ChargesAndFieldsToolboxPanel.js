@@ -215,7 +215,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     // first, create an actual measuring tape
 
     const unspooledMeterTape = 30; // in view coordinates
-    const measuringTape = new MeasuringTapeNode( new Property( { name: '', multiplier: 1 } ), new Property( true ), {
+    const measuringTape = new MeasuringTapeNode( new Property( { name: '', multiplier: 1 } ), {
       tipPositionProperty: new Vector2Property( new Vector2( unspooledMeterTape, 0 ), {
         tandem: tandem.createTandem( 'tipPositionProperty' ),
         phetioDocumentation: 'Tip position of measuring tape'

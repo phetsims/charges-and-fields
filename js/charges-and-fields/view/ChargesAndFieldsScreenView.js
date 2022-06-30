@@ -362,7 +362,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     this.availableModelBoundsProperty.link( bounds => {
 
       // the measuring Tape is subject to dragBounds (specified in model coordinates)
-      measuringTapeNode.dragBounds = bounds;
+      measuringTapeNode.setDragBounds( bounds );
 
       updateControlLayout();
     } );
