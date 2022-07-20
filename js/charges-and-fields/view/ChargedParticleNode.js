@@ -7,8 +7,7 @@
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { DragListener } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import { DragListener, Node } from '../../../../scenery/js/imports.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';

@@ -15,16 +15,11 @@
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import { DragListener } from '../../../../scenery/js/imports.js';
-import { Circle } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Path } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Circle, DragListener, Node, Path, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 

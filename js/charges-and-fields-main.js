@@ -9,9 +9,9 @@
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import chargesAndFieldsStrings from './chargesAndFieldsStrings.js';
 import ChargesAndFieldsScreen from './charges-and-fields/ChargesAndFieldsScreen.js';
 import GlobalOptionsNode from './charges-and-fields/view/GlobalOptionsNode.js';
+import chargesAndFieldsStrings from './chargesAndFieldsStrings.js';
 
 const chargesAndFieldsTitleString = chargesAndFieldsStrings[ 'charges-and-fields' ].title;
 

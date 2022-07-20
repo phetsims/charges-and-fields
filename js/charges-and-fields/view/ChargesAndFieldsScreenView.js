@@ -12,15 +12,14 @@ import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import LinearFunction from '../../../../dot/js/LinearFunction.js';
 import Rectangle from '../../../../dot/js/Rectangle.js';
+import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line default-import-match-filename
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import merge from '../../../../phet-core/js/merge.js';
 import platform from '../../../../phet-core/js/platform.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { Utils } from '../../../../scenery/js/imports.js';
+import { Node, Text, Utils } from '../../../../scenery/js/imports.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import chargesAndFields from '../../chargesAndFields.js';
@@ -39,7 +38,6 @@ import ElectricPotentialMobileWebGLNode from './ElectricPotentialMobileWebGLNode
 import ElectricPotentialSensorNode from './ElectricPotentialSensorNode.js';
 import ElectricPotentialWebGLNode from './ElectricPotentialWebGLNode.js';
 import GridNode from './GridNode.js';
-import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line default-import-match-filename
 
 // constants
 const linear = DotUtils.linear;

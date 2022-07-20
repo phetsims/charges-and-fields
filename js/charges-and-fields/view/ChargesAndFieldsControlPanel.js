@@ -6,14 +6,11 @@
  * @author Martin Veillette (Berea College)
  */
 
-import { HStrut } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
+import { HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Panel from '../../../../sun/js/Panel.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 

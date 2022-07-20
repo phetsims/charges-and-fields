@@ -10,11 +10,9 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Path } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import { Node, Path, Text } from '../../../../scenery/js/imports.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 

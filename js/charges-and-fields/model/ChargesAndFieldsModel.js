@@ -7,8 +7,8 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import Emitter from '../../../../axon/js/Emitter.js';
 import createObservableArray from '../../../../axon/js/createObservableArray.js';
+import Emitter from '../../../../axon/js/Emitter.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';

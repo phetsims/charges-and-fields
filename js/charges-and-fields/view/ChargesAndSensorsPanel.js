@@ -8,12 +8,10 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { HBox, Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';

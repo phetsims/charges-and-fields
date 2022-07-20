@@ -8,8 +8,7 @@
  * @author Andrew Adare <andrew.adare@colorado.edu>
  */
 
-import { Color } from '../../../scenery/js/imports.js';
-import { ProfileColorProperty } from '../../../scenery/js/imports.js';
+import { Color, ProfileColorProperty } from '../../../scenery/js/imports.js';
 import chargesAndFields from '../chargesAndFields.js';
 
 // constants
