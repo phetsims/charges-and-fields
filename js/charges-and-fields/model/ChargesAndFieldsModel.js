@@ -108,7 +108,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     this.chargesAndSensorsEnclosureBoundsProperty = new Property(
       new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
         tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
-        phetioType: Property.PropertyIO( Bounds2.Bounds2IO )
+        phetioValueType: Bounds2.Bounds2IO
       } );
 
     //----------------------------------------------------------------------------------------

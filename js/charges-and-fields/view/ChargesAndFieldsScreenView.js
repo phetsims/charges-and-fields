@@ -77,7 +77,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     // the availableModelBounds should not be reset when the resetAllButton is pressed,
     this.availableModelBoundsProperty = new Property( model.enlargedBounds, {
       tandem: tandem.createTandem( 'availableModelBoundsProperty' ),
-      phetioType: Property.PropertyIO( Bounds2.Bounds2IO ),
+      phetioValueType: Bounds2.Bounds2IO,
       phetioDocumentation: 'Registers the model bounds based on the screen size'
     } );
 
