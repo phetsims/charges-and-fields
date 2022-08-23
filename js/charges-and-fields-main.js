@@ -6,11 +6,11 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
+import PreferencesModel from '../../joist/js/preferences/PreferencesModel.js';
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ChargesAndFieldsScreen from './charges-and-fields/ChargesAndFieldsScreen.js';
-import GlobalOptionsNode from './charges-and-fields/view/GlobalOptionsNode.js';
 import chargesAndFieldsStrings from './chargesAndFieldsStrings.js';
 
 const chargesAndFieldsTitleString = chargesAndFieldsStrings[ 'charges-and-fields' ].title;
@@ -26,8 +26,13 @@ const simOptions = {
     team: 'Ariel Paul, Kathy Perkins',
     qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
   },
-  createOptionsDialogContent: tandem => new GlobalOptionsNode( tandem ),
-  webgl: true
+
+  webgl: true,
+  preferencesModel: new PreferencesModel( {
+    visualOptions: {
+      supportsProjectorMode: true
+    }
+  } )
 };
 
 simLauncher.launch( () => {
