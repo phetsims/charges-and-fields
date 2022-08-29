@@ -11,47 +11,47 @@ import chargesAndFields from './chargesAndFields.js';
 type StringsType = {
   'charges-and-fields': {
     'title': string;
-    'titleProperty': TReadOnlyProperty<string>;
+    'titleStringProperty': TReadOnlyProperty<string>;
   };
   'plusOneNanoC': string;
-  'plusOneNanoCProperty': TReadOnlyProperty<string>;
+  'plusOneNanoCStringProperty': TReadOnlyProperty<string>;
   'minusOneNanoC': string;
-  'minusOneNanoCProperty': TReadOnlyProperty<string>;
+  'minusOneNanoCStringProperty': TReadOnlyProperty<string>;
   'electricField': string;
-  'electricFieldProperty': TReadOnlyProperty<string>;
+  'electricFieldStringProperty': TReadOnlyProperty<string>;
   'directionOnly': string;
-  'directionOnlyProperty': TReadOnlyProperty<string>;
+  'directionOnlyStringProperty': TReadOnlyProperty<string>;
   'voltage': string;
-  'voltageProperty': TReadOnlyProperty<string>;
+  'voltageStringProperty': TReadOnlyProperty<string>;
   'values': string;
-  'valuesProperty': TReadOnlyProperty<string>;
+  'valuesStringProperty': TReadOnlyProperty<string>;
   'grid': string;
-  'gridProperty': TReadOnlyProperty<string>;
+  'gridStringProperty': TReadOnlyProperty<string>;
   'sensors': string;
-  'sensorsProperty': TReadOnlyProperty<string>;
+  'sensorsStringProperty': TReadOnlyProperty<string>;
   'eFieldUnit': string;
-  'eFieldUnitProperty': TReadOnlyProperty<string>;
+  'eFieldUnitStringProperty': TReadOnlyProperty<string>;
   'centimeterUnit': string;
-  'centimeterUnitProperty': TReadOnlyProperty<string>;
+  'centimeterUnitStringProperty': TReadOnlyProperty<string>;
   'angleUnit': string;
-  'angleUnitProperty': TReadOnlyProperty<string>;
+  'angleUnitStringProperty': TReadOnlyProperty<string>;
   'snapToGrid': string;
-  'snapToGridProperty': TReadOnlyProperty<string>;
+  'snapToGridStringProperty': TReadOnlyProperty<string>;
   'voltageUnit': string;
-  'voltageUnitProperty': TReadOnlyProperty<string>;
+  'voltageUnitStringProperty': TReadOnlyProperty<string>;
   'oneMeter': string;
-  'oneMeterProperty': TReadOnlyProperty<string>;
+  'oneMeterStringProperty': TReadOnlyProperty<string>;
   'equipotential': string;
-  'equipotentialProperty': TReadOnlyProperty<string>;
+  'equipotentialStringProperty': TReadOnlyProperty<string>;
   'pattern': {
     '0value': {
       '1units': string;
-      '1unitsProperty': TReadOnlyProperty<string>;
+      '1unitsStringProperty': TReadOnlyProperty<string>;
     }
   };
   'options': {
     'projectorColors': string;
-    'projectorColorsProperty': TReadOnlyProperty<string>;
+    'projectorColorsStringProperty': TReadOnlyProperty<string>;
   }
 };
 
