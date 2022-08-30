@@ -221,7 +221,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
         // Horrible horrible hacks
         draggableElementsLayer.children.forEach( potentialView => {
           if ( potentialView.modelElement === modelElement ) {
-            potentialView.movableDragHandler.press( event, potentialView );
+            potentialView.dragListener.press( event, potentialView );
           }
         } );
       },

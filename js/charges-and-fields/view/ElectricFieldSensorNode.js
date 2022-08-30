@@ -183,7 +183,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     };
     electricFieldSensor.positionProperty.link( positionListener );
 
-    this.movableDragHandler = new DragListener( {
+    this.dragListener = new DragListener( {
       applyOffset: false,
       positionProperty: electricFieldSensor.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
@@ -211,7 +211,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
         }
       }
     } );
-    this.movableDragHandler.isUserControlledProperty.link( controlled => electricFieldSensor.isUserControlledProperty.set( controlled ) );
+    this.dragListener.isUserControlledProperty.link( controlled => electricFieldSensor.isUserControlledProperty.set( controlled ) );
 
     // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
     let isDragListenerAttached = false;
@@ -221,11 +221,11 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {
           this.cursor = 'pointer';
-          this.addInputListener( this.movableDragHandler );
+          this.addInputListener( this.dragListener );
         }
         else {
           this.cursor = null;
-          this.removeInputListener( this.movableDragHandler );
+          this.removeInputListener( this.dragListener );
         }
 
         isDragListenerAttached = isInteractive;
@@ -245,7 +245,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
       isPlayAreaChargedProperty.unlink( isPlayAreaChargedListener );
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
-      this.movableDragHandler.dispose();
+      this.dragListener.dispose();
       fieldStrengthLabel.dispose();
       directionLabel.dispose();
     };

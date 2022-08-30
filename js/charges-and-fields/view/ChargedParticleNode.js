@@ -50,7 +50,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
     };
     chargedParticle.positionProperty.link( positionListener );
 
-    this.movableDragHandler = new DragListener( {
+    this.dragListener = new DragListener( {
       applyOffset: false,
       positionProperty: chargedParticle.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
@@ -72,7 +72,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
         }
       }
     } );
-    this.movableDragHandler.isUserControlledProperty.link( controlled => {
+    this.dragListener.isUserControlledProperty.link( controlled => {
       chargedParticle.isUserControlledProperty.value = controlled;
     } );
 
@@ -86,11 +86,11 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
       if ( isDragListenerAttached !== isInteractive ) {
         if ( isInteractive ) {
           this.cursor = 'pointer';
-          this.addInputListener( this.movableDragHandler );
+          this.addInputListener( this.dragListener );
         }
         else {
           this.cursor = null;
-          this.removeInputListener( this.movableDragHandler );
+          this.removeInputListener( this.dragListener );
         }
 
         isDragListenerAttached = isInteractive;
@@ -101,7 +101,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
     this.disposeChargedParticleNode = () => {
       chargedParticle.positionProperty.unlink( positionListener );
       chargedParticle.isInteractiveProperty.unlink( isInteractiveListener );
-      this.movableDragHandler.dispose();
+      this.dragListener.dispose();
     };
   }
 

@@ -227,7 +227,7 @@ class ElectricPotentialSensorNode extends Node {
     electricPotentialSensor.electricPotentialProperty.link( potentialListener );
 
     // Should be added as a listener by our parent when the time is right
-    this.movableDragHandler = new DragListener( {
+    this.dragListener = new DragListener( {
       positionProperty: electricPotentialSensor.positionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
       dragBoundsProperty: availableModelBoundsProperty,
@@ -236,12 +236,12 @@ class ElectricPotentialSensorNode extends Node {
         snapToGridLines( electricPotentialSensor.positionProperty );
       }
     } );
-    this.movableDragHandler.isUserControlledProperty.link( controlled => {
+    this.dragListener.isUserControlledProperty.link( controlled => {
       this.isUserControlledProperty.value = controlled;
     } );
 
     // When dragging, move the electric potential sensor
-    this.addInputListener( this.movableDragHandler );
+    this.addInputListener( this.dragListener );
 
     // Show/Hide this node
     // no need to unlink, stays for the lifetime of the simulation

@@ -113,7 +113,7 @@ class VoltageLabel extends Node {
     const electricPotential = electricPotentialLine.electricPotential;
     const position = electricPotentialLine.position;
 
-    const movableDragHandler = new DragListener( {
+    const dragListener = new DragListener( {
       applyOffset: false,
       positionProperty: electricPotentialLine.voltageLabelPositionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
@@ -124,7 +124,7 @@ class VoltageLabel extends Node {
         this.moveToFront();
       }
     } );
-    this.addInputListener( movableDragHandler );
+    this.addInputListener( dragListener );
 
     // a smaller electric potential should have more precision
     const electricPotentialValueString = ( Math.abs( electricPotential ) < 1 ) ?
@@ -170,7 +170,7 @@ class VoltageLabel extends Node {
     // create a dispose function to unlink the color functions
     this.disposeVoltageLabel = () => {
       electricPotentialLine.voltageLabelPositionProperty.unlink( positionFunction );
-      movableDragHandler.dispose();
+      dragListener.dispose();
       voltageLabelText.dispose();
       backgroundRectangle.dispose();
     };
