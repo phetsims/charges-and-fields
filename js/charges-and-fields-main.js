@@ -13,7 +13,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ChargesAndFieldsScreen from './charges-and-fields/ChargesAndFieldsScreen.js';
 import chargesAndFieldsStrings from './chargesAndFieldsStrings.js';
 
-const chargesAndFieldsTitleString = chargesAndFieldsStrings[ 'charges-and-fields' ].title;
+const chargesAndFieldsTitleStringProperty = chargesAndFieldsStrings[ 'charges-and-fields' ].titleStringProperty;
 
 const tandem = Tandem.ROOT;
 
@@ -36,7 +36,7 @@ const simOptions = {
 };
 
 simLauncher.launch( () => {
-  const sim = new Sim( chargesAndFieldsTitleString, [
+  const sim = new Sim( chargesAndFieldsTitleStringProperty, [
     new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) )
   ], simOptions );
   sim.start();
