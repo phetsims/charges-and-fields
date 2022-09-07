@@ -11,15 +11,15 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { HBox, Node, Text } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
 import ElectricFieldSensorRepresentationNode from './ElectricFieldSensorRepresentationNode.js';
 
-const minusOneNanoCString = chargesAndFieldsStrings.minusOneNanoC;
-const plusOneNanoCString = chargesAndFieldsStrings.plusOneNanoC;
-const sensorsString = chargesAndFieldsStrings.sensors;
+const minusOneNanoCString = ChargesAndFieldsStrings.minusOneNanoC;
+const plusOneNanoCString = ChargesAndFieldsStrings.plusOneNanoC;
+const sensorsString = ChargesAndFieldsStrings.sensors;
 
 const HORIZONTAL_SPACING = 60;
 const VERTICAL_SPACING = 25;

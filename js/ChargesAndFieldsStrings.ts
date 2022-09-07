@@ -55,8 +55,8 @@ type StringsType = {
   }
 };
 
-const chargesAndFieldsStrings = getStringModule( 'CHARGES_AND_FIELDS' ) as StringsType;
+const ChargesAndFieldsStrings = getStringModule( 'CHARGES_AND_FIELDS' ) as StringsType;
 
-chargesAndFields.register( 'chargesAndFieldsStrings', chargesAndFieldsStrings );
+chargesAndFields.register( 'ChargesAndFieldsStrings', ChargesAndFieldsStrings );
 
-export default chargesAndFieldsStrings;
+export default ChargesAndFieldsStrings;

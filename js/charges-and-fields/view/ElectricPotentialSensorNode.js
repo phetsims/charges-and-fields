@@ -19,7 +19,7 @@ import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import { Circle, DragListener, HBox, Image, Node, Path, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import PencilButton from './PencilButton.js';
@@ -27,9 +27,9 @@ import PencilButton from './PencilButton.js';
 // constants
 const CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
 
-const equipotentialString = chargesAndFieldsStrings.equipotential;
-const pattern0Value1UnitsString = chargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
-const voltageUnitString = chargesAndFieldsStrings.voltageUnit;
+const equipotentialString = ChargesAndFieldsStrings.equipotential;
+const pattern0Value1UnitsString = ChargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
+const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
 
 class ElectricPotentialSensorNode extends Node {

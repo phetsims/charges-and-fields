@@ -19,12 +19,12 @@ import { Circle, DragListener, Node, Path, Rectangle, Text } from '../../../../s
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
-const pattern0Value1UnitsString = chargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
-const voltageUnitString = chargesAndFieldsStrings.voltageUnit;
+const pattern0Value1UnitsString = ChargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
+const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
 // constants
 // if set to true will show the (model and view) positions use in the calculation of the electric potential lines

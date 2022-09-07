@@ -9,7 +9,7 @@
 import Property from '../../../../axon/js/Property.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 
 class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
 
@@ -26,7 +26,7 @@ class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
                availableModelBoundsProperty,
                tandem ) {
 
-    super( new Property( { name: chargesAndFieldsStrings.centimeterUnit, multiplier: 100 } ), {
+    super( new Property( { name: ChargesAndFieldsStrings.centimeterUnit, multiplier: 100 } ), {
       visibleProperty: measuringTape.isActiveProperty,
       tandem: tandem,
       dragBounds: availableModelBoundsProperty.get(),

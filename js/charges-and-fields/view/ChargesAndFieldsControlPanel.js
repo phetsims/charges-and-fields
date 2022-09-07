@@ -10,16 +10,16 @@ import { HStrut, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
-const directionOnlyString = chargesAndFieldsStrings.directionOnly;
-const electricFieldString = chargesAndFieldsStrings.electricField;
-const gridString = chargesAndFieldsStrings.grid;
-const snapToGridString = chargesAndFieldsStrings.snapToGrid;
-const valuesString = chargesAndFieldsStrings.values;
-const voltageString = chargesAndFieldsStrings.voltage;
+const directionOnlyString = ChargesAndFieldsStrings.directionOnly;
+const electricFieldString = ChargesAndFieldsStrings.electricField;
+const gridString = ChargesAndFieldsStrings.grid;
+const snapToGridString = ChargesAndFieldsStrings.snapToGrid;
+const valuesString = ChargesAndFieldsStrings.values;
+const voltageString = ChargesAndFieldsStrings.voltage;
 
 class ChargesAndFieldsControlPanel extends Panel {
 

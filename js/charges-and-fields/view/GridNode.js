@@ -12,7 +12,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
 import { Node, Path, Text } from '../../../../scenery/js/imports.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
@@ -26,7 +26,7 @@ const MINOR_GRIDLINE_LINEWIDTH = 1;
 const ARROW_LENGTH = 1; // in model coordinates
 const ARROW_POSITION = new Vector2( 2, -2.20 ); // top left position in model coordinates
 
-const oneMeterString = chargesAndFieldsStrings.oneMeter;
+const oneMeterString = ChargesAndFieldsStrings.oneMeter;
 
 class GridNode extends Node {
 

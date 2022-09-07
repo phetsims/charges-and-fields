@@ -16,14 +16,14 @@ import { Circle, Image, Node, Path, Rectangle, Text, VBox } from '../../../../sc
 import Panel from '../../../../sun/js/Panel.js';
 import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 // constants
 const CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
 
-const voltageUnitString = chargesAndFieldsStrings.voltageUnit;
+const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
 class ChargesAndFieldsToolboxPanel extends Panel {
 

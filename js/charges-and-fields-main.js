@@ -11,9 +11,9 @@ import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ChargesAndFieldsScreen from './charges-and-fields/ChargesAndFieldsScreen.js';
-import chargesAndFieldsStrings from './chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from './ChargesAndFieldsStrings.js';
 
-const chargesAndFieldsTitleStringProperty = chargesAndFieldsStrings[ 'charges-and-fields' ].titleStringProperty;
+const chargesAndFieldsTitleStringProperty = ChargesAndFieldsStrings[ 'charges-and-fields' ].titleStringProperty;
 
 const tandem = Tandem.ROOT;
 

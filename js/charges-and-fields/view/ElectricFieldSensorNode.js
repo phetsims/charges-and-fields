@@ -14,14 +14,14 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import { DragListener, Node, Text } from '../../../../scenery/js/imports.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import chargesAndFieldsStrings from '../../chargesAndFieldsStrings.js';
+import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ElectricFieldSensorRepresentationNode from './ElectricFieldSensorRepresentationNode.js';
 
-const angleUnitString = chargesAndFieldsStrings.angleUnit;
-const eFieldUnitString = chargesAndFieldsStrings.eFieldUnit;
-const pattern0Value1UnitsString = chargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
+const angleUnitString = ChargesAndFieldsStrings.angleUnit;
+const eFieldUnitString = ChargesAndFieldsStrings.eFieldUnit;
+const pattern0Value1UnitsString = ChargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
 
 // constants
 const LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
