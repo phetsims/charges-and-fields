@@ -167,12 +167,12 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 
     // Create the voltage Reading reading
     // TODO: Is this internationalized?
-    const voltageReading = new Text( `0.0 ${voltageUnitString}`, {
+    const voltageText = new Text( `0.0 ${voltageUnitString}`, {
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       fill: 'black',
       stroke: 'black',
       maxWidth: 200,
-      tandem: tandem.createTandem( 'voltageReading' )
+      tandem: tandem.createTandem( 'voltageText' )
     } );
     const outlineImage = new Image( electricPotentialPanelOutline_png, {
       tandem: tandem.createTandem( 'outlineImage' )
@@ -180,7 +180,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     outlineImage.scale( 0.5 * 6 / 25 );
 
     // Create the background rectangle behind the voltage Reading
-    const backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageReading.height * 1.5, 5, 5, {
+    const backgroundRectangle = new Rectangle( 0, 0, outlineImage.width * 0.8, voltageText.height * 1.5, 5, 5, {
       fill: 'white',
       stroke: 'black',
       tandem: tandem.createTandem( 'backgroundRectangle' )
@@ -188,19 +188,19 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 
     crosshairMount.centerX = circle.centerX;
     crosshairMount.top = circle.bottom;
-    voltageReading.centerX = circle.centerX;
+    voltageText.centerX = circle.centerX;
     backgroundRectangle.centerX = circle.centerX;
     outlineImage.centerX = circle.centerX;
     outlineImage.top = crosshairMount.bottom;
-    voltageReading.top = outlineImage.top + 20;
-    backgroundRectangle.centerY = voltageReading.centerY;
+    voltageText.top = outlineImage.top + 20;
+    backgroundRectangle.centerY = voltageText.centerY;
 
     node.addChild( crosshairMount );
     node.addChild( circle );
     node.addChild( crosshair );
     node.addChild( outlineImage );
     node.addChild( backgroundRectangle );
-    node.addChild( voltageReading );
+    node.addChild( voltageText );
 
     return node;
   }

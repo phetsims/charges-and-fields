@@ -72,29 +72,29 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     } );
 
     // Create two numerical readouts for the strength and direction of the electric field.
-    const fieldStrengthLabel = new Text( '', {
+    const fieldStrengthLabelText = new Text( '', {
       font: LABEL_FONT,
       pickable: false,
       fill: ChargesAndFieldsColors.electricFieldSensorLabelProperty,
-      tandem: tandem.createTandem( 'fieldStrengthLabel' )
+      tandem: tandem.createTandem( 'fieldStrengthLabelText' )
     } );
-    const directionLabel = new Text( '', {
+    const directionLabelText = new Text( '', {
       font: LABEL_FONT,
       pickable: false,
       fill: ChargesAndFieldsColors.electricFieldSensorLabelProperty,
-      tandem: tandem.createTandem( 'directionLabel' )
+      tandem: tandem.createTandem( 'directionLabelText' )
     } );
 
     this.addChild( arrowNode );
-    this.addChild( fieldStrengthLabel );
-    this.addChild( directionLabel );
+    this.addChild( fieldStrengthLabelText );
+    this.addChild( directionLabelText );
     arrowNode.moveToBack(); // the arrow should always be on the back of 'this'
 
     // layout
     arrowNode.left = 0;
     arrowNode.centerY = 0;
-    fieldStrengthLabel.bottom = this.top; // 'this' is the ElectricFieldSensorRepresentationNode, i.e. the circle
-    directionLabel.bottom = fieldStrengthLabel.top;
+    fieldStrengthLabelText.bottom = this.top; // 'this' is the ElectricFieldSensorRepresentationNode, i.e. the circle
+    directionLabelText.bottom = fieldStrengthLabelText.top;
 
     // when the electric field changes update the arrow and the labels
     const electricFieldListener = electricField => {
@@ -120,44 +120,44 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
         }
 
         if ( areValuesVisibleProperty.get() ) {
-          fieldStrengthLabel.visible = electricFieldSensor.isActiveProperty.get();
-          directionLabel.visible = electricFieldSensor.isActiveProperty.get();
+          fieldStrengthLabelText.visible = electricFieldSensor.isActiveProperty.get();
+          directionLabelText.visible = electricFieldSensor.isActiveProperty.get();
         }
 
         // Update the strings in the labels
         const fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
-        fieldStrengthLabel.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
+        fieldStrengthLabelText.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
 
         const angleString = Utils.toFixed( Utils.toDegrees( angle ), 1 );
-        directionLabel.text = isPlayAreaChargedProperty.get() ?
+        directionLabelText.text = isPlayAreaChargedProperty.get() ?
                               StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
 
       }
       else {
         arrowNode.visible = false;
 
-        fieldStrengthLabel.text = '-';
-        directionLabel.text = '-';
+        fieldStrengthLabelText.text = '-';
+        directionLabelText.text = '-';
       }
 
-      fieldStrengthLabel.centerX = 0;
-      directionLabel.centerX = 0;
+      fieldStrengthLabelText.centerX = 0;
+      directionLabelText.centerX = 0;
     };
     electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
     const isActiveListener = isActive => {
       arrowNode.visible = isActive;
       if ( areValuesVisibleProperty.get() ) {
-        fieldStrengthLabel.visible = isActive;
-        directionLabel.visible = isActive;
+        fieldStrengthLabelText.visible = isActive;
+        directionLabelText.visible = isActive;
       }
     };
     electricFieldSensor.isActiveProperty.link( isActiveListener );
 
     // Show/hide labels
     const areValuesVisibleListener = isVisible => {
-      fieldStrengthLabel.visible = isVisible;
-      directionLabel.visible = isVisible;
+      fieldStrengthLabelText.visible = isVisible;
+      directionLabelText.visible = isVisible;
     };
     areValuesVisibleProperty.link( areValuesVisibleListener );
 
@@ -174,7 +174,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     );
 
     // Show/hide labels
-    const isDirectionLabelVisibleListener = isVisible => directionLabel.setVisible( isVisible );
+    const isDirectionLabelVisibleListener = isVisible => directionLabelText.setVisible( isVisible );
     isDirectionLabelVisibleDerivedProperty.link( isDirectionLabelVisibleListener );
 
     // Register for synchronization with model.
@@ -246,8 +246,8 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
       isDirectionLabelVisibleDerivedProperty.unlink( isDirectionLabelVisibleListener );
       isDirectionLabelVisibleDerivedProperty.dispose();
       this.dragListener.dispose();
-      fieldStrengthLabel.dispose();
-      directionLabel.dispose();
+      fieldStrengthLabelText.dispose();
+      directionLabelText.dispose();
     };
 
     /**

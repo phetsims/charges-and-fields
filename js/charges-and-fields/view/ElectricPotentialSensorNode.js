@@ -124,10 +124,10 @@ class ElectricPotentialSensorNode extends Node {
     plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
 
     // Create the voltage readout
-    const voltageReadout = new Text( '', {
+    const voltageText = new Text( '', {
       maxWidth: 65,
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
-      tandem: tandem.createTandem( 'voltageReadout' ),
+      tandem: tandem.createTandem( 'voltageText' ),
       fill: ChargesAndFieldsColors.electricPotentialSensorTextPanelTextFillProperty
     } );
 
@@ -145,7 +145,7 @@ class ElectricPotentialSensorNode extends Node {
       backgroundAdjustment,
       0,
       buttonsBox.width - backgroundAdjustment * 2,
-      voltageReadout.height * 1.5, 5, 5, {
+      voltageText.height * 1.5, 5, 5, {
         fill: ChargesAndFieldsColors.electricPotentialSensorTextPanelBackgroundProperty,
         stroke: ChargesAndFieldsColors.electricPotentialSensorTextPanelBorderProperty,
         tandem: tandem.createTandem( 'backgroundRectangle' )
@@ -168,8 +168,8 @@ class ElectricPotentialSensorNode extends Node {
      * @param {number} electricPotential
      */
     function updateVoltageReadout( electricPotential ) {
-      voltageReadout.text = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
-      voltageReadout.centerX = bodyContent.centerX;
+      voltageText.text = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
+      voltageText.centerX = bodyContent.centerX;
     }
 
     // update text of the voltage readout according to the current value of the electric potential
@@ -179,14 +179,14 @@ class ElectricPotentialSensorNode extends Node {
     const bodyNode = new Node();
     bodyNode.addChild( outlineImage ); // must go first
     bodyNode.addChild( bodyContent );
-    bodyNode.addChild( voltageReadout ); // must be last
+    bodyNode.addChild( voltageText ); // must be last
 
     // layout the elements of bodyNode
     outlineImage.scale( 1.55 * 73.6 / outlineImage.width );
     outlineImage.centerX = bodyContent.centerX;
     outlineImage.top = bodyContent.top - 15;
-    voltageReadout.centerX = bodyContent.centerX;
-    voltageReadout.centerY = backgroundRectangle.centerY;
+    voltageText.centerX = bodyContent.centerX;
+    voltageText.centerY = backgroundRectangle.centerY;
 
     // the color of the fill tracks the electric potential
     function updateCircleFillWithPotential() {
