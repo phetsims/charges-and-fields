@@ -5,53 +5,53 @@
  */
 /* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import chargesAndFields from './chargesAndFields.js';
 
 type StringsType = {
   'charges-and-fields': {
     'title': string;
-    'titleStringProperty': TReadOnlyProperty<string>;
+    'titleStringProperty': LinkableProperty<string>;
   };
   'plusOneNanoC': string;
-  'plusOneNanoCStringProperty': TReadOnlyProperty<string>;
+  'plusOneNanoCStringProperty': LinkableProperty<string>;
   'minusOneNanoC': string;
-  'minusOneNanoCStringProperty': TReadOnlyProperty<string>;
+  'minusOneNanoCStringProperty': LinkableProperty<string>;
   'electricField': string;
-  'electricFieldStringProperty': TReadOnlyProperty<string>;
+  'electricFieldStringProperty': LinkableProperty<string>;
   'directionOnly': string;
-  'directionOnlyStringProperty': TReadOnlyProperty<string>;
+  'directionOnlyStringProperty': LinkableProperty<string>;
   'voltage': string;
-  'voltageStringProperty': TReadOnlyProperty<string>;
+  'voltageStringProperty': LinkableProperty<string>;
   'values': string;
-  'valuesStringProperty': TReadOnlyProperty<string>;
+  'valuesStringProperty': LinkableProperty<string>;
   'grid': string;
-  'gridStringProperty': TReadOnlyProperty<string>;
+  'gridStringProperty': LinkableProperty<string>;
   'sensors': string;
-  'sensorsStringProperty': TReadOnlyProperty<string>;
+  'sensorsStringProperty': LinkableProperty<string>;
   'eFieldUnit': string;
-  'eFieldUnitStringProperty': TReadOnlyProperty<string>;
+  'eFieldUnitStringProperty': LinkableProperty<string>;
   'centimeterUnit': string;
-  'centimeterUnitStringProperty': TReadOnlyProperty<string>;
+  'centimeterUnitStringProperty': LinkableProperty<string>;
   'angleUnit': string;
-  'angleUnitStringProperty': TReadOnlyProperty<string>;
+  'angleUnitStringProperty': LinkableProperty<string>;
   'snapToGrid': string;
-  'snapToGridStringProperty': TReadOnlyProperty<string>;
+  'snapToGridStringProperty': LinkableProperty<string>;
   'voltageUnit': string;
-  'voltageUnitStringProperty': TReadOnlyProperty<string>;
+  'voltageUnitStringProperty': LinkableProperty<string>;
   'oneMeter': string;
-  'oneMeterStringProperty': TReadOnlyProperty<string>;
+  'oneMeterStringProperty': LinkableProperty<string>;
   'equipotential': string;
-  'equipotentialStringProperty': TReadOnlyProperty<string>;
+  'equipotentialStringProperty': LinkableProperty<string>;
   'pattern': {
     '0value': {
       '1units': string;
-      '1unitsStringProperty': TReadOnlyProperty<string>;
+      '1unitsStringProperty': LinkableProperty<string>;
     }
   };
   'options': {
     'projectorColors': string;
-    'projectorColorsStringProperty': TReadOnlyProperty<string>;
+    'projectorColorsStringProperty': LinkableProperty<string>;
   }
 };
 
