@@ -73,7 +73,7 @@ class ElectricPotentialCanvasNode extends CanvasNode {
       }
     }
 
-    this.electricPotentials = new Float64Array( this.modelPositions.length ); // eslint-disable-line no-undef
+    this.electricPotentials = new Float64Array( this.modelPositions.length );
 
     this.directCanvas = document.createElement( 'canvas' );
     this.directCanvas.width = numHorizontal;
