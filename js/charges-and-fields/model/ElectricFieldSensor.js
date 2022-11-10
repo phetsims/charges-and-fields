@@ -16,7 +16,7 @@ class ElectricFieldSensor extends ModelElement {
   /**
    * @param {Function} computeElectricField - function( Vector2 ) : number, computes electric field at the given
    *                                          point in the model.
-   * @param {Vector2} initialPosition - optionally pass a the initalPosition for the animating home from toolbox.
+   * @param {Vector2} initialPosition - optionally pass an initialPosition for the animating home from toolbox.
    *                                        This is to support PhET-iO State.
    * @param {Tandem} tandem
    */
