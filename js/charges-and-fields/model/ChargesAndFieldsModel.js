@@ -310,7 +310,7 @@ class ChargesAndFieldsModel extends PhetioObject {
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
 
-             // only drop in if the toolbox is showing (may be hidden by phet-io)
+             // only drop in if the toolbox is showing (maybe hidden by phet-io)
              this.isChargesAndSensorsPanelDisplayed && this.isChargesAndSensorsPanelDisplayed() &&
              this.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedElectricFieldSensor.positionProperty.get() ) ) {
           addedElectricFieldSensor.isActiveProperty.set( false );
