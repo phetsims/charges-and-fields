@@ -69,8 +69,6 @@ class ModelElement extends PhetioObject {
     // @public {Vector2} Where to animate the element when it is done being used.
     this.initialPosition = initialPosition;
 
-    this.disposeEmitter = new Emitter();
-
     // @public
     this.returnedToOriginEmitter = new Emitter();
   }
@@ -80,7 +78,6 @@ class ModelElement extends PhetioObject {
    * @public
    */
   dispose() {
-    this.disposeEmitter.emit();
     this.isInteractiveProperty.dispose();
     this.isUserControlledProperty.dispose();
     this.isActiveProperty.dispose();

@@ -66,9 +66,6 @@ class ElectricPotentialLine extends PhetioObject {
     };
     this.chargeChangedListener();
     this.model.chargeConfigurationChangedEmitter.addListener( this.chargeChangedListener );
-
-    // @public
-    this.disposeEmitter = new Emitter();
   }
 
   /**
@@ -80,8 +77,6 @@ class ElectricPotentialLine extends PhetioObject {
     this.model.chargeConfigurationChangedEmitter.removeListener( this.chargeChangedListener );
     this.voltageLabelPositionProperty.dispose();
     this.chargeChangedEmitter.dispose();
-    this.disposeEmitter.emit();
-    this.disposeEmitter.dispose();
     super.dispose();
   }
 
