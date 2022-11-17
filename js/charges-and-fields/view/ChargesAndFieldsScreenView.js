@@ -198,7 +198,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     // Force the moving charged Particles and electric Field Sensors into a separate layer for performance reasons.
     const draggableElementsLayer = new Node( { layerSplit: true, preventFit: true } );
 
-    // webGL devices that do not have have full WebGL support can only have a finite number of charges on board
+    // webGL devices that do not have full WebGL support can only have a finite number of charges on board
     const isNumberChargesLimited = allowMobileWebGL && !( allowWebGL );
 
     const numberChargesLimit = ( isNumberChargesLimited ) ?
