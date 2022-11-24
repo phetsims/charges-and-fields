@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "8abd1abce34ba194339a5d8e8aaf5ba70514b339",
+    "sha": "996867d68227dcefe3873bdfc0126028ebcda89f",
     "branch": "1.0"
   },
   "chipper": {
@@ -45,7 +45,7 @@
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "9cf3381ff8c89c0a546242105633b0d73eceba83",
+    "sha": "2dc4759be9f76682b3dd70d002b08f29d86a4a62",
     "branch": "HEAD"
   },
   "scenery-phet": {
