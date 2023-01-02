@@ -131,7 +131,7 @@ ModelElement.ModelElementIO = new IOType( 'ModelElementIO', {
   stateSchema: {
     initialPosition: NullableIOVector2IO
   },
-  stateToArgsForConstructor: stateObject => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
+  stateObjectToCreateElementArguments: stateObject => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
 } );
 
 chargesAndFields.register( 'ModelElement', ModelElement );

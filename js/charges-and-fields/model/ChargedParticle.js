@@ -61,7 +61,7 @@ ChargedParticle.ChargedParticleIO = new IOType( 'ChargedParticleIO', {
     return parentStateObject;
   },
   // Put charge first for the chargedParticleGroup create function API.
-  stateToArgsForConstructor: stateObject => [ stateObject.charge ].concat( ModelElement.ModelElementIO.stateToArgsForConstructor( stateObject ) )
+  stateObjectToCreateElementArguments: stateObject => [ stateObject.charge ].concat( ModelElement.ModelElementIO.stateObjectToCreateElementArguments( stateObject ) )
 } );
 
 chargesAndFields.register( 'ChargedParticle', ChargedParticle );

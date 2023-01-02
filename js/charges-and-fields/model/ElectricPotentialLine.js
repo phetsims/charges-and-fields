@@ -421,7 +421,7 @@ ElectricPotentialLine.ElectricPotentialLineIO = new IOType( 'ElectricPotentialLi
   stateSchema: {
     position: Vector2.Vector2IO
   },
-  stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
+  stateObjectToCreateElementArguments: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 
 chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
