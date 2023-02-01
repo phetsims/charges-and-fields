@@ -44,7 +44,7 @@ class ElectricPotentialLine extends PhetioObject {
     // @public - the position of where the user is trying to drag the voltage label, in model coordinates
     this.voltageLabelPositionProperty = new Vector2Property( position, {
       tandem: tandem.createTandem( 'voltageLabelPositionProperty' ),
-      useDeepEquality: true
+      valueComparisonStrategy: 'equalsFunction'
     } );
 
     this.chargeChangedEmitter = new Emitter();

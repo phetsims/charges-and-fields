@@ -41,7 +41,7 @@ class ModelElement extends PhetioObject {
     // @public
     this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' ),
-      useDeepEquality: true // see https://github.com/phetsims/charges-and-fields/issues/132
+      valueComparisonStrategy: 'equalsFunction' // see https://github.com/phetsims/charges-and-fields/issues/132
     } );
 
     // @public {Property.<boolean>}
