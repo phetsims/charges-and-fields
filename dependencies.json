@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.56-rc.1 Thu Feb 02 2023 10:49:45 GMT-0700 (Mountain Standard Time)",
+  "comment": "# charges-and-fields 1.0.56 Thu Feb 02 2023 10:50:48 GMT-0700 (Mountain Standard Time)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "7efd37eb8f4585f5e9587dab4f835dfc6e72f9fc",
+    "sha": "9e6e775fd79ffb617e5c4878b5657a9abe61c977",
     "branch": "1.0"
   },
   "chipper": {
