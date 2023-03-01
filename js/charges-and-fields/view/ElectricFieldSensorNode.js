@@ -126,18 +126,18 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
 
         // Update the strings in the labels
         const fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
-        fieldStrengthLabelText.text = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
+        fieldStrengthLabelText.string = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
 
         const angleString = Utils.toFixed( Utils.toDegrees( angle ), 1 );
-        directionLabelText.text = isPlayAreaChargedProperty.get() ?
+        directionLabelText.string = isPlayAreaChargedProperty.get() ?
                               StringUtils.format( pattern0Value1UnitsString, angleString, angleUnitString ) : '';
 
       }
       else {
         arrowNode.visible = false;
 
-        fieldStrengthLabelText.text = '-';
-        directionLabelText.text = '-';
+        fieldStrengthLabelText.string = '-';
+        directionLabelText.string = '-';
       }
 
       fieldStrengthLabelText.centerX = 0;

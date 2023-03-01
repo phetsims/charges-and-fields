@@ -168,7 +168,7 @@ class ElectricPotentialSensorNode extends Node {
      * @param {number} electricPotential
      */
     function updateVoltageReadout( electricPotential ) {
-      voltageText.text = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
+      voltageText.string = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
       voltageText.centerX = bodyContent.centerX;
     }
 
