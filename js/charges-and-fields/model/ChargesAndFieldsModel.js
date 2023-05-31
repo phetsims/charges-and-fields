@@ -13,6 +13,7 @@ import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -636,7 +637,7 @@ class ChargesAndFieldsModel extends PhetioObject {
   clearElectricPotentialLines() {
 
     // Clear lines without disrupting phet-io state
-    if ( !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+    if ( !isSettingPhetioStateProperty.value ) {
       this.electricPotentialLineGroup.clear( { resetIndex: false } );
     }
   }
