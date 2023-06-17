@@ -276,6 +276,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
         tandem
       );
     }, () => [ model.chargedParticleGroup.archetype ], {
+      groupElementStartingIndex: 0,
       tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
 
@@ -300,6 +301,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
       return electricFieldSensorNode;
     }, () => [ model.electricFieldSensorGroup.archetype ], {
+      groupElementStartingIndex: 0,
       tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
 

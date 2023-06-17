@@ -45,6 +45,7 @@ class ElectricPotentialLinesNode extends Node {
     const electricPotentialLineViewGroup = new PhetioGroup( ( tandem, electricPotentialLine ) => {
       return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
     }, () => [ electricPotentialLineGroup.archetype ], {
+      groupElementStartingIndex: 0,
       tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( IOType.ObjectIO ),
 

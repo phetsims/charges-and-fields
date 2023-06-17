@@ -132,6 +132,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       chargedParticle.returnedToOriginEmitter.addListener( () => this.chargedParticleGroup.disposeElement( chargedParticle ) );
       return chargedParticle;
     }, [ 1, Vector2.ZERO ], {
+      groupElementStartingIndex: 0,
       tandem: tandem.createTandem( 'chargedParticleGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( ChargedParticle.ChargedParticleIO ),
       phetioDynamicElementName: 'particle'
@@ -151,6 +152,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeElement( sensor ) );
       return sensor;
     }, [ Vector2.ZERO ], {
+      groupElementStartingIndex: 0,
       tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( ModelElement.ModelElementIO )
     } ); // {ObservableArrayDef.<ElectricFieldSensor>}
@@ -174,6 +176,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       // for chaining and for PhET-iO restore state
       return new ElectricPotentialLine( this, position, tandem );
     }, [ this.electricPotentialSensor.positionProperty.get() ], {
+      groupElementStartingIndex: 0,
       tandem: tandem.createTandem( 'electricPotentialLineGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( ElectricPotentialLine.ElectricPotentialLineIO )
     } );
