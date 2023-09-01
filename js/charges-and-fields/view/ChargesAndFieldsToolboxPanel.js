@@ -132,7 +132,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
    */
   static createElectricPotentialSensorIcon( tandem ) {
 
-    const node = new Node( {
+    const electricPotentialSensor = new Node( {
       // Show a cursor hand over the sensor icon
       cursor: 'pointer',
       tandem: tandem.createTandem( 'electricPotentialSensor' )
@@ -195,14 +195,14 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     voltageText.top = outlineImage.top + 20;
     backgroundRectangle.centerY = voltageText.centerY;
 
-    node.addChild( crosshairMount );
-    node.addChild( circle );
-    node.addChild( crosshair );
-    node.addChild( outlineImage );
-    node.addChild( backgroundRectangle );
-    node.addChild( voltageText );
+    electricPotentialSensor.addChild( crosshairMount );
+    electricPotentialSensor.addChild( circle );
+    electricPotentialSensor.addChild( crosshair );
+    electricPotentialSensor.addChild( outlineImage );
+    electricPotentialSensor.addChild( backgroundRectangle );
+    electricPotentialSensor.addChild( voltageText );
 
-    return node;
+    return electricPotentialSensor;
   }
 
   /**
