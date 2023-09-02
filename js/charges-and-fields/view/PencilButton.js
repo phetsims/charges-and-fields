@@ -26,6 +26,7 @@ class PencilButton extends RectangularPushButton {
     }, options );
 
     // pencil icon
+    // eslint-disable-next-line tandem-name-should-match
     options.content = new Image( pencil_png, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
     options.content.scale( options.iconWidth / options.content.width, options.iconHeight / options.content.height );
 
