@@ -34,7 +34,7 @@ const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
 class ElectricPotentialSensorNode extends Node {
   /**
-   * TODO: this interface is unwieldy and difficult to navigate.  Why not pass the model with all these functions?
+   * TODO: this interface is unwieldy and difficult to navigate.  Why not pass the model with all these functions? https://github.com/phetsims/tasks/issues/1129
    * @param {ChargesAndFieldsModel} model
    * @param {Function} snapToGridLines - A Function that snap the position to the minor gridlines.
    * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
@@ -82,7 +82,7 @@ class ElectricPotentialSensorNode extends Node {
     } );
 
     // Create the base of the crosshair
-    // TODO: why are the fill and stroke set to the same thing?
+    // TODO: why are the fill and stroke set to the same thing? https://github.com/phetsims/tasks/issues/1129
     const crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
       fill: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty,
       stroke: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty,
