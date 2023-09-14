@@ -120,7 +120,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     // no need to dispose of this link since this is present for the lifetime of the sim
     availableModelBoundsProperty.link( bounds => {
 
-      // TODO: did this mean to say measuringTape.dragBounds??? https://github.com/phetsims/tasks/issues/1129
+      // TODO: did this mean to say measuringTape.dragBounds??? https://github.com/phetsims/charges-and-fields/issues/203
       measuringTapeInputListener.dragBounds = bounds;
     } );
   }
@@ -158,7 +158,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     } );
 
     // Create the base of the crosshair
-    // TODO: why is the fill the same as the stroke? https://github.com/phetsims/tasks/issues/1129
+    // TODO: why is the fill the same as the stroke? https://github.com/phetsims/charges-and-fields/issues/203
     const crosshairMount = new Rectangle( 0, 0, 0.4 * CIRCLE_RADIUS, 0.4 * CIRCLE_RADIUS, {
       fill: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty,
       stroke: ChargesAndFieldsColors.electricPotentialSensorCrosshairStrokeProperty,
@@ -166,7 +166,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     } );
 
     // Create the voltage Reading reading
-    // TODO: Is this internationalized? https://github.com/phetsims/tasks/issues/1129
+    // TODO: Is this internationalized? https://github.com/phetsims/charges-and-fields/issues/203
     const voltageText = new Text( `0.0 ${voltageUnitString}`, {
       font: ChargesAndFieldsConstants.DEFAULT_FONT,
       fill: 'black',

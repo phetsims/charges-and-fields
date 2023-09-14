@@ -44,7 +44,7 @@ class ElectricPotentialMobileWebGLNode extends WebGLNode {
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 
     // particle added
-    // TODO: I've seen this pattern elsewhere in the code https://github.com/phetsims/tasks/issues/1129
+    // TODO: I've seen this pattern elsewhere in the code https://github.com/phetsims/charges-and-fields/issues/203
     chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) );
 
     // particle removed
@@ -167,7 +167,7 @@ class ElectricPotentialMobilePainter {
 
     displayShaderProgram.use();
 
-    // TODO: reduce allocations https://github.com/phetsims/tasks/issues/1129
+    // TODO: reduce allocations https://github.com/phetsims/charges-and-fields/issues/203
     const projectionMatrixInverse = new Matrix3().set( projectionMatrix ).invert();
     const matrixInverse = this.node.modelViewTransform.getInverse().timesMatrix( modelViewMatrix.inverted().multiplyMatrix( projectionMatrixInverse ) );
     gl.uniformMatrix3fv( displayShaderProgram.uniformLocations.uMatrixInverse, false, matrixInverse.copyToArray( scratchFloatArray ) );

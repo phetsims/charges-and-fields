@@ -35,7 +35,7 @@ const WIDTH = ChargesAndFieldsConstants.WIDTH;
 // To avoid bugs, do not try to compute E-field at length scales smaller than MIN_DISTANCE_SCALE
 const MIN_DISTANCE_SCALE = 1e-9;
 
-// TODO: why is this phet-io instrumented? https://github.com/phetsims/tasks/issues/1129
+// TODO: why is this phet-io instrumented? https://github.com/phetsims/charges-and-fields/issues/203
 class ChargesAndFieldsModel extends PhetioObject {
 
   /**
@@ -594,7 +594,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     position = this.electricPotentialSensor.positionProperty.get() // use the Potential Sensor as default position
   ) {
 
-    // TODO: perhaps we want this, but it seems like isPlayAreaChargedProperty is not being kept up and in sync. https://github.com/phetsims/tasks/issues/1129
+    // TODO: perhaps we want this, but it seems like isPlayAreaChargedProperty is not being kept up and in sync. https://github.com/phetsims/charges-and-fields/issues/203
     // assert && assert( !this.isPlayAreaChargedProperty.get() );
 
     // Do not try to add an equipotential line if there are no charges.

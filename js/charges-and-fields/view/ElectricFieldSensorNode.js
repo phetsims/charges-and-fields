@@ -63,7 +63,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     this.touchArea = this.localBounds.dilated( 10 );
 
     // Create the E-field arrow, (set the arrow horizontally to start with)
-    // TODO: why is the fill and stroke set to the same value? https://github.com/phetsims/tasks/issues/1129
+    // TODO: why is the fill and stroke set to the same value? https://github.com/phetsims/charges-and-fields/issues/203
     const arrowNode = new ArrowNode( 0, 0, 1, 0, {
       pickable: false,
       stroke: ChargesAndFieldsColors.electricFieldSensorArrowProperty,

@@ -56,7 +56,7 @@ class ElectricPotentialLine extends PhetioObject {
       this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
       this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
 
-      // TODO: the conditional here is to support mutating this potential line, let's do this better. https://github.com/phetsims/tasks/issues/1129
+      // TODO: the conditional here is to support mutating this potential line, let's do this better. https://github.com/phetsims/charges-and-fields/issues/203
       const hasElectricField = this.model.getElectricField( position ).magnitude !== 0;
       this.positionArray = hasElectricField ? this.getEquipotentialPositionArray( position ) : []; // @public read-only
 
