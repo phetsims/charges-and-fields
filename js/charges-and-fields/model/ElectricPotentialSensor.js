@@ -7,9 +7,10 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
+import InfiniteNumberIO from '../../../../tandem/js/types/InfiniteNumberIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
 class ElectricPotentialSensor {
@@ -27,10 +28,11 @@ class ElectricPotentialSensor {
     } );
 
     // @public
-    this.electricPotentialProperty = new NumberProperty( 0, {
+    this.electricPotentialProperty = new Property( 0, {
       tandem: tandem.createTandem( 'electricPotentialProperty' ),
       units: 'V',
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioValueType: InfiniteNumberIO
     } );
 
     // @public - Whether the sensor is out in the play area (false when in the toolbox)
