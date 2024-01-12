@@ -228,13 +228,13 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     // second, create the measuringTape icon
     const measuringTapeIcon = new Node( { children: [ measuringTape ] } );
 
-    // Create the measuringTape icon using toImage
-    measuringTape.toImage( image => {
-      measuringTapeIcon.children = [ new Image( image, {
+    // Create the measuringTape icon using rasterized
+    measuringTapeIcon.children = [ measuringTape.rasterized( {
+      imageOptions: {
         cursor: 'pointer',
         tandem: tandem.createTandem( 'measuringTapeIconImage' )
-      } ) ];
-    }, measuringTape.width - unspooledMeterTape, measuringTape.height - 5, Math.ceil( measuringTape.width ), Math.ceil( measuringTape.height ) );
+      }
+    } ) ];
 
     return measuringTapeIcon;
   }
