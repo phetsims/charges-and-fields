@@ -2,6 +2,8 @@
 
 /**
  * Charges and Fields main Screen
+ *
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 import Screen from '../../../joist/js/Screen.js';
