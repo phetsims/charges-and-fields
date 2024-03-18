@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "ff796c3c23dbe5d92903d0776dfdff474b98b4a5",
+    "sha": "b7c2d18f57c42ead37ab22173b9d8b7261999a9b",
     "branch": "1.0-phetio"
   },
   "chipper": {
@@ -45,7 +45,7 @@
     "branch": "HEAD"
   },
   "phetcommon": {
-    "sha": "c4e322df37fa339fc208d9de31872aec365f3953",
+    "sha": "a3a3e9b685d4782e190faeb64552c25d47bc9e91",
     "branch": "HEAD"
   },
   "phetmarks": {
