@@ -1,5 +1,5 @@
 {
-  "comment": "# charges-and-fields 1.0.35-phetio Sun Jun 09 2024 13:21:41 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# charges-and-fields 1.0.36-phetiorc.1 Tue Jul 09 2024 17:56:10 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "845be6b591cb746b0b05b7023208aef2e49a8855",
     "branch": "HEAD"
@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "213d0e4386fe6deb8bee5a5c4efda12caf8b1683",
+    "sha": "9e5ac69705bd994bf250d1716437cf6a49aae2ee",
     "branch": "1.0-phetio"
   },
   "chipper": {
