@@ -230,7 +230,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 
     // Create the measuringTape icon using rasterized
     measuringTapeIcon.children = [ measuringTape.rasterized( {
-      imageOptions: {
+      nodeOptions: {
         cursor: 'pointer',
         tandem: tandem.createTandem( 'measuringTapeIconImage' )
       }
