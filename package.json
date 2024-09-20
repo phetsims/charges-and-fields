@@ -39,7 +39,7 @@
         ],
         "parserOptions": {
           "project": [
-            "../charges-and-fields/tsconfig.json"
+            "../chipper/tsconfig/eslint-all/tsconfig.json"
           ]
         }
       }
