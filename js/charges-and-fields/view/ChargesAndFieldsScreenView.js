@@ -12,7 +12,7 @@ import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import LinearFunction from '../../../../dot/js/LinearFunction.js';
 import Rectangle from '../../../../dot/js/Rectangle.js';
-import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line default-import-match-filename
+import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line phet/default-import-match-filename
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import merge from '../../../../phet-core/js/merge.js';
