@@ -20,6 +20,8 @@ import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 // constants
 const NullableIOVector2IO = NullableIO( Vector2.Vector2IO );
 
+/* global TWEEN */
+
 class ModelElement extends PhetioObject {
 
   /**
