@@ -57,32 +57,38 @@ class ChargesAndFieldsModel extends PhetioObject {
 
     // @public {Property.<boolean>} control the visibility of a grid of arrows representing the local electric field
     this.isElectricFieldVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' )
+      tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
+      phetioFeatured: true
     } );
 
     // @public {Property.<boolean>} controls the color shading in the fill of the electric field arrows
     this.isElectricFieldDirectionOnlyProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' )
+      tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' ),
+      phetioFeatured: true
     } );
 
     // @public {Property.<boolean>} control the visibility of the electric potential field, a.k.a. rectangular grid
     this.isElectricPotentialVisibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' )
+      tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
+      phetioFeatured: true
     } );
 
     // @public {Property.<boolean>} control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
     this.areValuesVisibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'areValuesVisibleProperty' )
+      tandem: tandem.createTandem( 'areValuesVisibleProperty' ),
+      phetioFeatured: true
     } );
 
     // @public {Property.<boolean>} control the visibility of the simple grid with minor and major axes
     this.isGridVisibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isGridVisibleProperty' )
+      tandem: tandem.createTandem( 'isGridVisibleProperty' ),
+      phetioFeatured: true
     } );
 
     // @public {Property.<boolean>} should we snap the position of model elements to the grid (minor or major)
     this.snapToGridProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'snapToGridProperty' )
+      tandem: tandem.createTandem( 'snapToGridProperty' ),
+      phetioFeatured: true
     } );
 
     // @public {Property.<boolean>} is there at least one active charged particle on the board
