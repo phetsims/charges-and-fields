@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
-import { Circle, Image, Node, Path, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
+import { Circle, Image, Node, Path, rasterized, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import Panel from '../../../../sun/js/Panel.js';
 import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
@@ -229,7 +229,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     const measuringTapeIcon = new Node( { children: [ measuringTape ] } );
 
     // Create the measuringTape icon using rasterized
-    measuringTapeIcon.children = [ measuringTape.rasterized( {
+    measuringTapeIcon.children = [ rasterized( measuringTape, {
       nodeOptions: {
         cursor: 'pointer',
         tandem: tandem.createTandem( 'measuringTapeIconImage' )
