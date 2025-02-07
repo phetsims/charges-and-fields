@@ -7,7 +7,7 @@
  */
 
 import merge from '../../../../phet-core/js/merge.js';
-import { Image } from '../../../../scenery/js/imports.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import pencil_png from '../../../mipmaps/pencil_png.js';
 import chargesAndFields from '../../chargesAndFields.js';

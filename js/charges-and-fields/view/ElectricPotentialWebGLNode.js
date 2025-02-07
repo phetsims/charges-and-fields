@@ -34,7 +34,9 @@
 
 import ObservableArrayDef from '../../../../axon/js/ObservableArrayDef.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import { ShaderProgram, Utils, WebGLNode } from '../../../../scenery/js/imports.js';
+import WebGLNode from '../../../../scenery/js/nodes/WebGLNode.js';
+import ShaderProgram from '../../../../scenery/js/util/ShaderProgram.js';
+import Utils from '../../../../scenery/js/util/Utils.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargeTracker from './ChargeTracker.js';

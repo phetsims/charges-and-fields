@@ -5,7 +5,7 @@
  * @author Martin Veillette (Berea College)
  */
 
-import { Node } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
