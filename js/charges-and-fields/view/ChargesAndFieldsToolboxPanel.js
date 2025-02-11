@@ -19,7 +19,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import { rasterized } from '../../../../scenery/js/util/rasterized.js';
+import { rasterizeNode } from '../../../../scenery/js/util/rasterizeNode.js';
 import Panel from '../../../../sun/js/Panel.js';
 import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
@@ -236,7 +236,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     const measuringTapeIcon = new Node( { children: [ measuringTape ] } );
 
     // Create the measuringTape icon using rasterized
-    measuringTapeIcon.children = [ rasterized( measuringTape, {
+    measuringTapeIcon.children = [ rasterizeNode( measuringTape, {
       nodeOptions: {
         cursor: 'pointer',
         tandem: tandem.createTandem( 'measuringTapeIconImage' )
