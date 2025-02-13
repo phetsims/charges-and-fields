@@ -7,7 +7,7 @@
  */
 
 import Emitter from '../../../../axon/js/Emitter.js';
-import dot from '../../../../dot/js/dot.js';
+import { clamp } from '../../../../dot/js/util/clamp.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
@@ -353,7 +353,7 @@ class ElectricPotentialLine extends PhetioObject {
       epsilonDistance *= ( 2 * Math.PI / 360 ) / deflectionAngle;
     }
     // clamp the value of epsilonDistance to be within this range
-    epsilonDistance = dot.clamp( Math.abs( epsilonDistance ), MIN_EPSILON_DISTANCE, MAX_EPSILON_DISTANCE );
+    epsilonDistance = clamp( Math.abs( epsilonDistance ), MIN_EPSILON_DISTANCE, MAX_EPSILON_DISTANCE );
     epsilonDistance = isClockwise ? epsilonDistance : -epsilonDistance;
     return epsilonDistance;
   }
