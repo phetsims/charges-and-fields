@@ -1,95 +1,103 @@
 {
-  "comment": "# charges-and-fields 1.1.0-dev.9 Tue Jun 16 2020 09:56:22 GMT-0800 (Alaska Daylight Time)",
+  "comment": "# charges-and-fields 1.1.0-dev.10 Wed Feb 26 2025 16:20:22 GMT-0700 (Mountain Standard Time)",
   "assert": {
-    "sha": "0b7a48c6b9ba48af48ae7419bd30c280c785f2cc",
+    "sha": "f6d41b399ad32df2a00ab4b329981be0c574d77a",
     "branch": "main"
   },
   "axon": {
-    "sha": "03af6115c89ddfee7c08d7554c56d10b58117357",
+    "sha": "5c08471924c1669919dd1982b57a88c0d1590f6a",
     "branch": "main"
   },
   "brand": {
-    "sha": "1122921450e373452907f57bace94ecf6f646244",
+    "sha": "e4e24dcdf62ea36c000fc70e78e306bc492a6757",
     "branch": "main"
   },
   "charges-and-fields": {
-    "sha": "0808f06afe483b7ea74291c703e22dc54d5cffee",
+    "sha": "80300e45cd04bcc16f43b63e97698519adffd407",
     "branch": "main"
   },
   "chipper": {
-    "sha": "50963ae4bab8cc8d9aaa0aca66e88ac437b2e146",
+    "sha": "4cd9fe6c91a7de704404a88c939236e7c998d064",
     "branch": "main"
   },
   "dot": {
-    "sha": "ac036a9bfde4357c8d4f249915f8d558951a7d67",
+    "sha": "a483beb1f20baaa838895e9acdd2ea95e23cab63",
     "branch": "main"
   },
   "joist": {
-    "sha": "dae848b7e8a9983e1ee400128239a21dcc2f8892",
+    "sha": "5c288511fcef11e5d0468029848ee78335e36795",
     "branch": "main"
   },
   "kite": {
-    "sha": "9a96b94bd4bf5bb8aebfb11eb6b2845ad86ad6f5",
+    "sha": "0f6bd61fe56f6af59ede1edb30c9e888a92bceb3",
+    "branch": "main"
+  },
+  "perennial-alias": {
+    "sha": "94e97a5235b4b7758c1f79882e710438bbe91c26",
     "branch": "main"
   },
   "phet-core": {
-    "sha": "01983673bf5e0e8afe9a0e0b9507b42f67563405",
+    "sha": "5643fef3bc7e86492a1817cbd6749da5f3f2fc60",
     "branch": "main"
   },
   "phet-io": {
-    "sha": "5e249f15bfd58d4553163c30c0f50fbbbda64f6c",
+    "sha": "12b4eedfd091bd2083716c126cb89d31c811b359",
     "branch": "main"
   },
-  "phet-io-client-guides": {
-    "sha": "5bdfaef0f60a9a7c2e155a64e5c6de53b8ceb625",
+  "phet-io-sim-specific": {
+    "sha": "5464ee7a1ef2c7feaeae0591bd03444cc972e68d",
     "branch": "main"
   },
   "phet-io-wrappers": {
-    "sha": "9832c2812042b4fad19ad80f9cabcf976d7a2fb7",
+    "sha": "03c56c4c92f84aa91295651a6f43e9c4d4064140",
     "branch": "main"
   },
   "phetcommon": {
-    "sha": "9f5ea542bef0cb05955cb150bd9e89d69c07220a",
+    "sha": "4569db1a24207120658c4eba6109799e7d074c57",
     "branch": "main"
   },
   "phetmarks": {
-    "sha": "70e01d455eee3238a32ebe13f7a027eec36ba584",
+    "sha": "505f6d72f64d4d42687014a35898079fbc5ac197",
     "branch": "main"
   },
   "query-string-machine": {
-    "sha": "3218f185e256dbc4713f76d0957d45523113c199",
+    "sha": "7ba3af15b52c50f6c0532775be2d88c851addaca",
     "branch": "main"
   },
   "scenery": {
-    "sha": "57dfe8b96766670fb42940a79a37e20e48dba378",
+    "sha": "7c57b908ed20028b3e35ce592a55ccb92fd8f5b3",
     "branch": "main"
   },
   "scenery-phet": {
-    "sha": "5c0826794e0346460d9bc1b42c70c3b5cc6c3f2c",
+    "sha": "85b41510a0cf17c7e3ad8deec33cd96457e1b68f",
     "branch": "main"
   },
   "sherpa": {
-    "sha": "88f9c1733bd97ea10275f196408a405018ec72de",
+    "sha": "31359345005b34e35ffa68ea5aec9d615eae5917",
     "branch": "main"
   },
   "studio": {
-    "sha": "867a1fd1494b3b147eb3a67dbad65db33ca7c73c",
+    "sha": "08d3b6010bec544d3755f6dbdd38c64810ca5a80",
     "branch": "main"
   },
   "sun": {
-    "sha": "c7c8c2101a0c4c86fa715b3c4d6de8e91626e073",
+    "sha": "52cf007c9b1ae14248aec5dfda42f31e12270ccd",
     "branch": "main"
   },
   "tambo": {
-    "sha": "cbec928e5a46b316eac13b1d603fe29e03f1a057",
+    "sha": "140d31960f0cfe689cbdcda759aea6d1c66e0d43",
     "branch": "main"
   },
   "tandem": {
-    "sha": "4a035869c3e67a235c610b2ab77950f0cc2d5b56",
+    "sha": "d92443811d2b5754f3b9900e3d7dbe1bfb743362",
+    "branch": "main"
+  },
+  "twixt": {
+    "sha": "12e79ba1ae505efcc6b97887dd1f8b7c7e58ade4",
     "branch": "main"
   },
   "utterance-queue": {
-    "sha": "bf368846c727c145973241306e1bfa15301cc34d",
+    "sha": "c2a9e27d2318247a05c26335f3f7799d4a2a9cdf",
     "branch": "main"
   }
 }
