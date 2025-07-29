@@ -8,33 +8,36 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ModelElement from './ModelElement.js';
 
 class ElectricFieldSensor extends ModelElement {
 
+  // electricField Vector in Newtons per Coulomb
+  public readonly electricFieldProperty: Vector2Property;
+  
+  public readonly computeElectricField: ( position: Vector2 ) => Vector2;
+  public readonly electricFieldSensorTandem: Tandem;
+
   /**
-   * @param {Function} computeElectricField - function( Vector2 ) : number, computes electric field at the given
-   *                                          point in the model.
-   * @param {Vector2} initialPosition - optionally pass an initialPosition for the animating home from toolbox.
-   *                                        This is to support PhET-iO State.
-   * @param {Tandem} tandem
+   * @param computeElectricField - function( Vector2 ) : Vector2, computes electric field at the given point in the model.
+   * @param initialPosition - optionally pass an initialPosition for the animating home from toolbox. This is to support PhET-iO State.
+   * @param tandem
    */
-  constructor( computeElectricField, initialPosition, tandem ) {
+  public constructor( computeElectricField: ( position: Vector2 ) => Vector2, initialPosition: Vector2, tandem: Tandem ) {
 
     super( initialPosition, {
       tandem: tandem,
       phetioDynamicElement: true
     } );
 
-    // @public - electricField Vector in Newtons per Coulomb
     this.electricFieldProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'electricFieldProperty' )
     } );
 
     this.computeElectricField = computeElectricField;
 
-    // @public (phet-io)
     this.electricFieldSensorTandem = tandem;
 
     this.positionProperty.link( this.update.bind( this ) );
@@ -42,9 +45,8 @@ class ElectricFieldSensor extends ModelElement {
 
   /**
    * Should be called to update the value of this sensor.
-   * @public
    */
-  update() {
+  public update(): void {
     const eField = this.computeElectricField( this.positionProperty.get() );
 
     assert && assert( eField.x !== Infinity && eField.y !== Infinity, `E-field is infinity: ${eField}` );
@@ -54,9 +56,8 @@ class ElectricFieldSensor extends ModelElement {
   }
 
   /**
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.electricFieldProperty.dispose();
     super.dispose();
   }

@@ -86,3 +86,29 @@ This simulation requires many PhET sibling repositories. The `dependencies.json`
 - Include JSDoc comments for all methods and classes
 - Add tandem parameters for PhET-IO integration
 - Use explicit file extensions in imports (.js)
+
+## TypeScript Conversion Rules
+
+When converting JavaScript files to TypeScript in PhET projects:
+
+1. **File Renaming**: Use `git mv filename.js filename.ts` to preserve git history
+2. **Required Imports**: Add `import Tandem from '../../../../tandem/js/Tandem.js';` for tandem parameters
+3. **Property Declarations**: All class properties must be declared with explicit types and access modifiers:
+   ```typescript
+   public readonly electricFieldProperty: Vector2Property;
+   private readonly computeElectricField: ( position: Vector2 ) => Vector2;
+   ```
+4. **Constructor Parameters**: Must have explicit types and public access modifier:
+   ```typescript
+   public constructor( computeElectricField: ( position: Vector2 ) => Vector2, initialPosition: Vector2, tandem: Tandem )
+   ```
+5. **Method Access Modifiers**: All methods require explicit access modifiers (`public`, `private`)
+6. **Override Methods**: Methods overriding base class methods need `override` modifier:
+   ```typescript
+   public override dispose(): void
+   ```
+7. **Remove JSDoc Type Annotations**: Remove `@param {Type}` and `@public` JSDoc comments - use TypeScript types instead
+8. **Property Documentation**: Document properties at declaration site, not assignment site in constructor
+   - Add blank lines before line comments for better readability
+9. **Validation Commands**: Always run `grunt type-check` and `grunt lint --fix` after conversion
+10. **Liberal @ts-expect-error**: Use `@ts-expect-error` for unresolved issues to focus on one file at a time
