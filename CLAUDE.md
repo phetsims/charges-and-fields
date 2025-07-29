@@ -91,7 +91,11 @@ This simulation requires many PhET sibling repositories. The `dependencies.json`
 
 When converting JavaScript files to TypeScript in PhET projects:
 
-1. **File Renaming**: Use `git mv filename.js filename.ts` to preserve git history
+1. **File Renaming**: 
+   - Use `git mv filename.js filename.ts` to preserve git history
+   - Immediately commit ONLY the rename: `git add filename.ts && git commit -m "Rename filename.js to .ts, see https://github.com/phetsims/charges-and-fields/issues/208"`
+   - Do NOT push
+   - Claude should ONLY commit the rename - the developer will review and commit all other changes
 2. **Required Imports**: 
    - Add `import Tandem from '../../../../tandem/js/Tandem.js';` for tandem parameters
    - Add `import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';` when you need `any` types
@@ -147,11 +151,13 @@ When converting JavaScript files to TypeScript in PhET projects:
 ## Conversion Process Summary
 
 1. `git mv file.js file.ts` (preserves git history)
-2. Run `grunt type-check` and `grunt lint --fix` to see all issues
-3. Add necessary imports (especially Tandem)
-4. Add property declarations with types and access modifiers
-5. Fix constructor parameters and add access modifier
-6. Fix method access modifiers and add `override` where needed
-7. Remove JSDoc type annotations
-8. Add blank lines before line comments
-9. Run validation commands again to verify
+2. **Commit the rename immediately**: `git add file.ts && git commit -m "Rename file.js to .ts, see https://github.com/phetsims/charges-and-fields/issues/208"`
+3. Run `grunt type-check` and `grunt lint --fix` to see all issues
+4. Add necessary imports (especially Tandem)
+5. Add property declarations with types and access modifiers
+6. Fix constructor parameters and add access modifier
+7. Fix method access modifiers and add `override` where needed
+8. Remove JSDoc type annotations
+9. Add blank lines before line comments
+10. Run validation commands again to verify
+11. **Developer will review and commit the TypeScript conversion changes**

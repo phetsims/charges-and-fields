@@ -12,9 +12,12 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import ChargesAndFieldsModel from './ChargesAndFieldsModel.js';
 
 // constants
 // see getEquipotentialPositionArray to find how these are used
@@ -23,14 +26,29 @@ const MIN_STEPS = 1000; // {number} integer, the minimum number of steps it will
 const MAX_EPSILON_DISTANCE = 0.05; // {number} maximum step length along electricPotential in meters
 const MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
 
+// type ElectricPotentialLineOptions = PhetioObjectOptions;
+
 class ElectricPotentialLine extends PhetioObject {
 
-  /**
-   * @param {ChargesAndFieldsModel} model
-   * @param {Vector2} position
-   * @param {Tandem} tandem
-   */
-  constructor( model, position, tandem ) {
+  public static ElectricPotentialLineIO: IOType<ElectricPotentialLine, IntentionalAny>;
+
+  private readonly model: ChargesAndFieldsModel;
+  public readonly position: Vector2;
+
+  // the position of where the user is trying to drag the voltage label, in model coordinates
+  public readonly voltageLabelPositionProperty: Vector2Property;
+  
+  private readonly chargeChangedEmitter: Emitter;
+  private chargeChangedListener: () => void;
+  
+  // value in volts
+  public electricPotential!: number;
+  
+  private isLineClosed!: boolean;
+  private isEquipotentialLineTerminatingInsideBounds!: boolean;
+  public positionArray!: Vector2[];
+
+  public constructor( model: ChargesAndFieldsModel, position: Vector2, tandem: Tandem ) {
 
     super( {
       tandem: tandem,
@@ -39,9 +57,8 @@ class ElectricPotentialLine extends PhetioObject {
     } );
 
     this.model = model;
-    this.position = position; // {Vector2} @public read-only static
+    this.position = position;
 
-    // @public - the position of where the user is trying to drag the voltage label, in model coordinates
     this.voltageLabelPositionProperty = new Vector2Property( position, {
       tandem: tandem.createTandem( 'voltageLabelPositionProperty' ),
       valueComparisonStrategy: 'equalsFunction'
@@ -51,14 +68,14 @@ class ElectricPotentialLine extends PhetioObject {
 
     // On startup and whenever the charge configuration changes, update the state of this line
     this.chargeChangedListener = () => {
-      this.electricPotential = model.getElectricPotential( position ); // {number} @public read-only static - value in volts
+      this.electricPotential = model.getElectricPotential( position );
 
-      this.isLineClosed = false; // @private - value will be updated by  this.getEquipotentialPositionArray
-      this.isEquipotentialLineTerminatingInsideBounds = true; // @private - value will be updated by this.getEquipotentialPositionArray
+      this.isLineClosed = false;
+      this.isEquipotentialLineTerminatingInsideBounds = true;
 
       // TODO: the conditional here is to support mutating this potential line, let's do this better. https://github.com/phetsims/charges-and-fields/issues/203
-      const hasElectricField = this.model.getElectricField( position ).magnitude !== 0;
-      this.positionArray = hasElectricField ? this.getEquipotentialPositionArray( position ) : []; // @public read-only
+      const hasElectricField = ( this.model as IntentionalAny ).getElectricField( position ).magnitude !== 0;
+      this.positionArray = hasElectricField ? this.getEquipotentialPositionArray( position ) : [];
 
       if ( !this.isDisposed ) {
         this.chargeChangedEmitter.emit();
@@ -70,10 +87,8 @@ class ElectricPotentialLine extends PhetioObject {
 
   /**
    * Releases references
-   * @public
-   * @override
    */
-  dispose() {
+  public override dispose(): void {
     this.model.chargeConfigurationChangedEmitter.removeListener( this.chargeChangedListener );
     this.voltageLabelPositionProperty.dispose();
     this.chargeChangedEmitter.dispose();
@@ -88,13 +103,12 @@ class ElectricPotentialLine extends PhetioObject {
    * there is no guarantee that the next position is within a delta distance from the initial point.
    * see https://github.com/phetsims/charges-and-fields/issues/5
    *
-   * @private
-   * @param {Vector2} position
-   * @param {number} electricPotential
-   * @param {number} deltaDistance - a distance in meters, can be positive or negative
-   * @returns {Vector2} finalPosition
+   * @param position
+   * @param electricPotential
+   * @param deltaDistance - a distance in meters, can be positive or negative
+   * @returns finalPosition
    */
-  getNextPositionAlongEquipotentialWithElectricPotential( position, electricPotential, deltaDistance ) {
+  private getNextPositionAlongEquipotentialWithElectricPotential( position: Vector2, electricPotential: number, deltaDistance: number ): Vector2 {
     /*
      * General Idea: Given the electric field at point position, find an intermediate point that is 90 degrees
      * to the left of the electric field (if deltaDistance is positive) or to the right (if deltaDistance is negative).
@@ -103,11 +117,11 @@ class ElectricPotentialLine extends PhetioObject {
      * and the electric potential at the intermediate point is found. By knowing the electric field at the intermediate point
      * the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
      */
-    const initialElectricField = this.model.getElectricField( position ); // {Vector2}
+    const initialElectricField = ( this.model as IntentionalAny ).getElectricField( position ); // {Vector2}
     assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
     const electricPotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
     const midwayPosition = ( electricPotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
-    const midwayElectricField = this.model.getElectricField( midwayPosition ); // {Vector2}
+    const midwayElectricField = ( this.model as IntentionalAny ).getElectricField( midwayPosition ); // {Vector2}
     assert && assert( midwayElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
     const midwayElectricPotential = this.model.getElectricPotential( midwayPosition ); //  {number}
     const deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
@@ -131,23 +145,21 @@ class ElectricPotentialLine extends PhetioObject {
    *
    * This uses a standard RK4 algorithm generalized to 2D
    * http://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
-   * @private
-   * @param {Vector2} position
-   * @param {number} deltaDistance - a distance in meters, can be positive or negative
-   * @returns {Vector2} finalPosition
+   * @param position
+   * @param deltaDistance - a distance in meters, can be positive or negative
+   * @returns finalPosition
    */
-  getNextPositionAlongEquipotentialWithRK4( position, deltaDistance ) {
-    const initialElectricField = this.model.getElectricField( position ); // {Vector2}
+  private getNextPositionAlongEquipotentialWithRK4( position: Vector2, deltaDistance: number ): Vector2 {
+    const initialElectricField = ( this.model as IntentionalAny ).getElectricField( position ); // {Vector2}
     assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
-    const k1Vector = this.model.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-    const k2Vector = this.model.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-    const k3Vector = this.model.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-    const k4Vector = this.model.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-    const deltaDisplacement =
-      {
-        x: deltaDistance * ( k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x ) / 6,
-        y: deltaDistance * ( k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y ) / 6
-      };
+    const k1Vector = ( this.model as IntentionalAny ).getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const k2Vector = ( this.model as IntentionalAny ).getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const k3Vector = ( this.model as IntentionalAny ).getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const k4Vector = ( this.model as IntentionalAny ).getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const deltaDisplacement = new Vector2(
+      deltaDistance * ( k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x ) / 6,
+      deltaDistance * ( k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y ) / 6
+    );
     return position.plus( deltaDisplacement ); // {Vector2} finalPosition
   }
 
@@ -158,11 +170,10 @@ class ElectricPotentialLine extends PhetioObject {
    * This function has side effects and updates this.isEquipotentialLineTerminatingInsideBounds and
    * this.isLineClosed.
    *
-   * @private
-   * @param {Vector2} position - initial position
-   * @returns {Array.<Vector2>} a series of positions with the same electric Potential as the initial position
+   * @param position - initial position
+   * @returns a series of positions with the same electric Potential as the initial position
    */
-  getEquipotentialPositionArray( position ) {
+  private getEquipotentialPositionArray( position: Vector2 ): Vector2[] {
 
     if ( this.model.activeChargedParticles.length === 0 ) {
       return [];
@@ -278,11 +289,9 @@ class ElectricPotentialLine extends PhetioObject {
    * More generally, if the middle point is a distance less than maxOffset of the line connecting the two
    * neighboring points, then it is removed.
    *
-   * @private
-   * @param {Array.<Vector2>} positionArray
-   * @returns {Array.<Vector2>}
+   * @param positionArray
    */
-  getPrunedPositionArray( positionArray ) {
+  private getPrunedPositionArray( positionArray: Vector2[] ): Vector2[] {
     const length = positionArray.length;
     const prunedPositionArray = []; // {Array.<Vector2>}
 
@@ -318,13 +327,11 @@ class ElectricPotentialLine extends PhetioObject {
    * Function that returns the smallest distance between the midwayPoint and
    * a straight line that would connect initialPoint and finalPoint.
    * see http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
-   * @private
-   * @param {Vector2} initialPoint
-   * @param {Vector2} midwayPoint
-   * @param {Vector2} finalPoint
-   * @returns {number}
+   * @param initialPoint
+   * @param midwayPoint
+   * @param finalPoint
    */
-  getDistanceFromLine( initialPoint, midwayPoint, finalPoint ) {
+  private getDistanceFromLine( initialPoint: Vector2, midwayPoint: Vector2, finalPoint: Vector2 ): number {
     const midwayDisplacement = midwayPoint.minus( initialPoint );
     const finalDisplacement = finalPoint.minus( initialPoint );
     return Math.abs( midwayDisplacement.crossScalar( finalDisplacement.normalized() ) );
@@ -333,13 +340,11 @@ class ElectricPotentialLine extends PhetioObject {
   /**
    * Function that returns the an updated epsilonDistance based on the three last points
    * of positionArray
-   * @private
-   * @param {number} epsilonDistance
-   * @param {Array.<Vector2>} positionArray
-   * @param {boolean} isClockwise
-   * @returns {number}
+   * @param epsilonDistance
+   * @param positionArray
+   * @param isClockwise
    */
-  getAdaptativeEpsilonDistance( epsilonDistance, positionArray, isClockwise ) {
+  private getAdaptativeEpsilonDistance( epsilonDistance: number, positionArray: Vector2[], isClockwise: boolean ): number {
     const deflectionAngle = this.getRotationAngle( positionArray ); // non negative number in radians
     if ( deflectionAngle === 0 ) {
 
@@ -361,11 +366,9 @@ class ElectricPotentialLine extends PhetioObject {
   /**
    * Function that returns the rotation angle between the three last points of a position array
    *
-   * @private
-   * @param {Array.<Vector2>} positionArray
-   * @returns {number}
+   * @param positionArray
    */
-  getRotationAngle( positionArray ) {
+  private getRotationAngle( positionArray: Vector2[] ): number {
     assert && assert( positionArray.length > 2, 'the positionArray must contain at least three elements' );
     const length = positionArray.length;
     const newDeltaPosition = positionArray[ length - 1 ].minus( positionArray[ length - 2 ] );
@@ -375,10 +378,8 @@ class ElectricPotentialLine extends PhetioObject {
 
   /**
    * Returns the Shape of the electric potential line
-   * @public read-only
-   * @returns {Shape}
    */
-  getShape() {
+  public getShape(): Shape {
     const shape = new Shape();
     if ( this.model.activeChargedParticles.lengthProperty.value === 0 ) {
       return shape; // to support mutable potential lines and PhET-iO state
@@ -389,13 +390,12 @@ class ElectricPotentialLine extends PhetioObject {
 
   /**
    * Function that returns an appended shape with lines between points.
-   * @private
-   * @param {Shape} shape
-   * @param {Array.<Vector2>} positionArray
-   * @param {Object} [options]
-   * @returns {Shape}
+   * @param shape
+   * @param positionArray
+   * @param [options]
    */
-  positionArrayToStraightLine( shape, positionArray, options ) {
+  private positionArrayToStraightLine( shape: Shape, positionArray: Vector2[], options?: { isClosedLineSegments?: boolean } ): Shape {
+    // eslint-disable-next-line phet/bad-typescript-text
     options = merge( {
       // is the resulting shape forming a close path
       isClosedLineSegments: false
@@ -412,16 +412,16 @@ class ElectricPotentialLine extends PhetioObject {
   }
 }
 
-ElectricPotentialLine.ElectricPotentialLineIO = new IOType( 'ElectricPotentialLineIO', {
+ElectricPotentialLine.ElectricPotentialLineIO = new IOType<ElectricPotentialLine, IntentionalAny>( 'ElectricPotentialLineIO', {
   valueType: ElectricPotentialLine,
   documentation: 'The vector that shows the charge strength and direction.',
-  toStateObject: electricPotentialLine => ( {
+  toStateObject: ( electricPotentialLine: ElectricPotentialLine ) => ( {
     position: Vector2.Vector2IO.toStateObject( electricPotentialLine.position )
   } ),
   stateSchema: {
     position: Vector2.Vector2IO
   },
-  stateObjectToCreateElementArguments: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
+  stateObjectToCreateElementArguments: ( stateObject: IntentionalAny ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 
 chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
