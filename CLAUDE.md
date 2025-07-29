@@ -112,3 +112,29 @@ When converting JavaScript files to TypeScript in PhET projects:
    - Add blank lines before line comments for better readability
 9. **Validation Commands**: Always run `grunt type-check` and `grunt lint --fix` after conversion
 10. **Liberal @ts-expect-error**: Use `@ts-expect-error` for unresolved issues to focus on one file at a time
+
+## Common TypeScript Patterns in PhET
+
+1. **Property Types**:
+   - `Vector2Property` for position/vector properties
+   - `Property<number>` for numeric values
+   - `BooleanProperty` for boolean flags
+   
+3. **Import Pattern**:
+   - Always use `.js` extension in imports even for TypeScript files
+   - Common imports needed: `import Tandem from '../../../../tandem/js/Tandem.js';`
+
+4. **Property Patterns**:
+   - Use `readonly` for properties that shouldn't be reassigned
+
+## Conversion Process Summary
+
+1. `git mv file.js file.ts` (preserves git history)
+2. Run `grunt type-check` and `grunt lint --fix` to see all issues
+3. Add necessary imports (especially Tandem)
+4. Add property declarations with types and access modifiers
+5. Fix constructor parameters and add access modifier
+6. Fix method access modifiers and add `override` where needed
+7. Remove JSDoc type annotations
+8. Add blank lines before line comments
+9. Run validation commands again to verify
