@@ -11,9 +11,10 @@ import Emitter from '../../../../axon/js/Emitter.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import merge from '../../../../phet-core/js/merge.js';
-import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
@@ -22,64 +23,74 @@ const NullableIOVector2IO = NullableIO( Vector2.Vector2IO );
 
 /* global TWEEN */
 
+type ModelElementOptions = PhetioObjectOptions;
+
 class ModelElement extends PhetioObject {
 
-  /**
-   * @param {Vector2} initialPosition - Where to animate the element when it is done being used.
-   * @param {Object} [options]
-   */
-  constructor( initialPosition, options ) {
+  public static ModelElementIO: IOType<ModelElement, IntentionalAny>;
 
+  public readonly positionProperty: Vector2Property;
+
+  // Flag that indicates if this model element is controlled by the user
+  public readonly isUserControlledProperty: BooleanProperty;
+
+  // Flag that indicates if the model element is active or dormant
+  public readonly isActiveProperty: BooleanProperty;
+
+  // If false, the user will not be able to interact with this charge at all.
+  public readonly isInteractiveProperty: BooleanProperty;
+
+  // Tween that is animating the particle back to its home in the toolbox, or null
+  // if not animating.  Public access is only for checking existence, not for manipulating or reading the tween attributes
+  public animationTween: IntentionalAny | null;
+
+  // Where to animate the element when it is done being used.
+  public readonly initialPosition: Vector2;
+
+  public readonly returnedToOriginEmitter: Emitter;
+
+  /**
+   * @param initialPosition - Where to animate the element when it is done being used.
+   */
+  public constructor( initialPosition: Vector2, options?: ModelElementOptions ) {
+
+    // eslint-disable-next-line phet/bad-typescript-text
     options = merge( {
 
       phetioType: ModelElement.ModelElementIO
     }, options );
     super( options );
 
-    assert && assert( initialPosition instanceof Vector2 );
+    const tandem = options.tandem!;// required
 
-    const tandem = options.tandem;// required
-
-    // @public
     this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' ),
       valueComparisonStrategy: 'equalsFunction' // see https://github.com/phetsims/charges-and-fields/issues/132
     } );
 
-    // @public {Property.<boolean>}
-    // Flag that indicates if this model element is controlled by the user
     this.isUserControlledProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isUserControlledProperty' )
     } );
 
-    // @public {Property.<boolean>}
-    // Flag that indicates if the model element is active or dormant
     this.isActiveProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isActiveProperty' )
     } );
 
-    // @public {Property.<boolean>}
-    // If false, the user will not be able to interact with this charge at all.
     this.isInteractiveProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isInteractiveProperty' )
     } );
 
-    // @public (read-only) {Tween|null} - Tween that is animating the particle back to its home in the toolbox, or null
-    // if not animating.  Public access is only for checking existence, not for manipulating or reading the tween attributes
     this.animationTween = null;
 
-    // @public {Vector2} Where to animate the element when it is done being used.
     this.initialPosition = initialPosition;
 
-    // @public
     this.returnedToOriginEmitter = new Emitter();
   }
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.isInteractiveProperty.dispose();
     this.isUserControlledProperty.dispose();
     this.isActiveProperty.dispose();
@@ -92,9 +103,8 @@ class ModelElement extends PhetioObject {
 
   /**
    * Function that animates the position of the chargeParticle toward its origin Position.
-   * @public
    */
-  animate() {
+  public animate(): void {
 
     assert && assert( this.animationTween === null, 'cannot start animating while already animating' );
 
@@ -124,16 +134,16 @@ class ModelElement extends PhetioObject {
   }
 }
 
-ModelElement.ModelElementIO = new IOType( 'ModelElementIO', {
+ModelElement.ModelElementIO = new IOType<ModelElement, IntentionalAny>( 'ModelElementIO', {
   valueType: ModelElement,
   documentation: 'A Model Element',
-  toStateObject: modelElement => ( {
+  toStateObject: ( modelElement: ModelElement ) => ( {
     initialPosition: NullableIOVector2IO.toStateObject( modelElement.initialPosition )
   } ),
   stateSchema: {
     initialPosition: NullableIOVector2IO
   },
-  stateObjectToCreateElementArguments: stateObject => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
+  stateObjectToCreateElementArguments: ( stateObject: IntentionalAny ) => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
 } );
 
 chargesAndFields.register( 'ModelElement', ModelElement );

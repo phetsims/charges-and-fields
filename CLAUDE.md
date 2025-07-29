@@ -92,7 +92,10 @@ This simulation requires many PhET sibling repositories. The `dependencies.json`
 When converting JavaScript files to TypeScript in PhET projects:
 
 1. **File Renaming**: Use `git mv filename.js filename.ts` to preserve git history
-2. **Required Imports**: Add `import Tandem from '../../../../tandem/js/Tandem.js';` for tandem parameters
+2. **Required Imports**: 
+   - Add `import Tandem from '../../../../tandem/js/Tandem.js';` for tandem parameters
+   - Add `import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';` when you need `any` types
+   - Import `PhetioObjectOptions` when extending PhetioObject: `import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';`
 3. **Property Declarations**: All class properties must be declared with explicit types and access modifiers:
    ```typescript
    public readonly electricFieldProperty: Vector2Property;
@@ -120,12 +123,26 @@ When converting JavaScript files to TypeScript in PhET projects:
    - `Property<number>` for numeric values
    - `BooleanProperty` for boolean flags
    
-3. **Import Pattern**:
+2. **Import Pattern**:
    - Always use `.js` extension in imports even for TypeScript files
    - Common imports needed: `import Tandem from '../../../../tandem/js/Tandem.js';`
 
-4. **Property Patterns**:
+3. **Property Patterns**:
    - Use `readonly` for properties that shouldn't be reassigned
+
+4. **Static IOType Pattern**:
+   - Declare static IOType property in class: `public static ModelElementIO: IOType<ModelElement, IntentionalAny>;`
+   - Assign after class definition: `ModelElement.ModelElementIO = new IOType<ModelElement, IntentionalAny>(...);`
+   - Cannot use `readonly` for static IOType properties that are assigned after class definition
+
+5. **Handling Legacy Code**:
+   - Use `IntentionalAny` instead of `any` to satisfy lint rules
+   - Add `// eslint-disable-next-line phet/bad-typescript-text` before `merge` function calls
+   - Remove redundant type assertions (e.g., `instanceof` checks) when TypeScript already enforces the type
+   - Use non-null assertion (`!`) for required options like tandem: `const tandem = options.tandem!;`
+
+6. **Global Variables**:
+   - Keep `/* global TWEEN */` comments when code uses global libraries
 
 ## Conversion Process Summary
 
