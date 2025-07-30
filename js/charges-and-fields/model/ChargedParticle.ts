@@ -1,4 +1,4 @@
-// Copyright 2014-2023, University of Colorado Boulder
+// Copyright 2025, University of Colorado Boulder
 
 /**
  * Type of a charged particle, which has charge (+1 or -1) and a position.
