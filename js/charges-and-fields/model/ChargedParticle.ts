@@ -3,6 +3,14 @@
 /**
  * Type of a charged particle, which has charge (+1 or -1) and a position.
  *
+ * NOTE: Due to the way the content of the file changed at the same time it was renamed from *.js to *.ts
+ * the normal way of viewing history will not work.
+ *
+ * Instead, you can use this command to see the history of this file:
+ * git log --oneline -- ./js/charges-and-fields/model/ChargedParticle.js ./js/charges-and-fields/model/ChargedParticle.ts
+ *
+ * See https://github.com/phetsims/charges-and-fields/issues/208#issuecomment-3134618756
+ *
  * @author Martin Veillette (Berea College)
  */
 
