@@ -17,6 +17,7 @@ import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioS
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from './ChargedParticle.js';
@@ -38,80 +39,133 @@ const MIN_DISTANCE_SCALE = 1e-9;
 // TODO: why is this phet-io instrumented? https://github.com/phetsims/charges-and-fields/issues/203
 class ChargesAndFieldsModel extends PhetioObject {
 
-  /**
-   * @param {Tandem} tandem
-   */
-  constructor( tandem ) {
+  // Supplied by the view to indicate when the charges and sensors panel is visible
+  // Used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
+  public isChargesAndSensorsPanelDisplayed: ( () => boolean ) | null;
+
+  // Control the visibility of a grid of arrows representing the local electric field
+  public readonly isElectricFieldVisibleProperty: BooleanProperty;
+
+  // Controls the color shading in the fill of the electric field arrows
+  public readonly isElectricFieldDirectionOnlyProperty: BooleanProperty;
+
+  // Control the visibility of the electric potential field, a.k.a. rectangular grid
+  public readonly isElectricPotentialVisibleProperty: BooleanProperty;
+
+  // Control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+  public readonly areValuesVisibleProperty: BooleanProperty;
+
+  // Control the visibility of the simple grid with minor and major axes
+  public readonly isGridVisibleProperty: BooleanProperty;
+
+  // Should we snap the position of model elements to the grid (minor or major)
+  public readonly snapToGridProperty: BooleanProperty;
+
+  // Is there at least one active charged particle on the board
+  public readonly isPlayAreaChargedProperty: BooleanProperty;
+
+  // Whether adding positive charges is allowed (and displayed) in general
+  public readonly allowNewPositiveChargesProperty: BooleanProperty;
+
+  // Whether adding negative charges is allowed (and displayed) in general
+  public readonly allowNewNegativeChargesProperty: BooleanProperty;
+
+  // Whether adding electric field sensors is allowed (and displayed) in general
+  public readonly allowNewElectricFieldSensorsProperty: BooleanProperty;
+
+  // In meters
+  public readonly chargesAndSensorsEnclosureBoundsProperty: Property<Bounds2>;
+
+  // Is the model being reset, necessary flag to address performance issues in the reset process
+  public isResetting: boolean;
+
+  // Bounds of the model (for the nominal view)
+  public readonly bounds: Bounds2;
+
+  // Bounds of the model (for the enlarged view)
+  public readonly enlargedBounds: Bounds2;
+
+  // Group of draggable electric charges
+  public readonly chargedParticleGroup: PhetioGroup<ChargedParticle, [ number, Vector2 ]>;
+
+  // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
+  // This is the relevant array to calculate the electric field, and electric potential
+  public readonly activeChargedParticles: ReturnType<typeof createObservableArray<ChargedParticle>>;
+
+  // Observable group of electric field sensors
+  public readonly electricFieldSensorGroup: PhetioGroup<ElectricFieldSensor, [ Vector2 ]>;
+
+  // Electric potential sensor
+  public readonly electricPotentialSensor: ElectricPotentialSensor;
+
+  public readonly measuringTape: MeasuringTape;
+
+  // Emits whenever the charge model changes, i.e. charges added/removed/moved
+  public readonly chargeConfigurationChangedEmitter: Emitter;
+
+  // Group of electric potential lines
+  public readonly electricPotentialLineGroup: PhetioGroup<ElectricPotentialLine, [ Vector2 ]>;
+
+  // @ts-expect-error - Need to add this property for compatibility with line 438 and 461
+  private electricField: Vector2;
+
+  public constructor( tandem: Tandem ) {
 
     super( {
       tandem: tandem,
       phetioState: false
     } );
 
-    // @public (read-write) {function} - supplied by the view to indicate when the charges and sensors panel is visible
-    // used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
     this.isChargesAndSensorsPanelDisplayed = null;
 
     // For performance reasons there are two visibility properties that are strongly tied to the model hence the reason they appear here.
     // The other visibility properties can be found in the ChargesAndFieldsScreenView file
-
-    // @public {Property.<boolean>} control the visibility of a grid of arrows representing the local electric field
     this.isElectricFieldVisibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isElectricFieldVisibleProperty' ),
       phetioFeatured: true
     } );
 
-    // @public {Property.<boolean>} controls the color shading in the fill of the electric field arrows
     this.isElectricFieldDirectionOnlyProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isElectricFieldDirectionOnlyProperty' ),
       phetioFeatured: true
     } );
 
-    // @public {Property.<boolean>} control the visibility of the electric potential field, a.k.a. rectangular grid
     this.isElectricPotentialVisibleProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isElectricPotentialVisibleProperty' ),
       phetioFeatured: true
     } );
 
-    // @public {Property.<boolean>} control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
     this.areValuesVisibleProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'areValuesVisibleProperty' ),
       phetioFeatured: true
     } );
 
-    // @public {Property.<boolean>} control the visibility of the simple grid with minor and major axes
     this.isGridVisibleProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isGridVisibleProperty' ),
       phetioFeatured: true
     } );
 
-    // @public {Property.<boolean>} should we snap the position of model elements to the grid (minor or major)
     this.snapToGridProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'snapToGridProperty' ),
       phetioFeatured: true
     } );
 
-    // @public {Property.<boolean>} is there at least one active charged particle on the board
     this.isPlayAreaChargedProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isPlayAreaChargedProperty' )
     } );
 
-    // @public {Property.<boolean>} whether adding positive charges is allowed (and displayed) in general
     this.allowNewPositiveChargesProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'allowNewPositiveChargesProperty' )
     } );
 
-    // @public {Property.<boolean>} whether adding negative charges is allowed (and displayed) in general
     this.allowNewNegativeChargesProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'allowNewNegativeChargesProperty' )
     } );
 
-    // @public {Property.<boolean>} whether adding electric field sensors is allowed (and displayed) in general
     this.allowNewElectricFieldSensorsProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'allowNewElectricFieldSensorsProperty' )
     } );
 
-    // @public {Property.<Bounds2>} in meters
     this.chargesAndSensorsEnclosureBoundsProperty = new Property(
       new Bounds2( -1.25, -2.30, 1.25, -1.70 ), {
         tandem: tandem.createTandem( 'chargesAndSensorsEnclosureBoundsProperty' ),
@@ -122,16 +176,12 @@ class ChargesAndFieldsModel extends PhetioObject {
     // Initialize variables
     //----------------------------------------------------------------------------------------
 
-    this.isResetting = false; // is the model being reset, necessary flag to address performance issues in the reset process
+    this.isResetting = false;
 
-    // @public read-only
-    this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 ); // bounds of the model (for the nominal view)
+    this.bounds = new Bounds2( -WIDTH / 2, -HEIGHT / 2, WIDTH / 2, HEIGHT / 2 );
 
-    // @public read-only
-    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 ); // bounds of the model (for the enlarged view)
-
-    // @public {PhetioGroup.<ChargedParticle>} group of draggable electric charges
-    this.chargedParticleGroup = new PhetioGroup( ( tandem, charge, initialPosition ) => {
+    this.enlargedBounds = new Bounds2( -1.5 * WIDTH / 2, -HEIGHT / 2, 1.5 * WIDTH / 2, 3 * HEIGHT / 2 );
+    this.chargedParticleGroup = new PhetioGroup( ( tandem: Tandem, charge: number, initialPosition: Vector2 ) => {
       const chargedParticle = new ChargedParticle( charge, initialPosition, {
         tandem: tandem
       } );
@@ -144,38 +194,29 @@ class ChargesAndFieldsModel extends PhetioObject {
     } );
     const chargedParticleGroup = this.chargedParticleGroup;
 
-    // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
-    // This is the relevant array to calculate the electric field, and electric potential
-    // @public {ObservableArrayDef.<ChargedParticle>}
     this.activeChargedParticles = createObservableArray( {
       phetioType: createObservableArray.ObservableArrayIO( ChargedParticle.ChargedParticleIO )
     } );
 
-    // @public {PhetioGroup.<ElectricFieldSensor>} Observable group of electric field sensors
-    this.electricFieldSensorGroup = new PhetioGroup( ( tandem, initialPosition ) => {
+    this.electricFieldSensorGroup = new PhetioGroup( ( tandem: Tandem, initialPosition: Vector2 ) => {
       const sensor = new ElectricFieldSensor( this.getElectricField.bind( this ), initialPosition, tandem );
       sensor.returnedToOriginEmitter.addListener( () => this.electricFieldSensorGroup.disposeElement( sensor ) );
       return sensor;
     }, [ Vector2.ZERO ], {
       tandem: tandem.createTandem( 'electricFieldSensorGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( ModelElement.ModelElementIO )
-    } ); // {ObservableArrayDef.<ElectricFieldSensor>}
+    } );
     const electricFieldSensorGroup = this.electricFieldSensorGroup;
 
-    // @public - electric potential sensor
     this.electricPotentialSensor = new ElectricPotentialSensor( this.getElectricPotential.bind( this ),
       tandem.createTandem( 'electricPotentialSensor' ) );
 
     this.measuringTape = new MeasuringTape( tandem.createTandem( 'measuringTape' ) );
 
-    // @public - emits whenever the charge model changes, i.e. charges added/removed/moved
     this.chargeConfigurationChangedEmitter = new Emitter();
 
-    // @public read-only {PhetioGroup.<ElectricPotentialLine>} group of electric potential lines
-    this.electricPotentialLineGroup = new PhetioGroup( ( tandem, position ) => {
+    this.electricPotentialLineGroup = new PhetioGroup( ( tandem: Tandem, position: Vector2 ) => {
 
-      assert && assert( position instanceof Vector2, 'position should be Vector2' );
-      assert && assert( tandem instanceof Tandem, 'tandem should be a Tandem' );
 
       // for chaining and for PhET-iO restore state
       return new ElectricPotentialLine( this, position, tandem );
@@ -190,7 +231,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     //
     //----------------------------------------------------------------------------------------
 
-    this.snapToGridProperty.link( snapToGrid => {
+    this.snapToGridProperty.link( ( snapToGrid: boolean ) => {
       if ( snapToGrid ) {
         this.snapAllElements();
       }
@@ -201,9 +242,9 @@ class ChargesAndFieldsModel extends PhetioObject {
     //------------------------
 
     // the following logic is the crux of the simulation
-    this.chargedParticleGroup.elementCreatedEmitter.addListener( addedChargedParticle => {
+    this.chargedParticleGroup.elementCreatedEmitter.addListener( ( addedChargedParticle: ChargedParticle ) => {
 
-      const userControlledListener = isUserControlled => {
+      const userControlledListener = ( isUserControlled: boolean ) => {
 
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
@@ -218,7 +259,7 @@ class ChargesAndFieldsModel extends PhetioObject {
 
       addedChargedParticle.isUserControlledProperty.link( userControlledListener );
 
-      const isActiveListener = isActive => {
+      const isActiveListener = ( isActive: boolean ) => {
 
         // clear all electricPotential lines, i.e. remove all elements from the electricPotentialLineGroup
         this.clearElectricPotentialLines();
@@ -243,7 +284,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
       // position and oldPosition refer to a charged particle
-      const positionListener = ( position, oldPosition ) => {
+      const positionListener = ( position: Vector2, oldPosition: Vector2 | null ) => {
 
         this.updateIsPlayAreaCharged();
 
@@ -263,7 +304,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       addedChargedParticle.positionProperty.link( positionListener );
 
       // remove listeners when a chargedParticle is removed
-      chargedParticleGroup.elementDisposedEmitter.addListener( function removalListener( removedChargeParticle ) {
+      chargedParticleGroup.elementDisposedEmitter.addListener( function removalListener( removedChargeParticle: ChargedParticle ) {
         if ( removedChargeParticle === addedChargedParticle ) {
           addedChargedParticle.isUserControlledProperty.unlink( userControlledListener );
           addedChargedParticle.isActiveProperty.unlink( isActiveListener );
@@ -277,7 +318,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // AddItem Removed Listener on the charged Particles Observable Array
     //------------------------
 
-    this.chargedParticleGroup.elementDisposedEmitter.addListener( removedChargeParticle => {
+    this.chargedParticleGroup.elementDisposedEmitter.addListener( ( removedChargeParticle: ChargedParticle ) => {
       // check that the particle was active before updating charge dependent model components
       if ( removedChargeParticle.isActiveProperty.get() && !this.isResetting ) {
 
@@ -302,17 +343,17 @@ class ChargesAndFieldsModel extends PhetioObject {
     // AddItem Added Listener on the electric Field Sensors Observable Array
     //------------------------
 
-    this.electricFieldSensorGroup.elementCreatedEmitter.addListener( addedElectricFieldSensor => {
+    this.electricFieldSensorGroup.elementCreatedEmitter.addListener( ( addedElectricFieldSensor: ElectricFieldSensor ) => {
 
       // Listener for sensor position changes
-      const positionListener = position => {
-        addedElectricFieldSensor.electricField = this.getElectricField( position );
+      const positionListener = ( position: Vector2 ) => {
+        addedElectricFieldSensor.update();
       };
 
       // update the Electric Field Sensors upon a change of its own position
       addedElectricFieldSensor.positionProperty.link( positionListener );
 
-      const userControlledListener = isUserControlled => {
+      const userControlledListener = ( isUserControlled: boolean ) => {
 
         // determine if the sensor is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
@@ -328,7 +369,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       addedElectricFieldSensor.isUserControlledProperty.link( userControlledListener );
 
       // remove listeners when an electricFieldSensor is removed
-      electricFieldSensorGroup.elementDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor ) {
+      electricFieldSensorGroup.elementDisposedEmitter.addListener( function removalListener( removedElectricFieldSensor: ElectricFieldSensor ) {
         if ( removedElectricFieldSensor === addedElectricFieldSensor ) {
           addedElectricFieldSensor.isUserControlledProperty.unlink( userControlledListener );
           addedElectricFieldSensor.positionProperty.unlink( positionListener );
@@ -340,9 +381,8 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * Reset function
-   * @public
    */
-  reset() {
+  public reset(): void {
     // we want to avoid the cost of constantly re-updating the grids when clearing chargedParticleGroup
     // so we set the flag isResetting to true.
     this.isResetting = true;
@@ -370,32 +410,22 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * Adds a positive charge to the model, and returns it.
-   * @public
-   *
-   * @param {Vector2} initialPosition
-   * @returns {ChargedParticle}
    */
-  addPositiveCharge( initialPosition ) {
+  public addPositiveCharge( initialPosition: Vector2 ): ChargedParticle {
     return this.chargedParticleGroup.createNextElement( 1, initialPosition );
   }
 
   /**
    * Adds a negative charge to the model, and returns it.
-   * @public
-   *
-   * @param {Vector2} initialPosition
-   * @returns {ChargedParticle}
    */
-  addNegativeCharge( initialPosition ) {
+  public addNegativeCharge( initialPosition: Vector2 ): ChargedParticle {
     return this.chargedParticleGroup.createNextElement( -1, initialPosition );
   }
 
   /**
    * Adds an electric field sensor to the model, and returns it.
-   * @param {Vector2} initialPosition
-   * @public
    */
-  addElectricFieldSensor( initialPosition ) {
+  public addElectricFieldSensor( initialPosition: Vector2 ): ElectricFieldSensor {
     return this.electricFieldSensorGroup.createNextElement( initialPosition );
   }
 
@@ -403,13 +433,12 @@ class ChargesAndFieldsModel extends PhetioObject {
    * Function that determines if there is at least one active and "uncompensated" charge
    * on the board. If this is not the case, it implies that the E-field is zero everywhere
    * (see https://github.com/phetsims/charges-and-fields/issues/46)
-   * @private
    */
-  updateIsPlayAreaCharged() {
-    let netElectricCharge = 0; // {number} Total electric charge on screen
-    let numberActiveChargedParticles = 0; // {number} Total active charged particles on screen
+  private updateIsPlayAreaCharged(): void {
+    let netElectricCharge = 0; // Total electric charge on screen
+    let numberActiveChargedParticles = 0; // Total active charged particles on screen
 
-    this.activeChargedParticles.forEach( chargedParticle => {
+    this.activeChargedParticles.forEach( ( chargedParticle: ChargedParticle ) => {
       numberActiveChargedParticles++;
       netElectricCharge += chargedParticle.charge;
     } );
@@ -427,7 +456,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // If this is a pair, it must be a +- pair. If charges are co-located, don't show field.
     else if ( numberActiveChargedParticles === 2 ) {
 
-      // {boolean} indicator for a co-located pair
+      // indicator for a co-located pair
       const colocated = this.activeChargedParticles.get( 1 ).positionProperty.get()
                           .minus( this.activeChargedParticles.get( 0 ).positionProperty.get() )
                           .magnitude < MIN_DISTANCE_SCALE;
@@ -441,9 +470,9 @@ class ChargesAndFieldsModel extends PhetioObject {
 
     // Check for two compensating pairs
     else if ( numberActiveChargedParticles === 4 ) {
-      const positiveChargePositionArray = [];
-      const negativeChargePositionArray = [];
-      this.activeChargedParticles.forEach( chargedParticle => {
+      const positiveChargePositionArray: Vector2[] = [];
+      const negativeChargePositionArray: Vector2[] = [];
+      this.activeChargedParticles.forEach( ( chargedParticle: ChargedParticle ) => {
         if ( chargedParticle.charge === 1 ) {
           positiveChargePositionArray.push( chargedParticle.positionProperty.get() );
         }
@@ -475,9 +504,8 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * Update all sensors
-   * @private
    */
-  updateAllSensors() {
+  private updateAllSensors(): void {
     this.electricPotentialSensor.update();
     for ( let i = 0; i < this.electricFieldSensorGroup.count; i++ ) {
       this.electricFieldSensorGroup.getElement( i ).update();
@@ -486,14 +514,11 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * Return the electric field (a vector) at the given position
-   * @private
-   * @param {Vector2} position - position of sensor
-   * @returns {Vector2} electricField
    */
-  getElectricField( position ) {
+  private getElectricField( position: Vector2 ): Vector2 {
     const electricField = new Vector2( 0, 0 );
 
-    this.activeChargedParticles.forEach( chargedParticle => {
+    this.activeChargedParticles.forEach( ( chargedParticle: ChargedParticle ) => {
       const distanceSquared = chargedParticle.positionProperty.get().distanceSquared( position );
 
       // Avoid bugs stemming from large or infinite fields (#82, #84, #85).
@@ -507,10 +532,10 @@ class ChargesAndFieldsModel extends PhetioObject {
       const distancePowerCube = Math.pow( distanceSquared, 1.5 );
 
       // For performance reasons, we don't want to generate more vector allocations
-      const electricFieldContribution = {
-        x: ( position.x - chargedParticle.positionProperty.get().x ) * ( chargedParticle.charge ) / distancePowerCube,
-        y: ( position.y - chargedParticle.positionProperty.get().y ) * ( chargedParticle.charge ) / distancePowerCube
-      };
+      const electricFieldContribution = new Vector2(
+        ( position.x - chargedParticle.positionProperty.get().x ) * ( chargedParticle.charge ) / distancePowerCube,
+        ( position.y - chargedParticle.positionProperty.get().y ) * ( chargedParticle.charge ) / distancePowerCube
+      );
       electricField.add( electricFieldContribution );
     } );
     electricField.multiplyScalar( K_CONSTANT ); // prefactor depends on units
@@ -519,11 +544,8 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * Return the electric potential at the given position due to the configuration of charges on the board.
-   * @public read-Only
-   * @param {Vector2} position
-   * @returns {number} electricPotential
    */
-  getElectricPotential( position ) {
+  public getElectricPotential( position: Vector2 ): number {
     let electricPotential = 0;
 
     if ( !this.isPlayAreaChargedProperty.get() ) {
@@ -539,7 +561,7 @@ class ChargesAndFieldsModel extends PhetioObject {
       return Number.NEGATIVE_INFINITY;
     }
     else {
-      this.activeChargedParticles.forEach( chargedParticle => {
+      this.activeChargedParticles.forEach( ( chargedParticle: ChargedParticle ) => {
         const distance = chargedParticle.positionProperty.get().distance( position );
 
         if ( distance > 0 ) {
@@ -554,13 +576,10 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * get local charge at this position
-   * @private
-   * @param {Vector2} position
-   * @returns {number}
    */
-  getCharge( position ) {
+  private getCharge( position: Vector2 ): number {
     let charge = 0;
-    this.activeChargedParticles.forEach( chargedParticle => {
+    this.activeChargedParticles.forEach( ( chargedParticle: ChargedParticle ) => {
       if ( chargedParticle.positionProperty.value.equals( position ) ) {
         charge += chargedParticle.charge;
       }
@@ -568,13 +587,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     return charge;
   }
 
-  /**
-   * @private
-   *
-   * @param {Vector2} position
-   * @returns {boolean}
-   */
-  canAddElectricPotentialLine( position ) {
+  private canAddElectricPotentialLine( position: Vector2 ): boolean {
 
 
     // Do not try to add an equipotential line if there are no charges.
@@ -585,7 +598,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // If we are too close to a charged particle, also bail out.
     // in model coordinates, should be less than the radius (in the view) of a charged particle
     const isTooCloseToParticle = this.activeChargedParticles.some(
-      chargedParticle => chargedParticle.positionProperty.get().distance( position ) < 0.03
+      ( chargedParticle: ChargedParticle ) => chargedParticle.positionProperty.get().distance( position ) < 0.03
     );
     return !isTooCloseToParticle;
   }
@@ -593,12 +606,10 @@ class ChargesAndFieldsModel extends PhetioObject {
   /**
    * Push an electricPotentialLine to an observable array
    * The drawing of the electricPotential line is handled in the view (ElectricPotentialLineView)
-   * @public
-   * @param {Vector2} [position] - optional argument: starting point to calculate the electricPotential line
    */
-  addElectricPotentialLine(
-    position = this.electricPotentialSensor.positionProperty.get() // use the Potential Sensor as default position
-  ) {
+  public addElectricPotentialLine(
+    position: Vector2 = this.electricPotentialSensor.positionProperty.get() // use the Potential Sensor as default position
+  ): void {
 
     // TODO: perhaps we want this, but it seems like isPlayAreaChargedProperty is not being kept up and in sync. https://github.com/phetsims/charges-and-fields/issues/203
     // assert && assert( !this.isPlayAreaChargedProperty.get() );
@@ -611,7 +622,7 @@ class ChargesAndFieldsModel extends PhetioObject {
     // If we are too close to a charged particle, also bail out.
     // in model coordinates, should be less than the radius (in the view) of a charged particle
     const isTooCloseToParticle = this.activeChargedParticles.some(
-      chargedParticle => chargedParticle.positionProperty.get().distance( position ) < 0.03
+      ( chargedParticle: ChargedParticle ) => chargedParticle.positionProperty.get().distance( position ) < 0.03
     );
     if ( isTooCloseToParticle ) {
       return;
@@ -622,11 +633,9 @@ class ChargesAndFieldsModel extends PhetioObject {
   /**
    * Push many electric Potential Lines to an observable array
    * The drawing of the electric Potential Lines is handled in the view.
-   * @param {number} numberOfLines
    * USED IN DEBUGGING MODE
-   * @public
    */
-  addManyElectricPotentialLines( numberOfLines ) {
+  public addManyElectricPotentialLines( numberOfLines: number ): void {
     for ( let i = 0; i < numberOfLines; i++ ) {
       const position = new Vector2(
         WIDTH * ( dotRandom.nextDouble() - 0.5 ),
@@ -638,9 +647,8 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * Function that clears the Equipotential Lines Observable Array
-   * @public
    */
-  clearElectricPotentialLines() {
+  public clearElectricPotentialLines(): void {
 
     // Clear lines without disrupting phet-io state
     if ( !isSettingPhetioStateProperty.value ) {
@@ -650,10 +658,8 @@ class ChargesAndFieldsModel extends PhetioObject {
 
   /**
    * snap the position to the minor gridlines
-   * @param {Property.<Vector2>} positionProperty
-   * @public
    */
-  snapToGridLines( positionProperty ) {
+  public snapToGridLines( positionProperty: Vector2Property ): void {
     if ( this.snapToGridProperty.value && this.isGridVisibleProperty.value ) {
       positionProperty.set( positionProperty.get()
         .dividedScalar( GRID_MINOR_SPACING )
@@ -662,12 +668,9 @@ class ChargesAndFieldsModel extends PhetioObject {
     }
   }
 
-  /**
-   * @private
-   */
-  snapAllElements() {
-    this.activeChargedParticles.forEach( chargedParticle => this.snapToGridLines( chargedParticle.positionProperty ) );
-    this.electricFieldSensorGroup.forEach( electricFieldSensor => this.snapToGridLines( electricFieldSensor.positionProperty ) );
+  private snapAllElements(): void {
+    this.activeChargedParticles.forEach( ( chargedParticle: ChargedParticle ) => this.snapToGridLines( chargedParticle.positionProperty ) );
+    this.electricFieldSensorGroup.forEach( ( electricFieldSensor: ElectricFieldSensor ) => this.snapToGridLines( electricFieldSensor.positionProperty ) );
 
     this.snapToGridLines( this.electricPotentialSensor.positionProperty );
     this.snapToGridLines( this.measuringTape.basePositionProperty );
