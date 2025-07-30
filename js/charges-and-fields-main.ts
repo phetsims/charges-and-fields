@@ -17,27 +17,26 @@ const chargesAndFieldsTitleStringProperty = ChargesAndFieldsStrings[ 'charges-an
 
 const tandem = Tandem.ROOT;
 
-const simOptions = {
-  credits: {
-
-    // all credits fields are optional
-    leadDesign: 'Michael Dubson, Amy Rouinfar',
-    softwareDevelopment: 'Andrew Adare, Michael Dubson, Jonathan Olson, Martin Veillette',
-    team: 'Ariel Paul, Kathy Perkins',
-    qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
-  },
-
-  webgl: true,
-  preferencesModel: new PreferencesModel( {
-    visualOptions: {
-      supportsProjectorMode: true
-    }
-  } )
-};
 
 simLauncher.launch( () => {
   const sim = new Sim( chargesAndFieldsTitleStringProperty, [
     new ChargesAndFieldsScreen( tandem.createTandem( 'chargesAndFieldsScreen' ) )
-  ], simOptions );
+  ], {
+    credits: {
+
+      // all credits fields are optional
+      leadDesign: 'Michael Dubson, Amy Rouinfar',
+      softwareDevelopment: 'Andrew Adare, Michael Dubson, Jonathan Olson, Martin Veillette',
+      team: 'Ariel Paul, Kathy Perkins',
+      qualityAssurance: 'Steele Dalton, Amanda Davis, Bryce Griebenow, Elise Morgan, Oliver Orejola, Ben Roberts, Bryan Yoelin'
+    },
+
+    webgl: true,
+    preferencesModel: new PreferencesModel( {
+      visualOptions: {
+        supportsProjectorMode: true
+      }
+    } )
+  } );
   sim.start();
 } );
