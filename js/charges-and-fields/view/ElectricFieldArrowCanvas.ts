@@ -28,14 +28,14 @@ const scaledPaddedBounds = new Bounds2( arrowShape.bounds.minX * scale,
 const canvas = document.createElement( 'canvas' );
 canvas.width = scaledPaddedBounds.width;
 canvas.height = scaledPaddedBounds.height;
-const context = canvas.getContext( '2d' );
+const context = canvas.getContext( '2d' )!;
 
 // Offset based on where the center is from the upper-left. Will usually be negative so it can be applied.
 // When drawing in this code, we'll want to negate it.
 const xOffset = scaledPaddedBounds.minX;
 const yOffset = scaledPaddedBounds.minY;
 
-function draw() {
+function draw(): void {
   context.save();
 
   // Clear if we need to redraw
@@ -64,20 +64,20 @@ ChargesAndFieldsColors.electricFieldGridSaturationProperty.link( draw );
 ChargesAndFieldsColors.electricFieldGridSaturationStrokeProperty.link( draw );
 
 const ElectricFieldArrowCanvas = {
-  // @public {number} - Scale that was applied to the ArrowShape. Presumably un-scale by this amount.
+  // Scale that was applied to the ArrowShape. Presumably un-scale by this amount.
   scale: scale,
 
-  // @public {number} - X translation that should be applied "before" the scale
+  // X translation that should be applied "before" the scale
   xOffset: xOffset,
 
-  // @public {number} - Y translation that should be applied "before" the scale
+  // Y translation that should be applied "before" the scale
   yOffset: yOffset,
 
-  // @public {HTMLCanvasElement} - The actual Canvas that can be used to draw
+  // The actual Canvas that can be used to draw
   canvas: canvas,
 
-  // @public {Emitter} - Emits when the contents of the Canvas have changed (needs to be redrawn).
+  // Emits when the contents of the Canvas have changed (needs to be redrawn).
   updateEmitter: emitter
-};
+} as const;
 chargesAndFields.register( 'ElectricFieldArrowCanvas', ElectricFieldArrowCanvas );
 export default ElectricFieldArrowCanvas;
