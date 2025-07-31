@@ -227,10 +227,10 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
     const chargesAndSensorsPanel = new ChargesAndSensorsPanel( model, this, ( modelElement: ModelElement, event: PressListenerEvent ) => {
 
         // Horrible, horrible hacks
-        draggableElementsLayer.children.forEach( potentialView => {
+        draggableElementsLayer.children.forEach( ( potentialView: IntentionalAny ) => {
 
-          if ( ( potentialView as IntentionalAny ).modelElement === modelElement ) {
-            ( potentialView as IntentionalAny ).dragListener.press( event, potentialView );
+          if ( potentialView.modelElement === modelElement ) {
+            potentialView.dragListener.press( event, potentialView );
           }
         } );
       },
