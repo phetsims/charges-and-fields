@@ -6,11 +6,16 @@
  * @author Martin Veillette (Berea College)
  */
 
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Property from '../../../../axon/js/Property.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargedParticle from '../model/ChargedParticle.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
 
 // constants
@@ -18,21 +23,30 @@ const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a ch
 
 class ChargedParticleNode extends ChargedParticleRepresentationNode {
 
+  // The model element
+  public readonly modelElement: ChargedParticle;
+
+  // The drag listener for this node
+  private readonly dragListener: DragListener;
+
+  // Function to dispose this node
+  private readonly disposeChargedParticleNode: () => void;
+
   /**
    * Constructor for the ChargedParticleNode which renders the charge as a scenery node.
-   * @param {ChargedParticle} chargedParticle - the model of the charged particle
-   * @param {function} snapToGridLines - function( {Property.<Vector2>})
-   * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
-   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
-   * @param {Bounds2} enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
-   * @param {Tandem} tandem
+   * @param chargedParticle
+   * @param snapToGridLines
+   * @param modelViewTransform - the coordinate transform between model coordinates and view coordinates
+   * @param availableModelBoundsProperty - dragBounds for the charged particle
+   * @param enclosureBounds - bounds in the model coordinate frame of the charge and sensor enclosure
+   * @param tandem
    */
-  constructor( chargedParticle,
-               snapToGridLines,
-               modelViewTransform,
-               availableModelBoundsProperty,
-               enclosureBounds,
-               tandem ) {
+  public constructor( chargedParticle: ChargedParticle,
+                      snapToGridLines: ( positionProperty: Property<Vector2> ) => void,
+                      modelViewTransform: ModelViewTransform2,
+                      availableModelBoundsProperty: Property<Bounds2>,
+                      enclosureBounds: Bounds2,
+                      tandem: Tandem ) {
 
     super( chargedParticle.charge, {
       tandem: tandem,
@@ -46,7 +60,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
     this.touchArea = this.localBounds.dilated( 10 );
 
     // Register for synchronization with model.
-    const positionListener = position => {
+    const positionListener = ( position: Vector2 ) => {
       this.translation = modelViewTransform.modelToViewPosition( position );
     };
     chargedParticle.positionProperty.link( positionListener );
@@ -73,7 +87,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
         }
       }
     } );
-    this.dragListener.isUserControlledProperty.link( controlled => {
+    this.dragListener.isUserControlledProperty.link( ( controlled: boolean ) => {
       chargedParticle.isUserControlledProperty.value = controlled;
     } );
 
@@ -108,9 +122,8 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.disposeChargedParticleNode();
     super.dispose();
   }
