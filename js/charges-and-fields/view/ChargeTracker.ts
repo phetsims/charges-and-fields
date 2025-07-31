@@ -19,23 +19,44 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import ObservableArrayDef from '../../../../axon/js/ObservableArrayDef.js';
+import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import ChargedParticle from '../model/ChargedParticle.js';
+
+// Type for queue items
+type QueueItem = {
+  charge: number;
+  oldPosition: Vector2 | null;
+  newPosition: Vector2 | null;
+};
+
+// Type for position listeners with particle reference
+type PositionListener = ( ( newPosition: Vector2, oldPosition: Vector2 ) => void ) & {
+  particle: ChargedParticle;
+};
 
 class ChargeTracker {
 
+  private readonly chargedParticles: ObservableArray<ChargedParticle>;
+
+  // Functions to be called back when particle positions change, tagged with listener.particle = particle
+  private readonly positionListeners: PositionListener[];
+
+  private readonly particleAddedListener: ( particle: ChargedParticle ) => void;
+  private readonly particleRemovedListener: ( particle: ChargedParticle ) => void;
+
+  // Queued changes that will accumulate. oldPosition === null means "add it", newPosition === null means "remove it".
+  // We'll apply these graphical deltas at the next rendering.
+  public readonly queue: QueueItem[];
+
   /**
-   * @param {ObservableArrayDef.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
+   * @param chargedParticles - only chargedParticles that active are in this array
    */
-  constructor( chargedParticles ) {
-    assert && assert( ObservableArrayDef.isObservableArray( chargedParticles ), 'invalid chargedParticles' );
+  public constructor( chargedParticles: ObservableArray<ChargedParticle> ) {
 
     this.chargedParticles = chargedParticles;
-
-    // @private functions to be called back when particle positions change, tagged with listener.particle = particle
     this.positionListeners = [];
-
-    // @private
     this.particleAddedListener = this.onParticleAdded.bind( this );
     this.particleRemovedListener = this.onParticleRemoved.bind( this );
 
@@ -43,10 +64,6 @@ class ChargeTracker {
     this.chargedParticles.addItemAddedListener( this.particleAddedListener );
     this.chargedParticles.addItemRemovedListener( this.particleRemovedListener );
 
-    // @public
-    // Queued changes of type { charge: {number}, oldPosition: {Vector2}, newPosition: {Vector2} } that will
-    // accumulate. oldPosition === null means "add it", newPosition === null means "remove it". We'll apply these
-    // graphical deltas at the next rendering.
     this.queue = [];
 
     // Queue up changes that will initialize things properly.
@@ -55,9 +72,8 @@ class ChargeTracker {
 
   /**
    * Clears the queue, essentially saying "the external state is now up-to-date with the changes"
-   * @public
    */
-  clear() {
+  public clear(): void {
     while ( this.queue.length ) {
       this.queue.pop();
     }
@@ -65,9 +81,8 @@ class ChargeTracker {
 
   /**
    * Clears the queue and adds all current particle positions, as if our external state has been reset to neutral.
-   * @public
    */
-  rebuild() {
+  public rebuild(): void {
     this.clear();
 
     for ( let i = 0; i < this.chargedParticles.length; i++ ) {
@@ -77,27 +92,25 @@ class ChargeTracker {
 
   /**
    * Called when this ChargeTracker won't be used anymore. Removes all listeners.
-   * @public
    */
-  dispose() {
+  public dispose(): void {
     // Remove add/remove listeners
     this.chargedParticles.removeItemAddedListener( this.particleAddedListener );
     this.chargedParticles.removeItemRemovedListener( this.particleRemovedListener );
 
     // Remove position listeners
     while ( this.positionListeners.length ) {
-      const positionListener = this.positionListeners.pop();
+      const positionListener = this.positionListeners.pop()!;
       positionListener.particle.positionProperty.unlink( positionListener );
     }
   }
 
   /**
    * Handle adding a particle with the queue.
-   * @private
    *
-   * @param {ChargedParticle} particle
+   * @param particle
    */
-  addParticle( particle ) {
+  private addParticle( particle: ChargedParticle ): void {
     this.queue.push( {
       charge: particle.charge,
       oldPosition: null,
@@ -107,15 +120,14 @@ class ChargeTracker {
 
   /**
    * Called when the particle is added to the model's list of charged particles. Hooks up listeners and the queue.
-   * @private
    *
-   * @param {ChargedParticle}
+   * @param particle
    */
-  onParticleAdded( particle ) {
+  private onParticleAdded( particle: ChargedParticle ): void {
     this.addParticle( particle );
 
     // add the position listener (need a reference to the particle with the listener, so we can't use the same one)
-    const positionListener = this.onParticleMoved.bind( this, particle );
+    const positionListener = this.onParticleMoved.bind( this, particle ) as PositionListener;
     positionListener.particle = particle;
     this.positionListeners.push( positionListener );
     particle.positionProperty.lazyLink( positionListener );
@@ -124,13 +136,12 @@ class ChargeTracker {
   /**
    * Called when our listener to the particle's position is fired. We see if we can reposition it, or create a new
    * entry.
-   * @private
    *
-   * @param {ChargedParticle} particle
-   * @param {Vector2} newPosition
-   * @param {Vector2} oldPosition
+   * @param particle
+   * @param newPosition
+   * @param oldPosition
    */
-  onParticleMoved( particle, newPosition, oldPosition ) {
+  private onParticleMoved( particle: ChargedParticle, newPosition: Vector2, oldPosition: Vector2 ): void {
     // Check to see if we can update an add/move for the same particle to a new position instead of creating
     // multiple queue entries for a single particle. This will help collapse multiple moves of the same particle in
     // one frame.
@@ -157,11 +168,10 @@ class ChargeTracker {
 
   /**
    * Called when the particle is removed from the model's list of charged particles. Removes listeners, etc.
-   * @private
    *
-   * @param {ChargedParticle}
+   * @param particle
    */
-  onParticleRemoved( particle ) {
+  private onParticleRemoved( particle: ChargedParticle ): void {
     // See if we can update an already-in-queue item with a null position.
     let modified = false;
     for ( let i = 0; i < this.queue.length; i++ ) {
