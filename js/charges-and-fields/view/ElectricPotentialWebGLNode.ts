@@ -452,15 +452,6 @@ class ElectricPotentialPainter implements WebGLNodePainter {
     gl.deleteBuffer( this.vertexBuffer );
     gl.deleteFramebuffer( this.framebuffer );
 
-    // @ts-expect-error
-    this.computeShaderProgram = null;
-
-    // @ts-expect-error
-    this.displayShaderProgram = null;
-
-    // @ts-expect-error
-    this.clearShaderProgram = null;
-
     this.chargeTracker.dispose();
   }
 }
