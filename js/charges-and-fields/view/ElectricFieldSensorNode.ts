@@ -12,7 +12,6 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -141,7 +140,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
         }
 
         // Update the strings in the labels
-        const fieldMagnitudeString = decimalAdjust( magnitude, { maxDecimalPlaces: 2 } );
+        const fieldMagnitudeString = decimalAdjust( magnitude, 2 );
         fieldStrengthLabelText.string = StringUtils.format( pattern0Value1UnitsString, fieldMagnitudeString, eFieldUnitString );
 
         const angleString = Utils.toFixed( Utils.toDegrees( angle ), 1 );
@@ -273,13 +272,9 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
      * is at least equal to the number of decimal places (or larger). See example below
      *
      * @param number
-     * @param options
+     * @param maxDecimalPlaces
      */
-    function decimalAdjust( number: number, options?: IntentionalAny ): string {
-      // eslint-disable-next-line phet/bad-typescript-text
-      options = merge( {
-        maxDecimalPlaces: 3
-      }, options );
+    function decimalAdjust( number: number, maxDecimalPlaces: number ): string {
 
       // e.g. for  maxDecimalPlaces: 3
       // 9999.11 -> 9999  (numbers larger than 10^maxDecimalPlaces) are rounded to unity
@@ -297,14 +292,14 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
 
       let decimalPlaces;
 
-      if ( exponent >= options.maxDecimalPlaces ) {
+      if ( exponent >= maxDecimalPlaces ) {
         decimalPlaces = 0;
       }
       else if ( exponent > 0 ) {
-        decimalPlaces = options.maxDecimalPlaces - exponent;
+        decimalPlaces = maxDecimalPlaces - exponent;
       }
       else {
-        decimalPlaces = options.maxDecimalPlaces;
+        decimalPlaces = maxDecimalPlaces;
       }
 
       return Utils.toFixed( number, decimalPlaces );

@@ -17,7 +17,6 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -294,13 +293,9 @@ class ElectricPotentialSensorNode extends Node {
      * 0.00011 -> 0.000
      *
      * @param number
-     * @param options
+     * @param maxDecimalPlaces
      */
-    function decimalAdjust( number: number, options?: IntentionalAny ): string {
-      // eslint-disable-next-line phet/bad-typescript-text
-      options = merge( {
-        maxDecimalPlaces: 3
-      }, options );
+    function decimalAdjust( number: number, maxDecimalPlaces = 3 ): string {
 
       // let's find the exponent as in
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
@@ -309,14 +304,14 @@ class ElectricPotentialSensorNode extends Node {
 
       let decimalPlaces;
 
-      if ( exponent >= options.maxDecimalPlaces ) {
+      if ( exponent >= maxDecimalPlaces ) {
         decimalPlaces = 0;
       }
       else if ( exponent > 0 ) {
-        decimalPlaces = options.maxDecimalPlaces - exponent;
+        decimalPlaces = maxDecimalPlaces - exponent;
       }
       else {
-        decimalPlaces = options.maxDecimalPlaces;
+        decimalPlaces = maxDecimalPlaces;
       }
 
       return Utils.toFixed( number, decimalPlaces );
