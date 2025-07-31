@@ -15,8 +15,9 @@
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
@@ -28,7 +29,7 @@ type SelfOptions = {
   // No additional self options
 };
 
-type ChargedParticleOptions = SelfOptions;
+type ChargedParticleOptions = SelfOptions & PhetioObjectOptions;
 
 class ChargedParticle extends ModelElement {
 
@@ -42,8 +43,7 @@ class ChargedParticle extends ModelElement {
    */
   public constructor( charge: number, initialPosition: Vector2, providedOptions?: ChargedParticleOptions ) {
 
-    // eslint-disable-next-line phet/bad-typescript-text
-    const options = merge( {
+    const options = optionize<ChargedParticleOptions, SelfOptions, PhetioObjectOptions>()( {
       tandem: Tandem.REQUIRED,
       phetioType: ChargedParticle.ChargedParticleIO,
       phetioDynamicElement: true
