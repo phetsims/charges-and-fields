@@ -19,8 +19,6 @@ export default class ElectricFieldSensorRepresentationNode extends Node {
 
   /**
    * Constructor for the ElectricFieldSensorRepresentationNode which renders the sensor as a scenery node.
-   *
-   * @param options - Passed to Node
    */
   public constructor( options?: NodeOptions ) {
 

@@ -270,9 +270,6 @@ export default class ElectricFieldSensorNode extends ElectricFieldSensorRepresen
      * For numbers between -10 and 10, the return strings has a fixed number of decimal places (determined by maxDecimalPlaces)
      * whereas for numbers larger than ten, (or smaller than -10)  the number returned has with a fixed number of significant figures that
      * is at least equal to the number of decimal places (or larger). See example below
-     *
-     * @param number
-     * @param maxDecimalPlaces
      */
     function decimalAdjust( number: number, maxDecimalPlaces: number ): string {
 

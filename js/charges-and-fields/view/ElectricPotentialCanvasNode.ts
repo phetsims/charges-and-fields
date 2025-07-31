@@ -187,7 +187,6 @@ export default class ElectricPotentialCanvasNode extends CanvasNode {
 
   /**
    * Function responsible for painting the canvas Node as a grid array of squares
-   * @param context
    */
   public override paintCanvas( context: CanvasRenderingContext2D ): void {
     this.updateElectricPotentials();

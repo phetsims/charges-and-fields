@@ -186,7 +186,6 @@ export default class ElectricPotentialSensorNode extends Node {
 
     /**
      * The voltage readout is updated according to the value of the electric potential
-     * @param electricPotential
      */
     function updateVoltageReadout( electricPotential: number ): void {
       voltageText.string = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
@@ -270,7 +269,6 @@ export default class ElectricPotentialSensorNode extends Node {
 
     /**
      * The color fill inside the circle changes according to the value of the electric potential*
-     * @param electricPotential
      */
     function updateCircleFill( electricPotential: number ): void {
       circle.fill = getElectricPotentialColor( electricPotential, 0.5 );
@@ -291,9 +289,6 @@ export default class ElectricPotentialSensorNode extends Node {
      * 0.11111 -> 0.111
      * 0.00111 -> 0.001
      * 0.00011 -> 0.000
-     *
-     * @param number
-     * @param maxDecimalPlaces
      */
     function decimalAdjust( number: number, maxDecimalPlaces = 3 ): string {
 

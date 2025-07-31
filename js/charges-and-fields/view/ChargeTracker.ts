@@ -107,8 +107,6 @@ export default class ChargeTracker {
 
   /**
    * Handle adding a particle with the queue.
-   *
-   * @param particle
    */
   private addParticle( particle: ChargedParticle ): void {
     this.queue.push( {
@@ -120,8 +118,6 @@ export default class ChargeTracker {
 
   /**
    * Called when the particle is added to the model's list of charged particles. Hooks up listeners and the queue.
-   *
-   * @param particle
    */
   private onParticleAdded( particle: ChargedParticle ): void {
     this.addParticle( particle );
@@ -136,10 +132,6 @@ export default class ChargeTracker {
   /**
    * Called when our listener to the particle's position is fired. We see if we can reposition it, or create a new
    * entry.
-   *
-   * @param particle
-   * @param newPosition
-   * @param oldPosition
    */
   private onParticleMoved( particle: ChargedParticle, newPosition: Vector2, oldPosition: Vector2 ): void {
     // Check to see if we can update an add/move for the same particle to a new position instead of creating
@@ -168,8 +160,6 @@ export default class ChargeTracker {
 
   /**
    * Called when the particle is removed from the model's list of charged particles. Removes listeners, etc.
-   *
-   * @param particle
    */
   private onParticleRemoved( particle: ChargedParticle ): void {
     // See if we can update an already-in-queue item with a null position.

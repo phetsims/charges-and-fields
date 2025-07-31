@@ -51,11 +51,6 @@ export default class ElectricPotentialLineView extends PhetioObject {
   // If running in development mode, then display each sample point on the potential line
   public readonly circles: Node | null;
 
-  /**
-   * @param electricPotentialLine
-   * @param modelViewTransform
-   * @param tandem
-   */
   public constructor( electricPotentialLine: ElectricPotentialLine, modelViewTransform: ModelViewTransform2, tandem: Tandem ) {
     super( {
       tandem: tandem,
@@ -117,9 +112,6 @@ class VoltageLabel extends Node {
 
   /**
    * Function that generates a voltage label for the electricPotential line
-   * @param electricPotentialLine
-   * @param modelViewTransform
-   * @param tandem
    */
   public constructor( electricPotentialLine: ElectricPotentialLine, modelViewTransform: ModelViewTransform2, tandem: Tandem ) {
 
@@ -211,9 +203,6 @@ class Circles extends Node {
 
   /**
    * Function that generates an array of Circles with their centers determined by the position array
-   * @param positionArray
-   * @param modelViewTransform
-   * @param providedOptions
    */
   public constructor( positionArray: Vector2[], modelViewTransform: ModelViewTransform2, providedOptions?: CirclesOptions ) {
 

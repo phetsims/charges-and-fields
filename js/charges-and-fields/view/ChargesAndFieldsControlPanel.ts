@@ -29,21 +29,8 @@ const voltageString = ChargesAndFieldsStrings.voltage;
 
 export default class ChargesAndFieldsControlPanel extends Panel {
 
-  // The model
-  private readonly model: ChargesAndFieldsModel;
-
-  /**
-   * @param model
-   * @param tandem
-   */
   public constructor( model: ChargesAndFieldsModel, tandem: Tandem ) {
 
-    /**
-     * checkbox factory
-     * @param tandemId
-     * @param string
-     * @param property
-     */
     function createCheckbox( tandemId: string, string: string, property: Property<boolean> ): Checkbox {
       const text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECKBOX_FONT,
@@ -60,10 +47,6 @@ export default class ChargesAndFieldsControlPanel extends Panel {
       } );
     }
 
-    /**
-     * indent the checkbox
-     * @param checkbox
-     */
     function createIndentedNode( checkbox: Checkbox ): Node {
       const node = new Node();
       const hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
@@ -109,7 +92,6 @@ export default class ChargesAndFieldsControlPanel extends Panel {
       tandem: tandem
     } );
 
-    this.model = model;
 
     model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckbox, 'enabled' );
     model.isGridVisibleProperty.linkAttribute( snapToGridCheckbox, 'enabled' );

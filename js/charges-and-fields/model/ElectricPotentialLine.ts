@@ -326,9 +326,6 @@ export default class ElectricPotentialLine extends PhetioObject {
    * Function that returns the smallest distance between the midwayPoint and
    * a straight line that would connect initialPoint and finalPoint.
    * see http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
-   * @param initialPoint
-   * @param midwayPoint
-   * @param finalPoint
    */
   private getDistanceFromLine( initialPoint: Vector2, midwayPoint: Vector2, finalPoint: Vector2 ): number {
     const midwayDisplacement = midwayPoint.minus( initialPoint );
@@ -339,9 +336,6 @@ export default class ElectricPotentialLine extends PhetioObject {
   /**
    * Function that returns an updated epsilonDistance based on the three last points
    * of positionArray
-   * @param epsilonDistance
-   * @param positionArray
-   * @param isClockwise
    */
   private getAdaptativeEpsilonDistance( epsilonDistance: number, positionArray: Vector2[], isClockwise: boolean ): number {
     const deflectionAngle = this.getRotationAngle( positionArray ); // non-negative number in radians
@@ -364,8 +358,6 @@ export default class ElectricPotentialLine extends PhetioObject {
 
   /**
    * Function that returns the rotation angle between the three last points of a position array
-   *
-   * @param positionArray
    */
   private getRotationAngle( positionArray: Vector2[] ): number {
     assert && assert( positionArray.length > 2, 'the positionArray must contain at least three elements' );

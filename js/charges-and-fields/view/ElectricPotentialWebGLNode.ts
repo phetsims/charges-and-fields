@@ -148,10 +148,6 @@ class ElectricPotentialPainter implements WebGLNodePainter {
   private textureWidth = 0;
   private textureHeight = 0;
 
-  /**
-   * @param gl
-   * @param node
-   */
   public constructor( gl: WebGLRenderingContext, node: ElectricPotentialWebGLNode ) {
     this.gl = gl;
     this.node = node;
@@ -279,8 +275,6 @@ class ElectricPotentialPainter implements WebGLNodePainter {
 
   /**
    * Resizes a texture to be able to cover the canvas area, and sets drawable properties for the size
-   *
-   * @param texture
    */
   private sizeTexture( texture: WebGLTexture ): void {
     const gl = this.gl;

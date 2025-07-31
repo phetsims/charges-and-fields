@@ -155,7 +155,6 @@ export default class ElectricFieldCanvasNode extends CanvasNode {
 
   /**
    * Function responsible for painting electric field arrows
-   * @param context
    */
   public override paintCanvas( context: CanvasRenderingContext2D ): void {
     this.updateElectricPotentials();

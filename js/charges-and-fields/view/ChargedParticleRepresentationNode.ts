@@ -19,12 +19,6 @@ const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a ch
 
 export default class ChargedParticleRepresentationNode extends Node {
 
-  /**
-   * Constructor for the scenery node of the charge
-   *
-   * @param charge
-   * @param options - Passed to Node
-   */
   public constructor( charge: number, options?: NodeOptions ) {
 
     super( options );

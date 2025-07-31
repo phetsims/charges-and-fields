@@ -42,15 +42,6 @@ const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
 export default class ChargesAndFieldsToolboxPanel extends Panel {
 
-  /**
-   * @param measuringTape
-   * @param electricPotentialSensor
-   * @param measuringTapeNode
-   * @param electricPotentialSensorNode
-   * @param modelViewTransform
-   * @param availableModelBoundsProperty
-   * @param tandem
-   */
   public constructor( measuringTape: MeasuringTape,
                       electricPotentialSensor: ElectricPotentialSensor,
                       measuringTapeNode: ChargesAndFieldsMeasuringTapeNode,

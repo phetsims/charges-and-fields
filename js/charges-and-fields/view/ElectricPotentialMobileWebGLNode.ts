@@ -70,9 +70,6 @@ export default class ElectricPotentialMobileWebGLNode extends WebGLNode {
     return ElectricPotentialMobileWebGLNode.particlesSupportedForContext( gl! );
   }
 
-  /**
-   * @param gl
-   */
   public static particlesSupportedForContext( gl: WebGLRenderingContext ): number {
     const otherVectorCount = 7; // colors, matrix and one extra to be safe
     const maxVertexUniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
@@ -90,10 +87,6 @@ class ElectricPotentialMobilePainter implements WebGLNodePainter {
   private readonly displayShaderProgram: ShaderProgram;
   private readonly vertexBuffer: WebGLBuffer;
 
-  /**
-   * @param gl
-   * @param node
-   */
   public constructor( gl: WebGLRenderingContext, node: ElectricPotentialMobileWebGLNode ) {
     this.gl = gl;
     this.node = node;

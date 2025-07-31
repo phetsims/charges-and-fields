@@ -56,7 +56,6 @@ const IS_DEBUG_MODE = phet.chipper.queryParameters.dev; // debug mode that displ
 
 /**
  * Determine whether a node is visible in the display, it must be a child and visible.
- * @param node
  */
 const isDisplayed = ( node: Node ): boolean => {
   const trail = node.getUniqueTrail();
@@ -484,7 +483,6 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
    * It scales the scene graph up and down with
    * the size of the screen to ensure a minimally visible area,
    * but keeping it centered at the bottom of the screen.
-   * @param viewBounds
    */
   public override layout( viewBounds: Bounds2 ): void {
 
