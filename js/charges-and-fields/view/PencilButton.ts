@@ -6,24 +6,29 @@
  * @author Martin Veillette (Berea College)
  */
 
-import merge from '../../../../phet-core/js/merge.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
-import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import pencil_png from '../../../mipmaps/pencil_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
+type SelfOptions = {
+  iconWidth?: number;
+  iconHeight?: number;
+};
+
+type PencilButtonOptions = SelfOptions & RectangularPushButtonOptions;
+
 class PencilButton extends RectangularPushButton {
 
-  public constructor( tandem: Tandem, options?: IntentionalAny ) {
+  public constructor( tandem: Tandem, providedOptions?: PencilButtonOptions ) {
 
-    // eslint-disable-next-line phet/bad-typescript-text
-    options = merge( {
+    const options = optionize<PencilButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
       iconWidth: 26,
       iconHeight: 20,
       tandem: tandem
-    }, options );
+    }, providedOptions );
 
     // pencil icon
     options.content = new Image( pencil_png, { tandem: options.tandem.createTandem( 'pencilButtonImage' ) } );
