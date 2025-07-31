@@ -16,11 +16,8 @@ import chargesAndFields from '../../chargesAndFields.js';
 
 class PencilButton extends RectangularPushButton {
 
-  /**
-   * @param tandem
-   * @param options
-   */
   public constructor( tandem: Tandem, options?: IntentionalAny ) {
+
     // eslint-disable-next-line phet/bad-typescript-text
     options = merge( {
       iconWidth: 26,
