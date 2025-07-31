@@ -14,13 +14,13 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Utils from '../../../../dot/js/Utils.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
+import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -200,22 +200,28 @@ class VoltageLabel extends Node {
   }
 }
 
+type CirclesSelfOptions = {
+  radius?: number;
+  fill: string;
+};
+
+type CirclesOptions = CirclesSelfOptions & NodeOptions;
+
 class Circles extends Node {
 
   /**
    * Function that generates an array of Circles with their centers determined by the position array
    * @param positionArray
    * @param modelViewTransform
-   * @param options
+   * @param providedOptions
    */
-  public constructor( positionArray: Vector2[], modelViewTransform: ModelViewTransform2, options?: IntentionalAny ) {
+  public constructor( positionArray: Vector2[], modelViewTransform: ModelViewTransform2, providedOptions?: CirclesOptions ) {
 
-    super();
-
-    // eslint-disable-next-line phet/bad-typescript-text
-    options = merge( {
+    const options = optionize<CirclesOptions, CirclesSelfOptions, NodeOptions>()( {
       radius: 2
-    }, options );
+    }, providedOptions );
+
+    super( options );
 
     // create and add all the circles
     positionArray.forEach( ( position: Vector2 ) => {
