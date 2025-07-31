@@ -12,8 +12,11 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Vector2 from '../../../../dot/js/Vector2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
@@ -22,11 +25,13 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ElectricPotentialLine from '../model/ElectricPotentialLine.js';
 
 const pattern0Value1UnitsString = ChargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
 const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
@@ -37,12 +42,21 @@ const IS_DEBUG = phet.chipper.queryParameters.dev;
 
 class ElectricPotentialLineView extends PhetioObject {
 
+  // The path of the potential line
+  public readonly path: Path;
+
+  // Label that says the voltage
+  public readonly voltageLabel: VoltageLabel;
+
+  // If running in development mode, then display each sample point on the potential line
+  public readonly circles: Node | null;
+
   /**
-   * @param {ElectricPotentialLine} electricPotentialLine
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Tandem} tandem
+   * @param electricPotentialLine
+   * @param modelViewTransform
+   * @param tandem
    */
-  constructor( electricPotentialLine, modelViewTransform, tandem ) {
+  public constructor( electricPotentialLine: ElectricPotentialLine, modelViewTransform: ModelViewTransform2, tandem: Tandem ) {
     super( {
       tandem: tandem,
       phetioDynamicElement: true,
@@ -50,15 +64,12 @@ class ElectricPotentialLineView extends PhetioObject {
       phetioState: false
     } );
 
-    // @public (read-only) {Node} - the path of the potential line
     this.path = new Path( modelViewTransform.modelToViewShape( electricPotentialLine.getShape() ), {
       stroke: ChargesAndFieldsColors.electricPotentialLineProperty
     } );
 
-    // @public (read-only) {Node} - label that says the voltage
     this.voltageLabel = new VoltageLabel( electricPotentialLine, modelViewTransform, tandem.createTandem( 'voltageLabel' ) );
 
-    // @public (read-only) {Node|null} - if running in development mode, then display each sample point on the potential line
     this.circles = null;
 
     if ( IS_DEBUG ) {
@@ -71,11 +82,13 @@ class ElectricPotentialLineView extends PhetioObject {
 
       // create all the circles corresponding to the positions used to create the shape of the electric potential line
       const electricPotentialViewCircles = new Circles(
+        // @ts-expect-error - accessing private method for debug mode
         electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ),
         modelViewTransform, { fill: 'orange' } );
 
       // no translatable strings, for debug only
       const text = new Text( `model=${electricPotentialLine.positionArray.length
+      // @ts-expect-error - accessing private method for debug mode
       }    view=${electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length}`, {
         center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
         fill: 'green',
@@ -92,10 +105,7 @@ class ElectricPotentialLineView extends PhetioObject {
     }
   }
 
-  /**
-   * @public
-   */
-  dispose() {
+  public override dispose(): void {
     this.path.dispose();
     this.voltageLabel.dispose();
     this.circles && this.circles.dispose();
@@ -105,13 +115,15 @@ class ElectricPotentialLineView extends PhetioObject {
 
 class VoltageLabel extends Node {
 
+  private readonly disposeVoltageLabel: () => void;
+
   /**
    * Function that generates a voltage label for the electricPotential line
-   * @param {ElectricPotentialLine} electricPotentialLine
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Tandem} tandem
+   * @param electricPotentialLine
+   * @param modelViewTransform
+   * @param tandem
    */
-  constructor( electricPotentialLine, modelViewTransform, tandem ) {
+  public constructor( electricPotentialLine: ElectricPotentialLine, modelViewTransform: ModelViewTransform2, tandem: Tandem ) {
 
     super( { cursor: 'pointer' } );
 
@@ -123,7 +135,7 @@ class VoltageLabel extends Node {
       positionProperty: electricPotentialLine.voltageLabelPositionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
       transform: modelViewTransform,
-      start: event => {
+      start: ( event: IntentionalAny ) => {
 
         // Move the label to the front of this layer when grabbed by the user.
         this.moveToFront();
@@ -155,10 +167,10 @@ class VoltageLabel extends Node {
     this.addChild( voltageLabelText );
 
     // finds the closest position on positionArray to the position of the cursor
-    const positionFunction = cursorPosition => {
+    const positionFunction = ( cursorPosition: Vector2 ) => {
       let smallestDistanceSquared = Number.POSITIVE_INFINITY;
-      let closestPosition; // {Vector2}
-      electricPotentialLine.positionArray.forEach( position => {
+      let closestPosition: Vector2 | undefined;
+      electricPotentialLine.positionArray.forEach( ( position: Vector2 ) => {
         const distanceSquared = position.distanceSquared( cursorPosition );
         if ( distanceSquared < smallestDistanceSquared ) {
           smallestDistanceSquared = distanceSquared;
@@ -183,9 +195,8 @@ class VoltageLabel extends Node {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.disposeVoltageLabel();
     super.dispose();
   }
@@ -195,20 +206,21 @@ class Circles extends Node {
 
   /**
    * Function that generates an array of Circles with their centers determined by the position array
-   * @param {Array.<Vector2>} positionArray
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options]
+   * @param positionArray
+   * @param modelViewTransform
+   * @param options
    */
-  constructor( positionArray, modelViewTransform, options ) {
+  public constructor( positionArray: Vector2[], modelViewTransform: ModelViewTransform2, options?: IntentionalAny ) {
 
     super();
 
+    // eslint-disable-next-line phet/bad-typescript-text
     options = merge( {
       radius: 2
     }, options );
 
     // create and add all the circles
-    positionArray.forEach( position => {
+    positionArray.forEach( ( position: Vector2 ) => {
       const circle = new Circle( options.radius, options );
       circle.center = modelViewTransform.modelToViewPosition( position );
       this.addChild( circle );
