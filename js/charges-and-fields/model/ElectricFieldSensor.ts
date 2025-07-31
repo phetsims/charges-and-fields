@@ -16,9 +16,8 @@ class ElectricFieldSensor extends ModelElement {
 
   // electricField Vector in Newtons per Coulomb
   public readonly electricFieldProperty: Vector2Property;
-  
+
   public readonly computeElectricField: ( position: Vector2 ) => Vector2;
-  public readonly electricFieldSensorTandem: Tandem;
 
   /**
    * @param computeElectricField - function( Vector2 ) : Vector2, computes electric field at the given point in the model.
@@ -37,8 +36,6 @@ class ElectricFieldSensor extends ModelElement {
     } );
 
     this.computeElectricField = computeElectricField;
-
-    this.electricFieldSensorTandem = tandem;
 
     this.positionProperty.link( this.update.bind( this ) );
   }

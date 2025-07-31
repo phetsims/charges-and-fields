@@ -216,7 +216,6 @@ export default class ChargesAndFieldsModel extends PhetioObject {
 
     this.electricPotentialLineGroup = new PhetioGroup( ( tandem: Tandem, position: Vector2 ) => {
 
-
       // for chaining and for PhET-iO restore state
       return new ElectricPotentialLine( this, position, tandem );
     }, [ this.electricPotentialSensor.positionProperty.get() ], {

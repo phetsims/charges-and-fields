@@ -17,20 +17,18 @@ import chargesAndFields from '../../chargesAndFields.js';
 class ElectricPotentialSensor {
 
   public readonly positionProperty: Vector2Property;
-  
+
   // Electric potential in volts
   public readonly electricPotentialProperty: Property<number>;
-  
+
   // Whether the sensor is out in the play area (false when in the toolbox)
   public readonly isActiveProperty: BooleanProperty;
-  
-  public readonly computeElectricPotential: ( position: Vector2 ) => number;
 
   /**
    * @param computeElectricPotential - function( Vector2 ) : number, computes electric potential at the given point in the model.
    * @param tandem
    */
-  public constructor( computeElectricPotential: ( position: Vector2 ) => number, tandem: Tandem ) {
+  public constructor( public readonly computeElectricPotential: ( position: Vector2 ) => number, tandem: Tandem ) {
 
     this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' )
@@ -46,8 +44,6 @@ class ElectricPotentialSensor {
     this.isActiveProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isActiveProperty' )
     } );
-
-    this.computeElectricPotential = computeElectricPotential;
 
     this.positionProperty.link( this.update.bind( this ) );
   }
