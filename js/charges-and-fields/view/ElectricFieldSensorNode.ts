@@ -7,18 +7,25 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ElectricFieldSensor from '../model/ElectricFieldSensor.js';
 import ElectricFieldSensorRepresentationNode from './ElectricFieldSensorRepresentationNode.js';
 
 const angleUnitString = ChargesAndFieldsStrings.angleUnit;
@@ -33,25 +40,32 @@ const MIN_ARROW_LENGTH = 1e-9;
 
 class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
 
+  // The model element that this node represents
+  public readonly modelElement: ElectricFieldSensor;
+
+  public readonly dragListener: DragListener;
+  private readonly availableModelBoundsProperty: Property<Bounds2>;
+  private readonly disposeElectricFieldSensorNode: () => void;
+
   /**
    * Constructor for the ElectricFieldSensorNode which renders the sensor as a scenery node.
-   * @param {ElectricFieldSensor} electricFieldSensor
-   * @param {function} snapToGridLines - function( {Property.<Vector2>})
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the electric field sensor node
-   * @param {Property.<boolean>} isPlayAreaChargedProperty - is there at least one charged particle on the board
-   * @param {Property.<boolean>} areValuesVisibleProperty
-   * @param {Bounds2} enclosureBounds
-   * @param {Tandem} tandem
+   * @param electricFieldSensor
+   * @param snapToGridLines - function( {Property.<Vector2>})
+   * @param modelViewTransform
+   * @param availableModelBoundsProperty - dragBounds for the electric field sensor node
+   * @param isPlayAreaChargedProperty - is there at least one charged particle on the board
+   * @param areValuesVisibleProperty
+   * @param enclosureBounds
+   * @param tandem
    */
-  constructor( electricFieldSensor,
-               snapToGridLines,
-               modelViewTransform,
-               availableModelBoundsProperty,
-               isPlayAreaChargedProperty,
-               areValuesVisibleProperty,
-               enclosureBounds,
-               tandem ) {
+  public constructor( electricFieldSensor: ElectricFieldSensor,
+                      snapToGridLines: ( positionProperty: Vector2Property ) => void,
+                      modelViewTransform: ModelViewTransform2,
+                      availableModelBoundsProperty: Property<Bounds2>,
+                      isPlayAreaChargedProperty: Property<boolean>,
+                      areValuesVisibleProperty: Property<boolean>,
+                      enclosureBounds: Bounds2,
+                      tandem: Tandem ) {
 
     super( {
       tandem: tandem,
@@ -59,7 +73,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
       phetioType: Node.NodeIO
     } );
 
-    this.modelElement = electricFieldSensor; // @public (read-only)
+    this.modelElement = electricFieldSensor;
 
     // Expand the touch area
     this.touchArea = this.localBounds.dilated( 10 );
@@ -99,7 +113,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     directionLabelText.bottom = fieldStrengthLabelText.top;
 
     // when the electric field changes update the arrow and the labels
-    const electricFieldListener = electricField => {
+    const electricFieldListener = ( electricField: Vector2 ) => {
       const magnitude = electricField.magnitude;
       const angle = electricField.angle; // angle from the model, in radians
 
@@ -147,7 +161,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     };
     electricFieldSensor.electricFieldProperty.link( electricFieldListener );
 
-    const isActiveListener = isActive => {
+    const isActiveListener = ( isActive: boolean ) => {
       arrowNode.visible = isActive;
       if ( areValuesVisibleProperty.get() ) {
         fieldStrengthLabelText.visible = isActive;
@@ -157,14 +171,14 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     electricFieldSensor.isActiveProperty.link( isActiveListener );
 
     // Show/hide labels
-    const areValuesVisibleListener = isVisible => {
+    const areValuesVisibleListener = ( isVisible: boolean ) => {
       fieldStrengthLabelText.visible = isVisible;
       directionLabelText.visible = isVisible;
     };
     areValuesVisibleProperty.link( areValuesVisibleListener );
 
     // Show/hide field arrow
-    const isPlayAreaChargedListener = isPlayAreaCharged => arrowNode.setVisible( isPlayAreaCharged );
+    const isPlayAreaChargedListener = ( isPlayAreaCharged: boolean ) => arrowNode.setVisible( isPlayAreaCharged );
     isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
     // The direction label is visible if:
@@ -172,15 +186,15 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
     // (2) the net play area charge is marked as nonzero
     const isDirectionLabelVisibleDerivedProperty = new DerivedProperty(
       [ areValuesVisibleProperty, isPlayAreaChargedProperty ],
-      ( areValuesVisible, isPlayAreaCharged ) => areValuesVisible && isPlayAreaCharged
+      ( areValuesVisible: boolean, isPlayAreaCharged: boolean ) => areValuesVisible && isPlayAreaCharged
     );
 
     // Show/hide labels
-    const isDirectionLabelVisibleListener = isVisible => directionLabelText.setVisible( isVisible );
+    const isDirectionLabelVisibleListener = ( isVisible: boolean ) => directionLabelText.setVisible( isVisible );
     isDirectionLabelVisibleDerivedProperty.link( isDirectionLabelVisibleListener );
 
     // Register for synchronization with model.
-    const positionListener = position => {
+    const positionListener = ( position: Vector2 ) => {
       this.translation = modelViewTransform.modelToViewPosition( position );
     };
     electricFieldSensor.positionProperty.link( positionListener );
@@ -192,7 +206,7 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
       dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
       canStartPress: () => !electricFieldSensor.animationTween,
-      offsetPosition: ( point, listener ) => {
+      offsetPosition: ( point: Vector2, listener: IntentionalAny ) => {
         return listener.pointer && listener.pointer.isTouchLike() ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
       },
       start: () => {
@@ -208,12 +222,12 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
         }
 
         // Avoid corner-case issue #89. Treat excessively large E-field magnitude as an indicator that r ~ 0
-        if ( electricFieldSensor.electricField.magnitude > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
+        if ( electricFieldSensor.electricFieldProperty.get().magnitude > ChargesAndFieldsConstants.MAX_EFIELD_MAGNITUDE ) {
           arrowNode.visible = false;
         }
       }
     } );
-    this.dragListener.isUserControlledProperty.link( controlled => electricFieldSensor.isUserControlledProperty.set( controlled ) );
+    this.dragListener.isUserControlledProperty.link( ( controlled: boolean ) => electricFieldSensor.isUserControlledProperty.set( controlled ) );
 
     // Conditionally hook up the input handling (and cursor) when the sensor is interactive.
     let isDragListenerAttached = false;
@@ -258,11 +272,11 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
      * whereas for numbers larger than ten, (or smaller than -10)  the number returned has with a fixed number of significant figures that
      * is at least equal to the number of decimal places (or larger). See example below
      *
-     * @param {number} number
-     * @param {Object} [options]
-     * @returns {string}
+     * @param number
+     * @param options
      */
-    function decimalAdjust( number, options ) {
+    function decimalAdjust( number: number, options?: IntentionalAny ): string {
+      // eslint-disable-next-line phet/bad-typescript-text
       options = merge( {
         maxDecimalPlaces: 3
       }, options );
@@ -299,9 +313,8 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.disposeElectricFieldSensorNode();
     super.dispose();
   }
