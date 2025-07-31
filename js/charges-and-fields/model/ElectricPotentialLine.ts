@@ -38,7 +38,7 @@ class ElectricPotentialLine extends PhetioObject {
   // the position of where the user is trying to drag the voltage label, in model coordinates
   public readonly voltageLabelPositionProperty: Vector2Property;
   
-  private readonly chargeChangedEmitter: Emitter;
+  public readonly chargeChangedEmitter: Emitter;
   private chargeChangedListener: () => void;
   
   // value in volts

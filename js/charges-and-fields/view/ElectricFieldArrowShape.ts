@@ -14,7 +14,7 @@ class ElectricFieldArrowShape extends ArrowShape {
   /**
    * Drawn pointing to the right, with the origin at the center hole
    */
-  constructor() {
+  public constructor() {
     const ratio = 2 / 5;
     const circleRadius = 2;
     const arrowLength = 40;

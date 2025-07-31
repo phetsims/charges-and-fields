@@ -7,7 +7,7 @@
  */
 
 import Circle from '../../../../scenery/js/nodes/Circle.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
+import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
@@ -20,9 +20,9 @@ class ElectricFieldSensorRepresentationNode extends Node {
   /**
    * Constructor for the ElectricFieldSensorRepresentationNode which renders the sensor as a scenery node.
    *
-   * @param {Object} [options] - Passed to Node
+   * @param options - Passed to Node
    */
-  constructor( options ) {
+  public constructor( options?: NodeOptions ) {
 
     super( options );
 

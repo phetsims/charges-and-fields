@@ -5,10 +5,15 @@
  * @author Martin Veillette (Berea College)
  */
 
+import Property from '../../../../axon/js/Property.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import chargesAndFields from '../../chargesAndFields.js';
+import ElectricPotentialLine from '../model/ElectricPotentialLine.js';
 import ElectricPotentialLineView from './ElectricPotentialLineView.js';
 
 // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
@@ -16,13 +21,19 @@ const IS_DEBUG = phet.chipper.queryParameters.dev;
 
 class ElectricPotentialLinesNode extends Node {
 
+  // The view group for electric potential lines
+  private readonly electricPotentialLineViews: PhetioGroup<ElectricPotentialLineView, [ ElectricPotentialLine ]>;
+
   /**
-   * @param {ObservableArrayDef.<ElectricPotentialLine>} electricPotentialLineGroup - array of models of electricPotentialLine
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} areValuesVisibleProperty - control the visibility of the voltage labels
-   * @param {Tandem} tandem
+   * @param electricPotentialLineGroup - array of models of electricPotentialLine
+   * @param modelViewTransform
+   * @param areValuesVisibleProperty - control the visibility of the voltage labels
+   * @param tandem
    */
-  constructor( electricPotentialLineGroup, modelViewTransform, areValuesVisibleProperty, tandem ) {
+  public constructor( electricPotentialLineGroup: PhetioGroup<ElectricPotentialLine, [ ElectricPotentialLine ]>,
+                      modelViewTransform: ModelViewTransform2,
+                      areValuesVisibleProperty: Property<boolean>,
+                      tandem: Tandem ) {
 
     // call the super constructor
     super( { tandem: tandem } );
@@ -32,7 +43,7 @@ class ElectricPotentialLinesNode extends Node {
     this.addChild( pathsNode );
 
     // Create and add the parent node for the circles (used in DEBUG mode)
-    let circlesNode;
+    let circlesNode: Node | undefined;
     if ( IS_DEBUG ) {
       circlesNode = new Node();
       this.addChild( circlesNode );
@@ -42,9 +53,11 @@ class ElectricPotentialLinesNode extends Node {
     const labelsNode = new Node();
     this.addChild( labelsNode );
 
-    const electricPotentialLineViewGroup = new PhetioGroup( ( tandem, electricPotentialLine ) => {
-      return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
-    }, () => [ electricPotentialLineGroup.archetype ], {
+    const electricPotentialLineViewGroup = new PhetioGroup<ElectricPotentialLineView, [ ElectricPotentialLine ]>(
+      ( tandem: Tandem, electricPotentialLine: ElectricPotentialLine ) => {
+        return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
+      },
+      () => [ electricPotentialLineGroup.archetype ], {
       tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( IOType.ObjectIO ),
 
@@ -55,16 +68,16 @@ class ElectricPotentialLinesNode extends Node {
     this.electricPotentialLineViews = electricPotentialLineViewGroup;
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
-    electricPotentialLineGroup.elementCreatedEmitter.addListener( function updateView( electricPotentialLine ) {
+    electricPotentialLineGroup.elementCreatedEmitter.addListener( function updateView( electricPotentialLine: ElectricPotentialLine ) {
       const electricPotentialLineView = electricPotentialLineViewGroup.createCorrespondingGroupElement(
         electricPotentialLine.tandem.name, electricPotentialLine );
 
-      pathsNode.addChild( electricPotentialLineView.path );
-      labelsNode.addChild( electricPotentialLineView.voltageLabel );
+      pathsNode.addChild( ( electricPotentialLineView as IntentionalAny ).path );
+      labelsNode.addChild( ( electricPotentialLineView as IntentionalAny ).voltageLabel );
 
       // add the circles and text
       if ( IS_DEBUG ) {
-        circlesNode.addChild( electricPotentialLineView.circles );
+        circlesNode!.addChild( ( electricPotentialLineView as IntentionalAny ).circles );
       }
 
       const modelDisposeListener = () => electricPotentialLineViewGroup.disposeElement( electricPotentialLineView );
