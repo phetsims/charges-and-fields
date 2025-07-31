@@ -16,6 +16,7 @@ import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line phet/
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import platform from '../../../../phet-core/js/platform.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
@@ -24,9 +25,11 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Utils from '../../../../scenery/js/util/Utils.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
 import ChargedParticleNode from './ChargedParticleNode.js';
 import ChargesAndFieldsControlPanel from './ChargesAndFieldsControlPanel.js';
 import ChargesAndFieldsMeasuringTapeNode from './ChargesAndFieldsMeasuringTapeNode.js';
@@ -55,21 +58,25 @@ const IS_DEBUG_MODE = phet.chipper.queryParameters.dev; // debug mode that displ
 
 /**
  * Determine whether a node is visible in the display, it must be a child and visible.
- * @param {Node} node
- * @returns {boolean}
+ * @param node
  */
-const isDisplayed = node => {
+const isDisplayed = ( node: Node ): boolean => {
   const trail = node.getUniqueTrail();
   return trail.isVisible() && trail.rootNode() === phet.joist.display.rootNode;
 };
 
 class ChargesAndFieldsScreenView extends ScreenView {
 
+  // Model properties and convenience variables
+  public readonly availableModelBoundsProperty: Property<Bounds2>;
+  public readonly modelViewTransform: ModelViewTransform2;
+  public readonly model: ChargesAndFieldsModel;
+
   /**
-   * @param {ChargesAndFieldsModel} model - main model of the simulation
-   * @param {Tandem} tandem
+   * @param model - main model of the simulation
+   * @param tandem
    */
-  constructor( model, tandem ) {
+  public constructor( model: ChargesAndFieldsModel, tandem: Tandem ) {
 
     super( {
       tandem: tandem
@@ -101,7 +108,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     const allowWebGL = allowMobileWebGL && Utils.checkWebGLSupport( [ 'OES_texture_float' ] ) &&
                        ElectricPotentialWebGLNode.supportsRenderingToFloatTexture();
 
-    let electricPotentialGridNode = null;
+    let electricPotentialGridNode: Node | null = null;
 
     // Create the electric Potential grid node that displays an array of contiguous rectangles of changing colors
     // Don't trust Safari's OES_texture_float support currently!
@@ -138,6 +145,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     // Create the scenery node responsible for drawing the electricPotential lines
     const electricPotentialLinesNode = new ElectricPotentialLinesNode(
+
+      // @ts-expect-error
       model.electricPotentialLineGroup,
       modelViewTransform,
       model.areValuesVisibleProperty,
@@ -177,6 +186,8 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     // Create a measuring tape (set to invisible initially)
     const measuringTapeNode = new ChargesAndFieldsMeasuringTapeNode( model.measuringTape,
+
+      // @ts-expect-error
       snapToGridLines,
       modelViewTransform,
       this.availableModelBoundsProperty,
@@ -218,12 +229,12 @@ class ChargesAndFieldsScreenView extends ScreenView {
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
     const chargesAndSensorsPanel = new ChargesAndSensorsPanel(
       model, this,
-      ( modelElement, event ) => {
+      ( modelElement: IntentionalAny, event: IntentionalAny ) => {
 
         // Horrible horrible hacks
         draggableElementsLayer.children.forEach( potentialView => {
-          if ( potentialView.modelElement === modelElement ) {
-            potentialView.dragListener.press( event, potentialView );
+          if ( ( potentialView as IntentionalAny ).modelElement === modelElement ) {
+            ( potentialView as IntentionalAny ).dragListener.press( event, potentialView );
           }
         } );
       },
@@ -268,15 +279,17 @@ class ChargesAndFieldsScreenView extends ScreenView {
       } );
     } );
 
-    const chargedParticleNodeGroup = new PhetioGroup( ( tandem, chargedParticle ) => {
+    const chargedParticleNodeGroup = new PhetioGroup( ( tandem: Tandem, chargedParticle: IntentionalAny ) => {
       return new ChargedParticleNode(
         chargedParticle,
+        // @ts-expect-error
         snapToGridLines,
         modelViewTransform,
         this.availableModelBoundsProperty,
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
         tandem
       );
+      // @ts-expect-error
     }, () => [ model.chargedParticleGroup.archetype ], {
       tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
@@ -286,7 +299,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       supportsDynamicState: false
     } );
 
-    const electricFieldSensorNodeGroup = new PhetioGroup( ( tandem, electricFieldSensor ) => {
+    const electricFieldSensorNodeGroup = new PhetioGroup( ( tandem: Tandem, electricFieldSensor: IntentionalAny ) => {
 
       // Create and add the view representation for this electric Field Sensor
       const electricFieldSensorNode = new ElectricFieldSensorNode(
@@ -301,6 +314,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       );
 
       return electricFieldSensorNode;
+      // @ts-expect-error
     }, () => [ model.electricFieldSensorGroup.archetype ], {
       tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
@@ -417,12 +431,11 @@ class ChargesAndFieldsScreenView extends ScreenView {
    * The interpolation scheme is somewhat unusual in the sense that it is performed via a piecewise function
    * which relies on three colors and three electric potential anchors. It is essentially two linear interpolation
    * functions put end to end so that the entire domain is covered.
-   * @private
-   * @param {number} electricPotential
-   * @param {Object} [options] - useful to set transparency
-   * @returns {string} color -  e.g. 'rgba(255, 255, 255, 1)'
+   * @param electricPotential
+   * @param options - useful to set transparency
+   * @returns color -  e.g. 'rgba(255, 255, 255, 1)'
    */
-  getElectricPotentialColor( electricPotential, options ) {
+  private getElectricPotentialColor( electricPotential: number, options?: IntentionalAny ): string {
 
     let finalColor; // {string} e.g. 'rgba(0,0,0,1)'
     let distance; // {number}  between 0 and 1
@@ -461,13 +474,11 @@ class ChargesAndFieldsScreenView extends ScreenView {
    * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
    * electric field value of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
    * electric field value of EFIELD_COLOR_SAT_MAGNITUDE).
-   * @private
-   * @param {number} electricFieldMagnitude - a non negative number
-   * @param {Object} [options] - useful to set transparency
-   * @returns {string} color - e.g. 'rgba(255, 255, 255, 1)'
-   *
+   * @param electricFieldMagnitude - a non negative number
+   * @param [options] - useful to set transparency
+   * @returns color - e.g. 'rgba(255, 255, 255, 1)'
    */
-  getElectricFieldMagnitudeColor( electricFieldMagnitude, options ) {
+  private getElectricFieldMagnitudeColor( electricFieldMagnitude: number, options?: IntentionalAny ): string {
 
     // ELECTRIC_FIELD_LINEAR_FUNCTION is a clamped linear function
     const distance = ELECTRIC_FIELD_LINEAR_FUNCTION.evaluate( electricFieldMagnitude ); // a value between 0 and 1
@@ -482,14 +493,14 @@ class ChargesAndFieldsScreenView extends ScreenView {
   /**
    * Function that interpolates between two color. The transparency can be set vis a default options
    * The function returns a string in order to minimize the number of allocations
-   * @private
-   * @param {Color} color1
-   * @param {Color} color2
-   * @param {number} distance - a value from 0 to 1
-   * @param {Object} [options]
-   * @returns {string} color - e.g. 'rgba(0,0,0,1)'
+   * @param color1
+   * @param color2
+   * @param distance - a value from 0 to 1
+   * @param [options]
+   * @returns color - e.g. 'rgba(0,0,0,1)'
    */
-  interpolateRGBA( color1, color2, distance, options ) {
+  private interpolateRGBA( color1: IntentionalAny, color2: IntentionalAny, distance: number, options?: IntentionalAny ): string {
+    // eslint-disable-next-line phet/bad-typescript-text
     options = merge( {
       // defaults
       transparency: 1
@@ -510,10 +521,9 @@ class ChargesAndFieldsScreenView extends ScreenView {
    * It scales the scene graph up and down with
    * the size of the screen to ensure a minimally visible area,
    * but keeping it centered at the bottom of the screen.
-   * @public
-   * @param {Bounds2} viewBounds
+   * @param viewBounds
    */
-  layout( viewBounds ) {
+  public override layout( viewBounds: Bounds2 ): void {
 
     this.resetTransform();
 

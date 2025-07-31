@@ -7,7 +7,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import createObservableArray from '../../../../axon/js/createObservableArray.js';
+import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
@@ -90,7 +90,7 @@ export default class ChargesAndFieldsModel extends PhetioObject {
 
   // Observable array of all active electric charges (i.e. isActive is true for the chargeParticle(s) in this array)
   // This is the relevant array to calculate the electric field, and electric potential
-  public readonly activeChargedParticles: ReturnType<typeof createObservableArray<ChargedParticle>>;
+  public readonly activeChargedParticles: ObservableArray<ChargedParticle>;
 
   // Observable group of electric field sensors
   public readonly electricFieldSensorGroup: PhetioGroup<ElectricFieldSensor, [ Vector2 ]>;

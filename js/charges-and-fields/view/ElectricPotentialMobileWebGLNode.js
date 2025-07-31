@@ -21,7 +21,7 @@ const scratchFloatArray = new Float32Array( 9 );
 class ElectricPotentialMobileWebGLNode extends WebGLNode {
 
   /**
-   * @param {ObservableArrayDef.<ChargedParticle>} chargedParticles - all the chargedParticles in this array are active
+   * @param {ObservableArray<ChargedParticle>} chargedParticles - all the chargedParticles in this array are active
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Property.<boolean>} isVisibleProperty
    */

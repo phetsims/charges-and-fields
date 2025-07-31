@@ -8,9 +8,12 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
@@ -21,11 +24,16 @@ import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import { rasterizeNode } from '../../../../scenery/js/util/rasterizeNode.js';
 import Panel from '../../../../sun/js/Panel.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ElectricPotentialSensor from '../model/ElectricPotentialSensor.js';
+import MeasuringTape from '../model/MeasuringTape.js';
+import ChargesAndFieldsMeasuringTapeNode from './ChargesAndFieldsMeasuringTapeNode.js';
+import ElectricPotentialSensorNode from './ElectricPotentialSensorNode.js';
 
 // constants
 const CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
@@ -35,21 +43,21 @@ const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 class ChargesAndFieldsToolboxPanel extends Panel {
 
   /**
-   * @param {MeasuringTape} measuringTape
-   * @param {ElectricPotentialSensor} electricPotentialSensor
-   * @param {ChargesAndFieldsMeasuringTapeNode} measuringTapeNode
-   * @param {ElectricPotentialSensorNode} electricPotentialSensorNode
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} availableModelBoundsProperty
-   * @param {Tandem} tandem
+   * @param measuringTape
+   * @param electricPotentialSensor
+   * @param measuringTapeNode
+   * @param electricPotentialSensorNode
+   * @param modelViewTransform
+   * @param availableModelBoundsProperty
+   * @param tandem
    */
-  constructor( measuringTape,
-               electricPotentialSensor,
-               measuringTapeNode,
-               electricPotentialSensorNode,
-               modelViewTransform,
-               availableModelBoundsProperty,
-               tandem ) {
+  public constructor( measuringTape: MeasuringTape,
+                      electricPotentialSensor: ElectricPotentialSensor,
+                      measuringTapeNode: ChargesAndFieldsMeasuringTapeNode,
+                      electricPotentialSensorNode: ElectricPotentialSensorNode,
+                      modelViewTransform: ModelViewTransform2,
+                      availableModelBoundsProperty: Property<Bounds2>,
+                      tandem: Tandem ) {
 
     // Create the icon image for the electricPotential sensor
     const electricPotentialSensorIconNode = ChargesAndFieldsToolboxPanel.createElectricPotentialSensorIcon( tandem ); // {Node}
@@ -81,8 +89,8 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
     const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
-    const measuringTapeInputListener = {
-      down: event => {
+    const measuringTapeInputListener: IntentionalAny = {
+      down: ( event: IntentionalAny ) => {
 
         // Don't try to start drags with a right mouse button or an attached pointer.
         if ( !event.canStartPress() ) { return; }
@@ -100,7 +108,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 
     // When pressed, creates a model element and triggers press() on the corresponding view
     electricPotentialSensorIconNode.addInputListener( {
-      down: event => {
+      down: ( event: IntentionalAny ) => {
 
         // Don't try to start drags with a right mouse button or an attached pointer.
         if ( !event.canStartPress() ) { return; }
@@ -125,7 +133,7 @@ class ChargesAndFieldsToolboxPanel extends Panel {
     measuringTape.isActiveProperty.link( active => measuringTapeIconNode.setVisible( !active ) );
 
     // no need to dispose of this link since this is present for the lifetime of the sim
-    availableModelBoundsProperty.link( bounds => {
+    availableModelBoundsProperty.link( ( bounds: Bounds2 ) => {
 
       // TODO: did this mean to say measuringTape.dragBounds??? https://github.com/phetsims/charges-and-fields/issues/203
       measuringTapeInputListener.dragBounds = bounds;
@@ -134,10 +142,8 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 
   /**
    * Returns an icon of the sensor (without the two buttons)
-   * @private
-   * @returns {Node}
    */
-  static createElectricPotentialSensorIcon( tandem ) {
+  private static createElectricPotentialSensorIcon( tandem: Tandem ): Node {
 
     const electricPotentialSensor = new Node( {
       // Show a cursor hand over the sensor icon
@@ -214,10 +220,8 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 
   /**
    * Returns an icon of the measuring tape
-   * @private
-   * @returns {Node}
    */
-  static createMeasuringTapeIcon( tandem ) {
+  private static createMeasuringTapeIcon( tandem: Tandem ): Node {
     // procedure to create an icon Image of a measuringTape
     // first, create an actual measuring tape
 

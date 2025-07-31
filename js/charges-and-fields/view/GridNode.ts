@@ -7,12 +7,16 @@
  * @author Martin Veillette (Berea College)
  */
 
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
@@ -33,17 +37,17 @@ const oneMeterString = ChargesAndFieldsStrings.oneMeter;
 class GridNode extends Node {
 
   /**
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} boundsProperty - bounds in model coordinates
-   * @param {Property.<boolean>} isGridVisibleProperty
-   * @param {Property.<boolean>} areValuesVisibleProperty
-   * @param {Tandem} tandem
+   * @param modelViewTransform
+   * @param boundsProperty - bounds in model coordinates
+   * @param isGridVisibleProperty
+   * @param areValuesVisibleProperty
+   * @param tandem
    */
-  constructor( modelViewTransform,
-               boundsProperty,
-               isGridVisibleProperty,
-               areValuesVisibleProperty,
-               tandem ) {
+  public constructor( modelViewTransform: ModelViewTransform2,
+                      boundsProperty: Property<Bounds2>,
+                      isGridVisibleProperty: Property<boolean>,
+                      areValuesVisibleProperty: Property<boolean>,
+                      tandem: Tandem ) {
 
     super();
 
@@ -137,14 +141,14 @@ class GridNode extends Node {
 
     // Show/ Hide the arrow
     // no need to unlink, present for the lifetime of the simulation
-    areValuesVisibleProperty.link( isVisible => {
+    areValuesVisibleProperty.link( ( isVisible: boolean ) => {
       arrowPath.visible = isVisible;
       legendText.visible = isVisible;
     } );
 
     // Show/ Hide the grid
     // no need to unlink, present for the lifetime of the simulation
-    isGridVisibleProperty.link( isVisible => {
+    isGridVisibleProperty.link( ( isVisible: boolean ) => {
       this.visible = isVisible;
     } );
   }
