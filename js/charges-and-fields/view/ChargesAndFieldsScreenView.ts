@@ -29,6 +29,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargedParticle from '../model/ChargedParticle.js';
 import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
 import ChargedParticleNode from './ChargedParticleNode.js';
 import ChargesAndFieldsControlPanel from './ChargesAndFieldsControlPanel.js';
@@ -277,7 +278,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       } );
     } );
 
-    const chargedParticleNodeGroup = new PhetioGroup( ( tandem: Tandem, chargedParticle: IntentionalAny ) => {
+    const chargedParticleNodeGroup = new PhetioGroup( ( tandem: Tandem, chargedParticle: ChargedParticle ) => {
       return new ChargedParticleNode(
         chargedParticle,
         // @ts-expect-error

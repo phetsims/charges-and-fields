@@ -6,7 +6,6 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
@@ -58,13 +57,13 @@ class ElectricPotentialLinesNode extends Node {
         return new ElectricPotentialLineView( electricPotentialLine, modelViewTransform, tandem );
       },
       () => [ electricPotentialLineGroup.archetype ], {
-      tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
-      phetioType: PhetioGroup.PhetioGroupIO( IOType.ObjectIO ),
+        tandem: tandem.createTandem( 'electricPotentialLineViewGroup' ),
+        phetioType: PhetioGroup.PhetioGroupIO( IOType.ObjectIO ),
 
-      // These elements are not created by the PhET-IO state engine, they can just listen to the model for supporting
-      // state in the same way they do for sim logic.
-      supportsDynamicState: false
-    } );
+        // These elements are not created by the PhET-IO state engine, they can just listen to the model for supporting
+        // state in the same way they do for sim logic.
+        supportsDynamicState: false
+      } );
     this.electricPotentialLineViews = electricPotentialLineViewGroup;
 
     // Monitor the electricPotentialLineArray and create a path and label for each electricPotentialLine
@@ -72,12 +71,12 @@ class ElectricPotentialLinesNode extends Node {
       const electricPotentialLineView = electricPotentialLineViewGroup.createCorrespondingGroupElement(
         electricPotentialLine.tandem.name, electricPotentialLine );
 
-      pathsNode.addChild( ( electricPotentialLineView as IntentionalAny ).path );
-      labelsNode.addChild( ( electricPotentialLineView as IntentionalAny ).voltageLabel );
+      pathsNode.addChild( electricPotentialLineView.path );
+      labelsNode.addChild( electricPotentialLineView.voltageLabel );
 
       // add the circles and text
       if ( IS_DEBUG ) {
-        circlesNode!.addChild( ( electricPotentialLineView as IntentionalAny ).circles );
+        circlesNode!.addChild( electricPotentialLineView.circles! );
       }
 
       const modelDisposeListener = () => electricPotentialLineViewGroup.disposeElement( electricPotentialLineView );

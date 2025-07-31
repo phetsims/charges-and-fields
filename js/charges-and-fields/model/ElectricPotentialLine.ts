@@ -74,7 +74,7 @@ class ElectricPotentialLine extends PhetioObject {
       this.isEquipotentialLineTerminatingInsideBounds = true;
 
       // TODO: the conditional here is to support mutating this potential line, let's do this better. https://github.com/phetsims/charges-and-fields/issues/203
-      const hasElectricField = ( this.model as IntentionalAny ).getElectricField( position ).magnitude !== 0;
+      const hasElectricField = this.model.getElectricField( position ).magnitude !== 0;
       this.positionArray = hasElectricField ? this.getEquipotentialPositionArray( position ) : [];
 
       if ( !this.isDisposed ) {
@@ -117,11 +117,11 @@ class ElectricPotentialLine extends PhetioObject {
      * and the electric potential at the intermediate point is found. By knowing the electric field at the intermediate point
      * the next point should be found (approximately) at a distance epsilon equal to (Delta V)/|E| of the intermediate point.
      */
-    const initialElectricField = ( this.model as IntentionalAny ).getElectricField( position ); // {Vector2}
+    const initialElectricField = this.model.getElectricField( position ); // {Vector2}
     assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
     const electricPotentialNormalizedVector = initialElectricField.normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
     const midwayPosition = ( electricPotentialNormalizedVector.multiplyScalar( deltaDistance ) ).add( position ); // {Vector2}
-    const midwayElectricField = ( this.model as IntentionalAny ).getElectricField( midwayPosition ); // {Vector2}
+    const midwayElectricField = this.model.getElectricField( midwayPosition ); // {Vector2}
     assert && assert( midwayElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: midway Electric Field ' );
     const midwayElectricPotential = this.model.getElectricPotential( midwayPosition ); //  {number}
     const deltaElectricPotential = midwayElectricPotential - electricPotential; // {number}
@@ -150,12 +150,12 @@ class ElectricPotentialLine extends PhetioObject {
    * @returns finalPosition
    */
   private getNextPositionAlongEquipotentialWithRK4( position: Vector2, deltaDistance: number ): Vector2 {
-    const initialElectricField = ( this.model as IntentionalAny ).getElectricField( position ); // {Vector2}
+    const initialElectricField = this.model.getElectricField( position ); // {Vector2}
     assert && assert( initialElectricField.magnitude !== 0, 'the magnitude of the electric field is zero: initial Electric Field' );
-    const k1Vector = ( this.model as IntentionalAny ).getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-    const k2Vector = ( this.model as IntentionalAny ).getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-    const k3Vector = ( this.model as IntentionalAny ).getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
-    const k4Vector = ( this.model as IntentionalAny ).getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const k1Vector = this.model.getElectricField( position ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const k2Vector = this.model.getElectricField( position.plus( k1Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const k3Vector = this.model.getElectricField( position.plus( k2Vector.timesScalar( deltaDistance / 2 ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
+    const k4Vector = this.model.getElectricField( position.plus( k3Vector.timesScalar( deltaDistance ) ) ).normalize().rotate( Math.PI / 2 ); // {Vector2} normalized Vector along electricPotential
     const deltaDisplacement = new Vector2(
       deltaDistance * ( k1Vector.x + 2 * k2Vector.x + 2 * k3Vector.x + k4Vector.x ) / 6,
       deltaDistance * ( k1Vector.y + 2 * k2Vector.y + 2 * k3Vector.y + k4Vector.y ) / 6

@@ -513,7 +513,7 @@ export default class ChargesAndFieldsModel extends PhetioObject {
   /**
    * Return the electric field (a vector) at the given position
    */
-  private getElectricField( position: Vector2 ): Vector2 {
+  public getElectricField( position: Vector2 ): Vector2 {
     const electricField = new Vector2( 0, 0 );
 
     this.activeChargedParticles.forEach( ( chargedParticle: ChargedParticle ) => {

@@ -28,7 +28,7 @@ type SelfOptions = {
   // No additional self options
 };
 
-type ChargedParticleOptions = SelfOptions & IntentionalAny;
+type ChargedParticleOptions = SelfOptions;
 
 class ChargedParticle extends ModelElement {
 
@@ -57,12 +57,12 @@ class ChargedParticle extends ModelElement {
 
   public static readonly ChargedParticleIO = new IOType( 'ChargedParticleIO', {
     valueType: ChargedParticle,
-    supertype: ModelElement.ModelElementIO as IntentionalAny,
+    supertype: ModelElement.ModelElementIO,
     methods: {
       setCharge: {
         returnType: VoidIO,
         parameterTypes: [ NumberIO ],
-        implementation: function( this: IntentionalAny, value: IntentionalAny ) {
+        implementation: function( this: IntentionalAny, value: ChargedParticle ) {
           this.charge = value.charge;
         },
         documentation: 'Set charge (in units of e)',
