@@ -6,12 +6,17 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import CanvasNode from '../../../../scenery/js/nodes/CanvasNode.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargedParticle from '../model/ChargedParticle.js';
 import ChargeTracker from './ChargeTracker.js';
 import ElectricFieldArrowCanvas from './ElectricFieldArrowCanvas.js';
 
@@ -24,25 +29,42 @@ const scratchVector = new Vector2( 0, 0 );
 
 class ElectricFieldCanvasNode extends CanvasNode {
 
+  private readonly chargeTracker: ChargeTracker;
+  private readonly modelViewTransform: ModelViewTransform2;
+  private readonly modelBounds: Bounds2;
+  private readonly viewBounds: Bounds2;
+  private readonly isElectricFieldDirectionOnlyProperty: Property<boolean>;
+  private readonly isVisibleProperty: Property<boolean>;
+
+  // Array of model positions where electric field arrows are displayed
+  private readonly modelPositions: Vector2[];
+
+  // Array of view positions corresponding to model positions
+  private readonly viewPositions: Vector2[];
+
+  // Array where electricField[i] is the 2D field at positions[i]
+  private readonly electricField: Vector2[];
+
+  private readonly disposeElectricFieldCanvasNode: () => void;
+
   /**
-   * @param {ObservableArrayDef.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
-   * @param {Property.<boolean>} isElectricFieldDirectionOnlyProperty
-   * @param {Property.<boolean>} isVisibleProperty
+   * @param chargedParticles - only chargedParticles that active are in this array
+   * @param modelViewTransform
+   * @param modelBounds - The bounds in the model that need to be drawn
+   * @param isElectricFieldDirectionOnlyProperty
+   * @param isVisibleProperty
    */
-  constructor( chargedParticles,
-               modelViewTransform,
-               modelBounds,
-               isElectricFieldDirectionOnlyProperty,
-               isVisibleProperty ) {
+  public constructor( chargedParticles: ObservableArray<ChargedParticle>,
+                      modelViewTransform: ModelViewTransform2,
+                      modelBounds: Bounds2,
+                      isElectricFieldDirectionOnlyProperty: Property<boolean>,
+                      isVisibleProperty: Property<boolean> ) {
 
     super( {
       canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
     } );
 
     this.chargeTracker = new ChargeTracker( chargedParticles );
-
     this.modelViewTransform = modelViewTransform;
     this.modelBounds = modelBounds;
     this.viewBounds = this.modelViewTransform.modelToViewBounds( modelBounds );
@@ -58,16 +80,16 @@ class ElectricFieldCanvasNode extends CanvasNode {
 
     isElectricFieldDirectionOnlyProperty.link( invalidateSelfListener ); // visibility change
 
-    chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) ); // particle added
+    chargedParticles.addItemAddedListener( ( particle: ChargedParticle ) => particle.positionProperty.link( invalidateSelfListener ) ); // particle added
 
-    chargedParticles.addItemRemovedListener( particle => {
+    chargedParticles.addItemRemovedListener( ( particle: ChargedParticle ) => {
       invalidateSelfListener();
       particle.positionProperty.unlink( invalidateSelfListener );
     } ); // particle removed
 
     isVisibleProperty.linkAttribute( this, 'visible' );
 
-    this.modelPositions = []; // {Array.<Vector2>}
+    this.modelPositions = [];
     const width = modelBounds.width;
     const height = modelBounds.height;
     const numHorizontal = Math.ceil( width / ELECTRIC_FIELD_SENSOR_SPACING );
@@ -82,10 +104,8 @@ class ElectricFieldCanvasNode extends CanvasNode {
       }
     }
 
-    // {Array.<Vector2>}
-    this.viewPositions = this.modelPositions.map( position => modelViewTransform.modelToViewPosition( position ) );
+    this.viewPositions = this.modelPositions.map( ( position: Vector2 ) => modelViewTransform.modelToViewPosition( position ) );
 
-    // {Array.<Vector2>}, where electricField[ i ] is the 2D field at positions[ i ]
     this.electricField = this.modelPositions.map( () => new Vector2( 0, 0 ) );
 
     this.disposeElectricFieldCanvasNode = () => {
@@ -95,10 +115,7 @@ class ElectricFieldCanvasNode extends CanvasNode {
   }
 
 
-  /**
-   * @private
-   */
-  updateElectricPotentials() {
+  private updateElectricPotentials(): void {
     const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
     const numChanges = this.chargeTracker.queue.length;
@@ -138,11 +155,9 @@ class ElectricFieldCanvasNode extends CanvasNode {
 
   /**
    * Function responsible for painting electric field arrows
-   * @override
-   * @public
-   * @param {CanvasRenderingContext2D} context
+   * @param context
    */
-  paintCanvas( context ) {
+  public override paintCanvas( context: CanvasRenderingContext2D ): void {
     this.updateElectricPotentials();
 
     const isDirectionOnly = this.isElectricFieldDirectionOnlyProperty.get();
@@ -170,9 +185,8 @@ class ElectricFieldCanvasNode extends CanvasNode {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.disposeElectricFieldCanvasNode();
   }
 }
