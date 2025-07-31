@@ -12,7 +12,7 @@ import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import LinearFunction from '../../../../dot/js/LinearFunction.js';
 import Rectangle from '../../../../dot/js/Rectangle.js';
-import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line phet/default-import-match-filename
+import { linear } from '../../../../dot/js/util/linear.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import platform from '../../../../phet-core/js/platform.js';
@@ -45,7 +45,6 @@ import ElectricPotentialWebGLNode from './ElectricPotentialWebGLNode.js';
 import GridNode from './GridNode.js';
 
 // constants
-const linear = DotUtils.linear;
 const MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which color will saturate to colorMax
 const MIN_ELECTRIC_POTENTIAL = -40; // electric potential at which color will saturate to minColor
 
@@ -493,7 +492,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     this.resetTransform();
 
-    const scale = this.getLayoutScale( viewBounds ); // {number}
+    const scale = this.getLayoutScale( viewBounds );
     this.setScaleMagnitude( scale );
 
     const width = viewBounds.width;
