@@ -19,6 +19,7 @@ import platform from '../../../../phet-core/js/platform.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
+import type { PressListenerEvent } from '../../../../scenery/js/listeners/PressListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
@@ -223,10 +224,11 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
     model.chargedParticleGroup.elementDisposedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
-    const chargesAndSensorsPanel = new ChargesAndSensorsPanel( model, this, ( modelElement: ModelElement, event: IntentionalAny ) => {
+    const chargesAndSensorsPanel = new ChargesAndSensorsPanel( model, this, ( modelElement: ModelElement, event: PressListenerEvent ) => {
 
         // Horrible, horrible hacks
         draggableElementsLayer.children.forEach( potentialView => {
+
           if ( ( potentialView as IntentionalAny ).modelElement === modelElement ) {
             ( potentialView as IntentionalAny ).dragListener.press( event, potentialView );
           }

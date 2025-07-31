@@ -8,10 +8,9 @@
 
 import Emitter from '../../../../axon/js/Emitter.js';
 import { clamp } from '../../../../dot/js/util/clamp.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
@@ -25,11 +24,13 @@ const MIN_STEPS = 1000; // {number} integer, the minimum number of steps it will
 const MAX_EPSILON_DISTANCE = 0.05; // {number} maximum step length along electricPotential in meters
 const MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electricPotential in meters
 
-// type ElectricPotentialLineOptions = PhetioObjectOptions;
+type ElectricPotentialLineStateObject = {
+  position: Vector2StateObject;
+};
 
 export default class ElectricPotentialLine extends PhetioObject {
 
-  public static ElectricPotentialLineIO: IOType<ElectricPotentialLine, IntentionalAny>;
+  public static ElectricPotentialLineIO: IOType<ElectricPotentialLine, ElectricPotentialLineStateObject>;
 
   private readonly model: ChargesAndFieldsModel;
   public readonly position: Vector2;
@@ -395,7 +396,7 @@ export default class ElectricPotentialLine extends PhetioObject {
   }
 }
 
-ElectricPotentialLine.ElectricPotentialLineIO = new IOType<ElectricPotentialLine, IntentionalAny>( 'ElectricPotentialLineIO', {
+ElectricPotentialLine.ElectricPotentialLineIO = new IOType<ElectricPotentialLine, ElectricPotentialLineStateObject>( 'ElectricPotentialLineIO', {
   valueType: ElectricPotentialLine,
   documentation: 'The vector that shows the charge strength and direction.',
   toStateObject: ( electricPotentialLine: ElectricPotentialLine ) => ( {
@@ -404,7 +405,7 @@ ElectricPotentialLine.ElectricPotentialLineIO = new IOType<ElectricPotentialLine
   stateSchema: {
     position: Vector2.Vector2IO
   },
-  stateObjectToCreateElementArguments: ( stateObject: IntentionalAny ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
+  stateObjectToCreateElementArguments: ( stateObject: ElectricPotentialLineStateObject ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 
 chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );

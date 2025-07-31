@@ -17,10 +17,10 @@ import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
+import TInputListener from '../../../../scenery/js/input/TInputListener.js';
 import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
@@ -46,7 +46,6 @@ const CIRCLE_RADIUS = 18; // radius of the circle around the crosshair
 const equipotentialString = ChargesAndFieldsStrings.equipotential;
 const pattern0Value1UnitsString = ChargesAndFieldsStrings.pattern[ '0value' ][ '1units' ];
 const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
-
 
 export default class ElectricPotentialSensorNode extends Node {
 
@@ -139,8 +138,8 @@ export default class ElectricPotentialSensorNode extends Node {
     model.isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
     // See see https://github.com/phetsims/charges-and-fields/issues/73
-    const doNotStartDragListener = {
-      down: ( event: IntentionalAny ) => event.handle()
+    const doNotStartDragListener: TInputListener = {
+      down: event => event.handle()
     };
     clearButton.addInputListener( doNotStartDragListener );
     plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );

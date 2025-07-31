@@ -12,7 +12,6 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
@@ -43,7 +42,6 @@ export default class ElectricFieldSensorNode extends ElectricFieldSensorRepresen
   public readonly modelElement: ElectricFieldSensor;
 
   public readonly dragListener: DragListener;
-  private readonly availableModelBoundsProperty: Property<Bounds2>;
   private readonly disposeElectricFieldSensorNode: () => void;
 
   /**
@@ -205,7 +203,7 @@ export default class ElectricFieldSensorNode extends ElectricFieldSensorRepresen
       dragBoundsProperty: availableModelBoundsProperty,
       transform: modelViewTransform,
       canStartPress: () => !electricFieldSensor.animationTween,
-      offsetPosition: ( point: Vector2, listener: IntentionalAny ) => {
+      offsetPosition: ( point: Vector2, listener: DragListener ) => {
         return listener.pointer && listener.pointer.isTouchLike() ? new Vector2( 0, -2 * ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS ) : Vector2.ZERO;
       },
       start: () => {
@@ -247,8 +245,6 @@ export default class ElectricFieldSensorNode extends ElectricFieldSensorRepresen
       }
     };
     electricFieldSensor.isInteractiveProperty.link( isInteractiveListener );
-
-    this.availableModelBoundsProperty = availableModelBoundsProperty;
 
     this.disposeElectricFieldSensorNode = () => {
       arrowNode.dispose();

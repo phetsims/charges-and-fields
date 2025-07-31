@@ -8,7 +8,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2, { Vector2StateObject } from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
@@ -21,6 +21,10 @@ import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 // constants
 const NullableIOVector2IO = NullableIO( Vector2.Vector2IO );
 
+export type ModelElementStateObject = {
+  initialPosition: null | Vector2StateObject;
+};
+
 /* global TWEEN */
 
 type SelfOptions = EmptySelfOptions;
@@ -29,7 +33,7 @@ type ModelElementOptions = SelfOptions & PhetioObjectOptions;
 
 export default class ModelElement extends PhetioObject {
 
-  public static ModelElementIO: IOType<ModelElement, IntentionalAny>;
+  public static ModelElementIO: IOType<ModelElement, ModelElementStateObject>;
 
   public readonly positionProperty: Vector2Property;
 
@@ -135,7 +139,7 @@ export default class ModelElement extends PhetioObject {
   }
 }
 
-ModelElement.ModelElementIO = new IOType<ModelElement, IntentionalAny>( 'ModelElementIO', {
+ModelElement.ModelElementIO = new IOType<ModelElement, ModelElementStateObject>( 'ModelElementIO', {
   valueType: ModelElement,
   documentation: 'A Model Element',
   toStateObject: ( modelElement: ModelElement ) => ( {
@@ -144,7 +148,7 @@ ModelElement.ModelElementIO = new IOType<ModelElement, IntentionalAny>( 'ModelEl
   stateSchema: {
     initialPosition: NullableIOVector2IO
   },
-  stateObjectToCreateElementArguments: ( stateObject: IntentionalAny ) => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
+  stateObjectToCreateElementArguments: ( stateObject: ModelElementStateObject ) => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
 } );
 
 chargesAndFields.register( 'ModelElement', ModelElement );

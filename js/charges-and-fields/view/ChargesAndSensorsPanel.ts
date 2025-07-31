@@ -10,9 +10,9 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
+import type { PressListenerEvent } from '../../../../scenery/js/listeners/PressListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
@@ -54,7 +54,7 @@ export default class ChargesAndSensorsPanel extends Panel {
    */
   public constructor( model: ChargesAndFieldsModel,
                       screenView: ChargesAndFieldsScreenView,
-                      hookDragHandler: ( modelElement: ModelElement, event: IntentionalAny ) => void,
+                      hookDragHandler: ( modelElement: ModelElement, event: PressListenerEvent ) => void,
                       canAddMoreChargedParticlesProperty: BooleanProperty,
                       modelViewTransform: ModelViewTransform2,
                       tandem: Tandem ) {
@@ -91,7 +91,7 @@ export default class ChargesAndSensorsPanel extends Panel {
 
       // When pressed, creates a model element and triggers press() on the corresponding view
       node.addInputListener( {
-        down: ( event: IntentionalAny ) => {
+        down: event => {
 
           // Don't try to start drags with a right mouse button or an attached pointer.
           if ( !event.canStartPress() ) { return; }

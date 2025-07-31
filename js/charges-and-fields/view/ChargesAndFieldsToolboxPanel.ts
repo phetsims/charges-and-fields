@@ -12,9 +12,9 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
+import TInputListener from '../../../../scenery/js/input/TInputListener.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
@@ -80,8 +80,8 @@ export default class ChargesAndFieldsToolboxPanel extends Panel {
     // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
     const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
-    const measuringTapeInputListener = {
-      down: ( event: IntentionalAny ) => {
+    const measuringTapeInputListener: TInputListener = {
+      down: event => {
 
         // Don't try to start drags with a right mouse button or an attached pointer.
         if ( !event.canStartPress() ) { return; }
@@ -99,7 +99,7 @@ export default class ChargesAndFieldsToolboxPanel extends Panel {
 
     // When pressed, creates a model element and triggers press() on the corresponding view
     electricPotentialSensorIconNode.addInputListener( {
-      down: ( event: IntentionalAny ) => {
+      down: event => {
 
         // Don't try to start drags with a right mouse button or an attached pointer.
         if ( !event.canStartPress() ) { return; }

@@ -16,14 +16,17 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import VoidIO from '../../../../tandem/js/types/VoidIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
-import ModelElement from './ModelElement.js';
+import ModelElement, { ModelElementStateObject } from './ModelElement.js';
+
+type ChargedParticleStateObject = {
+  charge: number;
+} & ModelElementStateObject;
 
 type SelfOptions = {
   // No additional self options
@@ -34,7 +37,7 @@ type ChargedParticleOptions = SelfOptions & PhetioObjectOptions;
 export default class ChargedParticle extends ModelElement {
 
   // a charge of one corresponds to one nano Coulomb
-  public readonly charge: number;
+  public charge: number;
 
   /**
    * @param charge - (positive=+1 or negative=-1)
@@ -62,7 +65,7 @@ export default class ChargedParticle extends ModelElement {
       setCharge: {
         returnType: VoidIO,
         parameterTypes: [ NumberIO ],
-        implementation: function( this: IntentionalAny, value: ChargedParticle ) {
+        implementation: function( this: ChargedParticle, value: ChargedParticleStateObject ) {
           this.charge = value.charge;
         },
         documentation: 'Set charge (in units of e)',
@@ -72,13 +75,14 @@ export default class ChargedParticle extends ModelElement {
     stateSchema: {
       charge: NumberIO
     },
-    toStateObject: ( chargedParticle: ChargedParticle ): IntentionalAny => {
-      const parentStateObject: IntentionalAny = ModelElement.ModelElementIO.toStateObject( chargedParticle );
+    toStateObject: ( chargedParticle: ChargedParticle ): ChargedParticleStateObject => {
+      const parentStateObject = ModelElement.ModelElementIO.toStateObject( chargedParticle ) as ChargedParticleStateObject;
       parentStateObject.charge = chargedParticle.charge;
       return parentStateObject;
     },
     // Put charge first for the chargedParticleGroup create function API.
-    stateObjectToCreateElementArguments: ( stateObject: IntentionalAny ): IntentionalAny[] => [ stateObject.charge ].concat(
+    stateObjectToCreateElementArguments: ( stateObject: ChargedParticleStateObject ) => [ stateObject.charge ].concat(
+      // @ts-expect-error
       ModelElement.ModelElementIO.stateObjectToCreateElementArguments( stateObject )
     )
   } );
