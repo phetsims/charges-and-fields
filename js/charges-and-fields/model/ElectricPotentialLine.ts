@@ -11,7 +11,6 @@ import { clamp } from '../../../../dot/js/util/clamp.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Shape from '../../../../kite/js/Shape.js';
-import merge from '../../../../phet-core/js/merge.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -37,13 +36,13 @@ class ElectricPotentialLine extends PhetioObject {
 
   // the position of where the user is trying to drag the voltage label, in model coordinates
   public readonly voltageLabelPositionProperty: Vector2Property;
-  
+
   public readonly chargeChangedEmitter: Emitter;
   private readonly chargeChangedListener: () => void;
-  
+
   // value in volts
   public electricPotential!: number;
-  
+
   private isLineClosed!: boolean;
   private isEquipotentialLineTerminatingInsideBounds!: boolean;
   public positionArray!: Vector2[];
@@ -385,24 +384,16 @@ class ElectricPotentialLine extends PhetioObject {
       return shape; // to support mutable potential lines and PhET-iO state
     }
     const prunedPositionArray = this.getPrunedPositionArray( this.positionArray );
-    return this.positionArrayToStraightLine( shape, prunedPositionArray, { isClosedLineSegments: this.isLineClosed } );
+    return this.positionArrayToStraightLine( shape, prunedPositionArray );
   }
 
   /**
    * Function that returns an appended shape with lines between points.
-   * @param shape
-   * @param positionArray
-   * @param [options]
    */
-  private positionArrayToStraightLine( shape: Shape, positionArray: Vector2[], options?: { isClosedLineSegments?: boolean } ): Shape {
-    // eslint-disable-next-line phet/bad-typescript-text
-    options = merge( {
-      // is the resulting shape forming a close path
-      isClosedLineSegments: false
-    }, options );
+  private positionArrayToStraightLine( shape: Shape, positionArray: Vector2[] ): Shape {
 
     // if the line is open, there is one less segments than point vectors
-    const segmentsNumber = ( options.isClosedLineSegments ) ? positionArray.length : positionArray.length - 1;
+    const segmentsNumber = this.isLineClosed ? positionArray.length : positionArray.length - 1;
 
     shape.moveToPoint( positionArray[ 0 ] );
     for ( let i = 1; i < segmentsNumber + 1; i++ ) {
