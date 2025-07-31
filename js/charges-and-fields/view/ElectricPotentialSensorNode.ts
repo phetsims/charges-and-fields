@@ -10,10 +10,16 @@
  * @author Martin Veillette (Berea College)
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Utils from '../../../../dot/js/Utils.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
 import merge from '../../../../phet-core/js/merge.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
@@ -25,11 +31,13 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import electricPotentialPanelOutline_png from '../../../mipmaps/electricPotentialPanelOutline_png.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
 import PencilButton from './PencilButton.js';
 
 // constants
@@ -41,21 +49,29 @@ const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
 
 class ElectricPotentialSensorNode extends Node {
+
+  // The model element that this node represents
+  public readonly modelElement: IntentionalAny;
+
+  public readonly isUserControlledProperty: BooleanProperty;
+  public readonly dragListener: DragListener;
+  private readonly disposeElectricPotentialSensorNode: () => void;
+
   /**
    * TODO: this interface is unwieldy and difficult to navigate.  Why not pass the model with all these functions? https://github.com/phetsims/charges-and-fields/issues/203
-   * @param {ChargesAndFieldsModel} model
-   * @param {Function} snapToGridLines - A Function that snap the position to the minor gridlines.
-   * @param {Function} getElectricPotentialColor - A function that maps a value of the electric potential to a color
-   * @param {ModelViewTransform2} modelViewTransform - the coordinate transform between model coordinates and view coordinates
-   * @param {Property.<Bounds2>} availableModelBoundsProperty - drag bounds in model coordinates for the electric potential sensor node
-   * @param {Tandem} tandem
+   * @param model
+   * @param snapToGridLines - A Function that snap the position to the minor gridlines.
+   * @param getElectricPotentialColor - A function that maps a value of the electric potential to a color
+   * @param modelViewTransform - the coordinate transform between model coordinates and view coordinates
+   * @param availableModelBoundsProperty - drag bounds in model coordinates for the electric potential sensor node
+   * @param tandem
    */
-  constructor( model,
-               snapToGridLines,
-               getElectricPotentialColor,
-               modelViewTransform,
-               availableModelBoundsProperty,
-               tandem ) {
+  public constructor( model: ChargesAndFieldsModel,
+                      snapToGridLines: ( positionProperty: Vector2Property ) => void,
+                      getElectricPotentialColor: ( electricPotential: number, options?: IntentionalAny ) => string,
+                      modelViewTransform: ModelViewTransform2,
+                      availableModelBoundsProperty: Property<Bounds2>,
+                      tandem: Tandem ) {
 
     const electricPotentialSensor = model.electricPotentialSensor;
 
@@ -63,10 +79,8 @@ class ElectricPotentialSensorNode extends Node {
       cursor: 'pointer', // Show a cursor hand over the sensor
       tandem: tandem
     } );
-    this.modelElement = electricPotentialSensor; // @public (read-only)
-
-    // @public
-    this.isUserControlledProperty = new Property( false );
+    this.modelElement = electricPotentialSensor;
+    this.isUserControlledProperty = new BooleanProperty( false );
 
     // Create the centered circle around the crosshair. The origin of this node is the center of the circle
     const circle = new Circle( CIRCLE_RADIUS, {
@@ -119,14 +133,14 @@ class ElectricPotentialSensorNode extends Node {
       listener: () => model.addElectricPotentialLine( electricPotentialSensor.positionProperty.get() )
     } );
 
-    const isPlayAreaChargedListener = charged => {
+    const isPlayAreaChargedListener = ( charged: boolean ) => {
       plotElectricPotentialLineButton.enabled = charged;
     };
     model.isPlayAreaChargedProperty.link( isPlayAreaChargedListener );
 
     // See see https://github.com/phetsims/charges-and-fields/issues/73
     const doNotStartDragListener = {
-      down: event => event.handle()
+      down: ( event: IntentionalAny ) => event.handle()
     };
     clearButton.addInputListener( doNotStartDragListener );
     plotElectricPotentialLineButton.addInputListener( doNotStartDragListener );
@@ -173,9 +187,9 @@ class ElectricPotentialSensorNode extends Node {
 
     /**
      * The voltage readout is updated according to the value of the electric potential
-     * @param {number} electricPotential
+     * @param electricPotential
      */
-    function updateVoltageReadout( electricPotential ) {
+    function updateVoltageReadout( electricPotential: number ): void {
       voltageText.string = StringUtils.format( pattern0Value1UnitsString, decimalAdjust( electricPotential ), voltageUnitString );
       voltageText.centerX = bodyContent.centerX;
     }
@@ -197,7 +211,7 @@ class ElectricPotentialSensorNode extends Node {
     voltageText.centerY = backgroundRectangle.centerY;
 
     // the color of the fill tracks the electric potential
-    function updateCircleFillWithPotential() {
+    function updateCircleFillWithPotential(): void {
       updateCircleFill( electricPotentialSensor.electricPotentialProperty.get() );
     }
 
@@ -218,13 +232,13 @@ class ElectricPotentialSensorNode extends Node {
     bodyNode.top = crosshairMount.bottom;
 
     // Register for synchronization with model.
-    const positionListener = position => {
+    const positionListener = ( position: Vector2 ) => {
       this.translation = modelViewTransform.modelToViewPosition( position );
     };
     electricPotentialSensor.positionProperty.link( positionListener );
 
     // Update the value of the electric potential on the panel and the fill color on the crosshair
-    const potentialListener = electricPotential => {
+    const potentialListener = ( electricPotential: number ) => {
 
       // update the text of the voltage
       updateVoltageReadout( electricPotential );
@@ -244,7 +258,7 @@ class ElectricPotentialSensorNode extends Node {
         snapToGridLines( electricPotentialSensor.positionProperty );
       }
     } );
-    this.dragListener.isUserControlledProperty.link( controlled => {
+    this.dragListener.isUserControlledProperty.link( ( controlled: boolean ) => {
       this.isUserControlledProperty.value = controlled;
     } );
 
@@ -257,9 +271,9 @@ class ElectricPotentialSensorNode extends Node {
 
     /**
      * The color fill inside the circle changes according to the value of the electric potential*
-     * @param {number} electricPotential
+     * @param electricPotential
      */
-    function updateCircleFill( electricPotential ) {
+    function updateCircleFill( electricPotential: number ): void {
       circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
     }
 
@@ -279,11 +293,11 @@ class ElectricPotentialSensorNode extends Node {
      * 0.00111 -> 0.001
      * 0.00011 -> 0.000
      *
-     * @param {number} number
-     * @param {Object} [options]
-     * @returns {string}
+     * @param number
+     * @param options
      */
-    function decimalAdjust( number, options ) {
+    function decimalAdjust( number: number, options?: IntentionalAny ): string {
+      // eslint-disable-next-line phet/bad-typescript-text
       options = merge( {
         maxDecimalPlaces: 3
       }, options );
@@ -317,10 +331,10 @@ class ElectricPotentialSensorNode extends Node {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.disposeElectricPotentialSensorNode();
+    super.dispose();
   }
 
 }
