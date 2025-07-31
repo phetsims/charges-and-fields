@@ -1,7 +1,7 @@
 // Copyright 2015-2025, University of Colorado Boulder
 
 /**
- * View for the electric potential Grid Node that displays a two dimensional grid of rectangles that represent the
+ * View for the electric potential Grid Node that displays a two-dimensional grid of rectangles that represent the
  * electric potential field, rendering in WebGL.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
@@ -87,7 +87,7 @@ class ElectricPotentialMobilePainter implements WebGLNodePainter {
   private readonly gl: WebGLRenderingContext;
   private readonly node: ElectricPotentialMobileWebGLNode;
   private readonly maximumNumParticles: number;
-  private displayShaderProgram: ShaderProgram;
+  private readonly displayShaderProgram: ShaderProgram;
   private readonly vertexBuffer: WebGLBuffer;
 
   /**

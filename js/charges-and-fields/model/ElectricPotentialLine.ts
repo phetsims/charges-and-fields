@@ -39,7 +39,7 @@ class ElectricPotentialLine extends PhetioObject {
   public readonly voltageLabelPositionProperty: Vector2Property;
   
   public readonly chargeChangedEmitter: Emitter;
-  private chargeChangedListener: () => void;
+  private readonly chargeChangedListener: () => void;
   
   // value in volts
   public electricPotential!: number;
@@ -130,7 +130,7 @@ class ElectricPotentialLine extends PhetioObject {
     // if the second order correction is larger than the first, use a more computationally expensive but accurate method.
     if ( deltaPosition.magnitude > Math.abs( deltaDistance ) ) {
 
-      // use a fail safe method
+      // use a fail-safe method
       return this.getNextPositionAlongEquipotentialWithRK4( position, deltaDistance );
     }
     else {
@@ -190,7 +190,7 @@ class ElectricPotentialLine extends PhetioObject {
      * clockwise or counterClockwise point is very far away from the origin. A third condition to bailout of the
      * search is that the clockwise and counterClockwise position are very close to one another in which case we have
      * a closed electricPotential line. Note that if the conditions (1) and (2) are fulfilled the electricPotential
-     * line is not going to be a closed line but this is so far away from the screenview that the end user will simply
+     * line is not going to be a closed line but this is so far away from the ScreenView that the end user will simply
      * see the line going beyond the screen.
      *
      * After the search is done, the function returns an array of points ordered in a counterclockwise direction,
@@ -246,7 +246,7 @@ class ElectricPotentialLine extends PhetioObject {
         // logic to stop the while loop when the two heads are getting closer
         if ( approachDistance < clockwiseEpsilonDistance + Math.abs( counterClockwiseEpsilonDistance ) ) {
 
-          // we want to perform more steps as the two head get closer but we want to avoid the two heads to pass
+          // we want to perform more steps as the two head get closer, but we want to avoid the two heads to pass
           // one another. Let's reduce the epsilon distance
           clockwiseEpsilonDistance = approachDistance / 3;
           counterClockwiseEpsilonDistance = -clockwiseEpsilonDistance;
@@ -338,14 +338,14 @@ class ElectricPotentialLine extends PhetioObject {
   }
 
   /**
-   * Function that returns the an updated epsilonDistance based on the three last points
+   * Function that returns an updated epsilonDistance based on the three last points
    * of positionArray
    * @param epsilonDistance
    * @param positionArray
    * @param isClockwise
    */
   private getAdaptativeEpsilonDistance( epsilonDistance: number, positionArray: Vector2[], isClockwise: boolean ): number {
-    const deflectionAngle = this.getRotationAngle( positionArray ); // non negative number in radians
+    const deflectionAngle = this.getRotationAngle( positionArray ); // non-negative number in radians
     if ( deflectionAngle === 0 ) {
 
       // pedal to metal

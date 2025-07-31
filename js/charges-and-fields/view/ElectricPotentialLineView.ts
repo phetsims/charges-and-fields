@@ -4,7 +4,7 @@
  * View object, with a variety of Nodes stored on it to be added by the parent container. Responsible for the drawing
  * of one electricPotentialLine and its accompanying voltage labels
  *
- * A debug option can enabled the view of the (model) position points used to calculate the electric potential line.
+ * A debug option can enable the view of the (model) position points used to calculate the electric potential line.
  * The (pruned) position points that are used to draw the electric potential line can also be displayed.
  *
  * @author Martin Veillette (Berea College)

@@ -111,7 +111,7 @@ class GridNode extends Node {
       tandem: tandem.createTandem( 'minorGridLinesPath' )
     } );
 
-    // Create the one-meter double headed arrow representation
+    // Create the one-meter double-headed arrow representation
     const arrowShape = new ArrowShape( 0, 0, modelViewTransform.modelToViewDeltaX( ARROW_LENGTH ), 0, { doubleHead: true } );
     const arrowPath = new Path( arrowShape, {
       fill: ChargesAndFieldsColors.gridLengthScaleArrowFillProperty,
@@ -119,7 +119,7 @@ class GridNode extends Node {
       tandem: tandem.createTandem( 'arrowPath' )
     } );
 
-    // Create and add the text (legend) accompanying the double headed arrow
+    // Create and add the text (legend) accompanying the double-headed arrow
     const legendText = new Text( oneMeterString, {
       fill: ChargesAndFieldsColors.gridTextFillProperty,
       font: FONT,

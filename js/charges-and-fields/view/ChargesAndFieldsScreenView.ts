@@ -16,8 +16,8 @@ import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line phet/
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import merge from '../../../../phet-core/js/merge.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import platform from '../../../../phet-core/js/platform.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -50,7 +50,6 @@ const MAX_ELECTRIC_POTENTIAL = 40; // electric potential (in volts) at which col
 const MIN_ELECTRIC_POTENTIAL = -40; // electric potential at which color will saturate to minColor
 
 // True (final arg) clamps the linear interpolation function
-const ELECTRIC_FIELD_LINEAR_FUNCTION = new LinearFunction( 0, ChargesAndFieldsConstants.EFIELD_COLOR_SAT_MAGNITUDE, 0, 1, true );
 const ELECTRIC_POTENTIAL_NEGATIVE_LINEAR_FUNCTION = new LinearFunction( MIN_ELECTRIC_POTENTIAL, 0, 0, 1, true );
 const ELECTRIC_POTENTIAL_POSITIVE_LINEAR_FUNCTION = new LinearFunction( 0, MAX_ELECTRIC_POTENTIAL, 0, 1, true );
 
@@ -145,7 +144,6 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     // Create the scenery node responsible for drawing the electricPotential lines
     const electricPotentialLinesNode = new ElectricPotentialLinesNode(
-
       // @ts-expect-error
       model.electricPotentialLineGroup,
       modelViewTransform,
@@ -155,7 +153,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     // function({Property.<Vector2>}) to be called at the end of drag event
     const snapToGridLines = model.snapToGridLines.bind( model );
 
-    // Create the draggable electric potential sensor node with a electric potential readout
+    // Create the draggable electric potential sensor node with an electric potential readout
     const electricPotentialSensorNode = new ElectricPotentialSensorNode(
       model,
       snapToGridLines,
@@ -231,7 +229,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
       model, this,
       ( modelElement: IntentionalAny, event: IntentionalAny ) => {
 
-        // Horrible horrible hacks
+        // Horrible, horrible hacks
         draggableElementsLayer.children.forEach( potentialView => {
           if ( ( potentialView as IntentionalAny ).modelElement === modelElement ) {
             ( potentialView as IntentionalAny ).dragListener.press( event, potentialView );
@@ -302,7 +300,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     const electricFieldSensorNodeGroup = new PhetioGroup( ( tandem: Tandem, electricFieldSensor: IntentionalAny ) => {
 
       // Create and add the view representation for this electric Field Sensor
-      const electricFieldSensorNode = new ElectricFieldSensorNode(
+      return new ElectricFieldSensorNode(
         electricFieldSensor,
         snapToGridLines,
         modelViewTransform,
@@ -312,8 +310,6 @@ class ChargesAndFieldsScreenView extends ScreenView {
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
         tandem
       );
-
-      return electricFieldSensorNode;
       // @ts-expect-error
     }, () => [ model.electricFieldSensorGroup.archetype ], {
       tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
@@ -461,33 +457,12 @@ class ChargesAndFieldsScreenView extends ScreenView {
       finalColor = this.interpolateRGBA(
         // {Color} color that corresponds to the lowest (i.e. negative) Electric Potential
         ChargesAndFieldsColors.electricPotentialGridSaturationNegativeProperty.get(),
-        // {Color} color that corresponds to the Electric Potential being zero zero
+        // {Color} color that corresponds to the Electric Potential being zero
         ChargesAndFieldsColors.electricPotentialGridZeroProperty.get(),
         distance, // {number} distance must be between 0 and 1
         options );
     }
     return finalColor;
-  }
-
-  /**
-   * Function that returns a color that is proportional to the magnitude of the electric Field.
-   * The color interpolates between ChargesAndFieldsColors.electricFieldGridZero (for an
-   * electric field value of zero) and ChargesAndFieldsColors.electricFieldGridSaturation (which corresponds to an
-   * electric field value of EFIELD_COLOR_SAT_MAGNITUDE).
-   * @param electricFieldMagnitude - a non negative number
-   * @param [options] - useful to set transparency
-   * @returns color - e.g. 'rgba(255, 255, 255, 1)'
-   */
-  private getElectricFieldMagnitudeColor( electricFieldMagnitude: number, options?: IntentionalAny ): string {
-
-    // ELECTRIC_FIELD_LINEAR_FUNCTION is a clamped linear function
-    const distance = ELECTRIC_FIELD_LINEAR_FUNCTION.evaluate( electricFieldMagnitude ); // a value between 0 and 1
-
-    return this.interpolateRGBA(
-      ChargesAndFieldsColors.electricFieldGridZeroProperty.get(), // {Color} color that corresponds to zero electric Field
-      ChargesAndFieldsColors.electricFieldGridSaturationProperty.get(), // {Color} color that corresponds to the largest electric field
-      distance, // {number} distance must be between 0 and 1
-      options );
   }
 
   /**

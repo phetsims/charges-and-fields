@@ -1,7 +1,7 @@
 // Copyright 2014-2025, University of Colorado Boulder
 
 /**
- * View for the electric potential Grid Node that displays a two dimensional grid of rectangles that represent the
+ * View for the electric potential Grid Node that displays a two-dimensional grid of rectangles that represent the
  * electric potential field, rendering in WebGL.
  *
  * Relies on storing floating-point data for current potential in a texture, and displays this texture with the needed
@@ -64,7 +64,7 @@ class ElectricPotentialWebGLNode extends WebGLNode {
   private readonly disposeElectricPotentialWebGLNode: () => void;
 
   /**
-   * @param chargedParticles - only chargedParticles that active are in this array
+   * @param chargedParticles - only chargedParticles that are active in this array
    * @param modelViewTransform
    * @param isVisibleProperty
    */

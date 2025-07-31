@@ -44,7 +44,7 @@ class ElectricPotentialCanvasNode extends CanvasNode {
   private readonly disposeElectricPotentialCanvasNode: () => void;
 
   /**
-   * @param chargedParticles - only chargedParticles that active are in this array
+   * @param chargedParticles - only chargedParticles that are active in this array
    * @param modelViewTransform
    * @param modelBounds - The bounds in the model that need to be drawn
    * @param isVisibleProperty

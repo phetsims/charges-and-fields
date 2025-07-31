@@ -51,7 +51,7 @@ class ChargeTracker {
   public readonly queue: QueueItem[];
 
   /**
-   * @param chargedParticles - only chargedParticles that active are in this array
+   * @param chargedParticles - only chargedParticles that are active in this array
    */
   public constructor( chargedParticles: ObservableArray<ChargedParticle> ) {
 
@@ -178,9 +178,9 @@ class ChargeTracker {
       const item = this.queue[ i ];
       if ( item.newPosition && item.newPosition.equals( particle.positionProperty.get() ) && item.charge === particle.charge ) {
         item.newPosition = null;
-        // console.log( 'update ' + particle.charge + ' null' );
+
         // remove the item from the list if we would add-remove it
-        if ( item.oldPosition === null && item.newPosition === null ) {
+        if ( item.oldPosition === null ) {
           this.queue.splice( i, 1 );
           // console.log( 'remove ' + particle.charge + ' ' + particle.position.toString() );
         }

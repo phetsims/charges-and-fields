@@ -36,20 +36,20 @@ class ChargedParticleRepresentationNode extends Node {
     this.addChild( circle );
 
     if ( charge === 1 ) {
-      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
+      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS )
         .addColorStop( 0, 'rgb(255,43,79)' ) // mostly red
         .addColorStop( 0.5, 'rgb(245, 60, 44 )' )
         .addColorStop( 1, 'rgb(232,9,0)' );
     }
     else {
       // then it must be a negative charge
-      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS * 1 )
+      circle.fill = new RadialGradient( 0, 0, CIRCLE_RADIUS * 0.2, 0, 0, CIRCLE_RADIUS )
         .addColorStop( 0, 'rgb(79,207,255)' ) // mostly blue
         .addColorStop( 0.5, 'rgb(44, 190, 245)' )
         .addColorStop( 1, 'rgb(0,169,232)' );
     }
 
-    // Create and add a plus or minus sign on the center of the circle based on the charge of the particle
+    // Create and add a plus or minus sign in the center of the circle based on the charge of the particle
     const ratio = 0.6; // relative size of the sign shape relative to the radius of the Circle
     const pathOptions = { centerX: 0, centerY: 0, lineWidth: CIRCLE_RADIUS * 0.3, stroke: 'white', pickable: false } as const;
     if ( charge === 1 ) {

@@ -13,11 +13,11 @@ import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from './ChargedParticle.js';
@@ -52,7 +52,7 @@ export default class ChargesAndFieldsModel extends PhetioObject {
   // Control the visibility of the electric potential field, a.k.a. rectangular grid
   public readonly isElectricPotentialVisibleProperty: BooleanProperty;
 
-  // Control the visibility of many numerical values ( e field sensors, electricPotential lines, etc)
+  // Control the visibility of many numerical values ( e field sensors, electricPotential lines, etc.)
   public readonly areValuesVisibleProperty: BooleanProperty;
 
   // Control the visibility of the simple grid with minor and major axes
@@ -249,7 +249,7 @@ export default class ChargesAndFieldsModel extends PhetioObject {
         // determine if the charge particle is no longer controlled by the user and is inside the enclosure
         if ( !isUserControlled &&
 
-             // only drop in if the toolbox is showing (may be hidden by phet-io)
+             // only drop in if the toolbox is showing (might be hidden by phet-io)
              this.isChargesAndSensorsPanelDisplayed && this.isChargesAndSensorsPanelDisplayed() &&
              this.chargesAndSensorsEnclosureBoundsProperty.get().containsPoint( addedChargedParticle.positionProperty.get() ) ) {
           addedChargedParticle.isActiveProperty.set( false ); // charge is no longer active, (effectively) equivalent to set its model charge to zero
@@ -284,7 +284,7 @@ export default class ChargesAndFieldsModel extends PhetioObject {
       addedChargedParticle.isActiveProperty.lazyLink( isActiveListener );
 
       // position and oldPosition refer to a charged particle
-      const positionListener = ( position: Vector2, oldPosition: Vector2 | null ) => {
+      const positionListener = () => {
 
         this.updateIsPlayAreaCharged();
 
@@ -346,9 +346,7 @@ export default class ChargesAndFieldsModel extends PhetioObject {
     this.electricFieldSensorGroup.elementCreatedEmitter.addListener( ( addedElectricFieldSensor: ElectricFieldSensor ) => {
 
       // Listener for sensor position changes
-      const positionListener = ( position: Vector2 ) => {
-        addedElectricFieldSensor.update();
-      };
+      const positionListener = () => addedElectricFieldSensor.update();
 
       // update the Electric Field Sensors upon a change of its own position
       addedElectricFieldSensor.positionProperty.link( positionListener );

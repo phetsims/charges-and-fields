@@ -1,7 +1,7 @@
 // Copyright 2025, University of Colorado Boulder
 
 /**
- * Type of a charged particle, which has charge (+1 or -1) and a position.
+ * ChargedParticle is a charged particle, which has charge (+1 or -1) and a position.
  *
  * NOTE: Due to the way the content of the file changed at the same time it was renamed from *.js to *.ts
  * the normal way of viewing history will not work.
