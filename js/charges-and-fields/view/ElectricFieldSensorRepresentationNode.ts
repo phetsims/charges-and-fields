@@ -15,7 +15,7 @@ import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 // constants
 const CIRCLE_RADIUS = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_CIRCLE_RADIUS;
 
-class ElectricFieldSensorRepresentationNode extends Node {
+export default class ElectricFieldSensorRepresentationNode extends Node {
 
   /**
    * Constructor for the ElectricFieldSensorRepresentationNode which renders the sensor as a scenery node.
@@ -40,4 +40,3 @@ class ElectricFieldSensorRepresentationNode extends Node {
 }
 
 chargesAndFields.register( 'ElectricFieldSensorRepresentationNode', ElectricFieldSensorRepresentationNode );
-export default ElectricFieldSensorRepresentationNode;

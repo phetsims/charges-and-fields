@@ -34,7 +34,7 @@ const HORIZONTAL_SPACING = 60;
 const VERTICAL_SPACING = 25;
 const Y_MARGIN = 10;
 
-class ChargesAndSensorsPanel extends Panel {
+export default class ChargesAndSensorsPanel extends Panel {
 
   private readonly hboxContent: HBox;
   private readonly draggableItems: Node[];
@@ -184,4 +184,3 @@ class ChargesAndSensorsPanel extends Panel {
 }
 
 chargesAndFields.register( 'ChargesAndSensorsPanel', ChargesAndSensorsPanel );
-export default ChargesAndSensorsPanel;

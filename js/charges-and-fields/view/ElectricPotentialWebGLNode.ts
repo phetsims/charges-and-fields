@@ -55,7 +55,7 @@ const scratchProjectionMatrix = new Matrix3();
 const scratchInverseMatrix = new Matrix3();
 const scratchFloatArray = new Float32Array( 9 );
 
-class ElectricPotentialWebGLNode extends WebGLNode {
+export default class ElectricPotentialWebGLNode extends WebGLNode {
 
   // Properties for WebGL rendering
   public readonly chargedParticles: ObservableArray<ChargedParticle>;
@@ -455,5 +455,3 @@ class ElectricPotentialPainter implements WebGLNodePainter {
     this.chargeTracker.dispose();
   }
 }
-
-export default ElectricPotentialWebGLNode;

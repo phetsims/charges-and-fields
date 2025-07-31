@@ -12,7 +12,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ModelElement from './ModelElement.js';
 
-class ElectricFieldSensor extends ModelElement {
+export default class ElectricFieldSensor extends ModelElement {
 
   // electricField Vector in Newtons per Coulomb
   public readonly electricFieldProperty: Vector2Property;
@@ -61,4 +61,3 @@ class ElectricFieldSensor extends ModelElement {
 }
 
 chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );
-export default ElectricFieldSensor;

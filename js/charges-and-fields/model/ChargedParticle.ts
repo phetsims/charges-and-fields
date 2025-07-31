@@ -31,7 +31,7 @@ type SelfOptions = {
 
 type ChargedParticleOptions = SelfOptions & PhetioObjectOptions;
 
-class ChargedParticle extends ModelElement {
+export default class ChargedParticle extends ModelElement {
 
   // a charge of one corresponds to one nano Coulomb
   public readonly charge: number;
@@ -85,4 +85,3 @@ class ChargedParticle extends ModelElement {
 }
 
 chargesAndFields.register( 'ChargedParticle', ChargedParticle );
-export default ChargedParticle;

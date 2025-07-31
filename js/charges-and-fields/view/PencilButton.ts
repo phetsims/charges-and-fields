@@ -20,7 +20,7 @@ type SelfOptions = {
 
 type PencilButtonOptions = SelfOptions & RectangularPushButtonOptions;
 
-class PencilButton extends RectangularPushButton {
+export default class PencilButton extends RectangularPushButton {
 
   public constructor( tandem: Tandem, providedOptions?: PencilButtonOptions ) {
 
@@ -39,4 +39,3 @@ class PencilButton extends RectangularPushButton {
 }
 
 chargesAndFields.register( 'PencilButton', PencilButton );
-export default PencilButton;

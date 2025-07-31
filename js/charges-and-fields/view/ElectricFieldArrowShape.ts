@@ -9,7 +9,7 @@
 import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
-class ElectricFieldArrowShape extends ArrowShape {
+export default class ElectricFieldArrowShape extends ArrowShape {
 
   /**
    * Drawn pointing to the right, with the origin at the center hole
@@ -34,4 +34,3 @@ class ElectricFieldArrowShape extends ArrowShape {
 }
 
 chargesAndFields.register( 'ElectricFieldArrowShape', ElectricFieldArrowShape );
-export default ElectricFieldArrowShape;

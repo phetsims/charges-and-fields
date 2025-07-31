@@ -19,7 +19,7 @@ import ElectricPotentialLineView from './ElectricPotentialLineView.js';
 // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
 const IS_DEBUG = phet.chipper.queryParameters.dev;
 
-class ElectricPotentialLinesNode extends Node {
+export default class ElectricPotentialLinesNode extends Node {
 
   // The view group for electric potential lines
   private readonly electricPotentialLineViews: PhetioGroup<ElectricPotentialLineView, [ ElectricPotentialLine ]>;
@@ -102,4 +102,3 @@ class ElectricPotentialLinesNode extends Node {
 }
 
 chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );
-export default ElectricPotentialLinesNode;

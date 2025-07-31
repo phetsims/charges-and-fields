@@ -14,7 +14,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import InfiniteNumberIO from '../../../../tandem/js/types/InfiniteNumberIO.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
-class ElectricPotentialSensor {
+export default class ElectricPotentialSensor {
 
   public readonly positionProperty: Vector2Property;
 
@@ -65,4 +65,3 @@ class ElectricPotentialSensor {
 }
 
 chargesAndFields.register( 'ElectricPotentialSensor', ElectricPotentialSensor );
-export default ElectricPotentialSensor;

@@ -27,7 +27,7 @@ const MIN_EPSILON_DISTANCE = 0.01; // {number} minimum step length along electri
 
 // type ElectricPotentialLineOptions = PhetioObjectOptions;
 
-class ElectricPotentialLine extends PhetioObject {
+export default class ElectricPotentialLine extends PhetioObject {
 
   public static ElectricPotentialLineIO: IOType<ElectricPotentialLine, IntentionalAny>;
 
@@ -416,4 +416,3 @@ ElectricPotentialLine.ElectricPotentialLineIO = new IOType<ElectricPotentialLine
 } );
 
 chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );
-export default ElectricPotentialLine;

@@ -27,7 +27,7 @@ const MIN_VISIBLE_ELECTRIC_FIELD_MAG = 1e-9; // V/m
 
 const scratchVector = new Vector2( 0, 0 );
 
-class ElectricFieldCanvasNode extends CanvasNode {
+export default class ElectricFieldCanvasNode extends CanvasNode {
 
   private readonly chargeTracker: ChargeTracker;
   private readonly modelViewTransform: ModelViewTransform2;
@@ -192,4 +192,3 @@ class ElectricFieldCanvasNode extends CanvasNode {
 }
 
 chargesAndFields.register( 'ElectricFieldCanvasNode', ElectricFieldCanvasNode );
-export default ElectricFieldCanvasNode;

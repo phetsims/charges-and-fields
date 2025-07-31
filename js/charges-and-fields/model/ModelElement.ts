@@ -27,7 +27,7 @@ type SelfOptions = EmptySelfOptions;
 
 type ModelElementOptions = SelfOptions & PhetioObjectOptions;
 
-class ModelElement extends PhetioObject {
+export default class ModelElement extends PhetioObject {
 
   public static ModelElementIO: IOType<ModelElement, IntentionalAny>;
 
@@ -148,4 +148,3 @@ ModelElement.ModelElementIO = new IOType<ModelElement, IntentionalAny>( 'ModelEl
 } );
 
 chargesAndFields.register( 'ModelElement', ModelElement );
-export default ModelElement;

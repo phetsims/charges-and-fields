@@ -22,7 +22,7 @@ import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNo
 // constants
 const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
-class ChargedParticleNode extends ChargedParticleRepresentationNode {
+export default class ChargedParticleNode extends ChargedParticleRepresentationNode {
 
   // The model element
   public readonly modelElement: ChargedParticle;
@@ -131,4 +131,3 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
 }
 
 chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );
-export default ChargedParticleNode;

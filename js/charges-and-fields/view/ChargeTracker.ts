@@ -36,7 +36,7 @@ type PositionListener = ( ( newPosition: Vector2, oldPosition: Vector2 ) => void
   particle: ChargedParticle;
 };
 
-class ChargeTracker {
+export default class ChargeTracker {
 
   private readonly chargedParticles: ObservableArray<ChargedParticle>;
 
@@ -210,4 +210,3 @@ class ChargeTracker {
 }
 
 chargesAndFields.register( 'ChargeTracker', ChargeTracker );
-export default ChargeTracker;

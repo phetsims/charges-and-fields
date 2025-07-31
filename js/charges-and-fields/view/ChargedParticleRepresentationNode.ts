@@ -17,7 +17,7 @@ import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 // constants
 const CIRCLE_RADIUS = ChargesAndFieldsConstants.CHARGE_RADIUS; // radius of a charged particle
 
-class ChargedParticleRepresentationNode extends Node {
+export default class ChargedParticleRepresentationNode extends Node {
 
   /**
    * Constructor for the scenery node of the charge
@@ -70,4 +70,3 @@ class ChargedParticleRepresentationNode extends Node {
 }
 
 chargesAndFields.register( 'ChargedParticleRepresentationNode', ChargedParticleRepresentationNode );
-export default ChargedParticleRepresentationNode;

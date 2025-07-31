@@ -16,7 +16,7 @@ import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import MeasuringTape from '../model/MeasuringTape.js';
 
-class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
+export default class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
 
   /**
    * @param measuringTape
@@ -52,4 +52,3 @@ class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
 }
 
 chargesAndFields.register( 'ChargesAndFieldsMeasuringTapeNode', ChargesAndFieldsMeasuringTapeNode );
-export default ChargesAndFieldsMeasuringTapeNode;

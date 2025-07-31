@@ -63,7 +63,7 @@ const isDisplayed = ( node: Node ): boolean => {
   return trail.isVisible() && trail.rootNode() === phet.joist.display.rootNode;
 };
 
-class ChargesAndFieldsScreenView extends ScreenView {
+export default class ChargesAndFieldsScreenView extends ScreenView {
 
   // Model properties and convenience variables
   public readonly availableModelBoundsProperty: Property<Bounds2>;
@@ -518,4 +518,3 @@ class ChargesAndFieldsScreenView extends ScreenView {
 }
 
 chargesAndFields.register( 'ChargesAndFieldsScreenView', ChargesAndFieldsScreenView );
-export default ChargesAndFieldsScreenView;

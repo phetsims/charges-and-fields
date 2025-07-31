@@ -47,7 +47,7 @@ const pattern0Value1UnitsString = ChargesAndFieldsStrings.pattern[ '0value' ][ '
 const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
 
-class ElectricPotentialSensorNode extends Node {
+export default class ElectricPotentialSensorNode extends Node {
 
   // The model element that this node represents
   public readonly modelElement: IntentionalAny;
@@ -335,4 +335,3 @@ class ElectricPotentialSensorNode extends Node {
 }
 
 chargesAndFields.register( 'ElectricPotentialSensorNode', ElectricPotentialSensorNode );
-export default ElectricPotentialSensorNode;

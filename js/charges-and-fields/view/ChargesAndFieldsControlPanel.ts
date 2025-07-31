@@ -27,7 +27,7 @@ const snapToGridString = ChargesAndFieldsStrings.snapToGrid;
 const valuesString = ChargesAndFieldsStrings.values;
 const voltageString = ChargesAndFieldsStrings.voltage;
 
-class ChargesAndFieldsControlPanel extends Panel {
+export default class ChargesAndFieldsControlPanel extends Panel {
 
   // The model
   private readonly model: ChargesAndFieldsModel;
@@ -117,4 +117,3 @@ class ChargesAndFieldsControlPanel extends Panel {
 }
 
 chargesAndFields.register( 'ChargesAndFieldsControlPanel', ChargesAndFieldsControlPanel );
-export default ChargesAndFieldsControlPanel;

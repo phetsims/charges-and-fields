@@ -21,7 +21,7 @@ import ChargeTracker from './ChargeTracker.js';
 // Spacing in the model coordinate frame.
 const ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POTENTIAL_SENSOR_SPACING;
 
-class ElectricPotentialCanvasNode extends CanvasNode {
+export default class ElectricPotentialCanvasNode extends CanvasNode {
 
   private readonly chargeTracker: ChargeTracker;
   private readonly modelViewTransform: ModelViewTransform2;
@@ -214,4 +214,3 @@ class ElectricPotentialCanvasNode extends CanvasNode {
 }
 
 chargesAndFields.register( 'ElectricPotentialCanvasNode', ElectricPotentialCanvasNode );
-export default ElectricPotentialCanvasNode;

@@ -37,7 +37,7 @@ const WIDTH = ChargesAndFieldsConstants.WIDTH;
 const MIN_DISTANCE_SCALE = 1e-9;
 
 // TODO: why is this phet-io instrumented? https://github.com/phetsims/charges-and-fields/issues/203
-export default class ChargesAndFieldsModel extends PhetioObject {
+class ChargesAndFieldsModel extends PhetioObject {
 
   // Supplied by the view to indicate when the charges and sensors panel is visible
   // Used to determine if charges can be dropped in the toolbox, see https://github.com/phetsims/phet-io/issues/915
@@ -675,3 +675,4 @@ export default class ChargesAndFieldsModel extends PhetioObject {
 }
 
 chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
+export default ChargesAndFieldsModel;

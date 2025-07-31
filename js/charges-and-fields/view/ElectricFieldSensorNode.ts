@@ -37,7 +37,7 @@ const LABEL_FONT = ChargesAndFieldsConstants.ELECTRIC_FIELD_SENSOR_LABEL_FONT;
 // Max value chosen such that this limit is reached once the sensor is fully enclosed in a charge
 const MIN_ARROW_LENGTH = 1e-9;
 
-class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
+export default class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
 
   // The model element that this node represents
   public readonly modelElement: ElectricFieldSensor;
@@ -316,4 +316,3 @@ class ElectricFieldSensorNode extends ElectricFieldSensorRepresentationNode {
 }
 
 chargesAndFields.register( 'ElectricFieldSensorNode', ElectricFieldSensorNode );
-export default ElectricFieldSensorNode;

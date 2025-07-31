@@ -40,7 +40,7 @@ const CIRCLE_RADIUS = 10; // radius of the circle around the crosshair
 
 const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 
-class ChargesAndFieldsToolboxPanel extends Panel {
+export default class ChargesAndFieldsToolboxPanel extends Panel {
 
   /**
    * @param measuringTape
@@ -252,4 +252,3 @@ class ChargesAndFieldsToolboxPanel extends Panel {
 }
 
 chargesAndFields.register( 'ChargesAndFieldsToolboxPanel', ChargesAndFieldsToolboxPanel );
-export default ChargesAndFieldsToolboxPanel;

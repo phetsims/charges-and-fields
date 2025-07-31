@@ -34,7 +34,7 @@ const ARROW_POSITION = new Vector2( 2, -2.20 ); // top left position in model co
 
 const oneMeterString = ChargesAndFieldsStrings.oneMeter;
 
-class GridNode extends Node {
+export default class GridNode extends Node {
 
   /**
    * @param modelViewTransform
@@ -155,4 +155,3 @@ class GridNode extends Node {
 }
 
 chargesAndFields.register( 'GridNode', GridNode );
-export default GridNode;

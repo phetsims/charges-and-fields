@@ -21,7 +21,7 @@ import ChargedParticle from '../model/ChargedParticle.js';
 const MAX_PARTICLES_LIMIT = 32;
 const scratchFloatArray = new Float32Array( 9 );
 
-class ElectricPotentialMobileWebGLNode extends WebGLNode {
+export default class ElectricPotentialMobileWebGLNode extends WebGLNode {
 
   public readonly chargedParticles: ObservableArray<ChargedParticle>;
   public readonly modelViewTransform: ModelViewTransform2;
@@ -221,5 +221,3 @@ class ElectricPotentialMobilePainter implements WebGLNodePainter {
     this.gl.deleteBuffer( this.vertexBuffer );
   }
 }
-
-export default ElectricPotentialMobileWebGLNode;

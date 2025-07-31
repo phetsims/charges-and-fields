@@ -13,7 +13,7 @@ import ChargesAndFieldsColors from './ChargesAndFieldsColors.js';
 import ChargesAndFieldsModel from './model/ChargesAndFieldsModel.js';
 import ChargesAndFieldsScreenView from './view/ChargesAndFieldsScreenView.js';
 
-class ChargesAndFieldsScreen extends Screen<ChargesAndFieldsModel, ChargesAndFieldsScreenView> {
+export default class ChargesAndFieldsScreen extends Screen<ChargesAndFieldsModel, ChargesAndFieldsScreenView> {
 
   public constructor( tandem: Tandem ) {
     const options = {
@@ -29,4 +29,3 @@ class ChargesAndFieldsScreen extends Screen<ChargesAndFieldsModel, ChargesAndFie
 }
 
 chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );
-export default ChargesAndFieldsScreen;

@@ -40,7 +40,7 @@ const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 // if set to true will show the (model and view) positions use in the calculation of the electric potential lines
 const IS_DEBUG = phet.chipper.queryParameters.dev;
 
-class ElectricPotentialLineView extends PhetioObject {
+export default class ElectricPotentialLineView extends PhetioObject {
 
   // The path of the potential line
   public readonly path: Path;
@@ -234,4 +234,3 @@ class Circles extends Node {
 
 
 chargesAndFields.register( 'ElectricPotentialLineView', ElectricPotentialLineView );
-export default ElectricPotentialLineView;

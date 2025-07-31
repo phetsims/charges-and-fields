@@ -12,7 +12,7 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 
-class MeasuringTape {
+export default class MeasuringTape {
 
   // Base (start of tape from the container) position
   public readonly basePositionProperty: Vector2Property;
@@ -51,4 +51,3 @@ class MeasuringTape {
 }
 
 chargesAndFields.register( 'MeasuringTape', MeasuringTape );
-export default MeasuringTape;
