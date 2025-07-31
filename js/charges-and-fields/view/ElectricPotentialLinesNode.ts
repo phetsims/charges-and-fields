@@ -6,6 +6,7 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
@@ -29,7 +30,7 @@ class ElectricPotentialLinesNode extends Node {
    * @param areValuesVisibleProperty - control the visibility of the voltage labels
    * @param tandem
    */
-  public constructor( electricPotentialLineGroup: PhetioGroup<ElectricPotentialLine, [ ElectricPotentialLine ]>,
+  public constructor( electricPotentialLineGroup: PhetioGroup<ElectricPotentialLine, [ Vector2 ]>,
                       modelViewTransform: ModelViewTransform2,
                       areValuesVisibleProperty: Property<boolean>,
                       tandem: Tandem ) {

@@ -8,7 +8,7 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -18,9 +18,6 @@ import MeasuringTape from '../model/MeasuringTape.js';
 
 class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
 
-  // The model element
-  private readonly measuringTape: MeasuringTape;
-
   /**
    * @param measuringTape
    * @param snapToGridLines - function({Property.<Vector2>})
@@ -29,7 +26,7 @@ class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
    * @param tandem
    */
   public constructor( measuringTape: MeasuringTape,
-                      snapToGridLines: ( positionProperty: Property<Vector2> ) => void,
+                      snapToGridLines: ( positionProperty: Vector2Property ) => void,
                       modelViewTransform: ModelViewTransform2,
                       availableModelBoundsProperty: Property<Bounds2>,
                       tandem: Tandem ) {
@@ -44,7 +41,6 @@ class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
       textBackgroundColor: 'rgba( 0, 0, 0, 0.65 )'
     } );
 
-    this.measuringTape = measuringTape;
 
     this.isTipUserControlledProperty.link( () => snapToGridLines( measuringTape.tipPositionProperty ) );
 

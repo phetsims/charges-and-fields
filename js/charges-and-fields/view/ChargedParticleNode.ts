@@ -9,6 +9,7 @@
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Property from '../../../../axon/js/Property.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -42,7 +43,7 @@ class ChargedParticleNode extends ChargedParticleRepresentationNode {
    * @param tandem
    */
   public constructor( chargedParticle: ChargedParticle,
-                      snapToGridLines: ( positionProperty: Property<Vector2> ) => void,
+                      snapToGridLines: ( positionProperty: Vector2Property ) => void,
                       modelViewTransform: ModelViewTransform2,
                       availableModelBoundsProperty: Property<Bounds2>,
                       enclosureBounds: Bounds2,

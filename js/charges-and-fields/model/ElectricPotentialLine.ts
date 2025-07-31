@@ -291,7 +291,7 @@ class ElectricPotentialLine extends PhetioObject {
    *
    * @param positionArray
    */
-  private getPrunedPositionArray( positionArray: Vector2[] ): Vector2[] {
+  public getPrunedPositionArray( positionArray: Vector2[] ): Vector2[] {
     const length = positionArray.length;
     const prunedPositionArray = []; // {Array.<Vector2>}
 

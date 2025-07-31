@@ -106,8 +106,7 @@ export default class ChargesAndFieldsModel extends PhetioObject {
   // Group of electric potential lines
   public readonly electricPotentialLineGroup: PhetioGroup<ElectricPotentialLine, [ Vector2 ]>;
 
-  // @ts-expect-error - Need to add this property for compatibility with line 438 and 461
-  private electricField: Vector2;
+  private electricField = Vector2.ZERO;
 
   public constructor( tandem: Tandem ) {
 

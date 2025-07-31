@@ -82,13 +82,11 @@ class ElectricPotentialLineView extends PhetioObject {
 
       // create all the circles corresponding to the positions used to create the shape of the electric potential line
       const electricPotentialViewCircles = new Circles(
-        // @ts-expect-error - accessing private method for debug mode
         electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ),
         modelViewTransform, { fill: 'orange' } );
 
       // no translatable strings, for debug only
       const text = new Text( `model=${electricPotentialLine.positionArray.length
-      // @ts-expect-error - accessing private method for debug mode
       }    view=${electricPotentialLine.getPrunedPositionArray( electricPotentialLine.positionArray ).length}`, {
         center: modelViewTransform.modelToViewPosition( electricPotentialLine.position ),
         fill: 'green',

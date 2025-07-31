@@ -145,7 +145,6 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     // Create the scenery node responsible for drawing the electricPotential lines
     const electricPotentialLinesNode = new ElectricPotentialLinesNode(
-      // @ts-expect-error
       model.electricPotentialLineGroup,
       modelViewTransform,
       model.areValuesVisibleProperty,
@@ -185,8 +184,6 @@ class ChargesAndFieldsScreenView extends ScreenView {
 
     // Create a measuring tape (set to invisible initially)
     const measuringTapeNode = new ChargesAndFieldsMeasuringTapeNode( model.measuringTape,
-
-      // @ts-expect-error
       snapToGridLines,
       modelViewTransform,
       this.availableModelBoundsProperty,
@@ -281,7 +278,6 @@ class ChargesAndFieldsScreenView extends ScreenView {
     const chargedParticleNodeGroup = new PhetioGroup( ( tandem: Tandem, chargedParticle: ChargedParticle ) => {
       return new ChargedParticleNode(
         chargedParticle,
-        // @ts-expect-error
         snapToGridLines,
         modelViewTransform,
         this.availableModelBoundsProperty,
