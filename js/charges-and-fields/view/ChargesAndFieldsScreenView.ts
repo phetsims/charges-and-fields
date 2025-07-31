@@ -284,7 +284,9 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
         tandem
       );
-    }, [ model.chargedParticleGroup.archetype ], {
+
+      // @ts-expect-error
+    }, () => [ model.chargedParticleGroup.archetype ], {
       tandem: tandem.createTandem( 'chargedParticleNodeGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
 
@@ -306,7 +308,9 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
         model.chargesAndSensorsEnclosureBoundsProperty.get(),
         tandem
       );
-    }, [ model.electricFieldSensorGroup.archetype ], {
+
+      // @ts-expect-error
+    }, () => [ model.electricFieldSensorGroup.archetype ], {
       tandem: tandem.createTandem( 'electricFieldSensorNodeGroup' ),
       phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
 
