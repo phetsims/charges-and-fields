@@ -10,7 +10,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
-import merge from '../../../../phet-core/js/merge.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
@@ -23,7 +23,9 @@ const NullableIOVector2IO = NullableIO( Vector2.Vector2IO );
 
 /* global TWEEN */
 
-type ModelElementOptions = PhetioObjectOptions;
+type SelfOptions = EmptySelfOptions;
+
+type ModelElementOptions = SelfOptions & PhetioObjectOptions;
 
 class ModelElement extends PhetioObject {
 
@@ -51,17 +53,16 @@ class ModelElement extends PhetioObject {
 
   /**
    * @param initialPosition - Where to animate the element when it is done being used.
+   * @param providedOptions - Options for the ModelElement, see ModelElementOptions.
    */
-  public constructor( initialPosition: Vector2, options?: ModelElementOptions ) {
+  public constructor( initialPosition: Vector2, providedOptions?: ModelElementOptions ) {
 
-    // eslint-disable-next-line phet/bad-typescript-text
-    options = merge( {
-
+    const options = optionize<ModelElementOptions, SelfOptions, PhetioObjectOptions>()( {
       phetioType: ModelElement.ModelElementIO
-    }, options );
+    }, providedOptions );
     super( options );
 
-    const tandem = options.tandem!;// required
+    const tandem = options.tandem;// required
 
     this.positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'positionProperty' ),
