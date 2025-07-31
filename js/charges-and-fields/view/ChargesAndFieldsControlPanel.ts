@@ -6,16 +6,19 @@
  * @author Martin Veillette (Berea College)
  */
 
+import Property from '../../../../axon/js/Property.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Panel from '../../../../sun/js/Panel.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
 
 const directionOnlyString = ChargesAndFieldsStrings.directionOnly;
 const electricFieldString = ChargesAndFieldsStrings.electricField;
@@ -26,20 +29,22 @@ const voltageString = ChargesAndFieldsStrings.voltage;
 
 class ChargesAndFieldsControlPanel extends Panel {
 
+  // The model
+  private readonly model: ChargesAndFieldsModel;
+
   /**
-   * @param {ChargesAndFieldsModel} model
-   * @param {Tandem} tandem
+   * @param model
+   * @param tandem
    */
-  constructor( model, tandem ) {
+  public constructor( model: ChargesAndFieldsModel, tandem: Tandem ) {
 
     /**
      * checkbox factory
      * @param tandemId
-     * @param {string} string
-     * @param {Property.<boolean>} property
-     * @returns {Checkbox}
+     * @param string
+     * @param property
      */
-    function createCheckbox( tandemId, string, property ) {
+    function createCheckbox( tandemId: string, string: string, property: Property<boolean> ): Checkbox {
       const text = new Text( string, {
         font: ChargesAndFieldsConstants.CHECKBOX_FONT,
         fill: ChargesAndFieldsColors.controlPanelTextProperty,
@@ -57,10 +62,9 @@ class ChargesAndFieldsControlPanel extends Panel {
 
     /**
      * indent the checkbox
-     * @param {Checkbox} checkbox
-     * @returns {Node}
+     * @param checkbox
      */
-    function createIndentedNode( checkbox ) {
+    function createIndentedNode( checkbox: Checkbox ): Node {
       const node = new Node();
       const hStrut = new HStrut( 25 ); // some arbitrary number that looks good.
       checkbox.left = hStrut.right;
@@ -80,7 +84,6 @@ class ChargesAndFieldsControlPanel extends Panel {
     const directionOnlyGroup = createIndentedNode( directionOnlyCheckbox );
     const snapToGridGroup = createIndentedNode( snapToGridCheckbox );
 
-    // @private
     const toggleNodes = [
       electricFieldCheckbox,
       directionOnlyGroup,
@@ -90,7 +93,6 @@ class ChargesAndFieldsControlPanel extends Panel {
       snapToGridGroup
     ];
 
-    // @private
     const checkboxGroup = new VBox( {
       spacing: 12,
       children: toggleNodes,
@@ -107,7 +109,6 @@ class ChargesAndFieldsControlPanel extends Panel {
       tandem: tandem
     } );
 
-    // @private
     this.model = model;
 
     model.isElectricFieldVisibleProperty.linkAttribute( directionOnlyCheckbox, 'enabled' );
