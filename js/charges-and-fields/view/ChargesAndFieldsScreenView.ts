@@ -15,7 +15,6 @@ import Rectangle from '../../../../dot/js/Rectangle.js';
 import DotUtils from '../../../../dot/js/Utils.js'; // eslint-disable-line phet/default-import-match-filename
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import merge from '../../../../phet-core/js/merge.js';
 import platform from '../../../../phet-core/js/platform.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
@@ -425,10 +424,10 @@ class ChargesAndFieldsScreenView extends ScreenView {
    * which relies on three colors and three electric potential anchors. It is essentially two linear interpolation
    * functions put end to end so that the entire domain is covered.
    * @param electricPotential
-   * @param options - useful to set transparency
+   * @param transparency - transparency value from 0 to 1
    * @returns color -  e.g. 'rgba(255, 255, 255, 1)'
    */
-  private getElectricPotentialColor( electricPotential: number, options?: IntentionalAny ): string {
+  private getElectricPotentialColor( electricPotential: number, transparency: number ): string {
 
     let finalColor; // {string} e.g. 'rgba(0,0,0,1)'
     let distance; // {number}  between 0 and 1
@@ -444,7 +443,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
         // {Color} color of Max Electric Potential
         ChargesAndFieldsColors.electricPotentialGridSaturationPositiveProperty.get(),
         distance, // {number} distance must be between 0 and 1
-        options );
+        transparency );
     }
     // for negative (or zero) electric potential
     else {
@@ -457,26 +456,21 @@ class ChargesAndFieldsScreenView extends ScreenView {
         // {Color} color that corresponds to the Electric Potential being zero
         ChargesAndFieldsColors.electricPotentialGridZeroProperty.get(),
         distance, // {number} distance must be between 0 and 1
-        options );
+        transparency );
     }
     return finalColor;
   }
 
   /**
-   * Function that interpolates between two color. The transparency can be set vis a default options
+   * Function that interpolates between two colors with a required transparency parameter
    * The function returns a string in order to minimize the number of allocations
    * @param color1
    * @param color2
    * @param distance - a value from 0 to 1
-   * @param [options]
+   * @param transparency - transparency value from 0 to 1
    * @returns color - e.g. 'rgba(0,0,0,1)'
    */
-  private interpolateRGBA( color1: IntentionalAny, color2: IntentionalAny, distance: number, options?: IntentionalAny ): string {
-    // eslint-disable-next-line phet/bad-typescript-text
-    options = merge( {
-      // defaults
-      transparency: 1
-    }, options );
+  private interpolateRGBA( color1: IntentionalAny, color2: IntentionalAny, distance: number, transparency: number ): string {
 
     if ( distance < 0 || distance > 1 ) {
       throw new Error( `distance must be between 0 and 1: ${distance}` );
@@ -484,7 +478,7 @@ class ChargesAndFieldsScreenView extends ScreenView {
     const r = Math.floor( linear( 0, 1, color1.r, color2.r, distance ) );
     const g = Math.floor( linear( 0, 1, color1.g, color2.g, distance ) );
     const b = Math.floor( linear( 0, 1, color1.b, color2.b, distance ) );
-    return `rgba(${r},${g},${b},${options.transparency})`;
+    return `rgba(${r},${g},${b},${transparency})`;
   }
 
   /**

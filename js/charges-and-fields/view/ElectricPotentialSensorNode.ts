@@ -61,14 +61,14 @@ class ElectricPotentialSensorNode extends Node {
    * TODO: this interface is unwieldy and difficult to navigate.  Why not pass the model with all these functions? https://github.com/phetsims/charges-and-fields/issues/203
    * @param model
    * @param snapToGridLines - A Function that snap the position to the minor gridlines.
-   * @param getElectricPotentialColor - A function that maps a value of the electric potential to a color
+   * @param getElectricPotentialColor - A function that maps a value of the electric potential to a color with transparency
    * @param modelViewTransform - the coordinate transform between model coordinates and view coordinates
    * @param availableModelBoundsProperty - drag bounds in model coordinates for the electric potential sensor node
    * @param tandem
    */
   public constructor( model: ChargesAndFieldsModel,
                       snapToGridLines: ( positionProperty: Vector2Property ) => void,
-                      getElectricPotentialColor: ( electricPotential: number, options?: IntentionalAny ) => string,
+                      getElectricPotentialColor: ( electricPotential: number, transparency: number ) => string,
                       modelViewTransform: ModelViewTransform2,
                       availableModelBoundsProperty: Property<Bounds2>,
                       tandem: Tandem ) {
@@ -274,7 +274,7 @@ class ElectricPotentialSensorNode extends Node {
      * @param electricPotential
      */
     function updateCircleFill( electricPotential: number ): void {
-      circle.fill = getElectricPotentialColor( electricPotential, { transparency: 0.5 } );
+      circle.fill = getElectricPotentialColor( electricPotential, 0.5 );
     }
 
     /**
