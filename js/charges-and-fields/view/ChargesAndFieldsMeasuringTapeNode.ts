@@ -7,24 +7,32 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
+import MeasuringTape from '../model/MeasuringTape.js';
 
 class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode {
 
+  // The model element
+  private readonly measuringTape: MeasuringTape;
+
   /**
-   * @param {MeasuringTape} measuringTape
-   * @param {function} snapToGridLines - function({Property.<Vector2>})
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<Bounds2>} availableModelBoundsProperty - dragBounds for the charged particle
-   * @param {Tandem} tandem
+   * @param measuringTape
+   * @param snapToGridLines - function({Property.<Vector2>})
+   * @param modelViewTransform
+   * @param availableModelBoundsProperty - dragBounds for the charged particle
+   * @param tandem
    */
-  constructor( measuringTape,
-               snapToGridLines,
-               modelViewTransform,
-               availableModelBoundsProperty,
-               tandem ) {
+  public constructor( measuringTape: MeasuringTape,
+                      snapToGridLines: ( positionProperty: Property<Vector2> ) => void,
+                      modelViewTransform: ModelViewTransform2,
+                      availableModelBoundsProperty: Property<Bounds2>,
+                      tandem: Tandem ) {
 
     super( new Property( { name: ChargesAndFieldsStrings.centimeterUnit, multiplier: 100 } ), {
       visibleProperty: measuringTape.isActiveProperty,
