@@ -6,17 +6,24 @@
  * @author Martin Veillette (Berea College)
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Panel from '../../../../sun/js/Panel.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
+import ChargesAndFieldsScreenView from './ChargesAndFieldsScreenView.js';
 import ElectricFieldSensorRepresentationNode from './ElectricFieldSensorRepresentationNode.js';
 
 const minusOneNanoCString = ChargesAndFieldsStrings.minusOneNanoC;
@@ -29,36 +36,38 @@ const Y_MARGIN = 10;
 
 class ChargesAndSensorsPanel extends Panel {
 
+  private readonly hboxContent: HBox;
+  private readonly draggableItems: Node[];
+
   /**
    * Enclosure that contains the charges and sensor
    *
-   * @param {ChargesAndFieldsModel} model
-   * @param {ChargesAndFieldsScreenView} screenView
-   * @param {Function} hookDragHandler - function(modelElement,event) Called when the element is dropped into the play
-   *                                     area, hooks up the provided event to the modelElement's corresponding view's
-   *                                     drag handler (starts the drag).
-   * @param {Property.<boolean>} canAddMoreChargedParticlesProperty - Whether more charged particles can be added.
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Tandem} tandem
+   * @param model
+   * @param screenView
+   * @param hookDragHandler - function(modelElement,event) Called when the element is dropped into the play
+   *                          area, hooks up the provided event to the modelElement's corresponding view's
+   *                          drag handler (starts the drag).
+   * @param canAddMoreChargedParticlesProperty - Whether more charged particles can be added.
+   * @param modelViewTransform
+   * @param tandem
    */
-  constructor( model,
-               screenView,
-               hookDragHandler,
-               canAddMoreChargedParticlesProperty,
-               modelViewTransform,
-               tandem ) {
+  public constructor( model: ChargesAndFieldsModel,
+                      screenView: ChargesAndFieldsScreenView,
+                      hookDragHandler: ( modelElement: IntentionalAny, event: IntentionalAny ) => void,
+                      canAddMoreChargedParticlesProperty: BooleanProperty,
+                      modelViewTransform: ModelViewTransform2,
+                      tandem: Tandem ) {
 
-    // @private {Array.<Node>}
-    const draggableItems = [];
+    const draggableItems: Node[] = [];
 
     /**
-     * @param {Tandem} itemTandem
-     * @param {string} label
-     * @param {Function} createModelElement - Adds one of these items to the model, and returns the model object.
-     * @param {Node} previewNode
-     * @param {Property.<boolean>} isVisibleProperty
+     * @param itemTandem
+     * @param label
+     * @param createModelElement - Adds one of these items to the model, and returns the model object.
+     * @param previewNode
+     * @param isVisibleProperty
      */
-    function createDraggableItem( itemTandem, label, createModelElement, previewNode, isVisibleProperty ) {
+    function createDraggableItem( itemTandem: Tandem, label: string, createModelElement: ( initialPosition: Vector2 ) => IntentionalAny, previewNode: Node, isVisibleProperty: TReadOnlyProperty<boolean> ): Node {
       const labelText = new Text( label, {
         font: ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT,
         fill: ChargesAndFieldsColors.enclosureTextProperty,
@@ -81,7 +90,7 @@ class ChargesAndSensorsPanel extends Panel {
 
       // When pressed, creates a model element and triggers press() on the corresponding view
       node.addInputListener( {
-        down: event => {
+        down: ( event: IntentionalAny ) => {
 
           // Don't try to start drags with a right mouse button or an attached pointer.
           if ( !event.canStartPress() ) { return; }
@@ -108,19 +117,16 @@ class ChargesAndSensorsPanel extends Panel {
       return node;
     }
 
-    // {Property.<boolean>}
     const positiveVisibleProperty = new DerivedProperty(
       [ canAddMoreChargedParticlesProperty, model.allowNewPositiveChargesProperty ],
-      ( canAdd, allowNew ) => canAdd && allowNew
+      ( canAdd: boolean, allowNew: boolean ) => canAdd && allowNew
     );
 
-    // {Property.<boolean>}
     const negativeVisibleProperty = new DerivedProperty(
       [ canAddMoreChargedParticlesProperty, model.allowNewNegativeChargesProperty ],
-      ( canAdd, allowNew ) => canAdd && allowNew
+      ( canAdd: boolean, allowNew: boolean ) => canAdd && allowNew
     );
 
-    // {Property.<boolean>}
     const electricFieldSensorVisibleProperty = model.allowNewElectricFieldSensorsProperty;
 
     const hboxContent = new HBox( {
@@ -129,19 +135,19 @@ class ChargesAndSensorsPanel extends Panel {
       children: [
         createDraggableItem( tandem.createTandem( 'positiveCharge' ),
           plusOneNanoCString,
-          initialPosition => model.addPositiveCharge( initialPosition ),
+          ( initialPosition: Vector2 ) => model.addPositiveCharge( initialPosition ),
           new ChargedParticleRepresentationNode( 1 ),
           positiveVisibleProperty ),
 
         createDraggableItem( tandem.createTandem( 'negativeCharge' ),
           minusOneNanoCString,
-          initialPosition => model.addNegativeCharge( initialPosition ),
+          ( initialPosition: Vector2 ) => model.addNegativeCharge( initialPosition ),
           new ChargedParticleRepresentationNode( -1 ),
           negativeVisibleProperty ),
 
         createDraggableItem( tandem.createTandem( 'electricFieldSensor' ),
           sensorsString,
-          initialPosition => model.addElectricFieldSensor( initialPosition ),
+          ( initialPosition: Vector2 ) => model.addElectricFieldSensor( initialPosition ),
 
           new ElectricFieldSensorRepresentationNode(),
           electricFieldSensorVisibleProperty )
@@ -160,7 +166,7 @@ class ChargesAndSensorsPanel extends Panel {
 
     this.hboxContent = hboxContent;
 
-    draggableItems.forEach( draggableItem => {
+    draggableItems.forEach( ( draggableItem: Node ) => {
       draggableItem.visibleProperty.lazyLink( this.updateChildrenWithVisibility.bind( this ) );
     } );
 
@@ -171,10 +177,9 @@ class ChargesAndSensorsPanel extends Panel {
 
   /**
    * Ensures visible items are children, and invisible items are removed.
-   * @private
    */
-  updateChildrenWithVisibility() {
-    this.hboxContent.children = this.draggableItems.filter( draggableItem => draggableItem.visible );
+  private updateChildrenWithVisibility(): void {
+    this.hboxContent.children = this.draggableItems.filter( ( draggableItem: Node ) => draggableItem.visible );
   }
 }
 
