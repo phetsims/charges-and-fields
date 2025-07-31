@@ -32,13 +32,17 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import ObservableArrayDef from '../../../../axon/js/ObservableArrayDef.js';
+import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
-import WebGLNode from '../../../../scenery/js/nodes/WebGLNode.js';
+import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
+import WebGLNode, { WebGLNodePainter, WebGLNodePainterResult } from '../../../../scenery/js/nodes/WebGLNode.js';
 import ShaderProgram from '../../../../scenery/js/util/ShaderProgram.js';
 import Utils from '../../../../scenery/js/util/Utils.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
+import ChargedParticle from '../model/ChargedParticle.js';
 import ChargeTracker from './ChargeTracker.js';
 
 // integer constants for our shader
@@ -53,13 +57,18 @@ const scratchFloatArray = new Float32Array( 9 );
 
 class ElectricPotentialWebGLNode extends WebGLNode {
 
+  // Properties for WebGL rendering
+  public readonly chargedParticles: ObservableArray<ChargedParticle>;
+  public readonly modelViewTransform: ModelViewTransform2;
+  public readonly isVisibleProperty: Property<boolean>;
+  private readonly disposeElectricPotentialWebGLNode: () => void;
+
   /**
-   * @param {ObservableArray<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Property.<boolean>} isVisibleProperty
+   * @param chargedParticles - only chargedParticles that active are in this array
+   * @param modelViewTransform
+   * @param isVisibleProperty
    */
-  constructor( chargedParticles, modelViewTransform, isVisibleProperty ) {
-    assert && assert( ObservableArrayDef.isObservableArray( chargedParticles ), 'invalid chargedParticles' );
+  public constructor( chargedParticles: ObservableArray<ChargedParticle>, modelViewTransform: ModelViewTransform2, isVisibleProperty: Property<boolean> ) {
 
     super( ElectricPotentialPainter, {
       layerSplit: true // ensure we're on our own layer
@@ -77,10 +86,10 @@ class ElectricPotentialWebGLNode extends WebGLNode {
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 
     // particle added
-    chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) );
+    chargedParticles.addItemAddedListener( ( particle: ChargedParticle ) => particle.positionProperty.link( invalidateSelfListener ) );
 
     // particle removed
-    chargedParticles.addItemRemovedListener( particle => {
+    chargedParticles.addItemRemovedListener( ( particle: ChargedParticle ) => {
       invalidateSelfListener();
       particle.positionProperty.unlink( invalidateSelfListener );
     } );
@@ -92,11 +101,12 @@ class ElectricPotentialWebGLNode extends WebGLNode {
   /**
    * Detection for support, because iOS Safari 8 doesn't support rendering to a float texture, AND doesn't support
    * classic detection via an extension (OES_texture_float works).
-   * @public
    */
-  static supportsRenderingToFloatTexture() {
+  public static supportsRenderingToFloatTexture(): boolean {
     const canvas = document.createElement( 'canvas' );
     const gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+    affirm( gl instanceof WebGLRenderingContext, 'WebGL context is required for ElectricPotentialWebGLNode' );
+
     gl.getExtension( 'OES_texture_float' );
     const framebuffer = gl.createFramebuffer();
     const texture = gl.createTexture();
@@ -112,22 +122,37 @@ class ElectricPotentialWebGLNode extends WebGLNode {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.disposeElectricPotentialWebGLNode();
+    super.dispose();
   }
 }
 
 chargesAndFields.register( 'ElectricPotentialWebGLNode', ElectricPotentialWebGLNode );
 
-class ElectricPotentialPainter {
+class ElectricPotentialPainter implements WebGLNodePainter {
+
+  private readonly gl: WebGLRenderingContext;
+  private readonly node: ElectricPotentialWebGLNode;
+  private readonly chargeTracker: ChargeTracker;
+  private readonly framebuffer: WebGLFramebuffer;
+  private currentTexture: WebGLTexture;
+  private previousTexture: WebGLTexture;
+  private readonly clearShaderProgram: ShaderProgram;
+  private readonly computeShaderProgram: ShaderProgram;
+  private readonly displayShaderProgram: ShaderProgram;
+  private readonly vertexBuffer: WebGLBuffer;
+  private canvasWidth = 0;
+  private canvasHeight = 0;
+  private textureWidth = 0;
+  private textureHeight = 0;
 
   /**
-   * @param {WebGLRenderingContext} gl
-   * @param {WaveWebGLNode} node
+   * @param gl
+   * @param node
    */
-  constructor( gl, node ) {
+  public constructor( gl: WebGLRenderingContext, node: ElectricPotentialWebGLNode ) {
     this.gl = gl;
     this.node = node;
 
@@ -137,11 +162,11 @@ class ElectricPotentialPainter {
     gl.getExtension( 'OES_texture_float' );
 
     // the framebuffer we'll be drawing into (with either of the two textures)
-    this.framebuffer = gl.createFramebuffer();
+    this.framebuffer = gl.createFramebuffer()!;
 
     // the two textures we'll be switching between
-    this.currentTexture = gl.createTexture();
-    this.previousTexture = gl.createTexture();
+    this.currentTexture = gl.createTexture()!;
+    this.previousTexture = gl.createTexture()!;
     this.sizeTexture( this.currentTexture );
     this.sizeTexture( this.previousTexture );
 
@@ -242,7 +267,7 @@ class ElectricPotentialPainter {
     } );
 
     // we only need one vertex buffer with the same contents for all three shaders!
-    this.vertexBuffer = gl.createBuffer();
+    this.vertexBuffer = gl.createBuffer()!;
     gl.bindBuffer( gl.ARRAY_BUFFER, this.vertexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( [
       -1, -1,
@@ -254,11 +279,10 @@ class ElectricPotentialPainter {
 
   /**
    * Resizes a texture to be able to cover the canvas area, and sets drawable properties for the size
-   * @private
    *
-   * @param {WebGLTexture} texture
+   * @param texture
    */
-  sizeTexture( texture ) {
+  private sizeTexture( texture: WebGLTexture ): void {
     const gl = this.gl;
     const width = gl.canvas.width;
     const height = gl.canvas.height;
@@ -277,13 +301,11 @@ class ElectricPotentialPainter {
   }
 
   /**
-   * @public
-   *
-   * @param {Matrix3} modelViewMatrix
-   * @param {Matrix3} projectionMatrix
-   * @returns {number} - WebGLNode.PAINTED_NOTHING or WebGLNode.PAINTED_SOMETHING.
+   * @param modelViewMatrix
+   * @param projectionMatrix
+   * @returns - WebGLNode.PAINTED_NOTHING or WebGLNode.PAINTED_SOMETHING.
    */
-  paint( modelViewMatrix, projectionMatrix ) {
+  public paint( modelViewMatrix: Matrix3, projectionMatrix: Matrix3 ): WebGLNodePainterResult {
     const gl = this.gl;
     const clearShaderProgram = this.clearShaderProgram;
     const computeShaderProgram = this.computeShaderProgram;
@@ -417,9 +439,8 @@ class ElectricPotentialPainter {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public dispose(): void {
     const gl = this.gl;
 
     // clears all of our resources
@@ -431,8 +452,13 @@ class ElectricPotentialPainter {
     gl.deleteBuffer( this.vertexBuffer );
     gl.deleteFramebuffer( this.framebuffer );
 
+    // @ts-expect-error
     this.computeShaderProgram = null;
+
+    // @ts-expect-error
     this.displayShaderProgram = null;
+
+    // @ts-expect-error
     this.clearShaderProgram = null;
 
     this.chargeTracker.dispose();
