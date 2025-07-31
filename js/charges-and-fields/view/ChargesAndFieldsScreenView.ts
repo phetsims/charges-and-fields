@@ -21,6 +21,7 @@ import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransfo
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Utils from '../../../../scenery/js/util/Utils.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
@@ -30,6 +31,8 @@ import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from '../model/ChargedParticle.js';
 import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
+import ElectricFieldSensor from '../model/ElectricFieldSensor.js';
+import ModelElement from '../model/ModelElement.js';
 import ChargedParticleNode from './ChargedParticleNode.js';
 import ChargesAndFieldsControlPanel from './ChargesAndFieldsControlPanel.js';
 import ChargesAndFieldsMeasuringTapeNode from './ChargesAndFieldsMeasuringTapeNode.js';
@@ -220,9 +223,7 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
     model.chargedParticleGroup.elementDisposedEmitter.addListener( updateCanAddMoreChargedParticlesProperty );
 
     // Create the charge and sensor enclosure, will be displayed at the bottom of the screen
-    const chargesAndSensorsPanel = new ChargesAndSensorsPanel(
-      model, this,
-      ( modelElement: IntentionalAny, event: IntentionalAny ) => {
+    const chargesAndSensorsPanel = new ChargesAndSensorsPanel( model, this, ( modelElement: ModelElement, event: IntentionalAny ) => {
 
         // Horrible, horrible hacks
         draggableElementsLayer.children.forEach( potentialView => {
@@ -290,7 +291,7 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
       supportsDynamicState: false
     } );
 
-    const electricFieldSensorNodeGroup = new PhetioGroup( ( tandem: Tandem, electricFieldSensor: IntentionalAny ) => {
+    const electricFieldSensorNodeGroup = new PhetioGroup( ( tandem: Tandem, electricFieldSensor: ElectricFieldSensor ) => {
 
       // Create and add the view representation for this electric Field Sensor
       return new ElectricFieldSensorNode(
@@ -466,7 +467,7 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
    * @param transparency - transparency value from 0 to 1
    * @returns color - e.g. 'rgba(0,0,0,1)'
    */
-  private interpolateRGBA( color1: IntentionalAny, color2: IntentionalAny, distance: number, transparency: number ): string {
+  private interpolateRGBA( color1: Color, color2: Color, distance: number, transparency: number ): string {
 
     if ( distance < 0 || distance > 1 ) {
       throw new Error( `distance must be between 0 and 1: ${distance}` );

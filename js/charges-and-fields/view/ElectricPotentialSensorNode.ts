@@ -37,6 +37,7 @@ import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
+import ElectricPotentialSensor from '../model/ElectricPotentialSensor.js';
 import PencilButton from './PencilButton.js';
 
 // constants
@@ -50,7 +51,7 @@ const voltageUnitString = ChargesAndFieldsStrings.voltageUnit;
 export default class ElectricPotentialSensorNode extends Node {
 
   // The model element that this node represents
-  public readonly modelElement: IntentionalAny;
+  public readonly modelElement: ElectricPotentialSensor;
 
   public readonly isUserControlledProperty: BooleanProperty;
   public readonly dragListener: DragListener;

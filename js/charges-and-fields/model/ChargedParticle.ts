@@ -73,13 +73,13 @@ export default class ChargedParticle extends ModelElement {
       charge: NumberIO
     },
     toStateObject: ( chargedParticle: ChargedParticle ): IntentionalAny => {
-      const parentStateObject: IntentionalAny = ( ModelElement.ModelElementIO as IntentionalAny ).toStateObject( chargedParticle );
+      const parentStateObject: IntentionalAny = ModelElement.ModelElementIO.toStateObject( chargedParticle );
       parentStateObject.charge = chargedParticle.charge;
       return parentStateObject;
     },
     // Put charge first for the chargedParticleGroup create function API.
     stateObjectToCreateElementArguments: ( stateObject: IntentionalAny ): IntentionalAny[] => [ stateObject.charge ].concat(
-      ( ModelElement.ModelElementIO as IntentionalAny ).stateObjectToCreateElementArguments( stateObject )
+      ModelElement.ModelElementIO.stateObjectToCreateElementArguments( stateObject )
     )
   } );
 }

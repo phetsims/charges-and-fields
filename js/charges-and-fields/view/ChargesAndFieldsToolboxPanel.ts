@@ -80,7 +80,7 @@ export default class ChargesAndFieldsToolboxPanel extends Panel {
     // determine the distance (in model coordinates) between the tip and the base position of the measuring tape
     const tipToBasePosition = measuringTape.tipPositionProperty.get().minus( measuringTape.basePositionProperty.get() );
 
-    const measuringTapeInputListener: IntentionalAny = {
+    const measuringTapeInputListener = {
       down: ( event: IntentionalAny ) => {
 
         // Don't try to start drags with a right mouse button or an attached pointer.
@@ -122,13 +122,6 @@ export default class ChargesAndFieldsToolboxPanel extends Panel {
 
     // measuringTape visibility has the opposite visibility of the measuringTape Icon
     measuringTape.isActiveProperty.link( active => measuringTapeIconNode.setVisible( !active ) );
-
-    // no need to dispose of this link since this is present for the lifetime of the sim
-    availableModelBoundsProperty.link( ( bounds: Bounds2 ) => {
-
-      // TODO: did this mean to say measuringTape.dragBounds??? https://github.com/phetsims/charges-and-fields/issues/203
-      measuringTapeInputListener.dragBounds = bounds;
-    } );
   }
 
   /**

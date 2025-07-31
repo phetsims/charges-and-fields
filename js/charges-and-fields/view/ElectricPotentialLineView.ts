@@ -15,7 +15,6 @@
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
@@ -125,7 +124,7 @@ class VoltageLabel extends Node {
       positionProperty: electricPotentialLine.voltageLabelPositionProperty,
       tandem: tandem.createTandem( 'dragListener' ),
       transform: modelViewTransform,
-      start: ( event: IntentionalAny ) => {
+      start: () => {
 
         // Move the label to the front of this layer when grabbed by the user.
         this.moveToFront();

@@ -22,6 +22,7 @@ import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargesAndFieldsModel from '../model/ChargesAndFieldsModel.js';
+import ModelElement from '../model/ModelElement.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
 import ChargesAndFieldsScreenView from './ChargesAndFieldsScreenView.js';
 import ElectricFieldSensorRepresentationNode from './ElectricFieldSensorRepresentationNode.js';
@@ -53,7 +54,7 @@ export default class ChargesAndSensorsPanel extends Panel {
    */
   public constructor( model: ChargesAndFieldsModel,
                       screenView: ChargesAndFieldsScreenView,
-                      hookDragHandler: ( modelElement: IntentionalAny, event: IntentionalAny ) => void,
+                      hookDragHandler: ( modelElement: ModelElement, event: IntentionalAny ) => void,
                       canAddMoreChargedParticlesProperty: BooleanProperty,
                       modelViewTransform: ModelViewTransform2,
                       tandem: Tandem ) {
@@ -67,7 +68,7 @@ export default class ChargesAndSensorsPanel extends Panel {
      * @param previewNode
      * @param isVisibleProperty
      */
-    function createDraggableItem( itemTandem: Tandem, label: string, createModelElement: ( initialPosition: Vector2 ) => IntentionalAny, previewNode: Node, isVisibleProperty: TReadOnlyProperty<boolean> ): Node {
+    function createDraggableItem( itemTandem: Tandem, label: string, createModelElement: ( initialPosition: Vector2 ) => ModelElement, previewNode: Node, isVisibleProperty: TReadOnlyProperty<boolean> ): Node {
       const labelText = new Text( label, {
         font: ChargesAndFieldsConstants.ENCLOSURE_LABEL_FONT,
         fill: ChargesAndFieldsColors.enclosureTextProperty,
