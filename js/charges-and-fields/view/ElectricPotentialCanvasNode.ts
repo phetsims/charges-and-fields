@@ -6,11 +6,16 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import CanvasNode from '../../../../scenery/js/nodes/CanvasNode.js';
 import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
+import ChargedParticle from '../model/ChargedParticle.js';
 import ChargeTracker from './ChargeTracker.js';
 
 // Spacing in the model coordinate frame.
@@ -18,23 +23,42 @@ const ELECTRIC_POTENTIAL_SENSOR_SPACING = ChargesAndFieldsConstants.ELECTRIC_POT
 
 class ElectricPotentialCanvasNode extends CanvasNode {
 
+  private readonly chargeTracker: ChargeTracker;
+  private readonly modelViewTransform: ModelViewTransform2;
+  private readonly modelBounds: Bounds2;
+  private readonly viewBounds: Bounds2;
+  private readonly isVisibleProperty: Property<boolean>;
+
+  // Array of model positions where electric potential is calculated
+  private readonly modelPositions: Vector2[];
+
+  // Array of electric potential values corresponding to model positions
+  private readonly electricPotentials: Float64Array;
+
+  // Direct canvas for rendering the potential grid
+  private readonly directCanvas: HTMLCanvasElement;
+  private readonly directContext: CanvasRenderingContext2D;
+  private directCanvasDirty: boolean;
+  private readonly imageData: ImageData;
+
+  private readonly disposeElectricPotentialCanvasNode: () => void;
+
   /**
-   * @param {ObservableArrayDef.<ChargedParticle>} chargedParticles - only chargedParticles that active are in this array
-   * @param {ModelViewTransform2} modelViewTransform
-   * @param {Bounds2} modelBounds - The bounds in the model that need to be drawn
-   * @param {Property.<boolean>} isVisibleProperty
+   * @param chargedParticles - only chargedParticles that active are in this array
+   * @param modelViewTransform
+   * @param modelBounds - The bounds in the model that need to be drawn
+   * @param isVisibleProperty
    */
-  constructor( chargedParticles,
-               modelViewTransform,
-               modelBounds,
-               isVisibleProperty ) {
+  public constructor( chargedParticles: ObservableArray<ChargedParticle>,
+                      modelViewTransform: ModelViewTransform2,
+                      modelBounds: Bounds2,
+                      isVisibleProperty: Property<boolean> ) {
 
     super( {
       canvasBounds: modelViewTransform.modelToViewBounds( modelBounds )
     } );
 
     this.chargeTracker = new ChargeTracker( chargedParticles );
-
     this.modelViewTransform = modelViewTransform;
     this.modelBounds = modelBounds;
     this.viewBounds = this.modelViewTransform.modelToViewBounds( modelBounds );
@@ -48,17 +72,17 @@ class ElectricPotentialCanvasNode extends CanvasNode {
     isVisibleProperty.link( invalidateSelfListener ); // visibility change
 
     // particle added
-    chargedParticles.addItemAddedListener( particle => particle.positionProperty.link( invalidateSelfListener ) );
+    chargedParticles.addItemAddedListener( ( particle: ChargedParticle ) => particle.positionProperty.link( invalidateSelfListener ) );
 
     // particle removed
-    chargedParticles.addItemRemovedListener( particle => {
+    chargedParticles.addItemRemovedListener( ( particle: ChargedParticle ) => {
       invalidateSelfListener();
       particle.positionProperty.unlink( invalidateSelfListener );
     } );
 
     isVisibleProperty.linkAttribute( this, 'visible' );
 
-    this.modelPositions = []; // {Array.<Vector2>}
+    this.modelPositions = [];
     const width = modelBounds.width;
     const height = modelBounds.height;
     const numHorizontal = Math.ceil( width / ELECTRIC_POTENTIAL_SENSOR_SPACING );
@@ -78,29 +102,22 @@ class ElectricPotentialCanvasNode extends CanvasNode {
     this.directCanvas = document.createElement( 'canvas' );
     this.directCanvas.width = numHorizontal;
     this.directCanvas.height = numVertical;
-    this.directContext = this.directCanvas.getContext( '2d' );
-    this.directCanvasDirty = true; // Store a dirty flag, in case there weren't charge changes detected
+    this.directContext = this.directCanvas.getContext( '2d' )!;
+    this.directCanvasDirty = true;
 
     this.imageData = this.directContext.getImageData( 0, 0, numHorizontal, numVertical );
     assert && assert( this.imageData.width === numHorizontal );
     assert && assert( this.imageData.height === numVertical );
 
-    // visibility change
     this.disposeElectricPotentialCanvasNode = () => isVisibleProperty.unlink( invalidateSelfListener );
   }
 
-  /**
-   * @private
-   */
-  forceRepaint() {
+  private forceRepaint(): void {
     this.invalidatePaint();
     this.directCanvasDirty = true;
   }
 
-  /**
-   * @private
-   */
-  updateElectricPotentials() {
+  private updateElectricPotentials(): void {
     const kConstant = ChargesAndFieldsConstants.K_CONSTANT;
 
     const numChanges = this.chargeTracker.queue.length;
@@ -170,11 +187,9 @@ class ElectricPotentialCanvasNode extends CanvasNode {
 
   /**
    * Function responsible for painting the canvas Node as a grid array of squares
-   * @public
-   * @override
-   * @param {CanvasRenderingContext2D} context
+   * @param context
    */
-  paintCanvas( context ) {
+  public override paintCanvas( context: CanvasRenderingContext2D ): void {
     this.updateElectricPotentials();
 
     context.save();
@@ -192,9 +207,8 @@ class ElectricPotentialCanvasNode extends CanvasNode {
 
   /**
    * Releases references
-   * @public
    */
-  dispose() {
+  public override dispose(): void {
     this.disposeElectricPotentialCanvasNode();
   }
 }
