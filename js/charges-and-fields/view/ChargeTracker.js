@@ -1,4 +1,4 @@
-// Copyright 2014-2015, University of Colorado Boulder
+// Copyright 2016, University of Colorado Boulder
 
 /**
  * Tracks movement of particles, so that efficient deltas can be computed for Canvas/WebGL display of the electric

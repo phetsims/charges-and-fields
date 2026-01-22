@@ -1,4 +1,4 @@
-// Copyright 2014-2015, University of Colorado Boulder
+// Copyright 2016, University of Colorado Boulder
 
 /**
  * View for a draggable measuring tape for Charges and Fields.
