@@ -16,7 +16,7 @@
  * 1. Iterate through the queue, applying changes
  * 2. Call clear()
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import { ObservableArray } from '../../../../axon/js/createObservableArray.js';

@@ -3,7 +3,7 @@
 /**
  * Namespace object for Molecule Shapes
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Namespace from '../../phet-core/js/Namespace.js';

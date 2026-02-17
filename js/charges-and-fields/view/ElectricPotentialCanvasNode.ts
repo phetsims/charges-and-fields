@@ -3,7 +3,7 @@
 /**
  * View for the electric potential Node that uses Canvas.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import { ObservableArray } from '../../../../axon/js/createObservableArray.js';

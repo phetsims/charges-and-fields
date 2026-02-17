@@ -4,7 +4,7 @@
  * Contains and updates a Canvas where a canonical electric field arrow is drawn facing to the right. Contains
  * information about the scale and offset, so it's easy for clients to draw the arrow.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Emitter from '../../../../axon/js/Emitter.js';

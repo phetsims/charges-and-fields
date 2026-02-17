@@ -3,7 +3,7 @@
 /**
  * Location for most colors of the simulation (especially those that could be tweaked)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Martin Veillette (Berea College)
  * @author Andrew Adare <andrew.adare@colorado.edu>
  */

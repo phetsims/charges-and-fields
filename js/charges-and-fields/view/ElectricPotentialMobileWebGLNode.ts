@@ -4,7 +4,7 @@
  * View for the electric potential Grid Node that displays a two-dimensional grid of rectangles that represent the
  * electric potential field, rendering in WebGL.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import { ObservableArray } from '../../../../axon/js/createObservableArray.js';

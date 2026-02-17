@@ -3,7 +3,7 @@
 /**
  * Arrow shape for the electric field arrows. Notably, it has a cut-out part in the middle (where the arrow spins around).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
