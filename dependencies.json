@@ -9,11 +9,11 @@
     "branch": "HEAD"
   },
   "brand": {
-    "sha": "55aa43f30cda11acc4a81527dc600f62c3f766a2",
+    "sha": "66f7c2d4c480b8b61d68be6ec5d7fafcf64a08bc",
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "d9650571468ef62dc6e0a04afa902f194f5db1a7",
+    "sha": "8ba0107d63d19c55a8671cfc8edbc6be60b3555d",
     "branch": "1.0-phetio"
   },
   "chipper": {
