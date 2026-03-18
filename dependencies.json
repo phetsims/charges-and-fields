@@ -13,11 +13,11 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "55dc830456fddfd913d8ab2d3ba7951d543aac13",
+    "sha": "f9fa77e856eb0aa96c6d81b43a193fd8ef0d818f",
     "branch": "1.0-phetio"
   },
   "chipper": {
-    "sha": "6e3c8d27e9bbf703f41ced475f856e5fc163834d",
+    "sha": "c0909c27dd91f29410de9da3d6a0fdeb8ad3b77f",
     "branch": "HEAD"
   },
   "dot": {
@@ -65,7 +65,7 @@
     "branch": "HEAD"
   },
   "sherpa": {
-    "sha": "bc19483f9cae25372295f860bf9d44dc850ea73b",
+    "sha": "9bc67146eb2669a7726e35f23b84fec1a58f6bc6",
     "branch": "HEAD"
   },
   "sun": {
