@@ -6,7 +6,6 @@
  */
 
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import chargesAndFields from '../chargesAndFields.js';
 
 const ChargesAndFieldsConstants = {
 
@@ -40,5 +39,4 @@ const ChargesAndFieldsConstants = {
   MAX_EFIELD_MAGNITUDE: 1e6, // V/m - maximum allowed electric field magnitude
   EFIELD_COLOR_SAT_MAGNITUDE: 5 // electricField at which color will saturate to maxColor (in Volts/meter)
 } as const;
-chargesAndFields.register( 'ChargesAndFieldsConstants', ChargesAndFieldsConstants );
 export default ChargesAndFieldsConstants;

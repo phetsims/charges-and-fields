@@ -9,7 +9,6 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ModelElement from './ModelElement.js';
 
 export default class ElectricFieldSensor extends ModelElement {
@@ -59,5 +58,3 @@ export default class ElectricFieldSensor extends ModelElement {
     super.dispose();
   }
 }
-
-chargesAndFields.register( 'ElectricFieldSensor', ElectricFieldSensor );

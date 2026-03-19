@@ -157,6 +157,4 @@ const ChargesAndFieldsColors = {
   } )
 };
 
-chargesAndFields.register( 'ChargesAndFieldsColors', ChargesAndFieldsColors );
-
 export default ChargesAndFieldsColors;

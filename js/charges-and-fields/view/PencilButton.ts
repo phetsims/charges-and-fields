@@ -11,7 +11,6 @@ import Image from '../../../../scenery/js/nodes/Image.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import pencil_png from '../../../mipmaps/pencil_png.js';
-import chargesAndFields from '../../chargesAndFields.js';
 
 type SelfOptions = {
   iconWidth?: number;
@@ -37,5 +36,3 @@ export default class PencilButton extends RectangularPushButton {
     super( options );
   }
 }
-
-chargesAndFields.register( 'PencilButton', PencilButton );

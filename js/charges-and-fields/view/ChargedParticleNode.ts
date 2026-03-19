@@ -14,7 +14,6 @@ import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransfo
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from '../model/ChargedParticle.js';
 import ChargedParticleRepresentationNode from './ChargedParticleRepresentationNode.js';
@@ -129,5 +128,3 @@ export default class ChargedParticleNode extends ChargedParticleRepresentationNo
     super.dispose();
   }
 }
-
-chargesAndFields.register( 'ChargedParticleNode', ChargedParticleNode );

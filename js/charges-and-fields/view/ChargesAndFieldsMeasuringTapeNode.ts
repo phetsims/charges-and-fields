@@ -12,7 +12,6 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import MeasuringTapeNode from '../../../../scenery-phet/js/MeasuringTapeNode.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import MeasuringTape from '../model/MeasuringTape.js';
 
@@ -50,5 +49,3 @@ export default class ChargesAndFieldsMeasuringTapeNode extends MeasuringTapeNode
     } );
   }
 }
-
-chargesAndFields.register( 'ChargesAndFieldsMeasuringTapeNode', ChargesAndFieldsMeasuringTapeNode );

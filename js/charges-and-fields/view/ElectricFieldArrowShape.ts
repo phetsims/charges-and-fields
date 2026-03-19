@@ -7,7 +7,6 @@
  */
 
 import ArrowShape from '../../../../scenery-phet/js/ArrowShape.js';
-import chargesAndFields from '../../chargesAndFields.js';
 
 export default class ElectricFieldArrowShape extends ArrowShape {
 
@@ -32,5 +31,3 @@ export default class ElectricFieldArrowShape extends ArrowShape {
     this.close();
   }
 }
-
-chargesAndFields.register( 'ElectricFieldArrowShape', ElectricFieldArrowShape );

@@ -9,7 +9,6 @@
 
 import Emitter from '../../../../axon/js/Emitter.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ElectricFieldArrowShape from './ElectricFieldArrowShape.js';
 
@@ -79,5 +78,4 @@ const ElectricFieldArrowCanvas = {
   // Emits when the contents of the Canvas have changed (needs to be redrawn).
   updateEmitter: emitter
 } as const;
-chargesAndFields.register( 'ElectricFieldArrowCanvas', ElectricFieldArrowCanvas );
 export default ElectricFieldArrowCanvas;

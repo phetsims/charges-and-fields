@@ -21,7 +21,6 @@
 
 import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargedParticle from '../model/ChargedParticle.js';
 
 // Type for queue items
@@ -198,5 +197,3 @@ export default class ChargeTracker {
     }
   }
 }
-
-chargesAndFields.register( 'ChargeTracker', ChargeTracker );

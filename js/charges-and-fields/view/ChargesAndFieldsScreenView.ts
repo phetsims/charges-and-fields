@@ -27,7 +27,6 @@ import Utils from '../../../../scenery/js/util/Utils.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from '../model/ChargedParticle.js';
@@ -519,5 +518,3 @@ export default class ChargesAndFieldsScreenView extends ScreenView {
     this.availableModelBoundsProperty.set( this.modelViewTransform.viewToModelBounds( nominalViewBounds ).intersection( this.model.enlargedBounds ) );
   }
 }
-
-chargesAndFields.register( 'ChargesAndFieldsScreenView', ChargesAndFieldsScreenView );

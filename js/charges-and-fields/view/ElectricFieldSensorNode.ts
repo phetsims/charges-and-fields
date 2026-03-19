@@ -19,7 +19,6 @@ import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
@@ -307,5 +306,3 @@ export default class ElectricFieldSensorNode extends ElectricFieldSensorRepresen
     super.dispose();
   }
 }
-
-chargesAndFields.register( 'ElectricFieldSensorNode', ElectricFieldSensorNode );

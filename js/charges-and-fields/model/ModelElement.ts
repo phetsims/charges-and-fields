@@ -15,7 +15,6 @@ import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../../tandem/js/types/NullableIO.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 // constants
@@ -150,5 +149,3 @@ ModelElement.ModelElementIO = new IOType<ModelElement, ModelElementStateObject>(
   },
   stateObjectToCreateElementArguments: ( stateObject: ModelElementStateObject ) => [ NullableIOVector2IO.fromStateObject( stateObject.initialPosition ) ]
 } );
-
-chargesAndFields.register( 'ModelElement', ModelElement );

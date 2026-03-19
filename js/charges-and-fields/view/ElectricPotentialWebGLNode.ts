@@ -40,7 +40,6 @@ import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransfo
 import WebGLNode, { WebGLNodePainter, WebGLNodePainterResult } from '../../../../scenery/js/nodes/WebGLNode.js';
 import ShaderProgram from '../../../../scenery/js/util/ShaderProgram.js';
 import Utils from '../../../../scenery/js/util/Utils.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargedParticle from '../model/ChargedParticle.js';
 import ChargeTracker from './ChargeTracker.js';
@@ -128,8 +127,6 @@ export default class ElectricPotentialWebGLNode extends WebGLNode {
     super.dispose();
   }
 }
-
-chargesAndFields.register( 'ElectricPotentialWebGLNode', ElectricPotentialWebGLNode );
 
 class ElectricPotentialPainter implements WebGLNodePainter {
 

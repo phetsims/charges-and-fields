@@ -60,6 +60,4 @@ type StringsType = {
 
 const ChargesAndFieldsStrings = getStringModule( 'CHARGES_AND_FIELDS' ) as StringsType;
 
-chargesAndFields.register( 'ChargesAndFieldsStrings', ChargesAndFieldsStrings );
-
 export default ChargesAndFieldsStrings;

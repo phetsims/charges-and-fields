@@ -14,7 +14,6 @@ import Shape from '../../../../kite/js/Shape.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsModel from './ChargesAndFieldsModel.js';
 
 // constants
@@ -407,5 +406,3 @@ ElectricPotentialLine.ElectricPotentialLineIO = new IOType<ElectricPotentialLine
   },
   stateObjectToCreateElementArguments: ( stateObject: ElectricPotentialLineStateObject ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
 } );
-
-chargesAndFields.register( 'ElectricPotentialLine', ElectricPotentialLine );

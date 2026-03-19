@@ -12,7 +12,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import InfiniteNumberIO from '../../../../tandem/js/types/InfiniteNumberIO.js';
-import chargesAndFields from '../../chargesAndFields.js';
 
 export default class ElectricPotentialSensor {
 
@@ -63,5 +62,3 @@ export default class ElectricPotentialSensor {
     this.isActiveProperty.reset();
   }
 }
-
-chargesAndFields.register( 'ElectricPotentialSensor', ElectricPotentialSensor );

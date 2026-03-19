@@ -12,7 +12,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ElectricPotentialLine from '../model/ElectricPotentialLine.js';
 import ElectricPotentialLineView from './ElectricPotentialLineView.js';
 
@@ -100,5 +99,3 @@ export default class ElectricPotentialLinesNode extends Node {
     areValuesVisibleProperty.linkAttribute( labelsNode, 'visible' );
   }
 }
-
-chargesAndFields.register( 'ElectricPotentialLinesNode', ElectricPotentialLinesNode );

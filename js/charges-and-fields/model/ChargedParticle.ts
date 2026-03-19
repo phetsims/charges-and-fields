@@ -21,7 +21,6 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../../tandem/js/types/NumberIO.js';
 import VoidIO from '../../../../tandem/js/types/VoidIO.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ModelElement, { ModelElementStateObject } from './ModelElement.js';
 
 type ChargedParticleStateObject = {
@@ -87,5 +86,3 @@ export default class ChargedParticle extends ModelElement {
     )
   } );
 }
-
-chargesAndFields.register( 'ChargedParticle', ChargedParticle );

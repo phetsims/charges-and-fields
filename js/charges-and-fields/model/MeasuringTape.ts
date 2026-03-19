@@ -10,7 +10,6 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import chargesAndFields from '../../chargesAndFields.js';
 
 export default class MeasuringTape {
 
@@ -49,5 +48,3 @@ export default class MeasuringTape {
     this.isActiveProperty.reset();
   }
 }
-
-chargesAndFields.register( 'MeasuringTape', MeasuringTape );

@@ -26,7 +26,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import IOType from '../../../../tandem/js/types/IOType.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsStrings from '../../ChargesAndFieldsStrings.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
@@ -219,6 +218,3 @@ class Circles extends Node {
     } );
   }
 }
-
-
-chargesAndFields.register( 'ElectricPotentialLineView', ElectricPotentialLineView );

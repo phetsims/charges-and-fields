@@ -12,7 +12,6 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import CanvasNode from '../../../../scenery/js/nodes/CanvasNode.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from '../model/ChargedParticle.js';
@@ -211,5 +210,3 @@ export default class ElectricPotentialCanvasNode extends CanvasNode {
     this.disposeElectricPotentialCanvasNode();
   }
 }
-
-chargesAndFields.register( 'ElectricPotentialCanvasNode', ElectricPotentialCanvasNode );

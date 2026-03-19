@@ -18,7 +18,6 @@ import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioS
 import PhetioGroup from '../../../../tandem/js/PhetioGroup.js';
 import PhetioObject from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 import ChargedParticle from './ChargedParticle.js';
 import ElectricFieldSensor from './ElectricFieldSensor.js';
@@ -674,5 +673,4 @@ class ChargesAndFieldsModel extends PhetioObject {
   }
 }
 
-chargesAndFields.register( 'ChargesAndFieldsModel', ChargesAndFieldsModel );
 export default ChargesAndFieldsModel;

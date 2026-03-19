@@ -8,7 +8,6 @@
 
 import Screen from '../../../joist/js/Screen.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import chargesAndFields from '../chargesAndFields.js';
 import ChargesAndFieldsColors from './ChargesAndFieldsColors.js';
 import ChargesAndFieldsModel from './model/ChargesAndFieldsModel.js';
 import ChargesAndFieldsScreenView from './view/ChargesAndFieldsScreenView.js';
@@ -27,5 +26,3 @@ export default class ChargesAndFieldsScreen extends Screen<ChargesAndFieldsModel
       options );
   }
 }
-
-chargesAndFields.register( 'ChargesAndFieldsScreen', ChargesAndFieldsScreen );

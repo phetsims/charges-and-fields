@@ -11,7 +11,6 @@ import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import RadialGradient from '../../../../scenery/js/util/RadialGradient.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsConstants from '../ChargesAndFieldsConstants.js';
 
 // constants
@@ -62,5 +61,3 @@ export default class ChargedParticleRepresentationNode extends Node {
     }
   }
 }
-
-chargesAndFields.register( 'ChargedParticleRepresentationNode', ChargedParticleRepresentationNode );

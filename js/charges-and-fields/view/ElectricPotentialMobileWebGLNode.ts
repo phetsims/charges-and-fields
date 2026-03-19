@@ -13,7 +13,6 @@ import Matrix3 from '../../../../dot/js/Matrix3.js';
 import ModelViewTransform2 from '../../../../phetcommon/js/view/ModelViewTransform2.js';
 import WebGLNode, { WebGLNodePainter, WebGLNodePainterResult } from '../../../../scenery/js/nodes/WebGLNode.js';
 import ShaderProgram from '../../../../scenery/js/util/ShaderProgram.js';
-import chargesAndFields from '../../chargesAndFields.js';
 import ChargesAndFieldsColors from '../ChargesAndFieldsColors.js';
 import ChargedParticle from '../model/ChargedParticle.js';
 
@@ -76,8 +75,6 @@ export default class ElectricPotentialMobileWebGLNode extends WebGLNode {
     return Math.min( MAX_PARTICLES_LIMIT, maxVertexUniforms - otherVectorCount );
   }
 }
-
-chargesAndFields.register( 'ElectricPotentialMobileWebGLNode', ElectricPotentialMobileWebGLNode );
 
 class ElectricPotentialMobilePainter implements WebGLNodePainter {
 
