@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "charges-and-fields": {
-    "sha": "0d0e572c8958188421d0dec33375c26c11015479",
+    "sha": "9e8f3234aed70b9fa8043d9604a840e5402e23c7",
     "branch": "1.0-phetio"
   },
   "chipper": {
@@ -25,7 +25,7 @@
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "4f86a5407e1c5784beb3079be1f274500360b74f",
+    "sha": "4aad2a14d734ba288530e382a69189a2832c6d31",
     "branch": "HEAD"
   },
   "kite": {
